@@ -4,6 +4,10 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-require 'ci/reporter/rake/rspec' if Rails.env.development?
+begin
+  require 'ci/reporter/rake/rspec'
+rescue LoadError
+  warn 'CI::Reporter not available. Rake Tasks not loaded.'
+end
 
 EFG::Application.load_tasks
