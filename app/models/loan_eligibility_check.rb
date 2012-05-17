@@ -1,6 +1,7 @@
+require 'active_model/model'
+
 class LoanEligibilityCheck
-  extend ActiveModel::Naming
-  include ActiveModel::Conversion
+  include ActiveModel::Model
 
   LoanCategories = [
     'Type A - New Term Loan with No Security',
@@ -28,10 +29,6 @@ class LoanEligibilityCheck
     'Replacing existing finance',
     'Financing an export order'
   ]
-
-  def persisted?
-    false
-  end
 
   attr_accessor :viable_proposition, :would_you_lend, :collateral_exhausted,
                 :amount, :lender_cap, :repayment_duration, :turnover,
