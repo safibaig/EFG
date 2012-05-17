@@ -10,17 +10,19 @@ en:
       # html: '<abbr title="required">*</abbr>'
     error_notification:
       default_message: "Please review the problems below:"
-    # Labels and hints examples
-    # labels:
-    #   defaults:
-    #     password: 'Password'
-    #   user:
-    #     new:
-    #       email: 'E-mail to sign in.'
-    #     edit:
-    #       email: 'E-mail.'
-    # hints:
-    #   defaults:
-    #     username: 'User name to sign in.'
-    #     password: 'No special characters, please.'
-
+    labels:
+      loan_eligibility_check:
+        viable_proposition: "Other than in respect of the availability of security, are the Applicant's plans viable and serviceable, as assessed according to your Normal Commercial Lending Criteria?"
+        would_you_lend: "Following Due Enquiry are you prepared, subject to the backing of the Enterprise Finance Guarantee, to provide the Applicant with a term loan or other debt facility?"
+        collateral_exhausted: "Do you confirm that, even after taking any available Collateral, the inadequacy of the Applicant's security would otherwise prevent a facility from being provided except with the backing of the Enterprise Finance Guarantee?"
+        amount: 'What is the value of the facility being applied for?'
+        lender_cap: 'What is the Lending Limit against which this facility is to be allocated? (Note that the date of the Scheme Facility Letter must fall within the validity of the Lending Limit)'
+        repayment_duration: 'Over what term does the Applicant intend to repay the guaranteed facility?'
+        turnover: 'What is the current annual turnover of the Applicant business?'
+        trading_date: 'What is the Commencement of Trading Date of the Applicant business? (dd/mm/yyyy)'
+        sic_code: 'Which Standard Industrial Classification (SIC) code best describes the business sector in which the guaranteed facility will be used?'
+        loan_category: 'Which EFG Lending Type which most accurately describes the facility to be guaranteed?'
+        reason: 'What is the principal purpose that this facility will be used for?'
+        previous_borrowing: "Including this facility, will the total outstanding balances and/or available limits of the Applicant's current EFG facilities be no more than £1 million?"
+        private_residence_charge_required: 'Will the granting of this facility be made conditional upon a new charge being taken over a Principal Private Residence?'
+        personal_guarantee_required: 'Will the granting of this facility be made conditional upon the provision of one or more personal guarantees, whether supported or unsupported, by the owners, directors, shareholders or others associated with the borrowing business?'

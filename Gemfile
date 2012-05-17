@@ -19,3 +19,7 @@ group :development, :test do
   gem 'ci_reporter'
   gem 'simplecov-rcov'
 end
+
+group :test do
+  gem 'capybara'
+end
