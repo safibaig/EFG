@@ -12,7 +12,7 @@
   <%= field_set_tag 'About the Borrower and Their Facility' do %>
     <%= f.input :amount, as: :currency %>
     <%= f.input :lender_cap, as: :radio_buttons, collection: LoanEligibilityCheck::LoanFacilities %>
-    <%= f.input :repayment_duration, as: :string %>
+    <%= f.input :repayment_duration, as: :duration %>
     <%= f.input :turnover, as: :currency %>
     <%= f.input :trading_date, as: :quick_date %>
     <%= f.input :sic_code, as: :sic_code %>
