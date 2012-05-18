@@ -22,6 +22,11 @@ class LoanEligibilityCheck
     super
   end
 
+  def repayment_duration
+    duration = loan.repayment_duration.to_i
+    { years: duration / 12, months: duration % 12 }
+  end
+
   def repayment_duration=(hash)
     years = hash.fetch(:years, 0).to_i
     months = hash.fetch(:months, 0).to_i

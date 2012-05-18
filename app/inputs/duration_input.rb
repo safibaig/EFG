@@ -1,8 +1,11 @@
 class DurationInput < SimpleForm::Inputs::Base
   def input
+    years = @builder.object.send(attribute_name)[:years]
+    months = @builder.object.send(attribute_name)[:months]
+
     template.content_tag(:div, class: 'input-append') do
-      template.text_field_tag(input_name('years')) + add_on('years') + ' ' + 
-      template.text_field_tag(input_name('months')) + add_on('months')
+      template.text_field_tag(input_name('years'), years) + add_on('years') + ' ' +
+      template.text_field_tag(input_name('months'), months) + add_on('months')
     end
   end
 
