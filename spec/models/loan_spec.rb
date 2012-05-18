@@ -49,5 +49,22 @@ describe Loan do
         end
       end
     end
+
+    describe 'repayment_duration' do
+      it 'is invalid when zero' do
+        loan.repayment_duration = 0
+        loan.should be_invalid
+      end
+
+      it 'is valid when greater than zero' do
+        loan.repayment_duration = 1
+        loan.should be_valid
+      end
+
+      it 'must be an integer' do
+        loan.repayment_duration = 1.5
+        loan.should be_invalid
+      end
+    end
   end
 end
