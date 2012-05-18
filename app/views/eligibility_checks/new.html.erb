@@ -2,7 +2,7 @@
   <h1>Check Eligibility</h1>
 </div>
 
-<%= simple_form_for(@loan_eligibility_check, url: loans_eligibility_check_path, html: {class: 'form-horizontal form-eligibility-check'}) do |f| %>
+<%= simple_form_for(@loan_eligibility_check, url: eligibility_check_path, html: {class: 'form-horizontal form-eligibility-check'}) do |f| %>
   <%= field_set_tag 'Declaration by Lender' do %>
     <%= f.input :viable_proposition, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :would_you_lend, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
