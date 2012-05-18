@@ -13,7 +13,6 @@ class LoanEligibilityCheck
     delegate attribute, "#{attribute}=", to: :loan
   end
   delegate :errors, :save, to: :loan
-  delegate :repayment_duration, to: :loan
 
   attr_reader :loan
 
@@ -23,13 +22,10 @@ class LoanEligibilityCheck
   end
 
   def repayment_duration
-    duration = loan.repayment_duration.to_i
-    { years: duration / 12, months: duration % 12 }
+    MonthDuration.new(loan.repayment_duration)
   end
 
   def repayment_duration=(hash)
-    years = hash.fetch(:years, 0).to_i
-    months = hash.fetch(:months, 0).to_i
-    loan.repayment_duration = (years * 12) + months
+    loan.repayment_duration = MonthDuration.from_hash(hash).total_months
   end
 end
