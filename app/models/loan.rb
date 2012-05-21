@@ -7,6 +7,16 @@ class Loan < ActiveRecord::Base
   validates_numericality_of :repayment_duration, greater_than: 0, only_integer: true
   validates_numericality_of :amount, greater_than: 0, only_integer: true
 
+  def amount
+    value = read_attribute(:amount)
+    Money.new(value) if value
+  end
+
+  def amount=(value)
+    cents = value.blank? ? nil : Money.parse(value).cents
+    write_attribute(:amount, cents)
+  end
+
   def lender_cap
     LoanFacility.find(lender_cap_id)
   end
@@ -17,5 +27,15 @@ class Loan < ActiveRecord::Base
 
   def reason
     LoanReason.find(reason_id)
+  end
+
+  def turnover
+    value = read_attribute(:turnover)
+    Money.new(value) if value
+  end
+
+  def turnover=(value)
+    cents = value.blank? ? nil : Money.parse(value).cents
+    write_attribute(:turnover, cents)
   end
 end

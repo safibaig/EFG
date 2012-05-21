@@ -6,7 +6,7 @@ class LoanEligibilityCheck
   ATTRIBUTES = [:viable_proposition, :would_you_lend, :collateral_exhausted,
                 :lender_cap_id, :sic_code, :loan_category_id, :reason_id,
                 :previous_borrowing, :private_residence_charge_required,
-                :personal_guarantee_required]
+                :personal_guarantee_required, :amount, :turnover]
 
   ATTRIBUTES.each do |attribute|
     delegate attribute, "#{attribute}=", to: :loan
@@ -18,15 +18,6 @@ class LoanEligibilityCheck
   def initialize(*)
     @loan = Loan.new
     super
-  end
-
-  def amount
-    Money.new(loan.amount) if loan.amount
-  end
-
-  def amount=(value)
-    return if value.blank?
-    loan.amount = Money.parse(value).cents
   end
 
   def repayment_duration
@@ -43,14 +34,5 @@ class LoanEligibilityCheck
     day, month, year = match[1..3].map(&:to_i)
     year += 2000 if year < 2000
     loan.trading_date = Date.new(year, month, day)
-  end
-
-  def turnover
-    Money.new(loan.turnover) if loan.turnover
-  end
-
-  def turnover=(value)
-    return if value.blank?
-    loan.turnover = Money.parse(value).cents
   end
 end

@@ -31,10 +31,10 @@ describe 'eligibility checks' do
     loan.viable_proposition.should be_true
     loan.would_you_lend.should be_true
     loan.collateral_exhausted.should be_true
-    loan.amount.should == 123456789
+    loan[:amount].should == 123456789
     loan.lender_cap_id.should == 1
     loan.repayment_duration.should == 30
-    loan.turnover.should == 123456789
+    loan[:turnover].should == 123456789
     loan.trading_date.should == Date.new(2012, 1, 31)
     loan.sic_code.should == 'DA15.61/1'
     loan.loan_category_id.should == 2

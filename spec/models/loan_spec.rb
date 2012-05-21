@@ -67,4 +67,56 @@ describe Loan do
       end
     end
   end
+
+  describe '#amount / #amount=' do
+    let(:loan) { Loan.new }
+
+    it 'is formatted with pence' do
+      loan[:amount] = 12345
+      loan.amount.to_s.should == '123.45'
+    end
+
+    it 'is stored as an integer' do
+      loan.amount = '123.45'
+      loan[:amount].should == 12345
+    end
+
+    it 'is stored as nil for a nil value' do
+      loan[:amount] = 12345
+      loan.amount = nil
+      loan.amount.should be_nil
+    end
+
+    it 'is stored as nil for a blank value' do
+      loan[:amount] = 12345
+      loan.amount = ''
+      loan.amount.should be_nil
+    end
+  end
+
+  describe '#turnover / #turnover=' do
+    let(:loan) { Loan.new }
+
+    it 'is formatted with pence' do
+      loan[:turnover] = 12345
+      loan.turnover.to_s.should == '123.45'
+    end
+
+    it 'is stored as an integer' do
+      loan.turnover = '123.45'
+      loan[:turnover].should == 12345
+    end
+
+    it 'is stored as nil for a nil value' do
+      loan[:turnover] = 12345
+      loan.turnover = nil
+      loan.turnover.should be_nil
+    end
+
+    it 'is stored as nil for a blank value' do
+      loan[:turnover] = 12345
+      loan.turnover = ''
+      loan.turnover.should be_nil
+    end
+  end
 end
