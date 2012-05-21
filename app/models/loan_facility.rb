@@ -1,7 +1,5 @@
-class LoanFacility < Struct.new(:id, :name)
-  def self.all
-    @all ||= [
-      new(1, 'EFG Training')
-    ]
-  end
+class LoanFacility < StaticAssociation
+  self.data = [
+    { id: 1, name: 'EFG Training' }
+  ]
 end

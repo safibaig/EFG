@@ -1,12 +1,10 @@
-class LoanCategory < Struct.new(:id, :name)
-  def self.all
-    @all ||= [
-      new(1, 'Type A - New Term Loan with No Security'),
-      new(2, 'Type B - New Term Loan with Partial Security'),
-      new(3, 'Type C - New Term Loan for Overdraft Refinancing'),
-      new(4, 'Type D - New Term Loan for Debt Consolidation or Refinancing'),
-      new(5, 'Type E - Overdraft Guarantee Facility'),
-      new(6, 'Type F - Invoice Finance Guarantee Facility')
-    ]
-  end
+class LoanCategory < StaticAssociation
+  self.data = [
+    { id: 1, name: 'Type A - New Term Loan with No Security' },
+    { id: 2, name: 'Type B - New Term Loan with Partial Security' },
+    { id: 3, name: 'Type C - New Term Loan for Overdraft Refinancing' },
+    { id: 4, name: 'Type D - New Term Loan for Debt Consolidation or Refinancing' },
+    { id: 5, name: 'Type E - Overdraft Guarantee Facility' },
+    { id: 6, name: 'Type F - Invoice Finance Guarantee Facility' }
+  ]
 end

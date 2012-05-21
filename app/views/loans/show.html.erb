@@ -22,7 +22,7 @@
     </tr>
     <tr>
       <th><%= t 'simple_form.labels.loan_eligibility_check.lender_cap_id' %></th>
-      <td><%= @loan.lender_cap_id %></td>
+      <td><%= @loan.lender_cap.name %></td>
     </tr>
     <tr>
       <th><%= t 'simple_form.labels.loan_eligibility_check.repayment_duration' %></th>
@@ -42,11 +42,11 @@
     </tr>
     <tr>
       <th><%= t 'simple_form.labels.loan_eligibility_check.loan_category_id' %></th>
-      <td><%= @loan.loan_category_id %></td>
+      <td><%= @loan.loan_category.name %></td>
     </tr>
     <tr>
       <th><%= t 'simple_form.labels.loan_eligibility_check.reason_id' %></th>
-      <td><%= @loan.reason_id %></td>
+      <td><%= @loan.reason.name %></td>
     </tr>
     <tr>
       <th><%= t 'simple_form.labels.loan_eligibility_check.previous_borrowing' %></th>
