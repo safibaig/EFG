@@ -49,4 +49,38 @@ describe MonthDuration do
       MonthDuration.new(30).should_not == MonthDuration.new(29)
     end
   end
+
+  describe '#format' do
+    it '1 month' do
+      MonthDuration.new(1).format.should == '1 month'
+    end
+
+    it 'many months' do
+      MonthDuration.new(11).format.should == '11 months'
+    end
+
+    it '1 year' do
+      MonthDuration.new(12).format.should == '1 year'
+    end
+
+    it 'many years' do
+      MonthDuration.new(36).format.should == '3 years'
+    end
+
+    it '1 year and 1 month' do
+      MonthDuration.new(13).format.should == '1 year, 1 month'
+    end
+
+    it '1 year and many months' do
+      MonthDuration.new(15).format.should == '1 year, 3 months'
+    end
+
+    it 'many years and 1 month' do
+      MonthDuration.new(37).format.should == '3 years, 1 month'
+    end
+
+    it 'many years and many month' do
+      MonthDuration.new(47).format.should == '3 years, 11 months'
+    end
+  end
 end

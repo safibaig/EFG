@@ -19,4 +19,11 @@ class MonthDuration
   def <=>(other)
     other.total_months <=> total_months
   end
+
+  def format
+    out = []
+    out << (years.to_s << ' year'.pluralize(years)) unless years.zero?
+    out << (months.to_s << ' month'.pluralize(months)) unless months.zero?
+    out.join(', ')
+  end
 end
