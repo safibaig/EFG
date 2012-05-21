@@ -2,6 +2,10 @@
   <h1>User Management</h1>
 </div>
 
+<div class="actions">
+  <%= link_to %Q{<i class="icon-plus"></i> New User}.html_safe, new_user_path, class: 'btn' %>
+</div>
+
 <table class="table table-striped">
   <thead>
     <tr><th>Name</th><th>Email</th></tr>

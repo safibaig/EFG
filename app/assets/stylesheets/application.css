@@ -16,3 +16,7 @@
 .navbar-inner {
   border-radius: 0;
 }
+
+.actions {
+  margin: 18px 0;
+}

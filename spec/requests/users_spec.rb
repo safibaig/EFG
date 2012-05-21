@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'memorable_password'
 
 describe "user management" do
   before do
@@ -17,5 +18,22 @@ describe "user management" do
     page.should have_content('flatley_florine@example.com')
     page.should have_content('Roselyn Morissette')
     page.should have_content('morissette.roselyn@example.com')
+  end
+
+  it "creating a new user" do
+    MemorablePassword.stub!(:generate).and_return('correct horse battery staple')
+
+    visit root_path
+    click_link 'User Management'
+
+    click_link 'New User'
+
+    fill_in 'Name', with: 'Aniya Kshlerin'
+    fill_in 'Email', with: 'kshlerin.aniya@example.com'
+    click_button 'Create User'
+
+    page.should have_content('Aniya Kshlerin')
+    page.should have_content('kshlerin.aniya@example.com')
+    page.should have_content('correct horse battery staple')
   end
 end
