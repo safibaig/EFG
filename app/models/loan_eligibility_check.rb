@@ -1,41 +1,31 @@
+require 'active_model/model'
+
 class LoanEligibilityCheck
-  extend ActiveModel::Naming
-  include ActiveModel::Conversion
+  include ActiveModel::Model
 
-  LoanCategories = [
-    'Type A - New Term Loan with No Security',
-    'Type B - New Term Loan with Partial Security',
-    'Type C - New Term Loan for Overdraft Refinancing',
-    'Type D - New Term Loan for Debt Consolidation or Refinancing',
-    'Type E - Overdraft Guarantee Facility',
-    'Type F - Invoice Finance Guarantee Facility'
-  ]
+  ATTRIBUTES = [:viable_proposition, :would_you_lend, :collateral_exhausted,
+                :lender_cap_id, :sic_code, :loan_category_id, :reason_id,
+                :previous_borrowing, :private_residence_charge_required,
+                :personal_guarantee_required, :amount, :turnover,
+                :repayment_duration]
 
-  LoanFacilities = [
-    'EFG Training'
-  ]
+  ATTRIBUTES.each do |attribute|
+    delegate attribute, "#{attribute}=", to: :loan
+  end
+  delegate :errors, :save, :trading_date, to: :loan
 
-  LoanReasons = [
-    'Start-up costs',
-    'General working capital requirements',
-    'Purchasing specific equipment or machinery',
-    'Purchasing licences, quotas or other entitlements to trade',
-    'Research and Development activities',
-    'Acquiring another business within UK',
-    'Acquiring another business outside UK',
-    'Expanding an existing business within UK',
-    'Expanding an existing business outside UK',
-    'Replacing existing finance',
-    'Financing an export order'
-  ]
+  attr_reader :loan
 
-  def persisted?
-    false
+  def initialize(*)
+    @loan = Loan.new
+    super
   end
 
-  attr_accessor :viable_proposition, :would_you_lend, :collateral_exhausted,
-                :amount, :lender_cap, :repayment_duration, :turnover,
-                :trading_date, :sic_code, :loan_category, :reason,
-                :previous_borrowing, :private_residence_charge_required,
-                :personal_guarantee_required
+  def trading_date=(value)
+    match = value.match(%r{(\d+)/(\d+)/(\d+)})
+    return unless match
+    day, month, year = match[1..3].map(&:to_i)
+    year += 2000 if year < 2000
+    loan.trading_date = Date.new(year, month, day)
+  end
 end

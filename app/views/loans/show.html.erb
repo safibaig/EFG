@@ -1,0 +1,64 @@
+<div class="page-header">
+  <h1>Loan</h1>
+</div>
+
+<table class="table table-striped">
+  <tbody>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.viable_proposition' %></th>
+      <td><%= humanize_boolean @loan.viable_proposition %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.would_you_lend' %></th>
+      <td><%= humanize_boolean @loan.would_you_lend %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.collateral_exhausted' %></th>
+      <td><%= humanize_boolean @loan.collateral_exhausted %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.amount' %></th>
+      <td><%= @loan.amount.format %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.lender_cap_id' %></th>
+      <td><%= @loan.lender_cap.name %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.repayment_duration' %></th>
+      <td><%= @loan.repayment_duration.format %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.turnover' %></th>
+      <td><%= @loan.turnover.format %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.trading_date' %></th>
+      <td><%= @loan.trading_date.strftime('%d/%m/%Y') %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.sic_code' %></th>
+      <td><%= @loan.sic_code %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.loan_category_id' %></th>
+      <td><%= @loan.loan_category.name %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.reason_id' %></th>
+      <td><%= @loan.reason.name %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.previous_borrowing' %></th>
+      <td><%= humanize_boolean @loan.previous_borrowing %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.private_residence_charge_required' %></th>
+      <td><%= humanize_boolean @loan.private_residence_charge_required %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.personal_guarantee_required' %></th>
+      <td><%= humanize_boolean @loan.personal_guarantee_required %></td>
+    </tr>
+  </tbody>
+</table>
