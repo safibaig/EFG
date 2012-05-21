@@ -1,5 +1,7 @@
 class MonthDuration
-  def self.from_hash(hash)
+  include Comparable
+
+  def self.from_params(hash)
     years = hash.fetch(:years, 0).to_i
     months = hash.fetch(:months, 0).to_i
     total_months = (years * 12) + months
@@ -13,4 +15,8 @@ class MonthDuration
   end
 
   attr_reader :years, :months, :total_months
+
+  def <=>(other)
+    other.total_months <=> total_months
+  end
 end

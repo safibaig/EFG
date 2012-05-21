@@ -6,7 +6,8 @@ class LoanEligibilityCheck
   ATTRIBUTES = [:viable_proposition, :would_you_lend, :collateral_exhausted,
                 :lender_cap_id, :sic_code, :loan_category_id, :reason_id,
                 :previous_borrowing, :private_residence_charge_required,
-                :personal_guarantee_required, :amount, :turnover]
+                :personal_guarantee_required, :amount, :turnover,
+                :repayment_duration]
 
   ATTRIBUTES.each do |attribute|
     delegate attribute, "#{attribute}=", to: :loan
@@ -18,14 +19,6 @@ class LoanEligibilityCheck
   def initialize(*)
     @loan = Loan.new
     super
-  end
-
-  def repayment_duration
-    MonthDuration.new(loan.repayment_duration)
-  end
-
-  def repayment_duration=(hash)
-    loan.repayment_duration = MonthDuration.from_hash(hash).total_months
   end
 
   def trading_date=(value)

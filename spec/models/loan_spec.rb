@@ -52,18 +52,13 @@ describe Loan do
 
     describe 'repayment_duration' do
       it 'is invalid when zero' do
-        loan.repayment_duration = 0
+        loan[:repayment_duration] = 0
         loan.should be_invalid
       end
 
       it 'is valid when greater than zero' do
-        loan.repayment_duration = 1
+        loan[:repayment_duration] = 1
         loan.should be_valid
-      end
-
-      it 'must be an integer' do
-        loan.repayment_duration = 1.5
-        loan.should be_invalid
       end
     end
   end
@@ -91,6 +86,25 @@ describe Loan do
       loan[:amount] = 12345
       loan.amount = ''
       loan.amount.should be_nil
+    end
+  end
+
+  describe '#repayment_duration / #repayment_duration=' do
+    let(:loan) { Loan.new }
+
+    it 'conforms to the MonthDuration interface' do
+      loan[:repayment_duration] = 18
+      loan.repayment_duration.should == MonthDuration.new(18)
+    end
+
+    it 'converts year/months hash to months' do
+      loan.repayment_duration = { years: 1, months: 6 }
+      loan.repayment_duration.should == MonthDuration.new(18)
+    end
+
+    it 'does not convert blank values to zero' do
+      loan.repayment_duration = { years: '', months: '' }
+      loan.repayment_duration.should be_nil
     end
   end
 

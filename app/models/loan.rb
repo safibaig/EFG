@@ -1,5 +1,5 @@
 class Loan < ActiveRecord::Base
-  validates_presence_of :amount, :lender_cap_id,
+  validates_presence_of :amount, :lender_cap_id, :repayment_duration,
     :turnover, :trading_date, :sic_code, :loan_category_id, :reason_id
   validates_inclusion_of :viable_proposition, :would_you_lend,
     :collateral_exhausted, :previous_borrowing,
@@ -27,6 +27,21 @@ class Loan < ActiveRecord::Base
 
   def reason
     LoanReason.find(reason_id)
+  end
+
+  def repayment_duration
+    total_months = read_attribute(:repayment_duration)
+    MonthDuration.new(total_months) if total_months
+  end
+
+  def repayment_duration=(hash)
+    if hash.all? { |key, value| value.blank? }
+      total_months = nil
+    else
+      total_months = MonthDuration.from_params(hash).total_months
+    end
+
+    write_attribute(:repayment_duration, total_months)
   end
 
   def turnover
