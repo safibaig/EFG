@@ -10,13 +10,13 @@ describe Loan do
 
     %w(
       amount
-      lender_cap
+      lender_cap_id
       repayment_duration
       turnover
       trading_date
       sic_code
-      loan_category
-      reason
+      loan_category_id
+      reason_id
     ).each do |attr|
       it "is invalid without #{attr}" do
         loan[attr] = ''

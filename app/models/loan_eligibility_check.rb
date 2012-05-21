@@ -4,7 +4,7 @@ class LoanEligibilityCheck
   include ActiveModel::Model
 
   ATTRIBUTES = [:viable_proposition, :would_you_lend, :collateral_exhausted,
-                :lender_cap, :sic_code, :loan_category, :reason,
+                :lender_cap_id, :sic_code, :loan_category_id, :reason_id,
                 :previous_borrowing, :private_residence_charge_required,
                 :personal_guarantee_required]
 

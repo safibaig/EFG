@@ -9,13 +9,13 @@ describe 'eligibility checks' do
     choose_radio_button 'would_you_lend', true
     choose_radio_button 'collateral_exhausted', true
     fill_in 'amount', 1234567.89
-    choose_radio_button 'lender_cap', 1
+    choose_radio_button 'lender_cap_id', 1
     fill_in_duration_input 'repayment_duration', 2, 6
     fill_in 'turnover', 1234567.89
     fill_in 'trading_date', '31/1/2012'
     fill_in 'sic_code', 'DA15.61/1'
-    choose_radio_button 'loan_category', 2
-    choose_radio_button 'reason', 3
+    choose_radio_button 'loan_category_id', 2
+    choose_radio_button 'reason_id', 3
     choose_radio_button 'previous_borrowing', true
     choose_radio_button 'private_residence_charge_required', false
     choose_radio_button 'personal_guarantee_required', true
@@ -32,13 +32,13 @@ describe 'eligibility checks' do
     loan.would_you_lend.should be_true
     loan.collateral_exhausted.should be_true
     loan.amount.should == 123456789
-    loan.lender_cap.should == 1
+    loan.lender_cap_id.should == 1
     loan.repayment_duration.should == 30
     loan.turnover.should == 123456789
     loan.trading_date.should == Date.new(2012, 1, 31)
     loan.sic_code.should == 'DA15.61/1'
-    loan.loan_category.should == 2
-    loan.reason.should == 3
+    loan.loan_category_id.should == 2
+    loan.reason_id.should == 3
     loan.previous_borrowing.should be_true
     loan.private_residence_charge_required.should be_false
     loan.personal_guarantee_required.should be_true
