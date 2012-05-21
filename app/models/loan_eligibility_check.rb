@@ -4,8 +4,7 @@ class LoanEligibilityCheck
   include ActiveModel::Model
 
   ATTRIBUTES = [:viable_proposition, :would_you_lend, :collateral_exhausted,
-                :amount, :lender_cap, :turnover,
-                :sic_code, :loan_category, :reason,
+                :lender_cap, :sic_code, :loan_category, :reason,
                 :previous_borrowing, :private_residence_charge_required,
                 :personal_guarantee_required]
 
@@ -19,6 +18,14 @@ class LoanEligibilityCheck
   def initialize(*)
     @loan = Loan.new
     super
+  end
+
+  def amount
+    Money.new(loan.amount) if loan.amount
+  end
+
+  def amount=(value)
+    loan.amount = Money.parse(value).cents
   end
 
   def repayment_duration
@@ -35,5 +42,13 @@ class LoanEligibilityCheck
     day, month, year = match[1..3].map(&:to_i)
     year += 2000 if year < 2000
     loan.trading_date = Date.new(year, month, day)
+  end
+
+  def turnover
+    Money.new(loan.turnover) if loan.turnover
+  end
+
+  def turnover=(value)
+    loan.turnover = Money.parse(value).cents
   end
 end
