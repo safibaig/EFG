@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.3'
 gem 'mysql2'
 
+gem 'devise'
 gem 'jquery-rails'
 gem 'money'
 gem 'simple_form'
