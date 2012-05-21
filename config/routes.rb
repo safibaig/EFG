@@ -8,4 +8,6 @@ EFG::Application.routes.draw do
       resource :eligibility_check, only: [:new, :create]
     end
   end
+
+  resources :users, only: [:index]
 end
