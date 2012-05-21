@@ -1,3 +1,64 @@
 <div class="page-header">
   <h1>Loan</h1>
 </div>
+
+<table class="table table-striped">
+  <tbody>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.viable_proposition' %></th>
+      <td><%= @loan.viable_proposition %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.would_you_lend' %></th>
+      <td><%= @loan.would_you_lend %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.collateral_exhausted' %></th>
+      <td><%= @loan.collateral_exhausted %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.amount' %></th>
+      <td><%= @loan.amount %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.lender_cap' %></th>
+      <td><%= @loan.lender_cap %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.repayment_duration' %></th>
+      <td><%= @loan.repayment_duration %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.turnover' %></th>
+      <td><%= @loan.turnover %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.trading_date' %></th>
+      <td><%= @loan.trading_date %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.sic_code' %></th>
+      <td><%= @loan.sic_code %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.loan_category' %></th>
+      <td><%= @loan.loan_category %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.reason' %></th>
+      <td><%= @loan.reason %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.previous_borrowing' %></th>
+      <td><%= @loan.previous_borrowing %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.private_residence_charge_required' %></th>
+      <td><%= @loan.private_residence_charge_required %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_eligibility_check.personal_guarantee_required' %></th>
+      <td><%= @loan.personal_guarantee_required %></td>
+    </tr>
+  </tbody>
+</table>
