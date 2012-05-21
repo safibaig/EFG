@@ -5,4 +5,5 @@ class Loan < ActiveRecord::Base
     :collateral_exhausted, :previous_borrowing,
     :private_residence_charge_required, :personal_guarantee_required, in: [true, false]
   validates_numericality_of :repayment_duration, greater_than: 0, only_integer: true
+  validates_numericality_of :amount, greater_than: 0, only_integer: true
 end

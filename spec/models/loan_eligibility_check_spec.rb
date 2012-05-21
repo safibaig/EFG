@@ -8,10 +8,6 @@ describe LoanEligibilityCheck do
       loan_eligibility_check.loan.amount = 12345
       loan_eligibility_check.amount.to_s.should == '123.45'
     end
-
-    it 'is nil for a zero value' do
-      loan_eligibility_check.amount.should be_nil
-    end
   end
 
   describe '#amount=' do
@@ -22,9 +18,9 @@ describe LoanEligibilityCheck do
       loan_eligibility_check.loan.amount.should == 12345
     end
 
-    it 'is zero for a blank value' do
+    it 'is nil for a blank value' do
       loan_eligibility_check.amount = ''
-      loan_eligibility_check.loan.amount.should == 0
+      loan_eligibility_check.loan.amount.should be_nil
     end
   end
 
@@ -78,10 +74,6 @@ describe LoanEligibilityCheck do
       loan_eligibility_check.loan.turnover = 12345
       loan_eligibility_check.turnover.to_s.should == '123.45'
     end
-
-    it 'is nil for a zero value' do
-      loan_eligibility_check.turnover.should be_nil
-    end
   end
 
   describe '#turnover=' do
@@ -92,9 +84,9 @@ describe LoanEligibilityCheck do
       loan_eligibility_check.loan.turnover.should == 12345
     end
 
-    it 'is zero for a blank value' do
+    it 'is nil for a blank value' do
       loan_eligibility_check.turnover = ''
-      loan_eligibility_check.loan.turnover.should == 0
+      loan_eligibility_check.loan.turnover.should be_nil
     end
   end
 end

@@ -25,6 +25,7 @@ class LoanEligibilityCheck
   end
 
   def amount=(value)
+    return if value.blank?
     loan.amount = Money.parse(value).cents
   end
 
@@ -49,6 +50,7 @@ class LoanEligibilityCheck
   end
 
   def turnover=(value)
+    return if value.blank?
     loan.turnover = Money.parse(value).cents
   end
 end
