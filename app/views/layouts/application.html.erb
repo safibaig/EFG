@@ -13,11 +13,25 @@
       <div class="container">
         <%= link_to 'Enterprise Finance Guarantee', '#', class: 'brand' %>
 
-        <ul class="nav">
-          <li><%= link_to 'Check Eligibility', new_eligibility_check_path %></li>
-        </ul>
+        <% if user_signed_in? %>
+          <ul class="nav">
+            <li><%= link_to 'Check Eligibility', new_eligibility_check_path %></li>
+            <li><%= link_to 'User Management', users_path %></li>
+            <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
+          </ul>
+        <% end %>
       </div>
     </div>
+  </div>
+
+  <div class="container">
+    <% if notice %>
+      <p class="alert alert-success"><%= notice %></p>
+    <% end %>
+
+    <% if alert %>
+      <p class="alert"><%= alert %></p>
+    <% end %>
   </div>
 
   <div class="container">

@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe 'eligibility checks' do
+  before do
+    user = FactoryGirl.create(:user)
+    login_as(user, scope: :user)
+  end
+
   it 'creates a loan from valid eligibility values' do
     visit root_path
     click_link 'Check Eligibility'
