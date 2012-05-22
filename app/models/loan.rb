@@ -1,4 +1,7 @@
 class Loan < ActiveRecord::Base
+  belongs_to :lender
+
+  validates_presence_of :lender, strict: true
   validates_presence_of :amount, :lender_cap_id, :repayment_duration,
     :turnover, :trading_date, :sic_code, :loan_category_id, :reason_id
   validates_inclusion_of :viable_proposition, :would_you_lend,

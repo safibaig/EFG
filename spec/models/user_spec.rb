@@ -13,6 +13,13 @@ describe User do
       user.name = ''
       user.should_not be_valid
     end
+
+    it 'requires a lender' do
+      expect {
+        user.lender = nil
+        user.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed)
+    end
   end
 
 end

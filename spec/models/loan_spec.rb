@@ -8,6 +8,13 @@ describe Loan do
       loan.should be_valid
     end
 
+    it 'requires a lender' do
+      expect {
+        loan.lender = nil
+        loan.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed)
+    end
+
     %w(
       amount
       lender_cap_id
