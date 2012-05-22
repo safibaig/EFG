@@ -2,11 +2,11 @@ require 'memorable_password'
 
 class UsersController < ApplicationController
   def index
-    @users = User.all
+    @users = current_lender.users
   end
 
   def show
-    @user = User.find(params[:id])
+    @user = current_lender.users.find(params[:id])
   end
 
   def new
@@ -14,7 +14,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = current_lender.users.new(params[:user])
     password = MemorablePassword.generate
     @user.password = @user.password_confirmation = password
 
@@ -27,11 +27,11 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id])
+    @user = current_lender.users.find(params[:id])
   end
 
   def update
-    @user = User.find(params[:id])
+    @user = current_lender.users.find(params[:id])
 
     if @user.update_attributes(params[:user])
       redirect_to user_url(@user)

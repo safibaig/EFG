@@ -1,5 +1,5 @@
 class LoansController < ApplicationController
   def show
-    @loan = Loan.find(params[:id])
+    @loan = current_lender.loans.find(params[:id])
   end
 end

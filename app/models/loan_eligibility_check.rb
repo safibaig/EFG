@@ -16,9 +16,10 @@ class LoanEligibilityCheck
 
   attr_reader :loan
 
-  def initialize(*)
+  def initialize(lender, attributes = {})
     @loan = Loan.new
-    super
+    @loan.lender = lender
+    super(attributes)
   end
 
   def trading_date=(value)

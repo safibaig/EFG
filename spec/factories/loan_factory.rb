@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :loan do
+    lender
     viable_proposition true
     would_you_lend true
     collateral_exhausted true
