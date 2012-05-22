@@ -1,0 +1,62 @@
+<div class="page-header">
+  <h1>Loan Entry</h1>
+</div>
+
+<p>From this page you can complete the application for the Government Guarantee. Before entering any further information on this page, the lender must have received the Data Protection and Disclosure Declaration signed by the Application and checked the box by way of confirmation.</p>
+<p>Following completion of the Business Facility and Lender sections of the application a decision will be returned and if agreed the application can be progress to 'Offered'.</p>
+<p>Please note that all the information within Facility Entry can be revised, however before progressing to Offered the information must represent the final terms agreed with the Applicant as it cannot subsequently be changed.</p>
+
+<hr>
+
+<%= simple_form_for(@loan_entry, url: loan_entry_path(@loan), html: {class: 'form-horizontal form-loan-entry'}) do |f| %>
+  <%= field_set_tag do %>
+    <%= f.input :declaration_signed, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
+  <% end %>
+
+  <%= field_set_tag 'Business' do %>
+    <%= f.input :business_name, as: :string %>
+    <%= f.input :trading_name, as: :string %>
+    <%= f.input :legal_form, as: :string %>
+    <%= f.input :company_registration, as: :string %>
+    <%= f.input :turnover, as: :currency %>
+    <%= f.input :trading_date, as: :quick_date %>
+    <%= f.input :postcode, as: :string %>
+    <%= f.input :branch_sortcode, as: :string %>
+  <% end %>
+
+  <%= field_set_tag 'Loan' do %>
+    <%= f.input :amount, as: :currency %>
+    <%= f.input :lender_cap_id, as: :radio_buttons, collection: LoanFacility.all, disabled: true %>
+    <%= f.input :repayment_duration, as: :duration %>
+    <%= f.input :turnover, as: :currency %>
+    <%= f.input :trading_date, as: :quick_date %>
+    <%= f.input :sic_code, as: :sic_code %>
+    <%= f.input :loan_category_id, as: :radio_buttons, collection: LoanCategory.all %>
+    <%= f.input :reason_id, as: :radio_buttons, collection: LoanReason.all %>
+    <%= f.input :interest_rate_type_id, as: :radio_buttons, collection: InterestRateType.all, wrapper_html: {class: 'radio-buttons-inline'} %>
+    <%= f.input :interest_rate, as: :string %>
+    <%= f.input :fees, as: :currency %>
+    <%= f.input :previous_borrowing, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
+    <%= f.input :state_aid_value, as: :currency, unit: '€', disabled: true, value: '123.90' %>
+    <%= f.input :total_value_state_aid, as: :boolean %>
+    <%= f.input :private_residence_charge_required, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
+    <%= f.input :personal_guarantee_required, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
+  <% end %>
+
+  <%= field_set_tag 'Lender' do %>
+    <%= f.input :viable_proposition, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
+    <%= f.input :would_you_lend, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
+    <%= f.input :collateral_exhausted, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
+    <%= f.input :generic1, as: :string %>
+    <%= f.input :generic2, as: :string %>
+    <%= f.input :generic3, as: :string %>
+    <%= f.input :generic4, as: :string %>
+    <%= f.input :generic5, as: :string %>
+    <%= f.input :town, as: :string %>
+    <%= f.input :non_validated_postcode, as: :string %>
+  <% end %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>
+  </div>
+<% end %>
