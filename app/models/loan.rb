@@ -7,6 +7,7 @@ class Loan < ActiveRecord::Base
   States = [Eligible, Completed, Offered, Guaranteed]
 
   belongs_to :lender
+  has_one :state_aid_calculation
 
   validates_inclusion_of :state, in: States, strict: true
   validates_presence_of :lender, strict: true
