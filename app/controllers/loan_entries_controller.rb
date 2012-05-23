@@ -1,6 +1,6 @@
 class LoanEntriesController < ApplicationController
   def new
-    @loan = Loan.find(params[:loan_id])
+    @loan = current_lender.loans.find(params[:loan_id])
     @loan_entry = LoanEntry.new(@loan)
   end
 end
