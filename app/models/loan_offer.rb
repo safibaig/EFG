@@ -28,4 +28,8 @@ class LoanOffer
     year += 2000 if year < 2000
     loan.facility_letter_date = Date.new(year, month, day)
   end
+
+  def lending_limit_details
+    loan.lender_cap.name
+  end
 end
