@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'eligibility checks' do
+describe 'loan entry' do
   let(:current_lender) { FactoryGirl.create(:lender) }
   let(:current_user) { FactoryGirl.create(:user, lender: current_lender) }
   let(:loan) { FactoryGirl.create(:loan, lender: current_lender) }

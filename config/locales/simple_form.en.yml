@@ -50,5 +50,5 @@ en:
         interest_rate_type_id: 'Please indicate whether the interest on this facility is to be charged at a fixed of variable rate:'
         interest_rate: 'Please enter the interest rate margin applicable to this facility:'
         fees: 'Please enter the total value of any arrangement, insurance or other fees (but excluding interest and the guarantee premium) the Applicant will be charged in connection with this facility being provided:'
-        state_aid_is_valid: "Is the total value of the Applicant's De Minimis State Aid for the last three years (including that arising from this application) no more than 2000,000 Euro, or the relavant lower threshold where advised for eligible agriculture, fisheris and transport businesses?"
+        state_aid_is_valid: "Is the total value of the Applicant's De Minimis State Aid for the last three years (including that arising from this application) no more than 2000,000 Euro, or the relevant lower threshold where advised for eligible agriculture, fisheries and transport businesses?"
         state_aid_value: 'Value of De Minimis State Aid applicable to this facility (in Euro)'
