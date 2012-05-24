@@ -11,7 +11,7 @@ en:
     error_notification:
       default_message: "Please review the problems below:"
     labels:
-      loan_eligibility_check:
+      loan: &loan
         viable_proposition: "Other than in respect of the availability of security, are the Applicant's plans viable and serviceable, as assessed according to your Normal Commercial Lending Criteria?"
         would_you_lend: "Following Due Enquiry are you prepared, subject to the backing of the Enterprise Finance Guarantee, to provide the Applicant with a term loan or other debt facility?"
         collateral_exhausted: "Do you confirm that, even after taking any available Collateral, the inadequacy of the Applicant's security would otherwise prevent a facility from being provided except with the backing of the Enterprise Finance Guarantee?"
@@ -23,6 +23,32 @@ en:
         sic_code: 'Which Standard Industrial Classification (SIC) code best describes the business sector in which the guaranteed facility will be used?'
         loan_category_id: 'Which EFG Lending Type which most accurately describes the facility to be guaranteed?'
         reason_id: 'What is the principal purpose that this facility will be used for?'
-        previous_borrowing: "Including this facility, will the total outstanding balances and/or available limits of the Applicant's current EFG facilities be no more than £1 million?"
+        previous_borrowing: "Including this facility, will the total outstanding balances and / or available limits of the Applicant's current EFG facilities be no more than £1 million?"
         private_residence_charge_required: 'Will the granting of this facility be made conditional upon a new charge being taken over a Principal Private Residence?'
         personal_guarantee_required: 'Will the granting of this facility be made conditional upon the provision of one or more personal guarantees, whether supported or unsupported, by the owners, directors, shareholders or others associated with the borrowing business?'
+
+      loan_eligibility_check:
+        <<: *loan
+
+      loan_entry:
+        <<: *loan
+        declaration_signed: 'Before proceeding, please confirm that a Data Protection and Disclosure Declaration signed by the Applicant has been received.'
+        business_name: 'What is the legal name of the Applicant business?'
+        trading_name: 'What is the trading name of the Applicant if the Applicant trades under another business name?'
+        legal_form: 'What is the legal form of the Applicant?'
+        company_registration: "What is the Applicant's Company Registration Number (if applicable)?"
+        trading_date: 'What is the Commencement of Trading Date of the Applicant business? (dd/mm/yyyy)'
+        postcode: "What is the postcode of the Applicant's main business address? (In instances where the Applicant's postcode cannot be validated please enter the lender's branch postcode and complete the two fields at the bottom of the page)."
+        branch_sortcode: '(For banks only) What is the Sort Code of the bank branch or business centre which originated this application? (nnnnnn)'
+        generic1: Enter any lender specific information to be captured for this application. (For optional internal use). Field 1.
+        generic2: Enter any lender specific information to be captured for this application. (For optional internal use). Field 2.
+        generic3: Enter any lender specific information to be captured for this application. (For optional internal use). Field 3.
+        generic4: Enter any lender specific information to be captured for this application. (For optional internal use). Field 4.
+        generic5: Enter any lender specific information to be captured for this application. (For optional internal use). Field 5.
+        town: "Where the postcode has failed validation, please enter the town in which the Applicant's business is located."
+        non_validated_postcode: "Where the postcode has failed validation, please enter the non-validated postcode in which the Applicant's business is located (when known)."
+        interest_rate_type_id: 'Please indicate whether the interest on this facility is to be charged at a fixed of variable rate:'
+        interest_rate: 'Please enter the interest rate margin applicable to this facility:'
+        fees: 'Please enter the total value of any arrangement, insurance or other fees (but excluding interest and the guarantee premium) the Applicant will be charged in connection with this facility being provided:'
+        state_aid_is_valid: "Is the total value of the Applicant's De Minimis State Aid for the last three years (including that arising from this application) no more than 2000,000 Euro, or the relavant lower threshold where advised for eligible agriculture, fisheris and transport businesses?"
+        state_aid_value: 'Value of De Minimis State Aid applicable to this facility (in Euro)'

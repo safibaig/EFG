@@ -2,8 +2,10 @@
 
 class CurrencyInput < SimpleForm::Inputs::StringInput
   def input
+    unit = options[:unit] || '£'
+
     template.content_tag(:div, class: 'input-prepend') do
-      template.content_tag(:span, '£', class: 'add-on') + super
+      template.content_tag(:span, unit, class: 'add-on') + super
     end
   end
 end

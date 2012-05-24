@@ -10,16 +10,6 @@ class Loan < ActiveRecord::Base
   validates_numericality_of :repayment_duration, greater_than: 0, only_integer: true
   validates_numericality_of :amount, greater_than: 0, only_integer: true
 
-  def amount
-    value = read_attribute(:amount)
-    Money.new(value) if value
-  end
-
-  def amount=(value)
-    cents = value.blank? ? nil : Money.parse(value).cents
-    write_attribute(:amount, cents)
-  end
-
   def lender_cap
     LoanFacility.find(lender_cap_id)
   end
@@ -30,6 +20,10 @@ class Loan < ActiveRecord::Base
 
   def reason
     LoanReason.find(reason_id)
+  end
+
+  def interest_rate_type
+    InterestRateType.find(interest_rate_type_id)
   end
 
   def repayment_duration
@@ -47,6 +41,16 @@ class Loan < ActiveRecord::Base
     write_attribute(:repayment_duration, total_months)
   end
 
+  def amount
+    value = read_attribute(:amount)
+    Money.new(value) if value
+  end
+
+  def amount=(value)
+    cents = value.blank? ? nil : Money.parse(value).cents
+    write_attribute(:amount, cents)
+  end
+
   def turnover
     value = read_attribute(:turnover)
     Money.new(value) if value
@@ -55,5 +59,15 @@ class Loan < ActiveRecord::Base
   def turnover=(value)
     cents = value.blank? ? nil : Money.parse(value).cents
     write_attribute(:turnover, cents)
+  end
+
+  def fees
+    value = read_attribute(:fees)
+    Money.new(value) if value
+  end
+
+  def fees=(value)
+    cents = value.blank? ? nil : Money.parse(value).cents
+    write_attribute(:fees, cents)
   end
 end

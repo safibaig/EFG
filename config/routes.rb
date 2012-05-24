@@ -7,6 +7,8 @@ EFG::Application.routes.draw do
     collection do
       resource :eligibility_check, only: [:new, :create]
     end
+
+    resource :entry, only: [:new, :create], controller: 'loan_entries'
   end
 
   resources :users, only: [:index, :show, :new, :create, :edit, :update]
