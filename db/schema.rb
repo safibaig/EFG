@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120522111612) do
+ActiveRecord::Schema.define(:version => 20120524102104) do
 
   create_table "lenders", :force => true do |t|
     t.string   "name"
@@ -20,23 +20,40 @@ ActiveRecord::Schema.define(:version => 20120522111612) do
   end
 
   create_table "loans", :force => true do |t|
-    t.boolean  "viable_proposition",                :null => false
-    t.boolean  "would_you_lend",                    :null => false
-    t.boolean  "collateral_exhausted",              :null => false
-    t.integer  "amount",                            :null => false
-    t.integer  "lender_cap_id",                     :null => false
-    t.integer  "repayment_duration",                :null => false
-    t.integer  "turnover",                          :null => false
-    t.date     "trading_date",                      :null => false
-    t.string   "sic_code",                          :null => false
-    t.integer  "loan_category_id",                  :null => false
-    t.integer  "reason_id",                         :null => false
-    t.boolean  "previous_borrowing",                :null => false
-    t.boolean  "private_residence_charge_required", :null => false
-    t.boolean  "personal_guarantee_required",       :null => false
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
-    t.integer  "lender_id",                         :null => false
+    t.boolean  "viable_proposition",                                              :null => false
+    t.boolean  "would_you_lend",                                                  :null => false
+    t.boolean  "collateral_exhausted",                                            :null => false
+    t.integer  "amount",                                                          :null => false
+    t.integer  "lender_cap_id",                                                   :null => false
+    t.integer  "repayment_duration",                                              :null => false
+    t.integer  "turnover",                                                        :null => false
+    t.date     "trading_date",                                                    :null => false
+    t.string   "sic_code",                                                        :null => false
+    t.integer  "loan_category_id",                                                :null => false
+    t.integer  "reason_id",                                                       :null => false
+    t.boolean  "previous_borrowing",                                              :null => false
+    t.boolean  "private_residence_charge_required",                               :null => false
+    t.boolean  "personal_guarantee_required",                                     :null => false
+    t.datetime "created_at",                                                      :null => false
+    t.datetime "updated_at",                                                      :null => false
+    t.integer  "lender_id",                                                       :null => false
+    t.boolean  "declaration_signed"
+    t.string   "business_name"
+    t.string   "trading_name"
+    t.string   "company_registration"
+    t.string   "postcode"
+    t.string   "non_validated_postcode"
+    t.string   "branch_sortcode"
+    t.string   "generic1"
+    t.string   "generic2"
+    t.string   "generic3"
+    t.string   "generic4"
+    t.string   "generic5"
+    t.string   "town"
+    t.integer  "interest_rate_type_id"
+    t.decimal  "interest_rate",                     :precision => 5, :scale => 2
+    t.integer  "fees"
+    t.boolean  "state_aid_is_valid"
   end
 
   create_table "users", :force => true do |t|

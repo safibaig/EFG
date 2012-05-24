@@ -38,7 +38,7 @@ en:
         legal_form: 'What is the legal form of the Applicant?'
         company_registration: "What is the Applicant's Company Registration Number (if applicable)?"
         trading_date: 'What is the Commencement of Trading Date of the Applicant business? (dd/mm/yyyy)'
-        postcode: "What is the postcode of the Applicant's main business address? (In instances where the Applicant's postcode cannot be validated please eneter the lender's branch postcode and complete the two fields at the bottom of the page)."
+        postcode: "What is the postcode of the Applicant's main business address? (In instances where the Applicant's postcode cannot be validated please enter the lender's branch postcode and complete the two fields at the bottom of the page)."
         branch_sortcode: '(For banks only) What is the Sort Code of the bank branch or business centre which originated this application? (nnnnnn)'
         generic1: Enter any lender specific information to be captured for this application. (For optional internal use). Field 1.
         generic2: Enter any lender specific information to be captured for this application. (For optional internal use). Field 2.
@@ -49,6 +49,6 @@ en:
         non_validated_postcode: "Where the postcode has failed validation, please enter the non-validated postcode in which the Applicant's business is located (when known)."
         interest_rate_type_id: 'Please indicate whether the interest on this facility is to be charged at a fixed of variable rate:'
         interest_rate: 'Please enter the interest rate margin applicable to this facility:'
-        fees: 'Please eneter the total value of any arrangement, insurance or other fees (but excluding interest and the guarantee premium) the Applicant will be charged in connection with this facility being provided:'
-        total_value_state_aid: "Is the total value of the Applicant's De Minimis State Aid for the last three years (including that arising from this application) no more than 2000,000 Euro, or the relavant lower threshold where advised for eligible agriculture, fisheris and transport businesses?"
+        fees: 'Please enter the total value of any arrangement, insurance or other fees (but excluding interest and the guarantee premium) the Applicant will be charged in connection with this facility being provided:'
+        state_aid_is_valid: "Is the total value of the Applicant's De Minimis State Aid for the last three years (including that arising from this application) no more than 2000,000 Euro, or the relavant lower threshold where advised for eligible agriculture, fisheris and transport businesses?"
         state_aid_value: 'Value of De Minimis State Aid applicable to this facility (in Euro)'
