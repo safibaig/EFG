@@ -2,11 +2,11 @@ class QuickDateInput < SimpleForm::Inputs::Base
   def input
     date = @builder.object.send(attribute_name)
 
+    input_html_options[:placeholder] = 'dd/mm/yyyy'
+    input_html_options[:value] = date && date.strftime('%d/%m/%Y')
+
     template.content_tag(:div, class: 'input-append') do
-      @builder.text_field(attribute_name,
-        placeholder: 'dd/mm/yyyy',
-        value: date && date.strftime('%d/%m/%Y')
-      ) + icon
+      @builder.text_field(attribute_name, input_html_options) + icon
     end
   end
 
