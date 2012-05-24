@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe LoanEntriesController do
+describe LoanOffersController do
   describe '#new' do
     let(:current_lender) { FactoryGirl.create(:lender) }
     let(:current_user) { FactoryGirl.create(:user, lender: current_lender) }
@@ -34,7 +34,7 @@ describe LoanEntriesController do
     before { sign_in(current_user) }
 
     def dispatch(params)
-      post :create, { loan_entry: {} }.merge(params)
+      post :create, { loan_offer: {} }.merge(params)
     end
 
     it 'works with a loan from the same lender' do
