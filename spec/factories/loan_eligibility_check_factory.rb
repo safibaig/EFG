@@ -16,7 +16,7 @@ FactoryGirl.define do
     personal_guarantee_required 'true'
 
     initialize_with {
-      new(FactoryGirl.create(:lender))
+      new(FactoryGirl.build(:loan))
     }
   end
 end

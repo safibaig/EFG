@@ -13,8 +13,10 @@ describe LoanEligibilityCheck do
     let(:lender) { FactoryGirl.create(:lender) }
 
     it 'assigns the specified lender to the created loan' do
+      loan_eligibility_check = LoanEligibilityCheck.new(lender.loans.new)
+
       attributes = FactoryGirl.attributes_for(:loan_eligibility_check)
-      loan_eligibility_check = LoanEligibilityCheck.new(lender, attributes)
+      loan_eligibility_check.attributes = attributes
 
       expect {
         loan_eligibility_check.save
@@ -25,7 +27,7 @@ describe LoanEligibilityCheck do
   end
 
   describe '#trading_date=' do
-    let(:loan_eligibility_check) { LoanEligibilityCheck.new(mock_model(Lender)) }
+    let(:loan_eligibility_check) { LoanEligibilityCheck.new(Loan.new) }
 
     it 'correctly parses dd/mm/yyyy' do
       loan_eligibility_check.trading_date = '11/1/2011'

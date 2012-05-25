@@ -1,26 +1,20 @@
-require 'active_model/model'
-
 class LoanEligibilityCheck
-  include ActiveModel::Model
+  include LoanStateTransition
 
-  ATTRIBUTES = [:viable_proposition, :would_you_lend, :collateral_exhausted,
-                :lender_cap_id, :sic_code, :loan_category_id, :reason_id,
-                :previous_borrowing, :private_residence_charge_required,
-                :personal_guarantee_required, :amount, :turnover,
-                :repayment_duration]
-
-  ATTRIBUTES.each do |attribute|
-    delegate attribute, "#{attribute}=", to: :loan
-  end
-  delegate :errors, :save, :trading_date, to: :loan
-
-  attr_reader :loan
-
-  def initialize(lender, attributes = {})
-    @loan = Loan.new
-    @loan.lender = lender
-    super(attributes)
-  end
+  attribute :viable_proposition
+  attribute :would_you_lend
+  attribute :collateral_exhausted
+  attribute :lender_cap_id
+  attribute :sic_code
+  attribute :loan_category_id
+  attribute :reason_id
+  attribute :previous_borrowing
+  attribute :private_residence_charge_required
+  attribute :personal_guarantee_required
+  attribute :amount
+  attribute :turnover
+  attribute :repayment_duration
+  attribute :trading_date
 
   def trading_date=(value)
     match = value.match(%r{(\d+)/(\d+)/(\d+)})

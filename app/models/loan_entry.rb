@@ -1,35 +1,38 @@
-require 'active_model/model'
-
 class LoanEntry
-  include ActiveModel::Model
+  include LoanStateTransition
 
-  READ_ONLY_ATTRIBUTES = [:viable_proposition, :would_you_lend,
-                          :collateral_exhausted, :lender_cap_id, :sic_code,
-                          :loan_category_id, :reason_id, :previous_borrowing,
-                          :private_residence_charge_required,
-                          :personal_guarantee_required, :amount, :turnover,
-                          :repayment_duration]
+  attribute :viable_proposition, read_only: true
+  attribute :would_you_lend, read_only: true
+  attribute :collateral_exhausted, read_only: true
+  attribute :lender_cap_id, read_only: true
+  attribute :sic_code, read_only: true
+  attribute :loan_category_id, read_only: true
+  attribute :reason_id, read_only: true
+  attribute :previous_borrowing, read_only: true
+  attribute :private_residence_charge_required, read_only: true
+  attribute :personal_guarantee_required, read_only: true
+  attribute :amount, read_only: true
+  attribute :turnover, read_only: true
+  attribute :repayment_duration, read_only: true
+  attribute :trading_date, read_only: true
 
-  delegate *READ_ONLY_ATTRIBUTES, to: :loan
-
-  ATTRIBUTES = [:declaration_signed, :business_name, :trading_name,
-                :company_registration, :postcode, :non_validated_postcode,
-                :branch_sortcode, :generic1, :generic2, :generic3, :generic4,
-                :generic5, :town, :interest_rate_type_id, :interest_rate,
-                :fees, :state_aid_is_valid]
-
-
-  ATTRIBUTES.each do |attribute|
-    delegate attribute, "#{attribute}=", to: :loan
-  end
-  delegate :errors, :save, :trading_date, to: :loan
-
-  attr_reader :loan
-
-  def initialize(loan, attributes = {})
-    @loan = loan
-    super(attributes)
-  end
+  attribute :declaration_signed
+  attribute :business_name
+  attribute :trading_name
+  attribute :company_registration
+  attribute :postcode
+  attribute :non_validated_postcode
+  attribute :branch_sortcode
+  attribute :generic1
+  attribute :generic2
+  attribute :generic3
+  attribute :generic4
+  attribute :generic5
+  attribute :town
+  attribute :interest_rate_type_id
+  attribute :interest_rate
+  attribute :fees
+  attribute :state_aid_is_valid
 
   # Don't really know what these fields are yet or how they are calculated.
   attr_accessor :legal_form, :state_aid_value
