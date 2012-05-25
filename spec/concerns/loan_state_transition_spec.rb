@@ -6,6 +6,7 @@ describe LoanStateTransition do
       include LoanStateTransition
 
       attribute :name
+      attribute :town, read_only: true
     end
   end
 
@@ -20,16 +21,24 @@ describe LoanStateTransition do
   end
 
   describe "attribute delegation" do
-    it "should delegate the reader to the loan" do
-      loan.should_receive(:name).and_return('Name')
+    context "read write attributes" do
+      it "should delegate the reader to the loan" do
+        loan.should_receive(:name).and_return('Name')
 
-      transition.name.should == 'Name'
+        transition.name.should == 'Name'
+      end
+
+      it "should delegate the writer to the loan" do
+        loan.should_receive(:name=).with('NewName')
+
+        transition.name = 'NewName'
+      end
     end
 
-    it "should delegate the writer to the loan" do
-      loan.should_receive(:name=).with('NewName')
-
-      transition.name = 'NewName'
+    context "read only attribute" do
+      it "should not have a writer" do
+        transition.should_not respond_to(:town=)
+      end
     end
   end
 end

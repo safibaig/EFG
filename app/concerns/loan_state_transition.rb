@@ -6,8 +6,10 @@ module LoanStateTransition
   end
 
   module ClassMethods
-    def attribute(name)
-      delegate name, "#{name}=", to: :loan
+    def attribute(name, options = {})
+      methods = [name]
+      methods << "#{name}=" unless options[:read_only]
+      delegate *methods, to: :loan
     end
   end
 
