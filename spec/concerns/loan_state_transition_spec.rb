@@ -56,6 +56,26 @@ describe LoanStateTransition do
     end
   end
 
+  describe "#attributes=" do
+    it "should call the writers for defined attributes" do
+      transition.should_receive(:name=).with('Name')
+
+      transition.attributes = {'name' => 'Name'}
+    end
+
+    it "should not call methods for read only attributes" do
+      transition.should_not_receive(:town=)
+
+      transition.attributes = {'town' => 'Town'}
+    end
+
+    it "should not call methods for undefined attributes" do
+      transition.should_not_receive(:junk=)
+
+      transition.attributes = {'junk' => 'junk'}
+    end
+  end
+
   describe "#errors" do
     it "should delegate to loan" do
       errors = double
