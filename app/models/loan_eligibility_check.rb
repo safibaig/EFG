@@ -17,10 +17,6 @@ class LoanEligibilityCheck
   attribute :trading_date
 
   def trading_date=(value)
-    match = value.match(%r{(\d+)/(\d+)/(\d+)})
-    return unless match
-    day, month, year = match[1..3].map(&:to_i)
-    year += 2000 if year < 2000
-    loan.trading_date = Date.new(year, month, day)
+    loan.trading_date = QuickDateFormatter.parse(value)
   end
 end
