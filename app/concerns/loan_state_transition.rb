@@ -6,6 +6,8 @@ module LoanStateTransition
     include ActiveModel::Conversion
 
     attr_reader :loan
+
+    delegate :errors, :save, to: :loan
   end
 
   module ClassMethods
