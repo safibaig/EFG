@@ -8,7 +8,7 @@ module LoanStateTransition
 
     attr_reader :loan
 
-    delegate :errors, :save, to: :loan
+    delegate :errors, :valid?, :save, to: :loan
   end
 
   module ClassMethods

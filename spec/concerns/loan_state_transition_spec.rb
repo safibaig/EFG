@@ -85,6 +85,14 @@ describe LoanStateTransition do
     end
   end
 
+  describe "#valid?" do
+    it "should delegate to loan" do
+      loan.should_receive(:valid?).and_return(true)
+
+      transition.valid?.should == true
+    end
+  end
+
   describe "#save" do
     it "should delegate to loan" do
       loan.should_receive(:save).and_return(true)
