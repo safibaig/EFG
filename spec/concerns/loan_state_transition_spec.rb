@@ -13,6 +13,20 @@ describe LoanStateTransition do
   let(:loan) { double(Loan) }
   let(:transition) { klass.new(loan) }
 
+  describe "ActiveModel conformance" do
+    it "persisted? should be false" do
+      transition.should_not be_persisted
+    end
+
+    it "should include ActiveModel::Conversion" do
+      klass.ancestors.should include(ActiveModel::Conversion)
+    end
+
+    it "should extend ActiveModel::Naming" do
+      klass.singleton_class.ancestors.should include(ActiveModel::Naming)
+    end
+  end
+
   describe "#initialize" do
     it "should take a loan" do
       transition = klass.new(loan)

@@ -2,6 +2,9 @@ module LoanStateTransition
   extend ActiveSupport::Concern
 
   included do
+    extend  ActiveModel::Naming
+    include ActiveModel::Conversion
+
     attr_reader :loan
   end
 
@@ -15,5 +18,9 @@ module LoanStateTransition
 
   def initialize(loan)
     @loan = loan
+  end
+
+  def persisted?
+    false
   end
 end
