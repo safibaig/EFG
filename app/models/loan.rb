@@ -42,42 +42,34 @@ class Loan < ActiveRecord::Base
   end
 
   def amount
-    value = read_attribute(:amount)
-    Money.new(value) if value
+    MoneyFormatter.format(read_attribute(:amount))
   end
 
   def amount=(value)
-    cents = value.blank? ? nil : Money.parse(value).cents
-    write_attribute(:amount, cents)
+    write_attribute(:amount, MoneyFormatter.parse(value))
   end
 
   def initial_draw_value
-    value = read_attribute(:initial_draw_value)
-    Money.new(value) if value
+    MoneyFormatter.format(read_attribute(:initial_draw_value))
   end
 
   def initial_draw_value=(value)
-    cents = value.blank? ? nil : Money.parse(value).cents
-    write_attribute(:initial_draw_value, cents)
+    write_attribute(:initial_draw_value, MoneyFormatter.parse(value))
   end
 
   def turnover
-    value = read_attribute(:turnover)
-    Money.new(value) if value
+    MoneyFormatter.format(read_attribute(:turnover))
   end
 
   def turnover=(value)
-    cents = value.blank? ? nil : Money.parse(value).cents
-    write_attribute(:turnover, cents)
+    write_attribute(:turnover, MoneyFormatter.parse(value))
   end
 
   def fees
-    value = read_attribute(:fees)
-    Money.new(value) if value
+    MoneyFormatter.format(read_attribute(:fees))
   end
 
   def fees=(value)
-    cents = value.blank? ? nil : Money.parse(value).cents
-    write_attribute(:fees, cents)
+    write_attribute(:fees, MoneyFormatter.parse(value))
   end
 end

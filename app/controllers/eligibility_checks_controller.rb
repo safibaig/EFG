@@ -1,10 +1,13 @@
 class EligibilityChecksController < ApplicationController
   def new
-    @loan_eligibility_check = LoanEligibilityCheck.new(current_lender)
+    @loan = current_lender.loans.new
+    @loan_eligibility_check = LoanEligibilityCheck.new(@loan)
   end
 
   def create
-    @loan_eligibility_check = LoanEligibilityCheck.new(current_lender, params[:loan_eligibility_check])
+    @loan = current_lender.loans.new
+    @loan_eligibility_check = LoanEligibilityCheck.new(@loan)
+    @loan_eligibility_check.attributes = params[:loan_eligibility_check]
 
     if @loan_eligibility_check.save
       redirect_to @loan_eligibility_check.loan

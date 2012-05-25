@@ -34,7 +34,7 @@ describe LoanGuaranteesController do
     before { sign_in(current_user) }
 
     def dispatch(params)
-      post :create, { loan_entry: {} }.merge(params)
+      post :create, { loan_guarantee: {} }.merge(params)
     end
 
     it 'works with a loan from the same lender' do
