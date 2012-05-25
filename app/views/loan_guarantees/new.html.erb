@@ -1,0 +1,26 @@
+<div class="page-header">
+  <h1>Guarantee and Initial Loan Draw</h1>
+</div>
+
+<p>From this page you can record the details of the initial draw of loan funds.</p>
+
+<p><span class="label label-important">IMPORTANT</span> If any changes have been made from what was originally set out in the Scheme Facility Offer documents then the loan will have to be cancelled and re-entered.</p>
+
+<p><span class="label label-info">REMINDER</span> The Direct Debit mandate should by now have been sent to the Premium Collection Agent.</p>
+
+<p>Please not that on completion of Guarantee and Initial Draw, the Premium Payment Schedule will be delivered to the Premium Collection Agent automatically through the Web Portal.</p>
+
+<hr>
+
+<%= simple_form_for(@loan_guarantee, url: loan_guarantee_path(@loan), html: {class: 'form-horizontal form-loan-guarantee'}) do |f| %>
+  <%= f.input :received_declaration, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
+  <%= f.input :signed_direct_debit_received, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
+  <%= f.input :first_pp_received, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
+  <%= f.input :initial_draw_date, as: :quick_date %>
+  <%= f.input :initial_draw_value, as: :currency %>
+  <%= f.input :maturity_date, as: :quick_date %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>
+  </div>
+<% end %>

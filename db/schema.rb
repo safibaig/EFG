@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120524145907) do
+ActiveRecord::Schema.define(:version => 20120525101713) do
 
   create_table "lenders", :force => true do |t|
     t.string   "name"
@@ -56,6 +56,12 @@ ActiveRecord::Schema.define(:version => 20120524145907) do
     t.boolean  "state_aid_is_valid"
     t.boolean  "facility_letter_sent"
     t.date     "facility_letter_date"
+    t.boolean  "received_declaration"
+    t.boolean  "signed_direct_debit_received"
+    t.boolean  "first_pp_received"
+    t.date     "initial_draw_date"
+    t.integer  "initial_draw_value"
+    t.date     "maturity_date"
   end
 
   create_table "users", :force => true do |t|

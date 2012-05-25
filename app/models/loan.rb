@@ -51,6 +51,16 @@ class Loan < ActiveRecord::Base
     write_attribute(:amount, cents)
   end
 
+  def initial_draw_value
+    value = read_attribute(:initial_draw_value)
+    Money.new(value) if value
+  end
+
+  def initial_draw_value=(value)
+    cents = value.blank? ? nil : Money.parse(value).cents
+    write_attribute(:initial_draw_value, cents)
+  end
+
   def turnover
     value = read_attribute(:turnover)
     Money.new(value) if value

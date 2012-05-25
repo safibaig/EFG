@@ -10,6 +10,7 @@ EFG::Application.routes.draw do
 
     resource :entry, only: [:new, :create], controller: 'loan_entries'
     resource :offer, only: [:new, :create], controller: 'loan_offers'
+    resource :guarantee, only: [:new, :create], controller: 'loan_guarantees'
   end
 
   resources :users, only: [:index, :show, :new, :create, :edit, :update]

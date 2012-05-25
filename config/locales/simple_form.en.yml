@@ -56,3 +56,11 @@ en:
       loan_offer:
         facility_letter_sent: "Have the Scheme Facility Offer Documents been sent to the Applicant?"
         facility_letter_date: "What is the date of the Scheme Facility Letter? (dd/mm/yyyy) - Please note that this must fall within the chosen Lending Limit period. Any change to the Lending Limit must be made in Loan Entry before entering the Scheme Facility date here."
+
+      loan_guarantee:
+        received_declaration: Has a signed Information Declaration (without any amendments) been received from the Application?
+        signed_dd_recvd: 'Confirm the Applicant has the means to settle the first Scheme Guarantee Premium from the date of Guarantee and Initial Draw. Please note that the first premium will be collected by the Premium Collection Agent by Direct Debit.'
+        first_pp_recvd: 'Has a completed Direct Debit Mandate been received signed by the Applicant and forwarded to the Premium Collection Agent?'
+        initial_draw_date: 'On what date was the initial draw of funds made?'
+        initial_draw_value: 'What was the value of the initial draw?'
+        maturity_date: 'On what date is the loan to be repaid (maturity date)?'
