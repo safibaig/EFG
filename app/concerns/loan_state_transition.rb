@@ -1,40 +1,28 @@
 module LoanStateTransition
   extend ActiveSupport::Concern
 
+  class IncorrectLoanState < StandardError; end
+
   included do
-    extend  ActiveModel::Naming
-    include ActiveModel::Conversion
-    include ActiveModel::MassAssignmentSecurity
-
-    attr_reader :loan
-
-    delegate :errors, :valid?, :save, to: :loan
+    raise RuntimeError.new('LoanPresenter must be included.') unless ancestors.include?(LoanPresenter)
   end
 
   module ClassMethods
-    def attribute(name, options = {})
-      methods = [name]
-
-      unless options[:read_only]
-        methods << "#{name}="
-        attr_accessible name
-      end
-
-      delegate *methods, to: :loan
+    def transition(options)
+      @from_state = options[:from]
+      @to_state = options[:to]
     end
+
+    attr_reader :from_state, :to_state
   end
 
   def initialize(loan)
-    @loan = loan
+    raise IncorrectLoanState unless loan.state == self.class.from_state
+    super(loan)
   end
 
-  def attributes=(attributes)
-    sanitize_for_mass_assignment(attributes).each do |k, v|
-      public_send("#{k}=", v)
-    end
-  end
-
-  def persisted?
-    false
+  def save
+    loan.state = self.class.to_state
+    super
   end
 end

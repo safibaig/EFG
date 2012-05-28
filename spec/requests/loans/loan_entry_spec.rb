@@ -3,11 +3,12 @@ require 'spec_helper'
 describe 'loan entry' do
   let(:current_lender) { FactoryGirl.create(:lender) }
   let(:current_user) { FactoryGirl.create(:user, lender: current_lender) }
-  let(:loan) { FactoryGirl.create(:loan, lender: current_lender) }
+  let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender) }
   before { login_as(current_user, scope: :user) }
 
   it 'entering further loan information' do
-    visit new_loan_entry_path(loan)
+    visit loan_path(loan)
+    click_link 'Loan Entry'
 
     choose_radio_button 'declaration_signed', true
     fill_in 'business_name', 'Widgets Ltd.'
@@ -32,6 +33,7 @@ describe 'loan entry' do
 
     current_path.should == loan_path(loan)
 
+    loan.state.should == Loan::Completed
     loan.declaration_signed.should be_true
     loan.business_name.should == 'Widgets Ltd.'
     loan.trading_name.should == 'Brilliant Widgets'

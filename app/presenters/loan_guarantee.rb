@@ -1,5 +1,8 @@
 class LoanGuarantee
+  include LoanPresenter
   include LoanStateTransition
+
+  transition from: Loan::Offered, to: Loan::Guaranteed
 
   attribute :received_declaration
   attribute :signed_direct_debit_received

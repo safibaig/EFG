@@ -11,7 +11,7 @@ describe LoanGuaranteesController do
     end
 
     it 'works with a loan from the same lender' do
-      loan = FactoryGirl.create(:loan, lender: current_lender)
+      loan = FactoryGirl.create(:loan, :offered, lender: current_lender)
 
       dispatch loan_id: loan.id
 
@@ -20,7 +20,7 @@ describe LoanGuaranteesController do
 
     it 'raises RecordNotFound for a loan from another lender' do
       other_lender = FactoryGirl.create(:lender)
-      loan = FactoryGirl.create(:loan, lender: other_lender)
+      loan = FactoryGirl.create(:loan, :offered, lender: other_lender)
 
       expect {
         dispatch loan_id: loan.id
@@ -38,7 +38,7 @@ describe LoanGuaranteesController do
     end
 
     it 'works with a loan from the same lender' do
-      loan = FactoryGirl.create(:loan, lender: current_lender)
+      loan = FactoryGirl.create(:loan, :offered, lender: current_lender)
 
       dispatch loan_id: loan.id
 
@@ -47,7 +47,7 @@ describe LoanGuaranteesController do
 
     it 'raises RecordNotFound for a loan from another lender' do
       other_lender = FactoryGirl.create(:lender)
-      loan = FactoryGirl.create(:loan, lender: other_lender)
+      loan = FactoryGirl.create(:loan, :offered, lender: other_lender)
 
       expect {
         dispatch loan_id: loan.id

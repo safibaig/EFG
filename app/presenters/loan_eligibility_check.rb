@@ -1,5 +1,8 @@
 class LoanEligibilityCheck
+  include LoanPresenter
   include LoanStateTransition
+
+  transition to: Loan::Eligible
 
   attribute :viable_proposition
   attribute :would_you_lend

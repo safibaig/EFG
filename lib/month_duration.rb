@@ -1,15 +1,12 @@
 class MonthDuration
   include Comparable
 
-  def self.from_params(hash)
-    years = hash.fetch(:years, 0).to_i
-    months = hash.fetch(:months, 0).to_i
-    total_months = (years * 12) + months
-    new(total_months)
+  def self.from_years_and_months(years, months)
+    new((years * 12) + months)
   end
 
-  def initialize(months)
-    @total_months = months.to_i
+  def initialize(total_months)
+    @total_months = total_months
     @years = @total_months / 12
     @months = @total_months % 12
   end

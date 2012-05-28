@@ -33,6 +33,7 @@ describe 'eligibility checks' do
 
     current_path.should == loan_path(loan)
 
+    loan.state.should == Loan::Eligible
     loan.viable_proposition.should be_true
     loan.would_you_lend.should be_true
     loan.collateral_exhausted.should be_true
