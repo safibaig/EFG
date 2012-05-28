@@ -5,10 +5,9 @@ module LoanPresenter
     extend  ActiveModel::Naming
     include ActiveModel::Conversion
     include ActiveModel::MassAssignmentSecurity
+    include ActiveModel::Validations
 
     attr_reader :loan
-
-    delegate :errors, :valid?, to: :loan
   end
 
   module ClassMethods
@@ -39,6 +38,7 @@ module LoanPresenter
   end
 
   def save
+    return false unless valid?
     loan.save
   end
 end

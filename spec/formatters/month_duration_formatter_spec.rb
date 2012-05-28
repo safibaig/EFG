@@ -10,6 +10,10 @@ describe MonthDurationFormatter do
     it "should return nil with blank values" do
       MonthDurationFormatter.parse(years: '', months: '').should be_nil
     end
+
+    it "should return nil with a blank hash" do
+      MonthDurationFormatter.parse({}).should be_nil
+    end
   end
 
   describe ".format" do
