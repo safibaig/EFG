@@ -27,18 +27,11 @@ class Loan < ActiveRecord::Base
   end
 
   def repayment_duration
-    total_months = read_attribute(:repayment_duration)
-    MonthDuration.new(total_months) if total_months
+    MonthDurationFormatter.format(read_attribute(:repayment_duration))
   end
 
   def repayment_duration=(hash)
-    if hash.all? { |key, value| value.blank? }
-      total_months = nil
-    else
-      total_months = MonthDuration.from_params(hash).total_months
-    end
-
-    write_attribute(:repayment_duration, total_months)
+    write_attribute(:repayment_duration, MonthDurationFormatter.parse(hash))
   end
 
   def amount
