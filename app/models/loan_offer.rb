@@ -1,5 +1,5 @@
 class LoanOffer
-  include LoanStateTransition
+  include LoanPresenter
 
   attribute :facility_letter_date
   attribute :facility_letter_sent

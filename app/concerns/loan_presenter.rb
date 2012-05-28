@@ -1,4 +1,4 @@
-module LoanStateTransition
+module LoanPresenter
   extend ActiveSupport::Concern
 
   included do

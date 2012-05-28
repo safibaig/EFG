@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe LoanStateTransition do
+describe LoanPresenter do
   let(:klass) do
     Class.new do
-      include LoanStateTransition
+      include LoanPresenter
 
       attribute :name
       attribute :town, read_only: true
