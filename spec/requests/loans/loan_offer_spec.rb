@@ -7,7 +7,8 @@ describe 'loan offer' do
   before { login_as(current_user, scope: :user) }
 
   it 'entering further loan information' do
-    visit new_loan_offer_path(loan)
+    visit loan_path(loan)
+    click_link 'Offer Loan'
 
     check 'facility_letter_sent'
     fill_in 'facility_letter_date', '24/5/2012'

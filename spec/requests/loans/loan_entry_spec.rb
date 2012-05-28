@@ -7,7 +7,8 @@ describe 'loan entry' do
   before { login_as(current_user, scope: :user) }
 
   it 'entering further loan information' do
-    visit new_loan_entry_path(loan)
+    visit loan_path(loan)
+    click_link 'Loan Entry'
 
     choose_radio_button 'declaration_signed', true
     fill_in 'business_name', 'Widgets Ltd.'

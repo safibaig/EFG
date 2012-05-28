@@ -7,7 +7,8 @@ describe 'loan guarantee' do
   before { login_as(current_user, scope: :user) }
 
   it 'entering further loan information' do
-    visit new_loan_guarantee_path(loan)
+    visit loan_path(loan)
+    click_link 'Guarantee & Initial Draw'
 
     choose_radio_button 'received_declaration', true
     choose_radio_button 'signed_direct_debit_received', true
