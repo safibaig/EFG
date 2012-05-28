@@ -1,4 +1,9 @@
 class Loan < ActiveRecord::Base
+  Eligible = 'eligible'.freeze
+  Completed = 'completed'.freeze
+  Offered = 'offered'.freeze
+  Guaranteed = 'guaranteed'.freeze
+
   belongs_to :lender
 
   validates_presence_of :lender, strict: true

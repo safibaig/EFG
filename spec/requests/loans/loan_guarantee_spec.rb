@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'loan guarantee' do
   let(:current_lender) { FactoryGirl.create(:lender) }
   let(:current_user) { FactoryGirl.create(:user, lender: current_lender) }
-  let(:loan) { FactoryGirl.create(:loan, lender: current_lender) }
+  let(:loan) { FactoryGirl.create(:loan, :offered, lender: current_lender) }
   before { login_as(current_user, scope: :user) }
 
   it 'entering further loan information' do
@@ -22,6 +22,7 @@ describe 'loan guarantee' do
 
     current_path.should == loan_path(loan)
 
+    loan.state.should == Loan::Guaranteed
     loan.received_declaration.should == true
     loan.signed_direct_debit_received.should == true
     loan.first_pp_received.should == true

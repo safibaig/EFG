@@ -8,7 +8,7 @@ module LoanPresenter
 
     attr_reader :loan
 
-    delegate :errors, :valid?, :save, to: :loan
+    delegate :errors, :valid?, to: :loan
   end
 
   module ClassMethods
@@ -36,5 +36,9 @@ module LoanPresenter
 
   def persisted?
     false
+  end
+
+  def save
+    loan.save
   end
 end

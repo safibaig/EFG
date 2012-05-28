@@ -1,5 +1,8 @@
 class LoanEntry
   include LoanPresenter
+  include LoanStateTransition
+
+  transition from: Loan::Eligible, to: Loan::Completed
 
   attribute :viable_proposition, read_only: true
   attribute :would_you_lend, read_only: true
