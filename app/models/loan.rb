@@ -4,8 +4,11 @@ class Loan < ActiveRecord::Base
   Offered = 'offered'.freeze
   Guaranteed = 'guaranteed'.freeze
 
+  States = [Eligible, Completed, Offered, Guaranteed]
+
   belongs_to :lender
 
+  validates_inclusion_of :state, in: States, strict: true
   validates_presence_of :lender, strict: true
 
   def lender_cap

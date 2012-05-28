@@ -14,6 +14,20 @@ describe Loan do
         loan.valid?
       }.to raise_error(ActiveModel::StrictValidationFailed)
     end
+
+    it 'requires a state' do
+      expect {
+        loan.state = nil
+        loan.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed)
+    end
+
+    it 'requires a known state' do
+      expect {
+        loan.state = 'not-a-known-state-yo'
+        loan.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed)
+    end
   end
 
   describe '#repayment_duration / #repayment_duration=' do

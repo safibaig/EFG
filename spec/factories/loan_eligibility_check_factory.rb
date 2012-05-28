@@ -16,7 +16,9 @@ FactoryGirl.define do
     personal_guarantee_required 'true'
 
     initialize_with {
-      new(FactoryGirl.build(:loan))
+      loan = FactoryGirl.build(:loan)
+      loan.state = nil
+      new(loan)
     }
   end
 end

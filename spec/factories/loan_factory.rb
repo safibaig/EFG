@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :loan do
+    state Loan::Eligible
     lender
     viable_proposition true
     would_you_lend true
@@ -15,10 +16,6 @@ FactoryGirl.define do
     previous_borrowing true
     private_residence_charge_required true
     personal_guarantee_required true
-
-    trait :eligible do
-      state Loan::Eligible
-    end
 
     trait :completed do
       state Loan::Completed
