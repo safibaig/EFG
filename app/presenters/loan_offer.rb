@@ -7,6 +7,12 @@ class LoanOffer
   attribute :facility_letter_date
   attribute :facility_letter_sent
 
+  validates_presence_of :facility_letter_date
+
+  validate do
+    errors.add(:facility_letter_sent, :accepted) unless self.facility_letter_sent
+  end
+
   def facility_letter_date=(value)
     loan.facility_letter_date = QuickDateFormatter.parse(value)
   end

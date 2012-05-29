@@ -5,6 +5,10 @@ en:
   activemodel:
     errors:
       models:
+        loan_offer:
+          attributes:
+            facility_letter_sent:
+              accepted: The Facility letter and supporting documentation must have been sent to the Applicant.
         loan_guarantee:
           attributes:
             received_declaration:
