@@ -11,6 +11,10 @@ class Loan < ActiveRecord::Base
   validates_inclusion_of :state, in: States, strict: true
   validates_presence_of :lender, strict: true
 
+  def self.with_state(state)
+    where(:state => state)
+  end
+
   def lender_cap
     LoanFacility.find(lender_cap_id)
   end
