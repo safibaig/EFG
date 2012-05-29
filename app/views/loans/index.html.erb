@@ -1,0 +1,20 @@
+<div class="page-header">
+  <h1>Loan Portfolio</h1>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>State</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @states.each do |state| %>
+      <tr>
+        <th><%= state.name %></th>
+        <td><%= state.loan_count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
