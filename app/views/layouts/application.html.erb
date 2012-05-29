@@ -15,7 +15,7 @@
 
         <% if user_signed_in? %>
           <ul class="nav">
-            <li><%= link_to 'Loan Portfolio', loans_path %></li>
+            <li><%= link_to 'Loan Portfolio', loan_states_path %></li>
             <li><%= link_to 'Check Eligibility', new_eligibility_check_path %></li>
             <li><%= link_to 'User Management', users_path %></li>
             <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>

@@ -3,7 +3,7 @@ EFG::Application.routes.draw do
 
   root to: 'dashboard#show'
 
-  resources :loans, only: [:index, :show] do
+  resources :loans, only: [:show] do
     collection do
       resource :eligibility_check, only: [:new, :create]
     end
@@ -13,7 +13,7 @@ EFG::Application.routes.draw do
     resource :guarantee, only: [:new, :create], controller: 'loan_guarantees'
   end
 
-  get 'loans/state/:id' => 'loan_states#show', as: 'loan_state'
+  resources :loan_states, only: [:index, :show]
 
   resources :users, only: [:index, :show, :new, :create, :edit, :update]
 end
