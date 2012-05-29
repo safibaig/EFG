@@ -12,7 +12,7 @@
   <tbody>
     <% @states.each do |state| %>
       <tr>
-        <th><%= state.name %></th>
+        <th><%= link_to state.name, loan_state_path(state.name) %></th>
         <td><%= state.loan_count %></td>
       </tr>
     <% end %>

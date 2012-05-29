@@ -13,5 +13,7 @@ EFG::Application.routes.draw do
     resource :guarantee, only: [:new, :create], controller: 'loan_guarantees'
   end
 
+  get 'loans/state/:id' => 'loan_states#show', as: 'loan_state'
+
   resources :users, only: [:index, :show, :new, :create, :edit, :update]
 end
