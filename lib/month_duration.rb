@@ -19,8 +19,21 @@ class MonthDuration
 
   def format
     out = []
-    out << "#{years} year".pluralize(years) unless years.zero?
-    out << "#{months} month".pluralize(months) unless months.zero?
+    if not years.zero?
+      out << if years > 1
+        "#{years} years"
+      else
+        "1 year"
+      end
+    end
+
+    if not months.zero?
+      out << if months > 1
+        "#{months} months"
+      else
+        "1 month"
+      end
+    end
     out.join(', ')
   end
 end
