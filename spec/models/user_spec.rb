@@ -15,10 +15,11 @@ describe User do
     end
 
     it 'requires a lender' do
-      expect {
-        user.lender = nil
-        user.valid?
-      }.to raise_error(ActiveModel::StrictValidationFailed)
+      pending "Remove rails 3.2 feature"
+      # expect {
+      #   user.lender = nil
+      #   user.valid?
+      # }.to raise_error(ActiveModel::StrictValidationFailed)
     end
   end
 
