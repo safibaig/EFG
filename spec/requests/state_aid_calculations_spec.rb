@@ -13,7 +13,7 @@ describe 'state aid calculations' do
     end
 
     it 'creates a new record with valid data' do
-      visit new_loan_state_aid_calculations_path(loan)
+      visit new_loan_state_aid_calculation_path(loan)
 
       fill_in :initial_draw_year, '2012'
       fill_in :initial_draw_amount, '123456'
@@ -43,13 +43,13 @@ describe 'state aid calculations' do
     end
 
     it 'does not create a new record with invalid data' do
-      visit new_loan_state_aid_calculations_path(loan)
+      visit new_loan_state_aid_calculation_path(loan)
 
       expect {
         click_button 'Submit'
       }.to change(StateAidCalculation, :count).by(0)
 
-      current_path.should == loan_state_aid_calculations_path(loan)
+      current_path.should == loan_state_aid_calculation_path(loan)
     end
   end
 
