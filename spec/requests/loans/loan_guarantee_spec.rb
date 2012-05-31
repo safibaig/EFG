@@ -33,7 +33,15 @@ describe 'loan guarantee' do
   end
 
   it 'does not continue with invalid values' do
-    pending "Don't know what makes this form invalid yet."
+    visit new_loan_guarantee_path(loan)
+
+    loan.state.should == Loan::Offered
+    expect {
+      click_button 'Submit'
+      loan.reload
+    }.to_not change(loan, :state)
+
+    current_path.should == "/loans/#{loan.id}/guarantee"
   end
 
   private

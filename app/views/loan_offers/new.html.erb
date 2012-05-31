@@ -8,7 +8,7 @@
 <hr>
 
 <%= simple_form_for(@loan_offer, url: loan_offer_path(@loan), html: { class: 'form-horizontal form-loan-offer' }) do |f| %>
-  <%= f.input :facility_letter_sent, as: :boolean %>
+  <%= f.input :facility_letter_sent, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
 
   <div class="control-group">
     <div class="control-label">Loan lending limit details:</div>

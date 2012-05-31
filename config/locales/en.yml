@@ -2,4 +2,22 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  activemodel:
+    errors:
+      models:
+        loan_entry:
+          attributes:
+            declaration_signed:
+              accepted: A customer declaration must have been received before a loan can be entered.
+        loan_offer:
+          attributes:
+            facility_letter_sent:
+              accepted: The Facility letter and supporting documentation must have been sent to the Applicant.
+        loan_guarantee:
+          attributes:
+            received_declaration:
+              accepted: A signed copy of the Customer Declaration must have been received before the initial draw down can occur.
+            first_pp_received:
+              accepted: An initial payment for the correct amount of the first Scheme Guarantee Premium payment has not been received from the Applicant.
+            signed_direct_debit_received:
+              accepted: A signed Direct Debit mandate must have been received before the initial draw down can occur.
