@@ -14,7 +14,7 @@ class MonthDuration
   attr_reader :years, :months, :total_months
 
   def <=>(other)
-    other.total_months <=> total_months
+    total_months <=> other.total_months
   end
 
   def format

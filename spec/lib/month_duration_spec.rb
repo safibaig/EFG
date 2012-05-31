@@ -44,4 +44,22 @@ describe MonthDuration do
       MonthDuration.new(47).format.should == '3 years, 11 months'
     end
   end
+
+  describe "comparable" do
+    it "should have correct < behaviour" do
+      (MonthDuration.new(3) < MonthDuration.new(4)).should be_true
+    end
+
+    it "should have correct > behaviour" do
+      (MonthDuration.new(10) > MonthDuration.new(4)).should be_true
+    end
+
+    it "should have the correct between? behaviour" do
+      MonthDuration.new(2).should_not be_between(MonthDuration.new(3), MonthDuration.new(5))
+      MonthDuration.new(3).should be_between(MonthDuration.new(3), MonthDuration.new(5))
+      MonthDuration.new(4).should be_between(MonthDuration.new(3), MonthDuration.new(5))
+      MonthDuration.new(5).should be_between(MonthDuration.new(3), MonthDuration.new(5))
+      MonthDuration.new(6).should_not be_between(MonthDuration.new(3), MonthDuration.new(5))
+    end
+  end
 end
