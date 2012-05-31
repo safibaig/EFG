@@ -76,19 +76,20 @@ describe LoanEligibilityCheck do
   end
 
   describe '#save' do
-    let(:lender) { FactoryGirl.create(:lender) }
+    let(:loan_eligibility_check) { FactoryGirl.build(:loan_eligibility_check) }
 
-    it 'assigns the specified lender to the created loan' do
-      loan_eligibility_check = LoanEligibilityCheck.new(lender.loans.new)
+    it "should set the state to Eligible if its eligible" do
+      EligibilityCheck.should_receive(:eligible?).and_return(true)
 
-      attributes = FactoryGirl.attributes_for(:loan_eligibility_check)
-      loan_eligibility_check.attributes = attributes
+      loan_eligibility_check.save
+      loan_eligibility_check.loan.state.should == Loan::Eligible
+    end
 
-      expect {
-        loan_eligibility_check.save
-      }.to change(Loan, :count).by(1)
+    it "should set the state to Rejected if its eligible" do
+      EligibilityCheck.should_receive(:eligible?).and_return(false)
 
-      Loan.last.lender.should == lender
+      loan_eligibility_check.save
+      loan_eligibility_check.loan.state.should == Loan::Rejected
     end
   end
 end

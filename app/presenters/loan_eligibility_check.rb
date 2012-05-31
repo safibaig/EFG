@@ -2,8 +2,6 @@ class LoanEligibilityCheck
   include LoanPresenter
   include LoanStateTransition
 
-  transition to: Loan::Eligible
-
   attribute :viable_proposition
   attribute :would_you_lend
   attribute :collateral_exhausted
@@ -32,5 +30,9 @@ class LoanEligibilityCheck
 
   def trading_date=(value)
     loan.trading_date = QuickDateFormatter.parse(value)
+  end
+
+  def transition_to
+    EligibilityCheck.eligible?(loan) ? Loan::Eligible : Loan::Rejected
   end
 end
