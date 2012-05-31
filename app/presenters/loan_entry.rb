@@ -22,6 +22,7 @@ class LoanEntry
   attribute :declaration_signed
   attribute :business_name
   attribute :trading_name
+  attribute :legal_form_id
   attribute :company_registration
   attribute :postcode
   attribute :non_validated_postcode
@@ -38,5 +39,5 @@ class LoanEntry
   attribute :state_aid_is_valid
 
   # Don't really know what these fields are yet or how they are calculated.
-  attr_accessor :legal_form, :state_aid_value
+  attr_accessor :state_aid_value
 end

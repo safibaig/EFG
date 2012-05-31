@@ -35,7 +35,7 @@ en:
         declaration_signed: 'Before proceeding, please confirm that a Data Protection and Disclosure Declaration signed by the Applicant has been received.'
         business_name: 'What is the legal name of the Applicant business?'
         trading_name: 'What is the trading name of the Applicant if the Applicant trades under another business name?'
-        legal_form: 'What is the legal form of the Applicant?'
+        legal_form_id: 'What is the legal form of the Applicant?'
         company_registration: "What is the Applicant's Company Registration Number (if applicable)?"
         trading_date: 'What is the Commencement of Trading Date of the Applicant business? (dd/mm/yyyy)'
         postcode: "What is the postcode of the Applicant's main business address? (In instances where the Applicant's postcode cannot be validated please enter the lender's branch postcode and complete the two fields at the bottom of the page)."

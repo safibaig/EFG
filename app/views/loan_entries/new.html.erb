@@ -16,7 +16,7 @@
   <%= field_set_tag 'Business' do %>
     <%= f.input :business_name, as: :string %>
     <%= f.input :trading_name, as: :string %>
-    <%= f.input :legal_form, as: :string %>
+    <%= f.input :legal_form_id, as: :radio_buttons, collection: LegalForm.all %>
     <%= f.input :company_registration, as: :string %>
     <%= f.input :turnover, as: :currency, disabled: true %>
     <%= f.input :trading_date, as: :quick_date, disabled: true %>
