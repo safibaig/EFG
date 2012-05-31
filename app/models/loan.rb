@@ -1,10 +1,11 @@
 class Loan < ActiveRecord::Base
+  Rejected = 'rejected'.freeze
   Eligible = 'eligible'.freeze
   Completed = 'completed'.freeze
   Offered = 'offered'.freeze
   Guaranteed = 'guaranteed'.freeze
 
-  States = [Eligible, Completed, Offered, Guaranteed]
+  States = [Rejected, Eligible, Completed, Offered, Guaranteed]
 
   belongs_to :lender
 
