@@ -5,6 +5,10 @@ en:
   activemodel:
     errors:
       models:
+        loan_entry:
+          attributes:
+            declaration_signed:
+              accepted: A customer declaration must have been received before a loan can be entered.
         loan_offer:
           attributes:
             facility_letter_sent:

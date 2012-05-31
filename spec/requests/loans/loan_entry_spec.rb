@@ -14,9 +14,12 @@ describe 'loan entry' do
     fill_in 'business_name', 'Widgets Ltd.'
     fill_in 'trading_name', 'Brilliant Widgets'
     fill_in 'company_registration', '0123456789'
+    choose_radio_button 'legal_form_id', 1
     fill_in 'postcode', 'N8 4HF'
     fill_in 'non_validated_postcode', 'JF3 8HF'
     fill_in 'branch_sortcode', '03-12-45'
+    choose_radio_button 'repayment_frequency_id', 1
+    fill_in 'maturity_date', '01/01/2013'
     fill_in 'generic1', 'Generic 1'
     fill_in 'generic2', 'Generic 2'
     fill_in 'generic3', 'Generic 3'
@@ -53,15 +56,14 @@ describe 'loan entry' do
   end
 
   it 'does not continue with invalid values' do
-    pending "Don't know what makes this form invalid yet."
-
     visit new_loan_entry_path(loan)
 
+    loan.state.should == Loan::Eligible
     expect {
       click_button 'Submit'
-    }.not_to change(Loan, :count)
+    }.not_to change(loan, :state)
 
-    current_path.should == '/loans/eligibility_check'
+    current_path.should == "/loans/#{loan.id}/entry"
   end
 
   private

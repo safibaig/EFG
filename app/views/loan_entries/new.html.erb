@@ -29,6 +29,7 @@
     <%= f.input :lender_cap_id, as: :radio_buttons, collection: LoanFacility.all, disabled: true %>
     <%= f.input :repayment_duration, as: :duration, disabled: true %>
     <%= f.input :repayment_frequency_id, as: :radio_buttons, collection: RepaymentFrequency.all %>
+    <%= f.input :maturity_date, as: :quick_date %>
     <%= f.input :turnover, as: :currency, disabled: true %>
     <%= f.input :trading_date, as: :quick_date, disabled: true %>
     <%= f.input :sic_code, as: :sic_code, disabled: true %>
