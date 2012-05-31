@@ -40,6 +40,7 @@ en:
         trading_date: 'What is the Commencement of Trading Date of the Applicant business? (dd/mm/yyyy)'
         postcode: "What is the postcode of the Applicant's main business address? (In instances where the Applicant's postcode cannot be validated please enter the lender's branch postcode and complete the two fields at the bottom of the page)."
         branch_sortcode: '(For banks only) What is the Sort Code of the bank branch or business centre which originated this application? (nnnnnn)'
+        repayment_frequency_id: At what frequency will the Applicant make repayments of the principal of the facility?
         generic1: Enter any lender specific information to be captured for this application. (For optional internal use). Field 1.
         generic2: Enter any lender specific information to be captured for this application. (For optional internal use). Field 2.
         generic3: Enter any lender specific information to be captured for this application. (For optional internal use). Field 3.
