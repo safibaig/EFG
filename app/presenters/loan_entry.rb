@@ -22,10 +22,13 @@ class LoanEntry
   attribute :declaration_signed
   attribute :business_name
   attribute :trading_name
+  attribute :legal_form_id
+  attribute :maturity_date
   attribute :company_registration
   attribute :postcode
   attribute :non_validated_postcode
   attribute :branch_sortcode
+  attribute :repayment_frequency_id
   attribute :generic1
   attribute :generic2
   attribute :generic3
@@ -38,5 +41,13 @@ class LoanEntry
   attribute :state_aid_is_valid
 
   # Don't really know what these fields are yet or how they are calculated.
-  attr_accessor :legal_form, :state_aid_value
+  attr_accessor :state_aid_value
+
+  validates_presence_of :business_name, :legal_form_id, :interest_rate_type_id,
+                        :repayment_frequency_id, :postcode, :maturity_date,
+                        :interest_rate, :fees
+
+  validate do
+    errors.add(:declaration_signed, :accepted) unless self.declaration_signed
+  end
 end

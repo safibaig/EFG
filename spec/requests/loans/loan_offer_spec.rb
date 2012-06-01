@@ -8,9 +8,9 @@ describe 'loan offer' do
 
   it 'entering further loan information' do
     visit loan_path(loan)
-    click_link 'Offer Loan'
+    click_link 'Offer Scheme Facility'
 
-    check 'facility_letter_sent'
+    choose_radio_button 'facility_letter_sent', true
     fill_in 'facility_letter_date', '24/5/2012'
 
     click_button 'Submit'
@@ -25,15 +25,23 @@ describe 'loan offer' do
   end
 
   it 'does not continue with invalid values' do
-    pending "Don't know what makes this form invalid yet."
+    visit new_loan_offer_path(loan)
+
+    loan.state.should == Loan::Completed
+    expect {
+      click_button 'Submit'
+      loan.reload
+    }.to_not change(loan, :state)
+
+    current_path.should == "/loans/#{loan.id}/offer"
   end
 
   private
-    def check(attribute)
-      page.check "loan_offer_#{attribute}"
-    end
+  def choose_radio_button(attribute, value)
+    choose "loan_offer_#{attribute}_#{value}"
+  end
 
-    def fill_in(attribute, value)
-      page.fill_in "loan_offer_#{attribute}", with: value
-    end
+  def fill_in(attribute, value)
+    page.fill_in "loan_offer_#{attribute}", with: value
+  end
 end

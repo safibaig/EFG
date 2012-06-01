@@ -39,6 +39,7 @@ module LoanPresenter
 
   def save
     return false unless valid?
+    yield loan if block_given?
     loan.save
   end
 end

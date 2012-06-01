@@ -14,8 +14,8 @@ FactoryGirl.define do
     loan_category_id 1
     reason_id 1
     previous_borrowing true
-    private_residence_charge_required true
-    personal_guarantee_required true
+    private_residence_charge_required false
+    personal_guarantee_required false
 
     trait :completed do
       state Loan::Completed

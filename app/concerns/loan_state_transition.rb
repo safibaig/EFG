@@ -21,8 +21,13 @@ module LoanStateTransition
     super(loan)
   end
 
+  def transition_to
+    self.class.to_state
+  end
+
   def save
-    loan.state = self.class.to_state
-    super
+    super do |loan|
+      loan.state = transition_to
+    end
   end
 end

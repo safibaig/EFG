@@ -63,6 +63,8 @@ ActiveRecord::Schema.define(:version => 20120531141421) do
     t.integer  "initial_draw_value"
     t.date     "maturity_date"
     t.string   "state"
+    t.integer  "legal_form_id"
+    t.integer  "repayment_frequency_id"
   end
 
   add_index "loans", ["state"], :name => "index_loans_on_state"

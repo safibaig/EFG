@@ -1,12 +1,13 @@
 class Loan < ActiveRecord::Base
   include FormatterConcern
 
+  Rejected = 'rejected'.freeze
   Eligible = 'eligible'.freeze
   Completed = 'completed'.freeze
   Offered = 'offered'.freeze
   Guaranteed = 'guaranteed'.freeze
 
-  States = [Eligible, Completed, Offered, Guaranteed]
+  States = [Rejected, Eligible, Completed, Offered, Guaranteed]
 
   belongs_to :lender
   has_one :state_aid_calculation
@@ -38,5 +39,9 @@ class Loan < ActiveRecord::Base
 
   def interest_rate_type
     InterestRateType.find(interest_rate_type_id)
+  end
+
+  def eligibility_check
+    EligibilityCheck.new(self)
   end
 end

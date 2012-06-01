@@ -22,8 +22,8 @@ describe 'loan states' do
       states = page.all('tbody th').map(&:text)
       counts = page.all('tbody td').map(&:text)
 
-      states.should == %w(Eligible Completed Offered Guaranteed)
-      counts.should == %w(1 0 1 1)
+      states.should == %w(Rejected Eligible Completed Offered Guaranteed)
+      counts.should == %w(0 1 0 1 1)
     end
 
     it 'does not include loans from another lender' do
@@ -35,8 +35,8 @@ describe 'loan states' do
       states = page.all('tbody th').map(&:text)
       counts = page.all('tbody td').map(&:text)
 
-      states.should == %w(Eligible Completed Offered Guaranteed)
-      counts.should == %w(1 0 1 1)
+      states.should == %w(Rejected Eligible Completed Offered Guaranteed)
+      counts.should == %w(0 1 0 1 1)
     end
   end
 

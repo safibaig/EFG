@@ -3,6 +3,10 @@
   margin-right: 18px;
 }
 
+.control-group.error > label {
+  color: #333;
+}
+
 .currency input,
 .quick_date input,
 .sic_code input {

@@ -2,6 +2,18 @@
   <h1>Loan</h1>
 </div>
 
+<% if @loan.state == Loan::Rejected %>
+  <h3>Rejected</h3>
+  <p>This loan has been rejected for the following reasons:</p>
+  <ul>
+    <% @loan.eligibility_check.reasons.each do |reason| %>
+      <li><%= reason %></li>
+    <% end %>
+  </ul>
+
+  <hr />
+<% end %>
+
 <table class="table table-striped">
   <tbody>
     <tr>
