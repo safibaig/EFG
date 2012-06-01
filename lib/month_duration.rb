@@ -1,5 +1,6 @@
 class MonthDuration
   include Comparable
+  include ActionView::Helpers::TextHelper
 
   def self.from_years_and_months(years, months)
     new((years * 12) + months)
@@ -20,19 +21,11 @@ class MonthDuration
   def format
     out = []
     if not years.zero?
-      out << if years > 1
-        "#{years} years"
-      else
-        "1 year"
-      end
+      out << pluralize(years, "year")
     end
 
     if not months.zero?
-      out << if months > 1
-        "#{months} months"
-      else
-        "1 month"
-      end
+      out << pluralize(months, "month")
     end
     out.join(', ')
   end
