@@ -71,4 +71,8 @@ class Loan < ActiveRecord::Base
   def fees=(value)
     write_attribute(:fees, MoneyFormatter.parse(value))
   end
+
+  def eligibility_check
+    EligibilityCheck.new(self)
+  end
 end
