@@ -59,6 +59,37 @@ describe 'state aid calculations' do
     end
   end
 
+  describe 'updating an existing state_aid_calculation' do
+    let(:current_lender) { FactoryGirl.create(:lender) }
+    let(:current_user) { FactoryGirl.create(:user, lender: current_lender) }
+    let(:loan) { FactoryGirl.create(:loan, lender: current_lender, amount: '123456') }
+    let!(:state_aid_calculation) { FactoryGirl.create(:state_aid_calculation, loan: loan) }
+
+    before do
+      login_as(current_user, scope: :user)
+    end
+
+    it 'updates the record' do
+      visit edit_loan_state_aid_calculation_path(loan)
+      fill_in :initial_draw_amount, '100000'
+      click_button 'Submit'
+
+      current_path.should == loan_path(loan)
+
+      state_aid_calculation.reload.initial_draw_amount.should == Money.new(100_000_00)
+    end
+
+    it 'does not update the record with invalid data' do
+      visit edit_loan_state_aid_calculation_path(loan)
+      fill_in :initial_draw_amount, ''
+      click_button 'Submit'
+
+      current_path.should == loan_state_aid_calculation_path(loan)
+
+      state_aid_calculation.reload.initial_draw_amount.should_not be_nil
+    end
+  end
+
   private
     def fill_in(attribute, value)
       page.fill_in "state_aid_calculation_#{attribute}", with: value
