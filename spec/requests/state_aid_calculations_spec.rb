@@ -6,10 +6,16 @@ describe 'state aid calculations' do
   describe 'creating' do
     let(:current_lender) { FactoryGirl.create(:lender) }
     let(:current_user) { FactoryGirl.create(:user, lender: current_lender) }
-    let(:loan) { FactoryGirl.create(:loan, lender: current_lender, amount: 123_456_00) }
+    let(:loan) { FactoryGirl.create(:loan, lender: current_lender, amount: '123456') }
 
     before do
       login_as(current_user, scope: :user)
+    end
+
+    it 'pre-fills some fields' do
+      visit new_loan_state_aid_calculation_path(loan)
+
+      page.find('#state_aid_calculation_initial_draw_amount').value.should == '123456.00'
     end
 
     it 'creates a new record with valid data' do
