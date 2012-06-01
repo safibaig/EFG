@@ -13,4 +13,7 @@ class StateAidCalculation < ActiveRecord::Base
     :initial_draw_months
 
   format :initial_draw_amount, with: MoneyFormatter
+  format :second_draw_amount, with: MoneyFormatter
+  format :third_draw_amount, with: MoneyFormatter
+  format :fourth_draw_amount, with: MoneyFormatter
 end
