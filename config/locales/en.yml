@@ -2,6 +2,22 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  eligibility_check:
+    attributes:
+      viable_proposition:
+        invalid: This is not a viable lending proposition. Lenders' normal commercial lending practices provide the mechanism for determining whether the proposition under consideration is viable and thus that the business will be able to repay any facility offered.
+      would_you_lend:
+        invalid: Lender does not wish to lend. All Lenders have their own commercial criteria that define whether or not they would lend to a particular business proposition. Lenders must be content that they wish to provide a facility before determining whether use of EFG is appropriate and necessary to enable the facility to be offered.
+      collateral_exhausted:
+        invalid: "As part of the decision to use EFG it is the Lender's responsibility to ensure that all available collateral has been considered. Available collateral is that which, in the view of the Lender acting in the normal course of their SME financing activities, it is reasonable to expect the Borrower to make available in order to help secure the facility requested. The wish of a potential Borrower to avoid making particular assets available as security does not make that security unavailable and only when the status of all available security has been considered may the use of EFG be considered. It should, however, be noted that the principal private residence of an individual borrower or guarantor of another borrower should be explicitly excluded from consideration. In cases where there is sufficient collateral available to secure some but not all of the facility requested, then that should be taken by the Lender alongside the EFG Guarantee."
+      amount:
+        invalid: "A business may only borrow between £1,000 and £1,000,000 (inclusive) under the Enterprise Finance Guarantee (EFG)."
+      repayment_duration:
+        invalid: "Repayment duration should be between 3 months and 2, 3 or 10 years (inclusive). EFG facilities are only available for terms of between three months and ten years in most cases. Type E facilities have a maximum term of two years and Type F facilities have a maximum of three years."
+      previous_borrowing:
+        invalid: "Although a business may benefit from EFG on more than one occasion, and may have more than one EFG-backed facility at any one time, the total outstanding balances and/or active available limits of the Applicant's current EFG facilities may not exceed £1 million at any one time."
+      private_residence_charge_required:
+        invalid: A new charge may not not be taken over a principal private residence in connection with providing an EFG-backed facility.
   activemodel:
     errors:
       models:

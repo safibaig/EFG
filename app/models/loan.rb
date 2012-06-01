@@ -1,10 +1,11 @@
 class Loan < ActiveRecord::Base
+  Rejected = 'rejected'.freeze
   Eligible = 'eligible'.freeze
   Completed = 'completed'.freeze
   Offered = 'offered'.freeze
   Guaranteed = 'guaranteed'.freeze
 
-  States = [Eligible, Completed, Offered, Guaranteed]
+  States = [Rejected, Eligible, Completed, Offered, Guaranteed]
 
   belongs_to :lender
 
@@ -69,5 +70,9 @@ class Loan < ActiveRecord::Base
 
   def fees=(value)
     write_attribute(:fees, MoneyFormatter.parse(value))
+  end
+
+  def eligibility_check
+    EligibilityCheck.new(self)
   end
 end
