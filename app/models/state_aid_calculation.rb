@@ -1,4 +1,6 @@
 class StateAidCalculation < ActiveRecord::Base
+  include FormatterConcern
+
   belongs_to :loan
 
   attr_accessible :initial_draw_year, :initial_draw_amount,
@@ -10,11 +12,5 @@ class StateAidCalculation < ActiveRecord::Base
   validates_presence_of :initial_draw_year, :initial_draw_amount,
     :initial_draw_months
 
-  def initial_draw_amount
-    MoneyFormatter.format(super)
-  end
-
-  def initial_draw_amount=(value)
-    super(MoneyFormatter.parse(value))
-  end
+  format :initial_draw_amount, with: MoneyFormatter
 end
