@@ -1,0 +1,28 @@
+<div class="page-header">
+  <h1>State Aid Calculator</h1>
+</div>
+
+<p>From this page you can input the information to calculate the value of De Minimis State Aid and the Premium Payment Schedule applicable to this loan.</p>
+<p>Please note that the terms entered here must represent the final terms agreed with the Applicant.</p>
+
+<hr>
+
+<%= simple_form_for(@state_aid_calculation, url: [@loan, :state_aid_calculation], html: {class: 'form-horizontal form-state-aid-calculation'}) do |f| %>
+  <%= f.input :initial_draw_year, as: :string %>
+  <%= f.input :initial_draw_amount, as: :currency %>
+  <%= f.input :initial_draw_months, as: :string %>
+
+  <%= field_set_tag 'Draw Information' do %>
+    <%= f.input :initial_capital_repayment_holiday, as: :string %>
+    <%= f.input :second_draw_amount, as: :currency %>
+    <%= f.input :second_draw_months, as: :string %>
+    <%= f.input :third_draw_amount, as: :currency %>
+    <%= f.input :third_draw_months, as: :string %>
+    <%= f.input :fourth_draw_amount, as: :currency %>
+    <%= f.input :fourth_draw_months, as: :string %>
+  <% end %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>
+  </div>
+<% end %>

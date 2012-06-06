@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120531094535) do
+ActiveRecord::Schema.define(:version => 20120531141421) do
 
   create_table "lenders", :force => true do |t|
     t.string   "name"
@@ -68,6 +68,24 @@ ActiveRecord::Schema.define(:version => 20120531094535) do
   end
 
   add_index "loans", ["state"], :name => "index_loans_on_state"
+
+  create_table "state_aid_calculations", :force => true do |t|
+    t.integer  "loan_id",                           :null => false
+    t.integer  "initial_draw_year",                 :null => false
+    t.integer  "initial_draw_amount",               :null => false
+    t.integer  "initial_draw_months",               :null => false
+    t.integer  "initial_capital_repayment_holiday"
+    t.integer  "second_draw_amount"
+    t.integer  "second_draw_months"
+    t.integer  "third_draw_amount"
+    t.integer  "third_draw_months"
+    t.integer  "fourth_draw_amount"
+    t.integer  "fourth_draw_months"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+  end
+
+  add_index "state_aid_calculations", ["loan_id"], :name => "index_state_aid_calculations_on_loan_id"
 
   create_table "users", :force => true do |t|
     t.string   "name",                                  :null => false

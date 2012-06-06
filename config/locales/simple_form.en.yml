@@ -66,3 +66,15 @@ en:
         initial_draw_date: 'On what date was the initial draw of funds made?'
         initial_draw_value: 'What was the value of the initial draw?'
         maturity_date: 'On what date is the loan to be repaid (maturity date)?'
+
+      state_aid_calculation:
+        initial_draw_year: 'What is the expected year of the initial draw? (yyyy)'
+        initial_draw_amount: 'What is the amount of the initial draw?'
+        initial_draw_months: 'What is the loan term? (Months)'
+        initial_capital_repayment_holiday: 'What is the length of the initial capital repayment holiday? (Months)'
+        second_draw_amount: 'What is the amount of the additional draw (Second tranche)'
+        second_draw_months: 'What is the number of months (from the initial draw) to second tranche drawdown?'
+        third_draw_amount: 'What is the amount of the additional draw? (Third tranche)'
+        third_draw_months: 'What is the number of months (from the initial draw) to third tranche drawdown?'
+        fourth_draw_amount: 'What is the amount of additional draw? (Fourth tranche)'
+        fourth_draw_months: 'What is the number of months (from the initial draw) to fourth tranche drawdown?'
