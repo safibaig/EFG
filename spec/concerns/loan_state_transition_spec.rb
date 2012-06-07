@@ -6,7 +6,7 @@ describe LoanStateTransition do
       include LoanPresenter
       include LoanStateTransition
 
-      transition from: :a, to: :b
+      transition from: [:a, :b], to: :c
     end
   end
 
@@ -21,8 +21,17 @@ describe LoanStateTransition do
   end
 
   describe "#initialize" do
-    it "should accept a loan in the correct from state" do
-      loan = double(Loan, :state => :a)
+    it "should accept a loan in a correct from state" do
+      loan = double(Loan, state: :b)
+
+      expect {
+        klass.new(loan)
+      }.to_not raise_error(LoanStateTransition::IncorrectLoanState)
+    end
+
+    it 'is allowed to have a nil from state' do
+      klass.transition({})
+      loan = double(Loan, state: nil)
 
       expect {
         klass.new(loan)
@@ -30,7 +39,7 @@ describe LoanStateTransition do
     end
 
     it "should raise an IncorrectLoanState error if the loan isn't in the from state" do
-      loan = double(Loan, :state => :z)
+      loan = double(Loan, state: :z)
 
       expect {
         klass.new(loan)
@@ -38,7 +47,7 @@ describe LoanStateTransition do
     end
 
     it "should initialize the loan" do
-      loan = double(Loan, :state => :a)
+      loan = double(Loan, state: :a)
       presenter = klass.new(loan)
       presenter.loan.should == loan
     end
@@ -48,7 +57,7 @@ describe LoanStateTransition do
     it "should set the state to the to state" do
       save_result = mock
       loan = double(Loan, :state => :a, :save => save_result)
-      loan.should_receive(:state=).with(:b)
+      loan.should_receive(:state=).with(:c)
 
       presenter = klass.new(loan)
       presenter.save.should == save_result

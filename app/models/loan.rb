@@ -3,11 +3,12 @@ class Loan < ActiveRecord::Base
 
   Rejected = 'rejected'.freeze
   Eligible = 'eligible'.freeze
+  Incomplete = 'incomplete'.freeze
   Completed = 'completed'.freeze
   Offered = 'offered'.freeze
   Guaranteed = 'guaranteed'.freeze
 
-  States = [Rejected, Eligible, Completed, Offered, Guaranteed]
+  States = [Rejected, Eligible, Incomplete, Completed, Offered, Guaranteed]
 
   belongs_to :lender
   has_one :state_aid_calculation

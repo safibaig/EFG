@@ -17,7 +17,9 @@ module LoanStateTransition
   end
 
   def initialize(loan)
-    raise IncorrectLoanState unless loan.state == self.class.from_state
+    from_state = self.class.from_state
+    allowed_from_states = from_state.is_a?(Array) ? from_state : [from_state]
+    raise IncorrectLoanState unless allowed_from_states.include?(loan.state)
     super(loan)
   end
 

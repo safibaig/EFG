@@ -9,7 +9,10 @@ class LoanEntriesController < ApplicationController
     @loan_entry = LoanEntry.new(@loan)
     @loan_entry.attributes = params[:loan_entry]
 
-    if @loan_entry.save
+    if params[:commit] == 'Save as Incomplete'
+      @loan_entry.save_as_incomplete
+      redirect_to loan_url(@loan_entry.loan)
+    elsif @loan_entry.save
       redirect_to loan_url(@loan_entry.loan)
     else
       render :new

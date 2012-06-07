@@ -2,7 +2,7 @@ class LoanEntry
   include LoanPresenter
   include LoanStateTransition
 
-  transition from: Loan::Eligible, to: Loan::Completed
+  transition from: [Loan::Eligible, Loan::Incomplete], to: Loan::Completed
 
   attribute :viable_proposition, read_only: true
   attribute :would_you_lend, read_only: true
@@ -49,5 +49,10 @@ class LoanEntry
 
   validate do
     errors.add(:declaration_signed, :accepted) unless self.declaration_signed
+  end
+
+  def save_as_incomplete
+    loan.state = Loan::Incomplete
+    loan.save(validate: false)
   end
 end

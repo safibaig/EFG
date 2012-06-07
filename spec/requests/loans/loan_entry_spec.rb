@@ -63,7 +63,50 @@ describe 'loan entry' do
       click_button 'Submit'
     }.not_to change(loan, :state)
 
-    current_path.should == "/loans/#{loan.id}/entry"
+    current_path.should == loan_entry_path(loan)
+  end
+
+  it 'saves the loan as Incomplete when it is invalid' do
+    visit new_loan_entry_path(loan)
+
+    click_button 'Save as Incomplete'
+
+    loan.reload.state.should == Loan::Incomplete
+    current_path.should == loan_path(loan)
+  end
+
+  it 'progressing a loan from Incomplete to Completed' do
+    loan.update_attribute(:state, Loan::Incomplete)
+    visit loan_path(loan)
+    click_link 'Loan Entry'
+
+    choose_radio_button 'declaration_signed', true
+    fill_in 'business_name', 'Widgets Ltd.'
+    fill_in 'trading_name', 'Brilliant Widgets'
+    fill_in 'company_registration', '0123456789'
+    choose_radio_button 'legal_form_id', 1
+    fill_in 'postcode', 'N8 4HF'
+    fill_in 'non_validated_postcode', 'JF3 8HF'
+    fill_in 'branch_sortcode', '03-12-45'
+    choose_radio_button 'repayment_frequency_id', 1
+    fill_in 'maturity_date', '01/01/2013'
+    fill_in 'generic1', 'Generic 1'
+    fill_in 'generic2', 'Generic 2'
+    fill_in 'generic3', 'Generic 3'
+    fill_in 'generic4', 'Generic 4'
+    fill_in 'generic5', 'Generic 5'
+    fill_in 'town', 'Londinium'
+    choose_radio_button 'interest_rate_type_id', 1
+    fill_in 'interest_rate', '2.25'
+    fill_in 'fees', '123.45'
+
+    click_button 'Submit'
+
+    loan = Loan.last
+
+    current_path.should == loan_path(loan)
+
+    loan.state.should == Loan::Completed
   end
 
   private
