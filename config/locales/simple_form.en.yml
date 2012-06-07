@@ -30,6 +30,11 @@ en:
       loan_eligibility_check:
         <<: *loan
 
+      loan_cancel:
+        cancelled_reason: 'What is the reason for cancellation of the application?'
+        cancelled_comment: 'Please enter any additional explanatory comments regarding the reason for cancellation of the application'
+        cancelled_on: 'On what date was the application cancelled (dd/mm/yyyy)?'
+
       loan_entry:
         <<: *loan
         declaration_signed: 'Before proceeding, please confirm that a Data Protection and Disclosure Declaration signed by the Applicant has been received.'
