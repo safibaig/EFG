@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120531141421) do
+ActiveRecord::Schema.define(:version => 20120607154613) do
 
   create_table "lenders", :force => true do |t|
     t.string   "name"
@@ -65,6 +65,9 @@ ActiveRecord::Schema.define(:version => 20120531141421) do
     t.string   "state"
     t.integer  "legal_form_id"
     t.integer  "repayment_frequency_id"
+    t.date     "cancelled_on"
+    t.integer  "cancelled_reason"
+    t.text     "cancelled_comment"
   end
 
   add_index "loans", ["state"], :name => "index_loans_on_state"
