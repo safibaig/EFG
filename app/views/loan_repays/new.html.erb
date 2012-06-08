@@ -1,0 +1,17 @@
+<div class="page-header">
+  <h1>Repay Loan</h1>
+</div>
+
+<p>From this page you can record the date on which a facility was repaid.</p>
+
+<p><span class="label label-important">REMINDER</span> Please ensure that the Premium Direct Debit has been cancelled and the Premium Collection Agent has been informed.</p>
+
+<hr>
+
+<%= simple_form_for(@loan_repay, url: loan_repay_path(@loan), html: { class: 'form-horizontal form-loan-repay' }) do |f| %>
+  <%= f.input :repaid_on, as: :quick_date %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>
+  </div>
+<% end %>

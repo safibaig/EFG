@@ -9,9 +9,10 @@ class Loan < ActiveRecord::Base
   Offered = 'offered'.freeze
   Guaranteed = 'guaranteed'.freeze
   LenderDemand = 'lender_demand'.freeze
+  Repaid = 'repaid'.freeze
 
   States = [Rejected, Eligible, Cancelled, Incomplete, Completed, Offered,
-    Guaranteed, LenderDemand]
+    Guaranteed, LenderDemand, Repaid]
 
   belongs_to :lender
   has_one :state_aid_calculation
