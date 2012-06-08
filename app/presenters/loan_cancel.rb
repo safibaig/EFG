@@ -2,7 +2,7 @@ class LoanCancel
   include LoanPresenter
   include LoanStateTransition
 
-  transition from: Loan::Eligible, to: Loan::Cancelled
+  transition from: [Loan::Eligible, Loan::Incomplete], to: Loan::Cancelled
 
   attribute :cancelled_reason
   attribute :cancelled_comment

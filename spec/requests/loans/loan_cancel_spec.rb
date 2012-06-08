@@ -26,6 +26,20 @@ describe 'loan cancel' do
     loan.cancelled_comment.should == 'No comment'
   end
 
+  it 'cancels an incomplete loan' do
+    loan.update_attribute :state, Loan::Incomplete
+    visit loan_path(loan)
+    click_link 'Cancel Loan'
+
+    fill_in 'cancelled_on', '1/6/2012'
+    choose_radio_button 'cancelled_reason', 4
+    fill_in 'cancelled_comment', 'No comment'
+
+    click_button 'Submit'
+
+    Loan.last.state.should == Loan::Cancelled
+  end
+
   it 'does not continue with invalid values' do
     visit loan_path(loan)
     click_link 'Cancel Loan'
