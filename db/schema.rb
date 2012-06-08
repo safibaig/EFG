@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120608151824) do
+ActiveRecord::Schema.define(:version => 20120608160443) do
 
   create_table "lenders", :force => true do |t|
     t.string   "name"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(:version => 20120608151824) do
     t.date     "borrower_demanded_on"
     t.integer  "borrower_demanded_amount"
     t.date     "repaid_on"
+    t.date     "no_claim_on"
   end
 
   add_index "loans", ["state"], :name => "index_loans_on_state"

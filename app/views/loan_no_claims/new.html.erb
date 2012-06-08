@@ -1,0 +1,17 @@
+<div class="page-header">
+  <h1>No Claim Against Loan</h1>
+</div>
+
+<p>From this page you can record the date that a decision was made not to make Demand against the Guarantee.</p>
+
+<p><span class="label label-important">REMINDER</span> Please ensure that the Premium Direct Debit has been cancelled and the Premium Collection Agent has been informed.</p>
+
+<hr>
+
+<%= simple_form_for(@loan_no_claim, url: loan_no_claim_path(@loan), html: { class: 'form-horizontal form-loan-no-claim' }) do |f| %>
+  <%= f.input :no_claim_on, as: :quick_date %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>
+  </div>
+<% end %>
