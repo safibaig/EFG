@@ -16,14 +16,23 @@ describe 'loan states' do
       visit loan_states_path
     end
 
+    let(:states) { page.all('tbody th').map(&:text) }
+    let(:counts) { page.all('tbody td').map(&:text) }
+
     it 'lists loan states and the number of loans' do
       dispatch
 
-      states = page.all('tbody th').map(&:text)
-      counts = page.all('tbody td').map(&:text)
-
-      states.should == %w(Rejected Eligible Cancelled Incomplete Completed Offered Guaranteed)
-      counts.should == %w(0 1 0 0 0 1 1)
+      {
+        'Rejected' => 0,
+        'Eligible' => 1,
+        'Cancelled' => 0,
+        'Incomplete' => 0,
+        'Completed' => 0,
+        'Offered' => 1,
+        'Guaranteed' => 1
+      }.each do |name, count|
+        counts[states.index(name)].should == count.to_s
+      end
     end
 
     it 'does not include loans from another lender' do
@@ -32,11 +41,17 @@ describe 'loan states' do
 
       dispatch
 
-      states = page.all('tbody th').map(&:text)
-      counts = page.all('tbody td').map(&:text)
-
-      states.should == %w(Rejected Eligible Cancelled Incomplete Completed Offered Guaranteed)
-      counts.should == %w(0 1 0 0 0 1 1)
+      {
+        'Rejected' => 0,
+        'Eligible' => 1,
+        'Cancelled' => 0,
+        'Incomplete' => 0,
+        'Completed' => 0,
+        'Offered' => 1,
+        'Guaranteed' => 1
+      }.each do |name, count|
+        counts[states.index(name)].should == count.to_s
+      end
     end
   end
 
