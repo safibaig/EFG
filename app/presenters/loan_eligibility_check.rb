@@ -28,10 +28,6 @@ class LoanEligibilityCheck
     errors.add(:repayment_duration, :greater_than, count: 0) unless repayment_duration && repayment_duration.total_months > 0
   end
 
-  def trading_date=(value)
-    loan.trading_date = QuickDateFormatter.parse(value)
-  end
-
   def transition_to
     EligibilityCheck.eligible?(loan) ? Loan::Eligible : Loan::Rejected
   end
