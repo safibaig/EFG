@@ -10,7 +10,7 @@ describe 'loan cancel' do
     visit loan_path(loan)
     click_link 'Cancel Loan'
 
-    fill_in 'cancelled_on', '1/6/2012'
+    fill_in 'cancelled_on', '1/6/12'
     choose_radio_button 'cancelled_reason', 4
     fill_in 'cancelled_comment', 'No comment'
 
@@ -31,7 +31,7 @@ describe 'loan cancel' do
     visit loan_path(loan)
     click_link 'Cancel Loan'
 
-    fill_in 'cancelled_on', '1/6/2012'
+    fill_in 'cancelled_on', '1/6/12'
     choose_radio_button 'cancelled_reason', 4
     fill_in 'cancelled_comment', 'No comment'
 

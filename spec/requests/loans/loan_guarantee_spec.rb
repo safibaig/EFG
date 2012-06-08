@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe 'loan guarantee' do
@@ -13,9 +15,9 @@ describe 'loan guarantee' do
     choose_radio_button 'received_declaration', true
     choose_radio_button 'signed_direct_debit_received', true
     choose_radio_button 'first_pp_received', true
-    fill_in 'initial_draw_date', '28/02/2012'
-    fill_in 'initial_draw_value', '10000.42'
-    fill_in 'maturity_date', '01/03/2012'
+    fill_in 'initial_draw_date', '28/02/12'
+    fill_in 'initial_draw_value', '£10,000.42'
+    fill_in 'maturity_date', '01/03/12'
 
     click_button 'Submit'
 

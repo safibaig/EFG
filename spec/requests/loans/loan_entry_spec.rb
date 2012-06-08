@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe 'loan entry' do
@@ -19,7 +21,7 @@ describe 'loan entry' do
     fill_in 'non_validated_postcode', 'JF3 8HF'
     fill_in 'branch_sortcode', '03-12-45'
     choose_radio_button 'repayment_frequency_id', 1
-    fill_in 'maturity_date', '01/01/2013'
+    fill_in 'maturity_date', '01/01/13'
     fill_in 'generic1', 'Generic 1'
     fill_in 'generic2', 'Generic 2'
     fill_in 'generic3', 'Generic 3'
@@ -28,7 +30,7 @@ describe 'loan entry' do
     fill_in 'town', 'Londinium'
     choose_radio_button 'interest_rate_type_id', 1
     fill_in 'interest_rate', '2.25'
-    fill_in 'fees', '123.45'
+    fill_in 'fees', '£123.45'
 
     click_button 'Submit'
 
@@ -53,6 +55,7 @@ describe 'loan entry' do
     loan.interest_rate_type.should == InterestRateType.find(1)
     loan.interest_rate.should == 2.25
     loan.fees.should == Money.new(12345)
+    loan.maturity_date.should == Date.new(2013, 1, 1)
   end
 
   it 'does not continue with invalid values' do

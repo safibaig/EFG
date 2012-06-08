@@ -51,6 +51,10 @@ class LoanEntry
     errors.add(:declaration_signed, :accepted) unless self.declaration_signed
   end
 
+  def maturity_date=(value)
+    loan.maturity_date = QuickDateFormatter.parse(value)
+  end
+
   def save_as_incomplete
     loan.state = Loan::Incomplete
     loan.save(validate: false)
