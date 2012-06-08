@@ -1,0 +1,18 @@
+<div class="page-header">
+  <h1>Loan Demand to Borrower</h1>
+</div>
+
+<p>From this page you can record the details of a first or subsequent demand made on the borrower.</p>
+
+<p>If the demand is subsequently satisfied, the change should be recorded using the 'Change Amount or Terms' screen in order to return the loan to a state of Guaranteed.</p>
+
+<hr>
+
+<%= simple_form_for(@loan_demand_to_borrower, url: loan_demand_to_borrower_path(@loan), html: { class: 'form-horizontal form-loan-demand-to-borrower' }) do |f| %>
+  <%= f.input :borrower_demanded_amount, as: :currency %>
+  <%= f.input :borrower_demanded_on, as: :quick_date %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>
+  </div>
+<% end %>
