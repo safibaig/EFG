@@ -1,0 +1,17 @@
+<div class="page-header">
+  <h1>Cancel Loan</h1>
+</div>
+
+<p>From this page you can cancel an application for EFG support that is no longer required.</p>
+
+<hr>
+
+<%= simple_form_for(@loan_cancel, url: loan_cancel_path(@loan), html: { class: 'form-horizontal form-loan-cancel' }) do |f| %>
+  <%= f.input :cancelled_reason, as: :radio_buttons, collection: CancelReason.all %>
+  <%= f.input :cancelled_comment, as: :text, input_html: { rows: 5 } %>
+  <%= f.input :cancelled_on, as: :quick_date %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>
+  </div>
+<% end %>

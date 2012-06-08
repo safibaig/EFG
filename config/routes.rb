@@ -8,6 +8,7 @@ EFG::Application.routes.draw do
       resource :eligibility_check, only: [:new, :create]
     end
 
+    resource :cancel, only: [:new, :create], controller: 'loan_cancels'
     resource :entry, only: [:new, :create], controller: 'loan_entries'
     resource :offer, only: [:new, :create], controller: 'loan_offers'
     resource :guarantee, only: [:new, :create], controller: 'loan_guarantees'

@@ -17,6 +17,10 @@ FactoryGirl.define do
     private_residence_charge_required false
     personal_guarantee_required false
 
+    trait :eligible do
+      state Loan::Eligible
+    end
+
     trait :completed do
       state Loan::Completed
     end
