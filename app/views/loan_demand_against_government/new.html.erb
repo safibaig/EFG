@@ -1,0 +1,19 @@
+<div class="page-header">
+  <h1>Repay Loan</h1>
+</div>
+
+<p>From this page you can record the date on which a facility was repaid.</p>
+
+<p><span class="label label-important">REMINDER</span> Please ensure that the Premium Direct Debit has been cancelled and the Premium Collection Agent has been informed.</p>
+
+<hr>
+
+<%= simple_form_for(@loan_demand_against_government, url: loan_demand_against_government_path(@loan), html: { class: 'form-horizontal form-loan-demand-against-government' }) do |f| %>
+  <%= f.input :dti_demanded_on, as: :quick_date, input_html: { disabled: true } %>
+  <%= f.input :dti_demand_outstanding, as: :currency %>
+  <%= f.input :dti_reason, as: :string %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>
+  </div>
+<% end %>

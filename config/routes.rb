@@ -16,6 +16,7 @@ EFG::Application.routes.draw do
     resource :demand_to_borrower, only: [:new, :create], controller: 'loan_demand_to_borrowers'
     resource :repay, only: [:new, :create], controller: 'loan_repays'
     resource :no_claim, only: [:new, :create], controller: 'loan_no_claims'
+    resource :demand_against_government, only: [:new, :create], controller: 'loan_demand_against_government'
     resource :state_aid_calculation, only: [:new, :create, :edit, :update]
   end
 
