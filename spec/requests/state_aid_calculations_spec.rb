@@ -22,11 +22,11 @@ describe 'state aid calculations' do
       visit new_loan_state_aid_calculation_path(loan)
 
       fill_in :initial_draw_year, '2012'
-      fill_in :initial_draw_amount, '123456'
+      fill_in :initial_draw_amount, '£123,456'
       fill_in :initial_draw_months, '12'
       fill_in :initial_capital_repayment_holiday, '0'
-      fill_in :second_draw_amount, '0'
-      fill_in :second_draw_months, '0'
+      fill_in :second_draw_amount, '£0'
+      fill_in :second_draw_months, '£0'
 
       expect {
         click_button 'Submit'
@@ -71,7 +71,7 @@ describe 'state aid calculations' do
 
     it 'updates the record' do
       visit edit_loan_state_aid_calculation_path(loan)
-      fill_in :initial_draw_amount, '100000'
+      fill_in :initial_draw_amount, '£100,000'
       click_button 'Submit'
 
       current_path.should == loan_path(loan)

@@ -10,6 +10,10 @@ describe QuickDateFormatter do
       QuickDateFormatter.parse('11/1/11').should == Date.new(2011, 1, 11)
     end
 
+    it 'does not blow up for a nil value' do
+      QuickDateFormatter.parse(nil).should be_nil
+    end
+
     it 'does not blow up for a blank value' do
       QuickDateFormatter.parse('').should be_nil
     end

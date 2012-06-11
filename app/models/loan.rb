@@ -8,8 +8,13 @@ class Loan < ActiveRecord::Base
   Completed = 'completed'.freeze
   Offered = 'offered'.freeze
   Guaranteed = 'guaranteed'.freeze
+  LenderDemand = 'lender_demand'.freeze
+  Repaid = 'repaid'.freeze
+  NotDemanded = 'not_demanded'.freeze
+  Demanded = 'demanded'.freeze
 
-  States = [Rejected, Eligible, Cancelled, Incomplete, Completed, Offered, Guaranteed]
+  States = [Rejected, Eligible, Cancelled, Incomplete, Completed, Offered,
+    Guaranteed, LenderDemand, Repaid, NotDemanded, Demanded]
 
   belongs_to :lender
   has_one :state_aid_calculation
@@ -22,6 +27,18 @@ class Loan < ActiveRecord::Base
   format :initial_draw_value, with: MoneyFormatter
   format :turnover, with: MoneyFormatter
   format :repayment_duration, with: MonthDurationFormatter
+  format :borrower_demanded_amount, with: MoneyFormatter
+  format :cancelled_on, with: QuickDateFormatter
+  format :borrower_demanded_on, with: QuickDateFormatter
+  format :trading_date, with: QuickDateFormatter
+  format :maturity_date, with: QuickDateFormatter
+  format :initial_draw_date, with: QuickDateFormatter
+  format :maturity_date, with: QuickDateFormatter
+  format :facility_letter_date, with: QuickDateFormatter
+  format :repaid_on, with: QuickDateFormatter
+  format :no_claim_on, with: QuickDateFormatter
+  format :dti_demanded_on, with: QuickDateFormatter
+  format :dti_demand_outstanding, with: MoneyFormatter
 
   def self.with_state(state)
     where(:state => state)

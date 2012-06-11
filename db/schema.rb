@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120607154613) do
+ActiveRecord::Schema.define(:version => 20120611104303) do
 
   create_table "lenders", :force => true do |t|
     t.string   "name"
@@ -68,6 +68,14 @@ ActiveRecord::Schema.define(:version => 20120607154613) do
     t.date     "cancelled_on"
     t.integer  "cancelled_reason"
     t.text     "cancelled_comment"
+    t.date     "borrower_demanded_on"
+    t.integer  "borrower_demanded_amount"
+    t.date     "repaid_on"
+    t.date     "no_claim_on"
+    t.date     "dti_demanded_on"
+    t.integer  "dti_demand_outstanding"
+    t.text     "dti_reason"
+    t.string   "dti_ded_code"
   end
 
   add_index "loans", ["state"], :name => "index_loans_on_state"

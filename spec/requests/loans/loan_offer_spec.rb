@@ -11,7 +11,7 @@ describe 'loan offer' do
     click_link 'Offer Scheme Facility'
 
     choose_radio_button 'facility_letter_sent', true
-    fill_in 'facility_letter_date', '24/5/2012'
+    fill_in 'facility_letter_date', '24/5/12'
 
     click_button 'Submit'
 
