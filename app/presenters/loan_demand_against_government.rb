@@ -6,7 +6,9 @@ class LoanDemandAgainstGovernment
 
   attribute :dti_demanded_on
   attribute :dti_demand_outstanding
+  attribute :dti_ded_code
   attribute :dti_reason
 
-  validates_presence_of :dti_demanded_on, :dti_demand_outstanding, :dti_reason
+  validates_presence_of :dti_demanded_on, :dti_demand_outstanding,
+    :dti_reason, :dti_ded_code
 end

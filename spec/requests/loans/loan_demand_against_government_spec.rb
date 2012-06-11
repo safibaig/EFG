@@ -14,6 +14,7 @@ describe 'loan demand against government' do
 
     fill_in 'dti_demand_outstanding', '£10,000.42'
     fill_in 'dti_reason', 'Something'
+    fill_in 'dti_ded_code', 'A.10.10'
 
     click_button 'Submit'
 
@@ -24,6 +25,7 @@ describe 'loan demand against government' do
     loan.state.should == Loan::Demanded
     loan.dti_demanded_on.should == Date.today
     loan.dti_demand_outstanding.should == Money.new(10_000_42) # £10,000.42
+    loan.dti_ded_code.should == 'A.10.10'
     loan.dti_reason.should == 'Something'
   end
 
