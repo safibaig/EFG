@@ -44,6 +44,10 @@ class Loan < ActiveRecord::Base
     where(:state => state)
   end
 
+  def has_state_aid_calculation?
+    state_aid_calculation.present?
+  end
+
   def lender_cap
     LoanFacility.find(lender_cap_id)
   end

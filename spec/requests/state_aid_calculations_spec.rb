@@ -6,20 +6,22 @@ describe 'state aid calculations' do
   describe 'creating' do
     let(:current_lender) { FactoryGirl.create(:lender) }
     let(:current_user) { FactoryGirl.create(:user, lender: current_lender) }
-    let(:loan) { FactoryGirl.create(:loan, lender: current_lender, amount: '123456') }
+    let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: '123456') }
 
     before do
       login_as(current_user, scope: :user)
     end
 
     it 'pre-fills some fields' do
-      visit new_loan_state_aid_calculation_path(loan)
+      visit loan_path(loan)
+      click_link 'State Aid Calculation'
 
       page.find('#state_aid_calculation_initial_draw_amount').value.should == '123456.00'
     end
 
     it 'creates a new record with valid data' do
-      visit new_loan_state_aid_calculation_path(loan)
+      visit loan_path(loan)
+      click_link 'State Aid Calculation'
 
       fill_in :initial_draw_year, '2012'
       fill_in :initial_draw_amount, '£123,456'
@@ -62,7 +64,7 @@ describe 'state aid calculations' do
   describe 'updating an existing state_aid_calculation' do
     let(:current_lender) { FactoryGirl.create(:lender) }
     let(:current_user) { FactoryGirl.create(:user, lender: current_lender) }
-    let(:loan) { FactoryGirl.create(:loan, lender: current_lender, amount: '123456') }
+    let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: '123456') }
     let!(:state_aid_calculation) { FactoryGirl.create(:state_aid_calculation, loan: loan) }
 
     before do
@@ -70,7 +72,8 @@ describe 'state aid calculations' do
     end
 
     it 'updates the record' do
-      visit edit_loan_state_aid_calculation_path(loan)
+      visit loan_path(loan)
+      click_link 'State Aid Calculation'
       fill_in :initial_draw_amount, '£100,000'
       click_button 'Submit'
 
@@ -80,7 +83,8 @@ describe 'state aid calculations' do
     end
 
     it 'does not update the record with invalid data' do
-      visit edit_loan_state_aid_calculation_path(loan)
+      visit loan_path(loan)
+      click_link 'State Aid Calculation'
       fill_in :initial_draw_amount, ''
       click_button 'Submit'
 
