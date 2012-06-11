@@ -83,3 +83,19 @@ en:
         third_draw_months: 'What is the number of months (from the initial draw) to third tranche drawdown?'
         fourth_draw_amount: 'What is the amount of additional draw? (Fourth tranche)'
         fourth_draw_months: 'What is the number of months (from the initial draw) to fourth tranche drawdown?'
+
+      loan_demand_to_borrower:
+        borrower_demanded_amount: 'What was the amount for which demand was made on the borrower (as recorded on the demand letter)?'
+        borrower_demanded_on: 'What was the date that demand was made on the borrower (date of demand letter)? (dd/mm/yyyy)'
+
+      loan_repay:
+        repaid_on: 'What was the date the facility was repaid by the borrower? (dd/mm/yyyy)'
+
+      loan_no_claim:
+        no_claim_on: 'On what date was a decision made not to make Demand against the Guarantee? (dd/mm/yyyy)'
+
+      loan_demand_against_government:
+        dti_demanded_on: "What is the date the Demand is being made against the Scheme Guarantee? (dd/mm/yyyy) (This should be today's date)"
+        dti_demand_outstanding: 'What is the outstanding Scheme Facility Principal owed by the Borrower to the Lender upon which the Guaranteed Percentage will be calculated?'
+        dti_ded_code: 'Please select the primary cause of business failure'
+        dti_reason: 'Please provide any further information you consider appropriate to the reason for Demand against the Government Guarantee'
