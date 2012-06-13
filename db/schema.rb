@@ -11,13 +11,33 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120612154742) do
+ActiveRecord::Schema.define(:version => 20120613102639) do
 
   create_table "lenders", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "legacy_id"
+    t.integer  "version"
+    t.boolean  "high_volume"
+    t.boolean  "can_use_add_cap"
+    t.string   "organisation_reference_code"
+    t.string   "primary_contact_name"
+    t.string   "primary_contact_phone"
+    t.string   "primary_contact_email"
+    t.integer  "std_cap_lending_allocation"
+    t.integer  "add_cap_lending_allocation"
+    t.boolean  "disabled"
+    t.string   "created_by"
+    t.string   "modified_by"
+    t.boolean  "allow_alert_process"
+    t.string   "main_point_of_contact_user"
+    t.string   "loan_scheme"
+    t.datetime "ar_timestamp"
+    t.datetime "ar_insert_timestamp"
   end
+
+  add_index "lenders", ["legacy_id"], :name => "index_lenders_on_legacy_id", :unique => true
 
   create_table "loans", :force => true do |t|
     t.boolean  "viable_proposition",                                              :null => false
@@ -121,9 +141,9 @@ ActiveRecord::Schema.define(:version => 20120612154742) do
     t.integer  "login_failures"
     t.datetime "password_changed_at"
     t.boolean  "locked"
-    t.integer  "created_by"
+    t.string   "created_by"
     t.boolean  "confirm_t_and_c"
-    t.integer  "modified_by"
+    t.string   "modified_by"
     t.boolean  "knowledge_resource"
     t.string   "legacy_id"
     t.datetime "ar_timestamp"
