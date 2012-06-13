@@ -40,11 +40,28 @@ describe UserImporter do
   end
 
   describe ".import" do
+    def dispatch
+      UserImporter.csv_path = csv_fixture_path
+      UserImporter.import
+    end
+
     it "should create new user records" do
       expect {
-        UserImporter.csv_path = csv_fixture_path
-        UserImporter.import
+        dispatch
       }.to change(User, :count).by(1)
+    end
+
+    it "should import data correctly" do
+      dispatch
+
+      user = User.last
+      user.legacy_id.should == "B4B8938D980AD58C52B793D05466447CCDA92920"
+      user.lender_id.should == 9
+      user.created_at.should == Time.zone.parse("18-NOV-05")
+      user.updated_at.should == Time.zone.parse("30-MAR-07")
+      user.confirm_t_and_c.should == true
+      user.should_not be_disabled
+      user.created_by.should == "59CEB98864F8236E81D0F45F4AAAB25352748C0D"
     end
   end
 

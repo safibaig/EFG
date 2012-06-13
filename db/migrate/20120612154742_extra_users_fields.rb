@@ -12,9 +12,9 @@ class ExtraUsersFields < ActiveRecord::Migration
     add_column :users, :login_failures, :integer
     add_column :users, :password_changed_at, :datetime
     add_column :users, :locked, :boolean
-    add_column :users, :created_by, :integer
+    add_column :users, :created_by, :string
     add_column :users, :confirm_t_and_c, :boolean
-    add_column :users, :modified_by, :integer
+    add_column :users, :modified_by, :string
     add_column :users, :knowledge_resource, :boolean
     add_column :users, :legacy_id, :string
     add_column :users, :ar_timestamp, :datetime
