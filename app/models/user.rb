@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
   attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
 
-  validates_presence_of :lender, strict: true
+  validates_presence_of :lender_id, strict: true
   validates_presence_of :first_name, :last_name
 
   def name
