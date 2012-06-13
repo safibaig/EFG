@@ -27,7 +27,6 @@ class BaseImporter
   end
 
   def self.after_import
-    raise NotImplementedError
   end
 
 end
