@@ -57,11 +57,27 @@ describe UserImporter do
       user = User.last
       user.legacy_id.should == "B4B8938D980AD58C52B793D05466447CCDA92920"
       user.lender_id.should == 9
+      user.encrypted_password.should_not be_blank
       user.created_at.should == Time.zone.parse("18-NOV-05")
       user.updated_at.should == Time.zone.parse("30-MAR-07")
-      user.confirm_t_and_c.should == true
+      user.last_sign_in_at.should == Time.zone.parse("18-JUN-07")
+      user.version.should == 145
+      user.first_name.should == "FIRSTNAME"
+      user.last_name.should == "LASTNAME"
       user.should_not be_disabled
+      user.memorable_name.should == "MEMORABLENAME"
+      user.memorable_place.should == "MEMORABLEPLACE"
+      user.memorable_year.should == "1900"
+      user.login_failures.should == 0
+      user.password_changed_at.should == Time.zone.parse("30-MAR-07")
+      user.should_not be_locked
+      user.ar_timestamp.should == Time.zone.parse("11-DEC-06")
+      user.ar_insert_timestamp.should == Time.zone.parse("18-NOV-05")
+      user.email.should == "user0@example.com"
       user.created_by.should == "59CEB98864F8236E81D0F45F4AAAB25352748C0D"
+      user.confirm_t_and_c.should == true
+      user.modified_by.should == "B4B8938D980AD58C52B793D05466447CCDA92920"
+      user.knowledge_resource.should == false
     end
   end
 
