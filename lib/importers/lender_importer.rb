@@ -33,4 +33,9 @@ class LenderImporter < BaseImporter
     end
     attrs
   end
+  
+  private
+  
+  def self.after_import
+  end
 end

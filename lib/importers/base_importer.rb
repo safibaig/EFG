@@ -23,7 +23,11 @@ class BaseImporter
       end
       model.save!
     end
-    # call after_import hook
+    after_import
+  end
+
+  def self.after_import
+    raise NotImplementedError
   end
 
 end
