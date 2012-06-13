@@ -21,6 +21,8 @@ class BaseImporter
         setter_method = "#{key}="
         model.respond_to?(setter_method) ? model.send(setter_method, value) : model[key] = value
       end
+
+      before_save(model)
       model.save!
     end
     after_import
@@ -29,4 +31,6 @@ class BaseImporter
   def self.after_import
   end
 
+  def self.before_save(model)
+  end
 end
