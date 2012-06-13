@@ -17,7 +17,7 @@ describe UserImporter do
         password_confirmation: "PASSWORD",
         created_at: "18-NOV-05",
         updated_at: "30-MAR-07",
-        last_login_at: "18-JUN-07",
+        last_sign_in_at: "18-JUN-07",
         version: "145",
         first_name: "FIRSTNAME",
         last_name: "LASTNAME",

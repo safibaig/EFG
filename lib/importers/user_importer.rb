@@ -1,5 +1,3 @@
-require 'memorable_password'
-
 class UserImporter < BaseImporter
   self.csv_path = Rails.root.join('import_data/users.csv')
   self.klass = User
@@ -10,7 +8,7 @@ class UserImporter < BaseImporter
     "PASSWORD"             => :password,
     "CREATION_TIME"        => :created_at,
     "LAST_MOD_TIME"        => :updated_at,
-    "LAST_LOGIN_TIME"      => :last_login_at,
+    "LAST_LOGIN_TIME"      => :last_sign_in_at,
     "VERSION"              => :version,
     "FIRST_NAME"           => :first_name,
     "LAST_NAME"            => :last_name,
