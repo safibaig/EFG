@@ -4,8 +4,13 @@ class User < ActiveRecord::Base
 
   belongs_to :lender
 
-  attr_accessible :name, :email, :password, :password_confirmation
+  attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
 
   validates_presence_of :lender, strict: true
-  validates_presence_of :name
+  validates_presence_of :first_name, :last_name
+
+  def name
+    "#{first_name} #{last_name}"
+  end
+
 end

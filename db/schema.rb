@@ -11,12 +11,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120611104303) do
+ActiveRecord::Schema.define(:version => 20120612154742) do
 
   create_table "lenders", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "loans", :force => true do |t|
@@ -34,8 +34,8 @@ ActiveRecord::Schema.define(:version => 20120611104303) do
     t.boolean  "previous_borrowing",                                              :null => false
     t.boolean  "private_residence_charge_required",                               :null => false
     t.boolean  "personal_guarantee_required",                                     :null => false
-    t.datetime "created_at",                                                      :null => false
-    t.datetime "updated_at",                                                      :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "lender_id",                                                       :null => false
     t.boolean  "declaration_signed"
     t.string   "business_name"
@@ -92,14 +92,13 @@ ActiveRecord::Schema.define(:version => 20120611104303) do
     t.integer  "third_draw_months"
     t.integer  "fourth_draw_amount"
     t.integer  "fourth_draw_months"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "state_aid_calculations", ["loan_id"], :name => "index_state_aid_calculations_on_loan_id"
 
   create_table "users", :force => true do |t|
-    t.string   "name",                                  :null => false
     t.string   "email",                                 :null => false
     t.string   "encrypted_password",                    :null => false
     t.string   "reset_password_token"
@@ -109,12 +108,30 @@ ActiveRecord::Schema.define(:version => 20120611104303) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "lender_id",                             :null => false
+    t.integer  "version"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.boolean  "disabled"
+    t.string   "memorable_name"
+    t.string   "memorable_place"
+    t.string   "memorable_year"
+    t.integer  "login_failures"
+    t.datetime "password_changed_at"
+    t.boolean  "locked"
+    t.integer  "created_by"
+    t.boolean  "confirm_t_and_c"
+    t.integer  "modified_by"
+    t.boolean  "knowledge_resource"
+    t.string   "legacy_id"
+    t.datetime "ar_timestamp"
+    t.datetime "ar_insert_timestamp"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["legacy_id"], :name => "index_users_on_legacy_id", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
 end

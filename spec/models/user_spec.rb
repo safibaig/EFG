@@ -9,8 +9,13 @@ describe User do
       user.should be_valid
     end
 
-    it "should require a name" do
-      user.name = ''
+    it "should require a first_name" do
+      user.first_name = ''
+      user.should_not be_valid
+    end
+
+    it "should require a last_name" do
+      user.last_name = ''
       user.should_not be_valid
     end
 

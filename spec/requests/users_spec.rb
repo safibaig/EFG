@@ -16,17 +16,20 @@ describe "user management" do
 
     FactoryGirl.create(:user,
       lender: current_lender,
-      name: 'Florine Flatley',
+      first_name: 'Florine',
+      last_name: 'Flatley',
       email: 'flatley_florine@example.com'
     )
     FactoryGirl.create(:user,
       lender: current_lender,
-      name: 'Roselyn Morissette',
+      first_name: 'Roselyn',
+      last_name: 'Morissette',
       email: 'morissette.roselyn@example.com'
     )
     FactoryGirl.create(:user,
       lender: other_lender,
-      name: 'Bob Flemming',
+      first_name: 'Bob',
+      last_name: 'Flemming',
       email: 'bob.flemming@example.com'
     )
 
@@ -49,7 +52,8 @@ describe "user management" do
 
     click_link 'New User'
 
-    fill_in 'Name', with: 'Aniya Kshlerin'
+    fill_in 'First name', with: 'Aniya'
+    fill_in 'Last name', with: 'Kshlerin'
     fill_in 'Email', with: 'kshlerin.aniya@example.com'
 
     click_button 'Create User'
@@ -62,7 +66,8 @@ describe "user management" do
   it "editing a user" do
     FactoryGirl.create(:user,
       lender: current_lender,
-      name: 'Jarred Paucek',
+      first_name: 'Jarred',
+      last_name: 'Paucek',
       email: 'jarred_paucek@example.com'
     )
 
@@ -71,7 +76,8 @@ describe "user management" do
 
     click_link 'Jarred Paucek'
 
-    fill_in 'Name', with: 'Jarred Paucék'
+    fill_in 'First name', with: 'Jarred'
+    fill_in 'Last name', with: 'Paucék'
     click_button 'Update User'
 
     page.should have_content('Jarred Paucék')
