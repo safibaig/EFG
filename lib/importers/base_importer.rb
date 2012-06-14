@@ -21,6 +21,7 @@ class BaseImporter
         setter_method = "#{key}="
         model.respond_to?(setter_method) ? model.send(setter_method, value) : model[key] = value
       end
+
       model.save!
     end
     after_import

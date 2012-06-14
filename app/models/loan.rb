@@ -12,15 +12,26 @@ class Loan < ActiveRecord::Base
   Repaid = 'repaid'.freeze
   NotDemanded = 'not_demanded'.freeze
   Demanded = 'demanded'.freeze
+  AutoCancelled = 'auto_cancelled'.freeze
+  Removed = 'removed'.freeze
+  RepaidFromTransfer = 'repaid_from_transfer'.freeze
+  AutoRemoved = 'auto_removed'.freeze
+  Settled = 'settled'.freeze
+  Realised = 'realised'.freeze
+  Recovered = 'recovered'.freeze
+  IncompleteLegacy = 'incomplete_legacy'.freeze
+  CompleteLegacy = 'complete_legacy'.freeze
 
   States = [Rejected, Eligible, Cancelled, Incomplete, Completed, Offered,
-    Guaranteed, LenderDemand, Repaid, NotDemanded, Demanded]
+    Guaranteed, LenderDemand, Repaid, NotDemanded, Demanded, AutoCancelled,
+    Removed, RepaidFromTransfer, AutoRemoved, Settled,Realised, Recovered,
+    IncompleteLegacy, CompleteLegacy]
 
   belongs_to :lender
   has_one :state_aid_calculation
 
   validates_inclusion_of :state, in: States, strict: true
-  validates_presence_of :lender, strict: true
+  validates_presence_of :lender_id, strict: true
 
   format :amount, with: MoneyFormatter
   format :fees, with: MoneyFormatter
@@ -39,6 +50,10 @@ class Loan < ActiveRecord::Base
   format :no_claim_on, with: QuickDateFormatter
   format :dti_demanded_on, with: QuickDateFormatter
   format :dti_demand_outstanding, with: MoneyFormatter
+  format :dti_amount_claimed, with: MoneyFormatter
+  format :dti_interest, with: MoneyFormatter
+  format :current_refinanced_value, with: MoneyFormatter
+  format :final_refinanced_value, with: MoneyFormatter
 
   def self.with_state(state)
     where(:state => state)
