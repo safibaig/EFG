@@ -18,4 +18,9 @@ namespace :import do
     LoanImporter.import
   end
 
+  desc "Import loan data (CSV files found in import_data/loans.csv)"
+  task state_aid_calculations: :environment do
+    require 'importers'
+    StateAidCalculationImporter.import
+  end
 end

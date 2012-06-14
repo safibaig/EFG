@@ -158,7 +158,7 @@ ActiveRecord::Schema.define(:version => 20120614092649) do
     t.integer  "loan_id",                                                           :null => false
     t.integer  "initial_draw_year"
     t.integer  "initial_draw_amount",                                               :null => false
-    t.integer  "initial_draw_months",                                               :null => false
+    t.integer  "initial_draw_months"
     t.integer  "initial_capital_repayment_holiday"
     t.integer  "second_draw_amount"
     t.integer  "second_draw_months"
