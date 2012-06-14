@@ -4,7 +4,8 @@ lender.save!
 
 user = User.new
 user.lender = lender
-user.name = 'Bob Flemming'
+user.first_name = 'Bob'
+user.last_name = 'Flemming'
 user.email = 'bob@example.com'
 user.password = user.password_confirmation = 'password'
 user.save!
