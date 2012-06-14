@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120613151520) do
+ActiveRecord::Schema.define(:version => 20120614092649) do
 
   create_table "lenders", :force => true do |t|
     t.string   "name"
@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(:version => 20120613151520) do
 
   create_table "state_aid_calculations", :force => true do |t|
     t.integer  "loan_id",                                                           :null => false
-    t.integer  "initial_draw_year",                                                 :null => false
+    t.integer  "initial_draw_year"
     t.integer  "initial_draw_amount",                                               :null => false
     t.integer  "initial_draw_months",                                               :null => false
     t.integer  "initial_capital_repayment_holiday"

@@ -1,6 +1,7 @@
 class StateAidCalculationImporter < BaseImporter
   self.csv_path = Rails.root.join('import_data/SFLG_CALCULATORS_DATA_TABLE.csv')
   self.klass = StateAidCalculation
+  self.validate = false
 
   FIELD_MAPPING = {
     'OID'                   => :legacy_id,
@@ -39,6 +40,7 @@ class StateAidCalculationImporter < BaseImporter
 
   BOOLEANS = %w(OBJ1_AREA REDUCE_COSTS IMPROVE_PROD INCREASE_QUALITY
     IMPROVE_NAT_ENV PROMOTE AGRICULTURE)
+  INTEGERS = %w(HOLIDAY TOTAL_COST PUBLIC_FUNDING)
 
   def self.before_save(model)
     model.loan = Loan.find(model.legacy_id)
@@ -49,6 +51,8 @@ class StateAidCalculationImporter < BaseImporter
       value = case name
       when *BOOLEANS
         value.present?
+      when *INTEGERS
+        value.to_i
       else
         value
       end

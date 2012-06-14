@@ -4,7 +4,10 @@ class BaseImporter
   class << self
     attr_accessor :csv_path
     attr_accessor :klass
+    attr_accessor :validate
   end
+
+  self.validate = true
 
   def initialize(row, row_number)
     @row = row
@@ -23,7 +26,7 @@ class BaseImporter
       end
 
       before_save(model)
-      model.save!
+      model.save!(validate: validate)
     end
     after_import
   end
