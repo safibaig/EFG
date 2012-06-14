@@ -38,9 +38,6 @@ class UserImporter < BaseImporter
         value = "user#{@row_number}@example.com"
       when "PASSWORD"
         attrs[:password_confirmation] = value
-      when "LENDER_OID"
-        attrs[:lender_id] = 0
-        value = 0 if value.blank?
       end
 
       attrs[FIELD_MAPPING[field_name]] = value

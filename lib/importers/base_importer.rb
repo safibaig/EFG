@@ -12,8 +12,8 @@ class BaseImporter
   end
 
   def self.import
-    csv = CSV.read(csv_path, headers: true)
-    csv.each_with_index do |row, index|
+    index = 0
+    CSV.foreach(csv_path, headers: true) do |row|
       attributes = new(row, index).attributes
       model = klass.new
 
@@ -23,6 +23,7 @@ class BaseImporter
       end
 
       model.save!
+      index += 1
     end
     after_import
   end

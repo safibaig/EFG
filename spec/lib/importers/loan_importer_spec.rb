@@ -26,7 +26,7 @@ describe LoanImporter do
         :guaranteed_on                       => Date.parse("20-DEC-05"),
         :modified_by_legacy_id               => "8467CE2D5BE4B96EC60E11BD466B61514D1A33D5",
         :lender_legacy_id                    => "9",
-        :lender_id                           => 0,
+        :lender_id                           => lender.id,
         :outstanding_amount                  => "5000",
         :standard_cap                        => "0",
         :business_name                       => "BUSINESS NAME",

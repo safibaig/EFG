@@ -15,7 +15,6 @@ describe UserImporter do
       importer.attributes.should == {
         legacy_id: "B4B8938D980AD58C52B793D05466447CCDA92920",
         legacy_lender_id: "9",
-        lender_id: 0,
         password: "PASSWORD",
         password_confirmation: "PASSWORD",
         created_at: "18-NOV-05",

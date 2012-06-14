@@ -141,16 +141,11 @@ class LoanImporter < BaseImporter
         value = STATE_MAPPING[value]
       when "LOAN_TERM"
         value = { years: 0, months: value }
-      when "LOAN_CATEGORY"
-        value = 0 if value.blank?
       when "LENDER_OID"
-        attrs[:lender_id] = 0
-        value = 0 if value.blank?
+        attrs[:lender_id] = Lender.find_by_legacy_id(value).try(:id) || 0 unless value.blank?
       when "EFG_INTEREST_TYPE"
-        value = if value.blank?
-          value = 0
-        else
-          (value == 'V') ? 1 : 2 # V = variable (id: 1), F = fixed (id: 2)
+        unless value.blank?
+          value = (value == 'V') ? 1 : 2 # V = variable (id: 1), F = fixed (id: 2)
         end
       end
 
@@ -163,12 +158,4 @@ class LoanImporter < BaseImporter
     attrs
   end
 
-  private
-
-  def self.after_import
-    klass.find_each do |loan|
-      loan.lender = Lender.find_by_legacy_id(loan.lender_legacy_id) unless loan.lender_legacy_id.blank?
-      loan.save!
-    end
-  end
 end
