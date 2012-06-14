@@ -40,23 +40,23 @@ ActiveRecord::Schema.define(:version => 20120614092649) do
   add_index "lenders", ["legacy_id"], :name => "index_lenders_on_legacy_id", :unique => true
 
   create_table "loans", :force => true do |t|
-    t.boolean  "viable_proposition",                                              :null => false
-    t.boolean  "would_you_lend",                                                  :null => false
-    t.boolean  "collateral_exhausted",                                            :null => false
-    t.integer  "amount",                                                          :null => false
-    t.integer  "lender_cap_id",                                                   :null => false
-    t.integer  "repayment_duration",                                              :null => false
-    t.integer  "turnover",                                                        :null => false
-    t.date     "trading_date",                                                    :null => false
-    t.string   "sic_code",                                                        :null => false
-    t.integer  "loan_category_id",                                                :null => false
-    t.integer  "reason_id",                                                       :null => false
-    t.boolean  "previous_borrowing",                                              :null => false
-    t.boolean  "private_residence_charge_required",                               :null => false
-    t.boolean  "personal_guarantee_required",                                     :null => false
+    t.boolean  "viable_proposition",                                                               :null => false
+    t.boolean  "would_you_lend",                                                                   :null => false
+    t.boolean  "collateral_exhausted",                                                             :null => false
+    t.integer  "amount",                                                                           :null => false
+    t.integer  "lender_cap_id",                                                                    :null => false
+    t.integer  "repayment_duration",                                                               :null => false
+    t.integer  "turnover",                                                                         :null => false
+    t.date     "trading_date",                                                                     :null => false
+    t.string   "sic_code",                                                                         :null => false
+    t.integer  "loan_category_id",                                                                 :null => false
+    t.integer  "reason_id",                                                                        :null => false
+    t.boolean  "previous_borrowing",                                                               :null => false
+    t.boolean  "private_residence_charge_required",                                                :null => false
+    t.boolean  "personal_guarantee_required",                                                      :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "lender_id",                                                       :null => false
+    t.integer  "lender_id",                                                                        :null => false
     t.boolean  "declaration_signed"
     t.string   "business_name"
     t.string   "trading_name"
@@ -71,7 +71,7 @@ ActiveRecord::Schema.define(:version => 20120614092649) do
     t.string   "generic5"
     t.string   "town"
     t.integer  "interest_rate_type_id"
-    t.decimal  "interest_rate",                     :precision => 5, :scale => 2
+    t.decimal  "interest_rate",                                     :precision => 5,  :scale => 2
     t.integer  "fees"
     t.boolean  "state_aid_is_valid"
     t.boolean  "facility_letter_sent"
@@ -96,6 +96,60 @@ ActiveRecord::Schema.define(:version => 20120614092649) do
     t.integer  "dti_demand_outstanding"
     t.text     "dti_reason"
     t.string   "dti_ded_code"
+    t.integer  "legacy_id"
+    t.string   "reference"
+    t.string   "created_by_legacy_id"
+    t.integer  "version"
+    t.date     "guaranteed_on"
+    t.string   "modified_by_legacy_id"
+    t.integer  "lender_legacy_id"
+    t.integer  "outstanding_amount"
+    t.boolean  "standard_cap"
+    t.integer  "next_change_history_seq"
+    t.integer  "borrower_demand_outstanding"
+    t.date     "realised_money_date"
+    t.integer  "event_legacy_id"
+    t.integer  "state_aid"
+    t.datetime "ar_timestamp"
+    t.datetime "ar_insert_timestamp"
+    t.boolean  "notified_aid"
+    t.integer  "remove_guarantee_outstanding_amount"
+    t.date     "remove_guarantee_on"
+    t.string   "remove_guarantee_reason"
+    t.integer  "dti_amount_claimed"
+    t.integer  "invoice_legacy_id"
+    t.date     "settled_on"
+    t.integer  "next_borrower_demand_seq"
+    t.string   "sic_desc"
+    t.string   "sic_parent_desc"
+    t.boolean  "sic_notified_aid"
+    t.boolean  "sic_eligible"
+    t.string   "non_val_postcode",                    :limit => 10
+    t.integer  "transferred_from"
+    t.integer  "next_in_calc_seq"
+    t.string   "loan_source",                         :limit => 1
+    t.integer  "dit_break_costs"
+    t.decimal  "guarantee_rate",                                    :precision => 16, :scale => 2
+    t.decimal  "premium_rate",                                      :precision => 16, :scale => 2
+    t.boolean  "legacy_small_loan"
+    t.integer  "next_in_realise_seq"
+    t.integer  "next_in_recover_seq"
+    t.date     "recovery_on"
+    t.integer  "recovery_statement_legacy_id"
+    t.integer  "dti_interest"
+    t.string   "loan_scheme",                         :limit => 1
+    t.integer  "business_type"
+    t.integer  "payment_period"
+    t.decimal  "security_proportion",                               :precision => 5,  :scale => 2
+    t.decimal  "current_refinanced_value",                          :precision => 16, :scale => 2
+    t.decimal  "final_refinanced_value",                            :precision => 16, :scale => 2
+    t.decimal  "original_overdraft_proportion",                     :precision => 5,  :scale => 2
+    t.decimal  "refinance_security_proportion",                     :precision => 5,  :scale => 2
+    t.integer  "overdraft_limit"
+    t.boolean  "overdraft_maintained"
+    t.integer  "invoice_discount_limit"
+    t.decimal  "debtor_book_coverage",                              :precision => 5,  :scale => 2
+    t.decimal  "debtor_book_topup",                                 :precision => 5,  :scale => 2
   end
 
   add_index "loans", ["state"], :name => "index_loans_on_state"
