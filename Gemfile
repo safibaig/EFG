@@ -34,10 +34,6 @@ group :development, :test do
   gem 'simplecov-rcov'
 end
 
-group :import do
-  gem 'sequel'
-end
-
 group :test do
   gem 'capybara'
   gem 'factory_girl_rails'

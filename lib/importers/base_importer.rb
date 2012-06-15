@@ -1,5 +1,4 @@
 require 'csv'
-require 'sequel'
 
 class BaseImporter
   class << self
@@ -29,12 +28,15 @@ class BaseImporter
 
   def self.import
     values = []
+
     CSV.foreach(csv_path, headers: true) do |row|
       values << new(row).values
       bulk_import(values) if values.length % 1000 == 0
     end
 
     bulk_import(values) unless values.empty?
+
+    after_import if respond_to?(:after_import, true)
   end
 
   def parse_row
