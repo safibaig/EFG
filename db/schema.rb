@@ -11,12 +11,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120614102231) do
+ActiveRecord::Schema.define(:version => 20120615111938) do
 
   create_table "lenders", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
     t.integer  "legacy_id"
     t.integer  "version"
     t.boolean  "high_volume"
@@ -155,10 +155,10 @@ ActiveRecord::Schema.define(:version => 20120614102231) do
   add_index "loans", ["state"], :name => "index_loans_on_state"
 
   create_table "state_aid_calculations", :force => true do |t|
-    t.integer  "loan_id",                           :null => false
-    t.integer  "initial_draw_year",                 :null => false
-    t.integer  "initial_draw_amount",               :null => false
-    t.integer  "initial_draw_months",               :null => false
+    t.integer  "loan_id",                                                           :null => false
+    t.integer  "initial_draw_year"
+    t.integer  "initial_draw_amount",                                               :null => false
+    t.integer  "initial_draw_months"
     t.integer  "initial_capital_repayment_holiday"
     t.integer  "second_draw_amount"
     t.integer  "second_draw_months"
@@ -166,14 +166,38 @@ ActiveRecord::Schema.define(:version => 20120614102231) do
     t.integer  "third_draw_months"
     t.integer  "fourth_draw_amount"
     t.integer  "fourth_draw_months"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                                        :null => false
+    t.datetime "updated_at",                                                        :null => false
+    t.string   "legacy_loan_id"
+    t.integer  "seq"
+    t.integer  "loan_version"
+    t.string   "calc_type"
+    t.string   "premium_cheque_month"
+    t.integer  "holiday"
+    t.integer  "total_cost"
+    t.integer  "public_funding"
+    t.boolean  "obj1_area"
+    t.boolean  "reduce_costs"
+    t.boolean  "improve_prod"
+    t.boolean  "increase_quality"
+    t.boolean  "improve_nat_env"
+    t.boolean  "promote"
+    t.boolean  "agriculture"
+    t.integer  "guarantee_rate"
+    t.decimal  "npv",                               :precision => 2,  :scale => 1
+    t.decimal  "prem_rate",                         :precision => 2,  :scale => 1
+    t.decimal  "euro_conv_rate",                    :precision => 17, :scale => 14
+    t.integer  "elsewhere_perc"
+    t.integer  "obj1_perc"
+    t.datetime "ar_timestamp"
+    t.datetime "ar_insert_timestamp"
   end
 
+  add_index "state_aid_calculations", ["legacy_loan_id"], :name => "index_state_aid_calculations_on_legacy_loan_id"
   add_index "state_aid_calculations", ["loan_id"], :name => "index_state_aid_calculations_on_loan_id"
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :null => false
+    t.string   "email"
     t.string   "encrypted_password",                    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"

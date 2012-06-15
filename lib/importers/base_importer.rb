@@ -4,6 +4,7 @@ class BaseImporter
   class << self
     attr_accessor :csv_path
     attr_accessor :klass
+    attr_accessor :validate
   end
 
   attr_accessor :attributes, :row
