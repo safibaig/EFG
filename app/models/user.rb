@@ -10,7 +10,8 @@ class User < ActiveRecord::Base
 
   attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
 
-  validates_presence_of :lender_id, strict: true
+  # FIXME: lender users should require a lender so require lender_id when we
+  # come to implementing roles
   validates_presence_of :first_name, :last_name
 
   def name

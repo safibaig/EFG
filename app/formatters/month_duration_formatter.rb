@@ -5,11 +5,13 @@ module MonthDurationFormatter
     MonthDuration.new(months) if months
   end
 
-  def self.parse(hash)
-    return if hash.blank? || hash.all? {|_, value| value.blank? }
+  def self.parse(value)
+    return if value.blank?
+    return if value.is_a?(Hash) && value.all? {|_, v| v.blank? }
+    return value if value.is_a?(Fixnum)
 
-    years = hash.fetch(:years, 0).to_i
-    months = hash.fetch(:months, 0).to_i
+    years = value.fetch(:years, 0).to_i
+    months = value.fetch(:months, 0).to_i
     MonthDuration.from_years_and_months(years, months).total_months
   end
 end

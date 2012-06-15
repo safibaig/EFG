@@ -1,5 +1,5 @@
 class ExtraLoansFields < ActiveRecord::Migration
-  def up
+  def change
     add_column :loans, :legacy_id, :integer
     add_column :loans, :reference, :string
     add_column :loans, :created_by_legacy_id, :string
@@ -54,62 +54,5 @@ class ExtraLoansFields < ActiveRecord::Migration
     add_column :loans, :invoice_discount_limit, :integer
     add_column :loans, :debtor_book_coverage, :decimal, precision: 5, scale: 2
     add_column :loans, :debtor_book_topup, :decimal, precision: 5, scale: 2
-  end
-
-  def down
-    remove_column :loans, :legacy_id
-    remove_column :loans, :reference
-    remove_column :loans, :created_by_legacy_id
-    remove_column :loans, :version
-    remove_column :loans, :guaranteed_on
-    remove_column :loans, :modified_by_legacy_id
-    remove_column :loans, :lender_legacy_id
-    remove_column :loans, :outstanding_amount
-    remove_column :loans, :standard_cap
-    remove_column :loans, :next_change_history_seq
-    remove_column :loans, :borrower_demand_outstanding
-    remove_column :loans, :realised_money_date
-    remove_column :loans, :event_legacy_id
-    remove_column :loans, :state_aid
-    remove_column :loans, :ar_timestamp
-    remove_column :loans, :ar_insert_timestamp
-    remove_column :loans, :notified_aid
-    remove_column :loans, :remove_guarantee_outstanding_amount
-    remove_column :loans, :remove_guarantee_on
-    remove_column :loans, :remove_guarantee_reason
-    remove_column :loans, :dti_amount_claimed
-    remove_column :loans, :invoice_legacy_id
-    remove_column :loans, :settled_on
-    remove_column :loans, :next_borrower_demand_seq
-    remove_column :loans, :sic_desc
-    remove_column :loans, :sic_parent_desc
-    remove_column :loans, :sic_notified_aid
-    remove_column :loans, :sic_eligible
-    remove_column :loans, :non_val_postcode
-    remove_column :loans, :transferred_from
-    remove_column :loans, :next_in_calc_seq
-    remove_column :loans, :loan_source
-    remove_column :loans, :dit_break_costs
-    remove_column :loans, :guarantee_rate
-    remove_column :loans, :premium_rate
-    remove_column :loans, :legacy_small_loan
-    remove_column :loans, :next_in_realise_seq
-    remove_column :loans, :next_in_recover_seq
-    remove_column :loans, :recovery_on
-    remove_column :loans, :recovery_statement_legacy_id
-    remove_column :loans, :dti_interest
-    remove_column :loans, :loan_scheme
-    remove_column :loans, :business_type
-    remove_column :loans, :payment_period
-    remove_column :loans, :security_proportion
-    remove_column :loans, :current_refinanced_value
-    remove_column :loans, :final_refinanced_value
-    remove_column :loans, :original_overdraft_proportion
-    remove_column :loans, :refinance_security_proportion
-    remove_column :loans, :overdraft_limit
-    remove_column :loans, :overdraft_maintained
-    remove_column :loans, :invoice_discount_limit
-    remove_column :loans, :debtor_book_coverage
-    remove_column :loans, :debtor_book_topup
   end
 end
