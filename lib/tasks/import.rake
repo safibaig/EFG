@@ -10,7 +10,7 @@ namespace :import do
   end
 
   desc "Import loan data (CSV files found in import_data/loans.csv)"
-  task loans: :lenders do
+  task loans: [:lenders, :loan_allocations] do
     _import Loan
   end
 

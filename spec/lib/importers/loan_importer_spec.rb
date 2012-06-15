@@ -4,6 +4,7 @@ require 'importers'
 describe LoanImporter do
 
   let!(:lender) { FactoryGirl.create(:lender, legacy_id: 9) }
+  let!(:loan_allocation) { FactoryGirl.create(:loan_allocation, :lender => lender, :legacy_id => 47) }
 
   let(:csv_fixture_path) { Rails.root.join('spec/fixtures/import_data/loans.csv') }
 
@@ -81,6 +82,7 @@ describe LoanImporter do
         :sic_notified_aid                    => "0",
         :sic_eligible                        => "1",
         :lender_cap_id                       => "47",
+        :loan_allocation_id                  => loan_allocation.id,
         :town                                => "London",
         :non_val_postcode                    => "ec1123",
         :transferred_from                    => "12345",
@@ -252,6 +254,12 @@ describe LoanImporter do
       dispatch
 
       Loan.last.lender.should == lender
+    end
+
+    it "should associate loan with loan allocation" do
+      dispatch
+
+      Loan.last.loan_allocation.should == loan_allocation
     end
   end
 

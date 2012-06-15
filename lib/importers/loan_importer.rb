@@ -165,6 +165,9 @@ class LoanImporter < BaseImporter
         end
 
         value
+      when "LENDER_CAP_ID"
+        memo[:loan_allocation_id] = (value.blank?) ? nil : LoanAllocation.find_by_legacy_id(value.to_i).id
+        value
       when "EFG_INTEREST_TYPE"
         unless value.blank?
           value == 'V' ? 1 : 2 # V = variable (id: 1), F = fixed (id: 2)
@@ -184,10 +187,13 @@ class LoanImporter < BaseImporter
     }
   end
 
-  # insert lender_id column
+  # insert extra association fields in columns
   def self.columns
     columns = field_mapping.values
-    index = columns.index(:lender_legacy_id)
-    field_mapping.values.insert(index, :lender_id)
+    { lender_legacy_id: :lender_id, lender_cap_id: :loan_allocation_id }.each do |field1, field2|
+      index = columns.index(field1)
+      columns.insert(index, field2)
+    end
+    columns
   end
 end
