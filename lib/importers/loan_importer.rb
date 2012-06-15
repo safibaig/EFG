@@ -1,6 +1,6 @@
 class LoanImporter < BaseImporter
   self.csv_path = Rails.root.join('import_data/loans.csv')
-  self.table_name = :loans
+  self.klass = Loan
 
   def self.field_mapping
     {
@@ -134,19 +134,27 @@ class LoanImporter < BaseImporter
     "20" => Loan::CompleteLegacy,
   }
 
+  MONIES = %w(AMOUNT TURNOVER EFG_FEES OUTSTANDING_AMOUNT DTI_DEMAND_OUTSTANDING BORROWER_DEMAND_OUTSTANDING
+    AMOUNT_DEMANDED STATE_AID REMOVE_GUARANTEE_OUTSTD_AMT DTI_AMOUNT_CLAIMED DTI_INTEREST
+    OVERDRAFT_LIMIT CURRENT_REFINANCED_VALUE FINAL_REFINANCED_VALUE INVOICE_DISCOUNT_LIMIT DTI_BREAK_COSTS)
+
   def parse_row
     self.attributes = row.inject({}) { |memo, (name, value)|
       case name
       when "STATUS"
         value = STATE_MAPPING[value]
       when "LOAN_TERM"
-        value = { years: 0, months: value }
+        value = value.to_i
       when "LENDER_OID"
-        attrs[:lender_id] = Lender.find_by_legacy_id(value).try(:id) || 0 unless value.blank?
+        memo[:lender_id] = Lender.select(:id).find_by_legacy_id!(value).id unless value.blank?
       when "EFG_INTEREST_TYPE"
         unless value.blank?
           value = (value == 'V') ? 1 : 2 # V = variable (id: 1), F = fixed (id: 2)
         end
+      when *MONIES
+        value = Money.parse(value).cents
+      else
+        value
       end
 
       if value.is_a?(String) && value.match(%r{(\d{2})-(\w{3})-(\d{2})})
@@ -156,5 +164,12 @@ class LoanImporter < BaseImporter
       memo[self.class.field_mapping[name]] = value
       memo
     }
+  end
+
+  # insert lender_id column
+  def self.columns
+    columns = field_mapping.values
+    index = columns.index(:lender_legacy_id)
+    field_mapping.values.insert(index, :lender_id)
   end
 end

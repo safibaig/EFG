@@ -4,10 +4,8 @@ require 'sequel'
 class BaseImporter
   class << self
     attr_accessor :csv_path
-    attr_accessor :table_name
+    attr_accessor :klass
   end
-
-  DB = Sequel.connect(YAML.load_file(Rails.root.join('config/database.yml'))[Rails.env])
 
   attr_accessor :attributes, :row
 
@@ -17,7 +15,7 @@ class BaseImporter
   end
 
   def self.bulk_import(values)
-    DB[table_name].import(columns, values)
+    klass.import(columns, values, validate: false, timestamps: false)
     values.clear
   end
 
@@ -30,12 +28,13 @@ class BaseImporter
   end
 
   def self.import
+    values = []
     CSV.foreach(csv_path, headers: true) do |row|
       values << new(row).values
       bulk_import(values) if values.length % 1000 == 0
     end
 
-    bulk_import(values)
+    bulk_import(values) unless values.empty?
   end
 
   def parse_row

@@ -37,6 +37,7 @@ class Loan < ActiveRecord::Base
   format :fees, with: MoneyFormatter
   format :initial_draw_value, with: MoneyFormatter
   format :turnover, with: MoneyFormatter
+  format :outstanding_amount, with: MoneyFormatter
   format :repayment_duration, with: MonthDurationFormatter
   format :borrower_demanded_amount, with: MoneyFormatter
   format :cancelled_on, with: QuickDateFormatter
@@ -54,6 +55,12 @@ class Loan < ActiveRecord::Base
   format :dti_interest, with: MoneyFormatter
   format :current_refinanced_value, with: MoneyFormatter
   format :final_refinanced_value, with: MoneyFormatter
+  format :borrower_demand_outstanding, with: MoneyFormatter
+  format :state_aid, with: MoneyFormatter
+  format :borrower_demanded_amount, with: MoneyFormatter
+  format :overdraft_limit, with: MoneyFormatter
+  format :invoice_discount_limit, with: MoneyFormatter
+  format :remove_guarantee_outstanding_amount, with: MoneyFormatter
 
   def self.with_state(state)
     where(:state => state)

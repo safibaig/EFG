@@ -13,7 +13,7 @@ namespace :import do
   end
 
   desc "Import loan data (CSV files found in import_data/loans.csv)"
-  task loans: [:environment, :users] do
+  task loans: [:environment, :lenders] do
     require 'importers'
     LoanImporter.import
   end

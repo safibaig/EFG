@@ -9,7 +9,7 @@ gem 'jquery-rails', "~> 1.0.19"
 gem 'money'
 gem 'simple_form'
 gem 'twitter-bootstrap-rails'
-
+gem 'activerecord-import'
 gem "builder"
 
 group :passenger_compatibility do

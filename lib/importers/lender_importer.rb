@@ -1,6 +1,6 @@
 class LenderImporter < BaseImporter
   self.csv_path = Rails.root.join('import_data/lenders.csv')
-  self.table_name = :lenders
+  self.klass = Lender
 
   def self.field_mapping
     {

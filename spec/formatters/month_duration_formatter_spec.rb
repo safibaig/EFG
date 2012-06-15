@@ -14,6 +14,10 @@ describe MonthDurationFormatter do
     it "should return nil with a blank hash" do
       MonthDurationFormatter.parse({}).should be_nil
     end
+
+    it "should return argument if an integer" do
+      MonthDurationFormatter.parse(60).should == 60
+    end
   end
 
   describe ".format" do

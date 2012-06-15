@@ -1,6 +1,6 @@
 class UserImporter < BaseImporter
   self.csv_path = Rails.root.join('import_data/users.csv')
-  self.table_name = :users
+  self.klass = User
 
   FIELD_MAPPING = {
     "USER_ID"              => :legacy_id,
