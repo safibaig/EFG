@@ -11,12 +11,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120614102231) do
+ActiveRecord::Schema.define(:version => 20120615111938) do
 
   create_table "lenders", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
     t.integer  "legacy_id"
     t.integer  "version"
     t.boolean  "high_volume"
@@ -168,7 +168,7 @@ ActiveRecord::Schema.define(:version => 20120614102231) do
     t.integer  "fourth_draw_months"
     t.datetime "created_at",                                                        :null => false
     t.datetime "updated_at",                                                        :null => false
-    t.string   "legacy_id"
+    t.string   "legacy_loan_id"
     t.integer  "seq"
     t.integer  "loan_version"
     t.string   "calc_type"
@@ -193,11 +193,11 @@ ActiveRecord::Schema.define(:version => 20120614102231) do
     t.datetime "ar_insert_timestamp"
   end
 
-  add_index "state_aid_calculations", ["legacy_id"], :name => "index_state_aid_calculations_on_legacy_id"
+  add_index "state_aid_calculations", ["legacy_loan_id"], :name => "index_state_aid_calculations_on_legacy_loan_id"
   add_index "state_aid_calculations", ["loan_id"], :name => "index_state_aid_calculations_on_loan_id"
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :null => false
+    t.string   "email"
     t.string   "encrypted_password",                    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"

@@ -31,8 +31,6 @@ class BaseImporter
     CSV.foreach(csv_path, headers: true) do |row|
       values << new(row).values
 
-      before_save(model)
-
       if values.length % 1000 == 0
         bulk_import(values)
         values.clear

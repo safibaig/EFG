@@ -1,6 +1,6 @@
 class AddMissingStateAidCalculationFields < ActiveRecord::Migration
   def up
-    add_column :state_aid_calculations, :legacy_id, :string
+    add_column :state_aid_calculations, :legacy_loan_id, :string
     add_column :state_aid_calculations, :seq, :integer
     add_column :state_aid_calculations, :loan_version, :integer
     add_column :state_aid_calculations, :calc_type, :string
@@ -24,11 +24,11 @@ class AddMissingStateAidCalculationFields < ActiveRecord::Migration
     add_column :state_aid_calculations, :ar_timestamp, :datetime
     add_column :state_aid_calculations, :ar_insert_timestamp, :datetime
 
-    add_index :state_aid_calculations, :legacy_id
+    add_index :state_aid_calculations, :legacy_loan_id
   end
 
   def down
-    remove_column :state_aid_calculations, :legacy_id
+    remove_column :state_aid_calculations, :legacy_loan_id
     remove_column :state_aid_calculations, :seq
     remove_column :state_aid_calculations, :loan_version
     remove_column :state_aid_calculations, :calc_type
