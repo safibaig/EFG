@@ -54,8 +54,8 @@ describe LenderImporter do
       lender = Lender.last
       lender.legacy_id.should == 465
       lender.name.should == "465"
-      lender.created_at.should == Time.zone.parse("01-APR-10")
-      lender.updated_at.should == Time.zone.parse("11-MAY-10")
+      lender.created_at.should == Time.gm(2010, 4, 1)
+      lender.updated_at.should == Time.gm(2010, 5, 11)
       lender.version = 1
       lender.high_volume.should == true
       lender.can_use_add_cap.should == true
@@ -66,8 +66,8 @@ describe LenderImporter do
       lender.std_cap_lending_allocation.should == 123
       lender.add_cap_lending_allocation.should == 456
       lender.should_not be_disabled
-      lender.ar_timestamp.should == Time.zone.parse("11-DEC-06")
-      lender.ar_insert_timestamp.should == Time.zone.parse("20-MAR-07")
+      lender.ar_timestamp.should == Time.gm(2006, 12, 11)
+      lender.ar_insert_timestamp.should == Time.gm(2007, 3, 20)
       lender.created_by.should == "B0A11CFA070A9EB86882BB5199645F1232C47F8E"
       lender.modified_by.should == "8CD950DED80063E4502DDAD23C4A0D7EF03B7EE3"
       lender.allow_alert_process.should == true
