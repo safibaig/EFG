@@ -1,26 +1,31 @@
 namespace :import do
-
   desc "Import user data (CSV files found in import_data/users.csv)"
-  task users: [:environment, :lenders] do
-    require 'importers'
-    UserImporter.import
+  task users: :lenders do
+    _import User
   end
 
   desc "Import lender data (CSV files found in import_data/lenders.csv)"
   task lenders: :environment do
-    require 'importers'
-    LenderImporter.import
+    _import Lender
   end
 
   desc "Import loan data (CSV files found in import_data/loans.csv)"
-  task loans: [:environment, :lenders] do
-    require 'importers'
-    LoanImporter.import
+  task loans: :lenders do
+    _import Loan
   end
 
   desc "Import loan data (CSV files found in import_data/loans.csv)"
-  task state_aid_calculations: :environment do
-    require 'importers'
-    StateAidCalculationImporter.import
+  task state_aid_calculations: :loans do
+    _import StateAidCalculation
+  end
+
+  def _import(klass)
+    if klass.count.zero?
+      require 'importers'
+      importer = "#{klass.name}Importer".constantize
+      importer.import
+    else
+      puts "Did not import #{klass.table_name} - table is not empty."
+    end
   end
 end
