@@ -56,6 +56,7 @@ class StateAidCalculationImporter < BaseImporter
     row.inject({}) { |memo, (name, value)|
       value = case name
       when *BOOLEANS
+        # TODO: Cater for Yes, No and N/A values - true, false, nil.
         value.present?
       when *INTEGERS
         value.to_i
