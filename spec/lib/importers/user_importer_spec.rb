@@ -7,6 +7,11 @@ describe UserImporter do
 
   let(:csv_fixture_path) { Rails.root.join('spec/fixtures/import_data/users.csv') }
 
+  before(:each) do
+    Faker::Name.stub!(:first_name).and_return('Joe')
+    Faker::Name.stub!(:last_name).and_return('Bloggs')
+  end
+
   describe ".import" do
     before do
       UserImporter.csv_path = csv_fixture_path
@@ -33,8 +38,8 @@ describe UserImporter do
       user.updated_at.should_not be_blank
       user.last_sign_in_at.should == Time.gm(2007, 6, 18)
       user.version.should == 145
-      user.first_name.should == "FIRSTNAME"
-      user.last_name.should == "LASTNAME"
+      user.first_name.should == "Joe"
+      user.last_name.should == "Bloggs"
       user.should_not be_disabled
       user.memorable_name.should == "MEMORABLENAME"
       user.memorable_place.should == "MEMORABLEPLACE"

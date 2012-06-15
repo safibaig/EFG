@@ -45,6 +45,6 @@ class LoanAllocationImporter < BaseImporter
   def self.columns
     columns = field_mapping.values
     index = columns.index(:lender_legacy_id)
-    field_mapping.values.insert(index, :lender_id)
+    columns.insert(index, :lender_id)
   end
 end

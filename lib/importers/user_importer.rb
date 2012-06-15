@@ -1,3 +1,5 @@
+require 'faker'
+
 class UserImporter < BaseImporter
   self.csv_path = Rails.root.join('import_data/users.csv')
   self.klass = User
@@ -33,6 +35,10 @@ class UserImporter < BaseImporter
   def attributes
     row.inject({}) do |memo, (field_name, value)|
       value = case field_name
+      when "FIRST_NAME"
+        (value == 'FIRSTNAME') ? Faker::Name.first_name : value
+      when "LAST_NAME"
+        (value == 'LASTNAME') ? Faker::Name.last_name : value
       when 'EMAIL_ADDRESS'
         # Obfuscated data all has the same email address.
         nil

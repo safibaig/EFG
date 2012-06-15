@@ -5,6 +5,10 @@ describe LenderImporter do
 
   let(:csv_fixture_path) { Rails.root.join('spec/fixtures/import_data/lenders.csv') }
 
+  before(:each) do
+    Faker::Company.stub!(:name).and_return('ACME')
+  end
+
   describe "#attributes" do
     let(:row) { CSV.read(csv_fixture_path, headers: true).first }
     let(:importer) { LenderImporter.new(row) }
@@ -12,7 +16,7 @@ describe LenderImporter do
     it "should return a hash of attributes" do
       importer.attributes.should == {
         legacy_id: "465",
-        name: "465",
+        name: "ACME",
         created_at: "01-APR-10",
         updated_at: "11-MAY-10",
         version: "1",
@@ -53,7 +57,7 @@ describe LenderImporter do
 
       lender = Lender.last
       lender.legacy_id.should == 465
-      lender.name.should == "465"
+      lender.name.should == "ACME"
       lender.created_at.should == Time.gm(2010, 4, 1)
       lender.updated_at.should == Time.gm(2010, 5, 11)
       lender.version = 1

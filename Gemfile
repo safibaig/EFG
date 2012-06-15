@@ -28,6 +28,10 @@ group :development do
   gem 'guard-rspec'
 end
 
+group :import do
+  gem "faker"
+end
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'ci_reporter'

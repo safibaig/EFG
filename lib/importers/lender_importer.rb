@@ -27,4 +27,18 @@ class LenderImporter < BaseImporter
       "LOAN_SCHEME"                 => :loan_scheme
     }
   end
+
+  def attributes
+    row.inject({}) do |memo, (field_name, value)|
+      value = case field_name
+      when "NAME"
+        (value.to_i > 0) ? Faker::Company.name : value
+      else
+        value
+      end
+
+      memo[self.class.field_mapping[field_name]] = value
+      memo
+    end
+  end
 end
