@@ -20,8 +20,8 @@ describe LoanImporter do
         :turnover                            => 136500000,
         :state                               => Loan::Guaranteed,
         :created_by_legacy_id                => "8008769F7E055AEBA0033AD3880965BB0E99142A",
-        :created_at                          => Date.parse("19-DEC-05"),
-        :updated_at                          => Date.parse("22-OCT-07"),
+        :created_at                          => Time.parse("19-DEC-05"),
+        :updated_at                          => Time.parse("22-OCT-07"),
         :version                             => "11",
         :guaranteed_on                       => Date.parse("20-DEC-05"),
         :modified_by_legacy_id               => "8467CE2D5BE4B96EC60E11BD466B61514D1A33D5",
@@ -59,8 +59,8 @@ describe LoanImporter do
         :state_aid                           => 1471100,
         :previous_borrowing                  => "1",
         :would_you_lend                      => "1",
-        :ar_timestamp                        => Date.parse("11-DEC-06"),
-        :ar_insert_timestamp                 => Date.parse("19-DEC-05"),
+        :ar_timestamp                        => Time.parse("11-DEC-06"),
+        :ar_insert_timestamp                 => Time.parse("19-DEC-05"),
         :maturity_date                       => Date.parse("06-JUN-11"),
         :first_pp_received                   => "1",
         :signed_direct_debit_received        => "1",
@@ -123,8 +123,12 @@ describe LoanImporter do
   end
 
   describe ".import" do
-    def dispatch
+    before do
       LoanImporter.csv_path = csv_fixture_path
+      LoanImporter.instance_variable_set(:@lender_id_from_legacy_id, nil)
+    end
+
+    def dispatch
       LoanImporter.import
     end
 
@@ -141,14 +145,14 @@ describe LoanImporter do
       loan.legacy_id.should == 685
       loan.reference.should == "BCHNIQ5-01"
       loan.amount.should == Money.new(10000000)
-      loan.trading_date.should == Date.parse("10-JAN-06")
+      loan.trading_date.should == Date.new(2006, 1, 10)
       loan.turnover.should == Money.new(136500000)
       loan.state.should == Loan::Guaranteed
       loan.created_by_legacy_id.should == "8008769F7E055AEBA0033AD3880965BB0E99142A"
-      loan.created_at.should == Time.parse("19-DEC-05")
+      loan.created_at.should == Time.gm(2005, 12, 19)
       loan.updated_at.should_not be_blank # after_import hook will update this to current time
       loan.version.should == 11
-      loan.guaranteed_on.should == Date.parse("20-DEC-05")
+      loan.guaranteed_on.should == Date.new(2005, 12, 20)
       loan.modified_by_legacy_id.should == "8467CE2D5BE4B96EC60E11BD466B61514D1A33D5"
       loan.lender_legacy_id.should == 9
       loan.outstanding_amount.should == Money.new(500000)
@@ -162,9 +166,9 @@ describe LoanImporter do
       loan.cancelled_comment.should == "n/a"
       loan.next_change_history_seq.should == 3
       loan.declaration_signed.should == true
-      loan.borrower_demanded_on.should == Date.parse("20-JUL-07")
-      loan.cancelled_on.should == Date.parse("30-JUL-07")
-      loan.repaid_on.should == Date.parse("05-OCT-10")
+      loan.borrower_demanded_on.should == Date.new(2007, 7, 20)
+      loan.cancelled_on.should == Date.new(2007, 7, 30)
+      loan.repaid_on.should == Date.new(2010, 10, 5)
       loan.viable_proposition.should == true
       loan.collateral_exhausted.should == true
       loan.generic1.should == "n/a1"
@@ -172,20 +176,20 @@ describe LoanImporter do
       loan.generic3.should == "n/a3"
       loan.generic4.should == "n/a4"
       loan.generic5.should == "n/a5"
-      loan.facility_letter_date.should == Date.parse("12-JAN-06")
+      loan.facility_letter_date.should == Date.new(2006, 1, 12)
       loan.facility_letter_sent.should == true
-      loan.dti_demanded_on.should == Date.parse("11-SEP-07")
+      loan.dti_demanded_on.should == Date.new(2007, 9, 11)
       loan.dti_demand_outstanding.should == Money.new(7999996)
       loan.borrower_demand_outstanding.should == Money.new(30000)
-      loan.realised_money_date.should == Date.parse("30-JUN-07")
-      loan.no_claim_on.should == Date.parse("30-JUN-10")
+      loan.realised_money_date.should == Date.new(2007, 6, 30)
+      loan.no_claim_on.should == Date.new(2010, 6, 30)
       loan.event_legacy_id.should == 18
       loan.state_aid.should == Money.new(1471100)
       loan.previous_borrowing.should == true
       loan.would_you_lend.should == true
-      loan.ar_timestamp.should == Time.parse("11-DEC-06")
-      loan.ar_insert_timestamp.should == Time.parse("19-DEC-05")
-      loan.maturity_date.should == Date.parse("06-JUN-11")
+      loan.ar_timestamp.should == Time.gm(2006, 12, 11)
+      loan.ar_insert_timestamp.should == Time.gm(2005, 12, 19)
+      loan.maturity_date.should == Date.new(2011, 6, 6)
       loan.first_pp_received.should == true
       loan.signed_direct_debit_received.should == true
       loan.received_declaration.should == true
@@ -193,11 +197,11 @@ describe LoanImporter do
       loan.notified_aid.should == false
       loan.sic_code.should == "K74.87/9.013"
       loan.remove_guarantee_outstanding_amount.should == Money.new(40000)
-      loan.remove_guarantee_on.should == Date.parse("08-MAY-09")
+      loan.remove_guarantee_on.should == Date.new(2009, 5, 8)
       loan.remove_guarantee_reason.should == "n/a"
       loan.dti_amount_claimed.should == Money.new(6077668)
       loan.invoice_legacy_id.should == 44
-      loan.settled_on.should == Date.parse("22-OCT-07")
+      loan.settled_on.should == Date.new(2007, 10, 22)
       loan.borrower_demanded_amount.should == Money.new(7999996)
       loan.next_borrower_demand_seq.should == 1
       loan.sic_desc.should == "Franchisers"
@@ -217,7 +221,7 @@ describe LoanImporter do
       loan.legacy_small_loan.should == false
       loan.next_in_realise_seq.should == 0
       loan.next_in_recover_seq.should == 0
-      loan.recovery_on.should == Date.parse("20-AUG-10")
+      loan.recovery_on.should == Date.new(2010, 8, 20)
       loan.recovery_statement_legacy_id.should == 123456
       loan.dti_ded_code.should == "A.10.56"
       loan.dti_interest.should == Money.new(103561)
