@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120615132332) do
+ActiveRecord::Schema.define(:version => 20120615151930) do
 
   create_table "lenders", :force => true do |t|
     t.string   "name"
@@ -221,7 +221,7 @@ ActiveRecord::Schema.define(:version => 20120615132332) do
   add_index "state_aid_calculations", ["loan_id"], :name => "index_state_aid_calculations_on_loan_id"
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :null => false
+    t.string   "email"
     t.string   "encrypted_password",                    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
