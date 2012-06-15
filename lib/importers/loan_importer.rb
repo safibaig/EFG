@@ -158,11 +158,11 @@ class LoanImporter < BaseImporter
           value == 'V' ? 1 : 2 # V = variable (id: 1), F = fixed (id: 2)
         end
       when *DATES
-        Date.parse(value)
+        Date.parse(value) unless value.blank?
       when *MONIES
         Money.parse(value).cents
       when *TIMES
-        Time.parse(value)
+        Time.parse(value) unless value.blank?
       else
         value
       end
