@@ -32,11 +32,4 @@ class LoanEligibilityCheck
   def transition_to
     EligibilityCheck.eligible?(loan) ? Loan::Eligible : Loan::Rejected
   end
-
-  # FIXME - use loan_allocation for the current date or date when loan first created?
-  def loan_allocation_options
-    [
-      [lender.name, lender.loan_allocations.last.id]
-    ]
-  end
 end

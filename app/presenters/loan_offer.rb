@@ -13,7 +13,8 @@ class LoanOffer
     errors.add(:facility_letter_sent, :accepted) unless self.facility_letter_sent
   end
 
+  # TODO - return information about the loan allocation??
   def lending_limit_details
-    loan.lender_cap.name
+    loan.lender.name
   end
 end

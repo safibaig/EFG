@@ -71,10 +71,6 @@ class Loan < ActiveRecord::Base
     state_aid_calculation.present?
   end
 
-  def lender_cap
-    LoanFacility.find(lender_cap_id)
-  end
-
   def loan_category
     LoanCategory.find(loan_category_id)
   end
