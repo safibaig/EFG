@@ -138,8 +138,8 @@ class LoanImporter < BaseImporter
     AMOUNT_DEMANDED STATE_AID REMOVE_GUARANTEE_OUTSTD_AMT DTI_AMOUNT_CLAIMED DTI_INTEREST
     OVERDRAFT_LIMIT CURRENT_REFINANCED_VALUE FINAL_REFINANCED_VALUE INVOICE_DISCOUNT_LIMIT DTI_BREAK_COSTS)
 
-  def parse_row
-    self.attributes = row.inject({}) { |memo, (name, value)|
+  def attributes
+    row.inject({}) { |memo, (name, value)|
       case name
       when "STATUS"
         value = STATE_MAPPING[value]

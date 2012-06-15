@@ -10,12 +10,10 @@ class BaseImporter
 
   def initialize(row)
     @row = row
-    parse_row
   end
 
   def self.bulk_import(values)
     klass.import(columns, values, validate: false, timestamps: false)
-    values.clear
   end
 
   def self.columns
@@ -31,7 +29,11 @@ class BaseImporter
 
     CSV.foreach(csv_path, headers: true) do |row|
       values << new(row).values
-      bulk_import(values) if values.length % 1000 == 0
+
+      if values.length % 1000 == 0
+        bulk_import(values)
+        values.clear
+      end
     end
 
     bulk_import(values) unless values.empty?
@@ -39,8 +41,8 @@ class BaseImporter
     after_import if respond_to?(:after_import, true)
   end
 
-  def parse_row
-    self.attributes = row.inject({}) { |memo, (name, value)|
+  def attributes
+    row.inject({}) { |memo, (name, value)|
       memo[self.class.field_mapping[name]] = value
       memo
     }

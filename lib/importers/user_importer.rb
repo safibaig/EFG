@@ -30,8 +30,8 @@ class UserImporter < BaseImporter
     }
   end
 
-  def parse_row
-    self.attributes = row.inject({}) do |memo, (field_name, value)|
+  def attributes
+    row.inject({}) do |memo, (field_name, value)|
       value = case field_name
       when 'EMAIL_ADDRESS'
         # Obfuscated data all has the same email address.
