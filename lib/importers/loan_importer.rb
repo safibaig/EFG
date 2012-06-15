@@ -134,31 +134,37 @@ class LoanImporter < BaseImporter
     "20" => Loan::CompleteLegacy,
   }
 
+  DATES = %w(TRADING_DATE GUARANTEED_DATE BORROWER_DEMAND_DATE CANCELLED_DATE
+    REPAID_DATE FACILITY_LETTER_DATE DTI_DEMAND_DATE REALISED_MONEY_DATE
+    NO_CLAIM_DATE MATURITY_DATE REMOVE_GUARANTEE_DATE SETTLEMENT_DATE
+    RECOVERY_DATE)
   MONIES = %w(AMOUNT TURNOVER EFG_FEES OUTSTANDING_AMOUNT DTI_DEMAND_OUTSTANDING BORROWER_DEMAND_OUTSTANDING
     AMOUNT_DEMANDED STATE_AID REMOVE_GUARANTEE_OUTSTD_AMT DTI_AMOUNT_CLAIMED DTI_INTEREST
     OVERDRAFT_LIMIT CURRENT_REFINANCED_VALUE FINAL_REFINANCED_VALUE INVOICE_DISCOUNT_LIMIT DTI_BREAK_COSTS)
+  TIMES = %w(CREATION_TIME LAST_MODIFIED AR_TIMESTAMP AR_INSERT_TIMESTAMP)
 
   def attributes
     row.inject({}) { |memo, (name, value)|
-      case name
+      value = case name
       when "STATUS"
-        value = STATE_MAPPING[value]
+        STATE_MAPPING[value]
       when "LOAN_TERM"
-        value = value.to_i
+        value.to_i
       when "LENDER_OID"
         memo[:lender_id] = Lender.select(:id).find_by_legacy_id!(value).id unless value.blank?
+        value
       when "EFG_INTEREST_TYPE"
         unless value.blank?
-          value = (value == 'V') ? 1 : 2 # V = variable (id: 1), F = fixed (id: 2)
+          value == 'V' ? 1 : 2 # V = variable (id: 1), F = fixed (id: 2)
         end
+      when *DATES
+        Date.parse(value)
       when *MONIES
-        value = Money.parse(value).cents
+        Money.parse(value).cents
+      when *TIMES
+        Time.parse(value)
       else
         value
-      end
-
-      if value.is_a?(String) && value.match(%r{(\d{2})-(\w{3})-(\d{2})})
-        value = Date.parse(value)
       end
 
       memo[self.class.field_mapping[name]] = value
