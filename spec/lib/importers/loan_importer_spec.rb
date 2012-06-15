@@ -8,8 +8,12 @@ describe LoanImporter do
   let(:csv_fixture_path) { Rails.root.join('spec/fixtures/import_data/loans.csv') }
 
   describe ".import" do
-    def dispatch
+    before do
       LoanImporter.csv_path = csv_fixture_path
+      LoanImporter.instance_variable_set(:@lender_id_from_legacy_id, nil)
+    end
+
+    def dispatch
       LoanImporter.import
     end
 

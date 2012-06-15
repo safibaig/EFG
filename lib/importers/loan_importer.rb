@@ -134,6 +134,14 @@ class LoanImporter < BaseImporter
     "20" => Loan::CompleteLegacy,
   }
 
+  def self.lender_id_from_legacy_id(legacy_id)
+    @lender_id_from_legacy_id ||= Hash[*Lender.select('id, legacy_id').map { |lender|
+      [lender.legacy_id, lender.id]
+    }.flatten]
+
+    @lender_id_from_legacy_id[legacy_id]
+  end
+
   DATES = %w(TRADING_DATE GUARANTEED_DATE BORROWER_DEMAND_DATE CANCELLED_DATE
     REPAID_DATE FACILITY_LETTER_DATE DTI_DEMAND_DATE REALISED_MONEY_DATE
     NO_CLAIM_DATE MATURITY_DATE REMOVE_GUARANTEE_DATE SETTLEMENT_DATE
@@ -151,7 +159,11 @@ class LoanImporter < BaseImporter
       when "LOAN_TERM"
         value.to_i
       when "LENDER_OID"
-        memo[:lender_id] = Lender.select(:id).find_by_legacy_id!(value).id unless value.blank?
+        if value.present?
+          lender_id = self.class.lender_id_from_legacy_id(value.to_i)
+          memo[:lender_id] = lender_id
+        end
+
         value
       when "EFG_INTEREST_TYPE"
         unless value.blank?
