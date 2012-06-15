@@ -11,7 +11,7 @@ describe LoanImporter do
     let(:row) { CSV.read(csv_fixture_path, headers: true).first }
     let(:importer) { LoanImporter.new(row) }
 
-    it "should return an array of user attributes" do
+    it "should return an array of attributes" do
       importer.attributes.should == {
         :legacy_id                           => "685",
         :reference                           => "BCHNIQ5-01",
@@ -128,7 +128,7 @@ describe LoanImporter do
       LoanImporter.import
     end
 
-    it "should create new user records" do
+    it "should create new records" do
       expect {
         dispatch
       }.to change(Loan, :count).by(1)
@@ -244,7 +244,7 @@ describe LoanImporter do
       loan.debtor_book_topup.should == 300
     end
 
-    it "should associate user with lender" do
+    it "should associate loan with lender" do
       dispatch
 
       Loan.last.lender.should == lender

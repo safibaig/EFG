@@ -9,7 +9,7 @@ describe LenderImporter do
     let(:row) { CSV.read(csv_fixture_path, headers: true).first }
     let(:importer) { LenderImporter.new(row) }
 
-    it "should return a hash of user attributes" do
+    it "should return a hash of attributes" do
       importer.attributes.should == {
         legacy_id: "465",
         name: "465",
@@ -42,7 +42,7 @@ describe LenderImporter do
       LenderImporter.import
     end
 
-    it "should create new user records" do
+    it "should create new records" do
       expect {
         dispatch
       }.to change(Lender, :count).by(1)
