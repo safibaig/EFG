@@ -5,7 +5,8 @@ class LoanEligibilityCheck
   attribute :viable_proposition
   attribute :would_you_lend
   attribute :collateral_exhausted
-  attribute :lender_cap_id
+  attribute :lender
+  attribute :loan_allocation_id
   attribute :sic_code
   attribute :loan_category_id
   attribute :reason_id
@@ -17,7 +18,7 @@ class LoanEligibilityCheck
   attribute :repayment_duration
   attribute :trading_date
 
-  validates_presence_of :amount, :lender_cap_id, :repayment_duration,
+  validates_presence_of :amount, :loan_allocation_id, :repayment_duration,
     :turnover, :trading_date, :sic_code, :loan_category_id, :reason_id
   validates_inclusion_of :viable_proposition, :would_you_lend,
     :collateral_exhausted, :previous_borrowing,
@@ -30,5 +31,12 @@ class LoanEligibilityCheck
 
   def transition_to
     EligibilityCheck.eligible?(loan) ? Loan::Eligible : Loan::Rejected
+  end
+
+  # FIXME - use loan_allocation for the current date or date when loan first created?
+  def loan_allocation_options
+    [
+      [lender.name, lender.loan_allocations.last.id]
+    ]
   end
 end

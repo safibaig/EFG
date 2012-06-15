@@ -11,12 +11,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120615111938) do
+ActiveRecord::Schema.define(:version => 20120615132332) do
 
   create_table "lenders", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "legacy_id"
     t.integer  "version"
     t.boolean  "high_volume"
@@ -38,6 +38,28 @@ ActiveRecord::Schema.define(:version => 20120615111938) do
   end
 
   add_index "lenders", ["legacy_id"], :name => "index_lenders_on_legacy_id", :unique => true
+
+  create_table "loan_allocations", :force => true do |t|
+    t.integer  "lender_id"
+    t.integer  "legacy_id"
+    t.integer  "lender_legacy_id"
+    t.integer  "version"
+    t.integer  "allocation_type"
+    t.boolean  "active"
+    t.integer  "allocation"
+    t.date     "starts_on"
+    t.date     "ends_on"
+    t.string   "description"
+    t.string   "modified_by_legacy_id"
+    t.datetime "ar_timestamp"
+    t.datetime "ar_insert_timestamp"
+    t.decimal  "premium_rate",          :precision => 16, :scale => 2
+    t.decimal  "guarantee_rate",        :precision => 16, :scale => 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "loan_allocations", ["lender_id"], :name => "index_loan_allocations_on_lender_id"
 
   create_table "loans", :force => true do |t|
     t.boolean  "viable_proposition",                                                               :null => false
@@ -150,8 +172,10 @@ ActiveRecord::Schema.define(:version => 20120615111938) do
     t.integer  "invoice_discount_limit"
     t.decimal  "debtor_book_coverage",                              :precision => 5,  :scale => 2
     t.decimal  "debtor_book_topup",                                 :precision => 5,  :scale => 2
+    t.integer  "loan_allocation_id"
   end
 
+  add_index "loans", ["loan_allocation_id"], :name => "index_loans_on_loan_allocation_id"
   add_index "loans", ["state"], :name => "index_loans_on_state"
 
   create_table "state_aid_calculations", :force => true do |t|
@@ -166,8 +190,8 @@ ActiveRecord::Schema.define(:version => 20120615111938) do
     t.integer  "third_draw_months"
     t.integer  "fourth_draw_amount"
     t.integer  "fourth_draw_months"
-    t.datetime "created_at",                                                        :null => false
-    t.datetime "updated_at",                                                        :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "legacy_loan_id"
     t.integer  "seq"
     t.integer  "loan_version"
@@ -197,7 +221,7 @@ ActiveRecord::Schema.define(:version => 20120615111938) do
   add_index "state_aid_calculations", ["loan_id"], :name => "index_state_aid_calculations_on_loan_id"
 
   create_table "users", :force => true do |t|
-    t.string   "email"
+    t.string   "email",                                 :null => false
     t.string   "encrypted_password",                    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"

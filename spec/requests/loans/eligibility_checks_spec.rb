@@ -14,7 +14,7 @@ describe 'eligibility checks' do
     choose_radio_button 'would_you_lend', true
     choose_radio_button 'collateral_exhausted', true
     fill_in 'amount', '50000.89'
-    choose_radio_button 'lender_cap_id', 1
+    choose_radio_button 'loan_allocation_id', LoanAllocation.last.id
     fill_in_duration_input 'repayment_duration', 2, 6
     fill_in 'turnover', '1234567.89'
     fill_in 'trading_date', '31/1/2012'
@@ -38,7 +38,7 @@ describe 'eligibility checks' do
     loan.would_you_lend.should be_true
     loan.collateral_exhausted.should be_true
     loan.amount.should == Money.new(5000089)
-    loan.lender_cap_id.should == 1
+    loan.loan_allocation.should be_instance_of(LoanAllocation)
     loan.repayment_duration.should == MonthDuration.new(30)
     loan.turnover.should == Money.new(123456789)
     loan.trading_date.should == Date.new(2012, 1, 31)

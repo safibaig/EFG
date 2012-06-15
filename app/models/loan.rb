@@ -28,6 +28,7 @@ class Loan < ActiveRecord::Base
     IncompleteLegacy, CompleteLegacy]
 
   belongs_to :lender
+  belongs_to :loan_allocation
   has_one :state_aid_calculation
 
   validates_inclusion_of :state, in: States, strict: true

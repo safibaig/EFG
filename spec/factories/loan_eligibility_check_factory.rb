@@ -4,7 +4,7 @@ FactoryGirl.define do
     would_you_lend 'true'
     collateral_exhausted 'true'
     amount '12345'
-    lender_cap_id '1'
+    loan_allocation_id '1'
     repayment_duration({ years: '1', months: '6' })
     turnover '12345'
     trading_date '31/1/2011'

@@ -14,6 +14,11 @@ namespace :import do
     _import Loan
   end
 
+  desc "Import loan allocation data (CSV files found in import_data/loan_allocationss.csv)"
+  task loan_allocations: :environment do
+    _import LoanAllocation
+  end
+
   desc "Import loan data (CSV files found in import_data/loans.csv)"
   task state_aid_calculations: :loans do
     _import StateAidCalculation
@@ -28,4 +33,5 @@ namespace :import do
       puts "Did not import #{klass.table_name} - table is not empty."
     end
   end
+
 end
