@@ -11,13 +11,24 @@
   <div class="navbar">
     <div class="navbar-inner">
       <div class="container">
-        <%= link_to 'Enterprise Finance Guarantee', '#', class: 'brand' %>
+        <%= link_to 'Enterprise Finance Guarantee', root_path, class: 'brand' %>
 
         <% if user_signed_in? %>
           <ul class="nav">
             <li><%= link_to 'Loan Portfolio', loan_states_path %></li>
             <li><%= link_to 'Check Eligibility', new_eligibility_check_path %></li>
             <li><%= link_to 'User Management', users_path %></li>
+            <li class="dropdown">
+              <%= link_to 'Help <b class="caret"></b>'.html_safe, '#', "class" => "dropdown-toggle", "data-toggle" => "dropdown" %>
+              <ul class="dropdown-menu">
+                <li><%= link_to 'Frequently asked questions', '#' %></li>
+                <li><%= link_to "Guidance on the '5-year eligibility rule'", '#' %></li>
+                <li><%= link_to 'SFLG Scheme Manual', '#' %></li>
+                <li><%= link_to 'SFLG Web Portal Training Material', '#' %></li>
+                <li><%= link_to 'SFLG Web portal manual', '#' %></li>
+                <li><%= link_to 'User administration guide', '#' %></li>
+              </ul>
+            </li>
             <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
           </ul>
         <% end %>
