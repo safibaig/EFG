@@ -7,7 +7,7 @@ describe LenderImporter do
 
   describe "#attributes" do
     let(:row) { CSV.read(csv_fixture_path, headers: true).first }
-    let(:importer) { LenderImporter.new(row, 100) }
+    let(:importer) { LenderImporter.new(row) }
 
     it "should return a hash of user attributes" do
       importer.attributes.should == {
