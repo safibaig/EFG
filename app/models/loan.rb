@@ -25,7 +25,7 @@ class Loan < ActiveRecord::Base
   States = [Rejected, Eligible, Cancelled, Incomplete, Completed, Offered,
     Guaranteed, LenderDemand, Repaid, NotDemanded, Demanded, AutoCancelled,
     Removed, RepaidFromTransfer, AutoRemoved, Settled,Realised, Recovered,
-    IncompleteLegacy, CompleteLegacy]
+    IncompleteLegacy, CompleteLegacy].freeze
 
   belongs_to :lender
   belongs_to :loan_allocation
