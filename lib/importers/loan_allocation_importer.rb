@@ -22,6 +22,10 @@ class LoanAllocationImporter < BaseImporter
     }
   end
 
+  DATES = %w(START_DATE END_DATE)
+
+  TIMES = %w(AR_TIMESTAMP AR_INSERT_TIMESTAMP MODIFIED_DATE)
+
   MONIES = %(ALLOCATION)
 
   def attributes
@@ -32,6 +36,10 @@ class LoanAllocationImporter < BaseImporter
         value
       when *MONIES
         Money.parse(value).cents
+      when *DATES
+        Date.parse(value) unless value.blank?
+      when *TIMES
+        Time.parse(value) unless value.blank?
       else
         value
       end

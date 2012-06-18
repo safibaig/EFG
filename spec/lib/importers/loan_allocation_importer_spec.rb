@@ -20,13 +20,13 @@ describe LoanAllocationImporter do
         allocation_type: "1",
         active: "0",
         allocation: 50000000,
-        starts_on: "01-APR-07",
-        ends_on: "31-MAR-08",
+        starts_on: Date.parse("01-APR-07"),
+        ends_on: Date.parse("31-MAR-08"),
         description: "DESCRIPTION",
         modified_by_legacy_id: "4D726727C893A0437B9D2724C6E678CDDBB88AED",
-        updated_at: "13-MAY-09",
-        ar_timestamp: "28-MAR-10",
-        ar_insert_timestamp: "31-MAR-10",
+        updated_at: Time.parse("13-MAY-09"),
+        ar_timestamp: Time.parse("28-MAR-10"),
+        ar_insert_timestamp: Time.parse("31-MAR-10"),
         premium_rate: "2",
         guarantee_rate: "75"
       }
@@ -55,13 +55,13 @@ describe LoanAllocationImporter do
       loan_allocation.allocation_type == "1"
       loan_allocation.active == "0"
       loan_allocation.allocation == Money.parse("500000")
-      loan_allocation.starts_on == "01-APR-07"
-      loan_allocation.ends_on == "31-MAR-08"
+      loan_allocation.starts_on == Date.new(2007, 4, 1)
+      loan_allocation.ends_on == Date.new(2008, 3, 31)
       loan_allocation.description == "DESCRIPTION"
       loan_allocation.modified_by_legacy_id == "4D726727C893A0437B9D2724C6E678CDDBB88AED"
-      loan_allocation.updated_at == "13-MAY-09"
-      loan_allocation.ar_timestamp == "28-MAR-10"
-      loan_allocation.ar_insert_timestamp == "31-MAR-10"
+      loan_allocation.updated_at == Time.gm(2009, 5, 13)
+      loan_allocation.ar_timestamp == Time.gm(2010, 3, 28)
+      loan_allocation.ar_insert_timestamp == Time.gm(2010, 3, 31)
       loan_allocation.premium_rate == "2"
       loan_allocation.guarantee_rate == "75"
     end
