@@ -11,13 +11,16 @@
   <div class="navbar">
     <div class="navbar-inner">
       <div class="container">
-        <%= link_to 'Enterprise Finance Guarantee', '#', class: 'brand' %>
+        <%= link_to 'Enterprise Finance Guarantee', root_path, class: 'brand' %>
 
         <% if user_signed_in? %>
           <ul class="nav">
             <li><%= link_to 'Loan Portfolio', loan_states_path %></li>
-            <li><%= link_to 'Check Eligibility', new_eligibility_check_path %></li>
-            <li><%= link_to 'User Management', users_path %></li>
+            <li><%= link_to 'New Loan Application', new_eligibility_check_path %></li>
+          </ul>
+
+          <ul class="nav secondary">
+            <li><%= link_to 'Manage Users', users_path %></li>
             <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
           </ul>
         <% end %>

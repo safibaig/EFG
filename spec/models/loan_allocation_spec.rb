@@ -19,6 +19,16 @@ describe LoanAllocation do
       loan_allocation.should_not be_valid
     end
 
+    it 'requires a starts_on date' do
+      loan_allocation.starts_on = nil
+      loan_allocation.should_not be_valid
+    end
+
+    it 'requires a ends_on date' do
+      loan_allocation.ends_on = nil
+      loan_allocation.should_not be_valid
+    end
+
   end
 
 end

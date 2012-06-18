@@ -1,3 +1,66 @@
-<div class="page-header">
-  <h1>Dashboard</h1>
+<div class="page-header with-actions" id="welcome_message">
+  <h1>Welcome back, <%= current_user.first_name %></h1>
+  <p>Your last visit was <%= distance_of_time_in_words_to_now(current_user.last_sign_in_at) %> ago.</p>
+  <p>Since then, there have been <a href="#">3 new loan entries</a>, <a href="#">2 rejected loan requests</a> and <a href="#">1 newly offered loans</a>.</p>
+
+  <ul id="actions">
+    <li><%= link_to "Start New Loan Application", new_eligibility_check_path, class: "btn btn-primary" %></li>
+    <li><%= link_to "View Loan Portfolio", loan_states_path, class: "btn btn-info" %></li>
+  </ul>
 </div>
+
+<div class="dashboard_widgets" id="loan_alerts">
+  <h2>Loan Alerts For The Next 60 Days</h2>
+
+  <div class="loan-alert">
+    <h4>Loans which will have the <em>Guarantee</em> removed if not <em>Drawn</em>:</h4>
+    <span class="bar" data-height="70" data-width="580" data-colour="#4D89F9">5,3,9,6,5,9,7,3,5,2,5,3,9,6,5,9</span>
+    <ol class="dates">
+      <li>Today</li>
+      <li>17th Jul</li>
+      <li>16th Aug</li>
+    </ol>
+  </div>
+
+  <div class="loan-alert">
+    <h4>Loans with <em>Guarantee</em> that will be removed if not <em>Demanded</em>:</h4>
+    <span class="bar" data-height="70" data-width="580" data-colour="#4D89F9">4,6,4,4,6,5,5,3,9,6,5,9,7,3,5,2</span>
+    <ol class="dates">
+      <li>Today</li>
+      <li>17th Jul</li>
+      <li>16th Aug</li>
+    </ol>
+  </div>
+
+  <div class="loan-alert">
+    <h4><em>Eligible</em> Loans which will be removed if not <em>Progressed</em>:</h4>
+    <span class="bar" data-height="70" data-width="580" data-colour="#4D89F9">9,5,6,9,3,5,2,5,3,7,9,5,6,0,0,0</span>
+    <ol class="dates">
+      <li>Today</li>
+      <li>17th Jul</li>
+      <li>16th Aug</li>
+    </ol>
+  </div>
+
+  <div class="loan-alert">
+    <h4>Loans assumed to have been <em>Repaid</em> due to <em>lack of updates</em>:</h4>
+    <span class="bar" data-height="70" data-width="580" data-colour="#4D89F9">2,5,3,0,9,5,6,9,3,0,0,6,4,4,6,4</span>
+    <ol class="dates">
+      <li>Today</li>
+      <li>17th Jul</li>
+      <li>16th Aug</li>
+    </ol>
+  </div>
+
+</div>
+
+
+<% if @utilisation_presenter.has_allocations? %>
+<div class="dashboard_widgets" id="utilisation_dashboard">
+  <h2>Loan Allocation Utilisation</h2>
+
+  <% @utilisation_presenter.each_loan_allocation do |loan_allocation_presenter, index| %>
+    <%= render "loan_allocation", :loan_allocation_presenter => loan_allocation_presenter, :index => index %>
+  <% end %>
+</div>
+<% end %>

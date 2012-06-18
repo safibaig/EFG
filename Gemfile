@@ -11,6 +11,7 @@ gem 'simple_form'
 gem 'twitter-bootstrap-rails'
 gem 'activerecord-import'
 gem "builder"
+gem "bourbon"
 
 group :passenger_compatibility do
   gem 'rack', '1.3.5'
@@ -36,6 +37,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'ci_reporter'
   gem 'simplecov-rcov'
+  gem 'debugger'
 end
 
 group :test do

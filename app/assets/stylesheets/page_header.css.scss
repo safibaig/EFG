@@ -1,0 +1,18 @@
+.page-header {
+  float: left;
+  width: 100%;
+  position: relative;
+
+  ul#actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    list-style: none;
+    text-align: right;
+
+    li {
+      margin-bottom: 1em;
+    }
+  }
+
+}

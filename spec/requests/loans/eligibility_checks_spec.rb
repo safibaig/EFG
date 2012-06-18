@@ -8,7 +8,7 @@ describe 'eligibility checks' do
 
   it 'creates a loan from valid eligibility values' do
     visit root_path
-    click_link 'Check Eligibility'
+    click_link 'New Loan Application'
 
     choose_radio_button 'viable_proposition', true
     choose_radio_button 'would_you_lend', true
@@ -52,7 +52,7 @@ describe 'eligibility checks' do
 
   it 'does not create an invalid loan' do
     visit root_path
-    click_link 'Check Eligibility'
+    click_link 'New Loan Application'
 
     expect {
       click_button 'Check'
