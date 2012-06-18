@@ -10,45 +10,24 @@
 </div>
 
 <div class="dashboard_widgets" id="loan_alerts">
-  <h2>Loan Alerts For The Next 60 Days</h2>
+  <h2><%= t('dashboard.loan_alerts.title') %></h2>
 
-  <div class="loan-alert">
-    <h4>Loans which will have the <em>Guarantee</em> removed if not <em>Drawn</em>:</h4>
-    <span class="bar" data-height="70" data-width="580" data-colour="#4D89F9">5,3,9,6,5,9,7,3,5,2,5,3,9,6,5,9</span>
-    <ol class="dates">
-      <li>Today</li>
-      <li>17th Jul</li>
-      <li>16th Aug</li>
-    </ol>
-  </div>
+  <%= render 'loan_alert', :presenter => @offered_alerts_presenter, :title => raw(t('dashboard.loan_alerts.not_drawn')) %>
 
-  <div class="loan-alert">
-    <h4>Loans with <em>Guarantee</em> that will be removed if not <em>Demanded</em>:</h4>
-    <span class="bar" data-height="70" data-width="580" data-colour="#4D89F9">4,6,4,4,6,5,5,3,9,6,5,9,7,3,5,2</span>
-    <ol class="dates">
-      <li>Today</li>
-      <li>17th Jul</li>
-      <li>16th Aug</li>
-    </ol>
-  </div>
+  <%= render 'loan_alert', :presenter => @lender_demanded_alerts_presenter, :title => raw(t('dashboard.loan_alerts.not_drawn')) %>
 
-  <div class="loan-alert">
-    <h4><em>Eligible</em> Loans which will be removed if not <em>Progressed</em>:</h4>
-    <span class="bar" data-height="70" data-width="580" data-colour="#4D89F9">9,5,6,9,3,5,2,5,3,7,9,5,6,0,0,0</span>
-    <ol class="dates">
-      <li>Today</li>
-      <li>17th Jul</li>
-      <li>16th Aug</li>
-    </ol>
-  </div>
+  <%= render 'loan_alert', :presenter => @unprogressed_alerts_presenter, :title => raw(t('dashboard.loan_alerts.not_progressed')) %>
 
   <div class="loan-alert">
     <h4>Loans assumed to have been <em>Repaid</em> due to <em>lack of updates</em>:</h4>
-    <span class="bar" data-height="70" data-width="580" data-colour="#4D89F9">2,5,3,0,9,5,6,9,3,0,0,6,4,4,6,4</span>
+    <div class="bar-chart">
+      TO-DO
+    </div>
+
     <ol class="dates">
-      <li>Today</li>
-      <li>17th Jul</li>
-      <li>16th Aug</li>
+      <li>0 days</li>
+      <li>30 days</li>
+      <li>60 days</li>
     </ol>
   </div>
 
@@ -57,7 +36,7 @@
 
 <% if @utilisation_presenter.has_allocations? %>
 <div class="dashboard_widgets" id="utilisation_dashboard">
-  <h2>Loan Allocation Utilisation</h2>
+  <h2><%= t('dashboard.utilisation.title')%></h2>
 
   <% @utilisation_presenter.each_loan_allocation do |loan_allocation_presenter, index| %>
     <%= render "loan_allocation", :loan_allocation_presenter => loan_allocation_presenter, :index => index %>

@@ -31,6 +31,16 @@ class Loan < ActiveRecord::Base
   belongs_to :loan_allocation
   has_one :state_aid_calculation
 
+  scope :offered, where(:state => Offered)
+
+  scope :lender_demanded, where(:state => LenderDemand)
+
+  scope :unprogressed, where(:state => [Loan::Eligible, Loan::Completed, Loan::Incomplete])
+
+  scope :last_updated_between, lambda { |date1, date2|
+    where("updated_at >= ? AND updated_at <= ?", date1, date2)
+  }
+
   validates_inclusion_of :state, in: States, strict: true
   validates_presence_of :lender_id, strict: true
 

@@ -25,6 +25,10 @@ FactoryGirl.define do
       state Loan::Completed
     end
 
+    trait :incomplete do
+      state Loan::Incomplete
+    end
+
     trait :offered do
       state Loan::Offered
     end

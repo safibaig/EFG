@@ -1,0 +1,30 @@
+<div class="loan-alert">
+  <h4><%= title %></h4>
+
+  <div class="bar-chart">
+    <% presenter.alerts_grouped_by_priority.each do |alert_group| %>
+
+      <%= link_to("#", class: alert_group.class_name) do %>
+
+        <% alert_group.each_alert_by_day do |alert_entry| %>
+          <div>
+            <span style="height: <%= alert_entry.height %>%">&nbsp;</span>
+          </div>
+        <% end %>
+
+        <% if alert_group.total_loans > 0 %>
+          <p class="total-loans"><%= alert_group.total_loans %> Loans</p>
+        <% end %>
+
+      <% end %>
+
+    <% end %>
+  </div>
+
+  <ol class="dates">
+    <li>0 days</li>
+    <li>30 days</li>
+    <li>60 days</li>
+  </ol>
+
+</div>

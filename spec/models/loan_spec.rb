@@ -33,6 +33,31 @@ describe Loan do
     end
   end
 
+  describe ".last_updated_between scope" do
+    let!(:loan1) { FactoryGirl.create(:loan, :updated_at => 3.days.ago) }
+    let!(:loan2) { FactoryGirl.create(:loan, :updated_at => 1.day.ago) }
+
+    it "returns loans last updated between the specified dates" do
+      Loan.last_updated_between(2.days.ago, 1.day.ago).should == [loan2]
+    end
+  end
+
+  describe ".unprogressed scope" do
+    let!(:loan1) { FactoryGirl.create(:loan, :eligible) }
+    let!(:loan2) { FactoryGirl.create(:loan, :completed) }
+    let!(:loan3) { FactoryGirl.create(:loan, :incomplete) }
+    let!(:loan4) { FactoryGirl.create(:loan, :offered) }
+
+    it "returns loans with Eligible, Complete or Incomplete state" do
+      result = Loan.unprogressed
+
+      result.should include(loan1)
+      result.should include(loan2)
+      result.should include(loan3)
+      result.should_not include(loan4)
+    end
+  end
+
   describe '#repayment_duration / #repayment_duration=' do
     let(:loan) { Loan.new }
 

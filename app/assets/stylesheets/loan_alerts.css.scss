@@ -3,27 +3,15 @@
 
 #loan_alerts {
   float: left;
-  width: 600px;
+  width: 620px;
 
   .loan-alert {
-    background-color: #eee;
+    background-color: $light_grey;
     padding: 1em 10px;
     margin-bottom: 1em;
     border-radius: 10px;
     @include box-shadow(1px 1px 1px #ccc);
-    @include linear-gradient($light_red,#fff);
-
-    &:nth-child(3) {
-      @include linear-gradient($light_purple,#fff);
-    }
-
-    &:nth-child(4) {
-      @include linear-gradient($medium_blue,#fff);
-    }
-
-    &:nth-child(5) {
-      @include linear-gradient($light_blue,#fff);
-    }
+    @include linear-gradient($light_grey,#fff);
 
     h4 {
       margin-bottom: 0.5em;
@@ -57,4 +45,66 @@
     }
   }
 
+}
+
+.bar-chart {
+  height: 100px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid $medium_grey;
+
+  a {
+    position: relative;
+    float: left;
+    display: block;
+    height: 100%;
+
+    &.high-priority span {
+      background-color: $red;
+    }
+
+    &.medium-priority span {
+      background-color: $amber;
+    }
+
+    &.low-priority span {
+      background-color: $light_green;
+    }
+
+    p.total-loans {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      background-color: rgba(255,255,255,0.5);
+      font-size: 1.5em;
+      color: #000;
+      line-height: 5em;
+    }
+
+    &:hover p.total-loans {
+      display: block;
+    }
+
+    div {
+      position: relative;
+      display: block;
+      float: left;
+      width: 9px;
+      margin-right: 1px;
+      height: 100%;
+
+      span {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        color: #fff;
+        display: block;
+        padding: 0;
+      }
+    }
+  }
 }
