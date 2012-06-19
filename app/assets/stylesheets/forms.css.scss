@@ -45,16 +45,11 @@
 }
 
 .form-actions {
-  padding: 0.5em;
-  border-top: 1px solid $amber;
-  border-bottom: 1px solid $amber;
-  background-color: $beige;
-
   .btn {
     margin-right: 0.5em;
   }
 
-  .btn-primary {
-    margin-right: 1em;
+  .btn:last-child {
+    margin-right: 0;
   }
 }
