@@ -1,3 +1,5 @@
-<%= link_to 'Loan Entry', new_loan_entry_path(@loan), class: 'btn btn-primary' %>
-<%= link_to 'Cancel Loan', new_loan_cancel_path(@loan), class: 'btn btn-danger' %>
-<%= link_to 'State Aid Calculation', state_aid_calculation_path_for_loan(@loan), class: 'btn btn-info' %>
+<div class="form-actions">
+  <%= link_to 'Loan Entry', new_loan_entry_path(@loan), class: 'btn btn-primary' %>
+  <%= link_to 'Cancel Loan', new_loan_cancel_path(@loan), class: 'btn btn-danger' %>
+  <%= link_to 'State Aid Calculation', state_aid_calculation_path_for_loan(@loan), class: 'btn btn-info' %>
+</div>

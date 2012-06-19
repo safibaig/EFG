@@ -14,6 +14,7 @@
     margin: 0.5em;
     padding: 0;
     float: left;
+    width: 50%;
 
     li {
       margin-bottom: 0.5em;
@@ -21,6 +22,10 @@
 
     li:last-child {
       margin-bottom: 0;
+    }
+
+    ol {
+      margin: 0.5em 2em;
     }
   }
 

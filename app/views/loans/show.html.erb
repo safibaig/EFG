@@ -5,6 +5,18 @@
     <ul>
       <li><strong>Borrower:</strong> <%= loan_business_name(@loan) %></li>
       <li><strong>State:</strong> <%= @loan.state.titleize %></li>
+
+      <% if @loan.state == Loan::Rejected %>
+        <li>
+          <strong>Rejection reasons:</strong>
+          <ol>
+            <% @loan.eligibility_check.reasons.each do |reason| %>
+              <li><%= reason %></li>
+            <% end %>
+          </ol>
+        </li>
+      <% end %>
+
       <li><strong>Last Updated:</strong> <%= @loan.updated_at.strftime("%d %B %Y") %></li>
     </ul>
 
@@ -14,18 +26,6 @@
   </div>
 
 </div>
-
-<% if @loan.state == Loan::Rejected %>
-  <h3>Rejected</h3>
-  <p>This loan has been rejected for the following reasons:</p>
-  <ul>
-    <% @loan.eligibility_check.reasons.each do |reason| %>
-      <li><%= reason %></li>
-    <% end %>
-  </ul>
-
-  <hr />
-<% end %>
 
 <table class="table table-striped">
   <tbody>
@@ -94,6 +94,5 @@
   </tbody>
 </table>
 
-<div class="form-actions">
-  <%= render @loan.state %>
-</div>
+
+<%= render @loan.state %>
