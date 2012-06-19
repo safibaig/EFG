@@ -12,11 +12,11 @@
 <div class="dashboard_widgets" id="loan_alerts">
   <h2><%= t('dashboard.loan_alerts.title') %></h2>
 
-  <%= render 'loan_alert', :presenter => @offered_alerts_presenter, :title => raw(t('dashboard.loan_alerts.not_drawn')) %>
+  <%= render 'loan_alert', :presenter => @offered_alerts_presenter, :title => raw(t('dashboard.loan_alerts.not_drawn')), :url_helper => :not_drawn_loan_alerts_path %>
 
-  <%= render 'loan_alert', :presenter => @lender_demanded_alerts_presenter, :title => raw(t('dashboard.loan_alerts.not_demanded')) %>
+  <%= render 'loan_alert', :presenter => @lender_demanded_alerts_presenter, :title => raw(t('dashboard.loan_alerts.not_demanded')), :url_helper => :not_demanded_loan_alerts_path %>
 
-  <%= render 'loan_alert', :presenter => @unprogressed_alerts_presenter, :title => raw(t('dashboard.loan_alerts.not_progressed')) %>
+  <%= render 'loan_alert', :presenter => @unprogressed_alerts_presenter, :title => raw(t('dashboard.loan_alerts.not_progressed')), :url_helper => :not_progressed_loan_alerts_path %>
 
   <!-- <div class="loan-alert">
       <h4>Loans assumed to have been <em>Repaid</em> due to <em>lack of updates</em>:</h4>

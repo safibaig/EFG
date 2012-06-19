@@ -1,6 +1,8 @@
 module LoanAlerts
   class Group
 
+    attr_reader :priority
+
     def initialize(loans_by_day, priority, max_loan_count)
       @loans_by_day   = loans_by_day
       @priority       = priority

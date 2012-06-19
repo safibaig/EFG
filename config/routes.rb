@@ -22,5 +22,13 @@ EFG::Application.routes.draw do
 
   resources :loan_states, only: [:index, :show]
 
+  resources :loan_alerts, only: [] do
+    collection do
+      get :not_drawn
+      get :not_demanded
+      get :not_progressed
+    end
+  end
+
   resources :users, only: [:index, :show, :new, :create, :edit, :update]
 end

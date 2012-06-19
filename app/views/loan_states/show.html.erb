@@ -2,21 +2,6 @@
   <h1>Loans: <%= params[:id].titleize %></h1>
 </div>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Business name</th>
-      <th>Amount</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @loans.each do |loan| %>
-      <tr>
-        <td><%= link_to(loan_business_name(loan), loan) %></td>
-        <td><%= loan.amount.format %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= render :partial => "loans_listing", :locals => { :loans => @loans } %>
 
 <%= will_paginate @loans %>

@@ -4,7 +4,7 @@
   <div class="bar-chart">
     <% presenter.alerts_grouped_by_priority.each do |alert_group| %>
 
-      <%= link_to("#", class: alert_group.class_name) do %>
+      <%= link_to(send(url_helper, priority: alert_group.priority), class: alert_group.class_name) do %>
 
         <% alert_group.each_alert_by_day do |alert_entry| %>
           <div>
