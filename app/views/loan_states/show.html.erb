@@ -12,7 +12,7 @@
   <tbody>
     <% @loans.each do |loan| %>
       <tr>
-        <td><%= link_to(loan.business_name.present? ? loan.business_name : '<not assigned>', loan) %></td>
+        <td><%= link_to(loan_business_name(loan), loan) %></td>
         <td><%= loan.amount.format %></td>
       </tr>
     <% end %>

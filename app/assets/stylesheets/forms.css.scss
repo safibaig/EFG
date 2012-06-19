@@ -1,3 +1,5 @@
+@import "variables";
+
 .radio-buttons-inline .radio {
   display: inline-block;
   margin-right: 18px;
@@ -38,5 +40,16 @@
 
   .form-actions {
     padding-left: 440px;
+  }
+}
+
+.form-actions {
+  padding: 0.5em;
+  border-top: 1px solid $amber;
+  border-bottom: 1px solid $amber;
+  background-color: $beige;
+
+  .btn-primary {
+    margin-right: 1em;
   }
 }
