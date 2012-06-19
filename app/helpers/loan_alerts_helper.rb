@@ -18,10 +18,12 @@ module LoanAlertsHelper
 
   def other_alert_links(priority)
     links = []
-    links << link_to("High Priority Alerts", url_for(priority: :high), class: 'btn btn-danger') unless priority == 'high'
-    links << link_to("Medium Priority Alerts", url_for(priority: :medium), class: 'btn btn-warning') unless priority == 'medium'
-    links << link_to("Low Priority Alerts", url_for(priority: :high), class: 'btn btn-success') unless priority == 'low'
-    links << link_to("All Loan Alerts", url_for, class: 'btn btn-primary') if priority
+
+    %w(high medium low).each do |p|
+      links << link_to("#{p.titleize} Priority Alerts", url_for(priority: p), class: 'btn') unless priority == p
+    end
+
+    links << link_to("All Loan Alerts", url_for, class: 'btn') if priority
 
     content_tag :div, class: 'form-actions' do
       links.join.html_safe
