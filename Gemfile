@@ -12,6 +12,8 @@ gem 'twitter-bootstrap-rails'
 gem 'activerecord-import'
 gem "builder"
 gem "bourbon"
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
 
 group :passenger_compatibility do
   gem 'rack', '1.3.5'
