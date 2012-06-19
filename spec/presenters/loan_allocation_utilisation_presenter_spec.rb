@@ -63,12 +63,12 @@ describe LoanAllocationUtilisationPresenter do
 
     it "should return yellow when allocation usage is greater than 50% and less than 85%" do
       presenter.stub!(:usage_percentage).and_return(60.0)
-      presenter.chart_colour.should == "#fff000"
+      presenter.chart_colour.should == "#FF7E00"
     end
 
     it "should return yellow when allocation usage is 85%" do
       presenter.stub!(:usage_percentage).and_return(85.0)
-      presenter.chart_colour.should == "#fff000"
+      presenter.chart_colour.should == "#FF7E00"
     end
 
     it "should return red when allocation usage is greater 85%" do

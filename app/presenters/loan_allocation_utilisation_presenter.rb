@@ -2,7 +2,7 @@ class LoanAllocationUtilisationPresenter
 
   def initialize(loan_allocation, loans)
     @loan_allocation = loan_allocation
-    @loans = loans
+    @loans = loans.to_a
   end
 
   def group_header(index)
@@ -23,7 +23,7 @@ class LoanAllocationUtilisationPresenter
     if usage_percentage.to_f > 85.0
       "#ff0000"
     elsif usage_percentage.to_f > 50.0
-      "#fff000"
+      "#FF7E00"
     else
       "#00c000"
     end

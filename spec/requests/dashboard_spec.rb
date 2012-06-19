@@ -16,7 +16,7 @@ describe 'lender dashboard' do
     let!(:loan1) {
       FactoryGirl.create(
         :loan,
-        :completed,
+        :offered,
         lender: current_lender,
         loan_allocation: loan_allocation1,
         amount: 250000
@@ -26,7 +26,7 @@ describe 'lender dashboard' do
     let!(:loan2) {
       FactoryGirl.create(
         :loan,
-        :completed,
+        :offered,
         lender: current_lender,
         loan_allocation: loan_allocation2,
         amount: 800000
