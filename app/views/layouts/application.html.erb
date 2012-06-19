@@ -17,6 +17,19 @@
           <ul class="nav">
             <li><%= link_to 'Loan Portfolio', loan_states_path %></li>
             <li><%= link_to 'New Loan Application', new_eligibility_check_path %></li>
+            <li class="dropdown">
+              <%= link_to '#', "class" => "dropdown-toggle", "data-toggle" => "dropdown" do %>
+                Help <b class="caret"></b>
+              <% end %>
+              <ul class="dropdown-menu">
+                <li><%= link_to 'Frequently asked questions', '#' %></li>
+                <li><%= link_to "Guidance on the '5-year eligibility rule'", '#' %></li>
+                <li><%= link_to 'SFLG Scheme Manual', '#' %></li>
+                <li><%= link_to 'SFLG Web Portal Training Material', '#' %></li>
+                <li><%= link_to 'SFLG Web portal manual', '#' %></li>
+                <li><%= link_to 'User administration guide', '#' %></li>
+              </ul>
+            </li>
           </ul>
 
           <ul class="nav secondary">
