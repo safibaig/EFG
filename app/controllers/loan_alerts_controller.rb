@@ -1,31 +1,39 @@
 class LoanAlertsController < ApplicationController
 
-  def not_progressed
-    start_date, end_date = start_and_end_dates(183.days.ago, 124.days.ago)
+  include LoanAlerts
 
-    @loans = current_lender.loans.unprogressed.last_updated_between(start_date, end_date).order(:updated_at)
+  def not_progressed
+    start_date, end_date = start_and_end_dates(NotProgressedStartDate, NotProgressedEndDate)
+
+    @loans = unprogressed_loans(start_date, end_date)
     @title = I18n.t('dashboard.loan_alerts.not_progressed')
     render "show"
   end
 
   def not_drawn
-    start_date, end_date = start_and_end_dates(183.days.ago, 124.days.ago)
+    start_date, end_date = start_and_end_dates(NotDrawnStartDate, NotDrawnEndDate)
 
-    @loans = current_lender.loans.offered.last_updated_between(start_date, end_date).order(:updated_at)
+    @loans = not_drawn_loans(start_date, end_date)
     @title = I18n.t('dashboard.loan_alerts.not_drawn')
     render "show"
   end
 
   def demanded
-    start_date, end_date = start_and_end_dates(365.days.ago, 306.days.ago)
+    start_date, end_date = start_and_end_dates(DemandedStartDate, DemandedEndDate)
 
-    @loans = current_lender.loans.demanded.last_updated_between(start_date, end_date).order(:updated_at)
+    @loans = demanded_loans(start_date, end_date)
     @title = I18n.t('dashboard.loan_alerts.demanded')
     render "show"
   end
 
   def assumed_repaid
-    @loans = (assumed_repaid_loans1 + assumed_repaid_loans2).sort_by(&:updated_at)
+    offered_start_date, offered_end_date = start_and_end_dates(AssumedRepaidOfferedStartDate, AssumedRepaidOfferedEndDate)
+    guaranteed_start_date, guaranteed_end_date = start_and_end_dates(AssumedRepaidGuaranteedStartDate, AssumedRepaidGuaranteedEndDate)
+
+    @loans = (
+      assumed_repaid_offered_loans(offered_start_date, offered_end_date) +
+        assumed_repaid_guaranteed_loans(guaranteed_start_date, guaranteed_end_date)
+    ).sort_by(&:updated_at)
     @title = I18n.t('dashboard.loan_alerts.assumed_repaid')
     render "show"
   end
@@ -52,16 +60,6 @@ class LoanAlertsController < ApplicationController
     end
 
     return start_date.to_date, end_date.to_date
-  end
-
-  def assumed_repaid_loans1
-    start_date, end_date = start_and_end_dates(183.days.ago, 124.days.ago)
-    current_lender.loans.where(:state => [Loan::Incomplete, Loan::Completed, Loan::Offered]).maturity_date_between(start_date, end_date)
-  end
-
-  def assumed_repaid_loans2
-    start_date, end_date = start_and_end_dates(92.days.ago, 33.days.ago)
-    assumed_repaid_loans2 = current_lender.loans.guaranteed.maturity_date_between(start_date, end_date)
   end
 
 end
