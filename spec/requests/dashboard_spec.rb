@@ -55,8 +55,92 @@ describe 'lender dashboard' do
 
   end
 
-  it "should display loan alerts" do
-    pending
+  context "with not drawn loan alerts" do
+
+    let!(:high_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, updated_at: 180.days.ago) }
+
+    let!(:medium_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, updated_at: 170.days.ago) }
+
+    let!(:low_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, updated_at: 130.days.ago) }
+
+    before do
+      login_as(current_user, scope: :user)
+    end
+
+    it "should display high, medium and low priority loan alerts" do
+      visit root_path
+
+      page.should have_css "#not_drawn_loan_alerts a.high-priority .total-loans", :text => "1"
+      page.should have_css "#not_drawn_loan_alerts a.medium-priority .total-loans", :text => "1"
+      page.should have_css "#not_drawn_loan_alerts a.low-priority .total-loans", :text => "1"
+    end
+
+  end
+
+  context "demanded loan alerts" do
+
+    let!(:high_priority_loan) { FactoryGirl.create(:loan, :demanded, lender: current_lender, updated_at: 360.days.ago) }
+
+    let!(:medium_priority_loan) { FactoryGirl.create(:loan, :demanded, lender: current_lender, updated_at: 350.days.ago) }
+
+    let!(:low_priority_loan) { FactoryGirl.create(:loan, :demanded, lender: current_lender, updated_at: 310.days.ago) }
+
+    before do
+      login_as(current_user, scope: :user)
+    end
+
+    it "should display high, medium and low priority loan alerts" do
+      visit root_path
+
+      page.should have_css "#demanded_loan_alerts a.high-priority .total-loans", :text => "1"
+      page.should have_css "#demanded_loan_alerts a.medium-priority .total-loans", :text => "1"
+      page.should have_css "#demanded_loan_alerts a.low-priority .total-loans", :text => "1"
+    end
+
+  end
+
+  context "not progressed loan alerts" do
+
+    let!(:high_priority_loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, updated_at: 180.days.ago) }
+
+    let!(:medium_priority_loan) { FactoryGirl.create(:loan, :completed, lender: current_lender, updated_at: 170.days.ago) }
+
+    let!(:low_priority_loan) { FactoryGirl.create(:loan, :incomplete, lender: current_lender, updated_at: 130.days.ago) }
+
+    before do
+      login_as(current_user, scope: :user)
+    end
+
+    it "should display high, medium and low priority loan alerts" do
+      visit root_path
+
+      page.should have_css "#not_progressed_loan_alerts a.high-priority .total-loans", :text => "1"
+      page.should have_css "#not_progressed_loan_alerts a.medium-priority .total-loans", :text => "1"
+      page.should have_css "#not_progressed_loan_alerts a.low-priority .total-loans", :text => "1"
+    end
+
+  end
+
+  context "assumed repaid loan alerts" do
+
+    let!(:high_priority_incomplete_loan) { FactoryGirl.create(:loan, :incomplete, lender: current_lender, maturity_date: 180.days.ago) }
+
+    let!(:medium_priority_guaranteed_loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_lender, maturity_date: 70.days.ago) }
+
+    let!(:low_priority_offered_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, maturity_date: 125.days.ago) }
+
+    before do
+      login_as(current_user, scope: :user)
+    end
+
+    it "should display high, medium and low priority loan alerts" do
+      visit root_path
+
+      page.should have_css "#assumed_repaid_loan_alerts a.high-priority .total-loans", :text => "1"
+      page.should have_css "#assumed_repaid_loan_alerts a.medium-priority .total-loans", :text => "1"
+      page.should have_css "#assumed_repaid_loan_alerts a.low-priority .total-loans", :text => "1"
+    end
+
   end
 
 end

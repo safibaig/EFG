@@ -41,8 +41,8 @@ en:
     loan_alerts:
       title: Loan Alerts For The Next 60 Days
       not_drawn: "Loans which will have the <em>Guarantee</em> removed if not <em>Drawn</em>:"
-      not_demanded: "Loans with <em>Guarantee</em> that will be removed if not <em>Demanded</em>:"
+      demanded: "Loans <em>Demanded</em> that will be removed if not moved to <em>Lender Demand</em>:"
       not_progressed: "<em>Eligible</em> Loans which will be removed if not <em>Progressed</em>:"
-      lack_of_updates: "Loans assumed to have been <em>Repaid</em> due to <em>lack of updates</em>:"
+      assumed_repaid: "Loans assumed to have been <em>Repaid</em> due to <em>lack of updates</em>:"
     utilisation:
       title: Loan Allocation Utilisation

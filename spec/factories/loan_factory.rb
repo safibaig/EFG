@@ -37,6 +37,10 @@ FactoryGirl.define do
       state Loan::Guaranteed
     end
 
+    trait :demanded do
+      state Loan::Demanded
+    end
+
     trait :lender_demand do
       state Loan::LenderDemand
     end

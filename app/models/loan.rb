@@ -33,12 +33,18 @@ class Loan < ActiveRecord::Base
 
   scope :offered, where(:state => Offered)
 
-  scope :lender_demanded, where(:state => LenderDemand)
+  scope :demanded, where(:state => Demanded)
 
   scope :unprogressed, where(:state => [Loan::Eligible, Loan::Completed, Loan::Incomplete])
 
+  scope :guaranteed, where(:state => Loan::Guaranteed)
+
   scope :last_updated_between, lambda { |date1, date2|
     where("updated_at >= ? AND updated_at <= ?", date1, date2)
+  }
+
+  scope :maturity_date_between, lambda { |date1, date2|
+    where("maturity_date >= ? AND maturity_date <= ?", date1, date2)
   }
 
   validates_inclusion_of :state, in: States, strict: true

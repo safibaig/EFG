@@ -12,25 +12,33 @@
 <div class="dashboard_widgets" id="loan_alerts">
   <h2><%= t('dashboard.loan_alerts.title') %></h2>
 
-  <%= render 'loan_alert', :presenter => @offered_alerts_presenter, :title => raw(t('dashboard.loan_alerts.not_drawn')), :url_helper => :not_drawn_loan_alerts_path %>
+  <div id="not_progressed_loan_alerts">
+    <%= render 'loan_alert',
+                presenter: @unprogressed_alerts_presenter,
+                title: raw(t('dashboard.loan_alerts.not_progressed')),
+                url_helper: :not_progressed_loan_alerts_path %>
+  </div>
 
-  <%= render 'loan_alert', :presenter => @lender_demanded_alerts_presenter, :title => raw(t('dashboard.loan_alerts.not_demanded')), :url_helper => :not_demanded_loan_alerts_path %>
+  <div id="not_drawn_loan_alerts">
+    <%= render 'loan_alert',
+                presenter: @not_drawn_alerts_presenter,
+                title: raw(t('dashboard.loan_alerts.not_drawn')),
+                url_helper: :not_drawn_loan_alerts_path %>
+  </div>
 
-  <%= render 'loan_alert', :presenter => @unprogressed_alerts_presenter, :title => raw(t('dashboard.loan_alerts.not_progressed')), :url_helper => :not_progressed_loan_alerts_path %>
+  <div id="demanded_loan_alerts">
+    <%= render 'loan_alert',
+                presenter: @demanded_alerts_presenter,
+                title: raw(t('dashboard.loan_alerts.demanded')),
+                url_helper: :demanded_loan_alerts_path %>
+  </div>
 
-  <!-- <div class="loan-alert">
-      <h4>Loans assumed to have been <em>Repaid</em> due to <em>lack of updates</em>:</h4>
-      <div class="bar-chart">
-        TO-DO
-      </div>
-
-      <ol class="dates">
-        <li>0 days</li>
-        <li>30 days</li>
-        <li>60 days</li>
-      </ol>
-    </div> -->
-
+  <div id="assumed_repaid_loan_alerts">
+    <%= render 'loan_alert',
+                presenter: @assumed_repaid_presenter,
+                title: raw(t('dashboard.loan_alerts.assumed_repaid')),
+                url_helper: :assumed_repaid_loan_alerts_path %>
+  </div>
 </div>
 
 

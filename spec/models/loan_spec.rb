@@ -57,6 +57,10 @@ describe Loan do
       result.should_not include(loan4)
     end
   end
+  
+  describe ".assumed_repaid scope" do
+    it "includes loans with maturity dates"
+  end
 
   describe '#repayment_duration / #repayment_duration=' do
     let(:loan) { Loan.new }
