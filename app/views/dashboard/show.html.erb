@@ -14,7 +14,7 @@
 
   <div id="not_progressed_loan_alerts">
     <%= render 'loan_alert',
-                presenter: @unprogressed_alerts_presenter,
+                presenter: @not_progressed_alerts_presenter,
                 title: raw(t('dashboard.loan_alerts.not_progressed')),
                 url_helper: :not_progressed_loan_alerts_path %>
   </div>

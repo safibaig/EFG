@@ -35,7 +35,7 @@ class Loan < ActiveRecord::Base
 
   scope :demanded, where(:state => Demanded)
 
-  scope :unprogressed, where(:state => [Loan::Eligible, Loan::Completed, Loan::Incomplete])
+  scope :not_progressed, where(:state => [Loan::Eligible, Loan::Completed, Loan::Incomplete])
 
   scope :guaranteed, where(:state => Loan::Guaranteed)
 

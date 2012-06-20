@@ -42,14 +42,14 @@ describe Loan do
     end
   end
 
-  describe ".unprogressed scope" do
+  describe ".not_progressed scope" do
     let!(:loan1) { FactoryGirl.create(:loan, :eligible) }
     let!(:loan2) { FactoryGirl.create(:loan, :completed) }
     let!(:loan3) { FactoryGirl.create(:loan, :incomplete) }
     let!(:loan4) { FactoryGirl.create(:loan, :offered) }
 
     it "returns loans with Eligible, Complete or Incomplete state" do
-      result = Loan.unprogressed
+      result = Loan.not_progressed
 
       result.should include(loan1)
       result.should include(loan2)
@@ -57,7 +57,7 @@ describe Loan do
       result.should_not include(loan4)
     end
   end
-  
+
   describe ".assumed_repaid scope" do
     it "includes loans with maturity dates"
   end

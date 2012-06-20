@@ -3,11 +3,11 @@ class DashboardController < ApplicationController
   include LoanAlerts
 
   def show
-    @utilisation_presenter            = UtilisationPresenter.new(current_lender)
-    @not_drawn_alerts_presenter       = LoanAlerts::Presenter.new(not_drawn_loans_groups)
-    @demanded_alerts_presenter        = LoanAlerts::Presenter.new(demanded_loans_groups)
-    @unprogressed_alerts_presenter    = LoanAlerts::Presenter.new(unprogressed_loans_groups)
-    @assumed_repaid_presenter         = LoanAlerts::Presenter.new(assumed_repaid_loans_groups)
+    @utilisation_presenter           = UtilisationPresenter.new(current_lender)
+    @not_drawn_alerts_presenter      = LoanAlerts::Presenter.new(not_drawn_loans_groups)
+    @demanded_alerts_presenter       = LoanAlerts::Presenter.new(demanded_loans_groups)
+    @not_progressed_alerts_presenter = LoanAlerts::Presenter.new(not_progressed_loans_groups)
+    @assumed_repaid_presenter        = LoanAlerts::Presenter.new(assumed_repaid_loans_groups)
   end
 
   private
@@ -20,8 +20,8 @@ class DashboardController < ApplicationController
     LoanAlerts::PriorityGrouping.new(demanded_loans, DemandedStartDate, DemandedEndDate).groups_hash
   end
 
-  def unprogressed_loans_groups
-    LoanAlerts::PriorityGrouping.new(unprogressed_loans, NotProgressedStartDate, NotProgressedEndDate).groups_hash
+  def not_progressed_loans_groups
+    LoanAlerts::PriorityGrouping.new(not_progressed_loans, NotProgressedStartDate, NotProgressedEndDate).groups_hash
   end
 
   def assumed_repaid_loans_groups

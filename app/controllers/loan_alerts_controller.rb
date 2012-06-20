@@ -5,7 +5,7 @@ class LoanAlertsController < ApplicationController
   def not_progressed
     start_date, end_date = start_and_end_dates(NotProgressedStartDate, NotProgressedEndDate)
 
-    @loans = unprogressed_loans(start_date, end_date)
+    @loans = not_progressed_loans(start_date, end_date)
     @title = I18n.t('dashboard.loan_alerts.not_progressed')
     render "show"
   end

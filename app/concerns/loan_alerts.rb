@@ -20,9 +20,9 @@ module LoanAlerts
   # "All schemes, any loan that has remained at the state of
   # “eligible” / “incomplete” or “complete”
   # – for a period of 183 days from entering those states – should be ‘auto cancelled’"
-  def unprogressed_loans(start_date = NotProgressedStartDate, end_date = NotProgressedEndDate)
+  def not_progressed_loans(start_date = NotProgressedStartDate, end_date = NotProgressedEndDate)
     current_lender.loans.
-      unprogressed.
+      not_progressed.
       last_updated_between(start_date, end_date).
       order(:updated_at)
   end
