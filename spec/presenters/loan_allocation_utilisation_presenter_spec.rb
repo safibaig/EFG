@@ -9,7 +9,7 @@ describe LoanAllocationUtilisationPresenter do
   let!(:loan1) {
     FactoryGirl.create(
       :loan,
-      :completed,
+      :guaranteed,
       lender: lender,
       loan_allocation: loan_allocation,
       amount: 250000
@@ -19,16 +19,19 @@ describe LoanAllocationUtilisationPresenter do
   let!(:loan2) {
     FactoryGirl.create(
       :loan,
-      :completed,
+      :guaranteed,
       lender: lender,
       loan_allocation: loan_allocation,
       amount: 50000
     )
   }
 
-  let(:presenter) { LoanAllocationUtilisationPresenter.new(loan_allocation, [loan1, loan2]) }
+  let(:presenter) { LoanAllocationUtilisationPresenter.new(loan_allocation) }
 
-  let(:presenter_with_no_loans) { LoanAllocationUtilisationPresenter.new(loan_allocation, []) }
+  let(:presenter_with_no_loans) {
+    loan_allocation.loans.clear
+    LoanAllocationUtilisationPresenter.new(loan_allocation)
+  }
 
   describe "#group_header" do
     it "should return Current Year header when index greater is 0" do

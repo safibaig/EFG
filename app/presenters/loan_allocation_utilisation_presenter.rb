@@ -1,8 +1,7 @@
 class LoanAllocationUtilisationPresenter
 
-  def initialize(loan_allocation, loans)
+  def initialize(loan_allocation)
     @loan_allocation = loan_allocation
-    @loans = loans.to_a
   end
 
   def group_header(index)
@@ -34,12 +33,12 @@ class LoanAllocationUtilisationPresenter
   end
 
   def usage_amount
-    @allocation_usage_amount ||= allocation_has_loans? ? @loans.sum(&:amount) : Money.new(0)
+    @usage_amount ||= Money.new(@loan_allocation.completed_loans.sum(:amount))
   end
 
   def usage_percentage
     if allocation_has_loans?
-      percentage = (@loans.sum(&:amount) / total_allocation) * 100
+      percentage = (usage_amount / total_allocation) * 100
       sprintf("%03.2f", percentage)
     else
       0
@@ -49,7 +48,7 @@ class LoanAllocationUtilisationPresenter
   private
 
   def allocation_has_loans?
-    @loans.present?
+    usage_amount > 0
   end
 
 end
