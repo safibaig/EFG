@@ -31,4 +31,13 @@ describe LoanAllocation do
 
   end
 
+  it "has many completed loans" do
+    loan_allocation = FactoryGirl.create(:loan_allocation)
+
+    guaranteed_loan = FactoryGirl.create(:loan, :guaranteed, loan_allocation: loan_allocation)
+    eligible_loan = FactoryGirl.create(:loan, :eligible, loan_allocation: loan_allocation)
+
+    loan_allocation.completed_loans.should == [guaranteed_loan]
+  end
+
 end
