@@ -1,0 +1,56 @@
+@import "bourbon";
+@import "variables";
+
+#utilisation_dashboard {
+  float: right;
+  width: 280px;
+
+  .allocation_divider {
+    clear: both;
+    margin: 1em 0 1em 10px;
+    padding: 0;
+    line-height: 1em;
+    font-size: 1.2em;
+  }
+
+  .utilisation-year {
+    float: left;
+    width: 100%;
+    background-color: $beige;
+    border-radius: 10px;
+    @include box-shadow(1px 1px 1px #ccc);
+    margin: 0 0 1em 0;
+
+    .content {
+      float: left;
+      width: 100%;
+
+      h3 {
+        font-size: 1.2em;
+        margin: 0;
+        padding: 0 10px;
+        font-weight: normal;
+        background-color: $gold;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+
+      canvas {
+        margin: 10px;
+        float: left;
+      }
+
+      ul {
+        float: left;
+        list-style: none;
+        margin: 1em 0 0 1em;
+
+        li {
+          margin-bottom: 0.5em;
+        }
+      }
+    }
+
+  }
+
+}

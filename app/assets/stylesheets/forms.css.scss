@@ -1,3 +1,5 @@
+@import "variables";
+
 .radio-buttons-inline .radio {
   display: inline-block;
   margin-right: 18px;
@@ -37,6 +39,17 @@
   }
 
   .form-actions {
-    padding-left: 440px;
+    text-align: center;
+    padding-left: 0;
+  }
+}
+
+.form-actions {
+  .btn {
+    margin-right: 0.5em;
+  }
+
+  .btn:last-child {
+    margin-right: 0;
   }
 }

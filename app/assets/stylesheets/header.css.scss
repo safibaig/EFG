@@ -1,0 +1,24 @@
+@import "variables";
+
+.navbar {
+  .container {
+    margin: 0 auto;
+    width: 940px;
+  }
+
+  a.brand {
+    color: #fff;
+    font-family: $header_font;
+  }
+
+  .nav.secondary {
+    float: right;
+    margin-right: 0;
+
+    li {
+      a {
+        padding-right: 0;
+      }
+    }
+  }
+}

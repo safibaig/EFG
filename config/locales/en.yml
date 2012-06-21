@@ -37,3 +37,12 @@ en:
               accepted: An initial payment for the correct amount of the first Scheme Guarantee Premium payment has not been received from the Applicant.
             signed_direct_debit_received:
               accepted: A signed Direct Debit mandate must have been received before the initial draw down can occur.
+  dashboard:
+    loan_alerts:
+      title: Loan Alerts For The Next 60 Days
+      not_drawn: "Loans which will have the <em>Guarantee</em> removed if not <em>Drawn</em>:"
+      demanded: "Loans <em>Demanded</em> that will be removed if not moved to <em>Lender Demand</em>:"
+      not_progressed: "<em>Eligible</em> Loans which will be removed if not <em>Progressed</em>:"
+      assumed_repaid: "Loans assumed to have been <em>Repaid</em> due to <em>lack of updates</em>:"
+    utilisation:
+      title: Loan Allocation Utilisation

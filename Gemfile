@@ -11,6 +11,9 @@ gem 'simple_form'
 gem 'twitter-bootstrap-rails'
 gem 'activerecord-import'
 gem "builder"
+gem "bourbon"
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
 
 group :passenger_compatibility do
   gem 'rake', '0.9.2'
@@ -35,6 +38,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'ci_reporter'
   gem 'simplecov-rcov'
+  gem 'debugger'
 end
 
 group :test do

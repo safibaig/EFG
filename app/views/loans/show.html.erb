@@ -1,18 +1,31 @@
-<div class="page-header">
-  <h1>Loan</h1>
+<div class="page-header with-actions">
+  <h1><%= loan_title(@loan) %></h1>
+
+  <div class="loan-summary">
+    <ul>
+      <li><strong>Borrower:</strong> <%= loan_business_name(@loan) %></li>
+      <li><strong>State:</strong> <%= @loan.state.titleize %></li>
+
+      <% if @loan.state == Loan::Rejected %>
+        <li>
+          <strong>Rejection reasons:</strong>
+          <ol>
+            <% @loan.eligibility_check.reasons.each do |reason| %>
+              <li><%= reason %></li>
+            <% end %>
+          </ol>
+        </li>
+      <% end %>
+
+      <li><strong>Last Updated:</strong> <%= @loan.updated_at.strftime("%d %B %Y") %></li>
+    </ul>
+
+    <div class="form-actions">
+      <%= render @loan.state %>
+    </div>
+  </div>
+
 </div>
-
-<% if @loan.state == Loan::Rejected %>
-  <h3>Rejected</h3>
-  <p>This loan has been rejected for the following reasons:</p>
-  <ul>
-    <% @loan.eligibility_check.reasons.each do |reason| %>
-      <li><%= reason %></li>
-    <% end %>
-  </ul>
-
-  <hr />
-<% end %>
 
 <table class="table table-striped">
   <tbody>
@@ -44,22 +57,28 @@
       <th><%= t 'simple_form.labels.loan_eligibility_check.turnover' %></th>
       <td><%= @loan.turnover.format %></td>
     </tr>
+    <% if @loan.trading_date.present? %>
     <tr>
       <th><%= t 'simple_form.labels.loan_eligibility_check.trading_date' %></th>
       <td><%= @loan.trading_date.strftime('%d/%m/%Y') %></td>
     </tr>
+    <% end %>
     <tr>
       <th><%= t 'simple_form.labels.loan_eligibility_check.sic_code' %></th>
       <td><%= @loan.sic_code %></td>
     </tr>
+    <% if @loan.loan_category.present? %>
     <tr>
       <th><%= t 'simple_form.labels.loan_eligibility_check.loan_category_id' %></th>
       <td><%= @loan.loan_category.name %></td>
     </tr>
+    <% end %>
+    <% if @loan.reason.present? %>
     <tr>
       <th><%= t 'simple_form.labels.loan_eligibility_check.reason_id' %></th>
       <td><%= @loan.reason.name %></td>
     </tr>
+    <% end %>
     <tr>
       <th><%= t 'simple_form.labels.loan_eligibility_check.previous_borrowing' %></th>
       <td><%= humanize_boolean @loan.previous_borrowing %></td>
@@ -75,6 +94,5 @@
   </tbody>
 </table>
 
-<div class="form-actions">
-  <%= render @loan.state %>
-</div>
+
+<%= render @loan.state %>

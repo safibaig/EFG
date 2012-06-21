@@ -1,0 +1,11 @@
+<div class="page-header">
+  <h1>Loan Alerts</h1>
+
+  <%= loan_alerts_priority(params[:priority]) %>
+
+  <h3><%== @title %></h3>
+</div>
+
+<%= render :partial => "loan_states/loans_listing", :locals => { :loans => @loans } %>
+
+<%= other_alert_links(params[:priority]) %>

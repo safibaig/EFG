@@ -34,7 +34,7 @@ describe "user management" do
     )
 
     visit root_path
-    click_link 'User Management'
+    click_link 'Manage Users'
 
     page.should have_content('Florine Flatley')
     page.should have_content('flatley_florine@example.com')
@@ -48,7 +48,7 @@ describe "user management" do
     MemorablePassword.stub!(:generate).and_return('correct horse battery staple')
 
     visit root_path
-    click_link 'User Management'
+    click_link 'Manage Users'
 
     click_link 'New User'
 
@@ -72,7 +72,7 @@ describe "user management" do
     )
 
     visit root_path
-    click_link 'User Management'
+    click_link 'Manage Users'
 
     click_link 'Jarred Paucek'
 

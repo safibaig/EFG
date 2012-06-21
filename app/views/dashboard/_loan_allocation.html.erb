@@ -1,0 +1,18 @@
+<%== loan_allocation_presenter.group_header(index) %>
+
+<div class="utilisation-year">
+  <div class="content">
+
+    <h3><%= loan_allocation_presenter.title %></h3>
+
+    <%= content_tag :span, "#{loan_allocation_presenter.usage_percentage}/100", :class => 'pie', 'data-colour' => loan_allocation_presenter.chart_colour, 'data-diameter' => '80' %>
+
+    <ul>
+      <li><strong>Allocation:</strong> <%= loan_allocation_presenter.total_allocation.format %></li>
+      <li><strong>Usage:</strong> <%= loan_allocation_presenter.usage_amount.format %></li>
+      <li><strong>Utilisation:</strong> <%= loan_allocation_presenter.usage_percentage %>%</li>
+    </ul>
+
+  </div>
+</div>
+

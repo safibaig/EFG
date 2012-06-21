@@ -1,0 +1,39 @@
+@import "variables";
+
+.loan-summary {
+  background-color: $beige;
+  border-top: 1px solid $amber;
+  border-bottom: 1px solid $amber;
+  margin: 1em 0 -1.5em 0;
+  padding: 0;
+  float: left;
+  width: 100%;
+
+  ul {
+    list-style: none;
+    margin: 0.5em 0 0.5em 0.5em;
+    padding: 0;
+    float: left;
+    width: 45%;
+
+    li {
+      margin-bottom: 0.5em;
+    }
+
+    li:last-child {
+      margin-bottom: 0;
+    }
+
+    ol {
+      margin: 0.5em 2em;
+    }
+  }
+
+  .form-actions {
+    float: right;
+    padding: 0;
+    margin: 0.5em;
+    background-color: transparent;
+    border: 0;
+  }
+}
