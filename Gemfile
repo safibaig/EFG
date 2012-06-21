@@ -14,6 +14,7 @@ gem "builder"
 gem "bourbon"
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
+gem 'prawn'
 
 group :passenger_compatibility do
   gem 'rake', '0.9.2'
@@ -28,6 +29,7 @@ end
 
 group :development do
   gem 'guard-rspec'
+  gem 'powder'
 end
 
 group :import do
