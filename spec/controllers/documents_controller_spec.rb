@@ -26,4 +26,17 @@ describe DocumentsController do
     it_behaves_like 'documents controller action'
   end
 
+  describe '#data_protection_declaration' do
+
+    def dispatch
+      get :data_protection_declaration
+    end
+
+    it 'renders PDF document' do
+      dispatch
+
+      response.content_type.should == 'application/pdf'
+    end
+  end
+
 end

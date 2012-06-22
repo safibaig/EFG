@@ -9,9 +9,17 @@ en:
     information_declaration:
       declaration: "I confirm to the Lender and Government that:"
       declaration_list: "• all the answers I have given here are true and accurate\n
-      • I have not left any information out\n
-      • information in all other documents I may have given you is true and accurate\n
-      • I understand that, even though the Government is providing a guarantee to the Lender in\n
-      connection with my loan, I remain responsible to the Lender, for the loan and, in the event that I default on the terms of the loan (for example, by failing to make the specified repayments), the Lender is entitled to seek to recover the full amount outstanding from me"
+        • I have not left any information out\n
+        • information in all other documents I may have given you is true and accurate\n
+        • I understand that, even though the Government is providing a guarantee to the Lender in\n
+        connection with my loan, I remain responsible to the Lender, for the loan and, in the event that I default on the terms of the loan (for example, by failing to make the specified repayments), the Lender is entitled to seek to recover the full amount outstanding from me"
       declaration_important: "IMPORTANT: The information contained in this document is the formal record upon which decisions have been made. If <u>any</u> of the information contained in this declaration is incorrect the loan <u>must</u> be cancelled and a new application submitted. This document <u>cannot</u> be altered."
       signatories: "Signatories to be the same as those persons who are required to sign the lender's Scheme Facility Letter."
+    data_protection:
+      title: "Data Protection and Disclosure Declaration"
+      declaration: "I give my permission to the Lender and the Government to:"
+      declaration_list: "• make any enquiries about my loan application\n
+      • take up references about me and my business\n
+      • give information to each other about me and my business\n
+      • give information to any official involved in running or monitoring the SFLG scheme"
+      signatories: "Signed in accordance with the requirements of the Lender's Normal Commercial Lending Practice. Otherwise, for a Limited Company two signatories are required, being two Directors or one Director and the Company Secretary. For a partnership all Partners must sign."

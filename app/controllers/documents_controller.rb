@@ -16,4 +16,10 @@ class DocumentsController < ApplicationController
     send_data(pdf.render, filename: pdf.filename, type: "application/pdf", disposition: "inline")
   end
 
+  def data_protection_declaration
+    pdf = DataProtectionDeclaration.new
+
+    send_data(pdf.render, filename: pdf.filename, type: "application/pdf", disposition: "inline")
+  end
+
 end

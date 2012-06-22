@@ -25,6 +25,10 @@ EFG::Application.routes.draw do
       get :state_aid_letter
       get :information_declaration
     end
+
+    collection do
+      get :data_protection_declaration
+    end
   end
 
   resources :loan_states, only: [:index, :show]
