@@ -1,4 +1,5 @@
 <div class="form-actions">
   <%= link_to 'Demand to Borrower', new_loan_demand_to_borrower_path(@loan), class: 'btn' %>
   <%= link_to 'Repay Loan', new_loan_repay_path(@loan), class: 'btn' %>
+  <%= state_aid_letter_link(@loan) %>
 </div>
