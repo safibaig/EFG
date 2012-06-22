@@ -23,6 +23,7 @@ EFG::Application.routes.draw do
   resources :documents, only: [] do
     member do
       get :state_aid_letter
+      get :information_declaration
     end
   end
 

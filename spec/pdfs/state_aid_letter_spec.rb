@@ -4,48 +4,47 @@ require 'spec_helper'
 
 describe StateAidLetter do
 
-  let(:loan) { FactoryGirl.create(:loan, :offered, state_aid: Money.new(10000)) }
+  let(:loan) { FactoryGirl.create(:loan, :offered) }
 
-  let(:pdf) { StateAidLetter.new(loan) }
+  let(:pdf_content) {
+    state_aid_letter = StateAidLetter.new(loan)
+    reader = PDF::Reader.new(StringIO.new(state_aid_letter.render))
+    # Note: replace line breaks to make assertions easier
+    reader.pages.collect { |page| page.to_s }.join(" ").gsub("\n", ' ')
+  }
 
   describe "#render" do
 
-    let(:output) {
-      reader = PDF::Reader.new(StringIO.new(pdf.render))
-      # Note: replace line breaks to make assertions easier
-      reader.pages.collect { |page| page.to_s }.join(" ").gsub("\n", ' ')
-    }
-
-    it "should output a placeholder header" do
-      output.should include(I18n.t('pdfs.letterhead_placeholder').upcase)
+    it "should contain a placeholder header" do
+      pdf_content.should include(I18n.t('pdfs.letterhead_placeholder').upcase)
     end
 
-    it "should output address fields" do
-      output.should include('Name')
-      output.should include('Address')
-      output.should include('Date')
+    it "should contain address fields" do
+      pdf_content.should include('Name')
+      pdf_content.should include('Address')
+      pdf_content.should include('Date')
     end
 
-    it "should output a title" do
-      output.should include(I18n.t('pdfs.state_aid_letter.title').upcase)
+    it "should contain a title" do
+      pdf_content.should include(I18n.t('pdfs.state_aid_letter.title').upcase)
     end
 
-    it "should output loan details" do
-      output.should include(loan.business_name)
-      output.should include(loan.lender.name)
-      output.should include(loan.id.to_s)
-      output.should include(loan.amount.format)
-      output.should include(loan.repayment_duration.total_months.to_s)
-      output.should include("tbc")
+    it "should contain loan details" do
+      pdf_content.should include(loan.business_name)
+      pdf_content.should include(loan.lender.name)
+      pdf_content.should include(loan.reference)
+      pdf_content.should include(loan.amount.format)
+      pdf_content.should include(loan.repayment_duration.total_months.to_s)
+      pdf_content.should include("tbc")
     end
 
-    it "should output body text" do
-      output.should include(I18n.t('pdfs.state_aid_letter.body_text1').gsub("\n\n", ' '))
-      output.should include(I18n.t('pdfs.state_aid_letter.body_text2').gsub("\n\n", ' '))
+    it "should contain body text" do
+      pdf_content.should include(I18n.t('pdfs.state_aid_letter.body_text1').gsub("\n\n", ' '))
+      pdf_content.should include(I18n.t('pdfs.state_aid_letter.body_text2').gsub("\n\n", ' '))
     end
 
-    it "should output state aid calculation" do
-      output.should include(I18n.t('pdfs.state_aid_letter.state_aid', :amount => loan.state_aid))
+    it "should contain state aid calculation" do
+      pdf_content.should include(I18n.t('pdfs.state_aid_letter.state_aid', :amount => loan.state_aid))
     end
 
   end

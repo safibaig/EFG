@@ -12,6 +12,7 @@ en:
       default_message: "Please review the problems below:"
     labels:
       loan: &loan
+        reference: "System generated identification reference"
         viable_proposition: "Other than in respect of the availability of security, are the Applicant's plans viable and serviceable, as assessed according to your Normal Commercial Lending Criteria?"
         would_you_lend: "Following Due Enquiry are you prepared, subject to the backing of the Enterprise Finance Guarantee, to provide the Applicant with a term loan or other debt facility?"
         collateral_exhausted: "Do you confirm that, even after taking any available Collateral, the inadequacy of the Applicant's security would otherwise prevent a facility from being provided except with the backing of the Enterprise Finance Guarantee?"
@@ -21,6 +22,7 @@ en:
         turnover: 'What is the current annual turnover of the Applicant business?'
         trading_date: 'What is the Commencement of Trading Date of the Applicant business? (dd/mm/yyyy)'
         sic_code: 'Which Standard Industrial Classification (SIC) code best describes the business sector in which the guaranteed facility will be used?'
+        sic_code_description: 'SIC code activity description'
         loan_category_id: 'Which EFG Lending Type which most accurately describes the facility to be guaranteed?'
         reason_id: 'What is the principal purpose that this facility will be used for?'
         previous_borrowing: "Including this facility, will the total outstanding balances and / or available limits of the Applicant's current EFG facilities be no more than £1 million?"

@@ -9,4 +9,11 @@ class DocumentsController < ApplicationController
     send_data(pdf.render, filename: pdf.filename, type: "application/pdf", disposition: "inline")
   end
 
+  def information_declaration
+    loan = current_lender.loans.find(params[:id])
+    pdf = InformationDeclaration.new(loan)
+
+    send_data(pdf.render, filename: pdf.filename, type: "application/pdf", disposition: "inline")
+  end
+
 end
