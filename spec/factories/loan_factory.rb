@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :loan do
     state Loan::Eligible
     lender
+    business_name 'Acme'
     viable_proposition true
     would_you_lend true
     collateral_exhausted true
