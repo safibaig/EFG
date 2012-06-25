@@ -47,6 +47,10 @@ class Loan < ActiveRecord::Base
     where("maturity_date >= ? AND maturity_date <= ?", date1, date2)
   }
 
+  scope :by_reference, lambda { |reference|
+    where("reference LIKE ?", "%#{reference}%")
+  }
+
   validates_inclusion_of :state, in: States, strict: true
   validates_presence_of :lender_id, strict: true
 

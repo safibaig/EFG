@@ -72,7 +72,7 @@ describe 'loan states' do
     it 'includes loans in the specified state' do
       dispatch(id: 'completed')
 
-      names = page.all('tbody tr td:first-child').map(&:text)
+      names = page.all('tbody tr td:nth-child(2)').map(&:text)
       names.should == %w(ACME Foo)
     end
 
