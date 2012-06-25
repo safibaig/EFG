@@ -1,4 +1,6 @@
 <%= form_tag search_path, method: :get, class: "form-search", id: "loan_lookup" do %>
-  <%= text_field_tag :reference, params[:reference], class: "input-small search-query", id: "lookup_term", placeholder: "Loan reference" %>
-  <%= submit_tag "Search", class: "btn", id: "submit_lookup" %>
+  <%= text_field_tag :term, params[:term], class: "input-medium search-query", id: "lookup_term", placeholder: "Lookup loan by reference" %>
+  <noscript>
+    <%= submit_tag "Search", class: "btn", id: "submit_lookup" %>
+  </noscript>
 <% end %>

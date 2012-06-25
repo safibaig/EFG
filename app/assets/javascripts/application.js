@@ -14,5 +14,6 @@
 //= require jquery_ujs
 //= require 'jquery.peity.min'
 //= require twitter/bootstrap
+//= require 'jquery-ui.autocomplete'
 //= require_tree .
 

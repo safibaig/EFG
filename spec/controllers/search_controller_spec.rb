@@ -16,7 +16,7 @@ describe SearchController do
       get :show, params
     end
 
-    it 'returns loans for the current lender' do
+    it 'assigns loans for the current lender' do
       dispatch reference: loan.reference
 
       assigns[:loans].should include(loan)

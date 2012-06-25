@@ -1,7 +1,27 @@
+@import 'variables';
+
 #loan_lookup {
-  margin: 0;
+  margin: 0.5em 0 0 0;
 
   input[type='submit'] {
     margin-right: 0;
+  }
+}
+
+ul.ui-autocomplete {
+  float: left;
+  background-color: #fff;
+  list-style: none;
+  border: 1px solid $medium_grey;
+
+  li {
+    a {
+      display: block;
+      padding: 0.5em;
+
+      &.ui-state-hover {
+        background-color: $beige;
+      }
+    }
   }
 }
