@@ -20,6 +20,17 @@ EFG::Application.routes.draw do
     resource :state_aid_calculation, only: [:new, :create, :edit, :update]
   end
 
+  resources :documents, only: [] do
+    member do
+      get :state_aid_letter
+      get :information_declaration
+    end
+
+    collection do
+      get :data_protection_declaration
+    end
+  end
+
   resources :loan_states, only: [:index, :show]
 
   resources :loan_alerts, only: [] do

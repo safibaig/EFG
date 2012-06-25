@@ -99,7 +99,25 @@ class Loan < ActiveRecord::Base
     InterestRateType.find(interest_rate_type_id)
   end
 
+  def legal_form
+    LegalForm.find(legal_form_id)
+  end
+
   def eligibility_check
     EligibilityCheck.new(self)
+  end
+
+  def repayment_frequency
+    RepaymentFrequency.find(repayment_frequency_id)
+  end
+
+  # TODO: implement SIC code description
+  def sic_code_description
+    "to-do"
+  end
+
+  # TODO: implement legacy system reference format
+  def reference
+    super || id
   end
 end

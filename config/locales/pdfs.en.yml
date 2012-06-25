@@ -1,0 +1,25 @@
+en:
+  pdfs:
+    letterhead_placeholder: "EFG State Aid Letter to be sent to each borrower on lender's letterhead as part of loan Documentation"
+    state_aid_letter:
+      title: "Enterprise Finance Guarantee - Notification of State Aid"
+      state_aid: "I can confirm that the value of de minimis State Aid arising from this facility is %{amount} Euro."
+      body_text1: "Dear\n\nI am writing to provide you with the value of the State Aid applicable to the loan you have been offered through the Enterprise Finance Guarantee (EFG) should you accept it.\n\nThe assistance provided through EFG, like many Government-backed business support schemes, is regarded as a State Aid and is governed according to the European Commission's “De Minimis” State Aid rules. Under these rules the maximum State Aid any business or individual may receive over any rolling three-year period is currently 200,000 Euro. This letter is sent in accordance with European Commission Notice on State Aid in the form of Guarantees, OJ C155 of 20 June 2008."
+      body_text2: "It is your responsibility to retain records of any State Aid arising from assistance received for a minimum of three years from the date of receipt and to ensure that you do not exceed the rolling three-year limit. If you make any other application for assistance during the next three years you should expect to be asked by the provider of that assistance about the State Aid you have already received.\n\nPlease note that this letter is issued solely to advise you of the value of State Aid arising from your loan and is not a notice of further funding.\n\nYours sincerely,"
+    information_declaration:
+      declaration: "I confirm to the Lender and Government that:"
+      declaration_list: "• all the answers I have given here are true and accurate\n
+        • I have not left any information out\n
+        • information in all other documents I may have given you is true and accurate\n
+        • I understand that, even though the Government is providing a guarantee to the Lender in\n
+        connection with my loan, I remain responsible to the Lender, for the loan and, in the event that I default on the terms of the loan (for example, by failing to make the specified repayments), the Lender is entitled to seek to recover the full amount outstanding from me"
+      declaration_important: "IMPORTANT: The information contained in this document is the formal record upon which decisions have been made. If <u>any</u> of the information contained in this declaration is incorrect the loan <u>must</u> be cancelled and a new application submitted. This document <u>cannot</u> be altered."
+      signatories: "Signatories to be the same as those persons who are required to sign the lender's Scheme Facility Letter."
+    data_protection:
+      title: "Data Protection and Disclosure Declaration"
+      declaration: "I give my permission to the Lender and the Government to:"
+      declaration_list: "• make any enquiries about my loan application\n
+      • take up references about me and my business\n
+      • give information to each other about me and my business\n
+      • give information to any official involved in running or monitoring the SFLG scheme"
+      signatories: "Signed in accordance with the requirements of the Lender's Normal Commercial Lending Practice. Otherwise, for a Limited Company two signatories are required, being two Directors or one Director and the Company Secretary. For a partnership all Partners must sign."
