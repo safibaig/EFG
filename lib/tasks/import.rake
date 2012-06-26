@@ -1,4 +1,7 @@
 namespace :import do
+  desc "Import all data."
+  task all: [:users, :lenders, :loans, :loan_allocations, :state_aid_calculations]
+
   desc "Import user data (CSV files found in import_data/users.csv)"
   task users: :lenders do
     _import User
