@@ -58,8 +58,13 @@ describe Loan do
     end
   end
 
-  describe ".assumed_repaid scope" do
-    it "includes loans with maturity dates"
+  describe ".by_reference scope" do
+    let!(:loan1) { FactoryGirl.create(:loan, reference: "ABC123") }
+    let!(:loan2) { FactoryGirl.create(:loan, reference: "ABC12345") }
+
+    it "returns loans that partially or completely match the specified reference" do
+      Loan.by_reference("ABC123").should == [loan1, loan2]
+    end
   end
 
   describe '#repayment_duration / #repayment_duration=' do

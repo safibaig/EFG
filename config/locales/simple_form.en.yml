@@ -101,3 +101,14 @@ en:
         dti_demand_outstanding: 'What is the outstanding Scheme Facility Principal owed by the Borrower to the Lender upon which the Guaranteed Percentage will be calculated?'
         dti_ded_code: 'Please select the primary cause of business failure'
         dti_reason: 'Please provide any further information you consider appropriate to the reason for Demand against the Government Guarantee'
+
+      search:
+        sort_by: Sort By
+        sort_order: Sort Order
+        business_name: Business Name
+        trading_name: Trading Name
+        company_registration: Company Registration
+        updated_at: Last Modified Date
+        amount: Amount
+        postcode: Postcode
+        maturity_date: Maturity Date

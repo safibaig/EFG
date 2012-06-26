@@ -43,4 +43,11 @@ EFG::Application.routes.draw do
   end
 
   resources :users, only: [:index, :show, :new, :create, :edit, :update]
+
+  resource :search, only: [:show, :new], controller: :search do
+    collection do
+      get :lookup
+    end
+  end
+
 end

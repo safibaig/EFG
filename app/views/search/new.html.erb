@@ -1,0 +1,19 @@
+<div class="page-header">
+  <h1>Search</h1>
+</div>
+
+<%= simple_form_for(@search, url: search_path, method: :get, html: {id: 'search', class: 'form-horizontal'}) do |f| %>
+  <%= f.input :business_name %>
+  <%= f.input :trading_name %>
+  <%= f.input :company_registration  %>
+  <%= f.input :state, collection: Loan::States.map(&:titleize), input_html: {multiple: true} %>
+
+  <%= field_set_tag 'Sorting' do %>
+    <%= f.input :sort_by, collection: Search::SortableAttributes.map {|attribute| [I18n.t(attribute, scope: [:simple_form, :labels, :search]), attribute]} %>
+    <%= f.input :sort_order, as: :radio_buttons, collection: Search::SortOrders, wrapper_html: {class: 'radio-buttons-inline'} %>
+  <% end %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Search', class: 'btn-primary' %>
+  </div>
+<% end %>
