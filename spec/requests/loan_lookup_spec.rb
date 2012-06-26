@@ -18,7 +18,6 @@ describe "loan lookup" do
 
     lookup_loan(loan1.reference[1,5])
 
-    page.should have_content("Search Results")
     page.should have_content("2 results found")
     page.should have_content(loan1.reference)
     page.should have_content(loan2.reference)
@@ -38,7 +37,6 @@ describe "loan lookup" do
 
     lookup_loan("wrong")
 
-    page.should have_content("Search Results")
     page.should have_content("0 results found")
   end
 

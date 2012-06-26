@@ -7,7 +7,7 @@ jQuery.ajaxSetup({
 
 $(document).ready(function() {
   $("input#lookup_term").autocomplete({ 
-    source: "/search", 
+    source: "/search/lookup", 
     minLength: 3,
     select: function(event) {
       event.target.form.submit();
