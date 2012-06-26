@@ -1,5 +1,5 @@
 class LoanAllocationImporter < BaseImporter
-  self.csv_path = Rails.root.join('import_data/loan_allocations.csv')
+  self.csv_path = Rails.root.join('import_data/SFLG_LENDER_CAP_ALLOC_DATA_TABLE.csv')
   self.klass = LoanAllocation
 
   def self.field_mapping

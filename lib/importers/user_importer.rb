@@ -1,7 +1,7 @@
 require 'faker'
 
 class UserImporter < BaseImporter
-  self.csv_path = Rails.root.join('import_data/users.csv')
+  self.csv_path = Rails.root.join('import_data/SFLG_USER_DATA_TABLE.csv')
   self.klass = User
 
   def self.field_mapping
