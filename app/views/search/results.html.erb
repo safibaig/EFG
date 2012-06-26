@@ -2,10 +2,10 @@
   <h1>Search Results</h1>
 </div>
 
-<h3><%= search_results_count(@loans) %></h3>
+<h3><%= search_results_count(@results) %></h3>
 
-<% unless @loans.empty? %>
-<%= render :partial => "loan_states/loans_listing", :locals => { :loans => @loans } %>
+<% unless @results.empty? %>
+  <%= render 'loan_states/loans_listing', :loans => @results %>
 <% end %>
 
-<%= will_paginate @loans %>
+<%= will_paginate @results %>

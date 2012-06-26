@@ -1,27 +1,17 @@
 <div class="page-header">
-  <h1>Basic Search</h1>
+  <h1>Search</h1>
 </div>
 
-<%= simple_form_for(Loan.new, url: basic_search_path, method: :get, html: { id: 'basic_search' }) do |f| %>
+<%= simple_form_for(@search, url: search_path, method: :get, html: {id: 'search', class: 'form-horizontal'}) do |f| %>
   <%= f.input :business_name %>
   <%= f.input :trading_name %>
   <%= f.input :company_registration  %>
-  <%= f.input :state, collection: Loan::States, prompt: true %>
-  <%= f.input :amount, as: :currency %>
+  <%= f.input :state, collection: Loan::States.map(&:titleize), input_html: {multiple: true} %>
 
-  <div class='control-group select optional'>
-    <%= label_tag :loan_sort_by, "Select the sort option", class: "select optional control-label" %>
-    <div class='controls'>
-      <%= select_tag 'loan[sort_by]', options_for_select(basic_search_sorting_options), prompt: false %>
-      <p>
-        <%= radio_button_tag 'loan[asc_desc]', :asc, checked: :checked %>
-        <%= label_tag :loan_asc_desc_asc, "Ascending" %>
-
-        <%= radio_button_tag 'loan[asc_desc]', :desc %>
-        <%= label_tag :loan_asc_desc_desc, "Descending" %>
-      </p>
-    </div>
-  </div>
+  <%= field_set_tag 'Sorting' do %>
+    <%= f.input :sort_by, collection: Search::SortableAttributes.map {|attribute| [I18n.t(attribute, scope: [:simple_form, :labels, :search]), attribute]} %>
+    <%= f.input :sort_order, as: :radio_buttons, collection: Search::SortOrders, wrapper_html: {class: 'radio-buttons-inline'} %>
+  <% end %>
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Search', class: 'btn-primary' %>
