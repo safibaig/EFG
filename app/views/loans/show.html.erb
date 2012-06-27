@@ -21,7 +21,7 @@
     </ul>
 
     <div class="form-actions">
-      <%= render @loan.state %>
+      <%= render "loans/buttons/#{@loan.state}" %>
     </div>
   </div>
 
@@ -95,4 +95,4 @@
 </table>
 
 
-<%= render @loan.state %>
+<%= render "loans/buttons/#{@loan.state}" %>
