@@ -210,18 +210,10 @@
 </table>
 
 <h3>Offer Scheme Facility</h3>
-<table class="table table-striped table-loan-details">
-<tbody>
-  <tr>
-    <th><%= t 'simple_form.labels.loan_offer.facility_letter_sent' %></th>
-    <td><%= humanize_boolean @loan.facility_letter_sent %></td>
-  </tr>
-  <tr>
-    <th><%= t 'simple_form.labels.loan_offer.facility_letter_date' %></th>
-    <td><%= @loan.facility_letter_date.strftime('%d/%m/%Y %H:%M:%S') %></td>
-  </tr>
-</tbody>
-</table>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_offer') do |table| %>
+  <%= table.row 'facility_letter_sent' %>
+  <%= table.row 'facility_letter_date' %>
+<% end %>
 
 <h3>Guarantee and Initial Draw</h3>
 <%= loan_details_table(@loan, 'simple_form.labels.loan_guarantee') do |table| %>

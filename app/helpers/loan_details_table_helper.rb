@@ -3,7 +3,8 @@ module LoanDetailsTableHelper
     Formats = {
       TrueClass => 'Yes',
       FalseClass => 'No',
-      NilClass => 'Not Set'
+      NilClass => 'Not Set',
+      Date => ->(date) { date.strftime('%d/%m/%Y') }
     }
 
     def initialize(loan, translation_scope)
@@ -22,14 +23,20 @@ module LoanDetailsTableHelper
 
     private
     def format(value)
-      Formats[value.class]
+      formatted_value = Formats[value.class]
+      if formatted_value.respond_to?(:call)
+        formatted_value = formatted_value.call(value)
+      end
+      formatted_value
     end
   end
 
   def loan_details_table(loan, translation_scope)
     table = LoanDetailsTable.new(loan, translation_scope)
     content_tag(:table, class: 'table table-striped table-loan-details') do
-      yield table
+      content_tag(:tbody) do
+        yield table
+      end
     end
   end
 end
