@@ -28,16 +28,19 @@ class BaseImporter
   def self.import
     values = []
 
-    CSV.foreach(csv_path, headers: true) do |row|
-      values << new(row).values
+    File.open(csv_path, "r:utf-8") do |file|
+      csv = CSV.new(file, headers: true)
+      csv.each do |row|
+        values << new(row).values
 
-      if values.length % 1000 == 0
-        bulk_import(values)
-        values.clear
+        if values.length % 1000 == 0
+          bulk_import(values)
+          values.clear
+        end
       end
-    end
 
-    bulk_import(values) unless values.empty?
+      bulk_import(values) unless values.empty?
+    end
 
     after_import if respond_to?(:after_import, true)
   end
