@@ -3,6 +3,8 @@ require 'spec_helper'
 describe "loan details" do
 
   shared_examples "rendering loan details" do
+    before { loan.stub!(id: 1) }
+
     it "should render loan details" do
       assign(:loan, loan)
       render template: 'loans/details.html.erb'

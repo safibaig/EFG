@@ -9,4 +9,8 @@ module LoanHelper
     loan.business_name.present? ? loan.business_name : '<not assigned>'
   end
 
+  def loan_summary(loan, &block)
+    insert = block_given? ? capture(&block) : nil
+    render('loans/summary', loan: loan, insert: insert)
+  end
 end

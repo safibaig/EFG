@@ -1,27 +1,12 @@
-<div class="page-header with-actions">
+<div class="page-header">
   <h1><%= loan_title('Loan Details', @loan) %></h1>
-
-  <div class="loan-summary">
-    <ul>
-      <li><strong>Borrower:</strong> <%= loan_business_name(@loan) %></li>
-      <li><strong>State:</strong> <%= @loan.state.titleize %></li>
-
-      <% if @loan.state == Loan::Rejected %>
-        <li>
-          <strong>Rejection reasons:</strong>
-          <ol>
-            <% @loan.eligibility_check.reasons.each do |reason| %>
-              <li><%= reason %></li>
-            <% end %>
-          </ol>
-        </li>
-      <% end %>
-
-      <li><strong>Last Updated:</strong> <%= @loan.updated_at.strftime("%d %B %Y") %></li>
-    </ul>
-  </div>
-
 </div>
+
+<%= loan_summary(@loan) do %>
+  <div class="form-actions">
+    <%= link_to 'Loan Summary', loan_path(@loan), class: 'btn' %>
+  </div>
+<% end %>
 
 <h3>Eligibility and Loan Entry</h3>
 <%= loan_details_table(@loan, 'simple_form.labels.loan_entry') do |table| %>
