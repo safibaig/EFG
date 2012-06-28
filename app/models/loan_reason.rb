@@ -39,5 +39,5 @@ class LoanReason < StaticAssociation
     { id: 36, name: 'Expanding an existing business outside UK' },
     { id: 37, name: 'Replacing existing finance' },
     { id: 38, name: 'Financing an export order' }
-  ]
+  ].sort_by {|data| data[:name] }
 end
