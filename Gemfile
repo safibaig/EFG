@@ -41,6 +41,7 @@ group :development, :test do
   gem 'ci_reporter'
   gem 'simplecov-rcov'
   gem 'debugger'
+  gem 'puma'
 end
 
 group :test do
