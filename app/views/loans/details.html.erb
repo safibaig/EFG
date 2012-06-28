@@ -24,190 +24,65 @@
 </div>
 
 <h3>Eligibility and Loan Entry</h3>
-<table class="table table-striped table-loan-details">
-  <tbody>
-    <tr>
-      <th>What is the name of the lender organisation?</th>
-      <td><%= @loan.lender.name %></td>
-    </tr>
-    <tr>
-      <th>System Generated Identification Reference</th>
-      <td><%= @loan.reference %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.declaration_signed' %></th>
-      <td><%= humanize_boolean @loan.declaration_signed %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.business_name' %></th>
-      <td><%= @loan.business_name %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.trading_name' %></th>
-      <td><%= @loan.trading_name %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.legal_form_id' %></th>
-      <td><%= @loan.legal_form %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.company_registration' %></th>
-      <td><%= @loan.company_registration %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.turnover' %></th>
-      <td><%= @loan.turnover.format %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.trading_date' %></th>
-      <td><%= @loan.trading_date.strftime('%d/%m/%Y') %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.postcode' %></th>
-      <td><%= @loan.postcode %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.branch_sortcode' %></th>
-      <td><%= @loan.branch_sortcode %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.amount' %></th>
-      <td><%= @loan.amount.format %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.repayment_duration' %></th>
-      <td><%= @loan.repayment_duration.format %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.repayment_frequency_id' %></th>
-      <td><%= @loan.repayment_frequency %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.maturity_date' %></th>
-      <td><%= @loan.maturity_date.strftime('%d/%m/%Y') %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.loan_allocation_id' %></th>
-      <td><%= @loan.loan_allocation.title %></td>
-    </tr>
-    <tr>
-      <th>Guarantee Rate</th>
-      <td><%= @loan.loan_allocation.guarantee_rate %>%</td>
-    </tr>
-    <tr>
-      <th>Premium Rate</th>
-      <td><%= @loan.loan_allocation.premium_rate %>%</td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.sic_code' %></th>
-      <td><%= @loan.sic_code %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.sic_code_description' %></th>
-      <td><%= @loan.sic_code_description %></td>
-    </tr>
-    <tr>
-      <th>Other Business Activities Not Elsewhere Classified</th>
-      <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.loan_category_id' %></th>
-      <td><%= @loan.loan_category.try(:name) %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.interest_rate_type_id' %></th>
-      <td><%= @loan.interest_rate_type.try(:name) %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.interest_rate' %></th>
-      <td></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.fees' %></th>
-      <td><%= @loan.fees.format %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.previous_borrowing' %></th>
-      <td><%= humanize_boolean @loan.previous_borrowing %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.viable_proposition' %></th>
-      <td><%= humanize_boolean @loan.viable_proposition %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.would_you_lend' %></th>
-      <td><%= humanize_boolean @loan.would_you_lend %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.collateral_exhausted' %></th>
-      <td><%= humanize_boolean @loan.collateral_exhausted %></td>
-    </tr>
-    <tr>
-      <th>Is the intensity of Notified Aid calculated for this project less than 40% for non-Objective 1 loans or less than 60% for Objective 1 loans?</th>
-      <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.state_aid_value' %></th>
-      <td><%= @loan.state_aid_value.format %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.state_aid_is_valid' %></th>
-      <td><%= humanize_boolean @loan.state_aid_is_valid %></td>
-    </tr>
-    <tr>
-      <th>Generic Lender Field 1</th>
-      <td><%= @loan.generic1 %></td>
-    </tr>
-    <tr>
-      <th>Generic Lender Field 2</th>
-      <td><%= @loan.generic2 %></td>
-    </tr>
-    <tr>
-      <th>Generic Lender Field 3</th>
-      <td><%= @loan.generic3 %></td>
-    </tr>
-    <tr>
-      <th>Generic Lender Field 4</th>
-      <td><%= @loan.generic4 %></td>
-    </tr>
-    <tr>
-      <th>Generic Lender Field 5</th>
-      <td><%= @loan.generic5 %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.town' %></th>
-      <td><%= @loan.town %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_entry.non_validated_postcode' %></th>
-      <td><%= @loan.non_validated_postcode %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.private_residence_charge_required' %></th>
-      <td><%= humanize_boolean @loan.private_residence_charge_required %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.personal_guarantee_required' %></th>
-      <td><%= humanize_boolean @loan.personal_guarantee_required %></td>
-    </tr>
-    <tr>
-      <th>Created By</th>
-      <td><%= @loan.created_by.name %></td>
-    </tr>
-    <tr>
-      <th>Date and Time Created</th>
-      <td><%= @loan.created_at.strftime('%d/%m/%Y %H:%M:%S') %></td>
-    </tr>
-    <tr>
-      <th>Last Modified By</th>
-      <td><%= @loan.modified_by.name %></td>
-    </tr>
-    <tr>
-      <th>Last Modified On</th>
-      <td><%= @loan.updated_at.strftime('%d/%m/%Y %H:%M:%S') %></td>
-    </tr>
-  </tbody>
-</table>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_entry') do |table| %>
+  <%= table.row 'lender', header: 'What is the name of the lender organisation?' %>
+  <%= table.row 'reference', header: 'System Generated Identification Reference' %>
+  <%= table.row 'declaration_signed' %>
+  <%= table.row 'business_name' %>
+  <%= table.row 'trading_name' %>
+  <%= table.row 'legal_form', header: t('simple_form.labels.loan_entry.legal_form_id') %>
+  <%= table.row 'company_registration' %>
+  <%= table.row 'turnover' %>
+  <%= table.row 'trading_date' %>
+  <%= table.row 'postcode' %>
+  <%= table.row 'branch_sortcode' %>
+  <%= table.row 'amount' %>
+  <%= table.row 'repayment_duration' %>
+  <%= table.row 'repayment_frequency', header: t('simple_form.labels.loan_entry.repayment_frequency_id') %>
+  <%= table.row 'maturity_date' %>
+  <%= table.row 'loan_allocation', header: t('simple_form.labels.loan_entry.loan_allocation_id') %>
+  <tr>
+    <th>Guarantee Rate</th>
+    <td><%= @loan.loan_allocation.guarantee_rate %>%</td>
+  </tr>
+  <tr>
+    <th>Premium Rate</th>
+    <td><%= @loan.loan_allocation.premium_rate %>%</td>
+  </tr>
+  <%= table.row 'sic_code' %>
+  <%= table.row 'sic_code_description' %>
+  <tr>
+    <th>Other Business Activities Not Elsewhere Classified</th>
+    <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+  </tr>
+  <%= table.row 'loan_category', header: t('simple_form.labels.loan_entry.loan_category_id') %>
+  <%= table.row 'interest_rate_type', header: t('simple_form.labels.loan_entry.interest_rate_type_id') %>
+  <%= table.row 'interest_rate' %>
+  <%= table.row 'fees' %>
+  <%= table.row 'previous_borrowing', header: t('simple_form.labels.loan_eligibility_check.previous_borrowing') %>
+  <%= table.row 'viable_proposition', header: t('simple_form.labels.loan_eligibility_check.viable_proposition') %>
+  <%= table.row 'would_you_lend', header: t('simple_form.labels.loan_eligibility_check.would_you_lend') %>
+  <%= table.row 'collateral_exhausted', header: t('simple_form.labels.loan_eligibility_check.collateral_exhausted') %>
+  <tr>
+    <th>Is the intensity of Notified Aid calculated for this project less than 40% for non-Objective 1 loans or less than 60% for Objective 1 loans?</th>
+    <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+  </tr>
+  <%= table.row 'state_aid_value' %>
+  <%= table.row 'state_aid_is_valid' %>
+  <%= table.row 'generic1', header: 'Generic Lender Field 1' %>
+  <%= table.row 'generic2', header: 'Generic Lender Field 2' %>
+  <%= table.row 'generic3', header: 'Generic Lender Field 3' %>
+  <%= table.row 'generic4', header: 'Generic Lender Field 4' %>
+  <%= table.row 'generic5', header: 'Generic Lender Field 5' %>
+  <%= table.row 'town' %>
+  <%= table.row 'non_validated_postcode' %>
+  <%= table.row 'private_residence_charge_required', header: t('simple_form.labels.loan_eligibility_check.private_residence_charge_required') %>
+  <%= table.row 'personal_guarantee_required', header: t('simple_form.labels.loan_eligibility_check.personal_guarantee_required') %>
+  <%= table.row 'created_by', header: 'Created By' %>
+  <%= table.row 'created_at', header: 'Date and Time Created' %>
+  <%= table.row 'modified_by', header: 'Last Modified By' %>
+  <%= table.row 'updated_at', header: 'Last Modified On' %>
+<% end %>
 
 <h3>Offer Scheme Facility</h3>
 <%= loan_details_table(@loan, 'simple_form.labels.loan_offer') do |table| %>
