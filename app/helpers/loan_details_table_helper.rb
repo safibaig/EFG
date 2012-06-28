@@ -4,16 +4,16 @@ module LoanDetailsTableHelper
       ActiveSupport::TimeWithZone => ->(time) { time.strftime('%d/%m/%Y %H:%M:%S') },
       Date => ->(date) { date.strftime('%d/%m/%Y') },
       FalseClass => 'No',
-      InterestRateType => ->(interest_rate_type) { interest_rate_type.name },
-      LegalForm => ->(legal_form) { legal_form.name },
-      Lender => ->(lender) { lender.name },
-      LoanAllocation => ->(loan_allocation) { loan_allocation.title },
-      LoanCategory => ->(loan_category) { loan_category.name },
-      Money => ->(money) { money.format },
-      MonthDuration => ->(duration) { duration.format },
+      InterestRateType => :name.to_proc,
+      LegalForm => :name.to_proc,
+      Lender => :name.to_proc,
+      LoanAllocation => :title.to_proc,
+      LoanCategory => :name.to_proc,
+      Money => :format.to_proc,
+      MonthDuration => :format.to_proc,
       NilClass => 'Not Set',
       TrueClass => 'Yes',
-      User => ->(user) { user.name }
+      User => :name.to_proc,
     }
 
     def initialize(loan, translation_scope)
