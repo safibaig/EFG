@@ -3,7 +3,7 @@ FactoryGirl.define do
     state Loan::Eligible
     lender
     legal_form_id 1
-    lender_cap_id 1
+    loan_allocation
     loan_category_id 1
     repayment_frequency_id 4
     reason_id 1
@@ -28,6 +28,9 @@ FactoryGirl.define do
     personal_guarantee_required false
     state_aid 10000
     state_aid_is_valid true
+    fees 50000
+    created_at { Time.now }
+    updated_at { Time.now }
 
     trait :eligible do
       state Loan::Eligible

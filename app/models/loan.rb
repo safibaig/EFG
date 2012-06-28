@@ -130,4 +130,12 @@ class Loan < ActiveRecord::Base
   def reference
     super || id
   end
+
+  def created_by
+    User.first
+  end
+
+  def modified_by
+    User.first
+  end
 end

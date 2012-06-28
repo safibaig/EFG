@@ -95,4 +95,12 @@ describe Loan do
       loan.eligibility_check.should == result
     end
   end
+
+  describe "#created_by" do
+    pending "currently returns a canned response"
+  end
+
+  describe "#updated_by" do
+    pending "currently returns a canned response"
+  end
 end

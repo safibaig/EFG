@@ -1,7 +1,6 @@
 module LoanHelper
 
-  def loan_title(loan)
-    title = "Loan Summary"
+  def loan_title(title, loan)
     title << " for #{loan.reference}" if loan.reference.present?
     title
   end
