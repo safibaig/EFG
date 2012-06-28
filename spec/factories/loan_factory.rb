@@ -46,14 +46,24 @@ FactoryGirl.define do
 
     trait :offered do
       state Loan::Offered
+      facility_letter_sent true
+      facility_letter_date { Date.today }
     end
 
     trait :guaranteed do
       state Loan::Guaranteed
+      received_declaration true
+      signed_direct_debit_received true
+      first_pp_received true
+      initial_draw_date { Date.today }
+      initial_draw_value Money.new(10000)
+      maturity_date { 10.years.from_now }
     end
 
     trait :demanded do
       state Loan::Demanded
+      borrower_demanded_on { Date.today }
+      borrower_demanded_amount Money.new(100000)
     end
 
     trait :lender_demand do
