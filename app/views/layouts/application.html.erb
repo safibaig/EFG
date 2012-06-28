@@ -17,6 +17,9 @@
           <ul class="nav">
             <li><%= link_to 'Loan Portfolio', loan_states_path %></li>
             <li><%= link_to 'New Loan', new_eligibility_check_path %></li>
+            <li><%= link_to 'Search', new_search_path %></li>
+            <li><%= link_to 'Manage Users', users_path %></li>
+            <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
             <li class="dropdown">
               <%= link_to '#', "class" => "dropdown-toggle", "data-toggle" => "dropdown" do %>
                 Help <b class="caret"></b>
@@ -29,8 +32,6 @@
                 <li><%= link_to 'SFLG Web portal manual', '#' %></li>
                 <li><%= link_to 'User administration guide', '#' %></li>
               </ul>
-              <li><%= link_to 'Manage Users', users_path %></li>
-              <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
             </li>
           </ul>
 
