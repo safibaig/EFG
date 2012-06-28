@@ -222,3 +222,21 @@
   </tr>
 </tbody>
 </table>
+
+<h3>Guarantee and Initial Draw</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_guarantee') do |table| %>
+  <%= table.row 'received_declaration' %>
+  <%= table.row 'first_pp_received' %>
+  <%= table.row 'signed_direct_debit_received' %>
+  <%= table.row 'initial_draw_date' %>
+  <%= table.row 'initial_draw_value' %>
+  <%= table.row 'initial_draw_value' %>
+  <tr>
+    <th>Cumulative amount drawn to date</th>
+    <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+  </tr>
+  <tr>
+    <th>Cumulative amount of lump sum(s) repaid to date</th>
+    <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+  </tr>
+<% end %>
