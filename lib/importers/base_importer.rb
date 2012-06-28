@@ -1,4 +1,5 @@
 require 'csv'
+require 'csv_progress_bar'
 
 class BaseImporter
   class << self
@@ -30,6 +31,7 @@ class BaseImporter
 
     File.open(csv_path, "r:utf-8") do |file|
       csv = CSV.new(file, headers: true)
+      csv.extend(CSVProgressBar) unless Rails.env.test?
       csv.each do |row|
         values << new(row).values
 

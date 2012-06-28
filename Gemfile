@@ -15,6 +15,7 @@ gem "bourbon"
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 gem 'prawn'
+gem 'progressbar'
 
 group :passenger_compatibility do
   gem 'rake', '0.9.2'
