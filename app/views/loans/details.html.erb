@@ -107,3 +107,9 @@
     <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
   </tr>
 <% end %>
+
+<h3>Demand on Borrower</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_demand_to_borrower') do |table| %>
+  <%= table.row 'borrower_demanded_on' %>
+  <%= table.row 'borrower_demanded_amount' %>
+<% end %>
