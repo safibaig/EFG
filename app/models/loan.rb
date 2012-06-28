@@ -39,12 +39,12 @@ class Loan < ActiveRecord::Base
 
   scope :guaranteed, where(:state => Loan::Guaranteed)
 
-  scope :last_updated_between, lambda { |date1, date2|
-    where("updated_at >= ? AND updated_at <= ?", date1, date2)
+  scope :last_updated_between, lambda { |start_date, end_date|
+    where("updated_at >= ? AND updated_at <= ?", start_date, end_date)
   }
 
-  scope :maturity_date_between, lambda { |date1, date2|
-    where("maturity_date >= ? AND maturity_date <= ?", date1, date2)
+  scope :maturity_date_between, lambda { |start_date, end_date|
+    where("maturity_date >= ? AND maturity_date <= ?", start_date, end_date)
   }
 
   scope :by_reference, lambda { |reference|
