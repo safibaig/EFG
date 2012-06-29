@@ -2,6 +2,6 @@
   <h1>Loans: <%= params[:id].titleize %></h1>
 </div>
 
-<%= render :partial => "loans_listing", :locals => { :loans => @loans } %>
+<%= render partial: "loans_listing", locals: { loans: @loans } %>
 
 <%= will_paginate @loans %>

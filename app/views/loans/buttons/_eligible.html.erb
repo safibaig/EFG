@@ -2,5 +2,5 @@
   <%= link_to 'Loan Entry', new_loan_entry_path(@loan), class: 'btn btn-primary' %>
   <%= link_to 'Cancel Loan', new_loan_cancel_path(@loan), class: 'btn btn-danger' %>
   <%= link_to 'State Aid Calculation', edit_loan_state_aid_calculation_path(@loan), class: 'btn btn-info' %>
-  <%= link_to 'Data Protection and Disclosure Declaration', data_protection_declaration_documents_path(:format => :pdf), class: 'btn btn-info' %>
+  <%= link_to 'Data Protection and Disclosure Declaration', data_protection_declaration_documents_path(format: :pdf), class: 'btn btn-info' %>
 </div>

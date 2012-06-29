@@ -10,6 +10,6 @@ class LoanStatesController < ApplicationController
   end
 
   def show
-    @loans = current_lender.loans.with_state(params[:id]).paginate(:per_page => 50, :page => params[:page])
+    @loans = current_lender.loans.with_state(params[:id]).paginate(per_page: 50, page: params[:page])
   end
 end

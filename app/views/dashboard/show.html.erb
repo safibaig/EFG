@@ -46,7 +46,7 @@
   <h2><%= t('dashboard.utilisation.title')%></h2>
 
   <% @utilisation_presenter.each_loan_allocation do |loan_allocation_presenter, index| %>
-    <%= render "loan_allocation", :loan_allocation_presenter => loan_allocation_presenter, :index => index %>
+    <%= render "loan_allocation", loan_allocation_presenter: loan_allocation_presenter, index: index %>
   <% end %>
 </div>
 <% end %>

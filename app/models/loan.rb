@@ -31,13 +31,10 @@ class Loan < ActiveRecord::Base
   belongs_to :loan_allocation
   has_one :state_aid_calculation
 
-  scope :offered, where(:state => Offered)
-
-  scope :demanded, where(:state => Demanded)
-
-  scope :not_progressed, where(:state => [Loan::Eligible, Loan::Completed, Loan::Incomplete])
-
-  scope :guaranteed, where(:state => Loan::Guaranteed)
+  scope :offered,        where(state: Offered)
+  scope :demanded,       where(state: Demanded)
+  scope :not_progressed, where(state: [Loan::Eligible, Loan::Completed, Loan::Incomplete])
+  scope :guaranteed,     where(state: Loan::Guaranteed)
 
   scope :last_updated_between, lambda { |start_date, end_date|
     where("updated_at >= ? AND updated_at <= ?", start_date, end_date)
@@ -84,7 +81,7 @@ class Loan < ActiveRecord::Base
   format :remove_guarantee_outstanding_amount, with: MoneyFormatter.new
 
   def self.with_state(state)
-    where(:state => state)
+    where(state: state)
   end
 
   def cancelled_reason

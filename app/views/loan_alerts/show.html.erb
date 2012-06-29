@@ -6,6 +6,6 @@
   <h3><%== @title %></h3>
 </div>
 
-<%= render :partial => "loan_states/loans_listing", :locals => { :loans => @loans } %>
+<%= render partial: "loan_states/loans_listing", locals: { loans: @loans } %>
 
 <%= other_alert_links(params[:priority]) %>

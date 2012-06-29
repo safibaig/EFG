@@ -7,8 +7,8 @@ class LoanAllocation < ActiveRecord::Base
 
   # FIXME: update to use the correct loan states
   has_many :completed_loans,
-           :class_name => "Loan",
-           :conditions => ["loans.state IN (?)", [Loan::Guaranteed]]
+           class_name: "Loan",
+           conditions: ["loans.state IN (?)", [Loan::Guaranteed]]
 
   validates_presence_of :lender_id, strict: true
   validates_presence_of :allocation, :starts_on, :ends_on

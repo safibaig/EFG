@@ -4,7 +4,7 @@ require 'importers'
 describe LoanImporter do
 
   let!(:lender) { FactoryGirl.create(:lender, legacy_id: 9) }
-  let!(:loan_allocation) { FactoryGirl.create(:loan_allocation, :lender => lender, :legacy_id => 47) }
+  let!(:loan_allocation) { FactoryGirl.create(:loan_allocation, lender: lender, legacy_id: 47) }
 
   let(:csv_fixture_path) { Rails.root.join('spec/fixtures/import_data/loans.csv') }
 

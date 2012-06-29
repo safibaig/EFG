@@ -44,7 +44,7 @@ describe StateAidLetter do
     end
 
     it "should contain state aid calculation" do
-      pdf_content.should include(I18n.t('pdfs.state_aid_letter.state_aid', :amount => loan.state_aid))
+      pdf_content.should include(I18n.t('pdfs.state_aid_letter.state_aid', amount: loan.state_aid))
     end
 
   end

@@ -33,7 +33,7 @@ describe LoanOffersController do
     let(:current_user) { FactoryGirl.create(:user, lender: current_lender) }
     before { sign_in(current_user) }
 
-    let(:loan_offer) { double(LoanOffer, :loan => loan, :attributes= => nil, :save => false) }
+    let(:loan_offer) { double(LoanOffer, loan: loan, :attributes= => nil, save: false) }
     before { LoanOffer.stub!(:new).and_return(loan_offer) }
 
     def dispatch(parameters = {})

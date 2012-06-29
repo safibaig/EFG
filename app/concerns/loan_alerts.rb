@@ -65,7 +65,7 @@ module LoanAlerts
   # TODO: revisit the criteria for assumed repaid alert group and confirm if it needs further updates
   def assumed_repaid_offered_loans(start_date = AssumedRepaidOfferedStartDate, end_date = AssumedRepaidOfferedEndDate)
     current_lender.loans.
-      where(:state => [Loan::Incomplete, Loan::Completed, Loan::Offered]).
+      where(state: [Loan::Incomplete, Loan::Completed, Loan::Offered]).
       maturity_date_between(start_date, end_date).
       order(:updated_at)
   end

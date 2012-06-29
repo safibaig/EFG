@@ -62,7 +62,7 @@ class StateAidLetter < Prawn::Document
   end
 
   def state_aid_text
-    text I18n.t('pdfs.state_aid_letter.state_aid', :amount => @loan.state_aid)
+    text I18n.t('pdfs.state_aid_letter.state_aid', amount: @loan.state_aid)
     move_down 20
   end
 

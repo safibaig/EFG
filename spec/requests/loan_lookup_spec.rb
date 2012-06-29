@@ -44,7 +44,7 @@ describe "loan lookup" do
 
   def lookup_loan(reference)
     within "#loan_lookup" do
-      fill_in "lookup_term", :with => reference
+      fill_in "lookup_term", with: reference
       click_button "submit_lookup"
     end
   end

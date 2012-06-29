@@ -34,8 +34,8 @@ describe Loan do
   end
 
   describe ".last_updated_between scope" do
-    let!(:loan1) { FactoryGirl.create(:loan, :updated_at => 3.days.ago) }
-    let!(:loan2) { FactoryGirl.create(:loan, :updated_at => 1.day.ago) }
+    let!(:loan1) { FactoryGirl.create(:loan, updated_at: 3.days.ago) }
+    let!(:loan2) { FactoryGirl.create(:loan, updated_at: 1.day.ago) }
 
     it "returns loans last updated between the specified dates" do
       Loan.last_updated_between(2.days.ago, 1.day.ago).should == [loan2]
