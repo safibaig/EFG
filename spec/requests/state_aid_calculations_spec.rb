@@ -51,7 +51,7 @@ describe 'state aid calculations' do
     end
 
     it 'does not create a new record with invalid data' do
-      visit new_loan_state_aid_calculation_path(loan)
+      visit edit_loan_state_aid_calculation_path(loan)
 
       expect {
         click_button 'Submit'

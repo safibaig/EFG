@@ -44,8 +44,12 @@ describe LoanEntriesController do
     context "with a loan from the same lender" do
       let(:loan) { FactoryGirl.create(:loan, lender: current_lender) }
 
-      context "with a valid loan" do
+      context "when submitting a valid loan" do
         before { loan_entry.stub!(:save).and_return(true) }
+
+        def dispatch(parameters = {})
+          super(commit: 'Submit')
+        end
 
         it "should redirect to the loan page" do
           dispatch
@@ -53,8 +57,12 @@ describe LoanEntriesController do
         end
       end
 
-      context "with an invalid loan" do
+      context "when submitting an invalid loan" do
         before { loan_entry.stub!(:save).and_return(false) }
+
+        def dispatch(parameters = {})
+          super(commit: 'Submit')
+        end
 
         it "should render new action" do
           dispatch

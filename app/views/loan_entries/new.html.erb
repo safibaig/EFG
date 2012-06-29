@@ -39,7 +39,7 @@
     <%= f.input :interest_rate, as: :string %>
     <%= f.input :fees, as: :currency %>
     <%= f.input :previous_borrowing, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
-    <%= f.input :state_aid_value, as: :currency, unit: '€', disabled: true, value: '123.90' %>
+    <%= f.input :state_aid_value, as: :state_aid %>
     <%= f.input :state_aid_is_valid, as: :boolean %>
     <%= f.input :private_residence_charge_required, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :personal_guarantee_required, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
