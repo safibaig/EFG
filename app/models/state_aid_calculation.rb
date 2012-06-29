@@ -16,4 +16,32 @@ class StateAidCalculation < ActiveRecord::Base
   format :second_draw_amount, with: MoneyFormatter
   format :third_draw_amount, with: MoneyFormatter
   format :fourth_draw_amount, with: MoneyFormatter
+
+  GUARANTEE_RATE = 0.75
+  RISK_FACTOR = 0.3
+  PREMIUM_RATE = 0.02
+
+  def premiums
+    amount = initial_draw_amount
+    quarters = initial_draw_months / 3
+
+    (0..quarters).inject([]) do |memo, quarter|
+      outstanding_capital = amount - ((amount / quarters) * quarter)
+      memo[quarter] = outstanding_capital * PREMIUM_RATE / 4
+      memo
+    end
+  end
+
+  def total_premiums
+    premiums.sum
+  end
+
+  def state_aid_gbp
+    (initial_draw_amount * GUARANTEE_RATE * RISK_FACTOR) - total_premiums
+  end
+
+  def state_aid_eur
+    euro = state_aid_gbp * 1.1974
+    Money.new(euro.cents, 'EUR')
+  end
 end
