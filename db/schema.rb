@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120619084506) do
+ActiveRecord::Schema.define(:version => 20120629164945) do
 
   create_table "lenders", :force => true do |t|
     t.string   "name"
@@ -173,6 +173,7 @@ ActiveRecord::Schema.define(:version => 20120619084506) do
     t.decimal  "debtor_book_coverage",                              :precision => 5,  :scale => 2
     t.decimal  "debtor_book_topup",                                 :precision => 5,  :scale => 2
     t.integer  "loan_allocation_id"
+    t.integer  "state_aid_value"
   end
 
   add_index "loans", ["lender_id"], :name => "index_loans_on_lender_id"

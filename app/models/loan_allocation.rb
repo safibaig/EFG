@@ -13,6 +13,6 @@ class LoanAllocation < ActiveRecord::Base
   validates_presence_of :lender_id, strict: true
   validates_presence_of :allocation, :starts_on, :ends_on
 
-  format :allocation, with: MoneyFormatter
+  format :allocation, with: MoneyFormatter.new
 
 end

@@ -12,10 +12,10 @@ class StateAidCalculation < ActiveRecord::Base
   validates_presence_of :initial_draw_year, :initial_draw_amount,
     :initial_draw_months
 
-  format :initial_draw_amount, with: MoneyFormatter
-  format :second_draw_amount, with: MoneyFormatter
-  format :third_draw_amount, with: MoneyFormatter
-  format :fourth_draw_amount, with: MoneyFormatter
+  format :initial_draw_amount, with: MoneyFormatter.new
+  format :second_draw_amount, with: MoneyFormatter.new
+  format :third_draw_amount, with: MoneyFormatter.new
+  format :fourth_draw_amount, with: MoneyFormatter.new
 
   GUARANTEE_RATE = 0.75
   RISK_FACTOR = 0.3

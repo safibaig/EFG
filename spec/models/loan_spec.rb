@@ -95,4 +95,16 @@ describe Loan do
       loan.eligibility_check.should == result
     end
   end
+
+  describe "#state_aid_value" do
+    it "should return a EUR money object" do
+      loan = FactoryGirl.build(:loan, state_aid_value: '100.00')
+      loan.state_aid_value.should == Money.new(100_00, 'EUR')
+    end
+
+    it "return nil if not set" do
+      loan = FactoryGirl.build(:loan, state_aid_value: '')
+      loan.state_aid_value.should be_nil
+    end
+  end
 end

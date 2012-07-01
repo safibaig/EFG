@@ -54,13 +54,13 @@ class Loan < ActiveRecord::Base
   validates_inclusion_of :state, in: States, strict: true
   validates_presence_of :lender_id, strict: true
 
-  format :amount, with: MoneyFormatter
-  format :fees, with: MoneyFormatter
-  format :initial_draw_value, with: MoneyFormatter
-  format :turnover, with: MoneyFormatter
-  format :outstanding_amount, with: MoneyFormatter
+  format :amount, with: MoneyFormatter.new
+  format :fees, with: MoneyFormatter.new
+  format :initial_draw_value, with: MoneyFormatter.new
+  format :turnover, with: MoneyFormatter.new
+  format :outstanding_amount, with: MoneyFormatter.new
   format :repayment_duration, with: MonthDurationFormatter
-  format :borrower_demanded_amount, with: MoneyFormatter
+  format :borrower_demanded_amount, with: MoneyFormatter.new
   format :cancelled_on, with: QuickDateFormatter
   format :borrower_demanded_on, with: QuickDateFormatter
   format :trading_date, with: QuickDateFormatter
@@ -71,17 +71,18 @@ class Loan < ActiveRecord::Base
   format :repaid_on, with: QuickDateFormatter
   format :no_claim_on, with: QuickDateFormatter
   format :dti_demanded_on, with: QuickDateFormatter
-  format :dti_demand_outstanding, with: MoneyFormatter
-  format :dti_amount_claimed, with: MoneyFormatter
-  format :dti_interest, with: MoneyFormatter
-  format :current_refinanced_value, with: MoneyFormatter
-  format :final_refinanced_value, with: MoneyFormatter
-  format :borrower_demand_outstanding, with: MoneyFormatter
-  format :state_aid, with: MoneyFormatter
-  format :borrower_demanded_amount, with: MoneyFormatter
-  format :overdraft_limit, with: MoneyFormatter
-  format :invoice_discount_limit, with: MoneyFormatter
-  format :remove_guarantee_outstanding_amount, with: MoneyFormatter
+  format :dti_demand_outstanding, with: MoneyFormatter.new
+  format :dti_amount_claimed, with: MoneyFormatter.new
+  format :dti_interest, with: MoneyFormatter.new
+  format :current_refinanced_value, with: MoneyFormatter.new
+  format :final_refinanced_value, with: MoneyFormatter.new
+  format :borrower_demand_outstanding, with: MoneyFormatter.new
+  format :state_aid, with: MoneyFormatter.new
+  format :borrower_demanded_amount, with: MoneyFormatter.new
+  format :overdraft_limit, with: MoneyFormatter.new
+  format :invoice_discount_limit, with: MoneyFormatter.new
+  format :remove_guarantee_outstanding_amount, with: MoneyFormatter.new
+  format :state_aid_value, with: MoneyFormatter.new('EUR')
 
   def self.with_state(state)
     where(:state => state)
