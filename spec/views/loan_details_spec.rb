@@ -28,8 +28,7 @@ describe "loan details" do
   context "with a cancelled loan" do
     let(:loan) { FactoryGirl.build(:loan, :cancelled) }
 
-    pending "needs factory definition"
-    # include_examples 'rendering loan details'
+    include_examples 'rendering loan details'
   end
 
   context "with an incomplete loan" do

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120619084506) do
+ActiveRecord::Schema.define(:version => 20120702110134) do
 
   create_table "lenders", :force => true do |t|
     t.string   "name"
@@ -108,7 +108,7 @@ ActiveRecord::Schema.define(:version => 20120619084506) do
     t.integer  "legal_form_id"
     t.integer  "repayment_frequency_id"
     t.date     "cancelled_on"
-    t.integer  "cancelled_reason"
+    t.integer  "cancelled_reason_id"
     t.text     "cancelled_comment"
     t.date     "borrower_demanded_on"
     t.integer  "borrower_demanded_amount"

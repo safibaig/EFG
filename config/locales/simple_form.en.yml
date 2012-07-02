@@ -33,7 +33,7 @@ en:
         <<: *loan
 
       loan_cancel:
-        cancelled_reason: 'What is the reason for cancellation of the application?'
+        cancelled_reason_id: 'What is the reason for cancellation of the application?'
         cancelled_comment: 'Please enter any additional explanatory comments regarding the reason for cancellation of the application'
         cancelled_on: 'On what date was the application cancelled (dd/mm/yyyy)?'
 

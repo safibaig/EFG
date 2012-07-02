@@ -11,7 +11,7 @@ describe 'loan cancel' do
     click_link 'Cancel Loan'
 
     fill_in 'cancelled_on', '1/6/12'
-    choose_radio_button 'cancelled_reason', 4
+    choose_radio_button 'cancelled_reason_id', 4
     fill_in 'cancelled_comment', 'No comment'
 
     click_button 'Submit'
@@ -22,7 +22,7 @@ describe 'loan cancel' do
 
     loan.state.should == Loan::Cancelled
     loan.cancelled_on.should == Date.new(2012, 6, 1)
-    loan.cancelled_reason.should == 4
+    loan.cancelled_reason_id.should == 4
     loan.cancelled_comment.should == 'No comment'
   end
 
@@ -32,7 +32,7 @@ describe 'loan cancel' do
     click_link 'Cancel Loan'
 
     fill_in 'cancelled_on', '1/6/12'
-    choose_radio_button 'cancelled_reason', 4
+    choose_radio_button 'cancelled_reason_id', 4
     fill_in 'cancelled_comment', 'No comment'
 
     click_button 'Submit'

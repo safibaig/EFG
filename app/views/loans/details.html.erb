@@ -73,6 +73,13 @@
   <%= table.row 'updated_at', header: 'Last Modified On' %>
 <% end %>
 
+<h3>Application cancelled</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_cancel') do |table| %>
+  <%= table.row 'cancelled_reason', header: t('simple_form.labels.loan_cancel.cancelled_reason_id') %>
+  <%= table.row 'cancelled_comment' %>
+  <%= table.row 'cancelled_on' %>
+<% end %>
+
 <h3>Offer Scheme Facility</h3>
 <%= loan_details_table(@loan, 'simple_form.labels.loan_offer') do |table| %>
   <%= table.row 'facility_letter_sent' %>

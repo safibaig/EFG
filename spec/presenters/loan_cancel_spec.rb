@@ -9,7 +9,7 @@ describe LoanCancel do
     end
 
     it 'should be invalid without cancelled reason' do
-      loan_cancel.cancelled_reason = ''
+      loan_cancel.cancelled_reason_id = ''
       loan_cancel.should_not be_valid
     end
 

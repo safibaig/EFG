@@ -87,6 +87,10 @@ class Loan < ActiveRecord::Base
     where(:state => state)
   end
 
+  def cancelled_reason
+    CancelReason.find(cancelled_reason_id)
+  end
+
   def state_aid_value
     Money.new(0, 'EUR')
   end

@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :loan_cancel do
-    cancelled_reason CancelReason.find(1)
+    cancelled_reason_id 1
     cancelled_comment 'No comment'
     cancelled_on '01/06/2012'
 

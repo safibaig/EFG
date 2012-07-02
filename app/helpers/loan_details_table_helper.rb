@@ -2,6 +2,7 @@ module LoanDetailsTableHelper
   class LoanDetailsTable < ActionView::Base
     Formats = {
       ActiveSupport::TimeWithZone => ->(time) { time.strftime('%d/%m/%Y %H:%M:%S') },
+      CancelReason => :name.to_proc,
       Date => ->(date) { date.strftime('%d/%m/%Y') },
       FalseClass => 'No',
       InterestRateType => :name.to_proc,

@@ -36,6 +36,13 @@ FactoryGirl.define do
       state Loan::Eligible
     end
 
+    trait :cancelled do
+      state Loan::Cancelled
+      cancelled_reason_id 1
+      cancelled_comment 'Comment'
+      cancelled_on { Date.today }
+    end
+
     trait :completed do
       state Loan::Completed
     end

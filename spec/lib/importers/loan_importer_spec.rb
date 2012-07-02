@@ -106,7 +106,7 @@ describe LoanImporter do
         :reason_id                           => "26",
         :business_type                       => "4",
         :payment_period                      => "4",
-        :cancelled_reason                    => "1",
+        :cancelled_reason_id                 => "1",
         :loan_category_id                    => "20",
         :private_residence_charge_required   => "0",
         :personal_guarantee_required         => "0",
@@ -234,7 +234,7 @@ describe LoanImporter do
       loan.reason_id.should == 26
       loan.business_type.should == 4
       loan.payment_period.should == 4
-      loan.cancelled_reason.should == 1
+      loan.cancelled_reason_id.should == 1
       loan.loan_category_id.should == 20
       loan.private_residence_charge_required.should == false
       loan.personal_guarantee_required.should == false
