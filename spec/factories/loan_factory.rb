@@ -36,6 +36,10 @@ FactoryGirl.define do
       state Loan::Eligible
     end
 
+    trait :rejected do
+      state Loan::Rejected
+    end
+
     trait :cancelled do
       state Loan::Cancelled
       cancelled_reason_id 1

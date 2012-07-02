@@ -14,15 +14,13 @@ describe "loan details" do
   context "with a rejected loan" do
     let(:loan) { FactoryGirl.build(:loan, :rejected) }
 
-    pending "needs factory definition"
-    # include_examples 'rendering loan details'
+    include_examples 'rendering loan details'
   end
 
   context "with an eligible loan" do
     let(:loan) { FactoryGirl.build(:loan, :eligible) }
 
-    pending "needs factory definition"
-    # include_examples 'rendering loan details'
+    include_examples 'rendering loan details'
   end
 
   context "with a cancelled loan" do
