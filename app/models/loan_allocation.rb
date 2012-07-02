@@ -15,4 +15,9 @@ class LoanAllocation < ActiveRecord::Base
 
   format :allocation, with: MoneyFormatter.new
 
+  def title
+    start_date = starts_on.strftime('%B %Y')
+    end_date = ends_on.strftime('%B %Y')
+    [start_date, end_date].join(' - ')
+  end
 end

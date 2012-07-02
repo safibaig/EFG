@@ -94,7 +94,7 @@ class LoanImporter < BaseImporter
       "REASON"                        => :reason_id,
       "BUSINESS_TYPE"                 => :business_type,
       "PAYMENT_PERIOD"                => :payment_period,
-      "CANCEL_REASON"                 => :cancelled_reason,
+      "CANCEL_REASON"                 => :cancelled_reason_id,
       "LOAN_CATEGORY"                 => :loan_category_id,
       "PRIVATE_RES_CHG_REQD"          => :private_residence_charge_required,
       "PERSONAL_GUARANTEE_REQD"       => :personal_guarantee_required,

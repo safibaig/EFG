@@ -1,0 +1,16 @@
+<div class="loan-summary">
+  <dl>
+    <dt>State</dt>
+    <dd><%= loan.state.humanize %></dd>
+    <dt>Amount</dt>
+    <dd><%= loan.amount.try(:format) %></dd>
+    <dt>Last Modified</dt>
+    <dd><%= loan.updated_at.strftime('%d/%m/%Y %H:%M:%S') %></dd>
+    <dt>Business Name</dt>
+    <dd><%= loan_business_name(loan) %></dd>
+    <dt>User</dt>
+    <dd><%= loan.modified_by.try(:name) %></dd>
+  </dl>
+
+  <%= insert %>
+</div>

@@ -13,9 +13,7 @@ class LoanAllocationUtilisationPresenter
   end
 
   def title
-    start_date = @loan_allocation.starts_on.strftime('%B %Y')
-    end_date = @loan_allocation.ends_on.strftime('%B %Y')
-    [start_date, end_date].join(' - ')
+    @loan_allocation.title
   end
 
   def chart_colour

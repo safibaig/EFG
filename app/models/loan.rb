@@ -87,6 +87,16 @@ class Loan < ActiveRecord::Base
     where(:state => state)
   end
 
+  def cancelled_reason
+    CancelReason.find(cancelled_reason_id)
+  end
+
+  def state_aid_value
+    Money.new(0, 'EUR')
+  end
+
+  attr_writer :state_aid_value
+
   def has_state_aid_calculation?
     state_aid_calculation.present?
   end
@@ -123,5 +133,15 @@ class Loan < ActiveRecord::Base
   # TODO: implement legacy system reference format
   def reference
     super || id
+  end
+
+  # TODO: !
+  def created_by
+    User.first
+  end
+
+  # TODO: !
+  def modified_by
+    User.first
   end
 end

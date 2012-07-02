@@ -1,7 +1,6 @@
 <div class="page-header with-actions" id="welcome_message">
   <h1>Welcome back, <%= current_user.first_name %></h1>
   <p>Your last visit was <%= distance_of_time_in_words_to_now(current_user.last_sign_in_at) %> ago.</p>
-  <p>Since then, there have been <a href="#">3 new loan entries</a>, <a href="#">2 rejected loan requests</a> and <a href="#">1 newly offered loans</a>.</p>
 
   <ul id="actions">
     <li><%= link_to "Start New Loan Application", new_eligibility_check_path, class: "btn btn-primary" %></li>

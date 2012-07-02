@@ -107,4 +107,12 @@ describe Loan do
       loan.state_aid.should be_nil
     end
   end
+
+  describe "#created_by" do
+    pending "currently returns a canned response"
+  end
+
+  describe "#updated_by" do
+    pending "currently returns a canned response"
+  end
 end

@@ -1,98 +1,19 @@
-<div class="page-header with-actions">
-  <h1><%= loan_title(@loan) %></h1>
-
-  <div class="loan-summary">
-    <ul>
-      <li><strong>Borrower:</strong> <%= loan_business_name(@loan) %></li>
-      <li><strong>State:</strong> <%= @loan.state.titleize %></li>
-
-      <% if @loan.state == Loan::Rejected %>
-        <li>
-          <strong>Rejection reasons:</strong>
-          <ol>
-            <% @loan.eligibility_check.reasons.each do |reason| %>
-              <li><%= reason %></li>
-            <% end %>
-          </ol>
-        </li>
-      <% end %>
-
-      <li><strong>Last Updated:</strong> <%= @loan.updated_at.strftime("%d %B %Y") %></li>
-    </ul>
-
-    <div class="form-actions">
-      <%= render @loan.state %>
-    </div>
-  </div>
-
+<div class="page-header">
+  <h1><%= loan_title('Loan Summary', @loan) %></h1>
 </div>
 
-<table class="table table-striped">
-  <tbody>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.viable_proposition' %></th>
-      <td><%= humanize_boolean @loan.viable_proposition %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.would_you_lend' %></th>
-      <td><%= humanize_boolean @loan.would_you_lend %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.collateral_exhausted' %></th>
-      <td><%= humanize_boolean @loan.collateral_exhausted %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.amount' %></th>
-      <td><%= @loan.amount.format %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.lender_cap_id' %></th>
-      <td><%= @loan.lender.name %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.repayment_duration' %></th>
-      <td><%= @loan.repayment_duration.format %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.turnover' %></th>
-      <td><%= @loan.turnover.format %></td>
-    </tr>
-    <% if @loan.trading_date.present? %>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.trading_date' %></th>
-      <td><%= @loan.trading_date.strftime('%d/%m/%Y') %></td>
-    </tr>
-    <% end %>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.sic_code' %></th>
-      <td><%= @loan.sic_code %></td>
-    </tr>
-    <% if @loan.loan_category.present? %>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.loan_category_id' %></th>
-      <td><%= @loan.loan_category.name %></td>
-    </tr>
-    <% end %>
-    <% if @loan.reason.present? %>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.reason_id' %></th>
-      <td><%= @loan.reason.name %></td>
-    </tr>
-    <% end %>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.previous_borrowing' %></th>
-      <td><%= humanize_boolean @loan.previous_borrowing %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.private_residence_charge_required' %></th>
-      <td><%= humanize_boolean @loan.private_residence_charge_required %></td>
-    </tr>
-    <tr>
-      <th><%= t 'simple_form.labels.loan_eligibility_check.personal_guarantee_required' %></th>
-      <td><%= humanize_boolean @loan.personal_guarantee_required %></td>
-    </tr>
-  </tbody>
-</table>
+<%= loan_summary(@loan) do %>
+  <div class="form-actions">
+    <%= link_to 'Loan Details', details_loan_path(@loan), class: 'btn' %>
+    <%= render "loans/buttons/#{@loan.state}" %>
+  </div>
+<% end %>
 
-
-<%= render @loan.state %>
+<% if @loan.state == Loan::Rejected %>
+  <h3>Rejection Reasons</h3>
+  <ol>
+    <% @loan.eligibility_check.reasons.each do |reason| %>
+      <li><%= reason %></li>
+    <% end %>
+  </ol>
+<% end %>

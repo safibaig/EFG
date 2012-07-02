@@ -1,0 +1,158 @@
+<div class="page-header">
+  <h1><%= loan_title('Loan Details', @loan) %></h1>
+</div>
+
+<%= loan_summary(@loan) do %>
+  <div class="form-actions">
+    <%= link_to 'Loan Summary', loan_path(@loan), class: 'btn' %>
+  </div>
+<% end %>
+
+<h3>Eligibility and Loan Entry</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_entry') do |table| %>
+  <%= table.row 'lender', header: 'What is the name of the lender organisation?' %>
+  <%= table.row 'reference', header: 'System Generated Identification Reference' %>
+  <%= table.row 'declaration_signed' %>
+  <%= table.row 'business_name' %>
+  <%= table.row 'trading_name' %>
+  <%= table.row 'legal_form', header: t('simple_form.labels.loan_entry.legal_form_id') %>
+  <%= table.row 'company_registration' %>
+  <%= table.row 'turnover' %>
+  <%= table.row 'trading_date' %>
+  <%= table.row 'postcode' %>
+  <%= table.row 'branch_sortcode' %>
+  <%= table.row 'amount' %>
+  <%= table.row 'repayment_duration' %>
+  <%= table.row 'repayment_frequency', header: t('simple_form.labels.loan_entry.repayment_frequency_id') %>
+  <%= table.row 'maturity_date' %>
+  <%= table.row 'loan_allocation', header: t('simple_form.labels.loan_entry.loan_allocation_id') %>
+
+  <% if @loan.loan_allocation %>
+    <tr>
+      <th>Guarantee Rate</th>
+      <td><%= @loan.loan_allocation.guarantee_rate %>%</td>
+    </tr>
+    <tr>
+      <th>Premium Rate</th>
+      <td><%= @loan.loan_allocation.premium_rate %>%</td>
+    </tr>
+  <% end %>
+
+  <%= table.row 'sic_code' %>
+  <%= table.row 'sic_code_description' %>
+  <tr>
+    <th>Other Business Activities Not Elsewhere Classified</th>
+    <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+  </tr>
+  <%= table.row 'loan_category', header: t('simple_form.labels.loan_entry.loan_category_id') %>
+  <%= table.row 'interest_rate_type', header: t('simple_form.labels.loan_entry.interest_rate_type_id') %>
+  <%= table.row 'interest_rate' %>
+  <%= table.row 'fees' %>
+  <%= table.row 'previous_borrowing', header: t('simple_form.labels.loan_eligibility_check.previous_borrowing') %>
+  <%= table.row 'viable_proposition', header: t('simple_form.labels.loan_eligibility_check.viable_proposition') %>
+  <%= table.row 'would_you_lend', header: t('simple_form.labels.loan_eligibility_check.would_you_lend') %>
+  <%= table.row 'collateral_exhausted', header: t('simple_form.labels.loan_eligibility_check.collateral_exhausted') %>
+  <tr>
+    <th>Is the intensity of Notified Aid calculated for this project less than 40% for non-Objective 1 loans or less than 60% for Objective 1 loans?</th>
+    <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+  </tr>
+  <%= table.row 'state_aid_value' %>
+  <%= table.row 'state_aid_is_valid' %>
+  <%= table.row 'generic1', header: 'Generic Lender Field 1' %>
+  <%= table.row 'generic2', header: 'Generic Lender Field 2' %>
+  <%= table.row 'generic3', header: 'Generic Lender Field 3' %>
+  <%= table.row 'generic4', header: 'Generic Lender Field 4' %>
+  <%= table.row 'generic5', header: 'Generic Lender Field 5' %>
+  <%= table.row 'town' %>
+  <%= table.row 'non_validated_postcode' %>
+  <%= table.row 'private_residence_charge_required', header: t('simple_form.labels.loan_eligibility_check.private_residence_charge_required') %>
+  <%= table.row 'personal_guarantee_required', header: t('simple_form.labels.loan_eligibility_check.personal_guarantee_required') %>
+  <%= table.row 'created_by', header: 'Created By' %>
+  <%= table.row 'created_at', header: 'Date and Time Created' %>
+  <%= table.row 'modified_by', header: 'Last Modified By' %>
+  <%= table.row 'updated_at', header: 'Last Modified On' %>
+<% end %>
+
+<h3>Application cancelled</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_cancel') do |table| %>
+  <%= table.row 'cancelled_reason', header: t('simple_form.labels.loan_cancel.cancelled_reason_id') %>
+  <%= table.row 'cancelled_comment' %>
+  <%= table.row 'cancelled_on' %>
+<% end %>
+
+<h3>Offer Scheme Facility</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_offer') do |table| %>
+  <%= table.row 'facility_letter_sent' %>
+  <%= table.row 'facility_letter_date' %>
+<% end %>
+
+<h3>Guarantee and Initial Draw</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_guarantee') do |table| %>
+  <%= table.row 'received_declaration' %>
+  <%= table.row 'first_pp_received' %>
+  <%= table.row 'signed_direct_debit_received' %>
+  <%= table.row 'initial_draw_date' %>
+  <%= table.row 'initial_draw_value' %>
+  <%= table.row 'initial_draw_value' %>
+  <tr>
+    <th>Cumulative amount drawn to date</th>
+    <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+  </tr>
+  <tr>
+    <th>Cumulative amount of lump sum(s) repaid to date</th>
+    <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+  </tr>
+<% end %>
+
+<h3>Demand on Borrower</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_demand_to_borrower') do |table| %>
+  <%= table.row 'borrower_demanded_on' %>
+  <%= table.row 'borrower_demanded_amount' %>
+<% end %>
+
+<h3>Remove Guarantee</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_remove') do |table| %>
+  <%= table.row 'remove_guarantee_outstanding_amount' %>
+  <%= table.row 'remove_guarantee_on' %>
+  <%= table.row 'remove_guarantee_reason' %>
+<% end %>
+
+<h3>Loan Repaid</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_repay') do |table| %>
+  <%= table.row 'repaid_on' %>
+<% end %>
+
+<h3>No Demand Made Against Government Guarantee</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_no_claim') do |table| %>
+  <%= table.row 'no_claim_on' %>
+<% end %>
+
+<h3>Demand against Government Guarantee</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_demand_against_government') do |table| %>
+  <%= table.row 'dti_demanded_on' %>
+  <%= table.row 'dti_demand_outstanding' %>
+  <%= table.row 'dti_ded_code' %>
+  <% # TODO: Include further DED association details. %>
+  <%= table.row 'dti_reason' %>
+<% end %>
+
+<h3>Make demand against Government Guarantee</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_settle_claim') do |table| %>
+  <%= table.row 'settled_on' %>
+  <% # TODO: Not sure where 2 more fields come from. %>
+<% end %>
+
+<h3>Recover</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_recovery') do |table| %>
+  <tr>
+    <th>Total of all previous recoveries</th>
+    <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+  </tr>
+  <%= table.row 'recovery_on' %>
+<% end %>
+
+<h3>Realise Money</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_realise') do |table| %>
+  <%= table.row 'realised_money_date' %>
+  <% # TODO: More Realised fields. %>
+<% end %>

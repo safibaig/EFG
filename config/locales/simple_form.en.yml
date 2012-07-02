@@ -33,7 +33,7 @@ en:
         <<: *loan
 
       loan_cancel:
-        cancelled_reason: 'What is the reason for cancellation of the application?'
+        cancelled_reason_id: 'What is the reason for cancellation of the application?'
         cancelled_comment: 'Please enter any additional explanatory comments regarding the reason for cancellation of the application'
         cancelled_on: 'On what date was the application cancelled (dd/mm/yyyy)?'
 
@@ -93,6 +93,11 @@ en:
       loan_repay:
         repaid_on: 'What was the date the facility was repaid by the borrower? (dd/mm/yyyy)'
 
+      loan_remove:
+        remove_guarantee_on: 'What was the date on which the Guarantee was removed in respect of this facility?'
+        remove_guarantee_outstanding_amount: 'What is the outstanding balance of the facility, as recorded by the Lender, at the date of removal of the Guarantee?'
+        remove_guarantee_reason: 'What was the reason for the removal of the Guarantee in respect of this facility?'
+
       loan_no_claim:
         no_claim_on: 'On what date was a decision made not to make Demand against the Guarantee? (dd/mm/yyyy)'
 
@@ -101,6 +106,15 @@ en:
         dti_demand_outstanding: 'What is the outstanding Scheme Facility Principal owed by the Borrower to the Lender upon which the Guaranteed Percentage will be calculated?'
         dti_ded_code: 'Please select the primary cause of business failure'
         dti_reason: 'Please provide any further information you consider appropriate to the reason for Demand against the Government Guarantee'
+
+      loan_settle_claim:
+        settled_on: 'What was the date that the Demand against the Government Guarantee was settled?'
+
+      loan_recovery:
+        recovery_on: 'Last amount recovered on'
+
+      loan_realise:
+        realised_money_date: 'What was the most recent date on which Realisations were received by the Government in respect of this facility?'
 
       search:
         sort_by: Sort By
