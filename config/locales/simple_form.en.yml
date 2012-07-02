@@ -93,6 +93,11 @@ en:
       loan_repay:
         repaid_on: 'What was the date the facility was repaid by the borrower? (dd/mm/yyyy)'
 
+      loan_remove:
+        remove_guarantee_on: 'What was the date on which the Guarantee was removed in respect of this facility?'
+        remove_guarantee_outstanding_amount: 'What is the outstanding balance of the facility, as recorded by the Lender, at the date of removal of the Guarantee?'
+        remove_guarantee_reason: 'What was the reason for the removal of the Guarantee in respect of this facility?'
+
       loan_no_claim:
         no_claim_on: 'On what date was a decision made not to make Demand against the Guarantee? (dd/mm/yyyy)'
 

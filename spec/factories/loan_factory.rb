@@ -67,6 +67,13 @@ FactoryGirl.define do
       maturity_date { 10.years.from_now }
     end
 
+    trait :removed do
+      state Loan::Removed
+      remove_guarantee_outstanding_amount Money.new(10_000_00)
+      remove_guarantee_on { Date.today }
+      remove_guarantee_reason 'reason'
+    end
+
     trait :repaid do
       state Loan::Repaid
       repaid_on { Date.today }

@@ -110,6 +110,13 @@
   <%= table.row 'borrower_demanded_amount' %>
 <% end %>
 
+<h3>Remove Guarantee</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_remove') do |table| %>
+  <%= table.row 'remove_guarantee_outstanding_amount' %>
+  <%= table.row 'remove_guarantee_on' %>
+  <%= table.row 'remove_guarantee_reason' %>
+<% end %>
+
 <h3>Loan Repaid</h3>
 <%= loan_details_table(@loan, 'simple_form.labels.loan_repay') do |table| %>
   <%= table.row 'repaid_on' %>
