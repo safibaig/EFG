@@ -26,14 +26,18 @@
   <%= table.row 'repayment_frequency', header: t('simple_form.labels.loan_entry.repayment_frequency_id') %>
   <%= table.row 'maturity_date' %>
   <%= table.row 'loan_allocation', header: t('simple_form.labels.loan_entry.loan_allocation_id') %>
-  <tr>
-    <th>Guarantee Rate</th>
-    <td><%= @loan.loan_allocation.guarantee_rate %>%</td>
-  </tr>
-  <tr>
-    <th>Premium Rate</th>
-    <td><%= @loan.loan_allocation.premium_rate %>%</td>
-  </tr>
+
+  <% if @loan.loan_allocation %>
+    <tr>
+      <th>Guarantee Rate</th>
+      <td><%= @loan.loan_allocation.guarantee_rate %>%</td>
+    </tr>
+    <tr>
+      <th>Premium Rate</th>
+      <td><%= @loan.loan_allocation.premium_rate %>%</td>
+    </tr>
+  <% end %>
+
   <%= table.row 'sic_code' %>
   <%= table.row 'sic_code_description' %>
   <tr>
