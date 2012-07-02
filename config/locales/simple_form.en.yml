@@ -107,6 +107,9 @@ en:
         dti_ded_code: 'Please select the primary cause of business failure'
         dti_reason: 'Please provide any further information you consider appropriate to the reason for Demand against the Government Guarantee'
 
+      loan_settle_claim:
+        settled_on: 'What was the date that the Demand against the Government Guarantee was settled?'
+
       search:
         sort_by: Sort By
         sort_order: Sort Order

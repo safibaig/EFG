@@ -93,5 +93,10 @@ FactoryGirl.define do
     trait :lender_demand do
       state Loan::LenderDemand
     end
+
+    trait :settled do
+      state Loan::Settled
+      settled_on { Date.today }
+    end
   end
 end
