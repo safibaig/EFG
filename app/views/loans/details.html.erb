@@ -109,3 +109,8 @@
   <%= table.row 'borrower_demanded_on' %>
   <%= table.row 'borrower_demanded_amount' %>
 <% end %>
+
+<h3>Loan Repaid</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_repay') do |table| %>
+  <%= table.row 'repaid_on' %>
+<% end %>

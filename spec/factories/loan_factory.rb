@@ -67,6 +67,11 @@ FactoryGirl.define do
       maturity_date { 10.years.from_now }
     end
 
+    trait :repaid do
+      state Loan::Repaid
+      repaid_on { Date.today }
+    end
+
     trait :demanded do
       state Loan::Demanded
       borrower_demanded_on { Date.today }
