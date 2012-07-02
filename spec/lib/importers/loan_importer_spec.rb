@@ -186,7 +186,7 @@ describe LoanImporter do
       loan.realised_money_date.should == Date.new(2007, 6, 30)
       loan.no_claim_on.should == Date.new(2010, 6, 30)
       loan.event_legacy_id.should == 18
-      loan.state_aid.should == Money.new(1471100)
+      loan.state_aid.should == Money.new(1471100, 'EUR')
       loan.previous_borrowing.should == true
       loan.would_you_lend.should == true
       loan.ar_timestamp.should == Time.gm(2006, 12, 11)

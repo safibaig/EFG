@@ -40,7 +40,7 @@ class LoanEntry
   attribute :interest_rate
   attribute :fees
   attribute :state_aid_is_valid
-  attribute :state_aid_value
+  attribute :state_aid
 
   validates_presence_of :business_name, :legal_form_id, :interest_rate_type_id,
                         :repayment_frequency_id, :postcode, :maturity_date,

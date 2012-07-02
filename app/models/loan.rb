@@ -77,12 +77,11 @@ class Loan < ActiveRecord::Base
   format :current_refinanced_value, with: MoneyFormatter.new
   format :final_refinanced_value, with: MoneyFormatter.new
   format :borrower_demand_outstanding, with: MoneyFormatter.new
-  format :state_aid, with: MoneyFormatter.new
+  format :state_aid, with: MoneyFormatter.new('EUR')
   format :borrower_demanded_amount, with: MoneyFormatter.new
   format :overdraft_limit, with: MoneyFormatter.new
   format :invoice_discount_limit, with: MoneyFormatter.new
   format :remove_guarantee_outstanding_amount, with: MoneyFormatter.new
-  format :state_aid_value, with: MoneyFormatter.new('EUR')
 
   def self.with_state(state)
     where(:state => state)

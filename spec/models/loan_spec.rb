@@ -96,15 +96,15 @@ describe Loan do
     end
   end
 
-  describe "#state_aid_value" do
+  describe "#state_aid" do
     it "should return a EUR money object" do
-      loan = FactoryGirl.build(:loan, state_aid_value: '100.00')
-      loan.state_aid_value.should == Money.new(100_00, 'EUR')
+      loan = FactoryGirl.build(:loan, state_aid: '100.00')
+      loan.state_aid.should == Money.new(100_00, 'EUR')
     end
 
     it "return nil if not set" do
-      loan = FactoryGirl.build(:loan, state_aid_value: '')
-      loan.state_aid_value.should be_nil
+      loan = FactoryGirl.build(:loan, state_aid: '')
+      loan.state_aid.should be_nil
     end
   end
 end

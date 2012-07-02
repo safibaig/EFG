@@ -79,7 +79,7 @@ class InformationDeclaration < Prawn::Document
       [ row_description(:loan_category_id), @loan.loan_category.try(:name) ],
       [ row_description(:reason_id), @loan.reason.try(:name) ],
       [ row_description(:previous_borrowing), @loan.previous_borrowing? ? "Yes" : "No" ],
-      [ row_description(:state_aid_value), @loan.state_aid.try(:format) ],
+      [ row_description(:state_aid), @loan.state_aid.try(:format) ],
       [ row_description(:state_aid_is_valid), @loan.state_aid_is_valid? ? "Yes" : "No" ]
     ]
 

@@ -56,4 +56,15 @@ describe StateAidCalculation do
       state_aid_calculation.state_aid_eur.should == Money.new(14_668_15, 'EUR')
     end
   end
+
+  describe "saving a state aid calculation" do
+    it "should store the state aid on the loan" do
+      state_aid_calculation = FactoryGirl.build(:state_aid_calculation, initial_draw_amount: Money.new(100_000_00), initial_draw_months: 120)
+      loan = state_aid_calculation.loan
+      state_aid_calculation.save
+
+      loan.reload
+      loan.state_aid.should == Money.new(14_668_15, 'EUR')
+    end
+  end
 end

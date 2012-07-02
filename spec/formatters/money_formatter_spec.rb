@@ -5,21 +5,21 @@ describe MoneyFormatter.new do
 
   describe '.format' do
     it 'returns a Money object' do
-      format(12345).should == Money.new(12345)
+      subject.format(12345).should == Money.new(12345)
     end
 
     it 'does not return a zero-value Money object' do
-      format(nil).should be_nil
+      subject.format(nil).should be_nil
     end
   end
 
   describe '.parse' do
     it 'returns an integer of pence' do
-      parse('123.45').should == 12345
+      subject.parse('123.45').should == 12345
     end
 
     it 'returns nil for a blank value' do
-      parse('').should be_nil
+      subject.parse('').should be_nil
     end
   end
 end

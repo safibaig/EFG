@@ -44,4 +44,9 @@ class StateAidCalculation < ActiveRecord::Base
     euro = state_aid_gbp * 1.1974
     Money.new(euro.cents, 'EUR')
   end
+
+  after_save do |calculation|
+    calculation.loan.state_aid = state_aid_eur
+    calculation.loan.save
+  end
 end
