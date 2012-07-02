@@ -103,5 +103,10 @@ FactoryGirl.define do
       state Loan::Recovered
       recovery_on { Date.today }
     end
+
+    trait :realised do
+      state Loan::Realised
+      realised_money_date { Date.today }
+    end
   end
 end

@@ -113,6 +113,9 @@ en:
       loan_recovery:
         recovery_on: 'Last amount recovered on'
 
+      loan_realise:
+        realised_money_date: 'What was the most recent date on which Realisations were received by the Government in respect of this facility?'
+
       search:
         sort_by: Sort By
         sort_order: Sort Order

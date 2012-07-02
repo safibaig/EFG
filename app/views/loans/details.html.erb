@@ -150,3 +150,9 @@
   </tr>
   <%= table.row 'recovery_on' %>
 <% end %>
+
+<h3>Realise Money</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_realise') do |table| %>
+  <%= table.row 'realised_money_date' %>
+  <% # TODO: More Realised fields. %>
+<% end %>
