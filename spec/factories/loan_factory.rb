@@ -85,6 +85,11 @@ FactoryGirl.define do
       borrower_demanded_amount Money.new(100000)
     end
 
+    trait :not_demanded do
+      state Loan::NotDemanded
+      no_claim_on { Date.today }
+    end
+
     trait :lender_demand do
       state Loan::LenderDemand
     end

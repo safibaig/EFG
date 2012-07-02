@@ -121,3 +121,8 @@
 <%= loan_details_table(@loan, 'simple_form.labels.loan_repay') do |table| %>
   <%= table.row 'repaid_on' %>
 <% end %>
+
+<h3>No Demand Made Against Government Guarantee</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_no_claim') do |table| %>
+  <%= table.row 'no_claim_on' %>
+<% end %>

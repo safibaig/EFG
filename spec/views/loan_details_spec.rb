@@ -70,8 +70,7 @@ describe "loan details" do
   context "with a not demanded loan" do
     let(:loan) { FactoryGirl.build(:loan, :not_demanded) }
 
-    pending "needs factory definition"
-    # include_examples 'rendering loan details'
+    include_examples 'rendering loan details'
   end
 
   context "with a demanded loan" do
