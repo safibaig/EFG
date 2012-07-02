@@ -110,6 +110,9 @@ en:
       loan_settle_claim:
         settled_on: 'What was the date that the Demand against the Government Guarantee was settled?'
 
+      loan_recovery:
+        recovery_on: 'Last amount recovered on'
+
       search:
         sort_by: Sort By
         sort_order: Sort Order

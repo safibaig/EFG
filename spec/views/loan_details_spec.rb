@@ -122,8 +122,7 @@ describe "loan details" do
   context "with a recovered loan" do
     let(:loan) { FactoryGirl.build(:loan, :recovered) }
 
-    pending "needs factory definition"
-    # include_examples 'rendering loan details'
+    include_examples 'rendering loan details'
   end
 
   context "with an incomplete legacy loan" do

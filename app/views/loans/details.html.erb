@@ -141,3 +141,12 @@
   <%= table.row 'settled_on' %>
   <% # TODO: Not sure where 2 more fields come from. %>
 <% end %>
+
+<h3>Recover</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_recovery') do |table| %>
+  <tr>
+    <th>Total of all previous recoveries</th>
+    <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+  </tr>
+  <%= table.row 'recovery_on' %>
+<% end %>
