@@ -11,7 +11,7 @@ class UtilisationPresenter
   end
 
   def has_allocations?
-    !@loan_allocations.empty?
+    @loan_allocations.any?
   end
 
 end
