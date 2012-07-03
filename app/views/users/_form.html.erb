@@ -1,3 +1,9 @@
-<%= f.input :first_name %>
-<%= f.input :last_name %>
-<%= f.input :email %>
+<%= simple_form_for(@user.becomes(User)) do |f| %>
+  <%= f.input :first_name %>
+  <%= f.input :last_name %>
+  <%= f.input :email %>
+
+  <div class="form-actions">
+    <%= f.button :submit, class: 'btn btn-primary' %>
+  </div>
+<% end %>

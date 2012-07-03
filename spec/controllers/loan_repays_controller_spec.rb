@@ -3,7 +3,7 @@ require 'spec_helper'
 describe LoanRepaysController do
   describe '#new' do
     let(:current_lender) { FactoryGirl.create(:lender) }
-    let(:current_user) { FactoryGirl.create(:user, lender: current_lender) }
+    let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
     before { sign_in(current_user) }
 
     def dispatch(params)
@@ -30,7 +30,7 @@ describe LoanRepaysController do
 
   describe '#create' do
     let(:current_lender) { FactoryGirl.create(:lender) }
-    let(:current_user) { FactoryGirl.create(:user, lender: current_lender) }
+    let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
     before { sign_in(current_user) }
 
     def dispatch(params = {})

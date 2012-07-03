@@ -4,7 +4,7 @@ describe UsersController do
   describe '#create' do
     let(:current_lender) { FactoryGirl.create(:lender) }
     let(:current_user) {
-      FactoryGirl.create(:user, lender: current_lender)
+      FactoryGirl.create(:lender_user, lender: current_lender)
     }
 
     before do
@@ -27,7 +27,7 @@ describe UsersController do
   describe '#show' do
     let(:current_lender) { FactoryGirl.create(:lender) }
     let(:current_user) {
-      FactoryGirl.create(:user, lender: current_lender)
+      FactoryGirl.create(:lender_user, lender: current_lender)
     }
 
     before do
@@ -39,7 +39,7 @@ describe UsersController do
     end
 
     it 'works with a user from the same lender' do
-      other_user = FactoryGirl.create(:user, lender: current_lender)
+      other_user = FactoryGirl.create(:lender_user, lender: current_lender)
 
       dispatch id: other_user.id
 
@@ -48,7 +48,7 @@ describe UsersController do
 
     it 'raises RecordNotFound for a user from another lender' do
       other_lender = FactoryGirl.create(:lender)
-      other_user = FactoryGirl.create(:user, lender: other_lender)
+      other_user = FactoryGirl.create(:lender_user, lender: other_lender)
 
       expect {
         dispatch id: other_user.id
@@ -59,7 +59,7 @@ describe UsersController do
   describe '#edit' do
     let(:current_lender) { FactoryGirl.create(:lender) }
     let(:current_user) {
-      FactoryGirl.create(:user, lender: current_lender)
+      FactoryGirl.create(:lender_user, lender: current_lender)
     }
 
     before do
@@ -71,7 +71,7 @@ describe UsersController do
     end
 
     it 'works with a user from the same lender' do
-      other_user = FactoryGirl.create(:user, lender: current_lender)
+      other_user = FactoryGirl.create(:lender_user, lender: current_lender)
 
       dispatch id: other_user.id
 
@@ -80,7 +80,7 @@ describe UsersController do
 
     it 'raises RecordNotFound for a user from another lender' do
       other_lender = FactoryGirl.create(:lender)
-      other_user = FactoryGirl.create(:user, lender: other_lender)
+      other_user = FactoryGirl.create(:lender_user, lender: other_lender)
 
       expect {
         dispatch id: other_user.id
@@ -91,7 +91,7 @@ describe UsersController do
   describe '#update' do
     let(:current_lender) { FactoryGirl.create(:lender) }
     let(:current_user) {
-      FactoryGirl.create(:user, lender: current_lender)
+      FactoryGirl.create(:lender_user, lender: current_lender)
     }
 
     before do
@@ -103,7 +103,7 @@ describe UsersController do
     end
 
     it 'works with a user from the same lender' do
-      other_user = FactoryGirl.create(:user, lender: current_lender)
+      other_user = FactoryGirl.create(:lender_user, lender: current_lender)
 
       dispatch id: other_user.id
 
@@ -112,7 +112,7 @@ describe UsersController do
 
     it 'raises RecordNotFound for a user from another lender' do
       other_lender = FactoryGirl.create(:lender)
-      other_user = FactoryGirl.create(:user, lender: other_lender)
+      other_user = FactoryGirl.create(:lender_user, lender: other_lender)
 
       expect {
         dispatch id: other_user.id

@@ -5,7 +5,7 @@ require 'memorable_password'
 
 describe "user management" do
   let(:current_lender) { FactoryGirl.create(:lender) }
-  let(:current_user) { FactoryGirl.create(:user, lender: current_lender) }
+  let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
 
   before do
     login_as(current_user, scope: :user)
@@ -14,19 +14,19 @@ describe "user management" do
   it "should show a list of lender users" do
     other_lender = FactoryGirl.create(:lender)
 
-    FactoryGirl.create(:user,
+    FactoryGirl.create(:lender_user,
       lender: current_lender,
       first_name: 'Florine',
       last_name: 'Flatley',
       email: 'flatley_florine@example.com'
     )
-    FactoryGirl.create(:user,
+    FactoryGirl.create(:lender_user,
       lender: current_lender,
       first_name: 'Roselyn',
       last_name: 'Morissette',
       email: 'morissette.roselyn@example.com'
     )
-    FactoryGirl.create(:user,
+    FactoryGirl.create(:lender_user,
       lender: other_lender,
       first_name: 'Bob',
       last_name: 'Flemming',
@@ -64,7 +64,7 @@ describe "user management" do
   end
 
   it "editing a user" do
-    FactoryGirl.create(:user,
+    FactoryGirl.create(:lender_user,
       lender: current_lender,
       first_name: 'Jarred',
       last_name: 'Paucek',

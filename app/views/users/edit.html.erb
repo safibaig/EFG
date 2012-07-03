@@ -2,10 +2,4 @@
   <h1>Edit User</h1>
 </div>
 
-<%= simple_form_for(@user) do |f| %>
-  <%= render 'form', f: f %>
-
-  <div class="form-actions">
-    <%= f.button :submit, class: 'btn btn-primary' %>
-  </div>
-<% end %>
+<%= render 'form' %>

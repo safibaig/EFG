@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   end
 
   def new
-    @user = User.new
+    @user = current_lender.users.new
   end
 
   def create

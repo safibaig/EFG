@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "search" do
   let(:current_lender) { FactoryGirl.create(:lender) }
-  let(:current_user) { FactoryGirl.create(:user, lender: current_lender) }
+  let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
   let!(:loan1) { FactoryGirl.create(:loan, :guaranteed, reference: "9BCI17R-01", lender: current_lender) }
   let!(:loan2) { FactoryGirl.create(:loan, :guaranteed, reference: "9BCI17R-02", lender: current_lender, business_name: "Inter-slice") }
 
