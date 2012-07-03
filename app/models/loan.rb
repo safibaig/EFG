@@ -138,4 +138,9 @@ class Loan < ActiveRecord::Base
   def modified_by
     User.first
   end
+
+  def premium_schedule
+    return nil unless self.state_aid_calculation
+    PremiumSchedule.new(self.state_aid_calculation)
+  end
 end

@@ -1,0 +1,89 @@
+<div class="page-header">
+  <h1><%= loan_title('Premium Schedule', @loan) %></h1>
+</div>
+
+<%= loan_summary(@loan) %>
+
+<h4>Lender: <%= @loan.lender.name %></h4>
+
+<p>This Schedule itemises the cost of the Premiums that you (the Borrower) will be paying to the Government each quarter for the duration of this loan. The first Direct Debit payment is due shortly after the loan is drawn down. Future payments are collected quarterly, with collection being made on or around the 14th of the month.</p>
+
+<p>You must include a completed Direct Debit Mandate when you accept the loan you have been offered.</p>
+
+<dl>
+  <dt>Amount of Initial Premium Payment</dt>
+  <dd><%= @premium_schedule.premiums.first.format %></dd>
+  <dt>Month of Second Direct Debit Premium Collection</dt>
+  <dd></dd>
+  <dt>Subsequent Direct Debit Premiums to be Collected</dt>
+  <dd><%= @premium_schedule.total_subsequent_premiums.format %></dd>
+  <dt>Total Premium Payable over the life of the loan</dt>
+  <dd><%= @premium_schedule.total_premiums.format %></dd>
+</dl>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Premium No.</th>
+      <th>Premium Amount</th>
+  </thead>
+  <tbody>
+    <% @premium_schedule.subsequent_premiums.each.with_index do |premium, index| %>
+      <tr>
+        <td><%= index + 2 %></td>
+        <td><%= premium.format %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h3>Schedule Based on the Following Information</h3>
+
+<table class="table table-striped">
+  <tbody>
+    <tr>
+      <th>What is the expected year of the initial draw? (yyyy)</th>
+      <td><%= @premium_schedule.initial_draw_year %></td>
+    </tr>
+    <tr>
+      <th>What is the date of the Premium Collection point from which this schedule applies? (dd/mm/yyyy)</th>
+      <td><%= @premium_schedule.initial_draw_date %></td>
+    </tr>
+    <tr>
+      <th>What is the amount of the initial draw?</th>
+      <td><%= @premium_schedule.initial_draw_amount.try(:format) %></td>
+    </tr>
+    <tr>
+      <th>What is the loan term in months remaining at this Premium Collection point?</th>
+      <td><%= @premium_schedule.initial_draw_months %></td>
+    </tr>
+    <tr>
+      <th>What is the length of the initial capital repayment holiday? (Months) (Note that if the facility is being provided on interest-only terms then the value entered here should be equal to the full term of the facility)</th>
+      <td><%= @premium_schedule.initial_capital_repayment_holiday %></td>
+    </tr>
+    <tr>
+      <th>What is the amount of the additional draw? (Second tranche)</th>
+      <td><%= @premium_schedule.second_draw_amount %></td>
+    </tr>
+    <tr>
+      <th>What is the number of months (from this Premium Collection point) to second tranche drawdown?</th>
+      <td><%= @premium_schedule.second_draw_months %></td>
+    </tr>
+    <tr>
+      <th>What is the amount of the additional draw? (Third tranche)</th>
+      <td><%= @premium_schedule.third_draw_amount %></td>
+    </tr>
+    <tr>
+      <th>What is the number of months (from this Premium Collection point) to third tranche drawdown?</th>
+      <td><%= @premium_schedule.third_draw_months %></td>
+    </tr>
+    <tr>
+      <th>What is the amount of the additional draw? (Fourth tranche)</th>
+      <td><%= @premium_schedule.fourth_draw_amount %></td>
+    </tr>
+    <tr>
+      <th>What is the number of months (from this Premium Collection point) to fourth tranche drawdown?</th>
+      <td><%= @premium_schedule.fourth_draw_months %></td>
+    </tr>
+  </tbody>
+</table>
