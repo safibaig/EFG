@@ -3,7 +3,7 @@ class Search
   include ActiveModel::Conversion
 
   Filters = %w(business_name trading_name company_registration state).freeze
-  SortableAttributes = %w(business_name trading_name amount postcode maturity_date updated_at modified_by_legacy_id).freeze
+  SortableAttributes = %w(business_name trading_name amount postcode maturity_date updated_at).freeze
   SortOrders = {'Ascending' => 'ASC', 'Descending' => 'DESC'}.freeze
   DefaultSortBy = 'updated_at'.freeze
   DefaultSortOrder = 'DESC'.freeze
