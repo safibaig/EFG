@@ -117,13 +117,6 @@ describe Search do
       search('sort_by' => 'updated_at').results.should == [loan1, loan2]
     end
 
-    it "should sort loans by modified_by_legacy_id" do
-      loan1.update_attribute(:modified_by_legacy_id, 2)
-      loan2.update_attribute(:modified_by_legacy_id, 1)
-
-      search('sort_by' => 'modified_by_legacy_id').results.should == [loan1, loan2]
-    end
-
     it "should sort loans by amount in ascending order" do
       loan1.update_attribute(:amount, Money.new(1000))
       loan2.update_attribute(:amount, Money.new(500))
