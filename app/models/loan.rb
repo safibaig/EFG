@@ -91,12 +91,6 @@ class Loan < ActiveRecord::Base
     CancelReason.find(cancelled_reason_id)
   end
 
-  def state_aid_value
-    Money.new(0, 'EUR')
-  end
-
-  attr_writer :state_aid_value
-
   def has_state_aid_calculation?
     state_aid_calculation.present?
   end
