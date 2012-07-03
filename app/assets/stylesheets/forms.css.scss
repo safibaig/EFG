@@ -13,8 +13,11 @@
 .quick_date input,
 .sic_code input,
 .state_aid input.string {
-  margin-right: 10px;
   width: 100px;
+}
+
+.state_aid input.string {
+  margin-right: 10px;
 }
 
 .duration input {
