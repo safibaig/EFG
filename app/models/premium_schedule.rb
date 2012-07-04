@@ -45,4 +45,12 @@ class PremiumSchedule
   def total_premiums
     premiums.sum
   end
+
+  # This returns a string because its not really a valid date and it doesn't
+  # have a day. We could just pick an arbitary day, but then it might be
+  # tempting to (incorrectly) format it in the view with the day shown.
+  def second_premium_collection_month
+    return unless initial_draw_date
+    initial_draw_date.advance(months: 3).strftime('%m/%Y')
+  end
 end

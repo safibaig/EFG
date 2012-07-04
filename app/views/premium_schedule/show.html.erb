@@ -14,7 +14,7 @@
   <dt>Amount of Initial Premium Payment</dt>
   <dd><%= @premium_schedule.premiums.first.format %></dd>
   <dt>Month of Second Direct Debit Premium Collection</dt>
-  <dd></dd>
+  <dd><%= @premium_schedule.second_premium_collection_month %></dd>
   <dt>Subsequent Direct Debit Premiums to be Collected</dt>
   <dd><%= @premium_schedule.total_subsequent_premiums.format %></dd>
   <dt>Total Premium Payable over the life of the loan</dt>
