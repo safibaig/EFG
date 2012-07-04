@@ -115,4 +115,19 @@ describe Loan do
   describe "#updated_by" do
     pending "currently returns a canned response"
   end
+
+  describe "#premium_schedule" do
+    it "should return a PremiumSchedule for the loan" do
+      loan = FactoryGirl.build(:loan)
+      loan.build_state_aid_calculation
+
+      loan.premium_schedule.should be_instance_of(PremiumSchedule)
+      loan.premium_schedule.loan.should == loan
+    end
+
+    it "should return nil if it doesn't have a state aid calculation" do
+      loan = FactoryGirl.build(:loan)
+      loan.premium_schedule.should be_nil
+    end
+  end
 end

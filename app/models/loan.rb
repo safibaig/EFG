@@ -29,7 +29,7 @@ class Loan < ActiveRecord::Base
 
   belongs_to :lender
   belongs_to :loan_allocation
-  has_one :state_aid_calculation
+  has_one :state_aid_calculation, inverse_of: :loan
 
   scope :offered,        where(state: Offered)
   scope :demanded,       where(state: Demanded)
@@ -134,5 +134,10 @@ class Loan < ActiveRecord::Base
   # TODO: !
   def modified_by
     User.first
+  end
+
+  def premium_schedule
+    return nil unless self.state_aid_calculation
+    PremiumSchedule.new(self.state_aid_calculation)
   end
 end

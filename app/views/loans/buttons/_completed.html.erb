@@ -1,5 +1,6 @@
 <div class="form-actions">
   <%= link_to 'Offer Scheme Facility', new_loan_offer_path(@loan), class: 'btn btn-primary' %>
+  <%= premium_schedule_link(@loan) %>
   <%= link_to 'View Information Declaration', information_declaration_document_path(@loan, format: :pdf), class: 'btn btn-info' %>
   <%= state_aid_letter_link(@loan) %>
 </div>
