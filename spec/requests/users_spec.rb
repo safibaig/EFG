@@ -4,82 +4,141 @@ require 'spec_helper'
 require 'memorable_password'
 
 describe "user management" do
-  let(:current_lender) { FactoryGirl.create(:lender) }
-  let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
+  shared_examples 'creating a user' do
+    it "creating a new user" do
+      MemorablePassword.stub!(:generate).and_return('correct horse battery staple')
 
-  before do
-    login_as(current_user, scope: :user)
+      visit root_path
+      click_link 'Manage Users'
+
+      click_link 'New User'
+
+      fill_in 'First name', with: 'Aniya'
+      fill_in 'Last name', with: 'Kshlerin'
+      fill_in 'Email', with: 'kshlerin.aniya@example.com'
+
+      click_button 'Create User'
+
+      last_user = User.last
+      last_user.should be_a(user_klass)
+
+      page.should have_content('Aniya Kshlerin')
+      page.should have_content('kshlerin.aniya@example.com')
+      page.should have_content('correct horse battery staple')
+    end
   end
 
-  it "should show a list of lender users" do
-    other_lender = FactoryGirl.create(:lender)
+  context 'CfeUser' do
+    let(:user_klass) { CfeUser }
+    let(:current_user) { FactoryGirl.create(:cfe_user) }
 
-    FactoryGirl.create(:lender_user,
-      lender: current_lender,
-      first_name: 'Florine',
-      last_name: 'Flatley',
-      email: 'flatley_florine@example.com'
-    )
-    FactoryGirl.create(:lender_user,
-      lender: current_lender,
-      first_name: 'Roselyn',
-      last_name: 'Morissette',
-      email: 'morissette.roselyn@example.com'
-    )
-    FactoryGirl.create(:lender_user,
-      lender: other_lender,
-      first_name: 'Bob',
-      last_name: 'Flemming',
-      email: 'bob.flemming@example.com'
-    )
+    before do
+      login_as(current_user, scope: :user)
+    end
 
-    visit root_path
-    click_link 'Manage Users'
+    it_behaves_like 'creating a user'
 
-    page.should have_content('Florine Flatley')
-    page.should have_content('flatley_florine@example.com')
-    page.should have_content('Roselyn Morissette')
-    page.should have_content('morissette.roselyn@example.com')
-    page.should_not have_content('Bob Flemming')
-    page.should_not have_content('bob.flemming@example.com')
+    it "lists CfE users" do
+      FactoryGirl.create(:cfe_user,
+        first_name: 'Florine',
+        last_name: 'Flatley',
+        email: 'flatley_florine@example.com'
+      )
+      FactoryGirl.create(:lender_user,
+        first_name: 'Roselyn',
+        last_name: 'Morissette',
+        email: 'morissette.roselyn@example.com'
+      )
+
+      visit root_path
+      click_link 'Manage Users'
+
+      page.should have_content('Florine Flatley')
+      page.should have_content('flatley_florine@example.com')
+      page.should_not have_content('Roselyn Morissette')
+      page.should_not have_content('morissette.roselyn@example.com')
+    end
+
+    it "editing a user" do
+      FactoryGirl.create(:cfe_user,
+        first_name: 'Jarred',
+        last_name: 'Paucek',
+        email: 'jarred_paucek@example.com'
+      )
+
+      visit root_path
+      click_link 'Manage Users'
+
+      click_link 'Jarred Paucek'
+
+      fill_in 'First name', with: 'Jarred'
+      fill_in 'Last name', with: 'Paucék'
+      click_button 'Update User'
+
+      page.should have_content('Jarred Paucék')
+    end
   end
 
-  it "creating a new user" do
-    MemorablePassword.stub!(:generate).and_return('correct horse battery staple')
+  context 'LenderUser' do
+    let(:user_klass) { LenderUser }
+    let(:current_lender) { FactoryGirl.create(:lender) }
+    let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
 
-    visit root_path
-    click_link 'Manage Users'
+    before { login_as(current_user, scope: :user) }
 
-    click_link 'New User'
+    it_behaves_like 'creating a user'
 
-    fill_in 'First name', with: 'Aniya'
-    fill_in 'Last name', with: 'Kshlerin'
-    fill_in 'Email', with: 'kshlerin.aniya@example.com'
+    it "should show a list of the current lender's users" do
+      other_lender = FactoryGirl.create(:lender)
 
-    click_button 'Create User'
+      FactoryGirl.create(:lender_user,
+        lender: current_lender,
+        first_name: 'Florine',
+        last_name: 'Flatley',
+        email: 'flatley_florine@example.com'
+      )
+      FactoryGirl.create(:lender_user,
+        lender: current_lender,
+        first_name: 'Roselyn',
+        last_name: 'Morissette',
+        email: 'morissette.roselyn@example.com'
+      )
+      FactoryGirl.create(:lender_user,
+        lender: other_lender,
+        first_name: 'Bob',
+        last_name: 'Flemming',
+        email: 'bob.flemming@example.com'
+      )
 
-    page.should have_content('Aniya Kshlerin')
-    page.should have_content('kshlerin.aniya@example.com')
-    page.should have_content('correct horse battery staple')
-  end
+      visit root_path
+      click_link 'Manage Users'
 
-  it "editing a user" do
-    FactoryGirl.create(:lender_user,
-      lender: current_lender,
-      first_name: 'Jarred',
-      last_name: 'Paucek',
-      email: 'jarred_paucek@example.com'
-    )
+      page.should have_content('Florine Flatley')
+      page.should have_content('flatley_florine@example.com')
+      page.should have_content('Roselyn Morissette')
+      page.should have_content('morissette.roselyn@example.com')
+      page.should_not have_content('Bob Flemming')
+      page.should_not have_content('bob.flemming@example.com')
+    end
 
-    visit root_path
-    click_link 'Manage Users'
+    it "editing a user" do
+      FactoryGirl.create(:lender_user,
+        lender: current_lender,
+        first_name: 'Jarred',
+        last_name: 'Paucek',
+        email: 'jarred_paucek@example.com'
+      )
 
-    click_link 'Jarred Paucek'
+      visit root_path
+      click_link 'Manage Users'
 
-    fill_in 'First name', with: 'Jarred'
-    fill_in 'Last name', with: 'Paucék'
-    click_button 'Update User'
+      click_link 'Jarred Paucek'
 
-    page.should have_content('Jarred Paucék')
+      fill_in 'First name', with: 'Jarred'
+      fill_in 'Last name', with: 'Paucék'
+      click_button 'Update User'
+
+      page.should have_content('Jarred Paucék')
+    end
   end
 end

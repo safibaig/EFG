@@ -6,4 +6,8 @@ class CfeLender
   def loans
     Loan.scoped
   end
+
+  def users
+    CfeUser.scoped
+  end
 end
