@@ -2,6 +2,7 @@ class LoanCancelsController < ApplicationController
   def new
     @loan = current_lender.loans.find(params[:loan_id])
     @loan_cancel = LoanCancel.new(@loan)
+    enforce_create_permission(@loan_cancel)
   end
 
   def create

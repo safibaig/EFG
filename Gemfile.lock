@@ -41,6 +41,7 @@ GEM
     bourbon (2.1.0)
       sass (>= 3.1)
     builder (3.0.0)
+    canable (0.3.0)
     capybara (1.1.2)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -230,6 +231,7 @@ DEPENDENCIES
   bootstrap-will_paginate
   bourbon
   builder
+  canable
   capybara
   ci_reporter
   coffee-rails (~> 3.1.1)

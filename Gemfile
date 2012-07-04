@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '~> 3.1.1'
 gem 'mysql2'
 
+gem 'canable'
 gem 'devise'
 gem 'haddock'
 gem 'jquery-rails', "~> 1.0.19"

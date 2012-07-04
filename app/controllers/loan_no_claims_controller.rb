@@ -2,6 +2,7 @@ class LoanNoClaimsController < ApplicationController
   def new
     @loan = current_lender.loans.find(params[:loan_id])
     @loan_no_claim = LoanNoClaim.new(@loan)
+    enforce_create_permission(@loan_no_claim)
   end
 
   def create

@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include Canable::Cans
+
   devise :database_authenticatable,
          :recoverable, :trackable, :validatable
 
