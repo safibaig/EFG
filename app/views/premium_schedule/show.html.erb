@@ -26,12 +26,16 @@
     <tr>
       <th>Premium No.</th>
       <th>Premium Amount</th>
+      <th>Premium No.</th>
+      <th>Premium Amount</th>
   </thead>
   <tbody>
-    <% @premium_schedule.subsequent_premiums.each.with_index do |premium, index| %>
+    <% premiums_table_rows(@premium_schedule.subsequent_premiums).each do |(index1, premium1), (index2, premium2)| %>
       <tr>
-        <td><%= index + 2 %></td>
-        <td><%= premium.format %></td>
+        <td><%= index1 + 1 if index1 %></td>
+        <td><%= premium1.format if premium1 %></td>
+        <td><%= index2 + 1 if index2 %></td>
+        <td><%= premium2.format if premium2 %></td>
       </tr>
     <% end %>
   </tbody>
