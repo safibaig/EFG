@@ -29,7 +29,7 @@ class Loan < ActiveRecord::Base
 
   belongs_to :lender
   belongs_to :loan_allocation
-  has_one :state_aid_calculation
+  has_one :state_aid_calculation, inverse_of: :loan
 
   scope :offered, where(:state => Offered)
 
