@@ -5,7 +5,10 @@
 <%= loan_summary(@loan) do %>
   <div class="form-actions">
     <%= link_to 'Loan Details', details_loan_path(@loan), class: 'btn' %>
-    <%= render "loans/buttons/#{@loan.state}" %>
+
+    <div class="form-actions">
+      <%= render "loans/buttons/#{@loan.state}" %>
+    </div>
   </div>
 <% end %>
 

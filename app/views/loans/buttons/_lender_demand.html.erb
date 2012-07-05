@@ -1,6 +1,4 @@
-<div class="form-actions">
-  <%= link_to 'Repay Loan', new_loan_repay_path(@loan), class: 'btn' %>
-  <%= link_to 'No Claim', new_loan_no_claim_path(@loan), class: 'btn' %>
-  <%= link_to 'Demand Against Guarantee Guarantee', new_loan_demand_against_government_path(@loan), class: 'btn' %>
-  <%= state_aid_letter_link(@loan) %>
-</div>
+<%= link_to 'Repay Loan', new_loan_repay_path(@loan), class: 'btn' %>
+<%= link_to 'No Claim', new_loan_no_claim_path(@loan), class: 'btn' %>
+<%= link_to 'Demand Against Guarantee Guarantee', new_loan_demand_against_government_path(@loan), class: 'btn' %>
+<%= state_aid_letter_link(@loan) %>
