@@ -14,4 +14,7 @@ class Invoice < ActiveRecord::Base
   validates :received_on, presence: true
 
   format :received_on, with: QuickDateFormatter
+
+  attr_accessible :lender_id, :reference, :period_covered_quarter,
+                  :period_covered_year, :received_on
 end

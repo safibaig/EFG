@@ -1,0 +1,15 @@
+<div class="page-header">
+  <h1>Invoice Recieved</h1>
+</div>
+
+<%= simple_form_for(@invoice, url: invoices_path, html: {class: 'form-horizontal form-invoice'}) do |f| %>
+  <%= f.input :lender_id, collection: Lender.all %>
+  <%= f.input :reference %>
+  <%= f.input :period_covered_quarter, collection: Invoice::PERIOD_COVERED_QUARTERS %>
+  <%= f.input :period_covered_year %>
+  <%= f.input :received_on, as: :quick_date %>
+
+  <div class="form-actions">
+    <%= f.button :submit, 'Settle Loans', class: 'btn-primary' %>
+  </div>
+<% end %>
