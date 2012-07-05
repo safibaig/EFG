@@ -1,4 +1,4 @@
-<%= link_to 'Loan Entry', new_loan_entry_path(@loan), class: 'btn btn-primary' %>
-<%= link_to 'Cancel Loan', new_loan_cancel_path(@loan), class: 'btn btn-danger' %>
-<%= link_to 'State Aid Calculation', edit_loan_state_aid_calculation_path(@loan), class: 'btn btn-info' %>
+<%= link_to('Loan Entry', new_loan_entry_path(@loan), class: 'btn btn-primary') if current_user.can_create?(LoanEntry) %>
+<%= link_to('Cancel Loan', new_loan_cancel_path(@loan), class: 'btn btn-danger') if current_user.can_create?(LoanEntry) %>
+<%= link_to('State Aid Calculation', edit_loan_state_aid_calculation_path(@loan), class: 'btn btn-info') if current_user.can_update?(StateAidCalculation) %>
 <%= link_to_state_aid_letter(@loan) %>

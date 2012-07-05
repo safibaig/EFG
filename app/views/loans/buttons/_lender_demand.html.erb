@@ -1,4 +1,4 @@
-<%= link_to 'Repay Loan', new_loan_repay_path(@loan), class: 'btn' %>
-<%= link_to 'No Claim', new_loan_no_claim_path(@loan), class: 'btn' %>
-<%= link_to 'Demand Against Guarantee Guarantee', new_loan_demand_against_government_path(@loan), class: 'btn' %>
+<%= link_to('Repay Loan', new_loan_repay_path(@loan), class: 'btn') if current_user.can_create?(LoanRepay) %>
+<%= link_to('No Claim', new_loan_no_claim_path(@loan), class: 'btn') if current_user.can_create?(LoanNoClaim) %>
+<%= link_to('Demand Against Guarantee Guarantee', new_loan_demand_against_government_path(@loan), class: 'btn') if current_user.can_create?(LoanDemandAgainstGovernment) %>
 <%= link_to_state_aid_letter(@loan) %>

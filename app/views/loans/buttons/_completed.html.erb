@@ -1,3 +1,3 @@
-<%= link_to 'Offer Scheme Facility', new_loan_offer_path(@loan), class: 'btn btn-primary' %>
+<%= link_to('Offer Scheme Facility', new_loan_offer_path(@loan), class: 'btn btn-primary') if current_user.can_create?(LoanOffer) %>
 <%= link_to 'View Information Declaration', information_declaration_document_path(@loan, format: :pdf), class: 'btn btn-info' %>
 <%= link_to_state_aid_letter(@loan) %>
