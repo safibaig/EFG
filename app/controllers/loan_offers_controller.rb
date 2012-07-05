@@ -8,6 +8,7 @@ class LoanOffersController < ApplicationController
   def create
     @loan = current_lender.loans.find(params[:loan_id])
     @loan_offer = LoanOffer.new(@loan)
+    enforce_create_permission(@loan_offer)
     @loan_offer.attributes = params[:loan_offer]
 
     if @loan_offer.save

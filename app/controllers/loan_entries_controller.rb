@@ -8,6 +8,7 @@ class LoanEntriesController < ApplicationController
   def create
     @loan = current_lender.loans.find(params[:loan_id])
     @loan_entry = LoanEntry.new(@loan)
+    enforce_create_permission(@loan_entry)
     @loan_entry.attributes = params[:loan_entry]
 
     case params[:commit]

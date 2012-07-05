@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe LoanRepaysController do
-  describe '#new' do
-    let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
+  let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
 
+  describe '#new' do
     def dispatch(params = {})
       get :new, { loan_id: loan.id }.merge(params)
     end
@@ -23,24 +23,11 @@ describe LoanRepaysController do
   end
 
   describe '#create' do
-    let(:current_lender) { FactoryGirl.create(:lender) }
-    let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
-    before { sign_in(current_user) }
-
     def dispatch(params = {})
-      default_params = { loan_id: loan.id, loan_repay: {} }
-      post :create, default_params.merge(params)
+      post :create, { loan_id: loan.id, loan_repay: {} }.merge(params)
     end
 
-    context "with another lender's loan" do
-      let(:other_lender) { FactoryGirl.create(:lender) }
-      let(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: other_lender) }
-
-      it 'raises RecordNotFound for a loan from another lender' do
-        expect {
-          dispatch
-        }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-    end
+    it_behaves_like 'CfeUser-restricted LoanPresenter controller'
+    it_behaves_like 'LenderUser-restricted LoanPresenter controller'
   end
 end
