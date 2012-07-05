@@ -17,6 +17,7 @@ class StateAidCalculation < ActiveRecord::Base
   format :third_draw_amount, with: MoneyFormatter.new
   format :fourth_draw_amount, with: MoneyFormatter.new
 
+  # We believe these are defined in the relevant legislation?
   GUARANTEE_RATE = 0.75
   RISK_FACTOR = 0.3
 

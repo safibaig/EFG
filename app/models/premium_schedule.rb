@@ -1,4 +1,5 @@
 class PremiumSchedule
+  # The amount of interest that the government charges for guaranteeing the loan.
   PREMIUM_RATE = 0.02
 
   def initialize(state_aid_calculation)
