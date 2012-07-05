@@ -17,6 +17,7 @@
           <ul class="nav">
             <li><%= link_to 'Loan Portfolio', loan_states_path %></li>
             <% if current_user.can_create?(LoanEligibilityCheck) %><li><%= link_to 'New Loan', new_eligibility_check_path %></li><% end %>
+            <li><%= link_to 'Invoice Received', new_invoice_path %></li>
             <li><%= link_to 'Search', new_search_path %></li>
             <li><%= link_to 'Manage Users', users_path %></li>
             <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
