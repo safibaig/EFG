@@ -32,11 +32,11 @@ describe "loan settled" do
     page.should_not have_content('HJD4JF8-01')
 
     within('#loan_1') do
-      check('invoice[settled_loan_ids][]')
+      check('invoice[loans_to_be_settled_ids][]')
     end
 
     within('#loan_3') do
-      check('invoice[settled_loan_ids][]')
+      check('invoice[loans_to_be_settled_ids][]')
     end
 
     click_button 'Settle Loans'

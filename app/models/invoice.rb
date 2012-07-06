@@ -14,7 +14,7 @@ class Invoice < ActiveRecord::Base
   validates :reference, presence: true
   validates :received_on, presence: true
   validate(on: :create) do |invoice|
-    if invoice.settled_loans.none?
+    if invoice.loans_to_be_settled.none?
       errors.add(:base, 'No loans were selected.')
     end
   end
@@ -22,15 +22,24 @@ class Invoice < ActiveRecord::Base
   format :received_on, with: QuickDateFormatter
 
   attr_accessible :lender_id, :reference, :period_covered_quarter,
-                  :period_covered_year, :received_on, :settled_loan_ids
+                  :period_covered_year, :received_on, :loans_to_be_settled_ids
 
   def demanded_loans
     lender.loans.demanded
   end
 
+  def loans_to_be_settled
+    @loans_to_be_settled || []
+  end
+
+  def loans_to_be_settled_ids=(ids)
+    @loans_to_be_settled = Loan.where(id: ids)
+  end
+
   after_save :transition_loans
   def transition_loans
-    raise LoanStateTransition::IncorrectLoanState unless settled_loans.all? {|loan| loan.state == Loan::Demanded }
-    settled_loans.update_all(state: Loan::Settled)
+    raise LoanStateTransition::IncorrectLoanState unless loans_to_be_settled.all? {|loan| loan.state == Loan::Demanded }
+    loans_to_be_settled.update_all(state: Loan::Settled)
+    self.settled_loans = loans_to_be_settled
   end
 end

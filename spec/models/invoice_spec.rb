@@ -54,7 +54,7 @@ describe Invoice do
     end
 
     it "must have some loans" do
-      invoice.settled_loan_ids = []
+      invoice.loans_to_be_settled_ids = []
       invoice.should_not be_valid
     end
   end
