@@ -1,6 +1,10 @@
 class InvoicesController < ApplicationController
   # TODO: Access Control.
 
+  def show
+    @invoice = Invoice.find(params[:id])
+  end
+
   def new
     @invoice = Invoice.new
   end
@@ -18,7 +22,7 @@ class InvoicesController < ApplicationController
     @invoice.created_by = current_user
 
     if @invoice.save
-      redirect_to root_url
+      redirect_to invoice_url(@invoice)
     else
       render :select_loans
     end
