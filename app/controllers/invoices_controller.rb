@@ -5,7 +5,7 @@ class InvoicesController < ApplicationController
     @invoice = Invoice.new
   end
 
-  def new2
+  def select_loans
     @invoice = Invoice.new(params[:invoice])
   end
 
@@ -16,7 +16,7 @@ class InvoicesController < ApplicationController
     if @invoice.save
       redirect_to root_url
     else
-      render :new
+      render :select_loans
     end
   end
 end
