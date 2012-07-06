@@ -7,6 +7,10 @@ class InvoicesController < ApplicationController
 
   def select_loans
     @invoice = Invoice.new(params[:invoice])
+
+    if @invoice.invalid?(:details)
+      render :new
+    end
   end
 
   def create

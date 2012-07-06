@@ -8,7 +8,7 @@ class Invoice < ActiveRecord::Base
   has_many :settled_loans, class_name: 'Loan', foreign_key: 'invoice_id'
 
   validates :lender, presence: true
-  validates :created_by, presence: true
+  validates :created_by, presence: true, on: :create
   validates :period_covered_quarter, presence: true, inclusion: PERIOD_COVERED_QUARTERS
   validates :period_covered_year, presence: true, format: /\A(\d{4})\Z/
   validates :reference, presence: true
