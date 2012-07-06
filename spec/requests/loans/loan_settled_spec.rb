@@ -103,6 +103,8 @@ describe "loan settled" do
     fill_in 'invoice[period_covered_year]', with: '2011'
     fill_in 'invoice[received_on]', with: '06/01/2012'
 
+    click_button 'Select Loans'
+
     page.should have_content('There are no loans to settle.')
   end
 end

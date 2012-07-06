@@ -2,43 +2,53 @@
   <h1>Invoice Received</h1>
 </div>
 
-<%= simple_form_for(@invoice, url: invoices_path, html: {class: 'form-select-loans'}) do |f| %>
-  <%= f.error :base, error_tag: 'div', class: 'alert alert-error' %>
+<p>From this page you can record a Lender's Demand against the Guarantee as having been Settled.</p>
 
-  <%= f.hidden_field :lender_id %>
-  <%= f.hidden_field :reference %>
-  <%= f.hidden_field :period_covered_quarter %>
-  <%= f.hidden_field :period_covered_year %>
-  <%= f.hidden_field :received_on, value: f.object.received_on.strftime('%d/%m/%Y') %>
+<p>The amount of claim (Guaranteed Percentage) must agree with the invoice. When you have agreed all the loans for which a claim is to be settled (by 'checking' the relevant box) click on 'Settle loans'. You will then be provided with the list of loans that have been Settled.</p>
 
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Settle Claim?</th>
-        <th>Loan Reference</th>
-        <th>Name</th>
-        <th>Date Demanded</th>
-        <th>Outstanding Balance</th>
-        <th>Eligible Outstanding Interest</th>
-        <th>Amount of Claim (Guaranteed Percentage)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @invoice.demanded_loans.each do |loan| %>
-        <tr id="<%= dom_id(loan) %>">
-          <td><%= check_box_tag "#{f.object_name}[settled_loan_ids][]", loan.id %></td>
-          <td><%= loan.reference %></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+<hr>
+
+<% if @invoice.demanded_loans.any? %>
+  <%= simple_form_for(@invoice, url: invoices_path, html: {class: 'form-select-loans'}) do |f| %>
+    <%= f.error :base, error_tag: 'div', class: 'alert alert-error' %>
+
+    <%= f.hidden_field :lender_id %>
+    <%= f.hidden_field :reference %>
+    <%= f.hidden_field :period_covered_quarter %>
+    <%= f.hidden_field :period_covered_year %>
+    <%= f.hidden_field :received_on, value: f.object.received_on.strftime('%d/%m/%Y') %>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Settle Claim?</th>
+          <th>Loan Reference</th>
+          <th>Name</th>
+          <th>Date Demanded</th>
+          <th>Outstanding Balance</th>
+          <th>Eligible Outstanding Interest</th>
+          <th>Amount of Claim (Guaranteed Percentage)</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% @invoice.demanded_loans.each do |loan| %>
+          <tr id="<%= dom_id(loan) %>">
+            <td><%= check_box_tag "#{f.object_name}[settled_loan_ids][]", loan.id %></td>
+            <td><%= loan.reference %></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
 
-  <div class="form-actions">
-    <%= f.button :submit, 'Settle Loans', class: 'btn-primary' %>
-  </div>
+    <div class="form-actions">
+      <%= f.button :submit, 'Settle Loans', class: 'btn-primary' %>
+    </div>
+  <% end %>
+<% else %>
+  <div class="alert alert-error">There are no loans to settle.</div>
 <% end %>
