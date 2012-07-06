@@ -1,8 +1,9 @@
 class InvoicesController < ApplicationController
-  # TODO: Access Control.
+  before_filter :verify_create_permission, only: [:new, :select_loans, :create]
 
   def show
     @invoice = Invoice.find(params[:id])
+    enforce_view_permission(@invoice)
   end
 
   def new
@@ -26,5 +27,10 @@ class InvoicesController < ApplicationController
     else
       render :select_loans
     end
+  end
+
+  private
+  def verify_create_permission
+    enforce_create_permission(Invoice)
   end
 end

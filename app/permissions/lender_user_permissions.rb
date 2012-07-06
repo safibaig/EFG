@@ -1,5 +1,6 @@
 module LenderUserPermissions
   def can_create?(resource)
+    return false if resource == Invoice
     true
   end
 
@@ -8,6 +9,6 @@ module LenderUserPermissions
   end
 
   def can_view?(resource)
-    true
+    !resource.is_a?(Invoice)
   end
 end
