@@ -13,4 +13,12 @@ module LoanHelper
     insert = block_given? ? capture(&block) : nil
     render('loans/summary', loan: loan, insert: insert)
   end
+
+  def premium_schedule_link(loan)
+    premium_schedule = loan.premium_schedule
+
+    if premium_schedule && current_user.can_view?(premium_schedule)
+      link_to('Generate Premium Schedule', loan_premium_schedule_path(loan), class: 'btn btn-info')
+    end
+  end
 end

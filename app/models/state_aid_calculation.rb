@@ -1,7 +1,7 @@
 class StateAidCalculation < ActiveRecord::Base
   include FormatterConcern
 
-  belongs_to :loan
+  belongs_to :loan, inverse_of: :state_aid_calculation
 
   attr_accessible :initial_draw_year, :initial_draw_amount,
     :initial_draw_months, :initial_capital_repayment_holiday,
@@ -17,27 +17,16 @@ class StateAidCalculation < ActiveRecord::Base
   format :third_draw_amount, with: MoneyFormatter.new
   format :fourth_draw_amount, with: MoneyFormatter.new
 
+  # We believe these are defined in the relevant legislation?
   GUARANTEE_RATE = 0.75
   RISK_FACTOR = 0.3
-  PREMIUM_RATE = 0.02
 
-  def premiums
-    amount = initial_draw_amount
-    quarters = initial_draw_months / 3
-
-    (0..quarters).inject([]) do |memo, quarter|
-      outstanding_capital = amount - ((amount / quarters) * quarter)
-      memo[quarter] = outstanding_capital * PREMIUM_RATE / 4
-      memo
-    end
-  end
-
-  def total_premiums
-    premiums.sum
+  def premium_schedule
+    PremiumSchedule.new(self)
   end
 
   def state_aid_gbp
-    (initial_draw_amount * GUARANTEE_RATE * RISK_FACTOR) - total_premiums
+    (initial_draw_amount * GUARANTEE_RATE * RISK_FACTOR) - premium_schedule.total_premiums
   end
 
   def state_aid_eur
