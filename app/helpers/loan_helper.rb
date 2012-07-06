@@ -14,7 +14,7 @@ module LoanHelper
     render('loans/summary', loan: loan, insert: insert)
   end
 
-  def premium_schedule_link(loan)
+  def link_to_premium_schedule(loan)
     premium_schedule = loan.premium_schedule
 
     if premium_schedule && current_user.can_view?(premium_schedule)
