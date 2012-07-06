@@ -2,7 +2,9 @@
   <h1>Invoice Received</h1>
 </div>
 
-<%= simple_form_for(@invoice, url: invoices_path, html: {class: 'form-horizontal form-invoice'}) do |f| %>
+<%= simple_form_for(@invoice, url: invoices_path, html: {class: 'form-select-loans'}) do |f| %>
+  <%= f.error :base, error_tag: 'div', class: 'alert alert-error' %>
+
   <%= f.hidden_field :lender_id %>
   <%= f.hidden_field :reference %>
   <%= f.hidden_field :period_covered_quarter %>

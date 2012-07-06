@@ -7,12 +7,17 @@ class Invoice < ActiveRecord::Base
   belongs_to :created_by, class_name: 'User'
   has_many :settled_loans, class_name: 'Loan', foreign_key: 'invoice_id'
 
-  validates :lender, presence: true
+  validates :lender_id, presence: true
   validates :created_by, presence: true, on: :create
   validates :period_covered_quarter, presence: true, inclusion: PERIOD_COVERED_QUARTERS
   validates :period_covered_year, presence: true, format: /\A(\d{4})\Z/
   validates :reference, presence: true
   validates :received_on, presence: true
+  validate(on: :create) do |invoice|
+    if invoice.settled_loans.none?
+      errors.add(:base, 'No loans were selected.')
+    end
+  end
 
   format :received_on, with: QuickDateFormatter
 

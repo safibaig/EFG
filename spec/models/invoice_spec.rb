@@ -52,5 +52,10 @@ describe Invoice do
       invoice.created_by = nil
       invoice.should_not be_valid
     end
+
+    it "must have some loans" do
+      invoice.settled_loan_ids = []
+      invoice.should_not be_valid
+    end
   end
 end

@@ -126,3 +126,10 @@ en:
         amount: Amount
         postcode: Postcode
         maturity_date: Maturity Date
+
+      invoice:
+        lender_id: Name of the Lender submitting the invoice?
+        reference: What is the lender's invoice reference?
+        period_covered_quarter: What is the Demand Invoice Period quarter end date?
+        period_covered_year: What is the Demand Invoice Period quarter end year?
+        received_on: On what date was the invoice received?

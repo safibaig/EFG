@@ -33,7 +33,8 @@
 .form-loan-repay,
 .form-loan-no-claim,
 .form-loan-demand-against-government,
-.form-state-aid-calculation {
+.form-state-aid-calculation,
+.form-invoice {
   .control-label {
     text-align: left;
     width: 420px;
@@ -57,4 +58,8 @@
   .btn:last-child {
     margin-right: 0;
   }
+}
+
+.form-select-loans .alert {
+  display: block;
 }

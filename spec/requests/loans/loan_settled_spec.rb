@@ -4,7 +4,7 @@ describe "loan settled" do
   let(:current_user) { FactoryGirl.create(:cfe_user) }
   before { login_as(current_user, scope: :user) }
 
-  it "setting loans" do
+  it "settling loans" do
     lender1 = FactoryGirl.create(:lender, name: 'Hayes Inc')
     lender2 = FactoryGirl.create(:lender, name: 'Carroll-Cronin')
 
@@ -54,5 +54,55 @@ describe "loan settled" do
     loan1.reload; loan3.reload
     loan1.state.should == Loan::Settled
     loan3.state.should == Loan::Settled
+
+    page.should have_content('BSPFDNH-01')
+    page.should_not have_content('3PEZRGB-01')
+    page.should have_content('LOGIHLJ-02')
+    page.should_not have_content('MF6XT4Z-01')
+    page.should_not have_content('HJD4JF8-01')
+  end
+
+  it "validate the details" do
+    visit(new_invoice_path)
+
+    click_button 'Select Loans'
+
+    page.should have_content('Name of the Lender submitting the invoice?')
+    page.should have_content("What is the lender's invoice reference?")
+    page.should have_content('What is the Demand Invoice Period quarter end date?')
+    page.should have_content('What is the Demand Invoice Period quarter end year?')
+    page.should have_content('On what date was the invoice received?')
+  end
+
+  it "validate loans have been selected" do
+    lender1 = FactoryGirl.create(:lender, name: 'Hayes Inc')
+    loan1 = FactoryGirl.create(:loan, :demanded, id: 1, reference: 'BSPFDNH-01', lender: lender1)
+
+    visit(new_invoice_path)
+
+    select 'Hayes Inc', from: 'invoice[lender_id]'
+    fill_in 'invoice[reference]', with: '2006-SADHJ'
+    select 'December', from: 'invoice[period_covered_quarter]'
+    fill_in 'invoice[period_covered_year]', with: '2011'
+    fill_in 'invoice[received_on]', with: '06/01/2012'
+
+    click_button 'Select Loans'
+    click_button 'Settle Loans'
+
+    page.should have_content('No loans were selected.')
+  end
+
+  it "show text if there are no demanded loans" do
+    FactoryGirl.create(:lender, name: 'Hayes Inc')
+
+    visit(new_invoice_path)
+
+    select 'Hayes Inc', from: 'invoice[lender_id]'
+    fill_in 'invoice[reference]', with: '2006-SADHJ'
+    select 'December', from: 'invoice[period_covered_quarter]'
+    fill_in 'invoice[period_covered_year]', with: '2011'
+    fill_in 'invoice[received_on]', with: '06/01/2012'
+
+    page.should have_content('There are no loans to settle.')
   end
 end
