@@ -55,6 +55,10 @@ EFG::Application.routes.draw do
     end
   end
 
-  resources :invoices, only: [:new, :create]
+  resources :invoices, only: [:new, :create] do
+    collection do
+      post :new2
+    end
+  end
 
 end

@@ -5,6 +5,10 @@ class InvoicesController < ApplicationController
     @invoice = Invoice.new
   end
 
+  def new2
+    @invoice = Invoice.new(params[:invoice])
+  end
+
   def create
     @invoice = Invoice.new(params[:invoice])
     @invoice.created_by = current_user

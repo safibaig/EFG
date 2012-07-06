@@ -5,6 +5,7 @@ class Invoice < ActiveRecord::Base
 
   belongs_to :lender
   belongs_to :created_by, class_name: 'User'
+  has_many :settled_loans, class_name: 'Loan', foreign_key: 'invoice_id'
 
   validates :lender, presence: true
   validates :created_by, presence: true
@@ -16,5 +17,15 @@ class Invoice < ActiveRecord::Base
   format :received_on, with: QuickDateFormatter
 
   attr_accessible :lender_id, :reference, :period_covered_quarter,
-                  :period_covered_year, :received_on
+                  :period_covered_year, :received_on, :settled_loan_ids
+
+  def demanded_loans
+    lender.loans.demanded
+  end
+
+  after_save :transition_loans
+  def transition_loans
+    raise LoanStateTransition::IncorrectLoanState unless settled_loans.all? {|loan| loan.state == Loan::Demanded }
+    settled_loans.update_all(state: Loan::Settled)
+  end
 end
