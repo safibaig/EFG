@@ -24,12 +24,13 @@ class Loan < ActiveRecord::Base
 
   States = [Rejected, Eligible, Cancelled, Incomplete, Completed, Offered,
     Guaranteed, LenderDemand, Repaid, NotDemanded, Demanded, AutoCancelled,
-    Removed, RepaidFromTransfer, AutoRemoved, Settled,Realised, Recovered,
+    Removed, RepaidFromTransfer, AutoRemoved, Settled, Realised, Recovered,
     IncompleteLegacy, CompleteLegacy].freeze
 
   belongs_to :lender
   belongs_to :loan_allocation
   has_one :state_aid_calculation, inverse_of: :loan
+  has_many :recoveries
 
   scope :offered,        where(state: Offered)
   scope :demanded,       where(state: Demanded)
