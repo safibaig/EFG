@@ -1,5 +1,3 @@
-<div class="form-actions">
-  <%= link_to 'Guarantee & Initial Draw', new_loan_guarantee_path(@loan), class: 'btn btn-primary' %>
-  <%= premium_schedule_link(@loan) %>
-  <%= state_aid_letter_link(@loan) %>
-</div>
+<%= link_to('Guarantee & Initial Draw', new_loan_guarantee_path(@loan), class: 'btn btn-primary') if current_user.can_create?(LoanGuarantee) %>
+<%= premium_schedule_link(@loan) %>
+<%= link_to_state_aid_letter(@loan) %>

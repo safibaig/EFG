@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'eligibility checks' do
   before do
-    user = FactoryGirl.create(:user)
+    user = FactoryGirl.create(:lender_user)
     login_as(user, scope: :user)
   end
 

@@ -5,7 +5,7 @@ require 'spec_helper'
 describe 'state aid calculations' do
   describe 'creating' do
     let(:current_lender) { FactoryGirl.create(:lender) }
-    let(:current_user) { FactoryGirl.create(:user, lender: current_lender) }
+    let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
     let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: '123456') }
 
     before do
@@ -63,7 +63,7 @@ describe 'state aid calculations' do
 
   describe 'updating an existing state_aid_calculation' do
     let(:current_lender) { FactoryGirl.create(:lender) }
-    let(:current_user) { FactoryGirl.create(:user, lender: current_lender) }
+    let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
     let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: '123456') }
     let!(:state_aid_calculation) { FactoryGirl.create(:state_aid_calculation, loan: loan) }
 

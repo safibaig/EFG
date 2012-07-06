@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'loan states' do
   describe '#index' do
     let(:current_lender) { FactoryGirl.create(:lender) }
-    let(:current_user) { FactoryGirl.create(:user, lender: current_lender) }
+    let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
 
     before do
       login_as(current_user, scope: :user)
@@ -57,7 +57,7 @@ describe 'loan states' do
 
   describe '#show' do
     let(:current_lender) { FactoryGirl.create(:lender) }
-    let(:current_user) { FactoryGirl.create(:user, lender: current_lender) }
+    let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
 
     before do
       login_as(current_user, scope: :user)

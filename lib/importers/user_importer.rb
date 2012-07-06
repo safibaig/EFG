@@ -54,11 +54,20 @@ class UserImporter < BaseImporter
   private
 
   def self.after_import
+    lender_user_ids = []
+
     klass.find_each do |user|
       user.created_by  = User.find_by_legacy_id(user.created_by_legacy_id)
       user.modified_by = User.find_by_legacy_id(user.modified_by_legacy_id)
-      user.lender      = Lender.find_by_legacy_id(user.legacy_lender_id) unless user.legacy_lender_id.blank?
+      user.save!(validate: false)
 
+      lender_user_ids << user.id if user.legacy_lender_id
+    end
+
+    User.where(id: lender_user_ids).update_all(type: 'LenderUser')
+
+    LenderUser.find_each do |user|
+      user.lender = Lender.find_by_legacy_id(user.legacy_lender_id)
       user.save!(validate: false)
     end
   end

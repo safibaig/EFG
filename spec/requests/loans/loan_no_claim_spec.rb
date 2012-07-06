@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'loan no claim' do
   let(:current_lender) { FactoryGirl.create(:lender) }
-  let(:current_user) { FactoryGirl.create(:user, lender: current_lender) }
+  let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
   let(:loan) { FactoryGirl.create(:loan, :lender_demand, lender: current_lender) }
   before { login_as(current_user, scope: :user) }
 

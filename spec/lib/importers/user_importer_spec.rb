@@ -63,7 +63,7 @@ describe UserImporter do
     end
 
     it "should associate user with user who created record" do
-      creation_user = FactoryGirl.create(:user, legacy_id: "59CEB98864F8236E81D0F45F4AAAB25352748C0D")
+      creation_user = FactoryGirl.create(:lender_user, legacy_id: "59CEB98864F8236E81D0F45F4AAAB25352748C0D")
 
       dispatch
 

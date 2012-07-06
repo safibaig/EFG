@@ -15,6 +15,10 @@ module LoanHelper
   end
 
   def premium_schedule_link(loan)
-    link_to('Generate Premium Schedule', loan_premium_schedule_path(loan), class: 'btn btn-info') if loan.premium_schedule
+    premium_schedule = loan.premium_schedule
+
+    if premium_schedule && current_user.can_view?(premium_schedule)
+      link_to('Generate Premium Schedule', loan_premium_schedule_path(loan), class: 'btn btn-info')
+    end
   end
 end

@@ -1,5 +1,6 @@
 class LoanStatesController < ApplicationController
   def index
+    # TODO: Don't do N queries.
     @states = Loan::States.map { |state|
       OpenStruct.new(
         id: state,
