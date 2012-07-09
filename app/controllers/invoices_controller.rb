@@ -2,8 +2,8 @@ class InvoicesController < ApplicationController
   before_filter :verify_create_permission, only: [:new, :select_loans, :create]
 
   def show
+    enforce_view_permission(Invoice)
     @invoice = Invoice.find(params[:id])
-    enforce_view_permission(@invoice)
   end
 
   def new

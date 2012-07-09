@@ -1,14 +1,14 @@
 class LoanDemandToBorrowersController < ApplicationController
+  before_filter :verify_create_permission, only: [:new, :create]
+
   def new
     @loan = current_lender.loans.find(params[:loan_id])
     @loan_demand_to_borrower = LoanDemandToBorrower.new(@loan)
-    enforce_create_permission(@loan_demand_to_borrower)
   end
 
   def create
     @loan = current_lender.loans.find(params[:loan_id])
     @loan_demand_to_borrower = LoanDemandToBorrower.new(@loan)
-    enforce_create_permission(@loan_demand_to_borrower)
     @loan_demand_to_borrower.attributes = params[:loan_demand_to_borrower]
 
     if @loan_demand_to_borrower.save
@@ -16,5 +16,10 @@ class LoanDemandToBorrowersController < ApplicationController
     else
       render :new
     end
+  end
+
+  private
+  def verify_create_permission
+    enforce_create_permission(LoanDemandToBorrower)
   end
 end

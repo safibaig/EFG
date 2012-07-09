@@ -8,6 +8,6 @@ module CfeUserPermissions
   end
 
   def can_view?(resource)
-    resource.is_a?(Invoice)
+    resource == Invoice
   end
 end

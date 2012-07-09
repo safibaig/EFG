@@ -1,14 +1,14 @@
 class EligibilityChecksController < ApplicationController
+  before_filter :verify_create_permission, only: [:new, :create]
+
   def new
     @loan = current_lender.loans.new
     @loan_eligibility_check = LoanEligibilityCheck.new(@loan)
-    enforce_create_permission(@loan_eligibility_check)
   end
 
   def create
     @loan = current_lender.loans.new
     @loan_eligibility_check = LoanEligibilityCheck.new(@loan)
-    enforce_create_permission(@loan_eligibility_check)
     @loan_eligibility_check.attributes = params[:loan_eligibility_check]
 
     if @loan_eligibility_check.save
@@ -16,5 +16,10 @@ class EligibilityChecksController < ApplicationController
     else
       render :new
     end
+  end
+
+  private
+  def verify_create_permission
+    enforce_create_permission(LoanEligibilityCheck)
   end
 end

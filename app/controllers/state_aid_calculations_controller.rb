@@ -3,11 +3,11 @@ class StateAidCalculationsController < ApplicationController
   before_filter :load_state_aid_calculation, only: [:edit, :update]
 
   def edit
-    enforce_update_permission(@state_aid_calculation)
+    enforce_update_permission(StateAidCalculation)
   end
 
   def update
-    enforce_update_permission(@state_aid_calculation)
+    enforce_update_permission(StateAidCalculation)
     @state_aid_calculation.attributes = params[:state_aid_calculation]
 
     if @state_aid_calculation.save
