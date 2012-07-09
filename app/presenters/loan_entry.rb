@@ -48,6 +48,7 @@ class LoanEntry
 
   validate do
     errors.add(:declaration_signed, :accepted) unless self.declaration_signed
+    errors.add(:state_aid, :calculated) unless self.loan.state_aid_calculation
   end
 
   def save_as_incomplete

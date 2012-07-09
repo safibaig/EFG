@@ -25,6 +25,8 @@ en:
           attributes:
             declaration_signed:
               accepted: A customer declaration must have been received before a loan can be entered.
+            state_aid:
+              calculated: must be calculated
         loan_offer:
           attributes:
             facility_letter_sent:

@@ -16,8 +16,21 @@
   width: 100px;
 }
 
-.state_aid input.string {
-  margin-right: 10px;
+.state_aid {
+  input.string {
+    margin-right: 10px;
+  }
+
+  &.error {
+    input.string {
+      color: #555;
+    }
+
+    input.btn-info {
+      border-color: #2F96B4 #2F96B4 #1F6377;
+      color: #fff;
+    }
+  }
 }
 
 .duration input {
