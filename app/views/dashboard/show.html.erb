@@ -3,7 +3,7 @@
   <p>Your last visit was <%= distance_of_time_in_words_to_now(current_user.last_sign_in_at) %> ago.</p>
 
   <ul id="actions">
-    <li><%= link_to "Start New Loan Application", new_eligibility_check_path, class: "btn btn-primary" %></li>
+    <% if current_user.can_create?(LoanEligibilityCheck) %><li><%= link_to "Start New Loan Application", new_eligibility_check_path, class: "btn btn-primary" %></li><% end %>
     <li><%= link_to "View Loan Portfolio", loan_states_path, class: "btn btn-info" %></li>
   </ul>
 </div>
