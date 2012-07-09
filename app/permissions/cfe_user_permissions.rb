@@ -1,6 +1,6 @@
 module CfeUserPermissions
   def can_create?(resource)
-    false
+    resource == Invoice
   end
 
   def can_update?(resource)
@@ -8,6 +8,6 @@ module CfeUserPermissions
   end
 
   def can_view?(resource)
-    false
+    resource.is_a?(Invoice)
   end
 end
