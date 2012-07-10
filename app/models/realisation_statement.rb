@@ -15,4 +15,11 @@ class RealisationStatement < ActiveRecord::Base
 
   format :received_on, with: QuickDateFormatter
 
+  attr_accessible :lender_id, :reference, :period_covered_quarter,
+                  :period_covered_year, :received_on
+
+  def recovered_loans
+    lender.loans.recovered
+  end
+
 end

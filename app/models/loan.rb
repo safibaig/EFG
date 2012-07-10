@@ -31,10 +31,11 @@ class Loan < ActiveRecord::Base
   belongs_to :loan_allocation
   has_one :state_aid_calculation, inverse_of: :loan
 
-  scope :offered,        where(state: Offered)
-  scope :demanded,       where(state: Demanded)
+  scope :offered,        where(state: Loan::Offered)
+  scope :demanded,       where(state: Loan::Demanded)
   scope :not_progressed, where(state: [Loan::Eligible, Loan::Completed, Loan::Incomplete])
   scope :guaranteed,     where(state: Loan::Guaranteed)
+  scope :recovered,      where(state: Loan::Recovered)
 
   scope :last_updated_between, lambda { |start_date, end_date|
     where("updated_at >= ? AND updated_at <= ?", start_date, end_date)
