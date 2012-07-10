@@ -1,0 +1,17 @@
+<div class="page-header">
+  <h1>Loan Recovery</h1>
+</div>
+
+<p>Using this screen you can record any recovery due to the Secretary of State.</p>
+
+<p>This screen operates in accordance with Schedule 2 of the Legal Agreement under which this facility was guaranteed.  This should be referred to if a fuller description of any of the abbreviated definitions used below is required.</p>
+
+<hr>
+
+<%= simple_form_for([@loan, @recovery], html: { class: 'form-horizontal form-recovery' }) do |f| %>
+  <%= f.input :recovered_on, as: :quick_date %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>
+  </div>
+<% end %>

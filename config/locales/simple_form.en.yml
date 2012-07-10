@@ -133,3 +133,6 @@ en:
         period_covered_quarter: What is the Demand Invoice Period quarter end date?
         period_covered_year: What is the Demand Invoice Period quarter end year?
         received_on: On what date was the invoice received?
+
+      recovery:
+        recovered_on: 'On what date was the recovery made (dd/mm/yyyy)?'

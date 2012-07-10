@@ -23,6 +23,8 @@ EFG::Application.routes.draw do
     resource :demand_against_government, only: [:new, :create], controller: 'loan_demand_against_government'
     resource :state_aid_calculation, only: [:edit, :update]
     resource :premium_schedule, only: [:show], controller: 'premium_schedule'
+
+    resources :recoveries, only: [:new, :create]
   end
 
   resources :documents, only: [] do

@@ -80,6 +80,7 @@ class Loan < ActiveRecord::Base
   format :overdraft_limit, with: MoneyFormatter.new
   format :invoice_discount_limit, with: MoneyFormatter.new
   format :remove_guarantee_outstanding_amount, with: MoneyFormatter.new
+  format :recovery_on, with: QuickDateFormatter
 
   def self.with_state(state)
     where(state: state)
