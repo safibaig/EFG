@@ -41,6 +41,26 @@ describe StateAidCalculation do
     end
   end
 
+  describe "agrees with training" do
+    # https://www.sflg.gov.uk/training/action/loanDetail?ref=BM4YTG5%2B01
+    it "for GBP 50,000 loan over 5 years" do
+      state_aid_calculation = FactoryGirl.build(:state_aid_calculation,
+          initial_draw_amount: Money.new(50_000_00),
+          initial_draw_months: 60)
+
+      state_aid_calculation.state_aid_eur.should == Money.new(10_327_58, 'EUR')
+    end
+
+    # https://www.sflg.gov.uk/training/action/loanDetail?ref=GHKHZRF%2B01
+    it "for a GBP 1,000,000 loan over 5 years" do
+      state_aid_calculation = FactoryGirl.build(:state_aid_calculation,
+          initial_draw_amount: Money.new(1_000_000_00),
+          initial_draw_months: 60)
+
+      state_aid_calculation.state_aid_eur.should == Money.new(179_500_05, 'EUR')
+    end
+  end
+
   describe "saving a state aid calculation" do
     it "should store the state aid on the loan" do
       state_aid_calculation = FactoryGirl.build(:state_aid_calculation, initial_draw_amount: Money.new(100_000_00), initial_draw_months: 120)
