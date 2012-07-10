@@ -1,6 +1,6 @@
 module LenderUserPermissions
   def can_create?(resource)
-    return false if resource == Invoice
+    return false if [Invoice, RealisationStatement].include?(resource)
     true
   end
 
@@ -9,7 +9,7 @@ module LenderUserPermissions
   end
 
   def can_view?(resource)
-    return false if resource == Invoice
+    return false if [Invoice, RealisationStatement].include?(resource)
     true
   end
 end
