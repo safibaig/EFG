@@ -55,4 +55,42 @@ describe RealisationStatement do
     end
 
   end
+
+  describe "#save" do
+
+    let(:recovered_loan) { FactoryGirl.create(:loan, :recovered) }
+
+    let(:settled_loan) { FactoryGirl.create(:loan, :settled) }
+
+    context 'with invalid loans to be realised' do
+
+      before(:each) do
+        realisation_statement.loans_to_be_realised_ids = [ recovered_loan.id, settled_loan.id]
+      end
+
+      it 'raises exception when a loan to be realised is not in a Recovered state' do
+        expect {
+          realisation_statement.save
+        }.to raise_error(LoanStateTransition::IncorrectLoanState)
+      end
+
+    end
+
+    context 'with valid loans to be realised' do
+
+      before(:each) do
+        realisation_statement.loans_to_be_realised_ids = [ recovered_loan.id ]
+        realisation_statement.save
+      end
+
+      it 'updates all loans to be realised to Realised state' do
+        recovered_loan.reload.state.should == Loan::Realised
+      end
+
+      it 'creates loan realisation for each loan to be realised' do
+        realisation_statement.realised_loans.should == [ recovered_loan ]
+      end
+    end
+  end
+
 end
