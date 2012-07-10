@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120710111810) do
+ActiveRecord::Schema.define(:version => 20120710142606) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -71,6 +71,16 @@ ActiveRecord::Schema.define(:version => 20120710111810) do
   end
 
   add_index "loan_allocations", ["lender_id"], :name => "index_loan_allocations_on_lender_id"
+
+  create_table "loan_realisations", :force => true do |t|
+    t.integer  "realised_loan_id"
+    t.integer  "realisation_statement_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "loan_realisations", ["realisation_statement_id"], :name => "index_loan_realisations_on_realisation_statement_id"
+  add_index "loan_realisations", ["realised_loan_id"], :name => "index_loan_realisations_on_realised_loan_id"
 
   create_table "loans", :force => true do |t|
     t.boolean  "viable_proposition",                                                               :null => false
