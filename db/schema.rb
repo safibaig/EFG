@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120706104151) do
+ActiveRecord::Schema.define(:version => 20120710111810) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -184,13 +184,23 @@ ActiveRecord::Schema.define(:version => 20120706104151) do
     t.decimal  "debtor_book_coverage",                              :precision => 5,  :scale => 2
     t.decimal  "debtor_book_topup",                                 :precision => 5,  :scale => 2
     t.integer  "loan_allocation_id"
-    t.integer  "state_aid_value"
     t.integer  "invoice_id"
   end
 
   add_index "loans", ["lender_id"], :name => "index_loans_on_lender_id"
   add_index "loans", ["loan_allocation_id"], :name => "index_loans_on_loan_allocation_id"
   add_index "loans", ["state"], :name => "index_loans_on_state"
+
+  create_table "realisation_statements", :force => true do |t|
+    t.integer  "lender_id"
+    t.integer  "created_by_id"
+    t.string   "reference"
+    t.string   "period_covered_quarter"
+    t.string   "period_covered_year"
+    t.date     "received_on"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "state_aid_calculations", :force => true do |t|
     t.integer  "loan_id",                                                           :null => false
