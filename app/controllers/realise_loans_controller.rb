@@ -2,6 +2,11 @@ class RealiseLoansController < ApplicationController
 
   before_filter :verify_create_permission, only: [:new, :select_loans, :create]
 
+  def show
+    enforce_view_permission(RealisationStatement)
+    @realisation_statement = RealisationStatement.find(params[:id])
+  end
+
   def new
     @realisation_statement = RealisationStatement.new
   end
