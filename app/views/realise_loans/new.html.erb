@@ -6,7 +6,7 @@
   <%= f.input :lender_id, collection: Lender.all %>
   <%= f.input :reference %>
   <%= f.input :period_covered_quarter, collection: RealisationStatement::PERIOD_COVERED_QUARTERS %>
-  <%= f.input :period_covered_year %>
+  <%= f.input :period_covered_year, placeholder: 'yyyy' %>
   <%= f.input :received_on, as: :quick_date %>
 
   <div class="form-actions">
