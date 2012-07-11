@@ -22,7 +22,7 @@ class RealisationStatement < ActiveRecord::Base
 
   # TODO: should a field other than 'updated_at' be used here?
   def recovered_loans
-    lender.loans.recovered.where(['updated_at <= ?', quarter_cutoff_date])
+    lender.loans.recovered.where(['updated_at <= ?', quarter_cutoff_time])
   end
 
   def loans_to_be_realised
@@ -51,7 +51,7 @@ class RealisationStatement < ActiveRecord::Base
 
   private
 
-  def quarter_cutoff_date
+  def quarter_cutoff_time
     day_month = case period_covered_quarter
     when 'March'
       "31/03"
