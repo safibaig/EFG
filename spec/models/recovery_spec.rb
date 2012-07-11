@@ -18,6 +18,12 @@ describe Recovery do
       recovery.should_not be_valid
     end
 
+    it 'recovered_on must be after its loan was settled' do
+      recovery.loan.settled_on = Date.today
+      recovery.recovered_on = 1.day.ago
+      recovery.should_not be_valid
+    end
+
     %w(
       recovered_on
       outstanding_non_efg_debt

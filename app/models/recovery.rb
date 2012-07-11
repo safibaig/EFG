@@ -10,6 +10,14 @@ class Recovery < ActiveRecord::Base
     :outstanding_non_efg_debt, :non_linked_security_proceeds,
     :linked_security_proceeds, strict: true
 
+  validate do
+    return unless recovered_on && loan
+
+    if recovered_on < loan.settled_on
+      errors.add(:recovered_on, 'must not be before the loan was settled')
+    end
+  end
+
   format :recovered_on, with: QuickDateFormatter
   format :outstanding_non_efg_debt, with: MoneyFormatter.new
   format :non_linked_security_proceeds, with: MoneyFormatter.new

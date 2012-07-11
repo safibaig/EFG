@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe 'loan recovery' do
-  let(:loan) { FactoryGirl.create(:loan, :settled) }
+  let(:loan) { FactoryGirl.create(:loan, :settled, settled_on: '1/5/12') }
   let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
   before { login_as(current_user, scope: :user) }
 
