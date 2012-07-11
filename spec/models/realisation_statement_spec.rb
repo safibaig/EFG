@@ -56,6 +56,31 @@ describe RealisationStatement do
 
   end
 
+  describe "#recovered_loans" do
+    let!(:specified_quarter_recovered_loan) {
+      FactoryGirl.create(:loan, :recovered, lender: realisation_statement.lender, updated_at: Time.parse('31/03/2012 23:59'))
+    }
+
+    let!(:previous_quarter_recovered_loan) {
+      FactoryGirl.create(:loan, :recovered, lender: realisation_statement.lender, updated_at: Time.parse('31/12/2011 23:59'))
+    }
+
+    let!(:next_quarter_recovered_loan) {
+      FactoryGirl.create(:loan, :recovered, lender: realisation_statement.lender, updated_at: Time.parse('30/6/2012 23:59'))
+    }
+
+    it "should return recovered loans within or prior to the specified quarter" do
+      realisation_statement.period_covered_quarter = 'March'
+      realisation_statement.period_covered_year = '2012'
+
+      loans = realisation_statement.recovered_loans
+
+      loans.size.should == 2
+      loans.should include(specified_quarter_recovered_loan)
+      loans.should include(previous_quarter_recovered_loan)
+    end
+  end
+
   describe "#save" do
 
     let(:recovered_loan) { FactoryGirl.create(:loan, :recovered) }

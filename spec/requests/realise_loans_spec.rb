@@ -4,7 +4,7 @@ describe 'Realise loans' do
 
   let(:current_user) { FactoryGirl.create(:cfe_user) }
 
-  let!(:loan) { FactoryGirl.create(:loan, :recovered) }
+  let!(:loan) { FactoryGirl.create(:loan, :recovered, updated_at: Date.parse('20-02-2011')) }
 
   before do
     login_as(current_user, scope: :user)
