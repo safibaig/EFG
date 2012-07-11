@@ -116,6 +116,11 @@ en:
       loan_realise:
         realised_money_date: 'What was the most recent date on which Realisations were received by the Government in respect of this facility?'
 
+      loan_remove_guarantee:
+        remove_guarantee_on: What is the date that the Guarantee was removed from this facility? (dd/mm/yyyy)
+        remove_guarantee_outstanding_amount: 'What is the outstanding balance of the facility, as recorded by the Lender, at the date of removal of the Guarantee?'
+        remove_guarantee_reason: What is the reason that the Guarantee has been removed from this facility?
+
       search:
         sort_by: Sort By
         sort_order: Sort Order
