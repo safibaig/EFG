@@ -14,6 +14,16 @@ describe LenderUserPermissions do
     end
   end
 
+  context "realisation statements" do
+    it "can't view" do
+      refute can_view?(RealisationStatement)
+    end
+
+    it "can't create" do
+      refute can_create?(RealisationStatement)
+    end
+  end
+
   context "loan eligibility checks" do
     it "can create" do
       assert can_create?(LoanEligibilityCheck)

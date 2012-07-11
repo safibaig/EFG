@@ -1,0 +1,15 @@
+<div class="page-header">
+  <h1>Recoveries Statement Received</h1>
+</div>
+
+<%= simple_form_for(@realisation_statement, url: select_loans_realise_loans_path, html: {class: 'form-horizontal form-realise-loans'}) do |f| %>
+  <%= f.input :lender_id, collection: Lender.all %>
+  <%= f.input :reference %>
+  <%= f.input :period_covered_quarter, collection: RealisationStatement::PERIOD_COVERED_QUARTERS %>
+  <%= f.input :period_covered_year, placeholder: 'yyyy' %>
+  <%= f.input :received_on, as: :quick_date %>
+
+  <div class="form-actions">
+    <%= f.button :submit, 'Select Loans', class: 'btn-primary' %>
+  </div>
+<% end %>

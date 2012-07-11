@@ -1,0 +1,57 @@
+<div class="page-header">
+  <h1>Record Loan Recoveries</h1>
+</div>
+
+<p>From this page you can record a recovered amount on a loan as realised.</p>
+
+<p>The amount realised must agree with the lender's recoveries statement.</p>
+
+<p>When you have agreed all loans for which the amount realised has been received (by checking the relevant box) click on 'Recover Loans'. You will then be provided with a list of loans that have been realised.</p>
+
+<hr>
+
+<% if @realisation_statement.recovered_loans.any? %>
+  <%= simple_form_for(@realisation_statement, url: realise_loans_path, html: {class: 'form-select-loans'}) do |f| %>
+    <%= f.error :base, error_tag: 'div', class: 'alert alert-error' %>
+
+    <%= f.hidden_field :lender_id %>
+    <%= f.hidden_field :reference %>
+    <%= f.hidden_field :period_covered_quarter %>
+    <%= f.hidden_field :period_covered_year %>
+    <%= f.hidden_field :received_on, value: f.object.received_on.strftime('%d/%m/%Y') %>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Confirm Realised?</th>
+          <th>Loan Reference</th>
+          <th>Name</th>
+          <th>Recovered Date</th>
+          <th>Outstanding Demand against Government Guarantee</th>
+          <th>Recovered Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @realisation_statement.recovered_loans.each do |loan| %>
+          <tr id="<%= dom_id(loan) %>">
+            <td><%= check_box_tag "#{f.object_name}[loans_to_be_realised_ids][]", loan.id %></td>
+            <td><%= loan.reference %></td>
+            <td><%= loan.business_name %></td>
+            <% # TODO: confirm this is the right date to use %>
+            <td><%= loan.updated_at.strftime('%d/%m/%Y') %></td>
+            <% # TODO: confirm this is the correct value to use %>
+            <td><%= loan.dti_demand_outstanding.try(:format) %></td>
+            <% # TODO: populate the recovered amount %>
+            <td></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div class="form-actions">
+      <%= f.button :submit, 'Realise Loans', class: 'btn-primary' %>
+    </div>
+  <% end %>
+<% else %>
+  <div class="alert alert-error">There are no loans to realise.</div>
+<% end %>

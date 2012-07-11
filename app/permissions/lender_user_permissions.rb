@@ -1,6 +1,7 @@
 module LenderUserPermissions
   def can_create?(resource)
-    resource != Invoice
+    return false if [Invoice, RealisationStatement].include?(resource)
+    true
   end
 
   def can_update?(resource)
@@ -8,6 +9,7 @@ module LenderUserPermissions
   end
 
   def can_view?(resource)
-    resource != Invoice
+    return false if [Invoice, RealisationStatement].include?(resource)
+    true
   end
 end
