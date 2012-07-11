@@ -4,7 +4,8 @@ class RealiseLoansController < ApplicationController
 
   def show
     enforce_view_permission(RealisationStatement)
-    @realisation_statement = RealisationStatement.find(params[:id])
+    realisation_statement = RealisationStatement.find(params[:id])
+    @loan_realisations = realisation_statement.loan_realisations.includes(:realised_loan)
   end
 
   def new

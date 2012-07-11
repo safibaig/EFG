@@ -75,10 +75,13 @@ ActiveRecord::Schema.define(:version => 20120710142606) do
   create_table "loan_realisations", :force => true do |t|
     t.integer  "realised_loan_id"
     t.integer  "realisation_statement_id"
+    t.integer  "created_by_id"
+    t.integer  "realised_amount"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "loan_realisations", ["created_by_id"], :name => "index_loan_realisations_on_created_by_id"
   add_index "loan_realisations", ["realisation_statement_id"], :name => "index_loan_realisations_on_realisation_statement_id"
   add_index "loan_realisations", ["realised_loan_id"], :name => "index_loan_realisations_on_realised_loan_id"
 

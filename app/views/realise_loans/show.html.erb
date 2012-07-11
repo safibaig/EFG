@@ -15,12 +15,12 @@
   </thead>
   <tbody>
     <tbody>
-      <% @realisation_statement.realised_loans.each do |loan| %>
+      <% @loan_realisations.each do |loan_realisation| %>
         <tr>
-          <td><%= loan.reference %></td>
-          <td><%= loan.business_name %></td>
-          <td><%= @realisation_statement.created_at.strftime('%d/%m/%Y') %></td>
-          <td><%= loan.state.humanize %></td>
+          <td><%= loan_realisation.realised_loan.reference %></td>
+          <td><%= loan_realisation.realised_loan.business_name %></td>
+          <td><%= loan_realisation.created_at.strftime('%d/%m/%Y') %></td>
+          <td><%= loan_realisation.realised_loan.state.humanize %></td>
         </tr>
       <% end %>
     </tbody>
