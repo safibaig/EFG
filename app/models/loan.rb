@@ -70,6 +70,7 @@ class Loan < ActiveRecord::Base
   format :repaid_on, with: QuickDateFormatter
   format :no_claim_on, with: QuickDateFormatter
   format :dti_demanded_on, with: QuickDateFormatter
+  format :remove_guarantee_on, with: QuickDateFormatter
   format :dti_demand_outstanding, with: MoneyFormatter.new
   format :dti_amount_claimed, with: MoneyFormatter.new
   format :dti_interest, with: MoneyFormatter.new
