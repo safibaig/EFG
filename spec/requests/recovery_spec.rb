@@ -55,11 +55,17 @@ describe 'loan recovery' do
 
     def fill_in_valid_details
       fill_in 'recovered_on', '1/6/12'
+      fill_in 'outstanding_non_efg_debt', '£2000.00'
+      fill_in 'non_linked_security_proceeds', '£3000.00'
+      fill_in 'linked_security_proceeds', '£1000.00'
     end
 
     def verify_recovery_and_loan
       recovery = Recovery.last
       recovery.recovered_on.should == Date.new(2012, 6, 1)
+      recovery.outstanding_non_efg_debt.should == Money.new(2_000_00)
+      recovery.non_linked_security_proceeds.should == Money.new(3_000_00)
+      recovery.linked_security_proceeds.should == Money.new(1_000_00)
 
       loan.reload
       loan.state.should == Loan::Recovered

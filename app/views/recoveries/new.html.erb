@@ -10,6 +10,9 @@
 
 <%= simple_form_for([@loan, @recovery], html: { class: 'form-horizontal form-recovery' }) do |f| %>
   <%= f.input :recovered_on, as: :quick_date %>
+  <%= f.input :outstanding_non_efg_debt, as: :currency %>
+  <%= f.input :non_linked_security_proceeds, as: :currency %>
+  <%= f.input :linked_security_proceeds, as: :currency %>
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>

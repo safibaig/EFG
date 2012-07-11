@@ -7,7 +7,8 @@ class RecoveryPresenter
 
   attr_reader :loan, :recovery
 
-  RECOVERY_ATTRIBUTES = %w(recovered_on)
+  RECOVERY_ATTRIBUTES = %w(recovered_on outstanding_non_efg_debt
+    non_linked_security_proceeds linked_security_proceeds)
 
   RECOVERY_ATTRIBUTES.each do |name|
     delegate name, "#{name}=", to: :recovery

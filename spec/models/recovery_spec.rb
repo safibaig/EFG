@@ -20,6 +20,9 @@ describe Recovery do
 
     %w(
       recovered_on
+      outstanding_non_efg_debt
+      non_linked_security_proceeds
+      linked_security_proceeds
     ).each do |attr|
       it "requires #{attr}" do
         recovery.send("#{attr}=", '')

@@ -136,3 +136,6 @@ en:
 
       recovery:
         recovered_on: 'On what date was the recovery made (dd/mm/yyyy)?'
+        outstanding_non_efg_debt: 'Enter the value of any non-EFG Debt'
+        non_linked_security_proceeds: 'Enter the value of the proceeds of any post-Settlement Security Realisations, excluding any Linked Security'
+        linked_security_proceeds: 'Enter the value of the proceeds of any Linked Security'

@@ -11,9 +11,9 @@ class CreateRecoveries < ActiveRecord::Migration
       t.integer :amount_due_to_dti
       t.boolean :realise_flag
       t.integer :created_by_id, null: false
-      t.integer :outstanding_non_efg_debt
-      t.integer :non_linked_security_proceeds
-      t.integer :linked_security_proceeds
+      t.integer :outstanding_non_efg_debt, null: false
+      t.integer :non_linked_security_proceeds, null: false
+      t.integer :linked_security_proceeds, null: false
       t.integer :realisations_attributable
       t.integer :realisations_due_to_gov
       t.timestamps
