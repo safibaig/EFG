@@ -88,7 +88,17 @@ describe RealisationStatement do
       end
 
       it 'creates loan realisation for each loan to be realised' do
-        realisation_statement.realised_loans.should == [ recovered_loan ]
+        LoanRealisation.count.should == 1
+      end
+
+      it 'creates loan realisations with the same created by user as the realisation statement' do
+        realisation_statement.loan_realisations.each do |loan_realisation|
+          loan_realisation.created_by.should == realisation_statement.created_by
+        end
+      end
+
+      it 'stores the realised amount on each new loan realisation' do
+        pending
       end
     end
   end

@@ -32,12 +32,20 @@ class RealisationStatement < ActiveRecord::Base
     @loans_to_be_realised = Loan.where(id: ids)
   end
 
-  after_save :transition_loans
-  def transition_loans
-    raise LoanStateTransition::IncorrectLoanState unless loans_to_be_realised.all? {|loan| loan.state == Loan::Recovered }
-    loans_to_be_realised.update_all(state: Loan::Realised)
-    # TODO: persist realised amount in LoanRealisation
-    self.realised_loans = loans_to_be_realised
+  after_save :realise_loans
+  def realise_loans
+    self.class.transaction do
+      raise LoanStateTransition::IncorrectLoanState unless loans_to_be_realised.all? {|loan| loan.state == Loan::Recovered }
+      loans_to_be_realised.update_all(state: Loan::Realised)
+      loans_to_be_realised.each do |loan|
+        # TODO: persist correct realised amount in LoanRealisation
+        self.loan_realisations.create!(
+          realised_loan: loan,
+          created_by: created_by,
+          realised_amount: Money.new(0)
+        )
+      end
+    end
   end
 
 end
