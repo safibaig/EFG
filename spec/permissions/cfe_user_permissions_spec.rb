@@ -24,6 +24,16 @@ describe CfeUserPermissions do
     end
   end
 
+  context "remove guarantee" do
+    it "can view" do
+      assert can_view?(LoanRemoveGuarantee)
+    end
+
+    it "can create" do
+      assert can_create?(LoanRemoveGuarantee)
+    end
+  end
+
   context "loan eligibility checks" do
     it "can't create" do
       refute can_create?(LoanEligibilityCheck)
