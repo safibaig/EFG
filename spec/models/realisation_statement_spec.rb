@@ -54,6 +54,11 @@ describe RealisationStatement do
       realisation_statement.should_not be_valid
     end
 
+    it "must have loans to be realised" do
+      realisation_statement.loans_to_be_realised_ids = []
+      realisation_statement.should_not be_valid
+    end
+
   end
 
   describe "#recovered_loans" do

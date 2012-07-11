@@ -14,6 +14,11 @@ class RealisationStatement < ActiveRecord::Base
   validates :period_covered_quarter, presence: true, inclusion: PERIOD_COVERED_QUARTERS
   validates :period_covered_year, presence: true, format: /\A(\d{4})\Z/
   validates :received_on, presence: true
+  validate(on: :create) do |realisation_statement|
+    if realisation_statement.loans_to_be_realised.none?
+      errors.add(:base, 'No loans were selected.')
+    end
+  end
 
   format :received_on, with: QuickDateFormatter
 
