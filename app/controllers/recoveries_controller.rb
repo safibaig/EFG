@@ -3,15 +3,16 @@ class RecoveriesController < ApplicationController
   before_filter :load_loan
 
   def new
-    @recovery = RecoveryPresenter.new(@loan)
+    @recovery = @loan.recoveries.new
   end
 
   def create
-    @recovery = RecoveryPresenter.new(@loan)
+    @recovery = @loan.recoveries.new
     @recovery.attributes = params[:recovery]
     @recovery.created_by = current_user
 
     if @recovery.save
+      @recovery.update_loan!
       redirect_to loan_url(@loan)
     else
       render :new
@@ -20,7 +21,9 @@ class RecoveriesController < ApplicationController
 
   private
     def load_loan
-      @loan = current_lender.loans.find(params[:loan_id])
+      @loan = current_lender.loans
+        .where(state: Recovery::VALID_LOAN_STATES)
+        .find(params[:loan_id])
     end
 
     def verify_create_permission
