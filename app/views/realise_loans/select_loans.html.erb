@@ -36,7 +36,8 @@
           <tr id="<%= dom_id(loan) %>">
             <td><%= check_box_tag "#{f.object_name}[loans_to_be_realised_ids][]", loan.id %></td>
             <td><%= loan.reference %></td>
-            <td></td>
+            <td><%= loan.business_name %></td>
+            <% # TODO: populate the following cells... %>
             <td></td>
             <td></td>
             <td></td>
