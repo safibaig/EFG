@@ -49,4 +49,36 @@ describe Recovery do
       recovery.realisations_due_to_gov.should == Money.new(1_500_00)
     end
   end
+
+  describe '#save_and_update_loan' do
+    context 'when the recovery is valid' do
+      let(:recovery) { FactoryGirl.build(:recovery) }
+      let(:loan) { recovery.loan }
+
+      it 'saves the recovery' do
+        expect {
+          recovery.save_and_update_loan
+        }.to change(Recovery, :count).by(1)
+      end
+
+      it 'updates the loan state to recovered' do
+        recovery.save_and_update_loan
+        loan.reload.state.should == Loan::Recovered
+      end
+
+      it 'stores the recovered date on the loan' do
+        recovery.save_and_update_loan
+        loan.reload.recovery_on.should == recovery.recovered_on
+      end
+    end
+
+    context 'when the recovery is not valid' do
+      let(:loan) { FactoryGirl.create(:loan) }
+      let(:recovery) { loan.recoveries.new }
+
+      it 'returns false' do
+        recovery.save_and_update_loan.should == false
+      end
+    end
+  end
 end

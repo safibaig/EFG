@@ -42,9 +42,21 @@ class Recovery < ActiveRecord::Base
     end
   end
 
-  def update_loan!
-    loan.recovery_on = recovered_on
-    loan.state = Loan::Recovered
-    loan.save!
+  def save_and_update_loan
+    transaction do
+      save!
+      update_loan!
+    end
+
+    true
+  rescue ActiveRecord::RecordInvalid
+    false
   end
+
+  private
+    def update_loan!
+      loan.recovery_on = recovered_on
+      loan.state = Loan::Recovered
+      loan.save!
+    end
 end
