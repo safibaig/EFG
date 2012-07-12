@@ -202,7 +202,7 @@ ActiveRecord::Schema.define(:version => 20120712091841) do
 
   add_index "loans", ["lender_id"], :name => "index_loans_on_lender_id"
   add_index "loans", ["loan_allocation_id"], :name => "index_loans_on_loan_allocation_id"
-  add_index "loans", ["reference"], :name => "index_loans_on_reference"
+  add_index "loans", ["reference"], :name => "index_loans_on_reference", :unique => true
   add_index "loans", ["state"], :name => "index_loans_on_state"
 
   create_table "realisation_statements", :force => true do |t|
