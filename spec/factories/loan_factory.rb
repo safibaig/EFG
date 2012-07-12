@@ -7,7 +7,6 @@ FactoryGirl.define do
     loan_category_id 1
     repayment_frequency_id 4
     reason_id 1
-    reference 'ABC123'
     business_name 'Acme'
     trading_name 'Emca'
     company_registration "B1234567890"
@@ -31,6 +30,15 @@ FactoryGirl.define do
     fees 50000
     created_at { Time.now }
     updated_at { Time.now }
+
+    # reference is generated on loan creation
+    # over-ride generated value if reference value is specified
+    after(:create) do |loan, evaluator|
+      if evaluator.reference.present?
+        loan.reference = evaluator.reference
+        loan.save!
+      end
+    end
 
     trait :eligible do
       state Loan::Eligible

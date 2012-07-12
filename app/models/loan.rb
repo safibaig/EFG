@@ -1,3 +1,5 @@
+require 'loan_reference'
+
 class Loan < ActiveRecord::Base
   include FormatterConcern
 
@@ -82,6 +84,8 @@ class Loan < ActiveRecord::Base
   format :invoice_discount_limit, with: MoneyFormatter.new
   format :remove_guarantee_outstanding_amount, with: MoneyFormatter.new
 
+  before_create :set_reference
+
   def self.with_state(state)
     where(state: state)
   end
@@ -123,11 +127,6 @@ class Loan < ActiveRecord::Base
     "to-do"
   end
 
-  # TODO: implement legacy system reference format
-  def reference
-    super || id
-  end
-
   # TODO: !
   def created_by
     User.first
@@ -142,4 +141,11 @@ class Loan < ActiveRecord::Base
     return nil unless self.state_aid_calculation
     PremiumSchedule.new(self.state_aid_calculation)
   end
+
+  private
+
+  def set_reference
+    self.reference = LoanReference.generate
+  end
+
 end
