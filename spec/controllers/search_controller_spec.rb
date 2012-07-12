@@ -19,9 +19,9 @@ describe SearchController do
 
     it 'does not return loans from another lender' do
       other_lender      = FactoryGirl.create(:lender)
-      other_lender_loan = FactoryGirl.create(:loan, reference: "ABC123", lender: other_lender)
+      other_lender_loan = FactoryGirl.create(:loan, reference: "ABC12345", lender: other_lender)
 
-      dispatch reference: other_lender_loan.reference
+      dispatch reference: "ABC"
       assigns[:results].should_not include(other_lender_loan)
     end
   end

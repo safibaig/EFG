@@ -60,7 +60,7 @@ describe Loan do
 
   describe ".by_reference scope" do
     before(:each) do
-      LoanReference.stub(:generate).and_return(["ABC123", "ABC12345"])
+      LoanReference.stub(:generate).and_return("ABC123", "ABC12345")
     end
 
     let!(:loan1) { FactoryGirl.create(:loan) }
