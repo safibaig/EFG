@@ -33,10 +33,16 @@ FactoryGirl.define do
 
     # reference is generated on loan creation
     # over-ride generated value if reference value is specified
+    #
+    # Note: temporarily disable active record timestamp updating
+    # in case the factory object is explicitly setting a value
+    # for updated_at/created_at
     after(:create) do |loan, evaluator|
       if evaluator.reference.present?
+        ActiveRecord::Base.record_timestamps = false
         loan.reference = evaluator.reference
         loan.save!
+        ActiveRecord::Base.record_timestamps = true
       end
     end
 
