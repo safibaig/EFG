@@ -4,7 +4,7 @@
 #
 #  E.g. D54QT9C+01
 #
-
+# Note: all new loans are type EFG, so separator is always + for generated references
 class InvalidLoanReference < ArgumentError; end;
 
 class LoanReference
