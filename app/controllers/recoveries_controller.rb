@@ -10,8 +10,9 @@ class RecoveriesController < ApplicationController
     @recovery = @loan.recoveries.new
     @recovery.attributes = params[:recovery]
     @recovery.created_by = current_user
+    @recovery.calculate if @recovery.valid?
 
-    if @recovery.save
+    if params[:commit] == 'Submit' && @recovery.save
       @recovery.update_loan!
       redirect_to loan_url(@loan)
     else

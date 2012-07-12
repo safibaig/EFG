@@ -14,8 +14,8 @@ class CreateRecoveries < ActiveRecord::Migration
       t.integer :outstanding_non_efg_debt, null: false
       t.integer :non_linked_security_proceeds, null: false
       t.integer :linked_security_proceeds, null: false
-      t.integer :realisations_attributable
-      t.integer :realisations_due_to_gov
+      t.integer :realisations_attributable, null: false
+      t.integer :realisations_due_to_gov, null: false
       t.timestamps
     end
   end

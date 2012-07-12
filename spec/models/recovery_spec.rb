@@ -36,4 +36,17 @@ describe Recovery do
       end
     end
   end
+
+  describe '#calculate' do
+    it 'behaves like the Visio document example' do
+      recovery = FactoryGirl.build(:recovery,
+        outstanding_non_efg_debt: Money.new(2_000_00),
+        non_linked_security_proceeds: Money.new(3_000_00),
+        linked_security_proceeds: Money.new(1_000_00)
+      )
+      recovery.calculate
+      recovery.realisations_attributable.should == Money.new(2_000_00)
+      recovery.realisations_due_to_gov.should == Money.new(1_500_00)
+    end
+  end
 end

@@ -203,11 +203,11 @@ ActiveRecord::Schema.define(:version => 20120706113554) do
     t.integer  "amount_due_to_dti"
     t.boolean  "realise_flag"
     t.integer  "created_by_id",                  :null => false
-    t.integer  "outstanding_non_efg_debt"
-    t.integer  "non_linked_security_proceeds"
-    t.integer  "linked_security_proceeds"
-    t.integer  "realisations_attributable"
-    t.integer  "realisations_due_to_gov"
+    t.integer  "outstanding_non_efg_debt",       :null => false
+    t.integer  "non_linked_security_proceeds",   :null => false
+    t.integer  "linked_security_proceeds",       :null => false
+    t.integer  "realisations_attributable",      :null => false
+    t.integer  "realisations_due_to_gov",        :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
