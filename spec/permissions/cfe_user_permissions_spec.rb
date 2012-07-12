@@ -14,6 +14,12 @@ describe CfeUserPermissions do
     end
   end
 
+  context 'recoveries' do
+    it 'cannot create' do
+      refute can_create?(Recovery)
+    end
+  end
+
   context "loan eligibility checks" do
     it "can't create" do
       refute can_create?(LoanEligibilityCheck)
