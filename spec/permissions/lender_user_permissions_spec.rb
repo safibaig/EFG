@@ -14,6 +14,12 @@ describe LenderUserPermissions do
     end
   end
 
+  context 'recoveries' do
+    it 'can create' do
+      assert can_create?(Recovery)
+    end
+  end
+
   context "realisation statements" do
     it "can't view" do
       refute can_view?(RealisationStatement)

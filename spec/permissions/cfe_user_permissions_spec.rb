@@ -14,6 +14,12 @@ describe CfeUserPermissions do
     end
   end
 
+  context 'recoveries' do
+    it 'cannot create' do
+      refute can_create?(Recovery)
+    end
+  end
+
   context "realisation statements" do
     it "can view" do
       assert can_view?(RealisationStatement)

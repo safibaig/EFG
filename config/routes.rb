@@ -24,6 +24,8 @@ EFG::Application.routes.draw do
     resource :state_aid_calculation, only: [:edit, :update]
     resource :premium_schedule, only: [:show], controller: 'premium_schedule'
     resource :remove_guarantee, only: [:new, :create], controller: 'loan_remove_guarantees'
+
+    resources :recoveries, only: [:new, :create]
   end
 
   resources :documents, only: [] do

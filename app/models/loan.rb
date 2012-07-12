@@ -24,13 +24,14 @@ class Loan < ActiveRecord::Base
 
   States = [Rejected, Eligible, Cancelled, Incomplete, Completed, Offered,
     Guaranteed, LenderDemand, Repaid, NotDemanded, Demanded, AutoCancelled,
-    Removed, RepaidFromTransfer, AutoRemoved, Settled,Realised, Recovered,
+    Removed, RepaidFromTransfer, AutoRemoved, Settled, Realised, Recovered,
     IncompleteLegacy, CompleteLegacy].freeze
 
   belongs_to :lender
   belongs_to :loan_allocation
   has_one :state_aid_calculation, inverse_of: :loan
   has_many :loan_realisations, foreign_key: 'realised_loan_id'
+  has_many :recoveries
 
   scope :offered,        where(state: Loan::Offered)
   scope :demanded,       where(state: Loan::Demanded)
@@ -82,6 +83,7 @@ class Loan < ActiveRecord::Base
   format :overdraft_limit, with: MoneyFormatter.new
   format :invoice_discount_limit, with: MoneyFormatter.new
   format :remove_guarantee_outstanding_amount, with: MoneyFormatter.new
+  format :recovery_on, with: QuickDateFormatter
 
   def self.with_state(state)
     where(state: state)
