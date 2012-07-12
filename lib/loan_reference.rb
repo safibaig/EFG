@@ -12,9 +12,19 @@ class LoanReference
 
   INITIAL_VERSION = "01"
 
+  def initialize(reference)
+    @reference = reference
+  end
+
   def self.generate
-    reference = create_reference_string
-    Loan.exists?(reference: reference) ? generate : reference
+    string = create_reference_string
+    Loan.exists?(reference: string) ? generate : string
+  end
+
+  def increment
+    version = @reference[-2,2].to_i
+    new_version = "%02d" % (version + 1)
+    @reference[0, REFERENCE_LENGTH + 1] + new_version
   end
 
   private

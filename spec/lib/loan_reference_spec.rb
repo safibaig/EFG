@@ -28,4 +28,26 @@ describe LoanReference do
     end
   end
 
+  describe "#increment" do
+    let(:loan_reference) { LoanReference.new('ABCDEFG+01') }
+
+    it "should return incremented loan reference" do
+      loan_reference.increment.should == 'ABCDEFG+02'
+    end
+
+    it "should increment loan reference into double digits" do
+      loan_reference = LoanReference.new('ABCDEFG+09')
+
+      loan_reference.increment.should == 'ABCDEFG+10'
+    end
+
+    it "should not increment loan reference repeatedly" do
+      reference = nil
+
+      2.times { reference = loan_reference.increment }
+
+      reference.should == 'ABCDEFG+02'
+    end
+  end
+
 end
