@@ -20,6 +20,12 @@ describe LoanReference do
 
       loan.reference.should == 'DEF123'
     end
+
+    it "should not end in E+{numbers}" do
+      LoanReference.stub(:random_string).and_return('AABBCCE', 'DDEEFFE', 'ABCDEFG')
+
+      LoanReference.generate.should == 'ABCDEFG+01'
+    end
   end
 
 end

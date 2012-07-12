@@ -20,7 +20,13 @@ class LoanReference
   private
 
   def self.create_reference_string
-    (0...REFERENCE_LENGTH).map { |n| LETTERS_AND_NUMBERS.sample }.join + "+" + INITIAL_VERSION
+    string = random_string
+    return create_reference_string if string.last == 'E'
+    string + "+" + INITIAL_VERSION
+  end
+
+  def self.random_string
+    (0...REFERENCE_LENGTH).map { |n| LETTERS_AND_NUMBERS.sample }.join
   end
 
 end
