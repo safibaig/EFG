@@ -42,13 +42,15 @@
 .form-loan-entry,
 .form-loan-offer,
 .form-loan-guarantee,
+.form-loan-remove-guarantee,
 .form-loan-demand-to-borrower,
 .form-loan-repay,
 .form-loan-no-claim,
 .form-loan-demand-against-government,
 .form-state-aid-calculation,
 .form-invoice,
-.form-recovery {
+.form-recovery,
+.form-realise-loans {
   .control-label {
     text-align: left;
     width: 420px;

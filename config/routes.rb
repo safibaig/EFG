@@ -23,6 +23,7 @@ EFG::Application.routes.draw do
     resource :demand_against_government, only: [:new, :create], controller: 'loan_demand_against_government'
     resource :state_aid_calculation, only: [:edit, :update]
     resource :premium_schedule, only: [:show], controller: 'premium_schedule'
+    resource :remove_guarantee, only: [:new, :create], controller: 'loan_remove_guarantees'
 
     resources :recoveries, only: [:new, :create]
   end
@@ -58,6 +59,12 @@ EFG::Application.routes.draw do
   end
 
   resources :invoices, only: [:show, :new, :create] do
+    collection do
+      post :select_loans
+    end
+  end
+
+  resources :realise_loans, only: [:show, :new, :create] do
     collection do
       post :select_loans
     end

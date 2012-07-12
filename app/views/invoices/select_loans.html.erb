@@ -35,7 +35,7 @@
           <tr id="<%= dom_id(loan) %>">
             <td><%= check_box_tag "#{f.object_name}[loans_to_be_settled_ids][]", loan.id %></td>
             <td><%= loan.reference %></td>
-            <td></td>
+            <td><%= loan.business_name %></td>
             <td></td>
             <td></td>
             <td></td>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120706113554) do
+ActiveRecord::Schema.define(:version => 20120710142606) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -71,6 +71,19 @@ ActiveRecord::Schema.define(:version => 20120706113554) do
   end
 
   add_index "loan_allocations", ["lender_id"], :name => "index_loan_allocations_on_lender_id"
+
+  create_table "loan_realisations", :force => true do |t|
+    t.integer  "realised_loan_id"
+    t.integer  "realisation_statement_id"
+    t.integer  "created_by_id"
+    t.integer  "realised_amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "loan_realisations", ["created_by_id"], :name => "index_loan_realisations_on_created_by_id"
+  add_index "loan_realisations", ["realisation_statement_id"], :name => "index_loan_realisations_on_realisation_statement_id"
+  add_index "loan_realisations", ["realised_loan_id"], :name => "index_loan_realisations_on_realised_loan_id"
 
   create_table "loans", :force => true do |t|
     t.boolean  "viable_proposition",                                                               :null => false
@@ -184,13 +197,23 @@ ActiveRecord::Schema.define(:version => 20120706113554) do
     t.decimal  "debtor_book_coverage",                              :precision => 5,  :scale => 2
     t.decimal  "debtor_book_topup",                                 :precision => 5,  :scale => 2
     t.integer  "loan_allocation_id"
-    t.integer  "state_aid_value"
     t.integer  "invoice_id"
   end
 
   add_index "loans", ["lender_id"], :name => "index_loans_on_lender_id"
   add_index "loans", ["loan_allocation_id"], :name => "index_loans_on_loan_allocation_id"
   add_index "loans", ["state"], :name => "index_loans_on_state"
+
+  create_table "realisation_statements", :force => true do |t|
+    t.integer  "lender_id"
+    t.integer  "created_by_id"
+    t.string   "reference"
+    t.string   "period_covered_quarter"
+    t.string   "period_covered_year"
+    t.date     "received_on"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "recoveries", :force => true do |t|
     t.integer  "loan_id",                        :null => false

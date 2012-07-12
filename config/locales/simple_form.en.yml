@@ -116,6 +116,11 @@ en:
       loan_realise:
         realised_money_date: 'What was the most recent date on which Realisations were received by the Government in respect of this facility?'
 
+      loan_remove_guarantee:
+        remove_guarantee_on: What is the date that the Guarantee was removed from this facility? (dd/mm/yyyy)
+        remove_guarantee_outstanding_amount: 'What is the outstanding balance of the facility, as recorded by the Lender, at the date of removal of the Guarantee?'
+        remove_guarantee_reason: What is the reason that the Guarantee has been removed from this facility?
+
       search:
         sort_by: Sort By
         sort_order: Sort Order
@@ -139,3 +144,10 @@ en:
         outstanding_non_efg_debt: 'Enter the value of any non-EFG Debt'
         non_linked_security_proceeds: 'Enter the value of the proceeds of any post-Settlement Security Realisations, excluding any Linked Security'
         linked_security_proceeds: 'Enter the value of the proceeds of any Linked Security'
+
+      realisation_statement:
+        lender_id: Select lender
+        reference: Lender's recoveries statement reference?
+        period_covered_quarter: Select the recoveries statement period quarter end date?
+        period_covered_year: Recoveries statement period quarter end year? (yyyy)
+        received_on: On what date was the Recoveries Statement received? (dd/mm/yyyy)
