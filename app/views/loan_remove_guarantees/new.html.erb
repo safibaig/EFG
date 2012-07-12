@@ -1,0 +1,17 @@
+<div class="page-header">
+  <h1>Remove Guarantee on <%= @loan.reference %></h1>
+</div>
+
+<p>From this page you can record the details of a Guarantee that has been removed from a Lender. </p>
+
+<hr>
+
+<%= simple_form_for(@loan_remove_guarantee, url: loan_remove_guarantee_path(@loan), html: {class: 'form-horizontal form-loan-remove-guarantee'}) do |f| %>
+  <%= f.input :remove_guarantee_on, as: :quick_date %>
+  <%= f.input :remove_guarantee_outstanding_amount, as: :currency %>
+  <%= f.input :remove_guarantee_reason %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Remove Guarantee', class: 'btn-primary' %>
+  </div>
+<% end %>
