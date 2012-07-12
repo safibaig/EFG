@@ -36,6 +36,8 @@ class LoanReference
 
   private
 
+  # references should not end in E+01
+  # as it could break viewing the data in Excel!
   def self.create_reference_string
     string = random_string
     return create_reference_string if string.last == 'E'
