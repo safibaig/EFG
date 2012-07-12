@@ -4,6 +4,9 @@
 #
 #  E.g. D54QT9C+01
 #
+
+class InvalidLoanReference < ArgumentError; end;
+
 class LoanReference
 
   REFERENCE_LENGTH = 7
@@ -12,13 +15,17 @@ class LoanReference
 
   INITIAL_VERSION = "01"
 
-  def initialize(reference)
-    @reference = reference
-  end
+  # a valid reference can have a + or - separator
+  VALID_REFERENCE_REGEX = /^([A-Z]|[0-9]){#{REFERENCE_LENGTH}}(\+|-)\d{2}$/
 
   def self.generate
     string = create_reference_string
     Loan.exists?(reference: string) ? generate : string
+  end
+
+  def initialize(reference)
+    @reference = reference
+    raise InvalidLoanReference, "#{reference} is not a valid loan reference" unless valid_reference?
   end
 
   def increment
@@ -37,6 +44,10 @@ class LoanReference
 
   def self.random_string
     (0...REFERENCE_LENGTH).map { |n| LETTERS_AND_NUMBERS.sample }.join
+  end
+
+  def valid_reference?
+    @reference.match(VALID_REFERENCE_REGEX)
   end
 
 end

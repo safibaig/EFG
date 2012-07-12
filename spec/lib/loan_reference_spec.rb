@@ -2,6 +2,24 @@ require 'spec_helper'
 
 describe LoanReference do
 
+  describe "#initialize" do
+    it "raises exception when invalid reference" do
+      %w(wrong 1111111 A1B2C3D ABC123-01 ABC123+01 ABC12345+04 ABC1234+100).each do |string|
+        expect {
+          LoanReference.new(string)
+        }.to raise_error(InvalidLoanReference)
+      end
+    end
+
+    it "does not raise exception when valid reference" do
+      %w(ABC1234+01 ABC1234-01).each do |string|
+        expect {
+          LoanReference.new(string)
+        }.to_not raise_error(InvalidLoanReference)
+      end
+    end
+  end
+
   describe '#generate' do
     let(:loan) { FactoryGirl.build(:loan) }
 
