@@ -25,9 +25,8 @@ class RealisationStatement < ActiveRecord::Base
   attr_accessible :lender_id, :reference, :period_covered_quarter,
                   :period_covered_year, :received_on, :loans_to_be_realised_ids
 
-  # TODO: should a field other than 'updated_at' be used here?
   def recovered_loans
-    lender.loans.recovered.where(['updated_at <= ?', quarter_cutoff_time])
+    lender.loans.recovered.where(['recovery_on <= ?', quarter_cutoff_date])
   end
 
   def loans_to_be_realised
@@ -56,20 +55,15 @@ class RealisationStatement < ActiveRecord::Base
 
   private
 
-  def quarter_cutoff_time
-    day_month = case period_covered_quarter
-    when 'March'
-      "31/03"
-    when 'June'
-      "30/06"
-    when 'September'
-      "30/09"
-    when 'December'
-      "31/12"
-    else
-      nil
-    end
-    Time.parse("#{day_month}/#{period_covered_year} 23:59:59")
+  def quarter_cutoff_date
+    month = {
+      'March' => 3,
+      'June' => 6,
+      'September' => 9,
+      'December' => 12
+    }.fetch(period_covered_quarter)
+
+    Date.new(period_covered_year.to_i, month).end_of_month
   end
 
 end

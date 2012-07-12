@@ -14,11 +14,11 @@ describe 'Realise loans' do
     lender1 = FactoryGirl.create(:lender, name: 'Hayes Inc')
     lender2 = FactoryGirl.create(:lender, name: 'Carroll-Cronin')
 
-    loan1 = FactoryGirl.create(:loan, :recovered, id: 1, reference: 'BSPFDNH-01', lender: lender1, updated_at: Date.parse('20-02-2011'))
-    loan2 = FactoryGirl.create(:loan, :recovered, id: 2, reference: '3PEZRGB-01', lender: lender1, updated_at: Date.parse('20-02-2011'))
-    loan3 = FactoryGirl.create(:loan, :recovered, id: 3, reference: 'LOGIHLJ-02', lender: lender1, updated_at: Date.parse('05-05-2012'))
-    loan4 = FactoryGirl.create(:loan, id: 4, reference: 'MF6XT4Z-01', lender: lender1, updated_at: Date.parse('20-02-2011'))
-    loan5 = FactoryGirl.create(:loan, id: 5, reference: 'HJD4JF8-01', lender: lender2, updated_at: Date.parse('05-05-2012'))
+    loan1 = FactoryGirl.create(:loan, :recovered, id: 1, reference: 'BSPFDNH-01', lender: lender1, recovery_on: Date.new(2011, 2, 20))
+    loan2 = FactoryGirl.create(:loan, :recovered, id: 2, reference: '3PEZRGB-01', lender: lender1, recovery_on: Date.new(2011, 2, 20))
+    loan3 = FactoryGirl.create(:loan, :recovered, id: 3, reference: 'LOGIHLJ-02', lender: lender1, recovery_on: Date.new(2012, 5, 5))
+    loan4 = FactoryGirl.create(:loan, id: 4, reference: 'MF6XT4Z-01', lender: lender1, recovery_on: Date.new(2011, 2, 20))
+    loan5 = FactoryGirl.create(:loan, id: 5, reference: 'HJD4JF8-01', lender: lender2, recovery_on: Date.new(2012, 5, 5))
 
     # test
 
@@ -63,7 +63,7 @@ describe 'Realise loans' do
   end
 
   it 'should validate loans have been selected' do
-    loan = FactoryGirl.create(:loan, :recovered, id: 1, updated_at: Date.parse('20-02-2011'))
+    loan = FactoryGirl.create(:loan, :recovered, id: 1, recovery_on: Date.new(2011, 2, 20))
 
     visit root_path
     click_link 'Recoveries statement received'
@@ -81,7 +81,7 @@ describe 'Realise loans' do
   end
 
   it 'should show error text when there are no loans to recover' do
-    loan = FactoryGirl.create(:loan, :recovered, id: 1, updated_at: Date.parse('20-02-2011'))
+    loan = FactoryGirl.create(:loan, :recovered, id: 1, recovery_on: Date.new(2011, 2, 20))
 
     visit root_path
     click_link 'Recoveries statement received'

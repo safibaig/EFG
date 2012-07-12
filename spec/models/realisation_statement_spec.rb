@@ -63,15 +63,15 @@ describe RealisationStatement do
 
   describe "#recovered_loans" do
     let!(:specified_quarter_recovered_loan) {
-      FactoryGirl.create(:loan, :recovered, lender: realisation_statement.lender, updated_at: Time.parse('31/03/2012 23:59'))
+      FactoryGirl.create(:loan, :recovered, lender: realisation_statement.lender, recovery_on: Date.new(2012, 3, 31))
     }
 
     let!(:previous_quarter_recovered_loan) {
-      FactoryGirl.create(:loan, :recovered, lender: realisation_statement.lender, updated_at: Time.parse('31/12/2011 23:59'))
+      FactoryGirl.create(:loan, :recovered, lender: realisation_statement.lender, recovery_on: Date.new(2011, 12, 31))
     }
 
     let!(:next_quarter_recovered_loan) {
-      FactoryGirl.create(:loan, :recovered, lender: realisation_statement.lender, updated_at: Time.parse('30/6/2012 23:59'))
+      FactoryGirl.create(:loan, :recovered, lender: realisation_statement.lender, recovery_on: Date.new(2012, 6, 30))
     }
 
     it "should return recovered loans within or prior to the specified quarter" do

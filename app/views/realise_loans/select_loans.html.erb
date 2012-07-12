@@ -37,8 +37,7 @@
             <td><%= check_box_tag "#{f.object_name}[loans_to_be_realised_ids][]", loan.id %></td>
             <td><%= loan.reference %></td>
             <td><%= loan.business_name %></td>
-            <% # TODO: confirm this is the right date to use %>
-            <td><%= loan.updated_at.strftime('%d/%m/%Y') %></td>
+            <td><%= loan.recovery_on.strftime('%d/%m/%Y') %></td>
             <% # TODO: confirm this is the correct value to use %>
             <td><%= loan.dti_demand_outstanding.try(:format) %></td>
             <% # TODO: populate the recovered amount %>
