@@ -51,6 +51,7 @@ class RealisationStatement < ActiveRecord::Base
     transaction do
       save!
       realise_loans!
+      realise_recoveries!
     end
 
     true
@@ -88,5 +89,9 @@ class RealisationStatement < ActiveRecord::Base
         realised_amount: Money.new(0)
       )
     end
+  end
+
+  def realise_recoveries!
+    recoveries_to_be_realised.update_all(realise_flag: true)
   end
 end

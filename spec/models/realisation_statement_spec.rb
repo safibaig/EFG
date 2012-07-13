@@ -144,6 +144,11 @@ describe RealisationStatement do
         loan2.reload.state.should == Loan::Realised
       end
 
+      it 'updates recoveries to be realised' do
+        recovery1.reload.realise_flag.should be_true
+        recovery2.reload.realise_flag.should be_true
+      end
+
       it 'creates loan realisation for each loan to be realised' do
         LoanRealisation.count.should == 2
       end
