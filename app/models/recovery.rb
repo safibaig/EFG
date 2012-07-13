@@ -8,7 +8,7 @@ class Recovery < ActiveRecord::Base
 
   validates_presence_of :loan, :created_by, :recovered_on,
     :outstanding_non_efg_debt, :non_linked_security_proceeds,
-    :linked_security_proceeds, strict: true
+    :linked_security_proceeds
 
   validate do
     return unless recovered_on && loan

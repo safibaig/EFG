@@ -86,19 +86,35 @@ describe RealisationStatement do
 
       realisation_statement.recoveries.should_not include(other_lender_recovery)
     end
+
+    it 'does not include already realised recoveries' do
+      already_recovered_recovery = FactoryGirl.create(:recovery, loan: loan, realise_flag: true)
+
+      realisation_statement.recoveries.should_not include(already_recovered_recovery)
+    end
   end
 
   describe '#recoveries_to_be_realised_ids' do
     let(:lender) { FactoryGirl.create(:lender) }
+    let(:loan1) { FactoryGirl.create(:loan, :recovered, lender: lender, settled_on: Date.new(2000)) }
+    let(:recovery1) { FactoryGirl.create(:recovery, loan: loan1) }
+
+    before do
+      realisation_statement.lender = lender
+    end
+
+    context 'with already realised recoveries' do
+      let(:recovery2) { FactoryGirl.create(:recovery, realise_flag: true, loan: loan1) }
+
+      it 'does not assign them' do
+        realisation_statement.recoveries_to_be_realised_ids = [recovery1.id, recovery2.id]
+        realisation_statement.recoveries_to_be_realised.should include(recovery1)
+        realisation_statement.recoveries_to_be_realised.should_not include(recovery2)
+      end
+    end
 
     context 'with recoveries from other lenders' do
-      let(:loan1) { FactoryGirl.create(:loan, :recovered, lender: lender, settled_on: Date.new(2000)) }
-      let(:recovery1) { FactoryGirl.create(:recovery, loan: loan1) }
       let(:recovery2) { FactoryGirl.create(:recovery) }
-
-      before do
-        realisation_statement.lender = lender
-      end
 
       it 'does not assign them' do
         realisation_statement.recoveries_to_be_realised_ids = [recovery1.id, recovery2.id]

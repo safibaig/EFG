@@ -30,6 +30,7 @@ class RealisationStatement < ActiveRecord::Base
       .includes(:loan)
       .where(loans: { lender_id: lender_id, state: Loan::Recovered })
       .where(['recovered_on <= ?', quarter_cutoff_date])
+      .where(realise_flag: false)
   end
 
   def recoveries_to_be_realised
@@ -42,6 +43,7 @@ class RealisationStatement < ActiveRecord::Base
         .joins(:loan)
         .where(loans: { lender_id: lender_id })
         .where(id: ids)
+        .where(realise_flag: false)
     end
   end
 
