@@ -32,7 +32,7 @@ class LoanTransfer
    def loan_to_transfer
      @loan_to_transfer ||= Loan.where(
        reference: reference,
-       amount: amount.to_s,
+       amount: amount.cents,
        facility_letter_date: facility_letter_date,
        state: ALLOWED_LOAN_TRANSFER_STATES
      ).first
