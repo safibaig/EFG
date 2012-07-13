@@ -2,7 +2,17 @@ require 'spec_helper'
 
 describe LoanTransfer do
 
-  let(:loan_transfer) { FactoryGirl.build(:loan_transfer) }
+  let!(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, amount: 8000000) }
+
+  let(:loan_transfer) {
+    FactoryGirl.build(
+      :loan_transfer,
+      amount: loan.amount.cents,
+      new_amount: 7000000,
+      reference: loan.reference,
+      facility_letter_date: loan.facility_letter_date,
+    )
+  }
 
   describe 'validations' do
 
@@ -45,41 +55,17 @@ describe LoanTransfer do
       loan_transfer.should_not be_valid
     end
 
-  end
-
-  describe "#valid_loan_transfer_request?" do
-    let!(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed) }
-
-    let(:loan_transfer) {
-      FactoryGirl.build(
-        :loan_transfer,
-        amount: loan.amount.to_f,
-        new_amount: (loan.amount - Money.new(1000_00)).to_f,
-        reference: loan.reference,
-        facility_letter_date: loan.facility_letter_date.strftime('%d/%m/%Y'),
-      )
-    }
-
-    it "should return true when all attributes are valid and a loan that matches the specified loan transfer is found" do
-      loan_transfer.should be_valid_loan_transfer_request
-    end
-
-    it "should return false when not all attributes are valid" do
-      loan_transfer.reference = nil
-      loan_transfer.should_not be_valid_loan_transfer_request
-    end
-
     context 'when new loan amount is greater than the amount of the loan being transferred' do
       before(:each) do
         loan_transfer.new_amount = loan.amount + Money.new(100)
       end
 
       it 'should return false' do
-        loan_transfer.should_not be_valid_loan_transfer_request
+        loan_transfer.should_not be_valid
       end
 
       it 'should add error to base' do
-        loan_transfer.valid_loan_transfer_request?
+        loan_transfer.valid?
         loan_transfer.errors[:new_amount].should include('cannot be greater than the amount of the loan being transferred')
       end
     end
@@ -90,12 +76,7 @@ describe LoanTransfer do
       end
 
       it "should return false" do
-        loan_transfer.should_not be_valid_loan_transfer_request
-      end
-
-      it "should add error to base" do
-        loan_transfer.valid_loan_transfer_request?
-        loan_transfer.errors[:base].should include('The specified loan cannot be transferred')
+        loan_transfer.should_not be_valid
       end
     end
 
@@ -105,11 +86,11 @@ describe LoanTransfer do
       end
 
       it "should return false" do
-        loan_transfer.should_not be_valid_loan_transfer_request
+        loan_transfer.should_not be_valid
       end
 
       it "should add error to base" do
-        loan_transfer.valid_loan_transfer_request?
+        loan_transfer.valid?
         loan_transfer.errors[:base].should include('You cannot transfer one of your own loans')
       end
     end
@@ -118,31 +99,31 @@ describe LoanTransfer do
       before(:each) do
         # create new loan with same reference of 'loan' but with a incremented version number
         # this means the loan has already been transferred
-        loan.update_attribute(:reference, 'QTFDF90-01')
-        FactoryGirl.create(:loan, :repaid_from_transfer, reference: 'QTFDF90-02')
+        loan.update_attribute(:reference, 'QTFDF90+01')
+        FactoryGirl.create(:loan, :repaid_from_transfer, reference: 'QTFDF90+02')
       end
 
       it "should return false" do
-        loan_transfer.should_not be_valid_loan_transfer_request
+        loan_transfer.should_not be_valid
       end
 
       it "should add error to base" do
-        loan_transfer.valid_loan_transfer_request?
+        loan_transfer.valid?
         loan_transfer.errors[:base].should include('The specified loan cannot be transferred')
       end
     end
 
     context 'when no matching loan is found' do
       before(:each) do
-        loan_transfer.reference = "wrong"
+        loan_transfer.amount = Money.new(1000)
       end
 
       it "should return false" do
-        loan_transfer.should_not be_valid_loan_transfer_request
+        loan_transfer.should_not be_valid
       end
 
       it "should add error to base" do
-        loan_transfer.valid_loan_transfer_request?
+        loan_transfer.valid?
         loan_transfer.errors[:base].should include('Could not find the specified loan, please check the data you have entered')
       end
     end
