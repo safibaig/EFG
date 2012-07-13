@@ -24,7 +24,7 @@ class RealiseLoansController < ApplicationController
     @realisation_statement = RealisationStatement.new(params[:realisation_statement])
     @realisation_statement.created_by = current_user
 
-    if @realisation_statement.save
+    if @realisation_statement.save_and_realise_loans
       redirect_to realise_loan_path(@realisation_statement)
     else
       render :select_loans
