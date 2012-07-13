@@ -59,8 +59,12 @@ describe Loan do
   end
 
   describe ".by_reference scope" do
-    let!(:loan1) { FactoryGirl.create(:loan, reference: "ABC123") }
-    let!(:loan2) { FactoryGirl.create(:loan, reference: "ABC12345") }
+    before(:each) do
+      LoanReference.stub(:generate).and_return("ABC123", "ABC12345")
+    end
+
+    let!(:loan1) { FactoryGirl.create(:loan) }
+    let!(:loan2) { FactoryGirl.create(:loan) }
 
     it "returns loans that partially or completely match the specified reference" do
       Loan.by_reference("ABC123").should == [loan1, loan2]
@@ -128,6 +132,32 @@ describe Loan do
     it "should return nil if it doesn't have a state aid calculation" do
       loan = FactoryGirl.build(:loan)
       loan.premium_schedule.should be_nil
+    end
+  end
+
+  describe "reference" do
+    let(:loan) {
+      loan = FactoryGirl.build(:loan)
+      loan.reference = nil
+      loan
+    }
+
+    it "should be generated when loan is created" do
+      loan.reference.should be_nil
+
+      loan.save!
+
+      loan.reference.should be_instance_of(String)
+    end
+
+    it "should be unique" do
+      FactoryGirl.create(:loan, reference: 'ABC234')
+      FactoryGirl.create(:loan, reference: 'DEF456')
+      LoanReference.stub(:generate).and_return('ABC234', 'DEF456', 'GHF789')
+
+      loan.save!
+
+      loan.reference.should == 'GHF789'
     end
   end
 end
