@@ -1,6 +1,8 @@
 # Loan reference structure is:
 #
-#  {7 random uppercase characters and numbers}{loan type separator (+ for EFG, - for SFLG)}{version number}
+#  {7 random uppercase characters (excluding I and O) and numbers between 2 and 9}
+#   {loan type separator (+ for EFG, - for SFLG)}
+#    {version number}
 #
 #  E.g. D54QT9C+01
 #
@@ -11,7 +13,7 @@ class LoanReference
 
   REFERENCE_LENGTH = 7
 
-  LETTERS_AND_NUMBERS = ('A'..'Z').to_a + (0..9).to_a
+  LETTERS_AND_NUMBERS = (('A'..'Z').to_a + (2..9).to_a) - ['I', 'O']
 
   INITIAL_VERSION = "01"
 

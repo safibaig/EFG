@@ -20,6 +20,12 @@ describe LoanReference do
     end
   end
 
+  it 'possible reference characters and numbers, before version number, do not include 1, 0, I or O' do
+    %w(1 0 I O).each do |char|
+      LoanReference::LETTERS_AND_NUMBERS.should_not include(char)
+    end
+  end
+
   describe '#generate' do
     let(:loan) { FactoryGirl.build(:loan) }
 
