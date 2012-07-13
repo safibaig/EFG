@@ -36,15 +36,6 @@ describe LoanReference do
       reference[-3,3].should match(/\+\d{2}/)
     end
 
-    it "should return unique reference" do
-      LoanReference.stub(:create_reference_string).and_return('ABC123', 'DEF123')
-      existing_loan = FactoryGirl.create(:loan, reference: 'ABC123')
-
-      loan.save!
-
-      loan.reference.should == 'DEF123'
-    end
-
     it "should not end in E+{numbers}" do
       LoanReference.stub(:random_string).and_return('AABBCCE', 'DDEEFFE', 'ABCDEFG')
 

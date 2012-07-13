@@ -149,5 +149,15 @@ describe Loan do
 
       loan.reference.should be_instance_of(String)
     end
+
+    it "should be unique" do
+      FactoryGirl.create(:loan, reference: 'ABC234')
+      FactoryGirl.create(:loan, reference: 'DEF456')
+      LoanReference.stub(:generate).and_return('ABC234', 'DEF456', 'GHF789')
+
+      loan.save!
+
+      loan.reference.should == 'GHF789'
+    end
   end
 end

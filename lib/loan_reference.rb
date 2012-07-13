@@ -7,6 +7,7 @@
 #  E.g. D54QT9C+01
 #
 # Note: all new loans are type EFG, so separator is always + for generated references
+
 class InvalidLoanReference < ArgumentError; end;
 
 class LoanReference
@@ -20,9 +21,12 @@ class LoanReference
   # a valid reference can have a + or - separator
   VALID_REFERENCE_REGEX = /^([A-Z]|[0-9]){#{REFERENCE_LENGTH}}(\+|-)\d{2}$/
 
+  # references should not end in E+01
+  # as it could break viewing the data in Excel!
   def self.generate
-    string = create_reference_string
-    Loan.exists?(reference: string) ? generate : string
+    string = random_string
+    return generate if string.last == 'E'
+    string + "+" + INITIAL_VERSION
   end
 
   def initialize(reference)
@@ -37,14 +41,6 @@ class LoanReference
   end
 
   private
-
-  # references should not end in E+01
-  # as it could break viewing the data in Excel!
-  def self.create_reference_string
-    string = random_string
-    return create_reference_string if string.last == 'E'
-    string + "+" + INITIAL_VERSION
-  end
 
   def self.random_string
     (0...REFERENCE_LENGTH).map { |n| LETTERS_AND_NUMBERS.sample }.join

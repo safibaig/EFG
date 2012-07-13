@@ -145,7 +145,8 @@ class Loan < ActiveRecord::Base
   private
 
   def set_reference
-    self.reference = LoanReference.generate
+    reference_string = LoanReference.generate
+    self.reference = self.class.exists?(reference: reference_string) ? set_reference : reference_string
   end
 
 end
