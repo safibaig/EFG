@@ -19,12 +19,10 @@ describe 'Realise loans' do
 
     loan2 = FactoryGirl.create(:loan, :recovered, reference: '3PEZRGB-01', lender: lender1, settled_on: Date.new(2009))
     loan3 = FactoryGirl.create(:loan, :recovered, reference: 'LOGIHLJ-02', lender: lender1, settled_on: Date.new(2009))
-    loan4 = FactoryGirl.create(:loan, reference: 'MF6XT4Z-01', lender: lender1, settled_on: Date.new(2009))
     loan5 = FactoryGirl.create(:loan, reference: 'HJD4JF8-01', lender: lender2, settled_on: Date.new(2009))
 
     recovery2 = FactoryGirl.create(:recovery, loan: loan2, recovered_on: Date.new(2011, 2, 20))
     recovery3 = FactoryGirl.create(:recovery, loan: loan3, recovered_on: Date.new(2012, 5, 5))
-    recovery4 = FactoryGirl.create(:recovery, loan: loan4, recovered_on: Date.new(2011, 2, 20))
     recovery5 = FactoryGirl.create(:recovery, loan: loan5, recovered_on: Date.new(2012, 5, 5))
 
     # test
@@ -41,7 +39,6 @@ describe 'Realise loans' do
 
     page.should have_content('BSPFDNH-01')
     page.should have_content('3PEZRGB-01')
-    page.should_not have_content('MF6XT4Z-01') # loan not recovered
     page.should_not have_content('LOGIHLJ-02') # loan after quarter cut off date
     page.should_not have_content('HJD4JF8-01') # loan belongs to different lender
 
@@ -59,13 +56,11 @@ describe 'Realise loans' do
     page.should have_content(loan1.reference)
     page.should have_content(loan2.reference)
     page.should_not have_content(loan3.reference)
-    page.should_not have_content(loan4.reference)
     page.should_not have_content(loan5.reference)
 
     loan1.reload.state.should == Loan::Realised
     loan2.reload.state.should == Loan::Realised
     loan3.reload.state.should == Loan::Recovered
-    loan4.reload.state.should == Loan::Eligible
     loan5.reload.state.should == Loan::Eligible
   end
 

@@ -28,7 +28,7 @@ class RealisationStatement < ActiveRecord::Base
   def recoveries
     Recovery
       .includes(:loan)
-      .where(loans: { lender_id: lender_id, state: Loan::Recovered })
+      .where(loans: { lender_id: lender_id })
       .where(['recovered_on <= ?', quarter_cutoff_date])
       .where(realise_flag: false)
   end
@@ -79,6 +79,7 @@ class RealisationStatement < ActiveRecord::Base
     Date.new(period_covered_year.to_i, month).end_of_month
   end
 
+  # TODO: Don't mark loans as realised if they have futher recoveries.
   def realise_loans!
     loans_to_be_realised.update_all(state: Loan::Realised)
     loans_to_be_realised.each do |loan|

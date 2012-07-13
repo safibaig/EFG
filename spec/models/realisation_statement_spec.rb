@@ -62,7 +62,7 @@ describe RealisationStatement do
   end
 
   describe "#recoveries" do
-    let(:loan) { FactoryGirl.create(:loan, :recovered, lender: realisation_statement.lender, settled_on: Date.new(2010)) }
+    let(:loan) { FactoryGirl.create(:loan, lender: realisation_statement.lender, settled_on: Date.new(2010)) }
 
     let!(:specified_quarter_recovery) { FactoryGirl.create(:recovery, loan: loan, recovered_on: Date.new(2012, 3, 31)) }
     let!(:previous_quarter_recovery)  { FactoryGirl.create(:recovery, loan: loan, recovered_on: Date.new(2011, 12, 31)) }
