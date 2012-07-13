@@ -15,31 +15,37 @@ class RealisationStatement < ActiveRecord::Base
   validates :period_covered_year, presence: true, format: /\A(\d{4})\Z/
   validates :received_on, presence: true
   validate(on: :create) do |realisation_statement|
-    if realisation_statement.loans_to_be_realised.none?
-      errors.add(:base, 'No loans were selected.')
+    if realisation_statement.recoveries_to_be_realised.none?
+      errors.add(:base, 'No recoveries were selected.')
     end
   end
 
   format :received_on, with: QuickDateFormatter
 
   attr_accessible :lender_id, :reference, :period_covered_quarter,
-                  :period_covered_year, :received_on, :loans_to_be_realised_ids
+                  :period_covered_year, :received_on, :recoveries_to_be_realised_ids
 
-  def recovered_loans
-    lender.loans.recovered.where(['recovery_on <= ?', quarter_cutoff_date])
+  def recoveries
+    Recovery
+      .includes(:loan)
+      .where(loans: { lender_id: lender_id, state: Loan::Recovered })
+      .where(['recovered_on <= ?', quarter_cutoff_date])
   end
 
-  def loans_to_be_realised
-    @loans_to_be_realised || []
+  def recoveries_to_be_realised
+    @recoveries_to_be_realised || Recovery.none
   end
 
-  def loans_to_be_realised_ids=(ids)
-    @loans_to_be_realised = Loan.where(id: ids)
+  def recoveries_to_be_realised_ids=(ids)
+    @recoveries_to_be_realised = begin
+      Recovery
+        .joins(:loan)
+        .where(loans: { lender_id: lender_id })
+        .where(id: ids)
+    end
   end
 
   def save_and_realise_loans
-    raise LoanStateTransition::IncorrectLoanState unless loans_to_be_realised.all? {|loan| loan.state == Loan::Recovered }
-
     transaction do
       save!
       realise_loans!
@@ -51,6 +57,13 @@ class RealisationStatement < ActiveRecord::Base
   end
 
   private
+
+  def loans_to_be_realised
+    @loans_to_be_realised ||= begin
+      loan_ids = recoveries_to_be_realised.select('DISTINCT loan_id').map(&:loan_id)
+      Loan.where(id: loan_ids)
+    end
+  end
 
   def quarter_cutoff_date
     month = {

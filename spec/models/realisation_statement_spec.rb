@@ -55,70 +55,81 @@ describe RealisationStatement do
     end
 
     it "must have loans to be realised" do
-      realisation_statement.loans_to_be_realised_ids = []
+      realisation_statement.recoveries_to_be_realised_ids = []
       realisation_statement.should_not be_valid
     end
 
   end
 
-  describe "#recovered_loans" do
-    let!(:specified_quarter_recovered_loan) {
-      FactoryGirl.create(:loan, :recovered, lender: realisation_statement.lender, recovery_on: Date.new(2012, 3, 31))
-    }
+  describe "#recoveries" do
+    let(:loan) { FactoryGirl.create(:loan, :recovered, lender: realisation_statement.lender, settled_on: Date.new(2010)) }
 
-    let!(:previous_quarter_recovered_loan) {
-      FactoryGirl.create(:loan, :recovered, lender: realisation_statement.lender, recovery_on: Date.new(2011, 12, 31))
-    }
+    let!(:specified_quarter_recovery) { FactoryGirl.create(:recovery, loan: loan, recovered_on: Date.new(2012, 3, 31)) }
+    let!(:previous_quarter_recovery)  { FactoryGirl.create(:recovery, loan: loan, recovered_on: Date.new(2011, 12, 31)) }
+    let!(:next_quarter_recovery)      { FactoryGirl.create(:recovery, loan: loan, recovered_on: Date.new(2012, 6, 30)) }
 
-    let!(:next_quarter_recovered_loan) {
-      FactoryGirl.create(:loan, :recovered, lender: realisation_statement.lender, recovery_on: Date.new(2012, 6, 30))
-    }
-
-    it "should return recovered loans within or prior to the specified quarter" do
+    before do
       realisation_statement.period_covered_quarter = 'March'
       realisation_statement.period_covered_year = '2012'
+    end
 
-      loans = realisation_statement.recovered_loans
+    it "should return recoveries within or prior to the specified quarter" do
+      recoveries = realisation_statement.recoveries
 
-      loans.size.should == 2
-      loans.should include(specified_quarter_recovered_loan)
-      loans.should include(previous_quarter_recovered_loan)
+      recoveries.size.should == 2
+      recoveries.should include(specified_quarter_recovery)
+      recoveries.should include(previous_quarter_recovery)
+    end
+
+    it 'does not include recoveries from other lenders' do
+      other_lender_recovery = FactoryGirl.create(:recovery, recovered_on: Date.new(2012))
+
+      realisation_statement.recoveries.should_not include(other_lender_recovery)
+    end
+  end
+
+  describe '#recoveries_to_be_realised_ids' do
+    let(:lender) { FactoryGirl.create(:lender) }
+
+    context 'with recoveries from other lenders' do
+      let(:loan1) { FactoryGirl.create(:loan, :recovered, lender: lender, settled_on: Date.new(2000)) }
+      let(:recovery1) { FactoryGirl.create(:recovery, loan: loan1) }
+      let(:recovery2) { FactoryGirl.create(:recovery) }
+
+      before do
+        realisation_statement.lender = lender
+      end
+
+      it 'does not assign them' do
+        realisation_statement.recoveries_to_be_realised_ids = [recovery1.id, recovery2.id]
+        realisation_statement.recoveries_to_be_realised.should include(recovery1)
+        realisation_statement.recoveries_to_be_realised.should_not include(recovery2)
+      end
     end
   end
 
   describe "#save_and_realise_loans" do
-
-    let(:recovered_loan) { FactoryGirl.create(:loan, :recovered) }
-
-    let(:settled_loan) { FactoryGirl.create(:loan, :settled) }
-
-    context 'with invalid loans to be realised' do
-
-      before(:each) do
-        realisation_statement.loans_to_be_realised_ids = [ recovered_loan.id, settled_loan.id]
-      end
-
-      it 'raises exception when a loan to be realised is not in a Recovered state' do
-        expect {
-          realisation_statement.save_and_realise_loans
-        }.to raise_error(LoanStateTransition::IncorrectLoanState)
-      end
-
-    end
+    let(:lender) { FactoryGirl.create(:lender) }
 
     context 'with valid loans to be realised' do
+      let(:loan1) { FactoryGirl.create(:loan, :recovered, lender: lender, settled_on: Date.new(2000)) }
+      let(:loan2) { FactoryGirl.create(:loan, :recovered, lender: lender, settled_on: Date.new(2000)) }
+      let(:recovery1) { FactoryGirl.create(:recovery, loan: loan1) }
+      let(:recovery2) { FactoryGirl.create(:recovery, loan: loan2) }
 
       before(:each) do
-        realisation_statement.loans_to_be_realised_ids = [ recovered_loan.id ]
+        realisation_statement.lender = lender
+        realisation_statement.recoveries_to_be_realised_ids = [recovery1.id, recovery2.id]
         realisation_statement.save_and_realise_loans
       end
 
       it 'updates all loans to be realised to Realised state' do
-        recovered_loan.reload.state.should == Loan::Realised
+        loan1.reload.state.should == Loan::Realised
+        loan2.reload.state.should == Loan::Realised
       end
 
       it 'creates loan realisation for each loan to be realised' do
-        LoanRealisation.count.should == 1
+        LoanRealisation.count.should == 2
       end
 
       it 'creates loan realisations with the same created by user as the realisation statement' do
@@ -132,5 +143,4 @@ describe RealisationStatement do
       end
     end
   end
-
 end

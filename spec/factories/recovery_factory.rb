@@ -16,7 +16,7 @@ FactoryGirl.define do
     realisations_due_to_gov Money.new(10_000_00)
 
     after(:build) { |recovery|
-      recovery.loan ||= FactoryGirl.create(:loan, :settled)
+      recovery.loan ||= FactoryGirl.create(:loan, :settled, settled_on: recovery.recovered_on)
     }
   end
 end

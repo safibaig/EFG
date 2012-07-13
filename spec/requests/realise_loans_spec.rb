@@ -8,24 +8,31 @@ describe 'Realise loans' do
     login_as(current_user, scope: :user)
   end
 
+  let(:lender1) { FactoryGirl.create(:lender, name: 'Hayes Inc') }
+  let(:loan1) { FactoryGirl.create(:loan, :recovered, reference: 'BSPFDNH-01', lender: lender1, settled_on: Date.new(2009)) }
+  let!(:recovery1) { FactoryGirl.create(:recovery, loan: loan1, recovered_on: Date.new(2011, 2, 20)) }
+
   it 'should realise recovered loans' do
     # setup loans
 
-    lender1 = FactoryGirl.create(:lender, name: 'Hayes Inc')
     lender2 = FactoryGirl.create(:lender, name: 'Carroll-Cronin')
 
-    loan1 = FactoryGirl.create(:loan, :recovered, id: 1, reference: 'BSPFDNH-01', lender: lender1, recovery_on: Date.new(2011, 2, 20))
-    loan2 = FactoryGirl.create(:loan, :recovered, id: 2, reference: '3PEZRGB-01', lender: lender1, recovery_on: Date.new(2011, 2, 20))
-    loan3 = FactoryGirl.create(:loan, :recovered, id: 3, reference: 'LOGIHLJ-02', lender: lender1, recovery_on: Date.new(2012, 5, 5))
-    loan4 = FactoryGirl.create(:loan, id: 4, reference: 'MF6XT4Z-01', lender: lender1, recovery_on: Date.new(2011, 2, 20))
-    loan5 = FactoryGirl.create(:loan, id: 5, reference: 'HJD4JF8-01', lender: lender2, recovery_on: Date.new(2012, 5, 5))
+    loan2 = FactoryGirl.create(:loan, :recovered, reference: '3PEZRGB-01', lender: lender1, settled_on: Date.new(2009))
+    loan3 = FactoryGirl.create(:loan, :recovered, reference: 'LOGIHLJ-02', lender: lender1, settled_on: Date.new(2009))
+    loan4 = FactoryGirl.create(:loan, reference: 'MF6XT4Z-01', lender: lender1, settled_on: Date.new(2009))
+    loan5 = FactoryGirl.create(:loan, reference: 'HJD4JF8-01', lender: lender2, settled_on: Date.new(2009))
+
+    recovery2 = FactoryGirl.create(:recovery, loan: loan2, recovered_on: Date.new(2011, 2, 20))
+    recovery3 = FactoryGirl.create(:recovery, loan: loan3, recovered_on: Date.new(2012, 5, 5))
+    recovery4 = FactoryGirl.create(:recovery, loan: loan4, recovered_on: Date.new(2011, 2, 20))
+    recovery5 = FactoryGirl.create(:recovery, loan: loan5, recovered_on: Date.new(2012, 5, 5))
 
     # test
 
     visit root_path
     click_link 'Recoveries statement received'
 
-    select loan1.lender.name, from: 'realisation_statement_lender_id'
+    select lender1.name, from: 'realisation_statement_lender_id'
     fill_in 'realisation_statement_reference', with: "ABC123"
     select 'March', from: 'realisation_statement_period_covered_quarter'
     fill_in 'realisation_statement_period_covered_year', with: '2011'
@@ -38,12 +45,12 @@ describe 'Realise loans' do
     page.should_not have_content('LOGIHLJ-02') # loan after quarter cut off date
     page.should_not have_content('HJD4JF8-01') # loan belongs to different lender
 
-    within('#loan_1') do
-      check 'realisation_statement[loans_to_be_realised_ids][]'
+    within "#recovery_#{recovery1.id}" do
+      check 'realisation_statement[recoveries_to_be_realised_ids][]'
     end
 
-    within('#loan_2') do
-      check 'realisation_statement[loans_to_be_realised_ids][]'
+    within "#recovery_#{recovery2.id}" do
+      check 'realisation_statement[recoveries_to_be_realised_ids][]'
     end
 
     click_button 'Realise Loans'
@@ -63,12 +70,10 @@ describe 'Realise loans' do
   end
 
   it 'should validate loans have been selected' do
-    loan = FactoryGirl.create(:loan, :recovered, id: 1, recovery_on: Date.new(2011, 2, 20))
-
     visit root_path
     click_link 'Recoveries statement received'
 
-    select loan.lender.name, from: 'realisation_statement_lender_id'
+    select lender1.name, from: 'realisation_statement_lender_id'
     fill_in 'realisation_statement_reference', with: "ABC123"
     select 'March', from: 'realisation_statement_period_covered_quarter'
     fill_in 'realisation_statement_period_covered_year', with: '2011'
@@ -77,7 +82,7 @@ describe 'Realise loans' do
 
     click_button 'Realise Loans'
 
-    page.should have_content('No loans were selected.')
+    page.should have_content('No recoveries were selected.')
   end
 
   it 'should show error text when there are no loans to recover' do
@@ -93,7 +98,7 @@ describe 'Realise loans' do
     fill_in 'realisation_statement_received_on', with: '20/05/2010'
     click_button 'Select Loans'
 
-    page.should have_content('There are no loans to realise.')
+    page.should have_content('There are no recoveries to realise.')
   end
 
 end
