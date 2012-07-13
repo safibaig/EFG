@@ -6,6 +6,8 @@ class LoanTransfer
   include ActiveModel::MassAssignmentSecurity
   include ActiveModel::Validations
 
+  ALLOWED_LOAN_TRANSFER_STATES = [Loan::Guaranteed, Loan::Demanded, Loan::Repaid]
+
   attr_accessor :amount, :new_amount, :reference,
                 :facility_letter_date, :declaration_signed
 
@@ -28,10 +30,10 @@ class LoanTransfer
   end
 
   def valid_loan_transfer_request?
-    valid? && loan_to_transfer_found?
+    valid? && valid_loan_transfer?
   end
 
-  # TODO - user formatters for money and dates
+  # TODO - use formatters for money and dates
 
   def amount=(value)
     @amount = value.present? ? Money.parse(value) : nil
@@ -59,13 +61,23 @@ class LoanTransfer
 
   private
 
-  def loan_to_transfer_found?
-    if !self.loan_to_transfer.is_a?(Loan)
+  # TODO - get correct text for these validation errors
+  # TODO - move error text to I18n YAML
+  def valid_loan_transfer?
+    unless loan_to_transfer.is_a?(Loan)
       errors.add(:base, 'Could not find the specified loan, please check the data you have entered')
-      false
-    else
-      true
+      return false
     end
+
+    if new_amount > loan_to_transfer.amount
+      errors.add(:new_amount, 'cannot be greater than the amount of the loan being transferred')
+    end
+
+    unless ALLOWED_LOAN_TRANSFER_STATES.include?(loan_to_transfer.state)
+      errors.add(:base, 'The specified loan cannot be transferred')
+    end
+
+    errors.empty?
   end
 
 end

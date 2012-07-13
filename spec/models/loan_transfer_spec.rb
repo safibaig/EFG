@@ -64,6 +64,58 @@ describe LoanTransfer do
       loan_transfer.should_not be_valid_loan_transfer_request
     end
 
+    context 'when new loan amount is greater than the amount of the loan being transferred' do
+      before(:each) do
+        loan_transfer.new_amount = loan.amount + Money.new(100)
+      end
+
+      it 'should return false' do
+        loan_transfer.should_not be_valid_loan_transfer_request
+      end
+
+      it 'should add error to base' do
+        loan_transfer.valid_loan_transfer_request?
+        loan_transfer.errors[:new_amount].should include('cannot be greater than the amount of the loan being transferred')
+      end
+    end
+
+    context 'when loan being transferred is not in state guaranteed, lender demand or repaid' do
+      before(:each) do
+        loan.update_attribute(:state, Loan::Eligible)
+      end
+
+      it "should return false" do
+        loan_transfer.should_not be_valid_loan_transfer_request
+      end
+
+      it "should add error to base" do
+        loan_transfer.valid_loan_transfer_request?
+        loan_transfer.errors[:base].should include('The specified loan cannot be transferred')
+      end
+    end
+
+    context 'when loan being transferred belongs to lender requesting the transfer' do
+      it "should return false" do
+        loan_transfer.should_not be_valid_loan_transfer_request
+      end
+
+      it "should add error to base" do
+        loan_transfer.valid_loan_transfer_request?
+        loan_transfer.errors[:base].should include('You cannot transfer one of your own loans')
+      end
+    end
+
+    context 'when the loan being transferred has already been transferred' do
+      it "should return false" do
+        loan_transfer.should_not be_valid_loan_transfer_request
+      end
+
+      it "should add error to base" do
+        loan_transfer.valid_loan_transfer_request?
+        loan_transfer.errors[:base].should include('The specified loan cannot be transferred')
+      end
+    end
+
     context 'when no matching loan is found' do
       before(:each) do
         loan_transfer.reference = "wrong"
@@ -75,7 +127,7 @@ describe LoanTransfer do
 
       it "should add error to base" do
         loan_transfer.valid_loan_transfer_request?
-        loan_transfer.errors[:base].should_not be_empty
+        loan_transfer.errors[:base].should include('Could not find the specified loan, please check the data you have entered')
       end
     end
 
