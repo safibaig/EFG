@@ -40,6 +40,11 @@ describe LoanTransfer do
       loan_transfer.should_not be_valid
     end
 
+    it 'must have a lender' do
+      loan_transfer.lender = nil
+      loan_transfer.should_not be_valid
+    end
+
   end
 
   describe "#valid_loan_transfer_request?" do
@@ -95,6 +100,10 @@ describe LoanTransfer do
     end
 
     context 'when loan being transferred belongs to lender requesting the transfer' do
+      before(:each) do
+        loan_transfer.lender = loan.lender
+      end
+
       it "should return false" do
         loan_transfer.should_not be_valid_loan_transfer_request
       end

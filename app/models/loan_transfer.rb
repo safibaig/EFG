@@ -8,16 +8,13 @@ class LoanTransfer
 
   ALLOWED_LOAN_TRANSFER_STATES = [Loan::Guaranteed, Loan::Demanded, Loan::Repaid]
 
-  attr_accessor :amount, :new_amount, :reference,
+  attr_accessor :amount, :new_amount, :reference, :lender,
                 :facility_letter_date, :declaration_signed
 
   attr_accessible :amount, :new_amount, :reference, :facility_letter_date, :declaration_signed
 
-  validates_presence_of :amount
-  validates_presence_of :new_amount
-  validates_presence_of :reference
-  validates_presence_of :facility_letter_date
-  validates_acceptance_of :declaration_signed, accept: 'true' , allow_nil: false
+  validates_presence_of :amount, :new_amount, :reference, :lender, :facility_letter_date
+  validates_acceptance_of :declaration_signed, accept: 'true', allow_nil: false
 
   def initialize(attrs = {})
     self.attributes = attrs
@@ -79,6 +76,10 @@ class LoanTransfer
 
     if loan_to_transfer.transferred?
       errors.add(:base, 'The specified loan cannot be transferred')
+    end
+
+    if loan_to_transfer.lender == lender
+      errors.add(:base, 'You cannot transfer one of your own loans')
     end
 
     errors.empty?

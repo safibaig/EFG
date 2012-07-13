@@ -5,5 +5,6 @@ FactoryGirl.define do
     reference "ABC123"
     facility_letter_date '20/05/2011'
     declaration_signed 'true'
+    lender
   end
 end
