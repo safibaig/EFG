@@ -160,4 +160,16 @@ describe Loan do
       loan.reference.should == 'GHF789'
     end
   end
+
+  describe "#transferred?" do
+    it "returns true when a loan with the next incremented loan reference exists" do
+      FactoryGirl.create(:loan, reference: 'Q9HTDF7-02')
+
+      FactoryGirl.build(:loan, reference: 'Q9HTDF7-01').should be_transferred
+    end
+
+    it "returns false when loan with next incremented loan reference does not exist" do
+      FactoryGirl.build(:loan, reference: 'Q9HTDF7-01').should_not be_transferred
+    end
+  end
 end

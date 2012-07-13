@@ -77,6 +77,10 @@ class LoanTransfer
       errors.add(:base, 'The specified loan cannot be transferred')
     end
 
+    if loan_to_transfer.transferred?
+      errors.add(:base, 'The specified loan cannot be transferred')
+    end
+
     errors.empty?
   end
 

@@ -106,6 +106,13 @@ describe LoanTransfer do
     end
 
     context 'when the loan being transferred has already been transferred' do
+      before(:each) do
+        # create new loan with same reference of 'loan' but with a incremented version number
+        # this means the loan has already been transferred
+        loan.update_attribute(:reference, 'QTFDF90-01')
+        FactoryGirl.create(:loan, :repaid_from_transfer, reference: 'QTFDF90-02')
+      end
+
       it "should return false" do
         loan_transfer.should_not be_valid_loan_transfer_request
       end

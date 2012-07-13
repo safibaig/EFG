@@ -130,5 +130,10 @@ FactoryGirl.define do
       state Loan::Realised
       realised_money_date { Date.today }
     end
+
+    trait :repaid_from_transfer do
+      state Loan::RepaidFromTransfer
+    end
+
   end
 end
