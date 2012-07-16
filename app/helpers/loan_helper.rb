@@ -21,4 +21,15 @@ module LoanHelper
       link_to('Generate Premium Schedule', loan_premium_schedule_path(loan), class: 'btn btn-info')
     end
   end
+
+  def link_to_loan_entry(loan)
+    if loan.created_from_transfer?
+      path = new_loan_transferred_entry_path(loan)
+      permission_class = TransferredLoanEntry
+    else
+      path = new_loan_entry_path(loan)
+      permission_class = LoanEntry
+    end
+    link_to('Loan Entry', path, class: 'btn btn-primary') if current_user.can_create?(permission_class)
+  end
 end
