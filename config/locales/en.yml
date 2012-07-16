@@ -43,6 +43,10 @@ en:
           attributes:
             declaration_signed:
               accepted: A customer declaration must have been received before a loan can be transferred
+        transferred_loan_entry:
+          attributes:
+            state_aid:
+              calculated: must be calculated
   dashboard:
     loan_alerts:
       title: Loan Alerts For The Next 60 Days
