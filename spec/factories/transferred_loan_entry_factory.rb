@@ -8,7 +8,7 @@ FactoryGirl.define do
 
     initialize_with {
       state_aid_calculation = FactoryGirl.build(:state_aid_calculation)
-      loan = FactoryGirl.build(:loan, :incomplete, state_aid_calculation: state_aid_calculation)
+      loan = FactoryGirl.build(:loan, :incomplete, :transferred, state_aid_calculation: state_aid_calculation)
       new(loan)
     }
   end

@@ -46,6 +46,11 @@ class TransferredLoanEntry
     errors.add(:state_aid, :calculated) unless self.loan.state_aid_calculation
   end
 
+  def initialize(loan)
+    super
+    raise ArgumentError, 'loan is not a transferred loan' unless @loan.created_from_transfer?
+  end
+
   def save_as_incomplete
     loan.state = Loan::Incomplete
     loan.save(validate: false)

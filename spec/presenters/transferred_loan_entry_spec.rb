@@ -2,6 +2,16 @@ require 'spec_helper'
 
 describe TransferredLoanEntry do
 
+  describe "#initialize" do
+    let(:loan) { FactoryGirl.build(:loan, :incomplete) }
+
+    it 'raises exception when loan is not a transferred loan' do
+      expect {
+        TransferredLoanEntry.new(loan)
+      }.to raise_error(ArgumentError)
+    end
+  end
+
   describe "validations" do
     let(:transferred_loan_entry) { FactoryGirl.build(:transferred_loan_entry) }
 
