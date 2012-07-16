@@ -45,6 +45,7 @@ class LoanTransfer
 
        @new_loan                    = loan_to_transfer.dup
        @new_loan.lender             = self.lender
+       @new_loan.amount             = self.new_amount
        @new_loan.reference          = LoanReference.new(loan_to_transfer.reference).increment
        @new_loan.state              = Loan::Incomplete
        @new_loan.branch_sortcode    = ''

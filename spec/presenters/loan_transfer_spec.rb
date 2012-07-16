@@ -149,7 +149,7 @@ describe LoanTransfer do
 
     it "should create new loan with a copy of some of the original loan's data" do
       fields_not_copied = %w(
-        id lender_id reference state branch_sortcode repayment_duration
+        id lender_id reference state branch_sortcode repayment_duration amount
         payment_period maturity_date invoice_id generic1 generic2 generic3 generic4 generic5
       )
 
@@ -166,6 +166,10 @@ describe LoanTransfer do
 
     it 'should create new loan with state "incomplete"' do
       new_loan.state.should == Loan::Incomplete
+    end
+
+    it 'should create new loan with amount set to the specified new amount' do
+      new_loan.amount.should == loan_transfer.new_amount
     end
 
     it 'should create new loan with no value for branch sort code' do
