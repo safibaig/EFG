@@ -66,27 +66,26 @@ class LoanTransfer
    private
 
    # TODO - get correct text for these validation errors
-   # TODO - move error text to I18n YAML
    def loan_can_be_transferred?
      unless loan_to_transfer.is_a?(Loan)
-       errors.add(:base, 'Could not find the specified loan, please check the data you have entered')
+       errors.add(:base, :loan_not_found)
        return false
      end
 
      if new_amount > loan_to_transfer.amount
-       errors.add(:new_amount, 'cannot be greater than the amount of the loan being transferred')
+       errors.add(:new_amount, :cannot_be_greater)
      end
 
      unless ALLOWED_LOAN_TRANSFER_STATES.include?(loan_to_transfer.state)
-       errors.add(:base, 'The specified loan cannot be transferred')
+       errors.add(:base, :cannot_be_transferred)
      end
 
      if loan_to_transfer.already_transferred?
-       errors.add(:base, 'The specified loan cannot be transferred')
+       errors.add(:base, :cannot_be_transferred)
      end
 
      if loan_to_transfer.lender == lender
-       errors.add(:base, 'You cannot transfer one of your own loans')
+       errors.add(:base, :cannot_transfer_own_loan)
      end
 
      errors.empty?

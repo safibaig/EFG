@@ -66,7 +66,7 @@ describe LoanTransfer do
 
       it 'should add error to base' do
         loan_transfer.valid?
-        loan_transfer.errors[:new_amount].should include('cannot be greater than the amount of the loan being transferred')
+        loan_transfer.errors[:new_amount].should include(error_string('new_amount.cannot_be_greater'))
       end
     end
 
@@ -91,7 +91,7 @@ describe LoanTransfer do
 
       it "should add error to base" do
         loan_transfer.valid?
-        loan_transfer.errors[:base].should include('You cannot transfer one of your own loans')
+        loan_transfer.errors[:base].should include(error_string('base.cannot_transfer_own_loan'))
       end
     end
 
@@ -109,7 +109,7 @@ describe LoanTransfer do
 
       it "should add error to base" do
         loan_transfer.valid?
-        loan_transfer.errors[:base].should include('The specified loan cannot be transferred')
+        loan_transfer.errors[:base].should include(error_string('base.cannot_be_transferred'))
       end
     end
 
@@ -124,7 +124,7 @@ describe LoanTransfer do
 
       it "should add error to base" do
         loan_transfer.valid?
-        loan_transfer.errors[:base].should include('Could not find the specified loan, please check the data you have entered')
+        loan_transfer.errors[:base].should include(error_string('base.loan_not_found'))
       end
     end
 
@@ -150,7 +150,8 @@ describe LoanTransfer do
     it "should create new loan with a copy of some of the original loan's data" do
       fields_not_copied = %w(
         id lender_id reference state branch_sortcode repayment_duration amount
-        payment_period maturity_date invoice_id generic1 generic2 generic3 generic4 generic5
+        payment_period maturity_date invoice_id generic1 generic2 generic3 generic4
+        generic5 created_at updated_at
       )
 
       fields_to_compare = Loan.column_names - fields_not_copied
@@ -205,6 +206,12 @@ describe LoanTransfer do
     it 'should create new loan with created by set to user requesting transfer' do
       pending
     end
+  end
+
+  private
+
+  def error_string(key)
+    I18n.t("activemodel.errors.models.loan_transfer.attributes.#{key}")
   end
 
 end
