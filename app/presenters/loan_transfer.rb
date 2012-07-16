@@ -51,6 +51,9 @@ class LoanTransfer
        @new_loan.payment_period        = ''
        @new_loan.maturity_date         = ''
        @new_loan.invoice_id            = ''
+       @new_loan.state_aid             = nil
+       @new_loan.state_aid_is_valid    = false
+       # TODO - does notified aid need to change?
        # TODO - set created_by and modified by fields to user making transfer
 
        (1..5).each do |num|

@@ -79,7 +79,7 @@ describe LoanTransfer do
         fields_not_copied = %w(
           id lender_id reference state branch_sortcode repayment_duration amount
           payment_period maturity_date invoice_id generic1 generic2 generic3 generic4
-          generic5 created_at updated_at
+          generic5 state_aid state_aid_is_valid created_at updated_at
         )
 
         fields_to_compare = Loan.column_names - fields_not_copied
@@ -125,6 +125,11 @@ describe LoanTransfer do
 
       it 'should create new loan with no invoice' do
         new_loan.invoice_id.should be_blank
+      end
+
+      it 'should create new loan without state aid calculation' do
+        new_loan.state_aid.should be_blank
+        new_loan.state_aid_is_valid.should be_false
       end
 
       it 'should create new loan with modified by set to user requesting transfer' do
