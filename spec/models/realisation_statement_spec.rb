@@ -130,12 +130,13 @@ describe RealisationStatement do
     context 'with valid loans to be realised' do
       let(:loan1) { FactoryGirl.create(:loan, :recovered, lender: lender, settled_on: Date.new(2000)) }
       let(:loan2) { FactoryGirl.create(:loan, :recovered, lender: lender, settled_on: Date.new(2000)) }
-      let(:recovery1) { FactoryGirl.create(:recovery, loan: loan1) }
-      let(:recovery2) { FactoryGirl.create(:recovery, loan: loan2) }
+      let(:recovery1) { FactoryGirl.create(:recovery, loan: loan1, realisations_due_to_gov: Money.new(123_00)) }
+      let(:recovery2) { FactoryGirl.create(:recovery, loan: loan2, realisations_due_to_gov: Money.new(456_00)) }
+      let(:recovery3) { FactoryGirl.create(:recovery, loan: loan2, realisations_due_to_gov: Money.new(789_00)) }
 
       before(:each) do
         realisation_statement.lender = lender
-        realisation_statement.recoveries_to_be_realised_ids = [recovery1.id, recovery2.id]
+        realisation_statement.recoveries_to_be_realised_ids = [recovery1.id, recovery2.id, recovery3.id]
         realisation_statement.save_and_realise_loans
       end
 
@@ -147,6 +148,7 @@ describe RealisationStatement do
       it 'updates recoveries to be realised' do
         recovery1.reload.realise_flag.should be_true
         recovery2.reload.realise_flag.should be_true
+        recovery3.reload.realise_flag.should be_true
       end
 
       it 'creates loan realisation for each loan to be realised' do
@@ -160,12 +162,14 @@ describe RealisationStatement do
       end
 
       it 'stores the realised amount on each new loan realisation' do
-        pending
+        realisation_statement.loan_realisations.find_by_realised_loan_id!(loan1.id).realised_amount.should == Money.new(123_00)
+        realisation_statement.loan_realisations.find_by_realised_loan_id!(loan2.id).realised_amount.should == Money.new(1245_00)
       end
 
       it 'associates the recoveries with the realisation statement' do
         recovery1.reload.realisation_statement.should == realisation_statement
         recovery2.reload.realisation_statement.should == realisation_statement
+        recovery3.reload.realisation_statement.should == realisation_statement
       end
     end
   end

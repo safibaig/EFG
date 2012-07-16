@@ -62,13 +62,6 @@ class RealisationStatement < ActiveRecord::Base
 
   private
 
-  def loans_to_be_realised
-    @loans_to_be_realised ||= begin
-      loan_ids = recoveries_to_be_realised.select('DISTINCT loan_id').map(&:loan_id)
-      Loan.where(id: loan_ids)
-    end
-  end
-
   def quarter_cutoff_date
     month = {
       'March' => 3,
@@ -82,19 +75,25 @@ class RealisationStatement < ActiveRecord::Base
 
   # TODO: Don't mark loans as realised if they have futher recoveries.
   def realise_loans!
-    loans_to_be_realised.update_all(state: Loan::Realised)
-    loans_to_be_realised.each do |loan|
-      # TODO: persist correct realised amount in LoanRealisation
+    recoveries_to_be_realised.group_by(&:loan_id).each do |loan_id, recoveries|
+      realised_amount = recoveries.sum(&:realisations_due_to_gov)
+
       self.loan_realisations.create!(
-        realised_loan: loan,
+        realised_loan: Loan.find(loan_id),
         created_by: created_by,
-        realised_amount: Money.new(0)
+        realised_amount: realised_amount
       )
     end
+
+    loan_ids = recoveries_to_be_realised.map(&:loan_id).uniq
+
+    Loan.where(id: loan_ids).update_all(state: Loan::Realised)
   end
 
   def realise_recoveries!
-    recoveries_to_be_realised.update_all(
+    ids = recoveries_to_be_realised.map(&:id)
+
+    Recovery.where(id: ids).update_all(
       realisation_statement_id: id,
       realise_flag: true
     )
