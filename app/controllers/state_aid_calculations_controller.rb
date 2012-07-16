@@ -31,6 +31,8 @@ class StateAidCalculationsController < ApplicationController
   def leave_state_aid_calculation_path(loan)
     if params[:redirect] == 'loan_entry'
       new_loan_entry_path(loan)
+    elsif params[:redirect] == 'transferred_loan_entry'
+      new_loan_transferred_entry_path(loan)
     else
       loan_path(loan)
     end

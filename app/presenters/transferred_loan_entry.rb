@@ -14,9 +14,7 @@ class TransferredLoanEntry
   attribute :private_residence_charge_required, read_only: true
   attribute :personal_guarantee_required, read_only: true
   attribute :turnover, read_only: true
-  attribute :repayment_duration, read_only: true
   attribute :trading_date, read_only: true
-  attribute :loan_allocation_id, read_only: true
   attribute :lender, read_only: true
   attribute :reference, read_only: true
   attribute :business_name, read_only: true
@@ -26,9 +24,6 @@ class TransferredLoanEntry
   attribute :non_validated_postcode, read_only: true
   attribute :postcode, read_only: true
   attribute :town, read_only: true
-  attribute :interest_rate_type_id, read_only: true
-  attribute :interest_rate, read_only: true
-  attribute :fees, read_only: true
 
   attribute :declaration_signed
   attribute :branch_sortcode
