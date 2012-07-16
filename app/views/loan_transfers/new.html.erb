@@ -12,20 +12,20 @@
 
   <%= render_errors_on_base(@loan_transfer.errors) %>
 
-  <fieldset>
-    <legend>Please supply the following details about the loan to be transferred:</legend>
+  <%= field_set_tag 'Please supply the following details about the loan to be transferred' do %>
 
     <%= f.input :reference %>
     <%= f.input :amount, as: :currency %>
     <%= f.input :facility_letter_date, as: :quick_date %>
-  </fieldset>
 
-  <fieldset>
-    <legend>And these details about the new loan:</legend>
+  <% end %>
+
+  <%= field_set_tag 'And these details about the new loan:' do %>
 
     <%= f.input :new_amount, as: :currency %>
     <%= f.input :declaration_signed, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
-  </fieldset>
+
+  <% end %>
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Transfer Loan', class: 'btn-primary' %>
