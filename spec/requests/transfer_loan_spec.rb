@@ -8,12 +8,11 @@ describe 'Transfer a loan' do
 
   before(:each) do
     login_as(current_user, scope: :user)
+    visit root_path
+    click_link 'Transfer a loan'
   end
 
   it 'should transfer loan from one lender to another' do
-    # click_link 'Transfer a loan'
-    visit new_loan_transfer_path
-
     fill_in 'loan_transfer_reference', with: loan.reference
     fill_in 'loan_transfer_amount', with: loan.amount.to_s
     fill_in 'loan_transfer_facility_letter_date', with: loan.facility_letter_date.strftime('%d/%m/%Y')
@@ -75,8 +74,6 @@ describe 'Transfer a loan' do
   end
 
   it 'should display error when loan to transfer is not found' do
-    visit new_loan_transfer_path
-
     fill_in 'loan_transfer_reference', with: 'wrong'
     fill_in 'loan_transfer_amount', with: loan.amount.to_s
     fill_in 'loan_transfer_facility_letter_date', with: loan.facility_letter_date.strftime('%d/%m/%Y')
