@@ -162,6 +162,11 @@ describe RealisationStatement do
       it 'stores the realised amount on each new loan realisation' do
         pending
       end
+
+      it 'associates the recoveries with the realisation statement' do
+        recovery1.reload.realisation_statement.should == realisation_statement
+        recovery2.reload.realisation_statement.should == realisation_statement
+      end
     end
   end
 end

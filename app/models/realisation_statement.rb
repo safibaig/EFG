@@ -7,6 +7,7 @@ class RealisationStatement < ActiveRecord::Base
   belongs_to :created_by, class_name: 'User'
   has_many :loan_realisations
   has_many :realised_loans, through: :loan_realisations
+  has_many :recoveries
 
   validates :lender_id, presence: true
   validates :created_by_id, presence: true, on: :create
@@ -93,6 +94,9 @@ class RealisationStatement < ActiveRecord::Base
   end
 
   def realise_recoveries!
-    recoveries_to_be_realised.update_all(realise_flag: true)
+    recoveries_to_be_realised.update_all(
+      realisation_statement_id: id,
+      realise_flag: true
+    )
   end
 end
