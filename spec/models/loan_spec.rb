@@ -159,6 +159,12 @@ describe Loan do
 
       loan.reference.should == 'GHF789'
     end
+
+    it "should not be generated if already assigned" do
+      loan.reference = "custom-reference"
+      loan.save!
+      loan.reload.reference.should == 'custom-reference'
+    end
   end
 
   describe "#transferred?" do
