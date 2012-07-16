@@ -145,10 +145,15 @@ class Loan < ActiveRecord::Base
     PremiumSchedule.new(self.state_aid_calculation)
   end
 
-  def transferred?
+  def already_transferred?
     return false if reference.blank?
     next_loan_reference = LoanReference.new(reference).increment
     Loan.exists?(reference: next_loan_reference)
+  end
+
+  def created_from_transfer?
+    return false if reference.blank?
+    reference[-2,2].to_i > 1
   end
 
   private

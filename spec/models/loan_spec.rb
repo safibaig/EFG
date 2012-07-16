@@ -167,19 +167,35 @@ describe Loan do
     end
   end
 
-  describe "#transferred?" do
+  describe "#already_transferred" do
     it "returns true when a loan with the next incremented loan reference exists" do
       FactoryGirl.create(:loan, reference: 'Q9HTDF7-02')
 
-      FactoryGirl.build(:loan, reference: 'Q9HTDF7-01').should be_transferred
+      FactoryGirl.build(:loan, reference: 'Q9HTDF7-01').should be_already_transferred
     end
 
     it "returns false when loan with next incremented loan reference does not exist" do
-      FactoryGirl.build(:loan, reference: 'Q9HTDF7-01').should_not be_transferred
+      FactoryGirl.build(:loan, reference: 'Q9HTDF7-01').should_not be_already_transferred
     end
 
     it "returns false when loan has no reference" do
-      Loan.new.should_not be_transferred
+      Loan.new.should_not be_already_transferred
+    end
+  end
+
+  describe "#created_from_transfer?" do
+    it "returns true when a loan has been transferred from another loan" do
+      loan = FactoryGirl.build(:loan, reference: 'Q9HTDF7-02')
+      loan.should be_created_from_transfer
+    end
+
+    it "returns false when loan with next incremented loan reference does not exist" do
+      loan = FactoryGirl.build(:loan, reference: 'Q9HTDF7-01')
+      loan.should_not be_created_from_transfer
+    end
+
+    it "returns false when loan has no reference" do
+      Loan.new.should_not be_created_from_transfer
     end
   end
 end

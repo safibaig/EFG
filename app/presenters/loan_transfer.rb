@@ -53,7 +53,6 @@ class LoanTransfer
        @new_loan.payment_period        = ''
        @new_loan.maturity_date         = ''
        @new_loan.invoice_id            = ''
-       @new_loan.state_aid_calculation = loan_to_transfer.state_aid_calculation.dup
        # TODO - set created_by and modified by fields to user making transfer
 
        (1..5).each do |num|
@@ -82,7 +81,7 @@ class LoanTransfer
        errors.add(:base, 'The specified loan cannot be transferred')
      end
 
-     if loan_to_transfer.transferred?
+     if loan_to_transfer.already_transferred?
        errors.add(:base, 'The specified loan cannot be transferred')
      end
 

@@ -198,16 +198,6 @@ describe LoanTransfer do
       new_loan.invoice_id.should be_blank
     end
 
-    it "should create new loan with a copy of the original loan's state aid calculation" do
-      new_loan.state_aid_calculation.should_not be_nil
-
-      fields_to_compare = StateAidCalculation.column_names - %w(id loan_id)
-
-      fields_to_compare.each do |field|
-        new_loan.state_aid_calculation.send(field).should == original_loan.state_aid_calculation.send(field)
-      end
-    end
-
     it 'should create new loan with modified by set to user requesting transfer' do
       pending
     end
