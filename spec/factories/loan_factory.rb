@@ -120,5 +120,9 @@ FactoryGirl.define do
       state Loan::RepaidFromTransfer
     end
 
+    trait :with_state_aid_calculation do
+      state_aid_calculation
+    end
+
   end
 end

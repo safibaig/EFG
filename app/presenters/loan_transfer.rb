@@ -43,16 +43,17 @@ class LoanTransfer
 
        loan_to_transfer.update_attribute(:state, Loan::RepaidFromTransfer)
 
-       @new_loan                    = loan_to_transfer.dup
-       @new_loan.lender             = self.lender
-       @new_loan.amount             = self.new_amount
-       @new_loan.reference          = LoanReference.new(loan_to_transfer.reference).increment
-       @new_loan.state              = Loan::Incomplete
-       @new_loan.branch_sortcode    = ''
-       @new_loan.repayment_duration = 0
-       @new_loan.payment_period     = ''
-       @new_loan.maturity_date      = ''
-       @new_loan.invoice_id         = ''
+       @new_loan                       = loan_to_transfer.dup
+       @new_loan.lender                = self.lender
+       @new_loan.amount                = self.new_amount
+       @new_loan.reference             = LoanReference.new(loan_to_transfer.reference).increment
+       @new_loan.state                 = Loan::Incomplete
+       @new_loan.branch_sortcode       = ''
+       @new_loan.repayment_duration    = 0
+       @new_loan.payment_period        = ''
+       @new_loan.maturity_date         = ''
+       @new_loan.invoice_id            = ''
+       @new_loan.state_aid_calculation = loan_to_transfer.state_aid_calculation.dup
        # TODO - set created_by and modified by fields to user making transfer
 
        (1..5).each do |num|
