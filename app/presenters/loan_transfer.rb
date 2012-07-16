@@ -4,7 +4,7 @@ class LoanTransfer
 
    ALLOWED_LOAN_TRANSFER_STATES = [Loan::Guaranteed, Loan::Demanded, Loan::Repaid]
 
-   attr_reader :loan_to_transfer
+   attr_reader :loan_to_transfer, :new_loan
 
    attr_accessor :new_amount, :lender
 
@@ -36,6 +36,30 @@ class LoanTransfer
        facility_letter_date: facility_letter_date,
        state: ALLOWED_LOAN_TRANSFER_STATES
      ).first
+   end
+
+   def transfer!
+     Loan.transaction do
+
+       loan_to_transfer.update_attribute(:state, Loan::RepaidFromTransfer)
+
+       @new_loan                    = loan_to_transfer.dup
+       @new_loan.lender             = self.lender
+       @new_loan.reference          = LoanReference.new(loan_to_transfer.reference).increment
+       @new_loan.state              = Loan::Incomplete
+       @new_loan.branch_sortcode    = ''
+       @new_loan.repayment_duration = 0
+       @new_loan.payment_period     = ''
+       @new_loan.maturity_date      = ''
+       @new_loan.invoice_id         = ''
+       # TODO - set created_by and modified by fields to user making transfer
+
+       (1..5).each do |num|
+         @new_loan.send("generic#{num}=", nil)
+       end
+
+       @new_loan.save!
+     end
    end
 
    private

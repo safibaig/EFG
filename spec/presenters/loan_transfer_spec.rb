@@ -130,4 +130,77 @@ describe LoanTransfer do
 
   end
 
+  describe '#transfer!' do
+    let(:original_loan) { loan.reload }
+
+    let(:new_loan) { Loan.last }
+
+    before(:each) do
+      loan_transfer.transfer!
+    end
+
+    it 'should transition original loan to repaid from transfer state' do
+      original_loan.state.should == Loan::RepaidFromTransfer
+    end
+
+    it 'should assign new loan to lender requesting transfer' do
+      new_loan.lender.should == loan_transfer.lender
+    end
+
+    it "should create new loan with a copy of some of the original loan's data" do
+      fields_not_copied = %w(
+        id lender_id reference state branch_sortcode repayment_duration
+        payment_period maturity_date invoice_id generic1 generic2 generic3 generic4 generic5
+      )
+
+      fields_to_compare = Loan.column_names - fields_not_copied
+
+      fields_to_compare.each do |field|
+        original_loan.send(field).should == new_loan.send(field)
+      end
+    end
+
+    it 'should create new loan with incremented reference number' do
+      new_loan.reference.should == LoanReference.new(loan.reference).increment
+    end
+
+    it 'should create new loan with state "incomplete"' do
+      new_loan.state.should == Loan::Incomplete
+    end
+
+    it 'should create new loan with no value for branch sort code' do
+      new_loan.branch_sortcode.should be_blank
+    end
+
+    it 'should create new loan with repayment duration of 0' do
+      new_loan.repayment_duration.should == MonthDuration.new(0)
+    end
+
+    it 'should create new loan with no value for payment period' do
+      new_loan.payment_period.should be_blank
+    end
+
+    it 'should create new loan with no value for maturity date' do
+      new_loan.maturity_date.should be_blank
+    end
+
+    it 'should create new loan with no value for generic fields' do
+      (1..5).each do |num|
+        new_loan.send("generic#{num}").should be_blank
+      end
+    end
+
+    it 'should create new loan with no invoice' do
+      new_loan.invoice_id.should be_blank
+    end
+
+    it 'should create new loan with modified by set to user requesting transfer' do
+      pending
+    end
+
+    it 'should create new loan with created by set to user requesting transfer' do
+      pending
+    end
+  end
+
 end
