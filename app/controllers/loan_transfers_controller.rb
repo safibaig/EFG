@@ -14,8 +14,7 @@ class LoanTransfersController < ApplicationController
     @loan_transfer.attributes = params[:loan_transfer]
     @loan_transfer.lender = current_lender
 
-    if @loan_transfer.valid?
-      @loan_transfer.transfer!
+    if @loan_transfer.save
       redirect_to loan_transfer_path(@loan_transfer.new_loan)
     else
       render :new

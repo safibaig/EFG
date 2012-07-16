@@ -21,10 +21,6 @@ class LoanTransfer
      errors.add(:declaration_signed, :accepted) unless self.declaration_signed
    end
 
-   def valid?
-     super && loan_can_be_transferred?
-   end
-
    def new_amount=(value)
      @new_amount = value.present? ? Money.parse(value) : nil
    end
@@ -38,10 +34,12 @@ class LoanTransfer
      ).first
    end
 
-   def transfer!
+   def save
+     return false unless valid? && loan_can_be_transferred?
      Loan.transaction do
 
-       loan_to_transfer.update_attribute(:state, Loan::RepaidFromTransfer)
+       loan_to_transfer.state = Loan::RepaidFromTransfer
+       loan_to_transfer.save!
 
        @new_loan                       = loan_to_transfer.dup
        @new_loan.lender                = self.lender

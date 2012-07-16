@@ -55,17 +55,98 @@ describe LoanTransfer do
       loan_transfer.should_not be_valid
     end
 
+  end
+
+  describe '#save' do
+    let(:original_loan) { loan.reload }
+
+    let(:new_loan) { Loan.last }
+
+    context 'when valid' do
+      before(:each) do
+        loan_transfer.save
+      end
+
+      it 'should transition original loan to repaid from transfer state' do
+        original_loan.state.should == Loan::RepaidFromTransfer
+      end
+
+      it 'should assign new loan to lender requesting transfer' do
+        new_loan.lender.should == loan_transfer.lender
+      end
+
+      it "should create new loan with a copy of some of the original loan's data" do
+        fields_not_copied = %w(
+          id lender_id reference state branch_sortcode repayment_duration amount
+          payment_period maturity_date invoice_id generic1 generic2 generic3 generic4
+          generic5 created_at updated_at
+        )
+
+        fields_to_compare = Loan.column_names - fields_not_copied
+
+        fields_to_compare.each do |field|
+          original_loan.send(field).should == new_loan.send(field)
+        end
+      end
+
+      it 'should create new loan with incremented reference number' do
+        new_loan.reference.should == LoanReference.new(loan.reference).increment
+      end
+
+      it 'should create new loan with state "incomplete"' do
+        new_loan.state.should == Loan::Incomplete
+      end
+
+      it 'should create new loan with amount set to the specified new amount' do
+        new_loan.amount.should == loan_transfer.new_amount
+      end
+
+      it 'should create new loan with no value for branch sort code' do
+        new_loan.branch_sortcode.should be_blank
+      end
+
+      it 'should create new loan with repayment duration of 0' do
+        new_loan.repayment_duration.should == MonthDuration.new(0)
+      end
+
+      it 'should create new loan with no value for payment period' do
+        new_loan.payment_period.should be_blank
+      end
+
+      it 'should create new loan with no value for maturity date' do
+        new_loan.maturity_date.should be_blank
+      end
+
+      it 'should create new loan with no value for generic fields' do
+        (1..5).each do |num|
+          new_loan.send("generic#{num}").should be_blank
+        end
+      end
+
+      it 'should create new loan with no invoice' do
+        new_loan.invoice_id.should be_blank
+      end
+
+      it 'should create new loan with modified by set to user requesting transfer' do
+        pending
+      end
+
+      it 'should create new loan with created by set to user requesting transfer' do
+        pending
+      end
+    end
+
     context 'when new loan amount is greater than the amount of the loan being transferred' do
       before(:each) do
         loan_transfer.new_amount = loan.amount + Money.new(100)
       end
 
       it 'should return false' do
-        loan_transfer.should_not be_valid
+        loan_transfer.save.should == false
       end
 
       it 'should add error to base' do
-        loan_transfer.valid?
+        loan_transfer.save
         loan_transfer.errors[:new_amount].should include(error_string('new_amount.cannot_be_greater'))
       end
     end
@@ -76,7 +157,7 @@ describe LoanTransfer do
       end
 
       it "should return false" do
-        loan_transfer.should_not be_valid
+        loan_transfer.save.should == false
       end
     end
 
@@ -86,11 +167,11 @@ describe LoanTransfer do
       end
 
       it "should return false" do
-        loan_transfer.should_not be_valid
+        loan_transfer.save.should == false
       end
 
       it "should add error to base" do
-        loan_transfer.valid?
+        loan_transfer.save
         loan_transfer.errors[:base].should include(error_string('base.cannot_transfer_own_loan'))
       end
     end
@@ -104,11 +185,11 @@ describe LoanTransfer do
       end
 
       it "should return false" do
-        loan_transfer.should_not be_valid
+        loan_transfer.save.should == false
       end
 
       it "should add error to base" do
-        loan_transfer.valid?
+        loan_transfer.save
         loan_transfer.errors[:base].should include(error_string('base.cannot_be_transferred'))
       end
     end
@@ -119,92 +200,13 @@ describe LoanTransfer do
       end
 
       it "should return false" do
-        loan_transfer.should_not be_valid
+        loan_transfer.save.should == false
       end
 
       it "should add error to base" do
-        loan_transfer.valid?
+        loan_transfer.save
         loan_transfer.errors[:base].should include(error_string('base.loan_not_found'))
       end
-    end
-
-  end
-
-  describe '#transfer!' do
-    let(:original_loan) { loan.reload }
-
-    let(:new_loan) { Loan.last }
-
-    before(:each) do
-      loan_transfer.transfer!
-    end
-
-    it 'should transition original loan to repaid from transfer state' do
-      original_loan.state.should == Loan::RepaidFromTransfer
-    end
-
-    it 'should assign new loan to lender requesting transfer' do
-      new_loan.lender.should == loan_transfer.lender
-    end
-
-    it "should create new loan with a copy of some of the original loan's data" do
-      fields_not_copied = %w(
-        id lender_id reference state branch_sortcode repayment_duration amount
-        payment_period maturity_date invoice_id generic1 generic2 generic3 generic4
-        generic5 created_at updated_at
-      )
-
-      fields_to_compare = Loan.column_names - fields_not_copied
-
-      fields_to_compare.each do |field|
-        original_loan.send(field).should == new_loan.send(field)
-      end
-    end
-
-    it 'should create new loan with incremented reference number' do
-      new_loan.reference.should == LoanReference.new(loan.reference).increment
-    end
-
-    it 'should create new loan with state "incomplete"' do
-      new_loan.state.should == Loan::Incomplete
-    end
-
-    it 'should create new loan with amount set to the specified new amount' do
-      new_loan.amount.should == loan_transfer.new_amount
-    end
-
-    it 'should create new loan with no value for branch sort code' do
-      new_loan.branch_sortcode.should be_blank
-    end
-
-    it 'should create new loan with repayment duration of 0' do
-      new_loan.repayment_duration.should == MonthDuration.new(0)
-    end
-
-    it 'should create new loan with no value for payment period' do
-      new_loan.payment_period.should be_blank
-    end
-
-    it 'should create new loan with no value for maturity date' do
-      new_loan.maturity_date.should be_blank
-    end
-
-    it 'should create new loan with no value for generic fields' do
-      (1..5).each do |num|
-        new_loan.send("generic#{num}").should be_blank
-      end
-    end
-
-    it 'should create new loan with no invoice' do
-      new_loan.invoice_id.should be_blank
-    end
-
-    it 'should create new loan with modified by set to user requesting transfer' do
-      pending
-    end
-
-    it 'should create new loan with created by set to user requesting transfer' do
-      pending
     end
   end
 
