@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe LoanTransfer do
 
-  let!(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, amount: 8000000) }
+  let!(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed) }
 
   let(:loan_transfer) {
     FactoryGirl.build(
       :loan_transfer,
-      amount: loan.amount.cents,
-      new_amount: 7000000,
+      amount: loan.amount,
+      new_amount: loan.amount - Money.new(1000),
       reference: loan.reference,
       facility_letter_date: loan.facility_letter_date,
     )
