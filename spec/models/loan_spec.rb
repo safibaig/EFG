@@ -177,5 +177,9 @@ describe Loan do
     it "returns false when loan with next incremented loan reference does not exist" do
       FactoryGirl.build(:loan, reference: 'Q9HTDF7-01').should_not be_transferred
     end
+
+    it "returns false when loan has no reference" do
+      Loan.new.should_not be_transferred
+    end
   end
 end

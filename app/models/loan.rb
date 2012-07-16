@@ -146,6 +146,7 @@ class Loan < ActiveRecord::Base
   end
 
   def transferred?
+    return false if reference.blank?
     next_loan_reference = LoanReference.new(reference).increment
     Loan.exists?(reference: next_loan_reference)
   end
