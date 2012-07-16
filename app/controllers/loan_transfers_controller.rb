@@ -1,5 +1,9 @@
 class LoanTransfersController < ApplicationController
-  before_filter :verify_create_permission, only: [:new, :create]
+  before_filter :verify_create_permission
+
+  def show
+    @loan = current_lender.loans.find(params[:id])
+  end
 
   def new
     @loan_transfer = LoanTransfer.new(Loan.new)
@@ -11,7 +15,8 @@ class LoanTransfersController < ApplicationController
     @loan_transfer.lender = current_lender
 
     if @loan_transfer.valid?
-      render text: 'worked!'
+      @loan_transfer.transfer!
+      redirect_to loan_transfer_path(@loan_transfer.new_loan)
     else
       render :new
     end

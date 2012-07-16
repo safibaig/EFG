@@ -70,6 +70,6 @@ EFG::Application.routes.draw do
     end
   end
 
-  resources :loan_transfers, only: [:new, :create]
+  resources :loan_transfers, only: [:show, :new, :create]
 
 end

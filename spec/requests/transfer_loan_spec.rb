@@ -16,7 +16,7 @@ describe 'Transfer a loan' do
 
     fill_in 'loan_transfer_reference', with: loan.reference
     fill_in 'loan_transfer_amount', with: loan.amount.to_s
-    fill_in 'loan_transfer_facility_letter_date', with: loan.facility_letter_date
+    fill_in 'loan_transfer_facility_letter_date', with: loan.facility_letter_date.strftime('%d/%m/%Y')
     fill_in 'loan_transfer_new_amount', with: loan.amount - Money.new(500)
     choose 'loan_transfer_declaration_signed_true'
 
@@ -24,11 +24,16 @@ describe 'Transfer a loan' do
 
     page.should have_content('This page provides confirmation that the loan has been transferred.')
 
+    # Check original loan and new loan
     loan.reload.state.should == Loan::RepaidFromTransfer
-
     transferred_loan = Loan.last
     transferred_loan.state.should == Loan::Incomplete
     transferred_loan.business_name.should == loan.business_name
+
+    # update transferred loan entry
+    click_link 'Loan Entry'
+
+    page.current_url.should == new_loan_transferred_entry_path(transferred_loan)
   end
 
   it 'should display error when loan to transfer is not found' do
