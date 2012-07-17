@@ -13,29 +13,29 @@ class DashboardController < ApplicationController
   private
 
   def not_drawn_loans_groups
-    LoanAlerts::PriorityGrouping.new(not_drawn_loans, NotDrawnStartDate, NotDrawnEndDate).groups_hash
+    LoanAlerts::PriorityGrouping.new(not_drawn_loans, not_drawn_start_date, not_drawn_end_date).groups_hash
   end
 
   def demanded_loans_groups
-    LoanAlerts::PriorityGrouping.new(demanded_loans, DemandedStartDate, DemandedEndDate).groups_hash
+    LoanAlerts::PriorityGrouping.new(demanded_loans, demanded_start_date, demanded_end_date).groups_hash
   end
 
   def not_progressed_loans_groups
-    LoanAlerts::PriorityGrouping.new(not_progressed_loans, NotProgressedStartDate, NotProgressedEndDate).groups_hash
+    LoanAlerts::PriorityGrouping.new(not_progressed_loans, not_progressed_start_date, not_progressed_end_date).groups_hash
   end
 
   def assumed_repaid_loans_groups
     offered_group = LoanAlerts::PriorityGrouping.new(
       assumed_repaid_offered_loans,
-      AssumedRepaidOfferedStartDate,
-      AssumedRepaidOfferedEndDate,
+      assumed_repaid_offered_start_date,
+      assumed_repaid_offered_end_date,
       :maturity_date
     ).groups_hash
 
     guaranteed_group = LoanAlerts::PriorityGrouping.new(
       assumed_repaid_guaranteed_loans,
-      AssumedRepaidGuaranteedStartDate,
-      AssumedRepaidGuaranteedEndDate,
+      assumed_repaid_guaranteed_start_date,
+      assumed_repaid_guaranteed_end_date,
       :maturity_date
     ).groups_hash
 

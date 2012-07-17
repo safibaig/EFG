@@ -3,7 +3,7 @@ class LoanAlertsController < ApplicationController
   include LoanAlerts
 
   def not_progressed
-    start_date, end_date = start_and_end_dates(NotProgressedStartDate, NotProgressedEndDate)
+    start_date, end_date = start_and_end_dates(not_progressed_start_date, not_progressed_end_date)
 
     @loans = not_progressed_loans(start_date, end_date)
     @title = I18n.t('dashboard.loan_alerts.not_progressed')
@@ -11,7 +11,7 @@ class LoanAlertsController < ApplicationController
   end
 
   def not_drawn
-    start_date, end_date = start_and_end_dates(NotDrawnStartDate, NotDrawnEndDate)
+    start_date, end_date = start_and_end_dates(not_drawn_start_date, not_drawn_end_date)
 
     @loans = not_drawn_loans(start_date, end_date)
     @title = I18n.t('dashboard.loan_alerts.not_drawn')
@@ -19,7 +19,7 @@ class LoanAlertsController < ApplicationController
   end
 
   def demanded
-    start_date, end_date = start_and_end_dates(DemandedStartDate, DemandedEndDate)
+    start_date, end_date = start_and_end_dates(demanded_start_date, demanded_end_date)
 
     @loans = demanded_loans(start_date, end_date)
     @title = I18n.t('dashboard.loan_alerts.demanded')
@@ -27,8 +27,8 @@ class LoanAlertsController < ApplicationController
   end
 
   def assumed_repaid
-    offered_start_date, offered_end_date = start_and_end_dates(AssumedRepaidOfferedStartDate, AssumedRepaidOfferedEndDate)
-    guaranteed_start_date, guaranteed_end_date = start_and_end_dates(AssumedRepaidGuaranteedStartDate, AssumedRepaidGuaranteedEndDate)
+    offered_start_date, offered_end_date = start_and_end_dates(assumed_repaid_offered_start_date, assumed_repaid_offered_end_date)
+    guaranteed_start_date, guaranteed_end_date = start_and_end_dates(assumed_repaid_guaranteed_start_date, assumed_repaid_guaranteed_end_date)
 
     @loans = (
       assumed_repaid_offered_loans(offered_start_date, offered_end_date) +
