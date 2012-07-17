@@ -7,7 +7,7 @@
 <hr>
 
 <%= simple_form_for(@loan_cancel, url: loan_cancel_path(@loan), html: { class: 'form-horizontal form-loan-cancel' }) do |f| %>
-  <%= f.input :cancelled_reason_id, as: :radio_buttons, collection: CancelReason.all %>
+  <%= f.input :cancelled_reason_id, as: :select, collection: CancelReason.all, prompt: 'Please select' %>
   <%= f.input :cancelled_comment, as: :text, input_html: { rows: 5 } %>
   <%= f.input :cancelled_on, as: :quick_date %>
 

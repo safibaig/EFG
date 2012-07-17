@@ -90,11 +90,11 @@ describe 'loan entry' do
       fill_in 'business_name', 'Widgets Ltd.'
       fill_in 'trading_name', 'Brilliant Widgets'
       fill_in 'company_registration', '0123456789'
-      choose_radio_button 'legal_form_id', 1
+      select LegalForm.find(1).name, from: 'loan_entry_legal_form_id'
       fill_in 'postcode', 'N8 4HF'
       fill_in 'non_validated_postcode', 'JF3 8HF'
       fill_in 'branch_sortcode', '03-12-45'
-      choose_radio_button 'repayment_frequency_id', 1
+      select RepaymentFrequency.find(1).name, from: 'loan_entry_repayment_frequency_id'
       fill_in 'maturity_date', '01/01/2013'
 
       click_button 'State Aid Calculation'
