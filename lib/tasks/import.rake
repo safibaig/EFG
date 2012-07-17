@@ -1,28 +1,28 @@
 namespace :import do
-  desc "Import all data."
+  desc "Import all data"
   task all: [:users, :lenders, :loans, :loan_allocations, :state_aid_calculations]
 
-  desc "Import user data (CSV files found in import_data/users.csv)"
+  desc "Import user data (SFLG_USER_DATA_TABLE)"
   task users: :lenders do
     _import User
   end
 
-  desc "Import lender data (CSV files found in import_data/lenders.csv)"
+  desc "Import lender data (SFLG_LENDER_DATA_TABLE)"
   task lenders: :environment do
     _import Lender
   end
 
-  desc "Import loan data (CSV files found in import_data/loans.csv)"
+  desc "Import loan data (SFLG_LOAN_DATA_TABLE)"
   task loans: [:lenders, :loan_allocations] do
     _import Loan
   end
 
-  desc "Import loan allocation data (CSV files found in import_data/loan_allocationss.csv)"
+  desc "Import loan allocation data (SFLG_LENDER_CAP_ALLOC_DATA_TABLE)"
   task loan_allocations: :environment do
     _import LoanAllocation
   end
 
-  desc "Import loan data (CSV files found in import_data/loans.csv)"
+  desc "Import state aid calculation data (SFLG_CALCULATORS_DATA_TABLE)"
   task state_aid_calculations: :loans do
     _import StateAidCalculation
   end
