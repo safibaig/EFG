@@ -99,8 +99,8 @@ FactoryGirl.define do
 
     trait :demanded do
       state Loan::Demanded
+      amount_demanded Money.new(10_000_00)
       dti_demanded_on { Date.today }
-      dti_demand_outstanding Money.new(10_000_00)
       dti_ded_code 'ABC'
       dti_reason 'reason'
     end
