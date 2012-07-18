@@ -1,7 +1,7 @@
 class Recovery < ActiveRecord::Base
   include FormatterConcern
 
-  VALID_LOAN_STATES = [Loan::Settled, Loan::Recovered]
+  VALID_LOAN_STATES = [Loan::Settled, Loan::Recovered, Loan::Realised]
 
   belongs_to :loan
   belongs_to :created_by, class_name: 'LenderUser'

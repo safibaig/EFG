@@ -7,43 +7,29 @@ describe 'loan recovery' do
   let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
   before { login_as(current_user, scope: :user) }
 
-  it 'creates a loan recovery' do
-    visit loan_path(loan)
-    click_link 'Recovery Made'
-    page.should_not have_button('Submit')
+  [Loan::Settled, Loan::Recovered, Loan::Realised].each do |state|
+    context "with state #{state}" do
+      let(:loan) { FactoryGirl.create(:loan, state.to_sym, settled_on: '1/5/12') }
 
-    expect {
-      fill_in_valid_details
-      click_button 'Calculate'
-    }.not_to change(Recovery, :count)
+      it 'creates a loan recovery' do
+        visit loan_path(loan)
+        click_link 'Recovery Made'
+        page.should_not have_button('Submit')
 
-    expect {
-      click_button 'Submit'
-    }.to change(Recovery, :count).by(1)
+        expect {
+          fill_in_valid_details
+          click_button 'Calculate'
+        }.not_to change(Recovery, :count)
 
-    verify_recovery_and_loan
+        expect {
+          click_button 'Submit'
+        }.to change(Recovery, :count).by(1)
 
-    current_path.should == loan_path(loan)
-  end
+        verify_recovery_and_loan
 
-  it 'works for an already recovered loan' do
-    loan.update_attribute :state, Loan::Recovered
-
-    visit loan_path(loan)
-    click_link 'Recovery Made'
-
-    expect {
-      fill_in_valid_details
-      click_button 'Calculate'
-    }.not_to change(Recovery, :count)
-
-    expect {
-      click_button 'Submit'
-    }.to change(Recovery, :count).by(1)
-
-    verify_recovery_and_loan
-
-    current_path.should == loan_path(loan)
+        current_path.should == loan_path(loan)
+      end
+    end
   end
 
   it 'does not continue with invalid values' do
