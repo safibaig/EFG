@@ -122,6 +122,7 @@ FactoryGirl.define do
 
     trait :transferred do
       reference 'ABCDEFG+02'
+      state Loan::Incomplete
     end
 
     trait :with_state_aid_calculation do
