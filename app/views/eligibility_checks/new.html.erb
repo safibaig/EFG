@@ -11,13 +11,13 @@
 
   <%= field_set_tag 'About the Borrower and Their Facility' do %>
     <%= f.input :amount, as: :currency %>
-    <%= f.input :loan_allocation_id, as: :radio_buttons, collection: loan_allocation_options_for_select(@loan_eligibility_check.lender) %>
+    <%= f.input :loan_allocation_id, as: :select, collection: loan_allocation_options_for_select(@loan_eligibility_check.lender), prompt: 'Please select' %>
     <%= f.input :repayment_duration, as: :duration %>
     <%= f.input :turnover, as: :currency %>
     <%= f.input :trading_date, as: :quick_date %>
     <%= f.input :sic_code, as: :sic_code %>
-    <%= f.input :loan_category_id, as: :radio_buttons, collection: LoanCategory.all %>
-    <%= f.input :reason_id, as: :radio_buttons, collection: LoanReason.all %>
+    <%= f.input :loan_category_id, as: :select, collection: LoanCategory.all, prompt: 'Please select' %>
+    <%= f.input :reason_id, as: :select, collection: LoanReason.all, prompt: 'Please select' %>
     <%= f.input :previous_borrowing, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :private_residence_charge_required, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :personal_guarantee_required, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>

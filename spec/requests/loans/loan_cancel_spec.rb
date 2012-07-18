@@ -11,7 +11,7 @@ describe 'loan cancel' do
     click_link 'Cancel Loan'
 
     fill_in 'cancelled_on', '1/6/12'
-    choose_radio_button 'cancelled_reason_id', 4
+    select CancelReason.find(4).name, from: 'loan_cancel_cancelled_reason_id'
     fill_in 'cancelled_comment', 'No comment'
 
     click_button 'Submit'
@@ -32,7 +32,7 @@ describe 'loan cancel' do
     click_link 'Cancel Loan'
 
     fill_in 'cancelled_on', '1/6/12'
-    choose_radio_button 'cancelled_reason_id', 4
+    select CancelReason.find(4).name, from: 'loan_cancel_cancelled_reason_id'
     fill_in 'cancelled_comment', 'No comment'
 
     click_button 'Submit'
