@@ -56,7 +56,7 @@ en:
     loan_alerts:
       title: Loan Alerts For The Next 60 Days
       not_drawn: "Loans which will have the <em>Guarantee</em> removed if not <em>Drawn</em>:"
-      demanded: "Loans <em>Demanded</em> that will be removed if not moved to <em>Lender Demand</em>:"
+      demanded: "<em>Lender Demand</em> loans that will be removed if not moved to <em>Demanded</em>:"
       not_progressed: "<em>Eligible</em> Loans which will be removed if not <em>Progressed</em>:"
       assumed_repaid: "Loans assumed to have been <em>Repaid</em> due to <em>lack of updates</em>:"
     utilisation:

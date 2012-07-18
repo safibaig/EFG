@@ -1,7 +1,7 @@
 lender = Lender.find_or_create_by_name("Banksy")
 lender.save!
 
-user = User.find_or_create_by_email(email: "bob@example.com",
+user = LenderUser.find_or_create_by_email(email: "bob@example.com",
   first_name: "Bob",
   last_name: "Flemming",
   password: "password",

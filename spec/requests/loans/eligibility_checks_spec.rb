@@ -14,13 +14,13 @@ describe 'eligibility checks' do
     choose_radio_button 'would_you_lend', true
     choose_radio_button 'collateral_exhausted', true
     fill_in 'amount', '50000.89'
-    choose_radio_button 'loan_allocation_id', LoanAllocation.last.id
+    select LoanAllocation.last.lender.name, from: 'loan_eligibility_check_loan_allocation_id'
     fill_in_duration_input 'repayment_duration', 2, 6
     fill_in 'turnover', '1234567.89'
     fill_in 'trading_date', '31/1/2012'
     fill_in 'sic_code', 'DA15.61/1'
-    choose_radio_button 'loan_category_id', 2
-    choose_radio_button 'reason_id', 3
+    select LoanCategory.find(2).name, from: 'loan_eligibility_check_loan_category_id'
+    select LoanReason.find(3).name, from: 'loan_eligibility_check_reason_id'
     choose_radio_button 'previous_borrowing', true
     choose_radio_button 'private_residence_charge_required', false
     choose_radio_button 'personal_guarantee_required', false

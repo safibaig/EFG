@@ -57,15 +57,15 @@ ActiveRecord::Schema.define(:version => 20120718110542) do
     t.integer  "version"
     t.integer  "allocation_type"
     t.boolean  "active"
-    t.integer  "allocation"
+    t.integer  "allocation",            :limit => 8
     t.date     "starts_on"
     t.date     "ends_on"
     t.string   "description"
     t.string   "modified_by_legacy_id"
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
-    t.decimal  "premium_rate",          :precision => 16, :scale => 2
-    t.decimal  "guarantee_rate",        :precision => 16, :scale => 2
+    t.decimal  "premium_rate",                       :precision => 16, :scale => 2
+    t.decimal  "guarantee_rate",                     :precision => 16, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end

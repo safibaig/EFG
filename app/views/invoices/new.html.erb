@@ -3,7 +3,7 @@
 </div>
 
 <%= simple_form_for(@invoice, url: select_loans_invoices_path, html: {class: 'form-horizontal form-invoice'}) do |f| %>
-  <%= f.input :lender_id, collection: Lender.all %>
+  <%= f.input :lender_id, collection: Lender.order_by_name %>
   <%= f.input :reference %>
   <%= f.input :period_covered_quarter, collection: Invoice::PERIOD_COVERED_QUARTERS %>
   <%= f.input :period_covered_year %>

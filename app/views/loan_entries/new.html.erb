@@ -16,7 +16,7 @@
   <%= field_set_tag 'Business' do %>
     <%= f.input :business_name, as: :string %>
     <%= f.input :trading_name, as: :string %>
-    <%= f.input :legal_form_id, as: :radio_buttons, collection: LegalForm.all %>
+    <%= f.input :legal_form_id, as: :select, collection: LegalForm.all, prompt: 'Please select' %>
     <%= f.input :company_registration, as: :string %>
     <%= f.input :turnover, as: :currency, disabled: true %>
     <%= f.input :trading_date, as: :quick_date, disabled: true %>
@@ -26,15 +26,15 @@
 
   <%= field_set_tag 'Loan' do %>
     <%= f.input :amount, as: :currency, disabled: true %>
-    <%= f.input :loan_allocation_id, as: :radio_buttons, collection: loan_allocation_options_for_select(@loan_entry.lender), disabled: true %>
+    <%= f.input :loan_allocation_id, as: :select, collection: loan_allocation_options_for_select(@loan_entry.lender), disabled: true, prompt: 'Please select' %>
     <%= f.input :repayment_duration, as: :duration, disabled: true %>
-    <%= f.input :repayment_frequency_id, as: :radio_buttons, collection: RepaymentFrequency.all %>
+    <%= f.input :repayment_frequency_id, as: :select, collection: RepaymentFrequency.all, prompt: 'Please select' %>
     <%= f.input :maturity_date, as: :quick_date %>
     <%= f.input :turnover, as: :currency, disabled: true %>
     <%= f.input :trading_date, as: :quick_date, disabled: true %>
     <%= f.input :sic_code, as: :sic_code, disabled: true %>
-    <%= f.input :loan_category_id, as: :radio_buttons, collection: LoanCategory.all, disabled: true %>
-    <%= f.input :reason_id, as: :radio_buttons, collection: LoanReason.all, disabled: true %>
+    <%= f.input :loan_category_id, as: :select, collection: LoanCategory.all, disabled: true, prompt: 'Please select' %>
+    <%= f.input :reason_id, as: :select, collection: LoanReason.all, disabled: true, prompt: 'Please select' %>
     <%= f.input :interest_rate_type_id, as: :radio_buttons, collection: InterestRateType.all, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :interest_rate, as: :string %>
     <%= f.input :fees, as: :currency %>

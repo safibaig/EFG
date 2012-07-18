@@ -3,7 +3,7 @@
 </div>
 
 <%= simple_form_for(@realisation_statement, url: select_loans_realise_loans_path, html: {class: 'form-horizontal form-realise-loans'}) do |f| %>
-  <%= f.input :lender_id, collection: Lender.all %>
+  <%= f.input :lender_id, collection: Lender.order_by_name %>
   <%= f.input :reference %>
   <%= f.input :period_covered_quarter, collection: RealisationStatement::PERIOD_COVERED_QUARTERS %>
   <%= f.input :period_covered_year, placeholder: 'yyyy' %>

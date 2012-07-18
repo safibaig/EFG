@@ -3,18 +3,20 @@ module LoanDetailsTableHelper
     Formats = {
       ActiveSupport::TimeWithZone => ->(time) { time.strftime('%d/%m/%Y %H:%M:%S') },
       CancelReason => :name.to_proc,
+      CfeUser => :name.to_proc,
       Date => ->(date) { date.strftime('%d/%m/%Y') },
       FalseClass => 'No',
       InterestRateType => :name.to_proc,
       LegalForm => :name.to_proc,
       Lender => :name.to_proc,
+      LenderUser => :name.to_proc,
       LoanAllocation => :title.to_proc,
       LoanCategory => :name.to_proc,
       Money => :format.to_proc,
       MonthDuration => :format.to_proc,
       NilClass => 'Not Set',
-      TrueClass => 'Yes',
-      User => :name.to_proc,
+      RepaymentFrequency => :name.to_proc,
+      TrueClass => 'Yes'
     }
 
     def initialize(loan, translation_scope)
