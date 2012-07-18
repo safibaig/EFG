@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120717133659) do
+ActiveRecord::Schema.define(:version => 20120718110542) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -171,7 +171,7 @@ ActiveRecord::Schema.define(:version => 20120717133659) do
     t.boolean  "sic_notified_aid"
     t.boolean  "sic_eligible"
     t.string   "non_val_postcode",                    :limit => 10
-    t.integer  "transferred_from"
+    t.integer  "transferred_from_legacy_id"
     t.integer  "next_in_calc_seq"
     t.string   "loan_source",                         :limit => 1
     t.integer  "dit_break_costs"
@@ -198,11 +198,11 @@ ActiveRecord::Schema.define(:version => 20120717133659) do
     t.decimal  "debtor_book_topup",                                 :precision => 5,  :scale => 2
     t.integer  "loan_allocation_id"
     t.integer  "invoice_id"
+    t.integer  "transferred_from_id"
   end
 
   add_index "loans", ["lender_id"], :name => "index_loans_on_lender_id"
   add_index "loans", ["loan_allocation_id"], :name => "index_loans_on_loan_allocation_id"
-  add_index "loans", ["reference"], :name => "index_loans_on_reference", :unique => true
   add_index "loans", ["state"], :name => "index_loans_on_state"
 
   create_table "realisation_statements", :force => true do |t|

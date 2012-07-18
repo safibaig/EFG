@@ -31,21 +31,6 @@ FactoryGirl.define do
     created_at { Time.now }
     updated_at { Time.now }
 
-    # reference is generated on loan creation
-    # over-ride generated value if reference value is specified
-    #
-    # Note: temporarily disable active record timestamp updating
-    # in case the factory object is explicitly setting a value
-    # for updated_at/created_at
-    after(:create) do |loan, evaluator|
-      if evaluator.reference.present?
-        ActiveRecord::Base.record_timestamps = false
-        loan.reference = evaluator.reference
-        loan.save!
-        ActiveRecord::Base.record_timestamps = true
-      end
-    end
-
     trait :eligible do
       state Loan::Eligible
     end
@@ -130,5 +115,31 @@ FactoryGirl.define do
       state Loan::Realised
       realised_money_date { Date.today }
     end
+
+    trait :repaid_from_transfer do
+      state Loan::RepaidFromTransfer
+    end
+
+    trait :transferred do
+      reference 'ABCDEFG+02'
+      state Loan::Incomplete
+    end
+
+    trait :with_state_aid_calculation do
+      state_aid_calculation
+    end
+
+    trait :sflg do
+      reference 'ABC1234-01'
+      loan_source 'S'
+      loan_scheme 'S'
+    end
+
+    trait :efg do
+      reference 'ABC1234+01'
+      loan_source 'S'
+      loan_scheme 'E'
+    end
+
   end
 end

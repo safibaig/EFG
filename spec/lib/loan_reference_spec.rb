@@ -4,7 +4,7 @@ describe LoanReference do
 
   describe "#initialize" do
     it "raises exception when invalid reference" do
-      %w(wrong 1111111 A1B2C3D ABC123-01 ABC123+01 ABC12345+04 ABC1234+100).each do |string|
+      ['wrong', '1111111', 'A1B2C3D', 'ABC123-01', 'ABC123+01', 'ABC12345+04', 'ABC1234+100', '', nil].each do |string|
         expect {
           LoanReference.new(string)
         }.to raise_error(InvalidLoanReference)

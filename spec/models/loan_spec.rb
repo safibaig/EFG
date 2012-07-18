@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Loan do
-  describe 'validations' do
-    let(:loan) { FactoryGirl.build(:loan) }
+  let(:loan) { FactoryGirl.build(:loan) }
 
+  describe 'validations' do
     it 'has a valid Factory' do
       loan.should be_valid
     end
@@ -159,5 +159,79 @@ describe Loan do
 
       loan.reference.should == 'GHF789'
     end
+
+    it "should not be generated if already assigned" do
+      loan.reference = "custom-reference"
+      loan.save!
+      loan.reload.reference.should == 'custom-reference'
+    end
   end
+
+  describe "#already_transferred" do
+    it "returns true when a loan with the next incremented loan reference exists" do
+      FactoryGirl.create(:loan, reference: 'Q9HTDF7-02')
+
+      FactoryGirl.build(:loan, reference: 'Q9HTDF7-01').should be_already_transferred
+    end
+
+    it "returns false when loan with next incremented loan reference does not exist" do
+      FactoryGirl.build(:loan, reference: 'Q9HTDF7-01').should_not be_already_transferred
+    end
+
+    it "returns false when loan has no reference" do
+      Loan.new.should_not be_already_transferred
+    end
+  end
+
+  describe "#created_from_transfer?" do
+    it "returns true when a loan has been transferred from another loan" do
+      loan = FactoryGirl.build(:loan, reference: 'Q9HTDF7-02')
+      loan.should be_created_from_transfer
+    end
+
+    it "returns false when loan with next incremented loan reference does not exist" do
+      loan = FactoryGirl.build(:loan, reference: 'Q9HTDF7-01')
+      loan.should_not be_created_from_transfer
+    end
+
+    it "returns false when loan has no reference" do
+      Loan.new.should_not be_created_from_transfer
+    end
+  end
+
+  describe '#efg_loan?' do
+    it "returns true when loan source is SFLG and loan type is EFG" do
+      loan.loan_source = 'S'
+      loan.loan_scheme = 'E'
+
+      loan.should be_efg_loan
+    end
+
+    it "returns false when loan source is not SFLG" do
+      loan.loan_source = 'L'
+      loan.loan_scheme = 'E'
+
+      loan.should_not be_efg_loan
+    end
+
+    it "returns false when loan source is SFLG but loan type is not EFG" do
+      loan.loan_source = 'S'
+      loan.loan_scheme = 'S'
+
+      loan.should_not be_efg_loan
+    end
+  end
+
+  describe "#loan_scheme" do
+    it "should be set to 'E' by default" do
+      FactoryGirl.create(:loan).loan_scheme.should == 'E'
+    end
+  end
+
+  describe "#loan_source" do
+    it "should be set to 'S' by default" do
+      FactoryGirl.create(:loan).loan_source.should == 'S'
+    end
+  end
+
 end

@@ -54,6 +54,8 @@ class Loan < ActiveRecord::Base
   }
 
   validates_inclusion_of :state, in: States, strict: true
+  validates_inclusion_of :loan_scheme, in: %w(E S)
+  validates_inclusion_of :loan_source, in: %w(S L)
   validates_presence_of :lender_id, strict: true
 
   format :amount, with: MoneyFormatter.new
@@ -88,6 +90,8 @@ class Loan < ActiveRecord::Base
   format :recovery_on, with: QuickDateFormatter
 
   before_create :set_reference
+
+  before_validation :set_scheme, :set_source
 
   def self.with_state(state)
     where(state: state)
@@ -145,11 +149,45 @@ class Loan < ActiveRecord::Base
     PremiumSchedule.new(self.state_aid_calculation)
   end
 
+  def already_transferred?
+    return false if reference.blank?
+    next_loan_reference = LoanReference.new(reference).increment
+    Loan.exists?(reference: next_loan_reference)
+  end
+
+  def created_from_transfer?
+    return false if reference.blank?
+    reference[-2,2].to_i > 1
+  end
+
+  # Loan sources:
+  #   S = SFLG
+  #   L = Lognet
+  #
+  # Loan schemes:
+  #   S = SFLG
+  #   E = EFG
+  def efg_loan?
+    loan_source == 'S' && loan_scheme == 'E'
+  end
+
   private
 
   def set_reference
-    reference_string = LoanReference.generate
-    self.reference = self.class.exists?(reference: reference_string) ? set_reference : reference_string
+    unless reference.present?
+      reference_string = LoanReference.generate
+      self.reference = self.class.exists?(reference: reference_string) ? set_reference : reference_string
+    end
+  end
+
+  # 'E' = EFG
+  def set_scheme
+    self.loan_scheme = 'E' unless loan_scheme.present?
+  end
+
+  # 'S' = SFLG
+  def set_source
+    self.loan_source = 'S' unless loan_source.present?
   end
 
 end

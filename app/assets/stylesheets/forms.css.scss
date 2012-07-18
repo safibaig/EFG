@@ -46,6 +46,7 @@
 .form-loan-demand-to-borrower,
 .form-loan-repay,
 .form-loan-no-claim,
+.form-loan-transfer,
 .form-loan-demand-against-government,
 .form-state-aid-calculation,
 .form-invoice,
@@ -78,4 +79,14 @@
 
 .form-select-loans .alert {
   display: block;
+}
+
+.errors-on-base {
+  margin: 0 0 1em 0;
+  padding: 1em;
+  list-style-position: inside;
+  background-color: #eee;
+  border: 1px solid #B94A48;
+  border-radius: 5px;
+  color: #B94A48;
 }

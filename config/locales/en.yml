@@ -39,6 +39,19 @@ en:
               accepted: An initial payment for the correct amount of the first Scheme Guarantee Premium payment has not been received from the Applicant.
             signed_direct_debit_received:
               accepted: A signed Direct Debit mandate must have been received before the initial draw down can occur.
+        loan_transfer:
+          attributes:
+            base:
+              cannot_be_transferred: 'A suitable loan matching these criteria could not be found. Please note that all details supplied about the original loan must be correct, and it must be an SFLG scheme loan in one of the following states: "Guaranteed", "Lender demand" or "Repaid".'
+              cannot_transfer_own_loan: You cannot transfer one of your own loans
+            new_amount:
+              cannot_be_greater: cannot exceed the original loan amount
+            declaration_signed:
+              accepted: A customer declaration must have been received before a loan can be transferred
+        transferred_loan_entry:
+          attributes:
+            state_aid:
+              calculated: must be calculated
   dashboard:
     loan_alerts:
       title: Loan Alerts For The Next 60 Days

@@ -121,6 +121,13 @@ en:
         remove_guarantee_outstanding_amount: 'What is the outstanding balance of the facility, as recorded by the Lender, at the date of removal of the Guarantee?'
         remove_guarantee_reason: What is the reason that the Guarantee has been removed from this facility?
 
+      loan_transfer:
+        reference: What is the previous lender's loan reference (as recorded on the borrower's Scheme Facility Letter or Information Declaration)?
+        amount: What was the original loan amount (as recorded on the Web Portal)?
+        facility_letter_date: What was the date of the previous Lender's Scheme Facility Letter (as recorded on the Web Portal)? (dd/mm/yyyy)
+        new_amount: What is the value of the facility being applied for?
+        declaration_signed: 'Before proceeding, have you received the Data Protection and Disclosure Declaration signed by the Applicant?'
+
       search:
         sort_by: Sort By
         sort_order: Sort Order
