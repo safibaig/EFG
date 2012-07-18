@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe LoanTransfer do
 
-  let!(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation) }
+  let!(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation, :sflg) }
 
   let(:loan_transfer) {
     FactoryGirl.build(
