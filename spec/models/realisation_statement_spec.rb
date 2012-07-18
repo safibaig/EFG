@@ -130,9 +130,9 @@ describe RealisationStatement do
     context 'with valid loans to be realised' do
       let(:loan1) { FactoryGirl.create(:loan, :recovered, lender: lender, settled_on: Date.new(2000)) }
       let(:loan2) { FactoryGirl.create(:loan, :recovered, lender: lender, settled_on: Date.new(2000)) }
-      let(:recovery1) { FactoryGirl.create(:recovery, loan: loan1, realisations_due_to_gov: Money.new(123_00)) }
-      let(:recovery2) { FactoryGirl.create(:recovery, loan: loan2, realisations_due_to_gov: Money.new(456_00)) }
-      let(:recovery3) { FactoryGirl.create(:recovery, loan: loan2, realisations_due_to_gov: Money.new(789_00)) }
+      let(:recovery1) { FactoryGirl.create(:recovery, loan: loan1, amount_due_to_dti: Money.new(123_00)) }
+      let(:recovery2) { FactoryGirl.create(:recovery, loan: loan2, amount_due_to_dti: Money.new(456_00)) }
+      let(:recovery3) { FactoryGirl.create(:recovery, loan: loan2, amount_due_to_dti: Money.new(789_00)) }
 
       before(:each) do
         realisation_statement.lender = lender

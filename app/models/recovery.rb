@@ -24,7 +24,7 @@ class Recovery < ActiveRecord::Base
   format :non_linked_security_proceeds, with: MoneyFormatter.new
   format :linked_security_proceeds, with: MoneyFormatter.new
   format :realisations_attributable, with: MoneyFormatter.new
-  format :realisations_due_to_gov, with: MoneyFormatter.new
+  format :amount_due_to_dti, with: MoneyFormatter.new
 
   attr_accessible :recovered_on, :outstanding_non_efg_debt,
     :non_linked_security_proceeds, :linked_security_proceeds
@@ -36,10 +36,10 @@ class Recovery < ActiveRecord::Base
 
     if b > 0
       self.realisations_attributable = b
-      self.realisations_due_to_gov = b * StateAidCalculation::GUARANTEE_RATE
+      self.amount_due_to_dti = b * StateAidCalculation::GUARANTEE_RATE
     else
       self.realisations_attributable = 0
-      self.realisations_due_to_gov = 0
+      self.amount_due_to_dti = 0
     end
   end
 

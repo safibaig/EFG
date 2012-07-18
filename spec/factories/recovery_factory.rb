@@ -6,7 +6,7 @@ FactoryGirl.define do
     non_linked_security_proceeds Money.new(10_000_00)
     linked_security_proceeds Money.new(10_000_00)
     realisations_attributable Money.new(10_000_00)
-    realisations_due_to_gov Money.new(10_000_00)
+    amount_due_to_dti Money.new(10_000_00)
 
     after(:build) { |recovery|
       recovery.loan ||= FactoryGirl.create(:loan, :settled, settled_on: recovery.recovered_on)

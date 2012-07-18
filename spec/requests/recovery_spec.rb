@@ -75,7 +75,7 @@ describe 'loan recovery' do
       recovery.non_linked_security_proceeds.should == Money.new(3_000_00)
       recovery.linked_security_proceeds.should == Money.new(1_000_00)
       recovery.realisations_attributable.should == Money.new(2_000_00)
-      recovery.realisations_due_to_gov.should == Money.new(1_500_00)
+      recovery.amount_due_to_dti.should == Money.new(1_500_00)
 
       loan.reload
       loan.state.should == Loan::Recovered

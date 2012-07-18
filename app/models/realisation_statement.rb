@@ -76,7 +76,7 @@ class RealisationStatement < ActiveRecord::Base
   # TODO: Don't mark loans as realised if they have futher recoveries.
   def realise_loans!
     recoveries_to_be_realised.group_by(&:loan_id).each do |loan_id, recoveries|
-      realised_amount = recoveries.sum(&:realisations_due_to_gov)
+      realised_amount = recoveries.sum(&:amount_due_to_dti)
 
       self.loan_realisations.create!(
         realised_loan: Loan.find(loan_id),

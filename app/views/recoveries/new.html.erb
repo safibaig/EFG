@@ -51,7 +51,7 @@
     <div class="control-label">
       Value of payment due to the Secretary of State
     </div>
-    <div class="controls"><%= @recovery.realisations_due_to_gov && @recovery.realisations_due_to_gov.format %></div>
+    <div class="controls"><%= @recovery.amount_due_to_dti.format if @recovery.amount_due_to_dti %></div>
   </div>
 
   <div class="form-actions">

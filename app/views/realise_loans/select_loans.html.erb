@@ -40,7 +40,7 @@
             <td><%= recovery.recovered_on.strftime('%d/%m/%Y') %></td>
             <% # TODO: confirm this is the correct value to use %>
             <td><%= recovery.loan.dti_demand_outstanding.try(:format) %></td>
-            <td><%= recovery.realisations_due_to_gov.format %></td>
+            <td><%= recovery.amount_due_to_dti.format %></td>
           </tr>
         <% end %>
       </tbody>
