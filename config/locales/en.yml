@@ -42,11 +42,10 @@ en:
         loan_transfer:
           attributes:
             base:
-              loan_not_found: 'Could not find the specified loan, please check the data you have entered'
-              cannot_be_transferred: The specified loan cannot be transferred
+              cannot_be_transferred: 'A suitable loan matching these criteria could not be found. Please note that all details supplied about the original loan must be correct, and it must be an SFLG scheme loan in one of the following states: "Guaranteed", "Lender demand" or "Repaid".'
               cannot_transfer_own_loan: You cannot transfer one of your own loans
             new_amount:
-              cannot_be_greater: cannot be greater than the amount of the loan being transferred
+              cannot_be_greater: cannot exceed the original loan amount
             declaration_signed:
               accepted: A customer declaration must have been received before a loan can be transferred
         transferred_loan_entry:

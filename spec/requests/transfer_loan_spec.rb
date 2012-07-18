@@ -82,7 +82,7 @@ describe 'Transfer a loan' do
 
     click_button 'Transfer Loan'
 
-    page.should have_content('Could not find the specified loan, please check the data you have entered')
+    page.should have_content(I18n.t("activemodel.errors.models.loan_transfer.attributes.base.cannot_be_transferred"))
   end
 
 end

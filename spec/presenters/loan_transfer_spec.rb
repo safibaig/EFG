@@ -210,7 +210,7 @@ describe LoanTransfer do
 
       it "should add error to base" do
         loan_transfer.save
-        loan_transfer.errors[:base].should include(error_string('base.loan_not_found'))
+        loan_transfer.errors[:base].should include(error_string('base.cannot_be_transferred'))
       end
     end
   end
