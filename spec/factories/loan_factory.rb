@@ -113,7 +113,7 @@ FactoryGirl.define do
     trait :lender_demand do
       state Loan::LenderDemand
       borrower_demanded_on { Date.today }
-      borrower_demanded_amount Money.new(10_000_00)
+      borrower_demand_outstanding Money.new(10_000_00)
     end
 
     trait :settled do

@@ -62,7 +62,7 @@ class Loan < ActiveRecord::Base
   format :turnover, with: MoneyFormatter.new
   format :outstanding_amount, with: MoneyFormatter.new
   format :repayment_duration, with: MonthDurationFormatter
-  format :borrower_demanded_amount, with: MoneyFormatter.new
+  format :amount_demanded, with: MoneyFormatter.new
   format :cancelled_on, with: QuickDateFormatter
   format :borrower_demanded_on, with: QuickDateFormatter
   format :trading_date, with: QuickDateFormatter
@@ -81,7 +81,6 @@ class Loan < ActiveRecord::Base
   format :final_refinanced_value, with: MoneyFormatter.new
   format :borrower_demand_outstanding, with: MoneyFormatter.new
   format :state_aid, with: MoneyFormatter.new('EUR')
-  format :borrower_demanded_amount, with: MoneyFormatter.new
   format :overdraft_limit, with: MoneyFormatter.new
   format :invoice_discount_limit, with: MoneyFormatter.new
   format :remove_guarantee_outstanding_amount, with: MoneyFormatter.new

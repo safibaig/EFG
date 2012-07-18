@@ -64,7 +64,7 @@ class LoanImporter < BaseImporter
       "DTI_AMOUNT_CLAIMED"            => :dti_amount_claimed,
       "INVOICE_OID"                   => :invoice_legacy_id,
       "SETTLEMENT_DATE"               => :settled_on,
-      "AMOUNT_DEMANDED"               => :borrower_demanded_amount,
+      "AMOUNT_DEMANDED"               => :amount_demanded,
       "NEXT_BORROWER_DEMAND_SEQ"      => :next_borrower_demand_seq,
       "SIC_DESC"                      => :sic_desc,
       "SIC_PARENT_DESC"               => :sic_parent_desc,

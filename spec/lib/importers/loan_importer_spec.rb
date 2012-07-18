@@ -75,7 +75,7 @@ describe LoanImporter do
         :dti_amount_claimed                  => 6077668,
         :invoice_legacy_id                   => "44",
         :settled_on                          => Date.parse("22-OCT-07"),
-        :borrower_demanded_amount            => 7999996,
+        :amount_demanded                     => 7999996,
         :next_borrower_demand_seq            => "1",
         :sic_desc                            => "Franchisers",
         :sic_parent_desc                     => "Other business activities not elsewhere classified",
@@ -204,7 +204,7 @@ describe LoanImporter do
       loan.dti_amount_claimed.should == Money.new(6077668)
       loan.invoice_legacy_id.should == 44
       loan.settled_on.should == Date.new(2007, 10, 22)
-      loan.borrower_demanded_amount.should == Money.new(7999996)
+      loan.amount_demanded.should == Money.new(7999996)
       loan.next_borrower_demand_seq.should == 1
       loan.sic_desc.should == "Franchisers"
       loan.sic_parent_desc.should == "Other business activities not elsewhere classified"
