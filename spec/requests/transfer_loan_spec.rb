@@ -4,7 +4,7 @@ describe 'Transfer a loan' do
 
   let(:current_user) { FactoryGirl.create(:lender_user) }
 
-  let(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation) }
+  let(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation, :sflg) }
 
   before(:each) do
     login_as(current_user, scope: :user)
@@ -26,6 +26,7 @@ describe 'Transfer a loan' do
     # Check original loan and new loan
     loan.reload.state.should == Loan::RepaidFromTransfer
     transferred_loan = Loan.last
+    transferred_loan.reference.should == LoanReference.new(loan.reference).increment
     transferred_loan.state.should == Loan::Incomplete
     transferred_loan.business_name.should == loan.business_name
     transferred_loan.amount.should == loan.amount - Money.new(500)

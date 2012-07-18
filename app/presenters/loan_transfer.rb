@@ -53,7 +53,6 @@ class LoanTransfer
        @new_loan.invoice_id            = ''
        @new_loan.state_aid             = nil
        @new_loan.state_aid_is_valid    = false
-       # TODO - assign loan allocation to one belonging to the new lender?
        # TODO - does notified aid need to change?
        # TODO - set created_by and modified by fields to user making transfer
 
@@ -72,6 +71,10 @@ class LoanTransfer
        errors.add(:base, :cannot_be_transferred)
        return false
      end
+
+     if loan_to_transfer.efg_loan?
+        errors.add(:base, :cannot_be_transferred)
+      end
 
      if new_amount > loan_to_transfer.amount
        errors.add(:new_amount, :cannot_be_greater)

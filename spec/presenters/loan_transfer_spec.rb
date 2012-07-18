@@ -213,6 +213,23 @@ describe LoanTransfer do
         loan_transfer.errors[:base].should include(error_string('base.cannot_be_transferred'))
       end
     end
+
+    context 'when loan is an EFG loan' do
+      before(:each) do
+        loan.loan_source = 'S'
+        loan.loan_scheme = 'E'
+        loan.save
+      end
+
+      it "should return false" do
+        loan_transfer.save.should == false
+      end
+
+      it "should add error to base" do
+        loan_transfer.save
+        loan_transfer.errors[:base].should include(error_string('base.cannot_be_transferred'))
+      end
+    end
   end
 
   private

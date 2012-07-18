@@ -156,6 +156,17 @@ class Loan < ActiveRecord::Base
     reference[-2,2].to_i > 1
   end
 
+  # Loan sources:
+  #   S = SFLG
+  #   L = Lognet
+  #
+  # Loan schemes:
+  #   S = SFLG
+  #   E = EFG
+  def efg_loan?
+    loan_source == 'S' && loan_scheme == 'E'
+  end
+
   private
 
   def set_reference

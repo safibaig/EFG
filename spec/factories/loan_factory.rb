@@ -128,5 +128,17 @@ FactoryGirl.define do
       state_aid_calculation
     end
 
+    trait :sflg do
+      reference 'ABC1234-01'
+      loan_source 'S'
+      loan_scheme 'S'
+    end
+
+    trait :efg do
+      reference 'ABC1234+01'
+      loan_source 'S'
+      loan_scheme 'E'
+    end
+
   end
 end

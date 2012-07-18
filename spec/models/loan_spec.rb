@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Loan do
-  describe 'validations' do
-    let(:loan) { FactoryGirl.build(:loan) }
+  let(:loan) { FactoryGirl.build(:loan) }
 
+  describe 'validations' do
     it 'has a valid Factory' do
       loan.should be_valid
     end
@@ -196,6 +196,29 @@ describe Loan do
 
     it "returns false when loan has no reference" do
       Loan.new.should_not be_created_from_transfer
+    end
+  end
+
+  describe '#efg_loan?' do
+    it "returns true when loan source is SFLG and loan type is EFG" do
+      loan.loan_source = 'S'
+      loan.loan_scheme = 'E'
+
+      loan.should be_efg_loan
+    end
+
+    it "returns false when loan source is not SFLG" do
+      loan.loan_source = 'L'
+      loan.loan_scheme = 'E'
+
+      loan.should_not be_efg_loan
+    end
+
+    it "returns false when loan source is SFLG but loan type is not EFG" do
+      loan.loan_source = 'S'
+      loan.loan_scheme = 'S'
+
+      loan.should_not be_efg_loan
     end
   end
 end
