@@ -31,7 +31,7 @@ class LoanAllocationUtilisationPresenter
   end
 
   def usage_amount
-    @usage_amount ||= Money.new(@loan_allocation.completed_loans.sum(:amount))
+    @usage_amount ||= Money.new(@loan_allocation.loans_using_allocation.sum(:amount))
   end
 
   def usage_percentage
