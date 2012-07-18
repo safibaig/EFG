@@ -73,7 +73,7 @@ class LoanImporter < BaseImporter
       "LENDER_CAP_ID"                 => :lender_cap_id,
       "TOWN"                          => :town,
       "NON_VAL_POSTCODE"              => :non_val_postcode,
-      "TRANSFERRED_FROM"              => :transferred_from,
+      "TRANSFERRED_FROM"              => :transferred_from_legacy_id,
       "NEXT_IN_CALC_SEQ"              => :next_in_calc_seq,
       "DTI_REASON_TEXT"               => :dti_reason,
       "LOAN_SOURCE"                   => :loan_source,

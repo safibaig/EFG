@@ -221,4 +221,5 @@ describe Loan do
       loan.should_not be_efg_loan
     end
   end
+
 end

@@ -26,6 +26,7 @@ describe 'Transfer a loan' do
     # Check original loan and new loan
     loan.reload.state.should == Loan::RepaidFromTransfer
     transferred_loan = Loan.last
+    transferred_loan.transferred_from_id.should == loan.id
     transferred_loan.reference.should == LoanReference.new(loan.reference).increment
     transferred_loan.state.should == Loan::Incomplete
     transferred_loan.business_name.should == loan.business_name

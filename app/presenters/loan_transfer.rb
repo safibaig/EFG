@@ -51,6 +51,7 @@ class LoanTransfer
        @new_loan.payment_period        = ''
        @new_loan.maturity_date         = ''
        @new_loan.invoice_id            = ''
+       @new_loan.transferred_from_id   = loan_to_transfer.id
        # TODO - set created_by and modified by fields to user making transfer
 
        (1..5).each do |num|

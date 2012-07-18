@@ -79,13 +79,13 @@ describe LoanTransfer do
         fields_not_copied = %w(
           id lender_id reference state branch_sortcode repayment_duration amount
           payment_period maturity_date invoice_id generic1 generic2 generic3 generic4
-          generic5 created_at updated_at
+          generic5 transferred_from_id created_at updated_at
         )
 
         fields_to_compare = Loan.column_names - fields_not_copied
 
         fields_to_compare.each do |field|
-          original_loan.send(field).should == new_loan.send(field)
+          original_loan.send(field).should eql(new_loan.send(field)), "#{field} from transferred loan does not match #{field} from original loan"
         end
       end
 
@@ -125,6 +125,10 @@ describe LoanTransfer do
 
       it 'should create new loan with no invoice' do
         new_loan.invoice_id.should be_blank
+      end
+
+      it 'should track which loan a transferred loan came from' do
+        new_loan.transferred_from_id.should == loan.id
       end
 
       it 'should create new loan with modified by set to user requesting transfer' do
