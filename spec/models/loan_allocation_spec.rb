@@ -31,13 +31,16 @@ describe LoanAllocation do
 
   end
 
-  it "has many completed loans" do
+  it "has many loans using allocation" do
     loan_allocation = FactoryGirl.create(:loan_allocation)
 
-    guaranteed_loan = FactoryGirl.create(:loan, :guaranteed, loan_allocation: loan_allocation)
+    expected_loans = LoanAllocation::USAGE_LOAN_STATES.collect do |state|
+      FactoryGirl.create(:loan, state: state, loan_allocation: loan_allocation)
+    end
+
     eligible_loan = FactoryGirl.create(:loan, :eligible, loan_allocation: loan_allocation)
 
-    loan_allocation.completed_loans.should == [guaranteed_loan]
+    loan_allocation.loans_using_allocation.should == expected_loans
   end
 
 end
