@@ -12,7 +12,7 @@
 
   <%= render_errors_on_base(@loan_transfer.errors) %>
 
-  <%= field_set_tag 'Please supply the following details about the loan to be transferred' do %>
+  <%= field_set_tag 'Please supply the following details about the loan to be transferred:' do %>
 
     <%= f.input :reference %>
     <%= f.input :amount, as: :currency %>
