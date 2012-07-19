@@ -47,6 +47,7 @@ class LoanTransfer::Base
       @new_loan.invoice_id            = ''
       @new_loan.transferred_from_id   = loan_to_transfer.id
       @new_loan.loan_allocation       = lender.loan_allocations.last
+      # TODO - copy loan securities if any are present
       # TODO - set created_by and modified by fields to user making transfer
 
       (1..5).each do |num|
