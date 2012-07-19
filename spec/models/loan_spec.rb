@@ -222,16 +222,4 @@ describe Loan do
     end
   end
 
-  describe "#loan_scheme" do
-    it "should be set to 'E' by default" do
-      FactoryGirl.create(:loan).loan_scheme.should == 'E'
-    end
-  end
-
-  describe "#loan_source" do
-    it "should be set to 'S' by default" do
-      FactoryGirl.create(:loan).loan_source.should == 'S'
-    end
-  end
-
 end

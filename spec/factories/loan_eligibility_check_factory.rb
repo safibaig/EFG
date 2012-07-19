@@ -14,6 +14,8 @@ FactoryGirl.define do
     previous_borrowing 'true'
     private_residence_charge_required 'false'
     personal_guarantee_required 'true'
+    loan_scheme 'E'
+    loan_source 'S'
 
     initialize_with {
       loan = FactoryGirl.build(:loan)

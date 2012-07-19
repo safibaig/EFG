@@ -29,6 +29,14 @@ class Loan < ActiveRecord::Base
     Removed, RepaidFromTransfer, AutoRemoved, Settled, Realised, Recovered,
     IncompleteLegacy, CompleteLegacy].freeze
 
+  # Legacy system loan schemes: E = EFG, S = SFLG
+  # All new loans are in the EFG scheme
+  EFG_SCHEME = 'E'
+
+  # Legacy system loan sources: S = SFLG, L = Lognet
+  # All new loans have SFLG source
+  SFLG_SOURCE = 'S'
+
   belongs_to :lender
   belongs_to :loan_allocation
   has_one :state_aid_calculation, inverse_of: :loan
@@ -54,8 +62,6 @@ class Loan < ActiveRecord::Base
   }
 
   validates_inclusion_of :state, in: States, strict: true
-  validates_inclusion_of :loan_scheme, in: %w(E S)
-  validates_inclusion_of :loan_source, in: %w(S L)
   validates_presence_of :lender_id, strict: true
 
   format :amount, with: MoneyFormatter.new
@@ -90,8 +96,6 @@ class Loan < ActiveRecord::Base
   format :recovery_on, with: QuickDateFormatter
 
   before_create :set_reference
-
-  before_validation :set_scheme, :set_source
 
   def self.with_state(state)
     where(state: state)
@@ -160,15 +164,8 @@ class Loan < ActiveRecord::Base
     reference[-2,2].to_i > 1
   end
 
-  # Loan sources:
-  #   S = SFLG
-  #   L = Lognet
-  #
-  # Loan schemes:
-  #   S = SFLG
-  #   E = EFG
   def efg_loan?
-    loan_source == 'S' && loan_scheme == 'E'
+    loan_source == SFLG_SOURCE && loan_scheme == EFG_SCHEME
   end
 
   private
@@ -178,16 +175,6 @@ class Loan < ActiveRecord::Base
       reference_string = LoanReference.generate
       self.reference = self.class.exists?(reference: reference_string) ? set_reference : reference_string
     end
-  end
-
-  # 'E' = EFG
-  def set_scheme
-    self.loan_scheme = 'E' unless loan_scheme.present?
-  end
-
-  # 'S' = SFLG
-  def set_source
-    self.loan_source = 'S' unless loan_source.present?
   end
 
 end
