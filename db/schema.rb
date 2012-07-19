@@ -171,7 +171,7 @@ ActiveRecord::Schema.define(:version => 20120718144053) do
     t.boolean  "sic_notified_aid"
     t.boolean  "sic_eligible"
     t.string   "non_val_postcode",                    :limit => 10
-    t.integer  "transferred_from"
+    t.integer  "transferred_from_legacy_id"
     t.integer  "next_in_calc_seq"
     t.string   "loan_source",                         :limit => 1
     t.integer  "dit_break_costs"
@@ -198,6 +198,7 @@ ActiveRecord::Schema.define(:version => 20120718144053) do
     t.decimal  "debtor_book_topup",                                 :precision => 5,  :scale => 2
     t.integer  "loan_allocation_id"
     t.integer  "invoice_id"
+    t.integer  "transferred_from_id"
   end
 
   add_index "loans", ["lender_id"], :name => "index_loans_on_lender_id"

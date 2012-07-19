@@ -47,7 +47,7 @@ class LoanReference
   end
 
   def valid_reference?
-    @reference.match(VALID_REFERENCE_REGEX)
+    @reference && @reference.match(VALID_REFERENCE_REGEX)
   end
 
 end

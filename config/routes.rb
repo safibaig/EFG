@@ -17,6 +17,7 @@ EFG::Application.routes.draw do
     resource :offer, only: [:new, :create], controller: 'loan_offers'
     resource :guarantee, only: [:new, :create], controller: 'loan_guarantees'
     resource :entry, only: [:new, :create], controller: 'loan_entries'
+    resource :transferred_entry, only: [:new, :create], controller: 'transferred_loan_entries'
     resource :demand_to_borrower, only: [:new, :create], controller: 'loan_demand_to_borrowers'
     resource :repay, only: [:new, :create], controller: 'loan_repays'
     resource :no_claim, only: [:new, :create], controller: 'loan_no_claims'
@@ -69,5 +70,7 @@ EFG::Application.routes.draw do
       post :select_loans
     end
   end
+
+  resources :loan_transfers, only: [:show, :new, :create]
 
 end

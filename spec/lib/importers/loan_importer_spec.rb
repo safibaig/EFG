@@ -85,7 +85,7 @@ describe LoanImporter do
         :loan_allocation_id                  => loan_allocation.id,
         :town                                => "London",
         :non_val_postcode                    => "ec1123",
-        :transferred_from                    => "12345",
+        :transferred_from_legacy_id          => "12345",
         :next_in_calc_seq                    => "2",
         :dti_reason                          => "n/a",
         :loan_source                         => "S",
@@ -213,7 +213,7 @@ describe LoanImporter do
       loan.lender_cap_id.should == 47
       loan.town.should == "London"
       loan.non_val_postcode.should == "ec1123"
-      loan.transferred_from.should == 12345
+      loan.transferred_from_legacy_id.should == 12345
       loan.next_in_calc_seq.should == 2
       loan.dti_reason.should == "n/a"
       loan.loan_source.should == "S"

@@ -17,12 +17,16 @@ class LoanEligibilityCheck
   attribute :turnover
   attribute :repayment_duration
   attribute :trading_date
+  attribute :loan_scheme
+  attribute :loan_source
 
   validates_presence_of :amount, :loan_allocation_id, :repayment_duration,
     :turnover, :trading_date, :sic_code, :loan_category_id, :reason_id
   validates_inclusion_of :viable_proposition, :would_you_lend,
     :collateral_exhausted, :previous_borrowing,
     :private_residence_charge_required, :personal_guarantee_required, in: [true, false]
+  validates_inclusion_of :loan_scheme, in: [ Loan::EFG_SCHEME ]
+  validates_inclusion_of :loan_source, in: [ Loan::SFLG_SOURCE ]
 
   validate do
     errors.add(:amount, :greater_than, count: 0) unless amount && amount.cents > 0

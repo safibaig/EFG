@@ -73,6 +73,30 @@ describe LoanEligibilityCheck do
         loan_eligibility_check.should be_valid
       end
     end
+
+    describe '#loan_scheme' do
+      it 'is invalid when not "E"' do
+        loan_eligibility_check.loan_scheme = 'S'
+        loan_eligibility_check.should be_invalid
+      end
+
+      it 'is valid when "E"' do
+        loan_eligibility_check.loan_scheme = 'E'
+        loan_eligibility_check.should be_valid
+      end
+    end
+
+    describe '#loan_source' do
+      it 'is invalid when not "S"' do
+        loan_eligibility_check.loan_source = 'L'
+        loan_eligibility_check.should be_invalid
+      end
+
+      it 'is valid when "S"' do
+        loan_eligibility_check.loan_source = 'S'
+        loan_eligibility_check.should be_valid
+      end
+    end
   end
 
   describe '#save' do

@@ -48,6 +48,8 @@ describe 'eligibility checks' do
     loan.previous_borrowing.should be_true
     loan.private_residence_charge_required.should be_false
     loan.personal_guarantee_required.should be_false
+    loan.loan_scheme.should == Loan::EFG_SCHEME
+    loan.loan_source.should == Loan::SFLG_SOURCE
   end
 
   it 'does not create an invalid loan' do

@@ -29,6 +29,14 @@ class Loan < ActiveRecord::Base
     Removed, RepaidFromTransfer, AutoRemoved, Settled, Realised, Recovered,
     IncompleteLegacy, CompleteLegacy].freeze
 
+  # Legacy system loan schemes: E = EFG, S = SFLG
+  # All new loans are in the EFG scheme
+  EFG_SCHEME = 'E'
+
+  # Legacy system loan sources: S = SFLG, L = Lognet
+  # All new loans have SFLG source
+  SFLG_SOURCE = 'S'
+
   belongs_to :lender
   belongs_to :loan_allocation
   has_one :state_aid_calculation, inverse_of: :loan
@@ -151,11 +159,28 @@ class Loan < ActiveRecord::Base
     PremiumSchedule.new(self.state_aid_calculation)
   end
 
+  def already_transferred?
+    return false if reference.blank?
+    next_loan_reference = LoanReference.new(reference).increment
+    Loan.exists?(reference: next_loan_reference)
+  end
+
+  def created_from_transfer?
+    return false if reference.blank?
+    reference[-2,2].to_i > 1
+  end
+
+  def efg_loan?
+    loan_source == SFLG_SOURCE && loan_scheme == EFG_SCHEME
+  end
+
   private
 
   def set_reference
-    reference_string = LoanReference.generate
-    self.reference = self.class.exists?(reference: reference_string) ? set_reference : reference_string
+    unless reference.present?
+      reference_string = LoanReference.generate
+      self.reference = self.class.exists?(reference: reference_string) ? set_reference : reference_string
+    end
   end
 
 end
