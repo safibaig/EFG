@@ -44,8 +44,15 @@ class LoanChangeImporter < BaseImporter
   end
 
   def self.loan_id_from_oid(oid)
-    @loan_id_from_oid ||= {}
-    @loan_id_from_oid[oid] ||= Loan.select('id').find_by_legacy_id!(oid).id
+    @loan_id_from_oid ||= begin
+      {}.tap { |lookup|
+        Loan.select('id, legacy_id').find_each do |loan|
+          lookup[loan.legacy_id] = loan.id
+        end
+      }
+    end
+
+    @loan_id_from_oid[oid]
   end
 
   def self.user_id_from_modified_user(modified_user)
@@ -74,7 +81,7 @@ class LoanChangeImporter < BaseImporter
       when 'MODIFIED_USER'
         memo[:modified_by_id] = self.class.user_id_from_modified_user(value)
       when 'OID'
-        memo[:loan_id] = self.class.loan_id_from_oid(value)
+        memo[:loan_id] = self.class.loan_id_from_oid(value.to_i)
       when 'SEQ'
         value = value.to_i
       when *DATES
