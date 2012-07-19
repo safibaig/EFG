@@ -134,6 +134,13 @@ class Loan < ActiveRecord::Base
     User.first
   end
 
+  def cumulative_total_previous_recoveries
+    @cumulative_total_previous_recoveries ||= begin
+      total = recoveries.realised.sum(:realisations_attributable)
+      Money.new(total)
+    end
+  end
+
   # TODO: !
   def modified_by
     User.first

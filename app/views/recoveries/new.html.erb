@@ -15,8 +15,7 @@
     <div class="control-label">
       The Secretary of State previously paid the Lender this amount by way of a Settlement of the Lender's Demand against the Government Guarantee
     </div>
-    <% # TODO @loan.dti_amount_claimed.format ? %>
-    <div class="controls"><span style="color:red">UNKNOWN</span></div>
+    <div class="controls"><%= @loan.amount_demanded.format %></div>
   </div>
   <div class="control-group">
     <div class="control-label">
@@ -28,7 +27,7 @@
     <div class="control-label">
       This is the qualifying amount which was outstanding to the Lender by the Borrower under the guaranteed facility on the date Demand was originally made to the Secretary of State
     </div>
-    <div class="controls"><span style="color:red">UNKNOWN</span></div>
+    <div class="controls"><%= @loan.dti_amount_claimed.format %></div>
   </div>
 
   <%= f.input :outstanding_non_efg_debt, as: :currency %>
@@ -39,13 +38,13 @@
     <div class="control-label">
       Value of Realisations attributable to EFG facility
     </div>
-    <div class="controls"><span style="color:red">UNKNOWN</span></div>
+    <div class="controls"><%= @recovery.realisations_attributable.format if @recovery.realisations_attributable %></div>
   </div>
   <div class="control-group">
     <div class="control-label">
       Cumulative total of previous recorded Recoveries
     </div>
-    <div class="controls"><span style="color:red">UNKNOWN</span></div>
+    <div class="controls"><%= @loan.cumulative_total_previous_recoveries.format %></div>
   </div>
   <div class="control-group">
     <div class="control-label">
