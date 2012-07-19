@@ -7,7 +7,7 @@ describe LoanReference do
       ['wrong', '1111111', 'A1B2C3D', 'ABC123-01', 'ABC123+01', 'ABC12345+04', 'ABC1234+100', '', nil].each do |string|
         expect {
           LoanReference.new(string)
-        }.to raise_error(InvalidLoanReference)
+        }.to raise_error(InvalidLoanReference), "#{string} should not be a valid legacy loan reference"
       end
     end
 
@@ -15,7 +15,7 @@ describe LoanReference do
       %w(ABC1234+01 ABC1234-01).each do |string|
         expect {
           LoanReference.new(string)
-        }.to_not raise_error(InvalidLoanReference)
+        }.to_not raise_error(InvalidLoanReference), "#{string} should be a valid legacy loan reference"
       end
     end
   end

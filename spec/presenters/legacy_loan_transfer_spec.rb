@@ -1,16 +1,16 @@
 require 'spec_helper'
 
-describe LoanTransfer::Sflg do
+describe LoanTransfer::LegacySflg do
 
-  let!(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation, :sflg) }
+  let!(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation, :legacy_sflg) }
 
   let(:loan_transfer) {
     FactoryGirl.build(
-      :sflg_loan_transfer,
+      :legacy_sflg_loan_transfer,
       amount: loan.amount,
       new_amount: loan.amount - Money.new(1000),
       reference: loan.reference,
-      facility_letter_date: loan.facility_letter_date,
+      initial_draw_date: loan.initial_draw_date,
     )
   }
 
@@ -18,8 +18,8 @@ describe LoanTransfer::Sflg do
 
   describe 'validations' do
 
-    it 'must have a facility letter date' do
-      loan_transfer.facility_letter_date = nil
+    it 'must have an initial draw date' do
+      loan_transfer.initial_draw_date = nil
       loan_transfer.should_not be_valid
     end
 

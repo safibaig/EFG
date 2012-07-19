@@ -6,12 +6,12 @@ class LoanTransfersController < ApplicationController
   end
 
   def new
-    @loan_transfer = LoanTransfer.new(Loan.new)
+    @loan_transfer = LoanTransfer::Sflg.new(Loan.new)
   end
 
   def create
-    @loan_transfer = LoanTransfer.new(Loan.new)
-    @loan_transfer.attributes = params[:loan_transfer]
+    @loan_transfer = LoanTransfer::Sflg.new(Loan.new)
+    @loan_transfer.attributes = params[:loan_transfer_sflg]
     @loan_transfer.lender = current_lender
 
     if @loan_transfer.save
@@ -24,7 +24,7 @@ class LoanTransfersController < ApplicationController
   private
 
   def verify_create_permission
-    enforce_create_permission(LoanTransfer)
+    enforce_create_permission(LoanTransfer::Sflg)
   end
 
 end
