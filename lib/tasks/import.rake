@@ -22,6 +22,11 @@ namespace :import do
     _import LoanAllocation
   end
 
+  desc "Import loan allocation data (SFLG_LOAN_CHANGES_DATA_TABLE)"
+  task loan_changes: :loans do
+    _import LoanChange
+  end
+
   desc "Import state aid calculation data (SFLG_CALCULATORS_DATA_TABLE)"
   task state_aid_calculations: :loans do
     _import StateAidCalculation
