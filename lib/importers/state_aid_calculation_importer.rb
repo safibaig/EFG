@@ -39,14 +39,6 @@ class StateAidCalculationImporter < BaseImporter
     }
   end
 
-  def self.loan_id_from_legacy_id(legacy_id)
-    @loan_id_from_legacy_id ||= Hash[*Loan.select('id, legacy_id').map { |loan|
-      [loan.legacy_id, loan.id]
-    }.flatten]
-
-    @loan_id_from_legacy_id[legacy_id]
-  end
-
   BOOLEANS = %w(OBJ1_AREA REDUCE_COSTS IMPROVE_PROD INCREASE_QUALITY
     IMPROVE_NAT_ENV PROMOTE AGRICULTURE)
   INTEGERS = %w(HOLIDAY TOTAL_COST PUBLIC_FUNDING)
