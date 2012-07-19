@@ -2,7 +2,7 @@ class CreateLoanChanges < ActiveRecord::Migration
   def change
     create_table :loan_changes do |t|
       t.integer :loan_id, null: false
-      t.integer :modified_by_id, null: false
+      t.integer :created_by_id, null: false
       t.string :oid
       t.integer :seq, default: 0, null: false
       t.date :date_of_change, null: false

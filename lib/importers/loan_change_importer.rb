@@ -3,7 +3,7 @@ class LoanChangeImporter < BaseImporter
   self.klass = LoanChange
 
   def self.columns
-    [:loan_id, :modified_by_id] + super
+    [:loan_id, :created_by_id] + super
   end
 
   def self.field_mapping
@@ -60,14 +60,14 @@ class LoanChangeImporter < BaseImporter
 
   def attributes
     # attributes keys must be in the same order as they exist in the db.
-    ordered = { loan_id: nil, modified_by_id: nil }
+    ordered = { loan_id: nil, created_by_id: nil }
 
     row.inject(ordered) do |memo, (name, value)|
       value = nil if value.blank?
 
       case name
       when 'MODIFIED_USER'
-        memo[:modified_by_id] = self.class.user_id_from_modified_user(value)
+        memo[:created_by_id] = self.class.user_id_from_modified_user(value)
       when 'OID'
         memo[:loan_id] = self.class.loan_id_from_legacy_id(value.to_i)
       when 'SEQ'
