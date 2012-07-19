@@ -8,8 +8,8 @@ describe LoanDemandAgainstGovernment do
       loan_demand_against_government.should be_valid
     end
 
-    it 'should be invalid without demanded outstanding' do
-      loan_demand_against_government.dti_demand_outstanding = nil
+    it 'should be invalid without demanded amount' do
+      loan_demand_against_government.amount_demanded = nil
       loan_demand_against_government.should_not be_valid
     end
 

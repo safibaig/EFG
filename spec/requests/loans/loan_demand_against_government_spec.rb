@@ -12,7 +12,7 @@ describe 'loan demand against government' do
     visit loan_path(loan)
     click_link 'Demand Against Guarantee Guarantee'
 
-    fill_in 'dti_demand_outstanding', '£10,000.42'
+    fill_in 'amount_demanded', '£10,000.42'
     fill_in 'dti_reason', 'Something'
     fill_in 'dti_ded_code', 'A.10.10'
 
@@ -23,8 +23,8 @@ describe 'loan demand against government' do
     current_path.should == loan_path(loan)
 
     loan.state.should == Loan::Demanded
+    loan.amount_demanded.should == Money.new(10_000_42) # £10,000.42
     loan.dti_demanded_on.should == Date.today
-    loan.dti_demand_outstanding.should == Money.new(10_000_42) # £10,000.42
     loan.dti_ded_code.should == 'A.10.10'
     loan.dti_reason.should == 'Something'
   end
