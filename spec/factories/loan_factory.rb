@@ -131,14 +131,20 @@ FactoryGirl.define do
 
     trait :sflg do
       reference 'ABC1234-01'
-      loan_source 'S'
-      loan_scheme 'S'
+      loan_source Loan::SFLG_SOURCE
+      loan_scheme Loan::SFLG_SCHEME
+    end
+
+    trait :legacy_sflg do
+      reference '123456'
+      loan_source Loan::LEGACY_SFLG_SOURCE
+      loan_scheme Loan::SFLG_SCHEME
     end
 
     trait :efg do
       reference 'ABC1234+01'
-      loan_source 'S'
-      loan_scheme 'E'
+      loan_source Loan::SFLG_SOURCE
+      loan_scheme Loan::EFG_SCHEME
     end
 
   end

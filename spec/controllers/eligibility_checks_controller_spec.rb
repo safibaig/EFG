@@ -25,12 +25,12 @@ describe EligibilityChecksController do
 
       it 'should set loan scheme to "E"' do
         dispatch
-        Loan.last.loan_scheme.should == 'E'
+        Loan.last.loan_scheme.should == Loan::EFG_SCHEME
       end
 
       it 'should set loan source to "S"' do
         dispatch
-        Loan.last.loan_source.should == 'S'
+        Loan.last.loan_source.should == Loan::SFLG_SOURCE
       end
 
     end

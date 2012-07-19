@@ -219,8 +219,8 @@ describe LoanTransfer do
 
     context 'when loan is an EFG loan' do
       before(:each) do
-        loan.loan_source = 'S'
-        loan.loan_scheme = 'E'
+        loan.loan_source = Loan::SFLG_SOURCE
+        loan.loan_scheme = Loan::EFG_SCHEME
         loan.save
       end
 
