@@ -25,8 +25,11 @@
             <% if current_user.can_create?(RealisationStatement) %>
               <li><%= link_to 'Recoveries statement received', new_realise_loan_path %></li>
             <% end %>
-            <% if current_user.can_create?(LoanTransfer) %>
+            <% if current_user.can_create?(LoanTransfer::Sflg) %>
               <li><%= link_to 'Transfer a loan', new_loan_transfer_path %></li>
+            <% end %>
+            <% if current_user.can_create?(LoanTransfer::LegacySflg) %>
+              <li><%= link_to 'Transfer a legacy loan', new_legacy_loan_transfer_path %></li>
             <% end %>
             <li><%= link_to 'Search', new_search_path %></li>
             <li><%= link_to 'Manage Users', users_path %></li>
