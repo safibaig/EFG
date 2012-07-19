@@ -1,0 +1,31 @@
+<div class="page-header">
+  <h1>Legacy Loan Transfer (Applies to loans agreed pre 1st December 2005)</h1>
+</div>
+
+<p>From this page you can transfer legacy loans from another approved EFG/SFLG lender.</p>
+
+<hr>
+
+<%= simple_form_for(@loan_transfer, url: legacy_loan_transfers_path, html: { class: 'form-horizontal form-loan-transfer' }) do |f| %>
+
+  <%= render_errors_on_base(@loan_transfer.errors) %>
+
+  <%= field_set_tag 'Please supply the following details about the loan to be transferred:' do %>
+
+    <%= f.input :reference %>
+    <%= f.input :amount, as: :currency %>
+    <%= f.input :initial_draw_date, as: :quick_date %>
+
+  <% end %>
+
+  <%= field_set_tag 'And these details about the new loan:' do %>
+
+    <%= f.input :new_amount, as: :currency %>
+    <%= f.input :declaration_signed, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
+
+  <% end %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Transfer Loan', class: 'btn-primary' %>
+  </div>
+<% end %>

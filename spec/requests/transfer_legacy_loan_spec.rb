@@ -9,15 +9,16 @@ describe 'Transfer a legacy loan' do
   before(:each) do
     login_as(current_user, scope: :user)
     visit root_path
-    click_link 'Transfer a loan'
+    # click_link 'Transfer a loan'
+    visit new_legacy_loan_transfer_path
   end
 
   it 'should transfer legacy loan from one lender to another' do
-    fill_in 'loan_transfer_reference', with: loan.reference
-    fill_in 'loan_transfer_amount', with: loan.amount.to_s
-    fill_in 'loan_transfer_initial_draw_date', with: loan.initial_draw_date.strftime('%d/%m/%Y')
-    fill_in 'loan_transfer_new_amount', with: loan.amount - Money.new(500)
-    choose 'loan_transfer_declaration_signed_true'
+    fill_in 'loan_transfer_legacy_sflg_reference', with: loan.reference
+    fill_in 'loan_transfer_legacy_sflg_amount', with: loan.amount.to_s
+    fill_in 'loan_transfer_legacy_sflg_initial_draw_date', with: loan.initial_draw_date.strftime('%d/%m/%Y')
+    fill_in 'loan_transfer_legacy_sflg_new_amount', with: loan.amount - Money.new(500)
+    choose 'loan_transfer_legacy_sflg_declaration_signed_true'
 
     click_button 'Transfer Loan'
 
