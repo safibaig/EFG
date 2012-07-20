@@ -7,7 +7,7 @@ class InvalidLegacyLoanReference < ArgumentError; end;
 
 class LegacyLoanReference
 
-  VALID_REFERENCE_REGEX = /^([0-9]){5,6}(-\d{2})?$/
+  VALID_REFERENCE_REGEX = /^(\d){5,6}(-\d{2})?$/
 
   def initialize(reference)
     @reference = reference
