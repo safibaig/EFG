@@ -18,6 +18,8 @@ gem 'bootstrap-will_paginate'
 gem 'prawn'
 gem 'progressbar'
 
+gem 'exception_notification'
+
 group :passenger_compatibility do
   gem 'rake', '0.9.2'
 end
