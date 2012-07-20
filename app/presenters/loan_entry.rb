@@ -41,6 +41,17 @@ class LoanEntry
   attribute :fees
   attribute :state_aid_is_valid
   attribute :state_aid
+  attribute :loan_security_types
+  attribute :security_proportion
+  attribute :original_overdraft_proportion
+  attribute :refinance_security_proportion
+  attribute :current_refinanced_value
+  attribute :final_refinanced_value
+  attribute :overdraft_limit
+  attribute :overdraft_maintained
+  attribute :invoice_discount_limit
+  attribute :debtor_book_coverage
+  attribute :debtor_book_topup
 
   validates_presence_of :business_name, :legal_form_id, :interest_rate_type_id,
                         :repayment_frequency_id, :postcode, :maturity_date,

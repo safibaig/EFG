@@ -45,6 +45,23 @@
     <%= f.input :personal_guarantee_required, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
   <% end %>
 
+  <%= field_set_tag 'Loan Type Questions' do %>
+    <%= f.input :loan_security_types, as: :select, collection: LoanSecurityType.all, input_html: { multiple: true } %>
+    <%= f.input :security_proportion, as: :percentage %>
+    <%= f.input :original_overdraft_proportion, as: :percentage %>
+    <%= f.input :refinance_security_proportion, as: :percentage %>
+    <%= f.input :current_refinanced_value, as: :currency %>
+    <%= f.input :final_refinanced_value, as: :currency %>
+    <%= f.input :overdraft_limit, as: :currency %>
+    <%= f.input :overdraft_limit, as: :currency %>
+    <%= f.input :overdraft_limit, as: :currency %>
+    <%= f.input :overdraft_limit, as: :currency %>
+    <%= f.input :overdraft_maintained, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
+    <%= f.input :invoice_discount_limit, as: :currency %>
+    <%= f.input :debtor_book_coverage, as: :percentage %>
+    <%= f.input :debtor_book_topup, as: :percentage %>
+  <% end %>
+
   <%= field_set_tag 'Lender' do %>
     <%= f.input :viable_proposition, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :would_you_lend, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
