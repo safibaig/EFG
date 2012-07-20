@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120718110542) do
+ActiveRecord::Schema.define(:version => 20120718144053) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -135,7 +135,7 @@ ActiveRecord::Schema.define(:version => 20120718110542) do
     t.integer  "cancelled_reason_id"
     t.text     "cancelled_comment"
     t.date     "borrower_demanded_on"
-    t.integer  "borrower_demanded_amount"
+    t.integer  "amount_demanded"
     t.date     "repaid_on"
     t.date     "no_claim_on"
     t.date     "dti_demanded_on"
@@ -203,6 +203,7 @@ ActiveRecord::Schema.define(:version => 20120718110542) do
 
   add_index "loans", ["lender_id"], :name => "index_loans_on_lender_id"
   add_index "loans", ["loan_allocation_id"], :name => "index_loans_on_loan_allocation_id"
+  add_index "loans", ["reference"], :name => "index_loans_on_reference", :unique => true
   add_index "loans", ["state"], :name => "index_loans_on_state"
 
   create_table "realisation_statements", :force => true do |t|
@@ -217,23 +218,24 @@ ActiveRecord::Schema.define(:version => 20120718110542) do
   end
 
   create_table "recoveries", :force => true do |t|
-    t.integer  "loan_id",                        :null => false
-    t.date     "recovered_on",                   :null => false
+    t.integer  "loan_id",                                           :null => false
+    t.date     "recovered_on",                                      :null => false
     t.integer  "total_proceeds_recovered"
     t.integer  "total_liabilities_after_demand"
     t.integer  "total_liabilities_behind"
     t.integer  "additional_break_costs"
     t.integer  "additional_interest_accrued"
-    t.integer  "amount_due_to_dti"
-    t.boolean  "realise_flag"
-    t.integer  "created_by_id",                  :null => false
-    t.integer  "outstanding_non_efg_debt",       :null => false
-    t.integer  "non_linked_security_proceeds",   :null => false
-    t.integer  "linked_security_proceeds",       :null => false
-    t.integer  "realisations_attributable",      :null => false
-    t.integer  "realisations_due_to_gov",        :null => false
+    t.integer  "amount_due_to_dti",                                 :null => false
+    t.boolean  "realise_flag",                   :default => false, :null => false
+    t.integer  "created_by_id",                                     :null => false
+    t.integer  "outstanding_non_efg_debt",                          :null => false
+    t.integer  "non_linked_security_proceeds",                      :null => false
+    t.integer  "linked_security_proceeds",                          :null => false
+    t.integer  "realisations_attributable",                         :null => false
+    t.integer  "realisations_due_to_gov"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "realisation_statement_id"
   end
 
   create_table "state_aid_calculations", :force => true do |t|

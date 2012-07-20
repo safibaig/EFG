@@ -13,7 +13,7 @@ describe 'loan demand to borrower' do
     click_link 'Demand to Borrower'
 
     fill_in 'borrower_demanded_on', '1/6/12'
-    fill_in 'borrower_demanded_amount', '£5,000'
+    fill_in 'borrower_demand_outstanding', '£5,000'
 
     click_button 'Submit'
 
@@ -23,7 +23,7 @@ describe 'loan demand to borrower' do
 
     loan.state.should == Loan::LenderDemand
     loan.borrower_demanded_on.should == Date.new(2012, 6, 1)
-    loan.borrower_demanded_amount.should == Money.new(5_000_00) # 5000.00
+    loan.borrower_demand_outstanding.should == Money.new(5_000_00) # 5000.00
   end
 
   it 'does not continue with invalid values' do

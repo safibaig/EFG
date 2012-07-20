@@ -14,7 +14,7 @@ describe LoanDemandToBorrower do
     end
 
     it 'should be invalid without borrower demanded amount' do
-      loan_demand_to_borrower.borrower_demanded_amount = ''
+      loan_demand_to_borrower.borrower_demand_outstanding = ''
       loan_demand_to_borrower.should_not be_valid
     end
   end
