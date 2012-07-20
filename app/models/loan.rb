@@ -40,6 +40,7 @@ class Loan < ActiveRecord::Base
   belongs_to :lender
   belongs_to :loan_allocation
   has_one :state_aid_calculation, inverse_of: :loan
+  has_many :loan_changes
   has_many :loan_realisations, foreign_key: 'realised_loan_id'
   has_many :recoveries
 
