@@ -59,6 +59,101 @@ describe LoanEntry do
       loan_entry.errors[:state_aid].should == ['must be calculated']
     end
 
+    context 'when a type B loan' do
+      before(:each) do
+        loan_entry.stub(:loan_category_id).and_return(2)
+      end
+
+      it "should require security types" do
+        loan_entry.loan_security_types.clear
+        loan_entry.should_not be_valid
+      end
+
+      it "should be valid with a loan security" do
+        pending
+      end
+
+      it "should require security proportion" do
+        loan_entry.security_proportion = nil
+        loan_entry.should_not be_valid
+      end
+    end
+
+    context 'when a type C loan' do
+      before(:each) do
+        loan_entry.stub(:loan_category_id).and_return(3)
+      end
+
+      it "should require original overdraft proportion" do
+        loan_entry.original_overdraft_proportion = nil
+        loan_entry.should_not be_valid
+      end
+
+      it "should require refinance security proportion" do
+        loan_entry.refinance_security_proportion = nil
+        loan_entry.should_not be_valid
+      end
+    end
+
+    context 'when a type D loan' do
+      before(:each) do
+        loan_entry.stub(:loan_category_id).and_return(4)
+      end
+
+      it "should require refinance security proportion" do
+        loan_entry.refinance_security_proportion = nil
+        loan_entry.should_not be_valid
+      end
+
+      it "should require current refinanced value" do
+        loan_entry.current_refinanced_value = nil
+        loan_entry.should_not be_valid
+      end
+
+      it "should require final refinanced value" do
+        loan_entry.final_refinanced_value = nil
+        loan_entry.should_not be_valid
+      end
+    end
+
+    context 'when a type E loan' do
+      before(:each) do
+        loan_entry.stub(:loan_category_id).and_return(5)
+      end
+
+      it "should require overdraft limit" do
+        loan_entry.overdraft_limit = nil
+        loan_entry.should_not be_valid
+      end
+
+      it "should require overdraft maintained" do
+        loan_entry.overdraft_maintained = false
+        loan_entry.should_not be_valid
+      end
+    end
+
+    context 'when a type F loan' do
+      before(:each) do
+        loan_entry.stub(:loan_category_id).and_return(6)
+      end
+
+      it "should require invoice discount limit" do
+        loan_entry.invoice_discount_limit = nil
+        loan_entry.should_not be_valid
+      end
+
+      it "should require debtor book coverage" do
+        loan_entry.debtor_book_coverage = nil
+        loan_entry.should_not be_valid
+      end
+
+      it "should require debtor book topup" do
+        loan_entry.debtor_book_topup = nil
+        loan_entry.should_not be_valid
+      end
+    end
+
+
     # Although a business may benefit from EFG on more than one occasion, and may have more than one EFG-backed facility at any one time, the total outstanding balances and/or active available limits of the Applicant's current EFG facilities may not exceed £1 million at any one time.
     # To be eligible for EFG the Applicant's De Minimis State Aid status must be checked to ensure that it does not exceed the €200,000 rolling three year limit (or the corresponding lower limit applicable in certain business sectors). On this occasion that check has not been performed.
   end

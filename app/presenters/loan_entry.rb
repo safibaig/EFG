@@ -57,9 +57,32 @@ class LoanEntry
                         :repayment_frequency_id, :postcode, :maturity_date,
                         :interest_rate, :fees
 
+  # TODO: validate loan_security_types
+  validates_presence_of :security_proportion,
+                        if: lambda { loan_category_id == 2 }
+
+  validates_presence_of :original_overdraft_proportion, :refinance_security_proportion,
+                        if: lambda { loan_category_id == 3 }
+
+  validates_presence_of :refinance_security_proportion, :current_refinanced_value,
+                        :final_refinanced_value,
+                        if: lambda { loan_category_id == 4 }
+
+  validates_presence_of :overdraft_limit,
+                        if: lambda { loan_category_id == 5 }
+
+  validates_inclusion_of :overdraft_maintained,
+                         in: [true],
+                         if: lambda { loan_category_id == 5 }
+
+  validates_presence_of :invoice_discount_limit, :debtor_book_coverage,
+                        :debtor_book_topup,
+                        if: lambda { loan_category_id == 6 }
+
   validate do
     errors.add(:declaration_signed, :accepted) unless self.declaration_signed
     errors.add(:state_aid, :calculated) unless self.loan.state_aid_calculation
+    errors.add(:loan_security_types, :present) if loan_category_id == 2 && self.loan_security_types.empty?
   end
 
   def save_as_incomplete

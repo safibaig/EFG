@@ -11,8 +11,7 @@ FactoryGirl.define do
     maturity_date '01/01/2012'
 
     initialize_with {
-      state_aid_calculation = FactoryGirl.build(:state_aid_calculation)
-      loan = FactoryGirl.build(:loan, state_aid_calculation: state_aid_calculation)
+      loan = FactoryGirl.build(:loan, :with_state_aid_calculation)
       new(loan)
     }
   end
