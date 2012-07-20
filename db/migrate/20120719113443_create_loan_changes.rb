@@ -14,7 +14,7 @@ class CreateLoanChanges < ActiveRecord::Migration
       t.integer :amount_drawn
       t.date :modified_date, null: false
       t.string :modified_user
-      t.integer :change_type
+      t.string :change_type_id
       t.datetime :ar_timestamp
       t.datetime :ar_insert_timestamp
       t.integer :amount

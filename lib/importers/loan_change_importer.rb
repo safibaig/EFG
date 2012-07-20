@@ -19,7 +19,7 @@ class LoanChangeImporter < BaseImporter
       'AMOUNT_DRAWN' => :amount_drawn,
       'MODIFIED_DATE' => :modified_date,
       'MODIFIED_USER' => :modified_user,
-      'CHANGE_TYPE' => :change_type,
+      'CHANGE_TYPE' => :change_type_id,
       'AR_TIMESTAMP' => :ar_timestamp,
       'AR_INSERT_TIMESTAMP' => :ar_insert_timestamp,
       'AMOUNT' => :amount,

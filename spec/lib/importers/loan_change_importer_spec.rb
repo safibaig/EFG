@@ -39,7 +39,7 @@ describe LoanChangeImporter do
       loan_change.amount_drawn.should == Money.new(200_000_00)
       loan_change.modified_date.should == Date.new(2006, 8, 31)
       loan_change.modified_user.should == '51BB5F278B5F9ABCF695A5C8F1C9D75A1E482C8A'
-      loan_change.change_type.should == nil
+      loan_change.change_type_id.should == nil
       loan_change.ar_timestamp.should == Date.new(2006, 8, 31)
       loan_change.ar_insert_timestamp.should == Date.new(2006, 8, 31)
       loan_change.amount.should == nil

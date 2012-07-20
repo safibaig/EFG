@@ -18,7 +18,7 @@ describe LoanChange do
       loan_change.should_not be_valid
     end
 
-    %w(date_of_change modified_date seq).each do |attr|
+    %w(change_type_id date_of_change modified_date seq).each do |attr|
       it "requires #{attr}" do
         loan_change.send("#{attr}=", '')
         loan_change.should_not be_valid

@@ -29,6 +29,14 @@ en:
         private_residence_charge_required: 'Will the granting of this facility be made conditional upon a new charge being taken over a Principal Private Residence?'
         personal_guarantee_required: 'Will the granting of this facility be made conditional upon the provision of one or more personal guarantees, whether supported or unsupported, by the owners, directors, shareholders or others associated with the borrowing business?'
 
+      loan_change:
+        date_of_change: 'What is the date when the change to be recorded occurred? (dd/mm/yyyy)'
+        change_type_id: 'What is the change you wish to make?'
+        amount_drawn: 'What is the amount now being drawn that is to be recorded? (This should include any further draws it is known will take place before the next Premium Payment is due)'
+        lump_sum_repayment: 'What is the amount of the lump sum repayment?'
+        business_name: 'What is the new business name?'
+        maturity_date: 'What is the new maturity date?'
+
       loan_eligibility_check:
         <<: *loan
 

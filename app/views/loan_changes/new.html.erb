@@ -1,0 +1,53 @@
+<div class="page-header">
+  <h1>Change Facility</h1>
+</div>
+
+<p>From this page you can change the amount or terms of a facility (excluding the amount of the original facility or extending the term beyond ten years), return a facility from 'Demand to Borrower' to 'Guaranteed' and record a change of business name.</p>
+
+<p>Please note that, for loans agreed up until the end of 2005 under the former Small Loans Arrangement for which the full premium was paid in advance, the premium calculation is still required. However the schedule produced should not be given to the Borrower and is not forwarded to the Premium Collection Agent.</p>
+
+<p>Parameters to which changes may be recorded include the repayment date and the drawdown and repayment profiles.</p>
+
+<p>When such changes are made a new Premium Payment Schedule must be generated to reflect the new repayment profile of the loan. This will be delivered automatically to the Premium Collection Agent via the Web Portal.</p>
+
+<p><span class="label label-important">IMPORTANT</span> If the change involves defining a new Maturity Date it is important that this is recorded in the 'New Maturity Date' field.</p>
+
+<hr>
+
+<%= simple_form_for(@loan_change, url: loan_loan_changes_path(@loan), html: { class: 'form-horizontal form-loan-change' }) do |f| %>
+  <%= f.input :date_of_change, as: :quick_date %>
+  <%= f.input :change_type_id, as: :select, collection: ChangeType.for_loan_change, prompt: 'Please select' %>
+
+  <div class="control-group">
+    <div class="control-label">
+      Cumulative amount drawn against this facility prior to this change
+    </div>
+    <% # TODO %>
+    <div class="controls"></div>
+  </div>
+
+  <%= f.input :amount_drawn, as: :currency %>
+  <%= f.input :lump_sum_repayment, as: :currency %>
+
+  <div class="control-group">
+    <div class="control-label">Current business name</div>
+    <div class="controls"><%= @loan.business_name %></div>
+  </div>
+
+  <%= f.input :business_name %>
+
+  <div class="control-group">
+    <div class="control-label">Date of initial draw of funds</div>
+    <div class="controls"><%= @loan.initial_draw_date %></div>
+  </div>
+  <div class="control-group">
+    <div class="control-label">Current maturity date</div>
+    <div class="controls"><%= @loan.maturity_date %></div>
+  </div>
+
+  <%= f.input :maturity_date, as: :quick_date %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>
+  </div>
+<% end %>
