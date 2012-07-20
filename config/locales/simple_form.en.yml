@@ -61,17 +61,17 @@ en:
         fees: 'Please enter the total value of any arrangement, insurance or other fees (but excluding interest and the guarantee premium) the Applicant will be charged in connection with this facility being provided:'
         state_aid_is_valid: "Is the total value of the Applicant's De Minimis State Aid for the last three years (including that arising from this application) no more than 200,000 Euro, or the relevant lower threshold where advised for eligible agriculture, fisheries and transport businesses?"
         state_aid: 'Value of De Minimis State Aid applicable to this facility (in Euro)'
-        loan_security_types: '(For Type B only) Please select the principal type of asset over which a charge has been taken to provide the partial security:'
-        security_proportion: '(For Type B only) Based on your normal security valuation criteria, what proportion of the value of the EFG loan is covered by a specific charge over the asset identified?'
-        original_overdraft_proportion: (For Type C only) What proportion of the previous overdraft limit will remain available to the applicant following drawing of the replacement loan?
-        refinance_security_proportion: '(For Types C & D) Based on your normal security valuation policy, what proportion of the total value of the refinanced package will be covered by any security held?'
-        current_refinanced_value: (For Type D only) What is the current outstanding value of the existing facility or facilities intended to be refinanced?
-        final_refinanced_value: '(For Type D only) On completion of the refinancing exercise what will be the total outstanding value, including any new funds provided, of the entire refinanced package?'
-        overdraft_limit: (For Type E only) What is the limit of the Applicant's current overdraft facility (prior to the granting of the EFG facility)?
-        overdraft_maintained: "(For Type E only) Are you able to confirm that the Applicant's current overdraft facility has not been cancelled or reduced in the preceding three months and, subject to normal account behaviour being maintained, will be maintained while the EFG facility remains in place?"
-        invoice_discount_limit: (For Type F only) What is the current limit of the Applicant's Invoice Finance facility?
-        debtor_book_coverage: (For Type F only) What is the Applicant's Current Approved Pre-Payment Percentage?
-        debtor_book_topup: (For Type F only) What Guaranteed Pre-Payment Percentage will be provided to the Applicant? (Not to exceed the lower of 30% or the difference between the Current Approved Pre-Payment Percentage and 100%)
+        loan_security_types: 'Please select the principal type of asset over which a charge has been taken to provide the partial security:'
+        security_proportion: 'Based on your normal security valuation criteria, what proportion of the value of the EFG loan is covered by a specific charge over the asset identified?'
+        original_overdraft_proportion: What proportion of the previous overdraft limit will remain available to the applicant following drawing of the replacement loan?
+        refinance_security_proportion: 'Based on your normal security valuation policy, what proportion of the total value of the refinanced package will be covered by any security held?'
+        current_refinanced_value: What is the current outstanding value of the existing facility or facilities intended to be refinanced?
+        final_refinanced_value: 'On completion of the refinancing exercise what will be the total outstanding value, including any new funds provided, of the entire refinanced package?'
+        overdraft_limit: What is the limit of the Applicant's current overdraft facility (prior to the granting of the EFG facility)?
+        overdraft_maintained: "Are you able to confirm that the Applicant's current overdraft facility has not been cancelled or reduced in the preceding three months and, subject to normal account behaviour being maintained, will be maintained while the EFG facility remains in place?"
+        invoice_discount_limit: What is the current limit of the Applicant's Invoice Finance facility?
+        debtor_book_coverage: What is the Applicant's Current Approved Pre-Payment Percentage?
+        debtor_book_topup: What Guaranteed Pre-Payment Percentage will be provided to the Applicant? (Not to exceed the lower of 30% or the difference between the Current Approved Pre-Payment Percentage and 100%)
 
       transferred_loan_entry:
         <<: *loan_entry

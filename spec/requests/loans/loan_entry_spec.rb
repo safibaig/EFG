@@ -76,6 +76,46 @@ describe 'loan entry' do
     loan.state.should == Loan::Completed
   end
 
+  it 'should show specific questions for loan category B' do
+    loan.update_attribute(:loan_category_id, 2)
+
+    visit new_loan_entry_path(loan)
+
+    should_show_only_loan_category_fields(:loan_security_types, :security_proportion)
+  end
+
+  it 'should show specific questions for loan category C' do
+    loan.update_attribute(:loan_category_id, 3)
+
+    visit new_loan_entry_path(loan)
+
+    should_show_only_loan_category_fields(:original_overdraft_proportion, :refinance_security_proportion)
+  end
+
+  it 'should show specific questions for loan category D' do
+    loan.update_attribute(:loan_category_id, 4)
+
+    visit new_loan_entry_path(loan)
+
+    should_show_only_loan_category_fields(:refinance_security_proportion, :current_refinanced_value, :final_refinanced_value)
+  end
+
+  it 'should show specific questions for loan category E' do
+    loan.update_attribute(:loan_category_id, 5)
+
+    visit new_loan_entry_path(loan)
+
+    should_show_only_loan_category_fields(:overdraft_limit, :overdraft_maintained_true, :overdraft_maintained_false)
+  end
+
+  it 'should show specific questions for loan category F' do
+    loan.update_attribute(:loan_category_id, 6)
+
+    visit new_loan_entry_path(loan)
+
+    should_show_only_loan_category_fields(:invoice_discount_limit, :debtor_book_coverage, :debtor_book_topup)
+  end
+
   private
     def choose_radio_button(attribute, value)
       choose "loan_entry_#{attribute}_#{value}"
@@ -113,4 +153,29 @@ describe 'loan entry' do
       fill_in 'interest_rate', '2.25'
       fill_in 'fees', '123.45'
     end
+
+    def should_show_only_loan_category_fields(*field_names)
+      loan_category_fields = [
+        :loan_security_types,
+        :security_proportion,
+        :original_overdraft_proportion,
+        :refinance_security_proportion,
+        :current_refinanced_value,
+        :final_refinanced_value,
+        :overdraft_limit,
+        :overdraft_maintained,
+        :invoice_discount_limit,
+        :debtor_book_coverage,
+        :debtor_book_topup
+      ]
+
+      field_names.all? do |field_name|
+        page.should have_css("#loan_entry_#{field_name}")
+      end
+
+      (loan_category_fields - field_names).all? do |field_name|
+        page.should_not have_css("#loan_entry_#{field_name}")
+      end
+    end
+
 end
