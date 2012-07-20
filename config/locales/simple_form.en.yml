@@ -131,7 +131,7 @@ en:
         reference: What is the transferor loan reference (as recorded on the Web Portal)?
         amount: What was the original loan amount (as recorded on the Web Portal)?
         initial_draw_date: What was the Initial Draw Down Date of the transferring loan (as recorded on the Web Portal)? (dd/mm/yyyy)
-        new_amount: What was the Initial Draw Down Date of the transferring loan (as recorded on the Web Portal)? (dd/mm/yyyy)
+        new_amount: What is the value of the facility being applied for?
         declaration_signed: 'Before proceeding, have you received the Data Protection and Disclosure Declaration signed by the Applicant?'
 
       search:
