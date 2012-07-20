@@ -13,7 +13,7 @@ describe StateAidCalculationImporter do
       StateAidCalculationImporter.import
     end
 
-    it 'creates new user records' do
+    it 'creates new state aid calculation records' do
       expect {
         dispatch
       }.to change(StateAidCalculation, :count).by(2)
