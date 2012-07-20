@@ -11,7 +11,7 @@ describe 'Transferred loan entry' do
     visit new_loan_transferred_entry_path(loan)
   end
 
-  it 'should transfer loan from one lender to another' do
+  it 'should transition transferred loan to completed' do
     choose 'transferred_loan_entry_declaration_signed_true'
     fill_in 'transferred_loan_entry_branch_sortcode', with: '03-12-45'
     choose 'transferred_loan_entry_repayment_frequency_id_1'
