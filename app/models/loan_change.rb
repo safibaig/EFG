@@ -8,11 +8,12 @@ class LoanChange < ActiveRecord::Base
   belongs_to :created_by, class_name: 'User'
   belongs_to :loan
 
+  before_validation :set_seq, on: :create
   before_save :store_old_values, on: :create
 
   validates_presence_of :loan
   validates_presence_of :created_by
-  validates_presence_of :change_type_id, :date_of_change, :modified_date, :seq
+  validates_presence_of :change_type_id, :date_of_change, :modified_date
 
   format :date_of_change, with: QuickDateFormatter
   format :maturity_date, with: QuickDateFormatter
@@ -36,6 +37,10 @@ class LoanChange < ActiveRecord::Base
   end
 
   private
+    def set_seq
+      self.seq = (LoanChange.where(loan_id: loan_id).maximum(:seq) || -1) + 1
+    end
+
     def store_old_values
       attributes.slice(*OLD_ATTRIBUTES_TO_STORE).each do |name, value|
         if value.present?
