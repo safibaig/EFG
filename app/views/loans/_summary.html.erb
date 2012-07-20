@@ -1,7 +1,7 @@
 <div class="loan-summary">
   <dl>
     <dt>State</dt>
-    <dd><%= loan.state.humanize %></dd>
+    <dd><%= loan.state.humanize %> <%= "(legacy)" if loan.legacy_loan? %></dd>
     <dt>Amount</dt>
     <dd><%= loan.amount.try(:format) %></dd>
     <dt>Last Modified</dt>

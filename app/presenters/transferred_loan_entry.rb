@@ -24,6 +24,7 @@ class TransferredLoanEntry
   attribute :non_validated_postcode, read_only: true
   attribute :postcode, read_only: true
   attribute :town, read_only: true
+  attribute :legacy_loan?, read_only: true
 
   attribute :declaration_signed
   attribute :branch_sortcode

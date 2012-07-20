@@ -19,26 +19,29 @@ Please note that all the information within Facility Entry can be revised, howev
   <%= field_set_tag 'Business' do %>
     <%= f.input :business_name, as: :string, disabled: true %>
     <%= f.input :trading_name, as: :string, disabled: true %>
-    <%= f.input :legal_form_id, as: :radio_buttons, collection: LegalForm.all, disabled: true %>
-    <%= f.input :company_registration, as: :string, disabled: true %>
-    <%= f.input :turnover, as: :currency, disabled: true %>
-    <%= f.input :trading_date, as: :quick_date, disabled: true %>
-    <%= f.input :postcode, as: :string, disabled: true %>
-    <%= f.input :branch_sortcode, as: :string %>
+
+    <% unless @transferred_loan_entry.legacy_loan? %>
+      <%= f.input :legal_form_id, as: :radio_buttons, collection: LegalForm.all, disabled: true %>
+      <%= f.input :company_registration, as: :string, disabled: true %>
+      <%= f.input :turnover, as: :currency, disabled: true %>
+      <%= f.input :trading_date, as: :quick_date, disabled: true %>
+      <%= f.input :postcode, as: :string, disabled: true %>
+      <%= f.input :branch_sortcode, as: :string %>
+    <% end %>
   <% end %>
 
   <%= field_set_tag 'Loan' do %>
     <%= f.input :amount, as: :currency %>
 
     <div class='control-group string'>
-      <label class='control-label'>Guarantee Rate</label>
+      <label class='control-label'>Guarantee Rate for this loan (%):</label>
       <div class='controls'>
         <%= @loan.loan_allocation.guarantee_rate %>%
       </div>
     </div>
 
     <div class='control-group string'>
-      <label class='control-label'>Premium Rate</label>
+      <label class='control-label'>Premium Rate for this loan (%):</label>
       <div class='controls'>
         <%= @loan.loan_allocation.premium_rate %>%
       </div>
@@ -47,36 +50,45 @@ Please note that all the information within Facility Entry can be revised, howev
     <%= f.input :repayment_duration, as: :duration %>
     <%= f.input :repayment_frequency_id, as: :radio_buttons, collection: RepaymentFrequency.all %>
     <%= f.input :maturity_date, as: :quick_date %>
-    <%= f.input :turnover, as: :currency, disabled: true %>
-    <%= f.input :trading_date, as: :quick_date, disabled: true %>
-    <%= f.input :sic_code, as: :sic_code, disabled: true %>
-    <%= f.input :loan_category_id, as: :radio_buttons, collection: LoanCategory.all, disabled: true %>
-    <%= f.input :reason_id, as: :radio_buttons, collection: LoanReason.all, disabled: true %>
-    <%= f.input :previous_borrowing, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
-    <%= f.input :state_aid, as: :state_aid %>
-    <%= f.input :state_aid_is_valid, as: :boolean %>
-    <%= f.input :private_residence_charge_required, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
-    <%= f.input :personal_guarantee_required, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
 
-    <div class='control-group string'>
-      <label class='control-label'>Is the result for Notified Aid less than 60% for Objective 1 loans, or 40% for non-Objective 1 loans?</label>
-      <div class='controls'>
-        Not Set
+    <% unless @transferred_loan_entry.legacy_loan? %>
+      <%= f.input :turnover, as: :currency, disabled: true %>
+      <%= f.input :trading_date, as: :quick_date, disabled: true %>
+      <%= f.input :sic_code, as: :sic_code, disabled: true %>
+      <%= f.input :loan_category_id, as: :radio_buttons, collection: LoanCategory.all, disabled: true %>
+      <%= f.input :reason_id, as: :radio_buttons, collection: LoanReason.all, disabled: true %>
+      <%= f.input :previous_borrowing, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
+    <% end %>
+
+    <%= f.input :state_aid, as: :state_aid %>
+
+    <% unless @transferred_loan_entry.legacy_loan? %>
+      <%= f.input :state_aid_is_valid, as: :boolean %>
+      <%= f.input :private_residence_charge_required, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
+      <%= f.input :personal_guarantee_required, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
+
+      <div class='control-group string'>
+        <label class='control-label'>Is the result for Notified Aid less than 60% for Objective 1 loans, or 40% for non-Objective 1 loans?</label>
+        <div class='controls'>
+          Not Set
+        </div>
       </div>
-    </div>
+    <% end %>
   <% end %>
 
-  <%= field_set_tag 'Lender' do %>
-    <%= f.input :viable_proposition, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
-    <%= f.input :would_you_lend, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
-    <%= f.input :collateral_exhausted, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
-    <%= f.input :generic1, as: :string %>
-    <%= f.input :generic2, as: :string %>
-    <%= f.input :generic3, as: :string %>
-    <%= f.input :generic4, as: :string %>
-    <%= f.input :generic5, as: :string %>
-    <%= f.input :town, as: :string, disabled: true %>
-    <%= f.input :non_validated_postcode, as: :string, disabled: true %>
+  <% unless @transferred_loan_entry.legacy_loan? %>
+    <%= field_set_tag 'Lender' do %>
+      <%= f.input :viable_proposition, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
+      <%= f.input :would_you_lend, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
+      <%= f.input :collateral_exhausted, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
+      <%= f.input :generic1, as: :string %>
+      <%= f.input :generic2, as: :string %>
+      <%= f.input :generic3, as: :string %>
+      <%= f.input :generic4, as: :string %>
+      <%= f.input :generic5, as: :string %>
+      <%= f.input :town, as: :string, disabled: true %>
+      <%= f.input :non_validated_postcode, as: :string, disabled: true %>
+    <% end %>
   <% end %>
 
   <div class="form-actions">

@@ -1,14 +1,12 @@
 <div class="page-header">
-  <h1>Transfer a Loan</h1>
+  <h1>Legacy Loan Transfer (Applies to loans agreed pre 1st December 2005)</h1>
 </div>
 
-<p>From this page you can transfer loans from another approved SFLG lender.</p>
-
-<p>(Tip. The details about the loan to be transferred can be obtained from the customer copy of the Scheme Facility Letter and Information Declaration).</p>
+<p>From this page you can transfer legacy loans from another approved EFG/SFLG lender.</p>
 
 <hr>
 
-<%= simple_form_for(@loan_transfer, url: loan_transfers_path, html: { class: 'form-horizontal form-loan-transfer' }) do |f| %>
+<%= simple_form_for(@loan_transfer, url: legacy_loan_transfers_path, html: { class: 'form-horizontal form-loan-transfer' }) do |f| %>
 
   <%= render_errors_on_base(@loan_transfer.errors) %>
 
@@ -16,7 +14,7 @@
 
     <%= f.input :reference %>
     <%= f.input :amount, as: :currency %>
-    <%= f.input :facility_letter_date, as: :quick_date %>
+    <%= f.input :initial_draw_date, as: :quick_date %>
 
   <% end %>
 

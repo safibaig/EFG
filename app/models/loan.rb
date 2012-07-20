@@ -1,4 +1,5 @@
 require 'loan_reference'
+require 'legacy_loan_reference'
 
 class Loan < ActiveRecord::Base
   include FormatterConcern
@@ -29,13 +30,13 @@ class Loan < ActiveRecord::Base
     Removed, RepaidFromTransfer, AutoRemoved, Settled, Realised, Recovered,
     IncompleteLegacy, CompleteLegacy].freeze
 
-  # Legacy system loan schemes: E = EFG, S = SFLG
   # All new loans are in the EFG scheme
   EFG_SCHEME = 'E'
+  SFLG_SCHEME = 'S'
 
-  # Legacy system loan sources: S = SFLG, L = Lognet
   # All new loans have SFLG source
   SFLG_SOURCE = 'S'
+  LEGACY_SFLG_SOURCE = 'L'
 
   belongs_to :lender
   belongs_to :loan_allocation
@@ -161,7 +162,7 @@ class Loan < ActiveRecord::Base
 
   def already_transferred?
     return false if reference.blank?
-    next_loan_reference = LoanReference.new(reference).increment
+    next_loan_reference = reference_class.new(reference).increment
     Loan.exists?(reference: next_loan_reference)
   end
 
@@ -174,6 +175,10 @@ class Loan < ActiveRecord::Base
     loan_source == SFLG_SOURCE && loan_scheme == EFG_SCHEME
   end
 
+  def legacy_loan?
+    loan_source == LEGACY_SFLG_SOURCE
+  end
+
   private
 
   def set_reference
@@ -181,6 +186,10 @@ class Loan < ActiveRecord::Base
       reference_string = LoanReference.generate
       self.reference = self.class.exists?(reference: reference_string) ? set_reference : reference_string
     end
+  end
+
+  def reference_class
+    legacy_loan? ? LegacyLoanReference : LoanReference
   end
 
 end

@@ -37,7 +37,7 @@ en:
         cancelled_comment: 'Please enter any additional explanatory comments regarding the reason for cancellation of the application'
         cancelled_on: 'On what date was the application cancelled (dd/mm/yyyy)?'
 
-      loan_entry:
+      loan_entry: &loan_entry
         <<: *loan
         declaration_signed: 'Before proceeding, please confirm that a Data Protection and Disclosure Declaration signed by the Applicant has been received.'
         business_name: 'What is the legal name of the Applicant business?'
@@ -61,6 +61,9 @@ en:
         fees: 'Please enter the total value of any arrangement, insurance or other fees (but excluding interest and the guarantee premium) the Applicant will be charged in connection with this facility being provided:'
         state_aid_is_valid: "Is the total value of the Applicant's De Minimis State Aid for the last three years (including that arising from this application) no more than 200,000 Euro, or the relevant lower threshold where advised for eligible agriculture, fisheries and transport businesses?"
         state_aid: 'Value of De Minimis State Aid applicable to this facility (in Euro)'
+
+      transferred_loan_entry:
+        <<: *loan_entry
 
       loan_offer:
         facility_letter_sent: "Have the Scheme Facility Offer Documents been sent to the Applicant?"
@@ -121,10 +124,16 @@ en:
         remove_guarantee_outstanding_amount: 'What is the outstanding balance of the facility, as recorded by the Lender, at the date of removal of the Guarantee?'
         remove_guarantee_reason: What is the reason that the Guarantee has been removed from this facility?
 
-      loan_transfer:
+      loan_transfer_sflg:
         reference: What is the previous lender's loan reference (as recorded on the borrower's Scheme Facility Letter or Information Declaration)?
         amount: What was the original loan amount (as recorded on the Web Portal)?
         facility_letter_date: What was the date of the previous Lender's Scheme Facility Letter (as recorded on the Web Portal)? (dd/mm/yyyy)
+        new_amount: What is the value of the facility being applied for?
+        declaration_signed: 'Before proceeding, have you received the Data Protection and Disclosure Declaration signed by the Applicant?'
+      loan_transfer_legacy_sflg:
+        reference: What is the transferor loan reference (as recorded on the Web Portal)?
+        amount: What was the original loan amount (as recorded on the Web Portal)?
+        initial_draw_date: What was the Initial Draw Down Date of the transferring loan (as recorded on the Web Portal)? (dd/mm/yyyy)
         new_amount: What is the value of the facility being applied for?
         declaration_signed: 'Before proceeding, have you received the Data Protection and Disclosure Declaration signed by the Applicant?'
 
