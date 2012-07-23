@@ -236,4 +236,18 @@ describe Loan do
     end
   end
 
+  describe "#transferred_from" do
+    let(:original_loan) { FactoryGirl.create(:loan, :repaid_from_transfer) }
+
+    let(:transferred_loan) { FactoryGirl.create(:loan, transferred_from_id: original_loan.id) }
+
+    it "returns the original loan from which this loan was transferred" do
+      transferred_loan.transferred_from.should == original_loan
+    end
+
+    it "returns nil when loan is not a transfer" do
+      Loan.new.transferred_from.should be_nil
+    end
+  end
+
 end
