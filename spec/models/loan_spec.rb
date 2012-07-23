@@ -236,4 +236,20 @@ describe Loan do
     end
   end
 
+  describe "#loan_security_types" do
+    let(:security_type1) { LoanSecurityType.find(1) }
+
+    let(:security_type2) { LoanSecurityType.find(5) }
+
+    let!(:loan) {
+      loan = FactoryGirl.create(:loan)
+      loan.loan_security_types = [ security_type1.id, security_type2.id ]
+      loan
+    }
+
+    it "should return all loan security types for a loan" do
+      loan.loan_security_types.should == [ security_type1, security_type2 ]
+    end
+  end
+
 end
