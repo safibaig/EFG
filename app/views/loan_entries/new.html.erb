@@ -49,7 +49,12 @@
     <%= f.input :loan_category_id, as: :select, collection: LoanCategory.all, disabled: true, prompt: 'Please select' %>
 
     <% for_loan_in_categories(@loan_entry, 2) do %>
-      <%= f.input :loan_security_types, as: :select, collection: LoanSecurityType.all, input_html: { multiple: true } %>
+      <%= f.input :loan_security_types,
+                  as: :select,
+                  collection: LoanSecurityType.all,
+                  input_html: { multiple: true },
+                  selected: @loan.loan_security_types.collect(&:id) %>
+
       <%= f.input :security_proportion, as: :percentage %>
     <% end %>
 
