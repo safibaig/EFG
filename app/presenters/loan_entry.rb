@@ -15,11 +15,11 @@ class LoanEntry
   attribute :personal_guarantee_required, read_only: true
   attribute :amount, read_only: true
   attribute :turnover, read_only: true
-  attribute :repayment_duration, read_only: true
   attribute :trading_date, read_only: true
   attribute :loan_allocation_id, read_only: true
   attribute :lender, read_only: true
 
+  attribute :repayment_duration
   attribute :declaration_signed
   attribute :business_name
   attribute :trading_name
@@ -57,7 +57,6 @@ class LoanEntry
                         :repayment_frequency_id, :postcode, :maturity_date,
                         :interest_rate, :fees
 
-  # TODO: validate loan_security_types
   validates_presence_of :security_proportion,
                         if: lambda { loan_category_id == 2 }
 
@@ -83,6 +82,16 @@ class LoanEntry
     errors.add(:declaration_signed, :accepted) unless self.declaration_signed
     errors.add(:state_aid, :calculated) unless self.loan.state_aid_calculation
     errors.add(:loan_security_types, :present) if loan_category_id == 2 && self.loan_security_types.empty?
+
+    # Type E repayment duration cannot exceed 2 years
+    if loan_category_id == 5 && !repayment_duration.between?(MonthDuration.new(3), MonthDuration.new(24))
+      errors.add(:repayment_duration, :invalid)
+    end
+
+    # Type F repayment duration cannot exceed 3 years
+    if loan_category_id == 6 && !repayment_duration.between?(MonthDuration.new(3), MonthDuration.new(36))
+      errors.add(:repayment_duration, :invalid)
+    end
   end
 
   def save_as_incomplete

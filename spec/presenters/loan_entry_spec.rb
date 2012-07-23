@@ -60,17 +60,15 @@ describe LoanEntry do
     end
 
     context 'when a type B loan' do
-      before(:each) do
-        loan_entry.stub(:loan_category_id).and_return(2)
+      let(:loan_entry) { FactoryGirl.build(:loan_entry_type_b) }
+
+      it "should have a valid factory" do
+        loan_entry.should be_valid
       end
 
       it "should require security types" do
-        loan_entry.loan_security_types.clear
+        loan_entry.loan.loan_securities.clear
         loan_entry.should_not be_valid
-      end
-
-      it "should be valid with a loan security" do
-        pending
       end
 
       it "should require security proportion" do
@@ -80,8 +78,10 @@ describe LoanEntry do
     end
 
     context 'when a type C loan' do
-      before(:each) do
-        loan_entry.stub(:loan_category_id).and_return(3)
+      let(:loan_entry) { FactoryGirl.build(:loan_entry_type_c) }
+
+      it "should have a valid factory" do
+        loan_entry.should be_valid
       end
 
       it "should require original overdraft proportion" do
@@ -96,8 +96,10 @@ describe LoanEntry do
     end
 
     context 'when a type D loan' do
-      before(:each) do
-        loan_entry.stub(:loan_category_id).and_return(4)
+      let(:loan_entry) { FactoryGirl.build(:loan_entry_type_d) }
+
+      it "should have a valid factory" do
+        loan_entry.should be_valid
       end
 
       it "should require refinance security proportion" do
@@ -117,8 +119,10 @@ describe LoanEntry do
     end
 
     context 'when a type E loan' do
-      before(:each) do
-        loan_entry.stub(:loan_category_id).and_return(5)
+      let(:loan_entry) { FactoryGirl.build(:loan_entry_type_e) }
+
+      it "should have a valid factory" do
+        loan_entry.should be_valid
       end
 
       it "should require overdraft limit" do
@@ -130,11 +134,21 @@ describe LoanEntry do
         loan_entry.overdraft_maintained = false
         loan_entry.should_not be_valid
       end
+
+      it "should have a maximum repayment duration of 2 years" do
+        loan_entry.repayment_duration = 25
+        loan_entry.should_not be_valid
+
+        loan_entry.repayment_duration = 24
+        loan_entry.should be_valid
+      end
     end
 
     context 'when a type F loan' do
-      before(:each) do
-        loan_entry.stub(:loan_category_id).and_return(6)
+      let(:loan_entry) { FactoryGirl.build(:loan_entry_type_f) }
+
+      it "should have a valid factory" do
+        loan_entry.should be_valid
       end
 
       it "should require invoice discount limit" do
@@ -150,6 +164,14 @@ describe LoanEntry do
       it "should require debtor book topup" do
         loan_entry.debtor_book_topup = nil
         loan_entry.should_not be_valid
+      end
+
+      it "should have a maximum repayment duration of 3 years" do
+        loan_entry.repayment_duration = 37
+        loan_entry.should_not be_valid
+
+        loan_entry.repayment_duration = 36
+        loan_entry.should be_valid
       end
     end
 

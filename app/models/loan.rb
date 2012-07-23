@@ -140,7 +140,7 @@ class Loan < ActiveRecord::Base
 
   def loan_security_types=(security_type_ids)
     security_type_ids.each do |id|
-      self.loan_securities.create(loan_security_type_id: id)
+      self.loan_securities.build(loan_security_type_id: id)
     end
   end
 
