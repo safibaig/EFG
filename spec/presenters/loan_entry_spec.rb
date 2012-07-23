@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe LoanEntry do
+  before(:each) do
+    # ensure recalculate state aid validation does not fail
+    Loan.any_instance.stub(:repayment_duration_changed?).and_return(false)
+  end
+
   describe "validations" do
     let(:loan_entry) { FactoryGirl.build(:loan_entry) }
 
@@ -45,6 +50,11 @@ describe LoanEntry do
 
     it "should be invalid without an interest rate" do
       loan_entry.interest_rate = ''
+      loan_entry.should_not be_valid
+    end
+
+    it "should be invalid without a repayment duration" do
+      loan_entry.repayment_duration = nil
       loan_entry.should_not be_valid
     end
 
@@ -175,6 +185,17 @@ describe LoanEntry do
       end
     end
 
+    context "when repayment duration is changed" do
+      before(:each) do
+        # ensure recalculate state aid validation fails
+        Loan.any_instance.stub(:repayment_duration_changed?).and_return(true)
+      end
+
+      it "should require a recalculation of state aid" do
+        loan_entry.should_not be_valid
+        loan_entry.should have(1).error_on(:state_aid)
+      end
+    end
 
     # Although a business may benefit from EFG on more than one occasion, and may have more than one EFG-backed facility at any one time, the total outstanding balances and/or active available limits of the Applicant's current EFG facilities may not exceed £1 million at any one time.
     # To be eligible for EFG the Applicant's De Minimis State Aid status must be checked to ensure that it does not exceed the €200,000 rolling three year limit (or the corresponding lower limit applicable in certain business sectors). On this occasion that check has not been performed.

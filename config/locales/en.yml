@@ -27,6 +27,7 @@ en:
               accepted: A customer declaration must have been received before a loan can be entered.
             state_aid:
               calculated: must be calculated
+              recalculate: must be re-calculated when you change the loan term
         loan_offer:
           attributes:
             facility_letter_sent:

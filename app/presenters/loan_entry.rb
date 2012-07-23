@@ -55,7 +55,7 @@ class LoanEntry
 
   validates_presence_of :business_name, :legal_form_id, :interest_rate_type_id,
                         :repayment_frequency_id, :postcode, :maturity_date,
-                        :interest_rate, :fees
+                        :interest_rate, :fees, :repayment_duration
 
   validates_presence_of :security_proportion,
                         if: lambda { loan_category_id == 2 }
@@ -81,6 +81,7 @@ class LoanEntry
   validate do
     errors.add(:declaration_signed, :accepted) unless self.declaration_signed
     errors.add(:state_aid, :calculated) unless self.loan.state_aid_calculation
+    errors.add(:state_aid, :recalculate) if self.loan.repayment_duration_changed?
     errors.add(:loan_security_types, :present) if loan_category_id == 2 && self.loan_security_types.empty?
 
     # Type E repayment duration cannot exceed 2 years
