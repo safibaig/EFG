@@ -81,8 +81,13 @@ describe LoanEntry do
         loan_entry.should_not be_valid
       end
 
-      it "should require security proportion" do
-        loan_entry.security_proportion = nil
+      it "should require security proportion greater than 0" do
+        loan_entry.security_proportion = 0.0
+        loan_entry.should_not be_valid
+      end
+
+      it "should require security proportion less than 100" do
+        loan_entry.security_proportion = 100
         loan_entry.should_not be_valid
       end
     end
@@ -94,13 +99,23 @@ describe LoanEntry do
         loan_entry.should be_valid
       end
 
-      it "should require original overdraft proportion" do
-        loan_entry.original_overdraft_proportion = nil
+      it "should require original overdraft proportion greater than 0" do
+        loan_entry.original_overdraft_proportion = 0.0
         loan_entry.should_not be_valid
       end
 
-      it "should require refinance security proportion" do
-        loan_entry.refinance_security_proportion = nil
+      it "should require original overdraft proportion less than 100" do
+        loan_entry.original_overdraft_proportion = 100
+        loan_entry.should_not be_valid
+      end
+
+      it "should require refinance security proportion greater than 0" do
+        loan_entry.refinance_security_proportion = 0.0
+        loan_entry.should_not be_valid
+      end
+
+      it "should require refinance security proportion less than or equal to 100" do
+        loan_entry.refinance_security_proportion = 100.1
         loan_entry.should_not be_valid
       end
     end
@@ -112,8 +127,13 @@ describe LoanEntry do
         loan_entry.should be_valid
       end
 
-      it "should require refinance security proportion" do
-        loan_entry.refinance_security_proportion = nil
+      it "should require refinance security proportion greater than 0" do
+        loan_entry.refinance_security_proportion = 0.0
+        loan_entry.should_not be_valid
+      end
+
+      it "should require refinance security proportion less than or equal to 100" do
+        loan_entry.refinance_security_proportion = 100.1
         loan_entry.should_not be_valid
       end
 
@@ -166,13 +186,23 @@ describe LoanEntry do
         loan_entry.should_not be_valid
       end
 
-      it "should require debtor book coverage" do
-        loan_entry.debtor_book_coverage = nil
+      it "should require debtor book coverage greater than or equal to 1" do
+        loan_entry.debtor_book_coverage = 0.9
         loan_entry.should_not be_valid
       end
 
-      it "should require debtor book topup" do
-        loan_entry.debtor_book_topup = nil
+      it "should require debtor book coverage less than 100" do
+        loan_entry.debtor_book_coverage = 100
+        loan_entry.should_not be_valid
+      end
+
+      it "should require debtor book topup greater than or equal to 1" do
+        loan_entry.debtor_book_topup = 0.9
+        loan_entry.should_not be_valid
+      end
+
+      it "should require debtor book topup less than or equal to 30" do
+        loan_entry.debtor_book_topup = 30.1
         loan_entry.should_not be_valid
       end
 
