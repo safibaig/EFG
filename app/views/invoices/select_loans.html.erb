@@ -1,5 +1,14 @@
-<div class="page-header">
+<div class="page-header with-actions">
   <h1>Invoice Received</h1>
+
+  <ul id="actions">
+    <li>
+      <%= simple_form_for(@invoice, url: select_loans_invoices_path(format: 'csv')) do |f| %>
+        <%= render "hidden_fields", form: f %>
+        <%= f.button :submit, 'Export CSV', class: 'btn' %>
+      <% end %>
+    </li>
+  </ul>
 </div>
 
 <p>From this page you can record a Lender's Demand against the Guarantee as having been Settled.</p>
@@ -12,11 +21,7 @@
   <%= simple_form_for(@invoice, url: invoices_path, html: {class: 'form-select-loans'}) do |f| %>
     <%= f.error :base, error_tag: 'div', class: 'alert alert-error' %>
 
-    <%= f.hidden_field :lender_id %>
-    <%= f.hidden_field :reference %>
-    <%= f.hidden_field :period_covered_quarter %>
-    <%= f.hidden_field :period_covered_year %>
-    <%= f.hidden_field :received_on, value: f.object.received_on.strftime('%d/%m/%Y') %>
+    <%= render "hidden_fields", form: f %>
 
     <table class="table table-striped">
       <thead>

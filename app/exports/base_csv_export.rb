@@ -18,7 +18,7 @@ class BaseCsvExport
   private
 
   def formats
-    raise NotImplementedError, 'Define in sub-class'
+    {}
   end
 
   def fields
