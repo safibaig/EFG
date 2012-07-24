@@ -26,6 +26,18 @@ describe LoanChange do
     end
   end
 
+  describe '#changes' do
+    let(:loan_change) { FactoryGirl.build(:loan_change) }
+
+    it 'contains only fields that have a value' do
+      loan_change.old_business_name = 'Foo'
+      loan_change.business_name = 'Bar'
+
+      loan_change.changes.size.should == 1
+      loan_change.changes.first[:attribute].should == 'business_name'
+    end
+  end
+
   describe '#seq' do
     let(:loan) { FactoryGirl.create(:loan) }
 

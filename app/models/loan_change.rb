@@ -36,6 +36,21 @@ class LoanChange < ActiveRecord::Base
     ChangeType.find(change_type_id)
   end
 
+  def changes
+    attributes.slice(*OLD_ATTRIBUTES_TO_STORE).select { |_, value|
+      value.present?
+    }.keys.map { |attribute|
+      old_attribute = "old_#{attribute}"
+
+      {
+        old_attribute: old_attribute,
+        old_value: self[old_attribute],
+        attribute: attribute,
+        value: self[attribute]
+      }
+    }
+  end
+
   private
     def set_seq
       self.seq = (LoanChange.where(loan_id: loan_id).maximum(:seq) || -1) + 1

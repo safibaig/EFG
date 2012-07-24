@@ -3,6 +3,24 @@ require 'spec_helper'
 describe LoanChangesController do
   let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
 
+  describe '#index' do
+    def dispatch(params = {})
+      get :index, { loan_id: loan.id }.merge(params)
+    end
+
+    it_behaves_like 'LenderUser-restricted LoanPresenter controller'
+  end
+
+  describe '#show' do
+    let(:loan_change) { FactoryGirl.create(:loan_change, loan: loan) }
+
+    def dispatch(params = {})
+      get :show, { id: loan_change.id, loan_id: loan.id }.merge(params)
+    end
+
+    it_behaves_like 'LenderUser-restricted LoanPresenter controller'
+  end
+
   describe '#new' do
     def dispatch(params = {})
       get :new, { loan_id: loan.id }.merge(params)
