@@ -24,6 +24,28 @@ describe LoanChange do
         loan_change.should_not be_valid
       end
     end
+
+    context 'change types' do
+      context '1 - business name' do
+        it 'requires a business_name' do
+          loan_change.change_type_id = '1'
+          loan_change.business_name = ''
+          loan_change.should_not be_valid
+          loan_change.business_name = 'ACME'
+          loan_change.should be_valid
+        end
+      end
+
+      context '7 - Record agreed draw' do
+        it 'requires a amount_drawn' do
+          loan_change.change_type_id = '7'
+          loan_change.amount_drawn = ''
+          loan_change.should_not be_valid
+          loan_change.amount_drawn = '1,000'
+          loan_change.should be_valid
+        end
+      end
+    end
   end
 
   describe '#changes' do

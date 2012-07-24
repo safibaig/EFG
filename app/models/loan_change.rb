@@ -15,6 +15,8 @@ class LoanChange < ActiveRecord::Base
   validates_presence_of :created_by
   validates_presence_of :change_type_id, :date_of_change, :modified_date
 
+  validate :validate_change_type
+
   format :date_of_change, with: QuickDateFormatter
   format :maturity_date, with: QuickDateFormatter
   format :modified_date, with: QuickDateFormatter
@@ -62,6 +64,15 @@ class LoanChange < ActiveRecord::Base
           old_name = "old_#{name}"
           self[old_name] = loan[name]
         end
+      end
+    end
+
+    def validate_change_type
+      case change_type_id
+      when '1'
+        errors.add(:business_name, :required) unless business_name.present?
+      when '7'
+        errors.add(:amount_drawn, :required) unless amount_drawn.present?
       end
     end
 end
