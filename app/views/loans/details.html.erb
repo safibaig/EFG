@@ -2,7 +2,7 @@
   <h1><%= loan_title('Loan Details', @loan) %></h1>
 
   <ul id="actions">
-    <li><%= link_to "Export CSV", url_for(format: 'csv'), class: 'btn' %></li>
+    <li><%= link_to "Export CSV", details_loan_path(@loan, format: 'csv'), class: 'btn' %></li>
   </ul>
 </div>
 
