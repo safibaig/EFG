@@ -19,7 +19,7 @@ class LoanChangesController < ApplicationController
     @loan_change.created_by = current_user
     @loan_change.modified_date = Date.today
 
-    if @loan_change.save
+    if @loan_change.save_and_update_loan
       redirect_to @loan
     else
       render :new

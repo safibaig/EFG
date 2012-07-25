@@ -53,6 +53,17 @@ class LoanChange < ActiveRecord::Base
     }
   end
 
+  def save_and_update_loan
+    transaction do
+      save!
+      update_loan!
+    end
+
+    true
+  rescue ActiveRecord::RecordInvalid
+    false
+  end
+
   private
     def set_seq
       self.seq = (LoanChange.where(loan_id: loan_id).maximum(:seq) || -1) + 1
@@ -65,6 +76,14 @@ class LoanChange < ActiveRecord::Base
           self[old_name] = loan[name]
         end
       end
+    end
+
+    def update_loan!
+      changes.each do |change|
+        loan[change[:attribute]] = change[:value]
+      end
+
+      loan.save!
     end
 
     def validate_change_type

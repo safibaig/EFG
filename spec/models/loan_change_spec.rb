@@ -60,6 +60,24 @@ describe LoanChange do
     end
   end
 
+  describe '#save_and_update_loan' do
+    let(:loan) { FactoryGirl.create(:loan, business_name: 'ACME') }
+    let(:loan_change) { FactoryGirl.build(:loan_change, loan: loan) }
+
+    it 'works' do
+      loan_change.business_name = 'updated'
+
+      loan_change.save_and_update_loan.should == true
+      loan.business_name.should == 'updated'
+    end
+
+    it 'does not update the Loan if the LoanChange is not valid' do
+      loan_change.business_name = ''
+      loan_change.save_and_update_loan.should == false
+      loan.business_name.should == 'ACME'
+    end
+  end
+
   describe '#seq' do
     let(:loan) { FactoryGirl.create(:loan) }
 
