@@ -1,7 +1,7 @@
 <div class="page-header with-actions">
   <h1>Loans: <%= params[:id].titleize %></h1>
   <ul id="actions">
-    <li><%= link_to "Export CSV", url_for(format: 'csv'), class: 'btn' %></li>
+    <li><%= link_to "Export CSV", loan_state_path(params[:id], format: 'csv'), class: 'btn' %></li>
   </ul>
 </div>
 
