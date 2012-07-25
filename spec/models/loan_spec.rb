@@ -201,24 +201,54 @@ describe Loan do
 
   describe '#efg_loan?' do
     it "returns true when loan source is SFLG and loan type is EFG" do
-      loan.loan_source = 'S'
-      loan.loan_scheme = 'E'
+      loan.loan_source = Loan::SFLG_SOURCE
+      loan.loan_scheme = Loan::EFG_SCHEME
 
       loan.should be_efg_loan
     end
 
     it "returns false when loan source is not SFLG" do
-      loan.loan_source = 'L'
-      loan.loan_scheme = 'E'
+      loan.loan_source = Loan::LEGACY_SFLG_SOURCE
+      loan.loan_scheme = Loan::EFG_SCHEME
 
       loan.should_not be_efg_loan
     end
 
     it "returns false when loan source is SFLG but loan type is not EFG" do
-      loan.loan_source = 'S'
-      loan.loan_scheme = 'S'
+      loan.loan_source = Loan::SFLG_SOURCE
+      loan.loan_scheme = Loan::SFLG_SCHEME
 
       loan.should_not be_efg_loan
+    end
+  end
+
+  describe '#legacy_loan?' do
+    it "returns true when loan source is legacy SFLG" do
+      loan.loan_source = Loan::LEGACY_SFLG_SOURCE
+
+      loan.should be_legacy_loan
+    end
+
+    it "returns false when loan source is not legacy SFLG" do
+      loan.loan_source = Loan::SFLG_SOURCE
+
+      loan.should_not be_legacy_loan
+    end
+  end
+
+  describe "#loan_security_types" do
+    let(:security_type1) { LoanSecurityType.find(1) }
+
+    let(:security_type2) { LoanSecurityType.find(5) }
+
+    let!(:loan) {
+      loan = FactoryGirl.create(:loan)
+      loan.loan_security_types = [ security_type1.id, security_type2.id ]
+      loan
+    }
+
+    it "should return all loan security types for a loan" do
+      loan.loan_security_types.should == [ security_type1, security_type2 ]
     end
   end
 

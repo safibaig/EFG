@@ -1,18 +1,4 @@
-require 'spec_helper'
-
-describe LoanTransfer do
-
-  let!(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation, :sflg) }
-
-  let(:loan_transfer) {
-    FactoryGirl.build(
-      :loan_transfer,
-      amount: loan.amount,
-      new_amount: loan.amount - Money.new(1000),
-      reference: loan.reference,
-      facility_letter_date: loan.facility_letter_date,
-    )
-  }
+shared_examples_for 'a loan transfer' do
 
   describe 'validations' do
 
@@ -27,11 +13,6 @@ describe LoanTransfer do
 
     it 'must have an amount' do
       loan_transfer.amount = nil
-      loan_transfer.should_not be_valid
-    end
-
-    it 'must have a facility letter date' do
-      loan_transfer.facility_letter_date = nil
       loan_transfer.should_not be_valid
     end
 
@@ -75,22 +56,8 @@ describe LoanTransfer do
         new_loan.lender.should == loan_transfer.lender
       end
 
-      it "should create new loan with a copy of some of the original loan's data" do
-        fields_not_copied = %w(
-          id lender_id reference state branch_sortcode repayment_duration amount
-          payment_period maturity_date invoice_id generic1 generic2 generic3 generic4
-          generic5 transferred_from_id loan_allocation_id created_at updated_at
-        )
-
-        fields_to_compare = Loan.column_names - fields_not_copied
-
-        fields_to_compare.each do |field|
-          original_loan.send(field).should eql(new_loan.send(field)), "#{field} from transferred loan does not match #{field} from original loan"
-        end
-      end
-
       it 'should create new loan with incremented reference number' do
-        new_loan.reference.should == LoanReference.new(loan.reference).increment
+        new_loan.reference.should == reference_class.new(loan.reference).increment
       end
 
       it 'should create new loan with state "incomplete"' do
@@ -188,8 +155,8 @@ describe LoanTransfer do
       before(:each) do
         # create new loan with same reference of 'loan' but with a incremented version number
         # this means the loan has already been transferred
-        loan.update_attribute(:reference, 'QTFDF90+01')
-        FactoryGirl.create(:loan, :repaid_from_transfer, reference: 'QTFDF90+02')
+        incremented_reference = reference_class.new(loan.reference).increment
+        FactoryGirl.create(:loan, :repaid_from_transfer, reference: incremented_reference)
       end
 
       it "should return false" do
@@ -218,11 +185,7 @@ describe LoanTransfer do
     end
 
     context 'when loan is an EFG loan' do
-      before(:each) do
-        loan.loan_source = 'S'
-        loan.loan_scheme = 'E'
-        loan.save
-      end
+      let!(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation, :efg) }
 
       it "should return false" do
         loan_transfer.save.should == false
@@ -238,7 +201,12 @@ describe LoanTransfer do
   private
 
   def error_string(key)
-    I18n.t("activemodel.errors.models.loan_transfer.attributes.#{key}")
+    class_key = loan_transfer.class.to_s.underscore
+    I18n.t("activemodel.errors.models.#{class_key}.attributes.#{key}")
+  end
+
+  def reference_class
+    loan.legacy_loan? ? LegacyLoanReference : LoanReference
   end
 
 end

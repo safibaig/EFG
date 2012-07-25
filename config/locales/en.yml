@@ -28,6 +28,9 @@ en:
               accepted: A customer declaration must have been received before a loan can be entered.
             state_aid:
               calculated: must be calculated
+              recalculate: must be re-calculated when you change the loan term
+            loan_security_types:
+              present: choose at least one security
         loan_offer:
           attributes:
             facility_letter_sent:
@@ -40,7 +43,7 @@ en:
               accepted: An initial payment for the correct amount of the first Scheme Guarantee Premium payment has not been received from the Applicant.
             signed_direct_debit_received:
               accepted: A signed Direct Debit mandate must have been received before the initial draw down can occur.
-        loan_transfer:
+        loan_transfer/sflg: &loan_transfer
           attributes:
             base:
               cannot_be_transferred: 'A suitable loan matching these criteria could not be found. Please note that all details supplied about the original loan must be correct, and it must be an SFLG scheme loan in one of the following states: "Guaranteed", "Lender demand" or "Repaid".'
@@ -49,6 +52,8 @@ en:
               cannot_be_greater: cannot exceed the original loan amount
             declaration_signed:
               accepted: A customer declaration must have been received before a loan can be transferred
+        loan_transfer/legacy_sflg:
+          <<: *loan_transfer
         transferred_loan_entry:
           attributes:
             state_aid:

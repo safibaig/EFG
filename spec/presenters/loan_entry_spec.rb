@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe LoanEntry do
+  before(:each) do
+    # ensure recalculate state aid validation does not fail
+    Loan.any_instance.stub(:repayment_duration_changed?).and_return(false)
+  end
+
   describe "validations" do
     let(:loan_entry) { FactoryGirl.build(:loan_entry) }
 
@@ -48,6 +53,11 @@ describe LoanEntry do
       loan_entry.should_not be_valid
     end
 
+    it "should be invalid without a repayment duration" do
+      loan_entry.repayment_duration = nil
+      loan_entry.should_not be_valid
+    end
+
     it "should be invalid without fees" do
       loan_entry.fees = ''
       loan_entry.should_not be_valid
@@ -57,6 +67,164 @@ describe LoanEntry do
       loan_entry.loan.state_aid_calculation = nil
       loan_entry.should_not be_valid
       loan_entry.errors[:state_aid].should == ['must be calculated']
+    end
+
+    context 'when a type B loan' do
+      let(:loan_entry) { FactoryGirl.build(:loan_entry_type_b) }
+
+      it "should have a valid factory" do
+        loan_entry.should be_valid
+      end
+
+      it "should require security types" do
+        loan_entry.loan.loan_securities.clear
+        loan_entry.should_not be_valid
+      end
+
+      it "should require security proportion greater than 0" do
+        loan_entry.security_proportion = 0.0
+        loan_entry.should_not be_valid
+      end
+
+      it "should require security proportion less than 100" do
+        loan_entry.security_proportion = 100
+        loan_entry.should_not be_valid
+      end
+    end
+
+    context 'when a type C loan' do
+      let(:loan_entry) { FactoryGirl.build(:loan_entry_type_c) }
+
+      it "should have a valid factory" do
+        loan_entry.should be_valid
+      end
+
+      it "should require original overdraft proportion greater than 0" do
+        loan_entry.original_overdraft_proportion = 0.0
+        loan_entry.should_not be_valid
+      end
+
+      it "should require original overdraft proportion less than 100" do
+        loan_entry.original_overdraft_proportion = 100
+        loan_entry.should_not be_valid
+      end
+
+      it "should require refinance security proportion greater than 0" do
+        loan_entry.refinance_security_proportion = 0.0
+        loan_entry.should_not be_valid
+      end
+
+      it "should require refinance security proportion less than or equal to 100" do
+        loan_entry.refinance_security_proportion = 100.1
+        loan_entry.should_not be_valid
+      end
+    end
+
+    context 'when a type D loan' do
+      let(:loan_entry) { FactoryGirl.build(:loan_entry_type_d) }
+
+      it "should have a valid factory" do
+        loan_entry.should be_valid
+      end
+
+      it "should require refinance security proportion greater than 0" do
+        loan_entry.refinance_security_proportion = 0.0
+        loan_entry.should_not be_valid
+      end
+
+      it "should require refinance security proportion less than or equal to 100" do
+        loan_entry.refinance_security_proportion = 100.1
+        loan_entry.should_not be_valid
+      end
+
+      it "should require current refinanced value" do
+        loan_entry.current_refinanced_value = nil
+        loan_entry.should_not be_valid
+      end
+
+      it "should require final refinanced value" do
+        loan_entry.final_refinanced_value = nil
+        loan_entry.should_not be_valid
+      end
+    end
+
+    context 'when a type E loan' do
+      let(:loan_entry) { FactoryGirl.build(:loan_entry_type_e) }
+
+      it "should have a valid factory" do
+        loan_entry.should be_valid
+      end
+
+      it "should require overdraft limit" do
+        loan_entry.overdraft_limit = nil
+        loan_entry.should_not be_valid
+      end
+
+      it "should require overdraft maintained" do
+        loan_entry.overdraft_maintained = false
+        loan_entry.should_not be_valid
+      end
+
+      it "should have a maximum repayment duration of 2 years" do
+        loan_entry.repayment_duration = 25
+        loan_entry.should_not be_valid
+
+        loan_entry.repayment_duration = 24
+        loan_entry.should be_valid
+      end
+    end
+
+    context 'when a type F loan' do
+      let(:loan_entry) { FactoryGirl.build(:loan_entry_type_f) }
+
+      it "should have a valid factory" do
+        loan_entry.should be_valid
+      end
+
+      it "should require invoice discount limit" do
+        loan_entry.invoice_discount_limit = nil
+        loan_entry.should_not be_valid
+      end
+
+      it "should require debtor book coverage greater than or equal to 1" do
+        loan_entry.debtor_book_coverage = 0.9
+        loan_entry.should_not be_valid
+      end
+
+      it "should require debtor book coverage less than 100" do
+        loan_entry.debtor_book_coverage = 100
+        loan_entry.should_not be_valid
+      end
+
+      it "should require debtor book topup greater than or equal to 1" do
+        loan_entry.debtor_book_topup = 0.9
+        loan_entry.should_not be_valid
+      end
+
+      it "should require debtor book topup less than or equal to 30" do
+        loan_entry.debtor_book_topup = 30.1
+        loan_entry.should_not be_valid
+      end
+
+      it "should have a maximum repayment duration of 3 years" do
+        loan_entry.repayment_duration = 37
+        loan_entry.should_not be_valid
+
+        loan_entry.repayment_duration = 36
+        loan_entry.should be_valid
+      end
+    end
+
+    context "when repayment duration is changed" do
+      before(:each) do
+        # ensure recalculate state aid validation fails
+        Loan.any_instance.stub(:repayment_duration_changed?).and_return(true)
+      end
+
+      it "should require a recalculation of state aid" do
+        loan_entry.should_not be_valid
+        loan_entry.should have(1).error_on(:state_aid)
+      end
     end
 
     # Although a business may benefit from EFG on more than one occasion, and may have more than one EFG-backed facility at any one time, the total outstanding balances and/or active available limits of the Applicant's current EFG facilities may not exceed £1 million at any one time.

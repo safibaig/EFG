@@ -1,6 +1,6 @@
 namespace :import do
   desc "Import all data"
-  task all: [:users, :lenders, :loans, :loan_allocations, :state_aid_calculations]
+  task all: [:users, :lenders, :loans, :loan_allocations, :state_aid_calculations, :loan_securities]
 
   desc "Import user data (SFLG_USER_DATA_TABLE)"
   task users: :lenders do
@@ -30,6 +30,11 @@ namespace :import do
   desc "Import state aid calculation data (SFLG_CALCULATORS_DATA_TABLE)"
   task state_aid_calculations: :loans do
     _import StateAidCalculation
+  end
+
+  desc "Import loan securities data (SFLG_LOAN_SECURITY_DATA_TABLE)"
+  task loan_securities: :loans do
+    _import LoanSecurity
   end
 
   def _import(klass)
