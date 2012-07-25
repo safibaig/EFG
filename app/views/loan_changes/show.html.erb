@@ -28,6 +28,13 @@
       </tr>
     <% end %>
 
+    <% if @loan_change.amount_drawn %>
+      <tr>
+        <th>Amount drawn</th>
+        <td colspan="3"><%= @loan_change.amount_drawn.format %></td>
+      </tr>
+    <% end %>
+
     <tr>
       <th>Modified on</th>
       <td><%= @loan_change.modified_date %></td>
