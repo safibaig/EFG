@@ -32,4 +32,9 @@ module LoanHelper
     end
     link_to('Loan Entry', path, class: 'btn btn-primary') if current_user.can_create?(permission_class)
   end
+
+  def for_loan_in_categories(loan, *loan_category_ids)
+    yield if block_given? && loan_category_ids.include?(loan.loan_category_id)
+  end
+
 end

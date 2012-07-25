@@ -44,6 +44,7 @@ class Loan < ActiveRecord::Base
   has_one :transferred_from, class_name: 'Loan', foreign_key: 'id', primary_key: 'transferred_from_id'
   has_many :loan_realisations, foreign_key: 'realised_loan_id'
   has_many :recoveries
+  has_many :loan_securities
 
   scope :offered,        where(state: Loan::Offered)
   scope :demanded,       where(state: Loan::Demanded)
@@ -132,6 +133,16 @@ class Loan < ActiveRecord::Base
 
   def repayment_frequency
     RepaymentFrequency.find(repayment_frequency_id)
+  end
+
+  def loan_security_types
+    loan_securities.collect { |security| security.loan_security_type }
+  end
+
+  def loan_security_types=(security_type_ids)
+    security_type_ids.each do |id|
+      self.loan_securities.build(loan_security_type_id: id)
+    end
   end
 
   # TODO: implement SIC code description

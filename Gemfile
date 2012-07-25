@@ -19,6 +19,7 @@ gem 'prawn'
 gem 'progressbar'
 
 gem 'exception_notification'
+gem 'aws-ses', :require => 'aws/ses' # Needed by exception_notification
 
 group :passenger_compatibility do
   gem 'rake', '0.9.2'

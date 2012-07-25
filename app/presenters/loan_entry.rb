@@ -15,11 +15,11 @@ class LoanEntry
   attribute :personal_guarantee_required, read_only: true
   attribute :amount, read_only: true
   attribute :turnover, read_only: true
-  attribute :repayment_duration, read_only: true
   attribute :trading_date, read_only: true
   attribute :loan_allocation_id, read_only: true
   attribute :lender, read_only: true
 
+  attribute :repayment_duration
   attribute :declaration_signed
   attribute :business_name
   attribute :trading_name
@@ -41,14 +41,91 @@ class LoanEntry
   attribute :fees
   attribute :state_aid_is_valid
   attribute :state_aid
+  attribute :loan_security_types
+  attribute :security_proportion
+  attribute :original_overdraft_proportion
+  attribute :refinance_security_proportion
+  attribute :current_refinanced_value
+  attribute :final_refinanced_value
+  attribute :overdraft_limit
+  attribute :overdraft_maintained
+  attribute :invoice_discount_limit
+  attribute :debtor_book_coverage
+  attribute :debtor_book_topup
 
   validates_presence_of :business_name, :legal_form_id, :interest_rate_type_id,
                         :repayment_frequency_id, :postcode, :maturity_date,
-                        :interest_rate, :fees
+                        :interest_rate, :fees, :repayment_duration
+
+  # TYPE B LOANS
+
+  validates_numericality_of :security_proportion,
+                            greater_than: 0.0,
+                            less_than: 100,
+                            if: lambda { loan_category_id == 2 }
+
+  # TYPE C LOANS
+
+  validates_numericality_of :original_overdraft_proportion,
+                            greater_than: 0.0,
+                            less_than: 100,
+                            if: lambda { loan_category_id == 3 }
+
+  # TYPE C & D LOANS
+
+  validates_numericality_of :refinance_security_proportion,
+                            greater_than: 0.0,
+                            less_than_or_equal_to: 100,
+                            if: lambda { [3,4].include?(loan_category_id) }
+
+  # TYPE D LOANS
+
+  validates_presence_of :current_refinanced_value, :final_refinanced_value,
+                        if: lambda { loan_category_id == 4 }
+
+  # TYPE E LOANS
+
+  validates_presence_of :overdraft_limit,
+                        if: lambda { loan_category_id == 5 }
+
+  validates_inclusion_of :overdraft_maintained,
+                         in: [true],
+                         if: lambda { loan_category_id == 5 }
+
+  # TYPE F LOANS
+
+  validates_presence_of :invoice_discount_limit,
+                        if: lambda { loan_category_id == 6 }
+
+  validates_numericality_of :debtor_book_coverage,
+                            greater_than_or_equal_to: 1,
+                            less_than: 100,
+                            if: lambda { loan_category_id == 6 }
+
+  validates_numericality_of :debtor_book_topup,
+                            greater_than_or_equal_to: 1,
+                            less_than_or_equal_to: 30,
+                            if: lambda { loan_category_id == 6 }
 
   validate do
     errors.add(:declaration_signed, :accepted) unless self.declaration_signed
     errors.add(:state_aid, :calculated) unless self.loan.state_aid_calculation
+
+    # state aid must be recalculated if the loan term has changed
+    errors.add(:state_aid, :recalculate) if self.loan.repayment_duration_changed?
+
+    # Type B loans require at least one security
+    errors.add(:loan_security_types, :present) if loan_category_id == 2 && self.loan_security_types.empty?
+
+    # Type E repayment duration cannot exceed 2 years
+    if loan_category_id == 5 && !repayment_duration.between?(MonthDuration.new(3), MonthDuration.new(24))
+      errors.add(:repayment_duration, :invalid)
+    end
+
+    # Type F repayment duration cannot exceed 3 years
+    if loan_category_id == 6 && !repayment_duration.between?(MonthDuration.new(3), MonthDuration.new(36))
+      errors.add(:repayment_duration, :invalid)
+    end
   end
 
   def save_as_incomplete
