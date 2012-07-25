@@ -60,6 +60,11 @@ describe 'Realise loans' do
     loan5.reload.state.should == Loan::Eligible
   end
 
+  it 'should validate select loans form' do
+    click_button 'Select Loans'
+    page.should have_content("can't be blank")
+  end
+
   it 'should validate loans have been selected' do
     select lender1.name, from: 'realisation_statement_lender_id'
     fill_in 'realisation_statement_reference', with: "ABC123"

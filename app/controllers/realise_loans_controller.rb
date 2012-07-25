@@ -16,7 +16,7 @@ class RealiseLoansController < ApplicationController
     @realisation_statement = RealisationStatement.new(params[:realisation_statement])
 
     if @realisation_statement.invalid?(:details)
-      render :new
+      render :new and return
     end
 
     respond_to do |format|
