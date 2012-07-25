@@ -1,5 +1,6 @@
 class LoanChangesController < ApplicationController
-  before_filter :load_loan
+  before_filter :load_loan, only: [:index, :show]
+  before_filter :load_changeable_loan, only: [:new, :create]
   before_filter :verify_create_permission, only: [:new, :create]
 
   def index
@@ -29,6 +30,12 @@ class LoanChangesController < ApplicationController
   private
     def load_loan
       @loan = current_lender.loans.find(params[:loan_id])
+    end
+
+    def load_changeable_loan
+      @loan = current_lender.loans
+        .where(state: LoanChange::VALID_LOAN_STATES)
+        .find(params[:loan_id])
     end
 
     def verify_create_permission

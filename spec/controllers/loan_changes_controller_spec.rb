@@ -33,9 +33,29 @@ describe LoanChangesController do
       let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
       before { sign_in(current_user) }
 
-      it do
-        dispatch
-        response.should be_success
+      [Loan::Guaranteed, Loan::LenderDemand].each do |state|
+        context "for a loan in state #{state}" do
+          before do
+            loan.update_attribute :state, state
+          end
+
+          it do
+            dispatch
+            response.should be_success
+          end
+        end
+      end
+
+      context 'for a loan in an invalid state' do
+        before do
+          loan.update_attribute :state, Loan::Eligible
+        end
+
+        it do
+          expect {
+            dispatch
+          }.to raise_error(ActiveRecord::RecordNotFound)
+        end
       end
     end
   end

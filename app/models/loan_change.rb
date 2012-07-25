@@ -1,6 +1,7 @@
 class LoanChange < ActiveRecord::Base
   include FormatterConcern
 
+  VALID_LOAN_STATES = [Loan::Guaranteed, Loan::LenderDemand]
   OLD_ATTRIBUTES_TO_STORE = %w(maturity_date business_name amount
     guaranteed_date initial_draw_date initial_draw_amount sortcode
     dti_demand_out_amount dti_demand_interest cap_id loan_term)
