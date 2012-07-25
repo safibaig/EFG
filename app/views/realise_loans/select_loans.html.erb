@@ -1,5 +1,14 @@
 <div class="page-header">
   <h1>Record Loan Recoveries</h1>
+
+  <ul id="actions">
+    <li>
+      <%= simple_form_for(@realisation_statement, url: select_loans_realise_loans_path(format: 'csv')) do |f| %>
+        <%= render "hidden_fields", form: f %>
+        <%= f.button :submit, 'Export CSV', class: 'btn' %>
+      <% end %>
+    </li>
+  </ul>
 </div>
 
 <p>From this page you can record a recovered amount on a loan as realised.</p>
@@ -14,11 +23,7 @@
   <%= simple_form_for(@realisation_statement, url: realise_loans_path, html: {class: 'form-select-loans'}) do |f| %>
     <%= f.error :base, error_tag: 'div', class: 'alert alert-error' %>
 
-    <%= f.hidden_field :lender_id %>
-    <%= f.hidden_field :reference %>
-    <%= f.hidden_field :period_covered_quarter %>
-    <%= f.hidden_field :period_covered_year %>
-    <%= f.hidden_field :received_on, value: f.object.received_on.strftime('%d/%m/%Y') %>
+    <%= render "hidden_fields", form: f %>
 
     <table class="table table-striped">
       <thead>

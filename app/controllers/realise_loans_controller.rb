@@ -16,7 +16,16 @@ class RealiseLoansController < ApplicationController
     @realisation_statement = RealisationStatement.new(params[:realisation_statement])
 
     if @realisation_statement.invalid?(:details)
-      render :new
+      render :new and return
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv do
+        filename = "loan_recoveries_#{@realisation_statement.lender.name.parameterize}_#{Date.today.strftime('%d-%m-%Y')}.csv"
+        csv_export = LoanRecoveriesCsvExport.new(@realisation_statement.recoveries)
+        send_data(csv_export.generate, type: 'text/csv', filename: filename, disposition: 'attachment')
+      end
     end
   end
 
