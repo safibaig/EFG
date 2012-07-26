@@ -22,7 +22,7 @@ class RealiseLoansController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
-        filename = "loan_recoveries_#{@realisation_statement.lender.name.parameterize}_#{Date.today.strftime('%d-%m-%Y')}.csv"
+        filename = "loan_recoveries_#{@realisation_statement.lender.name.parameterize}_#{Date.today.to_s(:db)}.csv"
         csv_export = LoanRecoveriesCsvExport.new(@realisation_statement.recoveries)
         send_data(csv_export.generate, type: 'text/csv', filename: filename, disposition: 'attachment')
       end

@@ -16,7 +16,7 @@ class LoanStatesController < ApplicationController
     respond_to do |format|
       format.html { @loans = @loans.paginate(per_page: 50, page: params[:page]) }
       format.csv do
-        filename = "#{params[:id]}_loans_#{Date.today.strftime('%d-%m-%Y')}.csv"
+        filename = "#{params[:id]}_loans_#{Date.today.to_s(:db)}.csv"
         csv_export = LoanCsvExport.new(@loans)
         send_data(csv_export.generate, type: 'text/csv', filename: filename, disposition: 'attachment')
       end

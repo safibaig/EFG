@@ -21,7 +21,7 @@ describe LoanStatesController do
       end
 
       it "sets filename for CSV" do
-        expected_filename = "#{loan.state}_loans_#{Date.today.strftime('%d-%m-%Y')}.csv"
+        expected_filename = "#{loan.state}_loans_#{Date.today.strftime('%Y-%m-%d')}.csv"
         response.headers['Content-Disposition'].should match(/filename="#{expected_filename}"/)
       end
     end
