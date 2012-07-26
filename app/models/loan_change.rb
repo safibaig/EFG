@@ -17,6 +17,7 @@ class LoanChange < ActiveRecord::Base
   validates_presence_of :change_type_id, :date_of_change, :modified_date
 
   validate :validate_change_type
+  validate :validate_non_negative_amounts
 
   format :date_of_change, with: QuickDateFormatter
   format :maturity_date, with: QuickDateFormatter
@@ -94,5 +95,9 @@ class LoanChange < ActiveRecord::Base
       when '7'
         errors.add(:amount_drawn, :required) unless amount_drawn.present?
       end
+    end
+
+    def validate_non_negative_amounts
+      errors.add(:amount_drawn, :not_be_negative) if amount_drawn.present? && amount_drawn < 0
     end
 end

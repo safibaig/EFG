@@ -25,6 +25,11 @@ describe LoanChange do
       end
     end
 
+    it 'must not have a negative amount_drawn' do
+      loan_change.amount_drawn = '-1'
+      loan_change.should_not be_valid
+    end
+
     context 'change types' do
       context '1 - business name' do
         it 'requires a business_name' do

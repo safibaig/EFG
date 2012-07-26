@@ -66,6 +66,7 @@ en:
           attributes:
             amount_drawn:
               required: "can't be blank"
+              not_be_negative: "can't be negative"
             business_name:
               required: "can't be blank"
 
