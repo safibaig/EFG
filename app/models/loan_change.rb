@@ -97,11 +97,11 @@ class LoanChange < ActiveRecord::Base
       when '5'
         errors.add(:base, :required_lender_demand_satisfied) unless amount_drawn.present? || lump_sum_repayment.present? || maturity_date.present?
       when '7'
-        errors.add(:amount_drawn, :required) unless amount_drawn.present?
+        errors.add(:amount_drawn, :required) unless amount_drawn
       end
     end
 
     def validate_non_negative_amounts
-      errors.add(:amount_drawn, :not_be_negative) if amount_drawn.present? && amount_drawn < 0
+      errors.add(:amount_drawn, :not_be_negative) if amount_drawn && amount_drawn < 0
     end
 end
