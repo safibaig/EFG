@@ -74,10 +74,7 @@ class LoanChange < ActiveRecord::Base
 
     def store_old_values
       attributes.slice(*OLD_ATTRIBUTES_TO_STORE).each do |name, value|
-        if value.present?
-          old_name = "old_#{name}"
-          self[old_name] = loan[name]
-        end
+        self["old_#{name}"] = loan[name] if value.present?
       end
     end
 
