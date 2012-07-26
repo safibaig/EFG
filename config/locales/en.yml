@@ -64,6 +64,8 @@ en:
       models:
         loan_change:
           attributes:
+            base:
+              required_lender_demand_satisfied: 'At least one of the following values must be entered: Amount Drawn, Lump Sum Repayment or Maturity Date'
             amount_drawn:
               required: "can't be blank"
               not_be_negative: "can't be negative"

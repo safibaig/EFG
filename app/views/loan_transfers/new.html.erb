@@ -10,7 +10,7 @@
 
 <%= simple_form_for(@loan_transfer, url: loan_transfers_path, html: { class: 'form-horizontal form-loan-transfer' }) do |f| %>
 
-  <%= render_errors_on_base(@loan_transfer.errors) %>
+  <%= render_errors_on_base(f.object.errors) %>
 
   <%= field_set_tag 'Please supply the following details about the loan to be transferred:' do %>
 

@@ -93,6 +93,8 @@ class LoanChange < ActiveRecord::Base
       case change_type_id
       when '1'
         errors.add(:business_name, :required) unless business_name.present?
+      when '5'
+        errors.add(:base, :required_lender_demand_satisfied) unless amount_drawn.present? || lump_sum_repayment.present? || maturity_date.present?
       when '7'
         errors.add(:amount_drawn, :required) unless amount_drawn.present?
       end

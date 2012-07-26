@@ -41,6 +41,34 @@ describe LoanChange do
         end
       end
 
+      context '5 - Lender demand satisfied' do
+        before do
+          loan_change.change_type_id = '5'
+          loan_change.amount_drawn = ''
+          loan_change.lump_sum_repayment = ''
+          loan_change.maturity_date = ''
+        end
+
+        it 'requires either amount_drawn, lump_sum_repayment or maturity_date' do
+          loan_change.should_not be_valid
+        end
+
+        it 'is valid with amount_drawn' do
+          loan_change.amount_drawn = '123'
+          loan_change.should be_valid
+        end
+
+        it 'is valid with lump_sum_repayment' do
+          loan_change.lump_sum_repayment = '123'
+          loan_change.should be_valid
+        end
+
+        it 'is valid with maturity_date' do
+          loan_change.maturity_date = '1/1/11'
+          loan_change.should be_valid
+        end
+      end
+
       context '7 - Record agreed draw' do
         it 'requires a amount_drawn' do
           loan_change.change_type_id = '7'
