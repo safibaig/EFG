@@ -66,13 +66,14 @@ describe LoanChange do
   end
 
   describe '#save_and_update_loan' do
-    let(:loan) { FactoryGirl.create(:loan, business_name: 'ACME') }
+    let(:loan) { FactoryGirl.create(:loan, :lender_demand, business_name: 'ACME') }
     let(:loan_change) { FactoryGirl.build(:loan_change, loan: loan) }
 
     it 'works' do
       loan_change.business_name = 'updated'
 
       loan_change.save_and_update_loan.should == true
+      loan.state.should == Loan::Guaranteed
       loan.business_name.should == 'updated'
     end
 
@@ -80,6 +81,7 @@ describe LoanChange do
       loan_change.business_name = ''
       loan_change.save_and_update_loan.should == false
       loan.business_name.should == 'ACME'
+      loan.state.should == Loan::LenderDemand
     end
   end
 
