@@ -8,6 +8,8 @@ class StateAidCalculation < ActiveRecord::Base
     :second_draw_amount, :second_draw_months, :third_draw_amount,
     :third_draw_months, :fourth_draw_amount, :fourth_draw_months
 
+  before_validation :set_seq, on: :create
+
   validates_presence_of :loan_id
   validates_presence_of :initial_draw_year, :initial_draw_amount,
     :initial_draw_months
@@ -38,4 +40,9 @@ class StateAidCalculation < ActiveRecord::Base
     calculation.loan.state_aid = state_aid_eur
     calculation.loan.save
   end
+
+  private
+    def set_seq
+      self.seq = (StateAidCalculation.where(loan_id: loan_id).maximum(:seq) || -1) + 1 unless seq
+    end
 end

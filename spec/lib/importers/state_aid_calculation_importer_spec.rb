@@ -8,6 +8,10 @@ describe StateAidCalculationImporter do
 
     let(:csv_fixture_path) { Rails.root.join('spec/fixtures/import_data/SFLG_CALCULATORS_DATA_TABLE.csv') }
 
+    before do
+      StateAidCalculationImporter.instance_variable_set(:@lender_id_from_legacy_id, nil)
+    end
+
     def dispatch
       StateAidCalculationImporter.csv_path = csv_fixture_path
       StateAidCalculationImporter.import
@@ -23,7 +27,7 @@ describe StateAidCalculationImporter do
       dispatch
 
       state_aid_calculation = StateAidCalculation.first
-      # state_aid_calculation.loan.should == loan1
+      state_aid_calculation.loan.should == loan1
       # state_aid_calculation.legacy_loan_id.should == '8819'
       state_aid_calculation.seq.should == 0
       state_aid_calculation.loan_version.should == 0
@@ -62,7 +66,7 @@ describe StateAidCalculationImporter do
       dispatch
 
       state_aid_calculation = StateAidCalculation.last
-      # state_aid_calculation.loan.should == loan2
+      state_aid_calculation.loan.should == loan2
       # state_aid_calculation.legacy_loan_id.should == '65482'
       state_aid_calculation.seq.should == 1
       state_aid_calculation.loan_version.should == 1
