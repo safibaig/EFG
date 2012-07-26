@@ -18,6 +18,11 @@ describe LoanChange do
       loan_change.should_not be_valid
     end
 
+    it 'requires a valid change_type_id' do
+      loan_change.change_type_id = 'zzz'
+      loan_change.should_not be_valid
+    end
+
     %w(change_type_id date_of_change modified_date).each do |attr|
       it "requires #{attr}" do
         loan_change.send("#{attr}=", '')

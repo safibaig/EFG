@@ -14,7 +14,8 @@ class LoanChange < ActiveRecord::Base
 
   validates_presence_of :loan
   validates_presence_of :created_by
-  validates_presence_of :change_type_id, :date_of_change, :modified_date
+  validates_presence_of :date_of_change, :modified_date
+  validates_inclusion_of :change_type_id, in: ChangeType.all.map(&:id)
 
   validate :validate_change_type
   validate :validate_non_negative_amounts
