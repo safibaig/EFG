@@ -35,6 +35,11 @@ describe LoanChange do
       loan_change.should_not be_valid
     end
 
+    it 'must not have a negative lump_sum_repayment' do
+      loan_change.lump_sum_repayment = '-1'
+      loan_change.should_not be_valid
+    end
+
     context 'change types' do
       context '1 - business name' do
         it 'requires a business_name' do

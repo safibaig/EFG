@@ -71,6 +71,8 @@ en:
               not_be_negative: "can't be negative"
             business_name:
               required: "can't be blank"
+            lump_sum_repayment:
+              not_be_negative: "can't be negative"
 
   dashboard:
     loan_alerts:
