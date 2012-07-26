@@ -93,5 +93,13 @@ describe 'loan states' do
       names = page.all('tbody tr td:first-child').map(&:text)
       names.should_not include('Baz')
     end
+
+    it 'can export loan data as CSV' do
+      dispatch(id: 'completed')
+
+      click_link "Export CSV"
+
+      page.current_url.should == loan_state_url(id: 'completed', format: 'csv')
+    end
   end
 end

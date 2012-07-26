@@ -1,5 +1,8 @@
 <div class="page-header">
   <h1>Loans: <%= params[:id].titleize %></h1>
+  <ul id="actions">
+    <li><%= link_to "Export CSV", loan_state_path(params[:id], format: 'csv'), class: 'btn' %></li>
+  </ul>
 </div>
 
 <%= render partial: "loans_listing", locals: { loans: @loans } %>
