@@ -72,6 +72,47 @@ ActiveRecord::Schema.define(:version => 20120720112848) do
 
   add_index "loan_allocations", ["lender_id"], :name => "index_loan_allocations_on_lender_id"
 
+  create_table "loan_changes", :force => true do |t|
+    t.integer  "loan_id",                                  :null => false
+    t.integer  "created_by_id",                            :null => false
+    t.string   "oid"
+    t.integer  "seq",                       :default => 0, :null => false
+    t.date     "date_of_change",                           :null => false
+    t.date     "maturity_date"
+    t.date     "old_maturity_date"
+    t.string   "business_name"
+    t.string   "old_business_name"
+    t.integer  "lump_sum_repayment"
+    t.integer  "amount_drawn"
+    t.date     "modified_date",                            :null => false
+    t.string   "modified_user"
+    t.string   "change_type_id"
+    t.datetime "ar_timestamp"
+    t.datetime "ar_insert_timestamp"
+    t.integer  "amount"
+    t.integer  "old_amount"
+    t.date     "guaranteed_date"
+    t.date     "old_guaranteed_date"
+    t.date     "initial_draw_date"
+    t.date     "old_initial_draw_date"
+    t.integer  "initial_draw_amount"
+    t.integer  "old_initial_draw_amount"
+    t.string   "sortcode"
+    t.string   "old_sortcode"
+    t.integer  "dti_demand_out_amount"
+    t.integer  "old_dti_demand_out_amount"
+    t.integer  "dti_demand_interest"
+    t.integer  "old_dti_demand_interest"
+    t.integer  "cap_id"
+    t.integer  "old_cap_id"
+    t.integer  "loan_term"
+    t.integer  "old_loan_term"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "loan_changes", ["loan_id", "seq"], :name => "index_loan_changes_on_loan_id_and_seq", :unique => true
+
   create_table "loan_realisations", :force => true do |t|
     t.integer  "realised_loan_id"
     t.integer  "realisation_statement_id"
@@ -211,6 +252,7 @@ ActiveRecord::Schema.define(:version => 20120720112848) do
     t.integer  "transferred_from_id"
   end
 
+  add_index "loans", ["legacy_id"], :name => "index_loans_on_legacy_id", :unique => true
   add_index "loans", ["lender_id"], :name => "index_loans_on_lender_id"
   add_index "loans", ["loan_allocation_id"], :name => "index_loans_on_loan_allocation_id"
   add_index "loans", ["reference"], :name => "index_loans_on_reference", :unique => true

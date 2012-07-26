@@ -1,0 +1,28 @@
+<div class="page-header">
+  <h1>Loan Changes</h1>
+</div>
+
+<%= loan_summary(@loan) do %>
+  <div class="form-actions">
+    <%= link_to 'Loan Summary', loan_path(@loan), class: 'btn' %>
+  </div>
+<% end %>
+
+<p>From this page you can view a summary of Facility History Changes.</p>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Date of Change</th>
+      <th>Summary Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @loan_changes.each do |loan_change| %>
+      <tr>
+        <td><%= link_to loan_change.date_of_change, loan_loan_change_path(@loan, loan_change) %></td>
+        <td><%= loan_change.change_type.name if loan_change.change_type_id %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

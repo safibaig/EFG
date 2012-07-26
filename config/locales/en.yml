@@ -18,6 +18,7 @@ en:
         invalid: "Although a business may benefit from EFG on more than one occasion, and may have more than one EFG-backed facility at any one time, the total outstanding balances and/or active available limits of the Applicant's current EFG facilities may not exceed £1 million at any one time."
       private_residence_charge_required:
         invalid: A new charge may not not be taken over a principal private residence in connection with providing an EFG-backed facility.
+
   activemodel:
     errors:
       models:
@@ -57,6 +58,22 @@ en:
           attributes:
             state_aid:
               calculated: must be calculated
+
+  activerecord:
+    errors:
+      models:
+        loan_change:
+          attributes:
+            base:
+              required_lender_demand_satisfied: 'At least one of the following values must be entered: Amount Drawn, Lump Sum Repayment or Maturity Date'
+            amount_drawn:
+              required: "can't be blank"
+              not_be_negative: "can't be negative"
+            business_name:
+              required: "can't be blank"
+            lump_sum_repayment:
+              not_be_negative: "can't be negative"
+
   dashboard:
     loan_alerts:
       title: Loan Alerts For The Next 60 Days

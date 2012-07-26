@@ -127,4 +127,10 @@ describe CfeUserPermissions do
       refute can_create?(LoanGuarantee)
     end
   end
+
+  context 'loan changes' do
+    it 'cannot create' do
+      refute can_create?(LoanChange)
+    end
+  end
 end

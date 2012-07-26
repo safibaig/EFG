@@ -127,4 +127,10 @@ describe LenderUserPermissions do
       assert can_create?(LoanGuarantee)
     end
   end
+
+  context 'loan changes' do
+    it 'can create' do
+      assert can_create?(LoanChange)
+    end
+  end
 end
