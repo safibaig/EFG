@@ -6,7 +6,8 @@ class StateAidCalculation < ActiveRecord::Base
   attr_accessible :initial_draw_year, :initial_draw_amount,
     :initial_draw_months, :initial_capital_repayment_holiday,
     :second_draw_amount, :second_draw_months, :third_draw_amount,
-    :third_draw_months, :fourth_draw_amount, :fourth_draw_months
+    :third_draw_months, :fourth_draw_amount, :fourth_draw_months,
+    :loan_id
 
   before_validation :set_seq, on: :create
 

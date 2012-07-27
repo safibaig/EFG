@@ -9,7 +9,7 @@ describe StateAidCalculationImporter do
     let(:csv_fixture_path) { Rails.root.join('spec/fixtures/import_data/SFLG_CALCULATORS_DATA_TABLE.csv') }
 
     before do
-      StateAidCalculationImporter.instance_variable_set(:@lender_id_from_legacy_id, nil)
+      StateAidCalculationImporter.instance_variable_set(:@loan_id_from_legacy_id, nil)
     end
 
     def dispatch

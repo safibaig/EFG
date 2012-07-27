@@ -4,7 +4,7 @@ class StateAidCalculationImporter < BaseImporter
 
   def self.field_mapping
     {
-      'OID'                  => :legacy_loan_id,
+      'OID'                  => :loan_id,
       'SEQ'                  => :seq,
       'LOAN_VERSION'         => :loan_version,
       'CALC_TYPE'            => :calc_type,
