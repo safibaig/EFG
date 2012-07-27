@@ -51,4 +51,23 @@ describe StateAidCalculation do
       loan.state_aid.should == Money.new(14_668_15, 'EUR')
     end
   end
+
+  describe "sequence" do
+    let(:state_aid_calculation) { FactoryGirl.build(:state_aid_calculation) }
+
+    it "should be set before validation on create" do
+      state_aid_calculation.seq.should be_nil
+      state_aid_calculation.valid?
+      state_aid_calculation.seq.should == 0
+    end
+
+    it "should increment by 1 when state aid calculation for the same loan exists" do
+      state_aid_calculation.save!
+      new_state_aid_calculation = FactoryGirl.build(:state_aid_calculation, loan: state_aid_calculation.loan)
+
+      new_state_aid_calculation.valid?
+
+      new_state_aid_calculation.seq.should == 1
+    end
+  end
 end
