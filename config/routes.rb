@@ -28,6 +28,8 @@ EFG::Application.routes.draw do
 
     resources :loan_changes, only: [:index, :show, :new, :create]
     resources :recoveries, only: [:new, :create]
+
+    resource :regenerate_schedule, only: [:new, :create]
   end
 
   resources :documents, only: [] do
