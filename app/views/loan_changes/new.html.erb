@@ -17,6 +17,20 @@
 <%= simple_form_for(@loan_change, url: loan_loan_changes_path(@loan), html: { class: 'form-horizontal form-loan-change' }) do |f| %>
   <%= render_errors_on_base(f.object.errors) %>
 
+  <% if params[:state_aid_calculation] %>
+    <%= hidden_field_tag 'state_aid_calculation[premium_cheque_month]', params[:state_aid_calculation][:premium_cheque_month] %>
+    <%= hidden_field_tag 'state_aid_calculation[initial_draw_amount]', params[:state_aid_calculation][:initial_draw_amount] %>
+    <%= hidden_field_tag 'state_aid_calculation[initial_draw_months]', params[:state_aid_calculation][:initial_draw_months] %>
+    <%= hidden_field_tag 'state_aid_calculation[initial_capital_repayment_holiday]', params[:state_aid_calculation][:initial_capital_repayment_holiday] %>
+    <%= hidden_field_tag 'state_aid_calculation[second_draw_amount]', params[:state_aid_calculation][:second_draw_amount] %>
+    <%= hidden_field_tag 'state_aid_calculation[second_draw_months]', params[:state_aid_calculation][:second_draw_months] %>
+    <%= hidden_field_tag 'state_aid_calculation[third_draw_amount]', params[:state_aid_calculation][:third_draw_amount] %>
+    <%= hidden_field_tag 'state_aid_calculation[third_draw_months]', params[:state_aid_calculation][:third_draw_months] %>
+    <%= hidden_field_tag 'state_aid_calculation[fourth_draw_amount]', params[:state_aid_calculation][:fourth_draw_amount] %>
+    <%= hidden_field_tag 'state_aid_calculation[fourth_draw_months]', params[:state_aid_calculation][:fourth_draw_months] %>
+    <%= hidden_field_tag 'state_aid_calculation[rescheduling]', true %>
+  <% end %>
+
   <%= f.input :date_of_change, as: :quick_date %>
   <%= f.input :change_type_id, as: :select, collection: ChangeType.for_loan_change, prompt: 'Please select' %>
 
@@ -50,6 +64,7 @@
   <%= f.input :maturity_date, as: :quick_date %>
 
   <div class="form-actions">
+    <%= f.button :submit, value: 'Reschedule', class: 'btn-primary' %>
     <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>
   </div>
 <% end %>
