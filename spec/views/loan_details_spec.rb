@@ -7,7 +7,7 @@ describe "loan details" do
 
     it "should render loan details" do
       assign(:loan, loan)
-      render template: 'loans/details.html.erb'
+      render template: 'loans/details'
     end
   end
 
