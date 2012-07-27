@@ -8,7 +8,7 @@ FactoryGirl.define do
     factory :rescheduled_state_aid_calculation do
       rescheduling true
       initial_draw_year nil
-      premium_cheque_month '03/2012'
+      premium_cheque_month { Date.today.next_month.strftime('%m/%Y') }
     end
   end
 end

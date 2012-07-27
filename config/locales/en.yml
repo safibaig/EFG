@@ -73,7 +73,10 @@ en:
               required: "can't be blank"
             lump_sum_repayment:
               not_be_negative: "can't be negative"
-
+        state_aid_calculation:
+          attributes:
+            premium_cheque_month:
+              invalid: 'This does not allow enough time for the Premium Collection Agent. Please enter the next Premium date in the schedule'
   dashboard:
     loan_alerts:
       title: Loan Alerts For The Next 60 Days

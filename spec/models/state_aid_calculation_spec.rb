@@ -42,9 +42,22 @@ describe StateAidCalculation do
           rescheduled_state_aid_calculation.should_not be_valid
         end
       end
+
+      it "is not valid when premium cheque month is in the past" do
+        rescheduled_state_aid_calculation.premium_cheque_month = "03/2012"
+        rescheduled_state_aid_calculation.should_not be_valid
+      end
+
+      it "is not valid when premium cheque month is current month" do
+        rescheduled_state_aid_calculation.premium_cheque_month = Date.today.strftime('%m/%Y')
+        rescheduled_state_aid_calculation.should_not be_valid
+      end
+
+      it "is valid when premium cheque month is next month" do
+        rescheduled_state_aid_calculation.premium_cheque_month = Date.today.next_month.strftime('%m/%Y')
+        rescheduled_state_aid_calculation.should be_valid
+      end
     end
-
-
   end
 
   describe "calculations" do

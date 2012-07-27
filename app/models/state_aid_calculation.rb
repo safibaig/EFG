@@ -21,6 +21,12 @@ class StateAidCalculation < ActiveRecord::Base
 
   validates_presence_of :premium_cheque_month, if: :rescheduling
 
+  validate do
+    if rescheduling
+      errors.add(:premium_cheque_month, :invalid) unless premium_cheque_month_in_the_future?
+    end
+  end
+
   format :initial_draw_amount, with: MoneyFormatter.new
   format :second_draw_amount, with: MoneyFormatter.new
   format :third_draw_amount, with: MoneyFormatter.new
@@ -51,5 +57,11 @@ class StateAidCalculation < ActiveRecord::Base
   private
     def set_seq
       self.seq = (StateAidCalculation.where(loan_id: loan_id).maximum(:seq) || -1) + 1 unless seq
+    end
+
+    def premium_cheque_month_in_the_future?
+      cheque_date = Date.parse("01/#{premium_cheque_month}")
+      today = Date.today
+      cheque_date.month > today.month && cheque_date.year >= today.year
     end
 end
