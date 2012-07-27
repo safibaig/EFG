@@ -121,6 +121,31 @@ describe LoanChange do
       loan.business_name.should == 'ACME'
       loan.state.should == Loan::LenderDemand
     end
+
+    context 'when state aid recalculation is required' do
+      it 'creates new state aid calculation for the Loan' do
+        loan_change.change_type_id = '2'
+
+        loan_change.state_aid_calculation_attributes = FactoryGirl.attributes_for(
+          :rescheduled_state_aid_calculation, loan: loan
+        )
+
+        expect {
+          loan_change.save_and_update_loan
+        }.to change(StateAidCalculation, :count).by(1)
+      end
+
+      it 'does not update the Loan if the state aid calculation is not valid' do
+        loan_change.change_type_id = '2'
+
+        loan_change.state_aid_calculation_attributes = {}
+
+        loan_change.save_and_update_loan.should == false
+
+        loan.reload.business_name.should == 'ACME'
+        loan.reload.state.should == Loan::LenderDemand
+      end
+    end
   end
 
   describe '#seq' do
@@ -134,4 +159,23 @@ describe LoanChange do
       change1.seq.should == 1
     end
   end
+
+  describe "state aid recalculation" do
+
+    %w(2 3 4 6 8 a).each do |change_type_id|
+      it "should be required when change type ID is #{change_type_id}" do
+        loan_change = FactoryGirl.build(:loan_change, change_type_id: change_type_id)
+        loan_change.requires_state_aid_recalculation?.should be_true, "Expected true for change type ID #{change_type_id}"
+      end
+    end
+
+    %w(1 7).each do |change_type_id|
+      it "should not be required when change type ID is #{change_type_id}" do
+        loan_change = FactoryGirl.build(:loan_change, change_type_id: change_type_id)
+        loan_change.requires_state_aid_recalculation?.should be_false, "Expected false for change type ID #{change_type_id}"
+      end
+    end
+
+  end
+
 end

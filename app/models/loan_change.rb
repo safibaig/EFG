@@ -1,6 +1,8 @@
 class LoanChange < ActiveRecord::Base
   include FormatterConcern
 
+  attr_accessor :state_aid_calculation_attributes
+
   VALID_LOAN_STATES = [Loan::Guaranteed, Loan::LenderDemand]
   OLD_ATTRIBUTES_TO_STORE = %w(maturity_date business_name amount
     guaranteed_date initial_draw_date initial_draw_amount sortcode
@@ -67,6 +69,10 @@ class LoanChange < ActiveRecord::Base
     false
   end
 
+  def requires_state_aid_recalculation?
+    %w(2 3 4 6 8 a).include?(change_type_id)
+  end
+
   private
     def set_seq
       self.seq = (LoanChange.where(loan_id: loan_id).maximum(:seq) || -1) + 1
@@ -85,6 +91,10 @@ class LoanChange < ActiveRecord::Base
 
       loan.state = Loan::Guaranteed
       loan.save!
+
+      if requires_state_aid_recalculation?
+        loan.state_aid_calculations.create!(state_aid_calculation_attributes)
+      end
     end
 
     def validate_change_type
