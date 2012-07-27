@@ -50,9 +50,15 @@ describe 'loan change' do
     # choose change type that requires state aid recalculation
     select ChangeType.find('2').name, from: 'loan_change_change_type_id'
 
+    # verify state aid calculation is created
     expect {
       click_button 'Submit'
     }.to change(StateAidCalculation, :count).by(1)
+
+    calculation = StateAidCalculation.last
+    calculation.premium_cheque_month.should == '09/2012'
+    calculation.initial_draw_amount.should == Money.new(30_000_00)
+    calculation.initial_draw_months.should == 18
   end
 
   private
