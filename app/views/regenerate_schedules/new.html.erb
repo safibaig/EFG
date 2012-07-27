@@ -11,18 +11,18 @@
 <hr>
 
 <%= simple_form_for(@state_aid_calculation, url: loan_regenerate_schedule_path(@loan), html: {class: 'form-horizontal form-state-aid-calculation'}) do |f| %>
-  <%= f.input :premium_cheque_month, as: :string %>
-  <%= f.input :outstanding_balance, as: :currency %>
-  <%= f.input :outstanding_loan_term, as: :string %>
+  <%= f.input :premium_cheque_month, as: :string, label: reschedule_form_label('premium_cheque_month') %>
+  <%= f.input :initial_draw_amount, as: :currency, label: reschedule_form_label('initial_draw_amount') %>
+  <%= f.input :initial_draw_months, as: :string, label: reschedule_form_label('initial_draw_months') %>
 
   <%= field_set_tag 'Draw Information' do %>
-    <%= f.input :initial_capital_repayment_holiday, as: :string %>
-    <%= f.input :second_draw_amount, as: :currency %>
-    <%= f.input :second_draw_months, as: :string %>
-    <%= f.input :third_draw_amount, as: :currency %>
-    <%= f.input :third_draw_months, as: :string %>
-    <%= f.input :fourth_draw_amount, as: :currency %>
-    <%= f.input :fourth_draw_months, as: :string %>
+    <%= f.input :initial_capital_repayment_holiday, as: :string, label: reschedule_form_label('initial_capital_repayment_holiday')  %>
+    <%= f.input :second_draw_amount, as: :currency, label: reschedule_form_label('second_draw_amount')  %>
+    <%= f.input :second_draw_months, as: :string, label: reschedule_form_label('second_draw_months')  %>
+    <%= f.input :third_draw_amount, as: :currency, label: reschedule_form_label('third_draw_amount')  %>
+    <%= f.input :third_draw_months, as: :string, label: reschedule_form_label('third_draw_months')  %>
+    <%= f.input :fourth_draw_amount, as: :currency, label: reschedule_form_label('fourth_draw_amount')  %>
+    <%= f.input :fourth_draw_months, as: :string, label: reschedule_form_label('fourth_draw_months')  %>
   <% end %>
 
   <div class="form-actions">
