@@ -22,7 +22,7 @@ class StateAidCalculation < ActiveRecord::Base
   validates_presence_of :premium_cheque_month, if: :rescheduling
 
   validate do
-    if initial_draw_amount && (initial_draw_amount < 0 || initial_draw_amount > Money.new(9_999_999_99))
+    if initial_draw_amount.blank? || initial_draw_amount < 0 || initial_draw_amount > Money.new(9_999_999_99)
       errors.add(:initial_draw_amount, :invalid)
     end
 
