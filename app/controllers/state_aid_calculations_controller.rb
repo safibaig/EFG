@@ -23,7 +23,7 @@ class StateAidCalculationsController < ApplicationController
   end
 
   def load_state_aid_calculation
-    @state_aid_calculation = @loan.state_aid_calculation || @loan.build_state_aid_calculation
+    @state_aid_calculation = @loan.state_aid_calculation || @loan.state_aid_calculations.build
     @state_aid_calculation.initial_draw_amount ||= @loan.amount.dup
   end
 

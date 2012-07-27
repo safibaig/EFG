@@ -1,7 +1,7 @@
 class StateAidCalculation < ActiveRecord::Base
   include FormatterConcern
 
-  belongs_to :loan, inverse_of: :state_aid_calculation
+  belongs_to :loan, inverse_of: :state_aid_calculations
 
   attr_accessible :initial_draw_year, :initial_draw_amount,
     :initial_draw_months, :initial_capital_repayment_holiday,

@@ -40,7 +40,7 @@ class Loan < ActiveRecord::Base
 
   belongs_to :lender
   belongs_to :loan_allocation
-  has_one :state_aid_calculation, inverse_of: :loan
+  has_many :state_aid_calculations, inverse_of: :loan, order: :seq
   has_one :transferred_from, class_name: 'Loan', foreign_key: 'id', primary_key: 'transferred_from_id'
   has_many :loan_changes
   has_many :loan_realisations, foreign_key: 'realised_loan_id'
@@ -106,6 +106,10 @@ class Loan < ActiveRecord::Base
 
   def cancelled_reason
     CancelReason.find(cancelled_reason_id)
+  end
+
+  def state_aid_calculation
+    state_aid_calculations.last
   end
 
   def has_state_aid_calculation?
