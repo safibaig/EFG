@@ -32,6 +32,14 @@ describe StateAidCalculation do
       state_aid_calculation.should be_valid
     end
 
+    it 'requires initial draw amount to be less than 9,999,999.99' do
+      state_aid_calculation.initial_draw_amount = Money.new(10_000_000_00)
+      state_aid_calculation.should_not be_valid
+
+      state_aid_calculation.initial_draw_amount = 9999999.99
+      state_aid_calculation.should be_valid
+    end
+
     context 'when rescheduling' do
       let(:rescheduled_state_aid_calculation) { FactoryGirl.build(:rescheduled_state_aid_calculation) }
 

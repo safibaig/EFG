@@ -24,6 +24,10 @@ class StateAidCalculation < ActiveRecord::Base
   validates_numericality_of :initial_draw_amount, greater_than_or_equal_to: 0
 
   validate do
+    if initial_draw_amount && (initial_draw_amount < 0 || initial_draw_amount > Money.new(9_999_999_99))
+      errors.add(:initial_draw_amount, :invalid)
+    end
+
     if rescheduling
       errors.add(:premium_cheque_month, :invalid) unless premium_cheque_month_in_the_future?
     end
