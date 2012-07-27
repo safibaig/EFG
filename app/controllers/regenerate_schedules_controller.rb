@@ -11,7 +11,10 @@ class RegenerateSchedulesController < ApplicationController
     @state_aid_calculation.rescheduling = true
 
     if @state_aid_calculation.valid?
-      redirect_to new_loan_loan_change_path(state_aid_calculation: params[:state_aid_calculation])
+      redirect_to new_loan_loan_change_path(
+        state_aid_calculation: params[:state_aid_calculation],
+        loan_change: params[:loan_change]
+      )
     else
       render :new
     end

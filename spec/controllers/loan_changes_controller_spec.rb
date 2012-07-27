@@ -62,7 +62,7 @@ describe LoanChangesController do
 
   describe '#create' do
     def dispatch(params = {})
-      post :create, { loan_id: loan.id, loan_change: {} }.merge(params)
+      post :create, { loan_id: loan.id, loan_change: { business_name: 'acme' } }.merge(params)
     end
 
     it_behaves_like 'CfeUser-restricted LoanPresenter controller'
@@ -73,9 +73,9 @@ describe LoanChangesController do
       before { sign_in(current_user) }
 
       context 'and regenerating schedule' do
-        it 'should redirect to regenerate schedule controller' do
+        it 'should redirect to regenerate schedule controller with loan changes in params' do
           dispatch(commit: 'Reschedule')
-          response.should redirect_to(new_loan_regenerate_schedule_path)
+          response.should redirect_to(new_loan_regenerate_schedule_path(loan_change: { business_name: 'acme' }))
         end
       end
     end

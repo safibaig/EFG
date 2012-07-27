@@ -30,6 +30,7 @@ describe 'loan change' do
   end
 
   it 'requires recalculation of state aid' do
+    fill_in_valid_details
     click_button "Reschedule"
 
     fill_in "state_aid_calculation_premium_cheque_month", with: "09/2012"
@@ -40,7 +41,11 @@ describe 'loan change' do
 
     current_path.should == new_loan_loan_change_path(loan)
 
-    fill_in_valid_details
+    # verify previous values are remembered when returning to loan change form
+    page.find('#loan_change_date_of_change').value.should == '01/06/2012'
+    page.find('#loan_change_change_type_id').value.should == '1'
+    page.find('#loan_change_amount_drawn').value.should == '15000.00'
+    page.find('#loan_change_business_name').value.should == 'updated'
 
     # choose change type that requires state aid recalculation
     select ChangeType.find('2').name, from: 'loan_change_change_type_id'
