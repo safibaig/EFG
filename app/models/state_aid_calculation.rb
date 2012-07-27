@@ -1,19 +1,25 @@
 class StateAidCalculation < ActiveRecord::Base
   include FormatterConcern
 
+  attr_accessor :rescheduling
+
   belongs_to :loan, inverse_of: :state_aid_calculations
 
   attr_accessible :initial_draw_year, :initial_draw_amount,
     :initial_draw_months, :initial_capital_repayment_holiday,
     :second_draw_amount, :second_draw_months, :third_draw_amount,
     :third_draw_months, :fourth_draw_amount, :fourth_draw_months,
-    :loan_id
+    :loan_id, :premium_cheque_month, :rescheduling
 
   before_validation :set_seq, on: :create
 
   validates_presence_of :loan_id
-  validates_presence_of :initial_draw_year, :initial_draw_amount,
-    :initial_draw_months
+
+  validates_presence_of :initial_draw_amount, :initial_draw_months
+
+  validates_presence_of :initial_draw_year, unless: :rescheduling
+
+  validates_presence_of :premium_cheque_month, if: :rescheduling
 
   format :initial_draw_amount, with: MoneyFormatter.new
   format :second_draw_amount, with: MoneyFormatter.new
