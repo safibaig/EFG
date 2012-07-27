@@ -28,7 +28,6 @@ describe StateAidCalculation do
       let(:rescheduled_state_aid_calculation) { FactoryGirl.build(:rescheduled_state_aid_calculation) }
 
       it "does not require initial draw year" do
-        rescheduled_state_aid_calculation.rescheduling = true
         rescheduled_state_aid_calculation.initial_draw_year = nil
         rescheduled_state_aid_calculation.should be_valid
       end
@@ -39,7 +38,6 @@ describe StateAidCalculation do
         initial_draw_months
       ).each do |attr|
         it "is invalid without #{attr}" do
-          rescheduled_state_aid_calculation.rescheduling = true
           rescheduled_state_aid_calculation.send("#{attr}=", '')
           rescheduled_state_aid_calculation.should_not be_valid
         end

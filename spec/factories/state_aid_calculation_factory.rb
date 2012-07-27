@@ -6,6 +6,8 @@ FactoryGirl.define do
     initial_draw_months 12
 
     factory :rescheduled_state_aid_calculation do
+      rescheduling true
+      initial_draw_year nil
       premium_cheque_month '03/2012'
     end
   end
