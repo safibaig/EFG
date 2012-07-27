@@ -15,11 +15,13 @@ class StateAidCalculation < ActiveRecord::Base
 
   validates_presence_of :loan_id
 
-  validates_presence_of :initial_draw_amount, :initial_draw_months
+  validates_presence_of :initial_draw_months
 
   validates_presence_of :initial_draw_year, unless: :rescheduling
 
   validates_presence_of :premium_cheque_month, if: :rescheduling
+
+  validates_numericality_of :initial_draw_amount, greater_than_or_equal_to: 0
 
   validate do
     if rescheduling
