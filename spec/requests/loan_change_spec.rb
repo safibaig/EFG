@@ -7,10 +7,12 @@ describe 'loan change' do
   let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
   before { login_as(current_user, scope: :user) }
 
-  it 'works' do
+  before(:each) do
     visit loan_path(loan)
     click_link 'Change Amount or Terms'
+  end
 
+  it 'works' do
     fill_in_valid_details
 
     expect {
@@ -23,22 +25,62 @@ describe 'loan change' do
   end
 
   it 'does not continue with invalid values' do
-    visit loan_path(loan)
-    click_link 'Change Amount or Terms'
     click_button 'Submit'
     current_path.should == loan_loan_changes_path(loan)
   end
 
+  it 'requires recalculation of state aid' do
+    fill_in_valid_details
+    # choose change type that requires state aid recalculation
+    select ChangeType.find('2').name, from: 'loan_change_change_type_id'
+    click_button 'Submit'
+
+    # confirm reschedule validation error is shown
+    page.should have_content('please reschedule')
+
+    click_button "Reschedule"
+
+    fill_in "state_aid_calculation_premium_cheque_month", with: "09/2012"
+    fill_in "state_aid_calculation_initial_draw_amount", with: "30000"
+    fill_in "state_aid_calculation_initial_draw_months", with: "18"
+
+    click_button "Submit"
+
+    current_path.should == new_loan_loan_change_path(loan)
+
+
+
+    # verify state aid calculation is created
+    expect {
+      click_button 'Submit'
+    }.to change(StateAidCalculation, :count).by(1)
+
+    calculation = StateAidCalculation.last
+    calculation.premium_cheque_month.should == '09/2012'
+    calculation.initial_draw_amount.should == Money.new(30_000_00)
+    calculation.initial_draw_months.should == 18
+  end
+
+  it 'remembers loan change values when rescheduling is cancelled' do
+    fill_in_valid_details
+    click_button "Reschedule"
+
+    click_button "Cancel"
+
+    # verify previous values are remembered when returning to loan change form
+    page.find('#loan_change_date_of_change').value.should == '01/06/2012'
+    page.find('#loan_change_change_type_id').value.should == '1'
+    page.find('#loan_change_amount_drawn').value.should == '15000.00'
+    page.find('#loan_change_business_name').value.should == 'updated'
+  end
+
   private
-    def fill_in(attribute, value)
-      page.fill_in "loan_change_#{attribute}", with: value
-    end
 
     def fill_in_valid_details
-      fill_in 'date_of_change', '1/6/12'
+      fill_in 'loan_change_date_of_change', with: '1/6/12'
       select ChangeType.find('1').name, from: 'loan_change_change_type_id'
-      fill_in 'amount_drawn', '£15,000'
-      fill_in 'business_name', 'updated'
+      fill_in 'loan_change_amount_drawn', with: '£15,000'
+      fill_in 'loan_change_business_name', with: 'updated'
     end
 
     def verify

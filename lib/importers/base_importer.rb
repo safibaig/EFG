@@ -56,7 +56,7 @@ class BaseImporter
       }
     end
 
-    @loan_id_from_legacy_id[legacy_id]
+    @loan_id_from_legacy_id[legacy_id.to_i]
   end
 
   def attributes

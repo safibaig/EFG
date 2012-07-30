@@ -4,7 +4,7 @@ class StateAidCalculationImporter < BaseImporter
 
   def self.field_mapping
     {
-      'OID'                  => :legacy_loan_id,
+      'OID'                  => :loan_id,
       'SEQ'                  => :seq,
       'LOAN_VERSION'         => :loan_version,
       'CALC_TYPE'            => :calc_type,
@@ -41,7 +41,7 @@ class StateAidCalculationImporter < BaseImporter
 
   BOOLEANS = %w(OBJ1_AREA REDUCE_COSTS IMPROVE_PROD INCREASE_QUALITY
     IMPROVE_NAT_ENV PROMOTE AGRICULTURE)
-  INTEGERS = %w(HOLIDAY TOTAL_COST PUBLIC_FUNDING)
+  INTEGERS = %w(SEQ HOLIDAY TOTAL_COST PUBLIC_FUNDING)
   MONIES = %w(INITIAL_DRAW_AMOUNT)
 
   def attributes

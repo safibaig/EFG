@@ -56,7 +56,8 @@
 .form-state-aid-calculation,
 .form-invoice,
 .form-recovery,
-.form-realise-loans {
+.form-realise-loans,
+.cancel-reschedule {
   .control-label {
     text-align: left;
     width: 420px;
@@ -94,4 +95,9 @@
   border: 1px solid #B94A48;
   border-radius: 5px;
   color: #B94A48;
+}
+
+.cancel-reschedule .form-actions {
+  margin: -2em 0 0 0;
+  border: 0;
 }

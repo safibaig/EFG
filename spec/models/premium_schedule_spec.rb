@@ -28,7 +28,7 @@ describe PremiumSchedule do
 
   describe "#second_premium_collection_month" do
     let!(:loan) { FactoryGirl.build(:loan) }
-    let!(:state_aid_calculation) { loan.build_state_aid_calculation }
+    let!(:state_aid_calculation) { loan.state_aid_calculations.build }
     let!(:premium_schedule) { loan.premium_schedule }
 
     it "should return formatted date string 3 months from the initial draw date " do

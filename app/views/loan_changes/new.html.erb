@@ -17,6 +17,8 @@
 <%= simple_form_for(@loan_change, url: loan_loan_changes_path(@loan), html: { class: 'form-horizontal form-loan-change' }) do |f| %>
   <%= render_errors_on_base(f.object.errors) %>
 
+  <%= state_aid_calculation_hidden_fields(params[:state_aid_calculation]) %>
+
   <%= f.input :date_of_change, as: :quick_date %>
   <%= f.input :change_type_id, as: :select, collection: ChangeType.for_loan_change, prompt: 'Please select' %>
 
@@ -51,5 +53,6 @@
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>
+    <%= f.button :submit, value: 'Reschedule', class: 'btn-info' %>
   </div>
 <% end %>

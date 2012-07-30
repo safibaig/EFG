@@ -1,6 +1,8 @@
 class LoanChange < ActiveRecord::Base
   include FormatterConcern
 
+  attr_accessor :state_aid_calculation_attributes
+
   VALID_LOAN_STATES = [Loan::Guaranteed, Loan::LenderDemand]
   OLD_ATTRIBUTES_TO_STORE = %w(maturity_date business_name amount
     guaranteed_date initial_draw_date initial_draw_amount sortcode
@@ -19,6 +21,7 @@ class LoanChange < ActiveRecord::Base
 
   validate :validate_change_type
   validate :validate_non_negative_amounts
+  validate :state_aid_recalculated, if: :requires_state_aid_recalculation?
 
   format :date_of_change, with: QuickDateFormatter
   format :maturity_date, with: QuickDateFormatter
@@ -67,6 +70,10 @@ class LoanChange < ActiveRecord::Base
     false
   end
 
+  def requires_state_aid_recalculation?
+    %w(2 3 4 6 8 a).include?(change_type_id)
+  end
+
   private
     def set_seq
       self.seq = (LoanChange.where(loan_id: loan_id).maximum(:seq) || -1) + 1
@@ -85,6 +92,10 @@ class LoanChange < ActiveRecord::Base
 
       loan.state = Loan::Guaranteed
       loan.save!
+
+      if requires_state_aid_recalculation?
+        loan.state_aid_calculations.create!(state_aid_calculation_attributes)
+      end
     end
 
     def validate_change_type
@@ -101,5 +112,9 @@ class LoanChange < ActiveRecord::Base
     def validate_non_negative_amounts
       errors.add(:amount_drawn, :not_be_negative) if amount_drawn && amount_drawn < 0
       errors.add(:lump_sum_repayment, :not_be_negative) if lump_sum_repayment && lump_sum_repayment < 0
+    end
+
+    def state_aid_recalculated
+      errors.add(:base, :state_aid_not_recalculated) unless state_aid_calculation_attributes.present?
     end
 end

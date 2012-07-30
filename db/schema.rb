@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120720112848) do
+ActiveRecord::Schema.define(:version => 20120726154310) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -330,7 +330,7 @@ ActiveRecord::Schema.define(:version => 20120720112848) do
   end
 
   add_index "state_aid_calculations", ["legacy_loan_id"], :name => "index_state_aid_calculations_on_legacy_loan_id"
-  add_index "state_aid_calculations", ["loan_id"], :name => "index_state_aid_calculations_on_loan_id"
+  add_index "state_aid_calculations", ["loan_id", "seq"], :name => "index_state_aid_calculations_on_loan_id_and_seq", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "email"

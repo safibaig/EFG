@@ -126,7 +126,9 @@ FactoryGirl.define do
     end
 
     trait :with_state_aid_calculation do
-      state_aid_calculation
+      after(:build) do |loan|
+        loan.state_aid_calculations = [ FactoryGirl.build(:state_aid_calculation) ]
+      end
     end
 
     trait :sflg do

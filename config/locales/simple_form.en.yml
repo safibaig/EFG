@@ -108,6 +108,18 @@ en:
         fourth_draw_amount: 'What is the amount of additional draw? (Fourth tranche)'
         fourth_draw_months: 'What is the number of months (from the initial draw) to fourth tranche drawdown?'
 
+      regenerate_schedule:
+        premium_cheque_month: 'When is the next quarterly Premium due? (mm/yyyy)'
+        initial_draw_amount: 'What is the outstanding balance at the next (or subsequent) quarterly Premium collection point, taking account of any draws or repayments which may be made between now and the relevant quarter date?'
+        initial_draw_months: 'What will the outstanding loan term be at the next (or subsequent) quarterly Premium collection point? (Months - must be a multiple of 3, i.e. rounded up to the next whole quarter)'
+        initial_capital_repayment_holiday: What is the length of the initial capital repayment holiday? (Months) (Note that if the facility is being provided on interest-only terms then the value entered here should be equal to the full term of the facility)
+        second_draw_amount: What is the amount of the additional draw? (Second tranche)
+        second_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to second tranche drawdown?
+        third_draw_amount: What is the amount of the additional draw? (Third tranche)
+        third_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to third tranche drawdown?
+        fourth_draw_amount: What is the amount of the additional draw? (Fourth tranche)
+        fourth_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to fourth tranche drawdown?
+
       loan_demand_to_borrower:
         borrower_demand_outstanding: 'What was the amount for which demand was made on the borrower (as recorded on the demand letter)?'
         borrower_demanded_on: 'What was the date that demand was made on the borrower (date of demand letter)? (dd/mm/yyyy)'

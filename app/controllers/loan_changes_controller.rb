@@ -12,13 +12,17 @@ class LoanChangesController < ApplicationController
   end
 
   def new
-    @loan_change = @loan.loan_changes.new
+    @loan_change = @loan.loan_changes.new(params[:loan_change])
   end
 
   def create
+    if params[:commit] == 'Reschedule'
+      redirect_to new_loan_regenerate_schedule_path(loan_change: params[:loan_change]) and return
+    end
     @loan_change = @loan.loan_changes.new(params[:loan_change])
     @loan_change.created_by = current_user
     @loan_change.modified_date = Date.today
+    @loan_change.state_aid_calculation_attributes = params[:state_aid_calculation]
 
     if @loan_change.save_and_update_loan
       redirect_to @loan

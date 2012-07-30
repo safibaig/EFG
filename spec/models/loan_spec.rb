@@ -71,6 +71,19 @@ describe Loan do
     end
   end
 
+  describe "#state_aid_calculation" do
+
+    let!(:loan) { FactoryGirl.create(:loan) }
+
+    let!(:state_aid_calculation1) { FactoryGirl.create(:state_aid_calculation, loan: loan) }
+
+    let!(:state_aid_calculation2) { FactoryGirl.create(:state_aid_calculation, loan: loan) }
+
+    it "returns the most recent state aid calculation record" do
+      loan.state_aid_calculation.should == state_aid_calculation2
+    end
+  end
+
   describe '#repayment_duration / #repayment_duration=' do
     let(:loan) { Loan.new }
 
@@ -123,7 +136,7 @@ describe Loan do
   describe "#premium_schedule" do
     it "should return a PremiumSchedule for the loan" do
       loan = FactoryGirl.build(:loan)
-      loan.build_state_aid_calculation
+      loan.state_aid_calculations.build
 
       loan.premium_schedule.should be_instance_of(PremiumSchedule)
       loan.premium_schedule.loan.should == loan
