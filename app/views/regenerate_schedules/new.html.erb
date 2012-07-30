@@ -32,6 +32,12 @@
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>
-    <%# link_to 'Cancel', leave_state_aid_calculation_path(@loan), class: 'btn' %>
+  </div>
+<% end %>
+
+<%= form_tag new_loan_loan_change_path(@loan), method: :get, class: 'cancel-reschedule' do %>
+  <%= loan_change_hidden_fields(params[:loan_change]) %>
+  <div class="form-actions">
+    <%= submit_tag 'Cancel', class: 'btn' %>
   </div>
 <% end %>

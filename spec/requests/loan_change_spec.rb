@@ -48,11 +48,7 @@ describe 'loan change' do
 
     current_path.should == new_loan_loan_change_path(loan)
 
-    # verify previous values are remembered when returning to loan change form
-    page.find('#loan_change_date_of_change').value.should == '01/06/2012'
-    page.find('#loan_change_change_type_id').value.should == '2'
-    page.find('#loan_change_amount_drawn').value.should == '15000.00'
-    page.find('#loan_change_business_name').value.should == 'updated'
+
 
     # verify state aid calculation is created
     expect {
@@ -63,6 +59,19 @@ describe 'loan change' do
     calculation.premium_cheque_month.should == '09/2012'
     calculation.initial_draw_amount.should == Money.new(30_000_00)
     calculation.initial_draw_months.should == 18
+  end
+
+  it 'remembers loan change values when rescheduling is cancelled' do
+    fill_in_valid_details
+    click_button "Reschedule"
+
+    click_button "Cancel"
+
+    # verify previous values are remembered when returning to loan change form
+    page.find('#loan_change_date_of_change').value.should == '01/06/2012'
+    page.find('#loan_change_change_type_id').value.should == '1'
+    page.find('#loan_change_amount_drawn').value.should == '15000.00'
+    page.find('#loan_change_business_name').value.should == 'updated'
   end
 
   private
