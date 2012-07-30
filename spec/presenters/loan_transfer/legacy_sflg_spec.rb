@@ -78,7 +78,7 @@ describe LoanTransfer::LegacySflg do
         generic5 transferred_from_id loan_allocation_id created_at updated_at
         facility_letter_date declaration_signed state_aid state_aid_is_valid
         notified_aid viable_proposition collateral_exhausted previous_borrowing
-        would_you_lend
+        would_you_lend legacy_id
       )
 
       fields_to_compare = Loan.column_names - fields_not_copied

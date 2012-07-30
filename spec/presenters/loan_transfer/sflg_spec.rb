@@ -39,7 +39,7 @@ describe LoanTransfer::Sflg do
       fields_not_copied = %w(
         id lender_id reference state branch_sortcode repayment_duration amount
         payment_period maturity_date invoice_id generic1 generic2 generic3 generic4
-        generic5 transferred_from_id loan_allocation_id created_at updated_at
+        generic5 transferred_from_id loan_allocation_id created_at updated_at legacy_id
       )
 
       fields_to_compare = Loan.column_names - fields_not_copied

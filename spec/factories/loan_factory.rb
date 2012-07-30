@@ -28,6 +28,7 @@ FactoryGirl.define do
     state_aid 10000
     state_aid_is_valid true
     fees 50000
+    sequence(:legacy_id) { |n| n }
     created_at { Time.now }
     updated_at { Time.now }
 

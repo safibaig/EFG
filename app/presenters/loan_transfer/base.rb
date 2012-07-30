@@ -40,6 +40,7 @@ class LoanTransfer::Base
       @new_loan.amount                = self.new_amount
       @new_loan.reference             = reference_class.new(loan_to_transfer.reference).increment
       @new_loan.state                 = Loan::Incomplete
+      @new_loan.legacy_id             = nil
       @new_loan.branch_sortcode       = ''
       @new_loan.repayment_duration    = 0
       @new_loan.payment_period        = ''

@@ -102,6 +102,11 @@ shared_examples_for 'a loan transfer' do
         new_loan.loan_allocation.should == new_loan.lender.loan_allocations.last
       end
 
+      it 'should nullify legacy_id field' do
+        original_loan.legacy_id = 12345
+        new_loan.legacy_id.should be_nil
+      end
+
       it 'should create new loan with modified by set to user requesting transfer' do
         pending
       end
