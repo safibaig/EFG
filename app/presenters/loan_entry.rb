@@ -57,12 +57,20 @@ class LoanEntry
                         :repayment_frequency_id, :postcode, :maturity_date,
                         :interest_rate, :fees, :repayment_duration
 
+  validate :state_aid_calculated
+
+  validate do
+    errors.add(:declaration_signed, :accepted) unless self.declaration_signed
+  end
+
   # TYPE B LOANS
 
   validates_numericality_of :security_proportion,
                             greater_than: 0.0,
                             less_than: 100,
                             if: lambda { loan_category_id == 2 }
+
+  validate :loan_security, if: lambda { loan_category_id == 2 }
 
   # TYPE C LOANS
 
@@ -92,6 +100,8 @@ class LoanEntry
                          in: [true],
                          if: lambda { loan_category_id == 5 }
 
+  validate :type_e_repayment_duration, if: lambda { loan_category_id == 5 }
+
   # TYPE F LOANS
 
   validates_presence_of :invoice_discount_limit,
@@ -107,29 +117,38 @@ class LoanEntry
                             less_than_or_equal_to: 30,
                             if: lambda { loan_category_id == 6 }
 
-  validate do
-    errors.add(:declaration_signed, :accepted) unless self.declaration_signed
-    errors.add(:state_aid, :calculated) unless self.loan.state_aid_calculation
-
-    # state aid must be recalculated if the loan term has changed
-    errors.add(:state_aid, :recalculate) if self.loan.repayment_duration_changed?
-
-    # Type B loans require at least one security
-    errors.add(:loan_security_types, :present) if loan_category_id == 2 && self.loan_security_types.empty?
-
-    # Type E repayment duration cannot exceed 2 years
-    if loan_category_id == 5 && !repayment_duration.between?(MonthDuration.new(3), MonthDuration.new(24))
-      errors.add(:repayment_duration, :invalid)
-    end
-
-    # Type F repayment duration cannot exceed 3 years
-    if loan_category_id == 6 && !repayment_duration.between?(MonthDuration.new(3), MonthDuration.new(36))
-      errors.add(:repayment_duration, :invalid)
-    end
-  end
+  validate :type_f_repayment_duration, if: lambda { loan_category_id == 6 }
 
   def save_as_incomplete
     loan.state = Loan::Incomplete
     loan.save(validate: false)
   end
+
+  private
+
+  # Note: state aid must be recalculated if the loan term has changed
+  def state_aid_calculated
+    errors.add(:state_aid, :calculated) unless self.loan.state_aid_calculation
+    errors.add(:state_aid, :recalculate) if self.loan.repayment_duration_changed?
+  end
+
+  # Type B loans require at least one security
+  def loan_security
+    errors.add(:loan_security_types, :present) if self.loan_security_types.empty?
+  end
+
+  # Type E repayment duration cannot exceed 2 years
+  def type_e_repayment_duration
+    unless repayment_duration.between?(MonthDuration.new(3), MonthDuration.new(24))
+      errors.add(:repayment_duration, :invalid)
+    end
+  end
+
+  # Type F repayment duration cannot exceed 3 years
+  def type_f_repayment_duration
+    unless repayment_duration.between?(MonthDuration.new(3), MonthDuration.new(36))
+      errors.add(:repayment_duration, :invalid)
+    end
+  end
+
 end
