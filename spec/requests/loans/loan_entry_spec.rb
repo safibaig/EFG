@@ -120,7 +120,7 @@ describe 'loan entry' do
     visit new_loan_entry_path(loan)
 
     fill_in_valid_details
-    fill_in "repayment_duration_months", loan.repayment_duration.total_months + 1
+    fill_in "repayment_duration_months", loan.repayment_duration.total_months + 12
     click_button 'Submit'
 
     page.should have_content("must be re-calculated when you change the loan term")

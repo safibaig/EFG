@@ -227,6 +227,39 @@ describe LoanEntry do
       end
     end
 
+    context "when repaying loan quarterly" do
+      it "should require repayment duration to be divisible by 3" do
+        loan_entry.repayment_frequency_id = 3
+        loan_entry.repayment_duration = 19
+        loan_entry.should_not be_valid
+
+        loan_entry.repayment_duration = 18
+        loan_entry.should be_valid
+      end
+    end
+
+    context "when repaying loan six monthly" do
+      it "should require repayment duration to be divisible by 6" do
+        loan_entry.repayment_frequency_id = 2
+        loan_entry.repayment_duration = 11
+        loan_entry.should_not be_valid
+
+        loan_entry.repayment_duration = 12
+        loan_entry.should be_valid
+      end
+    end
+
+    context "when repaying loan annually" do
+      it "should require repayment duration to be divisible by 12" do
+        loan_entry.repayment_frequency_id = 1
+        loan_entry.repayment_duration = 25
+        loan_entry.should_not be_valid
+
+        loan_entry.repayment_duration = 24
+        loan_entry.should be_valid
+      end
+    end
+
     # Although a business may benefit from EFG on more than one occasion, and may have more than one EFG-backed facility at any one time, the total outstanding balances and/or active available limits of the Applicant's current EFG facilities may not exceed £1 million at any one time.
     # To be eligible for EFG the Applicant's De Minimis State Aid status must be checked to ensure that it does not exceed the €200,000 rolling three year limit (or the corresponding lower limit applicable in certain business sectors). On this occasion that check has not been performed.
   end

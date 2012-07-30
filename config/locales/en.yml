@@ -31,6 +31,8 @@ en:
               recalculate: must be re-calculated when you change the loan term
             loan_security_types:
               present: choose at least one security
+            repayment_frequency_id:
+              not_allowed: 'The selected repayment frequency is not possible for the given loan term. For instance, the loan term must be a multiple of the number of months between payments.'
         loan_offer:
           attributes:
             facility_letter_sent:

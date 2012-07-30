@@ -59,6 +59,8 @@ class LoanEntry
 
   validate :state_aid_calculated
 
+  validate :repayment_frequency_allowed
+
   validate do
     errors.add(:declaration_signed, :accepted) unless self.declaration_signed
   end
@@ -130,6 +132,18 @@ class LoanEntry
   def state_aid_calculated
     errors.add(:state_aid, :calculated) unless self.loan.state_aid_calculation
     errors.add(:state_aid, :recalculate) if self.loan.repayment_duration_changed?
+  end
+
+  def repayment_frequency_allowed
+    return unless repayment_frequency_id.present? && repayment_duration.present?
+    case repayment_frequency_id
+    when 1
+      errors.add(:repayment_frequency_id, :not_allowed) unless repayment_duration.total_months % 12 == 0
+    when 2
+      errors.add(:repayment_frequency_id, :not_allowed) unless repayment_duration.total_months % 6 == 0
+    when 3
+      errors.add(:repayment_frequency_id, :not_allowed) unless repayment_duration.total_months % 3 == 0
+    end
   end
 
   # Type B loans require at least one security
