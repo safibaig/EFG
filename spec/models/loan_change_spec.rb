@@ -89,6 +89,17 @@ describe LoanChange do
         end
       end
     end
+
+    context 'when state aid recalculation is required' do
+      it 'should require state aid calculation attributes' do
+        loan_change.change_type_id = '2'
+        loan_change.should_not be_valid
+        loan_change.state_aid_calculation_attributes = FactoryGirl.attributes_for(
+          :rescheduled_state_aid_calculation, loan: loan_change.loan
+        )
+        loan_change.should be_valid
+      end
+    end
   end
 
   describe '#changes' do

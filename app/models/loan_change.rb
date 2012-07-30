@@ -21,6 +21,7 @@ class LoanChange < ActiveRecord::Base
 
   validate :validate_change_type
   validate :validate_non_negative_amounts
+  validate :state_aid_recalculated, if: :requires_state_aid_recalculation?
 
   format :date_of_change, with: QuickDateFormatter
   format :maturity_date, with: QuickDateFormatter
@@ -111,5 +112,9 @@ class LoanChange < ActiveRecord::Base
     def validate_non_negative_amounts
       errors.add(:amount_drawn, :not_be_negative) if amount_drawn && amount_drawn < 0
       errors.add(:lump_sum_repayment, :not_be_negative) if lump_sum_repayment && lump_sum_repayment < 0
+    end
+
+    def state_aid_recalculated
+      errors.add(:base, :state_aid_not_recalculated) unless state_aid_calculation_attributes.present?
     end
 end
