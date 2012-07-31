@@ -8,7 +8,7 @@ describe LegacyLoanTransfersController do
       get :show, id: loan.id
     end
 
-    it_behaves_like 'CfeUser-restricted LoanPresenter controller'
+    it_behaves_like 'CfeUser-restricted controller'
 
     context 'as a LenderUser from the same lender' do
       let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
@@ -26,7 +26,7 @@ describe LegacyLoanTransfersController do
       get :new
     end
 
-    it_behaves_like 'CfeUser-restricted LoanPresenter controller'
+    it_behaves_like 'CfeUser-restricted controller'
 
     context 'as a LenderUser from the same lender' do
       let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
@@ -44,6 +44,6 @@ describe LegacyLoanTransfersController do
       post :create, loan_transfer: {}
     end
 
-    it_behaves_like 'CfeUser-restricted LoanPresenter controller'
+    it_behaves_like 'CfeUser-restricted controller'
   end
 end

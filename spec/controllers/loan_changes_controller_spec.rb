@@ -26,7 +26,7 @@ describe LoanChangesController do
       get :new, { loan_id: loan.id }.merge(params)
     end
 
-    it_behaves_like 'CfeUser-restricted LoanPresenter controller'
+    it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'LenderUser-restricted LoanPresenter controller'
 
     context 'as a LenderUser from the same lender' do
@@ -65,7 +65,7 @@ describe LoanChangesController do
       post :create, { loan_id: loan.id, loan_change: { business_name: 'acme' } }.merge(params)
     end
 
-    it_behaves_like 'CfeUser-restricted LoanPresenter controller'
+    it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'LenderUser-restricted LoanPresenter controller'
 
     context 'when logged in' do

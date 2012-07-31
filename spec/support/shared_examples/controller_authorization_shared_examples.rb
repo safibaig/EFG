@@ -1,4 +1,4 @@
-shared_examples_for 'CfeUser-restricted LoanPresenter controller' do
+shared_examples_for 'CfeUser-restricted controller' do
   let(:current_user) { FactoryGirl.create(:cfe_user) }
 
   before { sign_in(current_user) }

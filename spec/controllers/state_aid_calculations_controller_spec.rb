@@ -8,7 +8,7 @@ describe StateAidCalculationsController do
       get :edit, { loan_id: loan.id }.merge(params)
     end
 
-    it_behaves_like 'CfeUser-restricted LoanPresenter controller'
+    it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'LenderUser-restricted LoanPresenter controller'
 
     context 'as a LenderUser from the same lender' do
@@ -27,7 +27,7 @@ describe StateAidCalculationsController do
       put :update, { loan_id: loan.id, state_aid_calculation: {} }.merge(params)
     end
 
-    it_behaves_like 'CfeUser-restricted LoanPresenter controller'
+    it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'LenderUser-restricted LoanPresenter controller'
   end
 end

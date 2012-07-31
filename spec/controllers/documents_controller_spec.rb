@@ -26,7 +26,7 @@ describe DocumentsController do
       get :data_protection_declaration, id: loan.id
     end
 
-    it_behaves_like 'CfeUser-restricted LoanPresenter controller'
+    it_behaves_like 'CfeUser-restricted controller'
 
     it 'renders PDF document' do
       dispatch
