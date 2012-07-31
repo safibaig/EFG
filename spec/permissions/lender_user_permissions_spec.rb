@@ -133,4 +133,10 @@ describe LenderUserPermissions do
       assert can_create?(LoanChange)
     end
   end
+
+  context 'premium schedule report' do
+    it 'cannot create' do
+      refute can_create?(PremiumScheduleReport)
+    end
+  end
 end

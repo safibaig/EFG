@@ -1,6 +1,11 @@
 module LenderUserPermissions
   def can_create?(resource)
-    ![Invoice, LoanRemoveGuarantee, RealisationStatement].include?(resource)
+    ![
+      Invoice,
+      LoanRemoveGuarantee,
+      RealisationStatement,
+      PremiumScheduleReport
+    ].include?(resource)
   end
 
   def can_update?(resource)

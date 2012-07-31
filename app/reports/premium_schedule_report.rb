@@ -1,0 +1,2 @@
+class PremiumScheduleReport
+end
