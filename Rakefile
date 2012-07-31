@@ -6,6 +6,11 @@ require File.expand_path('../config/application', __FILE__)
 
 begin
   require 'ci/reporter/rake/rspec'
+  # ci_reporter gem outputs data to spec/reports by default
+  # deleting that directory beforehand
+  # but this app uses spec/reports for actual specs
+  # so use a different directory
+  ENV["CI_REPORTS"] = 'spec/ci_reports'
 rescue LoadError
   warn 'CI::Reporter not available. Rake Tasks not loaded.'
 end
