@@ -129,14 +129,42 @@ describe PremiumScheduleCollectorUser do
   end
 
   context 'loan changes' do
+    it 'cannot view' do
+      refute can_view?(LoanChange)
+    end
+
     it 'cannot create' do
       refute can_create?(LoanChange)
+    end
+  end
+
+  context 'loan alerts' do
+    it 'cannot view' do
+      refute can_view?(LoanAlerts)
     end
   end
 
   context 'premium schedule report' do
     it 'can create' do
       assert can_create?(PremiumScheduleReport)
+    end
+  end
+
+  context 'Loan' do
+    it 'cannot view' do
+      refute can_view?(Loan)
+    end
+  end
+
+  context 'Loan::States' do
+    it 'cannot view' do
+      refute can_view?(Loan::States)
+    end
+  end
+
+  context 'Search' do
+    it 'cannot view' do
+      refute can_view?(Search)
     end
   end
 end

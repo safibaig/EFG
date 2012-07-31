@@ -129,14 +129,42 @@ describe CfeUserPermissions do
   end
 
   context 'loan changes' do
+    it 'can view' do
+      refute can_view?(LoanChange)
+    end
+
     it 'cannot create' do
       refute can_create?(LoanChange)
+    end
+  end
+
+  context 'loan alerts' do
+    it 'can view' do
+      assert can_view?(LoanAlerts)
     end
   end
 
   context 'premium schedule report' do
     it 'cannot create' do
       refute can_create?(PremiumScheduleReport)
+    end
+  end
+
+  context 'Loan' do
+    it 'can view' do
+      assert can_view?(Loan)
+    end
+  end
+
+  context 'Loan::States' do
+    it 'can view' do
+      assert can_view?(Loan::States)
+    end
+  end
+
+  context 'Search' do
+    it 'can view' do
+      assert can_view?(Search)
     end
   end
 end

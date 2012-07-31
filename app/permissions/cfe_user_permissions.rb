@@ -8,6 +8,14 @@ module CfeUserPermissions
   end
 
   def can_view?(resource)
-    [Invoice, LoanRemoveGuarantee, RealisationStatement].include?(resource)
+    [
+      Invoice,
+      Loan,
+      LoanAlerts,
+      LoanRemoveGuarantee,
+      Loan::States,
+      RealisationStatement,
+      Search
+    ].include?(resource)
   end
 end

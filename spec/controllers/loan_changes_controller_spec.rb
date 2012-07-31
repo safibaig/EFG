@@ -9,6 +9,7 @@ describe LoanChangesController do
     end
 
     it_behaves_like 'Lender-scoped controller'
+    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
   end
 
   describe '#show' do
@@ -19,6 +20,7 @@ describe LoanChangesController do
     end
 
     it_behaves_like 'Lender-scoped controller'
+    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
   end
 
   describe '#new' do
@@ -27,6 +29,7 @@ describe LoanChangesController do
     end
 
     it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
     it_behaves_like 'Lender-scoped controller'
 
     context 'as a LenderUser from the same lender' do

@@ -7,6 +7,7 @@ describe EligibilityChecksController do
     end
 
     it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
   end
 
   describe '#create' do
@@ -15,6 +16,7 @@ describe EligibilityChecksController do
     end
 
     it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
 
     context 'as logged in lender user' do
       let(:current_user) { FactoryGirl.create(:lender_user) }

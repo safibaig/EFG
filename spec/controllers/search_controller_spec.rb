@@ -7,9 +7,11 @@ describe SearchController do
   before { sign_in(current_user) }
 
   describe '#lookup' do
-    def dispatch(params)
+    def dispatch(params = {})
       get :lookup, params
     end
+
+    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
 
     it 'assigns loans for the current lender' do
       dispatch(reference: loan.reference)

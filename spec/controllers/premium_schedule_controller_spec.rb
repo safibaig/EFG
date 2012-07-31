@@ -9,6 +9,7 @@ describe PremiumScheduleController do
     end
 
     it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
     it_behaves_like 'Lender-scoped controller'
   end
 end

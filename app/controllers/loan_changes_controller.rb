@@ -1,7 +1,8 @@
 class LoanChangesController < ApplicationController
+  before_filter :verify_view_permission, only: [:index, :show]
+  before_filter :verify_create_permission, only: [:new, :create]
   before_filter :load_loan, only: [:index, :show]
   before_filter :load_changeable_loan, only: [:new, :create]
-  before_filter :verify_create_permission, only: [:new, :create]
 
   def index
     @loan_changes = @loan.loan_changes
@@ -44,5 +45,9 @@ class LoanChangesController < ApplicationController
 
     def verify_create_permission
       enforce_create_permission(LoanChange)
+    end
+
+    def verify_view_permission
+      enforce_view_permission(LoanChange)
     end
 end

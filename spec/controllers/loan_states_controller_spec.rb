@@ -8,6 +8,8 @@ describe LoanStatesController do
       get :show, { id: 'guaranteed' }.merge(params)
     end
 
+    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
+
     context 'when requesting CSV export' do
       let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
 

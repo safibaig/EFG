@@ -9,6 +9,7 @@ describe InvoicesController do
     end
 
     it_behaves_like 'CfeUser-only controller'
+    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
   end
 
   describe "GET new" do
@@ -17,6 +18,7 @@ describe InvoicesController do
     end
 
     it_behaves_like 'CfeUser-only controller'
+    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
   end
 
   describe "POST select_loans" do
@@ -25,6 +27,7 @@ describe InvoicesController do
     end
 
     it_behaves_like 'CfeUser-only controller'
+    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
 
     context 'when requesting CSV export' do
       let(:current_user) { FactoryGirl.create(:cfe_user) }
@@ -61,5 +64,6 @@ describe InvoicesController do
     end
 
     it_behaves_like 'CfeUser-only controller'
+    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
   end
 end
