@@ -5,166 +5,103 @@ describe PremiumScheduleCollectorUser do
   include PremiumScheduleCollectorUserPermissions
 
   context 'invoices' do
-    it 'cannot view' do
-      refute can_view?(Invoice)
-    end
-
-    it 'cannot create' do
-      refute can_create?(Invoice)
-    end
+    it { refute can_view?(Invoice) }
+    it { refute can_create?(Invoice) }
   end
 
   context 'recoveries' do
-    it 'cannot create' do
-      refute can_create?(Recovery)
-    end
+    it { refute can_create?(Recovery) }
   end
 
   context 'realisation statements' do
-    it 'cannot view' do
-      refute can_view?(RealisationStatement)
-    end
-
-    it 'cannot create' do
-      refute can_create?(RealisationStatement)
-    end
+    it { refute can_view?(RealisationStatement) }
+    it { refute can_create?(RealisationStatement) }
   end
 
   context 'remove guarantee' do
-    it 'cannot view' do
-      refute can_view?(LoanRemoveGuarantee)
-    end
-
-    it 'cannot create' do
-      refute can_create?(LoanRemoveGuarantee)
-    end
+    it { refute can_view?(LoanRemoveGuarantee) }
+    it { refute can_create?(LoanRemoveGuarantee) }
   end
 
   context 'loan eligibility checks' do
-    it 'cannot create' do
-      refute can_create?(LoanEligibilityCheck)
-    end
+    it { refute can_create?(LoanEligibilityCheck) }
   end
 
   context 'state aid calculations' do
-    it 'cannot update' do
-      refute can_update?(StateAidCalculation)
-    end
+    it { refute can_update?(StateAidCalculation) }
   end
 
   context 'data protection declaration' do
-    it 'cannot view' do
-      refute can_view?(DataProtectionDeclaration)
-    end
+    it { refute can_view?(DataProtectionDeclaration) }
   end
 
   context 'information declaration' do
-    it 'cannot view' do
-      refute can_view?(InformationDeclaration)
-    end
+    it { refute can_view?(InformationDeclaration) }
   end
 
   context 'state aid letters' do
-    it 'cannot view' do
-      refute can_view?(StateAidLetter)
-    end
+    it { refute can_view?(StateAidLetter) }
   end
 
   context 'premium schedules' do
-    it 'cannot view' do
-      refute can_view?(PremiumSchedule)
-    end
-
-    it 'cannot update' do
-      refute can_update?(PremiumSchedule)
-    end
+    it { refute can_view?(PremiumSchedule) }
+    it { refute can_update?(PremiumSchedule) }
   end
 
   context 'Loan Offer' do
-    it 'cannot create' do
-      refute can_create?(LoanOffer)
-    end
+    it { refute can_create?(LoanOffer) }
   end
 
   context 'Loan Entry' do
-    it 'cannot create' do
-      refute can_create?(LoanEntry)
-    end
+    it { refute can_create?(LoanEntry) }
   end
 
   context 'Loan Cancel' do
-    it 'cannot create' do
-      refute can_create?(LoanCancel)
-    end
+    it { refute can_create?(LoanCancel) }
   end
 
   context 'Loan Demand to Borrower' do
-    it 'cannot create' do
-      refute can_create?(LoanDemandToBorrower)
-    end
+    it { refute can_create?(LoanDemandToBorrower) }
   end
 
   context 'Loan Repay' do
-    it 'cannot create' do
-      refute can_create?(LoanRepay)
-    end
+    it { refute can_create?(LoanRepay) }
   end
 
   context 'Loan No Claim' do
-    it 'cannot create' do
-      refute can_create?(LoanNoClaim)
-    end
+    it { refute can_create?(LoanNoClaim) }
   end
 
   context 'Loan Demand Against Government' do
-    it 'cannot create' do
-      refute can_create?(LoanDemandAgainstGovernment)
-    end
+    it { refute can_create?(LoanDemandAgainstGovernment) }
   end
 
   context 'Loan Guarantee' do
-    it 'cannot create' do
-      refute can_create?(LoanGuarantee)
-    end
+    it { refute can_create?(LoanGuarantee) }
   end
 
   context 'loan changes' do
-    it 'cannot view' do
-      refute can_view?(LoanChange)
-    end
-
-    it 'cannot create' do
-      refute can_create?(LoanChange)
-    end
+    it { refute can_view?(LoanChange) }
+    it { refute can_create?(LoanChange) }
   end
 
   context 'loan alerts' do
-    it 'cannot view' do
-      refute can_view?(LoanAlerts)
-    end
+    it { refute can_view?(LoanAlerts) }
   end
 
   context 'premium schedule report' do
-    it 'can create' do
-      assert can_create?(PremiumScheduleReport)
-    end
+    it { assert can_create?(PremiumScheduleReport) }
   end
 
   context 'Loan' do
-    it 'cannot view' do
-      refute can_view?(Loan)
-    end
+    it { refute can_view?(Loan) }
   end
 
   context 'Loan::States' do
-    it 'cannot view' do
-      refute can_view?(Loan::States)
-    end
+    it { refute can_view?(Loan::States) }
   end
 
   context 'Search' do
-    it 'cannot view' do
-      refute can_view?(Search)
-    end
+    it { refute can_view?(Search) }
   end
 end
