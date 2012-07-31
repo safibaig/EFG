@@ -9,6 +9,6 @@ describe PremiumScheduleController do
     end
 
     it_behaves_like 'CfeUser-restricted controller'
-    it_behaves_like 'LenderUser-restricted LoanPresenter controller'
+    it_behaves_like 'Lender-scoped controller'
   end
 end

@@ -9,7 +9,7 @@ describe LoanDemandToBorrowersController do
     end
 
     it_behaves_like 'CfeUser-restricted controller'
-    it_behaves_like 'LenderUser-restricted LoanPresenter controller'
+    it_behaves_like 'Lender-scoped controller'
 
     context 'as a LenderUser from the same lender' do
       let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
@@ -28,6 +28,6 @@ describe LoanDemandToBorrowersController do
     end
 
     it_behaves_like 'CfeUser-restricted controller'
-    it_behaves_like 'LenderUser-restricted LoanPresenter controller'
+    it_behaves_like 'Lender-scoped controller'
   end
 end

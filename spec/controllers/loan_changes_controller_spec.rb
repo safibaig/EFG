@@ -8,7 +8,7 @@ describe LoanChangesController do
       get :index, { loan_id: loan.id }.merge(params)
     end
 
-    it_behaves_like 'LenderUser-restricted LoanPresenter controller'
+    it_behaves_like 'Lender-scoped controller'
   end
 
   describe '#show' do
@@ -18,7 +18,7 @@ describe LoanChangesController do
       get :show, { id: loan_change.id, loan_id: loan.id }.merge(params)
     end
 
-    it_behaves_like 'LenderUser-restricted LoanPresenter controller'
+    it_behaves_like 'Lender-scoped controller'
   end
 
   describe '#new' do
@@ -27,7 +27,7 @@ describe LoanChangesController do
     end
 
     it_behaves_like 'CfeUser-restricted controller'
-    it_behaves_like 'LenderUser-restricted LoanPresenter controller'
+    it_behaves_like 'Lender-scoped controller'
 
     context 'as a LenderUser from the same lender' do
       let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
@@ -66,7 +66,7 @@ describe LoanChangesController do
     end
 
     it_behaves_like 'CfeUser-restricted controller'
-    it_behaves_like 'LenderUser-restricted LoanPresenter controller'
+    it_behaves_like 'Lender-scoped controller'
 
     context 'when logged in' do
       let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
