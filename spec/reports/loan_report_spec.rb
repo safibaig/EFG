@@ -18,7 +18,7 @@ describe LoanReport do
       loan_report.loan_state = "wrong"
       loan_report.should_not be_valid
 
-      loan_report.loan_state = "all"
+      loan_report.loan_state = "All"
       loan_report.should be_valid
     end
 
