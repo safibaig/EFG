@@ -11,7 +11,7 @@ describe DocumentsController do
     end
 
     it_behaves_like 'documents controller action'
-    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
   describe '#information_declaration' do
@@ -20,7 +20,7 @@ describe DocumentsController do
     end
 
     it_behaves_like 'documents controller action'
-    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
   describe '#data_protection_declaration' do
@@ -29,7 +29,7 @@ describe DocumentsController do
     end
 
     it_behaves_like 'CfeUser-restricted controller'
-    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
 
     it 'renders PDF document' do
       dispatch

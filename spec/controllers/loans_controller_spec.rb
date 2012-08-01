@@ -8,7 +8,7 @@ describe LoansController do
       get :show, { id: loan.id }.merge(params)
     end
 
-    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
     it_behaves_like 'Lender-scoped controller'
 
     context 'as a LenderUser from the same lender' do

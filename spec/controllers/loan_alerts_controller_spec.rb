@@ -15,7 +15,7 @@ describe LoanAlertsController do
     end
 
     it_behaves_like "loan alerts controller"
-    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
   describe "#not_demanded" do
@@ -28,7 +28,7 @@ describe LoanAlertsController do
     end
 
     it_behaves_like "loan alerts controller"
-    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
   describe "#not_progressed" do
@@ -41,7 +41,7 @@ describe LoanAlertsController do
     end
 
     it_behaves_like "loan alerts controller"
-    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
   describe "#assumed_repaid" do
@@ -56,7 +56,7 @@ describe LoanAlertsController do
       get :assumed_repaid, params
     end
 
-    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
 
     context "with high priority" do
       before do

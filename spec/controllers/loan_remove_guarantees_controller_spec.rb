@@ -9,7 +9,7 @@ describe LoanRemoveGuaranteesController do
     end
 
     it_behaves_like 'CfeUser-only controller'
-    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
   describe '#create' do
@@ -18,6 +18,6 @@ describe LoanRemoveGuaranteesController do
     end
 
     it_behaves_like 'CfeUser-only controller'
-    it_behaves_like 'PremiumScheduleCollectorUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 end

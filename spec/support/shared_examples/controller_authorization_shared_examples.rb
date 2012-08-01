@@ -34,8 +34,8 @@ shared_examples_for 'CfeUser-only controller' do
   end
 end
 
-shared_examples_for 'PremiumScheduleCollectorUser-restricted controller' do
-  let(:current_user) { FactoryGirl.create(:premium_schedule_collector_user) }
+shared_examples_for 'PremiumCollectorUser-restricted controller' do
+  let(:current_user) { FactoryGirl.create(:premium_collector_user) }
 
   before { sign_in(current_user) }
 

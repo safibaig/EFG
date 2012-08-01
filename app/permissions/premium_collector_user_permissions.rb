@@ -1,4 +1,4 @@
-module PremiumScheduleCollectorUserPermissions
+module PremiumCollectorUserPermissions
   def can_create?(resource)
     resource == PremiumScheduleReport
   end

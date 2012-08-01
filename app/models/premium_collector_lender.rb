@@ -1,4 +1,4 @@
-class PremiumScheduleCollectorLender
+class PremiumCollectorLender
   def loan_allocations
     LoanAllocation.none
   end
@@ -8,6 +8,6 @@ class PremiumScheduleCollectorLender
   end
 
   def users
-    PremiumScheduleCollectorUser.scoped
+    PremiumCollectorUser.scoped
   end
 end

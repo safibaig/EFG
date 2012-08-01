@@ -11,6 +11,6 @@ FactoryGirl.define do
       lender
     end
 
-    factory :premium_schedule_collector_user, class: PremiumScheduleCollectorUser
+    factory :premium_collector_user, class: PremiumCollectorUser
   end
 end

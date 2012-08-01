@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe PremiumScheduleCollectorUser do
+describe PremiumCollectorUser do
   include RefuteMacro
-  include PremiumScheduleCollectorUserPermissions
+  include PremiumCollectorUserPermissions
 
   context 'invoices' do
     it { refute can_view?(Invoice) }
