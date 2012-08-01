@@ -9,7 +9,7 @@ describe RealiseLoansController do
       get :show, id: realisation_statement.id
     end
 
-    it_behaves_like 'CfeUser-only controller'
+    it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
@@ -18,7 +18,7 @@ describe RealiseLoansController do
       get :new
     end
 
-    it_behaves_like 'CfeUser-only controller'
+    it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
@@ -27,7 +27,7 @@ describe RealiseLoansController do
       post :select_loans, params
     end
 
-    it_behaves_like 'CfeUser-only controller'
+    it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
 
     context 'when requesting CSV export' do
@@ -64,7 +64,7 @@ describe RealiseLoansController do
       post :create
     end
 
-    it_behaves_like 'CfeUser-only controller'
+    it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 

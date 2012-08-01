@@ -8,7 +8,7 @@ describe InvoicesController do
       get :show, id: invoice.id
     end
 
-    it_behaves_like 'CfeUser-only controller'
+    it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
@@ -17,7 +17,7 @@ describe InvoicesController do
       get :new
     end
 
-    it_behaves_like 'CfeUser-only controller'
+    it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
@@ -26,7 +26,7 @@ describe InvoicesController do
       post :select_loans, params
     end
 
-    it_behaves_like 'CfeUser-only controller'
+    it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
 
     context 'when requesting CSV export' do
@@ -63,7 +63,7 @@ describe InvoicesController do
       post :create
     end
 
-    it_behaves_like 'CfeUser-only controller'
+    it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 end
