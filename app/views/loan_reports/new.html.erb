@@ -24,7 +24,7 @@
 
   <%= f.input :state, as: :select, collection: loan_report_state_options, include_blank: false %>
 
-  <%= f.input :lender_id, as: :select, collection: loan_report_lender_options, prompt: 'All'  %>
+  <%= loan_report_lender_field(f) %>
 
   <%# f.input :created_by_user_id, as: :select, collection: current_lender.users, include_blank: false %>
 
