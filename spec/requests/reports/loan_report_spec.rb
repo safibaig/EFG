@@ -1,35 +1,65 @@
 require 'spec_helper'
 
-describe 'Generate a loan report' do
+describe 'Loan report' do
 
-  let(:current_user) { FactoryGirl.create(:lender_user) }
+  let!(:loan1) { FactoryGirl.create(:loan, :eligible) }
 
-  let!(:loan1) { FactoryGirl.create(:loan, :eligible, lender: current_user.lender) }
+  let!(:loan2) { FactoryGirl.create(:loan, :guaranteed) }
 
-  let!(:loan2) { FactoryGirl.create(:loan, :guaranteed, lender: current_user.lender) }
+  context 'as a lender user' do
 
-  before(:each) do
-    login_as(current_user, scope: :user)
-    visit new_loan_report_path
+    let(:current_user) { FactoryGirl.create(:lender_user, lender: loan1.lender) }
+
+    before(:each) do
+      login_as(current_user, scope: :user)
+      visit new_loan_report_path
+    end
+
+    it "should output a CSV report for that specific lender" do
+      click_button "Submit"
+
+      page.should have_content "Data extract found 1 row"
+
+      click_button "Download Report"
+
+      # verify CSV is rendered
+      page.body.should include(LoanCsvExport.new([loan1]).generate)
+    end
+
+    it "should return validation errors" do
+      fill_in 'loan_report_facility_letter_start_date', with: 'wrong'
+      click_button "Submit"
+
+      page.should have_content I18n.t('simple_form.labels.loan_report.facility_letter_start_date')
+      page.should have_content "is invalid"
+    end
+
   end
 
-  it "should generate CSV report for all loan states and all schemes" do
-    click_button "Submit"
+  context "as a CFE user" do
 
-    page.should have_content "Data extract found 2 rows"
+    let!(:loan3) { FactoryGirl.create(:loan) }
 
-    click_button "Download Report"
+    let!(:current_user) { FactoryGirl.create(:cfe_user) }
 
-    # verify CSV is rendered
-    page.body.should include(LoanCsvExport.new([loan1, loan2]).generate)
-  end
+    before(:each) do
+      login_as(current_user, scope: :user)
+      visit new_loan_report_path
+    end
 
-  it "should render errors when invalid data is entered in the form" do
-    fill_in 'loan_report_facility_letter_start_date', with: 'wrong'
-    click_button "Submit"
+    it "should output a CSV report for a selection of lenders" do
+      select loan1.lender.name, from: 'loan_report_lender_ids'
+      select loan3.lender.name, from: 'loan_report_lender_ids'
+      click_button "Submit"
 
-    page.should have_content I18n.t('simple_form.labels.loan_report.facility_letter_start_date')
-    page.should have_content "is invalid"
+      page.should have_content "Data extract found 2 rows"
+
+      click_button "Download Report"
+
+      # verify CSV is rendered
+      page.body.should include(LoanCsvExport.new([loan1, loan3]).generate)
+    end
+
   end
 
 end
