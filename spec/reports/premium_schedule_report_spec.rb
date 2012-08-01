@@ -68,4 +68,23 @@ describe PremiumScheduleReport do
       end
     end
   end
+
+  describe '#loans' do
+    let(:premium_schedule_report) { PremiumScheduleReport.new }
+    let!(:loan1) { FactoryGirl.create(:loan) }
+    let!(:loan2) { FactoryGirl.create(:loan) }
+
+    it 'returns the loans' do
+      premium_schedule_report.loans.should include(loan1)
+      premium_schedule_report.loans.should include(loan2)
+    end
+
+    context 'with a lender_id' do
+      it 'includes only loans from that lender' do
+        premium_schedule_report.lender_id = loan1.lender_id
+        premium_schedule_report.loans.should include(loan1)
+        premium_schedule_report.loans.should_not include(loan2)
+      end
+    end
+  end
 end

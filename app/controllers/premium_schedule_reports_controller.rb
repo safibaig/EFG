@@ -20,7 +20,7 @@ class PremiumScheduleReportsController < ApplicationController
         end
       }
       format.csv {
-        render text: '', content_type: 'text/csv'
+        render text: @premium_schedule_report.to_csv, content_type: 'text/csv'
       }
     end
   end

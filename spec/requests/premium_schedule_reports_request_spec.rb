@@ -4,6 +4,9 @@ describe 'premium schedule reports' do
   let(:current_user) { FactoryGirl.create(:premium_collector_user) }
   before { login_as(current_user, scope: :user) }
 
+  let!(:loan1) { FactoryGirl.create(:loan) }
+  let!(:loan2) { FactoryGirl.create(:loan) }
+
   it 'works' do
     visit root_path
     click_link 'Extract premium schedule information'

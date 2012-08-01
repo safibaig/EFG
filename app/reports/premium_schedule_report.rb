@@ -15,7 +15,7 @@ class PremiumScheduleReport
   validate :all_the_things
 
   def count
-    2
+    loans.count
   end
 
   def finish_on=(value)
@@ -26,8 +26,18 @@ class PremiumScheduleReport
     Lender.find(lender_id) if lender_id.present?
   end
 
+  def loans
+    scope = Loan.scoped
+    scope = scope.where(lender_id: lender_id) if lender_id.present?
+    scope
+  end
+
   def start_on=(value)
     @start_on = QuickDateFormatter.parse(value)
+  end
+
+  def to_csv
+    ''
   end
 
   private
