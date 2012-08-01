@@ -8,7 +8,7 @@
 
 <hr>
 
-<%= simple_form_for(@loan_report, url: loan_report_path, html: { class: 'form-horizontal' }) do |f| %>
+<%= simple_form_for(@loan_report, url: loan_report_path, html: { class: 'form-horizontal loan-report' }) do |f| %>
 
   <%= f.input :facility_letter_start_date, as: :quick_date %>
 
