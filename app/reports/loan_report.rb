@@ -3,11 +3,11 @@ require 'active_model/model'
 class LoanReport
   include ActiveModel::Model
 
-  ALLOWED_LOAN_STATES = (Loan::States + ['All']).sort
+  ALLOWED_LOAN_STATES = (Loan::States + ['All']).sort.freeze
 
-  ALLOWED_LOAN_TYPES = [ Loan::SFLG_SOURCE, Loan::LEGACY_SFLG_SOURCE ]
+  ALLOWED_LOAN_TYPES = [ Loan::SFLG_SOURCE, Loan::LEGACY_SFLG_SOURCE ].freeze
 
-  ALLOWED_LOAN_SCHEMES = [ "All", Loan::EFG_SCHEME, Loan::SFLG_SCHEME ]
+  ALLOWED_LOAN_SCHEMES = [ "All", Loan::EFG_SCHEME, Loan::SFLG_SCHEME ].freeze
 
   attr_accessor :facility_letter_start_date, :facility_letter_end_date,
                 :created_at_start_date, :created_at_end_date,
