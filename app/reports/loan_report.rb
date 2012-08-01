@@ -12,7 +12,7 @@ class LoanReport
   attr_accessor :facility_letter_start_date, :facility_letter_end_date,
                 :created_at_start_date, :created_at_end_date,
                 :last_modified_start_date, :last_modified_end_date,
-                :state, :loan_source, :loan_scheme, :lender_id
+                :state, :loan_source, :loan_scheme, :lender_ids
 
   # TODO: implement created_by user for loans so report can filter by that user
 
@@ -20,7 +20,7 @@ class LoanReport
 
   # validates_presence_of :created_by_user_id
 
-  validates_presence_of :lender_id
+  validates_presence_of :lender_ids
 
   validates_inclusion_of :state, in: ALLOWED_LOAN_STATES
 
@@ -70,6 +70,9 @@ class LoanReport
       if date_field_mapping.has_key?(key)
         conditions << date_field_mapping[key]
         values << Date.parse(value)
+      elsif key.to_sym == :lender_ids
+        conditions << "lender_id IN (?)"
+        values << value
       else
         conditions << "#{key} = ?"
         values << value

@@ -4,6 +4,6 @@ FactoryGirl.define do
     # created_by_user_id "All"
     loan_source "S"
     loan_scheme "E"
-    lender_id "All"
+    lender_ids [ 1 ]
   end
 end

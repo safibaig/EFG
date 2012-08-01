@@ -11,7 +11,7 @@ describe LoanReport do
   end
 
   describe "validation" do
-    let(:loan_report) { LoanReport.new(report_attributes) }
+    let(:loan_report) { LoanReport.new(report_attributes(lender_ids: [1])) }
 
     it 'should have a valid factory' do
       loan_report.should be_valid
@@ -62,8 +62,8 @@ describe LoanReport do
       loan_report.should be_valid
     end
 
-    it 'should be invalid without lender ID' do
-      loan_report.lender_id = nil
+    it 'should be invalid without lender IDs' do
+      loan_report.lender_ids = nil
       loan_report.should_not be_valid
     end
 
@@ -202,7 +202,7 @@ describe LoanReport do
       loan1 = FactoryGirl.create(:loan)
       loan2 = FactoryGirl.create(:loan)
 
-      loan_report = LoanReport.new(report_attributes(lender_id: loan1.lender_id))
+      loan_report = LoanReport.new(report_attributes(lender_ids: [ loan1.lender_id ]))
 
       loan_report.loans.should == [ loan1 ]
     end
@@ -232,7 +232,9 @@ describe LoanReport do
   private
 
   def report_attributes(params = {})
-    FactoryGirl.attributes_for(:loan_report).merge(params)
+    FactoryGirl.attributes_for(:loan_report).
+      merge(lender_ids: Lender.all.collect(&:id)).
+      merge(params)
   end
 
 end
