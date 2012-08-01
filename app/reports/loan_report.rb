@@ -76,14 +76,14 @@ class LoanReport
   end
 
   def date_field_mapping
-    {
+    HashWithIndifferentAccess.new(
       facility_letter_start_date: "facility_letter_date >= ?",
       facility_letter_end_date: "facility_letter_date <= ?",
       created_at_start_date: "created_at >= ?",
       created_at_end_date: "created_at <= ?",
       last_modified_start_date: "updated_at >= ?",
       last_modified_end_date: "updated_at <= ?"
-    }
+    )
   end
 
 end
