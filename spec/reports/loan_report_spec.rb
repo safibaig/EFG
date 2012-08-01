@@ -82,6 +82,11 @@ describe LoanReport do
         loan_report.send("#{field}=", '18/06/2012')
         loan_report.should be_valid
       end
+
+      it "should allow blank value for date field" do
+        loan_report.send("#{field}=", "")
+        loan_report.should be_valid
+      end
     end
   end
 

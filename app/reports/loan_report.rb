@@ -36,7 +36,7 @@ class LoanReport
     last_modified_start_date
     last_modified_end_date
   ).each do |field|
-     validates_format_of field, with: %r{(\d){2}/(\d){2}/(\d){4}}, allow_nil: true
+     validates_format_of field, with: %r{(\d){2}/(\d){2}/(\d){4}}, allow_nil: true, allow_blank: true
   end
 
   def initialize(attributes = {})
