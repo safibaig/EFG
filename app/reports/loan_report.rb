@@ -52,6 +52,10 @@ class LoanReport
     Loan.where(query_conditions)
   end
 
+  def to_csv
+    LoanCsvExport.new(loans).generate
+  end
+
   private
 
   # return ActiveRecord query array

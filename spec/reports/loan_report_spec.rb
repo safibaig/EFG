@@ -218,6 +218,17 @@ describe LoanReport do
 
   end
 
+  describe "#to_csv" do
+    it "should return all found loans in CSV format" do
+      loan1 = FactoryGirl.create(:loan)
+      loan2 = FactoryGirl.create(:loan)
+
+      loan_report = LoanReport.new(report_attributes)
+
+      loan_report.to_csv.should == LoanCsvExport.new([loan1, loan2]).generate
+    end
+  end
+
   private
 
   def report_attributes(params = {})
