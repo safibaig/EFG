@@ -10,23 +10,27 @@
 
 <%= simple_form_for(@loan_report, url: loan_report_path, html: { class: 'form-horizontal' }) do |f| %>
 
-  <%= f.input :facility_letter_start_date %>
+  <%= f.input :facility_letter_start_date, as: :quick_date %>
 
-  <%= f.input :facility_letter_end_date %>
+  <%= f.input :facility_letter_end_date, as: :quick_date %>
 
-  <%= f.input :created_at_start_date %>
+  <%= f.input :created_at_start_date, as: :quick_date %>
 
-  <%= f.input :created_at_end_date %>
+  <%= f.input :created_at_end_date, as: :quick_date %>
 
-  <%= f.input :last_modified_start_date %>
+  <%= f.input :last_modified_start_date, as: :quick_date %>
 
-  <%= f.input :last_modified_end_date %>
+  <%= f.input :last_modified_end_date, as: :quick_date %>
 
-  <%= f.input :loan_state, as: :select, collection: LoanReport::ALLOWED_LOAN_STATES, include_blank: false %>
+  <%= f.input :state, as: :select, collection: LoanReport::ALLOWED_LOAN_STATES, include_blank: false %>
 
-  <%= f.input :created_by_user_id, as: :select, collection: current_lender.users, include_blank: false %>
+  <%# f.input :created_by_user_id, as: :select, collection: current_lender.users, include_blank: false %>
 
-  <%= f.input :loan_type, as: :radio_buttons, collection: LoanReport::ALLOWED_LOAN_TYPES, wrapper_html: { class: 'radio-buttons-inline' } %>
+  <%= f.input :loan_source,
+              as: :radio_buttons,
+              collection: LoanReport::ALLOWED_LOAN_TYPES,
+              checked: LoanReport::ALLOWED_LOAN_TYPES.first,
+              wrapper_html: { class: 'radio-buttons-inline' } %>
 
   <%= f.input :loan_scheme, as: :select, collection: LoanReport::ALLOWED_LOAN_SCHEMES, include_blank: false %>
 
