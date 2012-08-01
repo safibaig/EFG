@@ -12,4 +12,8 @@ module LoanReportsHelper
     [ ['All'], ['SFLG Only', Loan::SFLG_SCHEME], ['EFG Only', Loan::EFG_SCHEME] ]
   end
 
+  def loan_report_lender_options
+    current_user.lenders.map { |lender| [ lender.name, lender.id ] }
+  end
+
 end
