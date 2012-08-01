@@ -1,0 +1,39 @@
+<div class="page-header">
+  <h1>Loan Report Summary</h1>
+</div>
+
+<p>This page summarises the results of your loan report search criteria. You can download the report or perform a fresh search using edited or new criteria.</p>
+
+<h2>Data extract found <%= pluralize(@loan_report.count, 'row') %></h2>
+
+<%= simple_form_for(@loan_report, url: loan_report_path(format: :csv)) do |f| %>
+
+  <%= f.input :facility_letter_start_date, as: :hidden %>
+
+  <%= f.input :facility_letter_end_date, as: :hidden %>
+
+  <%= f.input :created_at_start_date, as: :hidden %>
+
+  <%= f.input :created_at_end_date, as: :hidden %>
+
+  <%= f.input :last_modified_start_date, as: :hidden %>
+
+  <%= f.input :last_modified_end_date, as: :hidden %>
+
+  <%= f.input :state, as: :hidden %>
+
+  <% @loan_report.lender_ids.each do |lender_id| %>
+    <%= hidden_field_tag 'loan_report[lender_ids][]', lender_id  %>
+  <% end %>
+
+  <%# f.input :created_by_user_id, as: :hidden %>
+
+  <%= f.input :loan_source, as: :hidden %>
+
+  <%= f.input :loan_scheme, as: :hidden %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Download Report', class: 'btn-primary' %>
+  </div>
+
+<% end %>
