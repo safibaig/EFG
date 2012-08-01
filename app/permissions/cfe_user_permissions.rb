@@ -1,6 +1,11 @@
 module CfeUserPermissions
   def can_create?(resource)
-    [Invoice, LoanRemoveGuarantee, RealisationStatement].include?(resource)
+    [
+      Invoice,
+      LoanRemoveGuarantee,
+      RealisationStatement,
+      Search
+    ].include?(resource)
   end
 
   def can_update?(resource)
@@ -14,8 +19,7 @@ module CfeUserPermissions
       LoanAlerts,
       LoanRemoveGuarantee,
       Loan::States,
-      RealisationStatement,
-      Search
+      RealisationStatement
     ].include?(resource)
   end
 end

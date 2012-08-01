@@ -102,6 +102,6 @@ describe CfeUserPermissions do
   end
 
   context 'Search' do
-    it { assert can_view?(Search) }
+    it { assert can_create?(Search) }
   end
 end

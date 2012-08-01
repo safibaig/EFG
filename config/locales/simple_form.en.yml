@@ -198,3 +198,13 @@ en:
         period_covered_quarter: Select the recoveries statement period quarter end date?
         period_covered_year: Recoveries statement period quarter end year? (yyyy)
         received_on: On what date was the Recoveries Statement received? (dd/mm/yyyy)
+
+      premium_schedule_report:
+        collection_month: 'Month of Collection'
+        start_on: 'To refine your data extraction what is the start date for your report.  This date refers to the first Premium collection following the date when the Premium Payment Schedule was created or updated?'
+        finish_on: 'To refine your data extraction what is the end date for your report.  This date refers to the first Premium collection following the date when the Premium Payment Schedule was created or updated?'
+        schedule_type: 'Schedule Type'
+        loan_type: 'Loan Type'
+        loan_reference: 'Loan Reference'
+        lender_id: 'Lender'
+        scheme: 'Loan Scheme'
