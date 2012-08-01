@@ -4,4 +4,8 @@ class CfeUser < User
   def lender
     CfeLender.new
   end
+
+  def lenders
+    Lender.scoped
+  end
 end

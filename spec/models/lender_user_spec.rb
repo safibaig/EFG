@@ -11,4 +11,10 @@ describe LenderUser do
       user.should_not be_valid
     end
   end
+
+  describe '#lenders' do
+    it "returns an array containing only this user's lender record" do
+      user.lenders.should == [ user.lender ]
+    end
+  end
 end
