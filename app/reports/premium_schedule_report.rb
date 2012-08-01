@@ -14,8 +14,16 @@ class PremiumScheduleReport
   validates_format_of :collection_month, with: /\d+\/\d+/, allow_blank: true
   validate :all_the_things
 
+  def count
+    2
+  end
+
   def finish_on=(value)
     @finish_on = QuickDateFormatter.parse(value)
+  end
+
+  def lender
+    Lender.find(lender_id) if lender_id.present?
   end
 
   def start_on=(value)

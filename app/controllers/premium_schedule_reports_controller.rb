@@ -11,10 +11,17 @@ class PremiumScheduleReportsController < ApplicationController
   def create
     @premium_schedule_report = PremiumScheduleReport.new(params[:premium_schedule_report])
 
-    if @premium_schedule_report.valid?
-      # TODO
-    else
-      render :new
+    respond_to do |format|
+      format.html {
+        if @premium_schedule_report.valid?
+          render :summary
+        else
+          render :new
+        end
+      }
+      format.csv {
+        render text: '', content_type: 'text/csv'
+      }
     end
   end
 
