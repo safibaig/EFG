@@ -22,17 +22,17 @@
 
   <%= f.input :last_modified_end_date, as: :quick_date %>
 
-  <%= f.input :state, as: :select, collection: LoanReport::ALLOWED_LOAN_STATES, include_blank: false %>
+  <%= f.input :state, as: :select, collection: loan_report_state_options, include_blank: false %>
 
   <%# f.input :created_by_user_id, as: :select, collection: current_lender.users, include_blank: false %>
 
   <%= f.input :loan_source,
               as: :radio_buttons,
-              collection: LoanReport::ALLOWED_LOAN_TYPES,
-              checked: LoanReport::ALLOWED_LOAN_TYPES.first,
+              collection: loan_report_source_options,
+              checked: LoanReport::ALLOWED_LOAN_SOURCES.first,
               wrapper_html: { class: 'radio-buttons-inline' } %>
 
-  <%= f.input :loan_scheme, as: :select, collection: LoanReport::ALLOWED_LOAN_SCHEMES, include_blank: false %>
+  <%= f.input :loan_scheme, as: :select, collection: loan_report_scheme_options, include_blank: false %>
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>

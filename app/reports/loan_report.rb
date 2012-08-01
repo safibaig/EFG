@@ -5,7 +5,7 @@ class LoanReport
 
   ALLOWED_LOAN_STATES = (Loan::States + ['All']).sort.freeze
 
-  ALLOWED_LOAN_TYPES = [ Loan::SFLG_SOURCE, Loan::LEGACY_SFLG_SOURCE ].freeze
+  ALLOWED_LOAN_SOURCES = [ Loan::SFLG_SOURCE, Loan::LEGACY_SFLG_SOURCE ].freeze
 
   ALLOWED_LOAN_SCHEMES = [ "All", Loan::EFG_SCHEME, Loan::SFLG_SCHEME ].freeze
 
@@ -24,7 +24,7 @@ class LoanReport
 
   validates_inclusion_of :state, in: ALLOWED_LOAN_STATES
 
-  validates_inclusion_of :loan_source, in: ALLOWED_LOAN_TYPES
+  validates_inclusion_of :loan_source, in: ALLOWED_LOAN_SOURCES
 
   validates_inclusion_of :loan_scheme, in: ALLOWED_LOAN_SCHEMES
 
