@@ -28,6 +28,17 @@ class LoanReport
 
   validates_inclusion_of :loan_scheme, in: ALLOWED_LOAN_SCHEMES
 
+  %w(
+    facility_letter_start_date
+    facility_letter_end_date
+    created_at_start_date
+    created_at_end_date
+    last_modified_start_date
+    last_modified_end_date
+  ).each do |field|
+     validates_format_of field, with: %r{(\d){2}/(\d){2}/(\d){4}}, allow_nil: true
+  end
+
   def initialize(attributes = {})
     super
     @attributes = attributes

@@ -66,6 +66,23 @@ describe LoanReport do
       loan_report.lender_id = nil
       loan_report.should_not be_valid
     end
+
+    %w(
+      facility_letter_start_date
+      facility_letter_end_date
+      created_at_start_date
+      created_at_end_date
+      last_modified_start_date
+      last_modified_end_date
+    ).each do |field|
+      it "should be invalid without a correctly formatted #{field.humanize}" do
+        loan_report.send("#{field}=", '2008/01/01')
+        loan_report.should_not be_valid
+
+        loan_report.send("#{field}=", '18/06/2012')
+        loan_report.should be_valid
+      end
+    end
   end
 
   describe "#count" do
