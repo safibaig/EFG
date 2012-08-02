@@ -190,9 +190,23 @@ describe LoanReport do
       loan1 = FactoryGirl.create(:loan)
       loan2 = FactoryGirl.create(:loan)
 
-      loan_report = LoanReport.new(report_attributes(lender_ids: [ loan1.lender_id ]))
+      loan_report = LoanReport.new(report_attributes(allowed_lender_ids: [ loan1.lender_id ], lender_ids: [ loan1.lender_id ]))
 
       loan_report.loans.should == [ loan1 ]
+    end
+
+    it "should raise exception when a specified lender is not allowed" do
+      loan1 = FactoryGirl.create(:loan)
+      loan2 = FactoryGirl.create(:loan)
+
+      expect {
+        LoanReport.new(
+          report_attributes(
+            allowed_lender_ids: [ loan2.lender_id ],
+            lender_ids: [ loan1.lender_id, loan2.lender_id ]
+          )
+        )
+      }.to raise_error(LoanReport::LenderNotAllowed)
     end
 
     it "should ignore blank values" do
@@ -220,7 +234,10 @@ describe LoanReport do
   private
 
   def report_attributes(params = {})
+    allowed_lender_ids = Lender.count.zero? ? [ 1 ] : Lender.all.collect(&:id)
+
     FactoryGirl.attributes_for(:loan_report).
+      merge(allowed_lender_ids: allowed_lender_ids).
       merge(lender_ids: Lender.all.collect(&:id)).
       merge(params)
   end

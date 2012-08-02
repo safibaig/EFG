@@ -17,13 +17,10 @@ describe LoanReportsController do
         post :create, loan_report: { lender_ids: [ loan.lender.id, loan2.lender.id ] }
       end
 
-      it "should remove any lender IDs from params that the current user does not have access to" do
-        LoanReport.
-          should_receive(:new).
-          with({ "lender_ids" => [ loan.lender.id.to_s ] }).
-          and_return(mock(valid?: false))
-
-        dispatch
+      it "should raise exception when trying to access loans belonging to a different user" do
+        expect {
+          dispatch
+        }.to raise_error(LoanReport::LenderNotAllowed)
       end
     end
 
