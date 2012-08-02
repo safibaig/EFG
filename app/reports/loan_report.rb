@@ -9,10 +9,33 @@ class LoanReport
 
   ALLOWED_LOAN_SCHEMES = [ Loan::EFG_SCHEME, Loan::SFLG_SCHEME ].freeze
 
-  attr_accessor :facility_letter_start_date, :facility_letter_end_date,
-                :created_at_start_date, :created_at_end_date,
-                :last_modified_start_date, :last_modified_end_date,
-                :state, :loan_source, :loan_scheme, :lender_ids
+  DATE_FIELDS = %w(
+    facility_letter_start_date
+    facility_letter_end_date
+    created_at_start_date
+    created_at_end_date
+    last_modified_start_date
+    last_modified_end_date
+  )
+
+  OTHER_FIELDS = %w(
+    state
+    loan_source
+    loan_scheme
+    lender_ids
+  )
+
+  DATE_FIELDS.each do |field|
+    attr_reader field
+
+    define_method "#{field}=" do |value|
+      instance_variable_set "@#{field}", QuickDateFormatter.parse(value)
+    end
+  end
+
+  OTHER_FIELDS.each { |attr| attr_accessor attr }
+
+  # attr_accessor :state, :loan_source, :loan_scheme, :lender_ids
 
   # TODO: implement created_by user for loans so report can filter by that user
 
@@ -28,20 +51,11 @@ class LoanReport
 
   validates_inclusion_of :loan_scheme, in: ALLOWED_LOAN_SCHEMES, allow_blank: true
 
-  %w(
-    facility_letter_start_date
-    facility_letter_end_date
-    created_at_start_date
-    created_at_end_date
-    last_modified_start_date
-    last_modified_end_date
-  ).each do |field|
-     validates_format_of field, with: %r{(\d){2}/(\d){2}/(\d){4}}, allow_nil: true, allow_blank: true
-  end
-
-  def initialize(attributes = {})
-    super
-    @attributes = attributes
+  def attributes
+    (DATE_FIELDS + OTHER_FIELDS).inject({}) do |memo, field|
+      memo[field] = send(field)
+      memo
+    end
   end
 
   def count
@@ -64,12 +78,12 @@ class LoanReport
     conditions = []
     values = []
 
-    @attributes.each_pair do |key, value|
+    attributes.each_pair do |key, value|
       next if value.blank?
 
       if date_field_mapping.has_key?(key)
         conditions << date_field_mapping[key]
-        values << Date.parse(value)
+        values << value
       elsif key.to_sym == :lender_ids
         conditions << "lender_id IN (?)"
         values << value

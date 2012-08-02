@@ -25,15 +25,6 @@ describe 'Loan report' do
       # verify CSV is rendered
       page.body.should include(LoanCsvExport.new([loan1]).generate)
     end
-
-    it "should return validation errors" do
-      fill_in 'loan_report_facility_letter_start_date', with: 'wrong'
-      click_button "Submit"
-
-      page.should have_content I18n.t('simple_form.labels.loan_report.facility_letter_start_date')
-      page.should have_content "is invalid"
-    end
-
   end
 
   context "as a CFE user" do
