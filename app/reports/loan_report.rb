@@ -3,11 +3,11 @@ require 'active_model/model'
 class LoanReport
   include ActiveModel::Model
 
-  ALLOWED_LOAN_STATES = (Loan::States + ['All']).sort.freeze
+  ALLOWED_LOAN_STATES = Loan::States.sort.freeze
 
   ALLOWED_LOAN_SOURCES = [ Loan::SFLG_SOURCE, Loan::LEGACY_SFLG_SOURCE ].freeze
 
-  ALLOWED_LOAN_SCHEMES = [ "All", Loan::EFG_SCHEME, Loan::SFLG_SCHEME ].freeze
+  ALLOWED_LOAN_SCHEMES = [ Loan::EFG_SCHEME, Loan::SFLG_SCHEME ].freeze
 
   attr_accessor :facility_letter_start_date, :facility_letter_end_date,
                 :created_at_start_date, :created_at_end_date,
@@ -22,11 +22,11 @@ class LoanReport
 
   validates_presence_of :lender_ids
 
-  validates_inclusion_of :state, in: ALLOWED_LOAN_STATES
+  validates_inclusion_of :state, in: ALLOWED_LOAN_STATES, allow_blank: true
 
   validates_inclusion_of :loan_source, in: ALLOWED_LOAN_SOURCES
 
-  validates_inclusion_of :loan_scheme, in: ALLOWED_LOAN_SCHEMES
+  validates_inclusion_of :loan_scheme, in: ALLOWED_LOAN_SCHEMES, allow_blank: true
 
   %w(
     facility_letter_start_date
@@ -65,7 +65,7 @@ class LoanReport
     values = []
 
     @attributes.each_pair do |key, value|
-      next if value.blank? || value == 'All'
+      next if value.blank?
 
       if date_field_mapping.has_key?(key)
         conditions << date_field_mapping[key]

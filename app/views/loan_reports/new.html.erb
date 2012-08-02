@@ -22,7 +22,7 @@
 
   <%= f.input :last_modified_end_date, as: :quick_date %>
 
-  <%= f.input :state, as: :select, collection: loan_report_state_options, include_blank: false %>
+  <%= f.input :state, as: :select, collection: loan_report_state_options, prompt: 'All' %>
 
   <%= loan_report_lender_field(f) %>
 
@@ -34,7 +34,7 @@
               checked: LoanReport::ALLOWED_LOAN_SOURCES.first,
               wrapper_html: { class: 'radio-buttons-inline' } %>
 
-  <%= f.input :loan_scheme, as: :select, collection: loan_report_scheme_options, include_blank: false %>
+  <%= f.input :loan_scheme, as: :select, collection: loan_report_scheme_options, prompt: 'All' %>
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>

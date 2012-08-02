@@ -17,16 +17,21 @@ describe LoanReport do
       loan_report.should be_valid
     end
 
-    it 'should be invalid without a loan state' do
+    it 'should be valid when loan state is nil' do
       loan_report.state = nil
-      loan_report.should_not be_valid
+      loan_report.should be_valid
+    end
+
+    it 'should be valid with a blank loan state' do
+      loan_report.state = ""
+      loan_report.should be_valid
     end
 
     it 'should be invalid without an allowed loan state' do
       loan_report.state = "wrong"
       loan_report.should_not be_valid
 
-      loan_report.state = "All"
+      loan_report.state = Loan::Guaranteed
       loan_report.should be_valid
     end
 
@@ -49,9 +54,14 @@ describe LoanReport do
       loan_report.should be_valid
     end
 
-    it 'should be invalid without a loan scheme' do
+    it 'should be valid when loan scheme is nil' do
       loan_report.loan_scheme = nil
-      loan_report.should_not be_valid
+      loan_report.should be_valid
+    end
+
+    it 'should be valid with a blank loan scheme' do
+      loan_report.loan_scheme = ""
+      loan_report.should be_valid
     end
 
     it 'should be invalid without an allowed loan scheme' do
