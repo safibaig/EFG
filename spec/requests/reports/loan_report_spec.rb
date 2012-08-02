@@ -72,26 +72,9 @@ describe 'Loan report' do
       page.body.should include(LoanCsvExport.new([loan1, loan3]).generate)
     end
 
-    # TODO: update spec to confirm cfe admin, auditor and premium collection users are shown
-    it "should only allow selection of loans created by any Cfe admin, Cfe, Auditor or Premium collection agent user" do
-      another_cfe_user = FactoryGirl.create(:cfe_user, first_name: "Mr", last_name: "Admin")
-
+    it "should not show created by form field" do
       visit new_loan_report_path
-
-      [current_user, another_cfe_user].each do |user|
-        page.should have_css("#loan_report_created_by_id option", text: user.name)
-      end
-
-      (loan1.lender.users & loan2.lender.users).each do |lender_user|
-        page.should_not have_css("#loan_report_created_by_id option", text: lender_user.name)
-      end
-
-      select loan1.lender.name, from: 'loan_report_lender_ids'
-      select "Mr Admin", from: "loan_report[created_by_id]"
-      click_button "Submit"
-
-      # another_cfe_user did not create any loans
-      page.should have_content "Data extract found 0 rows"
+      page.should_not have_css("#loan_report_created_by_id option")
     end
 
   end

@@ -26,7 +26,7 @@
 
   <%= loan_report_lender_field(f) %>
 
-  <%= f.input :created_by_id, as: :select, collection: loan_report_user_options, prompt: 'All' %>
+  <%= loan_report_created_by_field(f) %>
 
   <%= f.input :loan_source,
               as: :radio_buttons,

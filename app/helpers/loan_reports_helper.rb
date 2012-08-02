@@ -24,13 +24,9 @@ module LoanReportsHelper
     current_user.lenders.map { |lender| [ lender.name, lender.id ] }
   end
 
-  # TODO: include auditors, premium collection agents and CFE admins
-  # in CfeUser options when those user types are available
-  def loan_report_user_options
-    if current_user.is_a?(CfeUser)
-      CfeUser.all # + AuditorUser.all + PremiumCollectionUser.all + CfeAdmin.all
-    else
-      current_lender.users
+  def loan_report_created_by_field(form_builder)
+    if current_user.is_a?(LenderUser)
+      form_builder.input :created_by_id, as: :select, collection: current_lender.users, prompt: 'All'
     end
   end
 
