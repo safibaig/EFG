@@ -140,4 +140,29 @@ describe PremiumScheduleReport do
       end
     end
   end
+
+  describe '#to_csv' do
+    let!(:loan) {
+      FactoryGirl.create(:loan,
+        lender: FactoryGirl.create(:lender, organisation_reference_code: 'Z'),
+        reference: 'ABC'
+      )
+    }
+
+    let(:premium_schedule_report) { PremiumScheduleReport.new }
+    let(:csv) { CSV.parse(premium_schedule_report.to_csv) }
+
+    it do
+      csv.length.should == 2
+    end
+
+    context 'data' do
+      let(:row) { csv[1] }
+
+      it do
+        row[1].should == 'Z'
+        row[2].should == 'ABC'
+      end
+    end
+  end
 end
