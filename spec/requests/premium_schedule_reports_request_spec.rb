@@ -4,8 +4,13 @@ describe 'premium schedule reports' do
   let(:current_user) { FactoryGirl.create(:premium_collector_user) }
   before { login_as(current_user, scope: :user) }
 
-  let!(:loan1) { FactoryGirl.create(:loan) }
-  let!(:loan2) { FactoryGirl.create(:loan) }
+  let(:loan1) { FactoryGirl.create(:loan, :guaranteed) }
+  let(:loan2) { FactoryGirl.create(:loan, :guaranteed) }
+
+  before do
+    FactoryGirl.create(:loan_change, loan: loan1)
+    FactoryGirl.create(:loan_change, loan: loan2)
+  end
 
   it 'works' do
     visit root_path

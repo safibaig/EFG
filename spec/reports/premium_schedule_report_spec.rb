@@ -116,8 +116,13 @@ describe PremiumScheduleReport do
 
   describe '#loans' do
     let(:premium_schedule_report) { PremiumScheduleReport.new }
-    let!(:loan1) { FactoryGirl.create(:loan) }
-    let!(:loan2) { FactoryGirl.create(:loan, reference: 'ABC') }
+    let(:loan1) { FactoryGirl.create(:loan, :guaranteed) }
+    let(:loan2) { FactoryGirl.create(:loan, :guaranteed, reference: 'ABC') }
+
+    before do
+      FactoryGirl.create(:loan_change, loan: loan1)
+      FactoryGirl.create(:loan_change, loan: loan2)
+    end
 
     it 'returns the loans' do
       premium_schedule_report.loans.should include(loan1)
@@ -142,27 +147,30 @@ describe PremiumScheduleReport do
   end
 
   describe '#to_csv' do
-    let!(:loan) {
-      FactoryGirl.create(:loan,
-        lender: FactoryGirl.create(:lender, organisation_reference_code: 'Z'),
+    before do
+      lender = FactoryGirl.create(:lender, organisation_reference_code: 'Z')
+
+      loan = FactoryGirl.create(:loan,
+        lender: lender,
         reference: 'ABC'
       )
-    }
 
-    let(:premium_schedule_report) { PremiumScheduleReport.new }
-    let(:csv) { CSV.parse(premium_schedule_report.to_csv) }
-
-    it do
-      csv.length.should == 2
+      FactoryGirl.create(:loan_change,
+        loan: loan,
+        date_of_change: '3/11/2011'
+      )
     end
 
-    context 'data' do
-      let(:row) { csv[1] }
+    let(:premium_schedule_report) { PremiumScheduleReport.new }
 
-      it do
-        row[1].should == 'Z'
-        row[2].should == 'ABC'
-      end
+    it 'works' do
+      csv = CSV.parse(premium_schedule_report.to_csv)
+      csv.length.should == 2
+
+      row = csv[1]
+      row[0].should == '03-11-2011'
+      row[1].should == 'Z'
+      row[2].should == 'ABC'
     end
   end
 end

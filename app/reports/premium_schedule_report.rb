@@ -31,7 +31,15 @@ class PremiumScheduleReport
   end
 
   def loans
-    scope = Loan.includes(:lender)
+    scope = Loan
+      .select([
+        'loans.*',
+        'loan_changes.date_of_change AS _draw_down_date',
+        'lenders.organisation_reference_code AS _lender_organisation'
+      ].join(', '))
+      .joins(:lender, :loan_changes)
+      .where(loan_changes: { seq: 0 })
+
     scope = scope.where(lender_id: lender_id) if lender_id.present?
     scope = scope.where(reference: loan_reference) if loan_reference.present?
     scope
@@ -66,13 +74,13 @@ class PremiumScheduleReport
 
     def values_from_loan(loan)
       [
-        nil,                                      # Draw Down Date
-        loan.lender.organisation_reference_code,  # Lender organisation
-        loan.reference,                           # Loan reference
-        nil,                                      # Schedule Type
-        nil,                                      # Initial Premium Cheque
-        nil,                                      # 1st Collection Date
-        nil                                       # No of Payments
+        loan._draw_down_date.strftime('%d-%m-%Y'),
+        loan._lender_organisation,
+        loan.reference,
+        nil,  # Schedule Type
+        nil,  # Initial Premium Cheque
+        nil,  # 1st Collection Date
+        nil   # No of Payments
       ] + Array.new(40)
     end
 end
