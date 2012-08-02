@@ -35,8 +35,6 @@ class LoanReport
 
   OTHER_FIELDS.each { |attr| attr_accessor attr }
 
-  # attr_accessor :state, :loan_source, :loan_scheme, :lender_ids
-
   # TODO: implement created_by user for loans so report can filter by that user
 
   # attr_accessor :created_by_user_id
@@ -80,31 +78,26 @@ class LoanReport
 
     attributes.each_pair do |key, value|
       next if value.blank?
-
-      if date_field_mapping.has_key?(key)
-        conditions << date_field_mapping[key]
-        values << value
-      elsif key.to_sym == :lender_ids
-        conditions << "lender_id IN (?)"
-        values << value
-      else
-        conditions << "#{key} = ?"
-        values << value
-      end
+      conditions << query_conditions_mapping[key.to_sym]
+      values << value
     end
 
     [conditions.join(" AND "), *values]
   end
 
-  def date_field_mapping
-    HashWithIndifferentAccess.new(
+  def query_conditions_mapping
+    {
+      state: "state = ?",
+      loan_source: "loan_source = ?",
+      loan_scheme: "loan_scheme = ?",
+      lender_ids: "lender_id IN (?)",
       facility_letter_start_date: "facility_letter_date >= ?",
       facility_letter_end_date: "facility_letter_date <= ?",
       created_at_start_date: "created_at >= ?",
       created_at_end_date: "created_at <= ?",
       last_modified_start_date: "updated_at >= ?",
       last_modified_end_date: "updated_at <= ?"
-    )
+    }
   end
 
 end
