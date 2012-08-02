@@ -16,14 +16,9 @@ class LoanReport
     created_at_end_date
     last_modified_start_date
     last_modified_end_date
-  )
+  ).freeze
 
-  OTHER_FIELDS = %w(
-    state
-    loan_source
-    loan_scheme
-    lender_ids
-  )
+  OTHER_FIELDS = %w(state loan_source loan_scheme lender_ids).freeze
 
   DATE_FIELDS.each do |field|
     attr_reader field
