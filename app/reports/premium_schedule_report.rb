@@ -29,6 +29,7 @@ class PremiumScheduleReport
   def loans
     scope = Loan.scoped
     scope = scope.where(lender_id: lender_id) if lender_id.present?
+    scope = scope.where(reference: loan_reference) if loan_reference.present?
     scope
   end
 
@@ -42,7 +43,9 @@ class PremiumScheduleReport
 
   private
     def all_the_things
-      if collection_month.blank? && schedule_type != 'New' && loan_reference.blank?
+      return if loan_reference.present?
+
+      if collection_month.blank? && schedule_type != 'New'
         errors.add(:collection_month, :required)
       end
 
