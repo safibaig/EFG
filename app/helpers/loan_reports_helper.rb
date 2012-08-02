@@ -9,7 +9,7 @@ module LoanReportsHelper
   end
 
   def loan_report_scheme_options
-    [ ['All'], ['SFLG Only', Loan::SFLG_SCHEME], ['EFG Only', Loan::EFG_SCHEME] ]
+    [ ['SFLG Only', Loan::SFLG_SCHEME], ['EFG Only', Loan::EFG_SCHEME] ]
   end
 
   def loan_report_lender_field(form_builder)

@@ -26,7 +26,7 @@
     <%= hidden_field_tag 'loan_report[lender_ids][]', lender_id  %>
   <% end %>
 
-  <%# f.input :created_by_user_id, as: :hidden %>
+  <%= f.input :created_by_id, as: :hidden %>
 
   <%= f.input :loan_source, as: :hidden %>
 
