@@ -85,11 +85,25 @@ describe PremiumScheduleReport do
         premium_schedule_report.schedule_type = 'Changed'
       end
 
-      it 'requires a collection_month' do
-        premium_schedule_report.collection_month = ''
+      it 'is invalid without a collection_month' do
         premium_schedule_report.should_not be_valid
+      end
+
+      it 'is valid with a collection_month' do
         premium_schedule_report.collection_month = '1/2012'
         premium_schedule_report.should be_valid
+      end
+
+      it 'cannot have start_on' do
+        premium_schedule_report.collection_month = '1/2012'
+        premium_schedule_report.start_on = '1/1/11'
+        premium_schedule_report.should_not be_valid
+      end
+
+      it 'cannot have finish_on' do
+        premium_schedule_report.collection_month = '1/2012'
+        premium_schedule_report.finish_on = '1/1/11'
+        premium_schedule_report.should_not be_valid
       end
     end
 

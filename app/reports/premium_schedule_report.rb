@@ -68,7 +68,11 @@ class PremiumScheduleReport
       end
 
       if finish_on.blank? && start_on.blank? && schedule_type != 'Changed'
-        errors.add(:base, :start_or_finish_is_required)
+        errors.add(:base, :start_or_finish_required)
+      end
+
+      if schedule_type == 'Changed' && (finish_on.present? || start_on.present?)
+        errors.add(:base, :start_or_finish_forbidden)
       end
     end
 
