@@ -17,5 +17,9 @@ describe QuickDateFormatter do
     it 'does not blow up for a blank value' do
       QuickDateFormatter.parse('').should be_nil
     end
+
+    it 'does not blow up for an incorrectly formatted date' do
+      QuickDateFormatter.parse('2008/01/01').should be_nil
+    end
   end
 end
