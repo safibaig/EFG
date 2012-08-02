@@ -10,6 +10,8 @@ describe 'premium schedule reports' do
   before do
     FactoryGirl.create(:loan_change, loan: loan1)
     FactoryGirl.create(:loan_change, loan: loan2)
+    FactoryGirl.create(:state_aid_calculation, loan: loan1)
+    FactoryGirl.create(:state_aid_calculation, loan: loan2)
   end
 
   it 'works' do

@@ -81,7 +81,7 @@ class PremiumScheduleReport
         loan._draw_down_date.strftime('%d-%m-%Y'),
         loan._lender_organisation,
         loan.reference,
-        nil,  # Schedule Type
+        loan.state_aid_calculations.last.calc_type,
         nil,  # Initial Premium Cheque
         nil,  # 1st Collection Date
         nil   # No of Payments

@@ -173,6 +173,9 @@ describe PremiumScheduleReport do
         loan: loan,
         date_of_change: '3/11/2011'
       )
+
+      FactoryGirl.create(:state_aid_calculation, loan: loan, calc_type: '_')
+      FactoryGirl.create(:state_aid_calculation, loan: loan, calc_type: 'S')
     end
 
     let(:premium_schedule_report) { PremiumScheduleReport.new }
@@ -185,6 +188,7 @@ describe PremiumScheduleReport do
       row[0].should == '03-11-2011'
       row[1].should == 'Z'
       row[2].should == 'ABC'
+      row[3].should == 'S'
     end
   end
 end
