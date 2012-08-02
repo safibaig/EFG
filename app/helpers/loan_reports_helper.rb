@@ -14,7 +14,7 @@ module LoanReportsHelper
 
   def loan_report_lender_field(form_builder)
     if current_user.lenders.count == 1
-      hidden_field_tag 'loan_report[lender_ids][]', current_user.lender.id
+      hidden_field_tag 'loan_report[lender_ids][]', current_lender.id
     else
       form_builder.input :lender_ids, as: :select, collection: loan_report_lender_options, input_html: { multiple: true }
     end
@@ -22,6 +22,16 @@ module LoanReportsHelper
 
   def loan_report_lender_options
     current_user.lenders.map { |lender| [ lender.name, lender.id ] }
+  end
+
+  # TODO: include auditors, premium collection agents and CFE admins
+  # in CfeUser options when those user types are available
+  def loan_report_user_options
+    if current_user.is_a?(CfeUser)
+      CfeUser.all # + AuditorUser.all + PremiumCollectionUser.all + CfeAdmin.all
+    else
+      current_lender.users
+    end
   end
 
 end
