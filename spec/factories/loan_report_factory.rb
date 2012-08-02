@@ -1,6 +1,5 @@
 FactoryGirl.define do
   factory :loan_report do
-    # created_by_user_id "All"
     loan_source "S"
     loan_scheme "E"
     lender_ids [1]

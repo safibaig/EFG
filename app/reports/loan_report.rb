@@ -22,7 +22,14 @@ class LoanReport
     last_modified_end_date
   ).freeze
 
-  OTHER_FIELDS = %w(allowed_lender_ids state loan_source loan_scheme lender_ids).freeze
+  OTHER_FIELDS = %w(
+    allowed_lender_ids
+    state
+    loan_source
+    loan_scheme
+    lender_ids
+    created_by_id
+  ).freeze
 
   DATE_FIELDS.each do |field|
     attr_reader field
@@ -34,13 +41,9 @@ class LoanReport
 
   OTHER_FIELDS.each { |attr| attr_accessor attr }
 
-  # TODO: implement created_by user for loans so report can filter by that user
-
-  # attr_accessor :created_by_user_id
-
-  # validates_presence_of :created_by_user_id
-
   validates_presence_of :allowed_lender_ids, :lender_ids
+
+  validates_numericality_of :created_by_id, allow_blank: true
 
   validates_inclusion_of :state, in: ALLOWED_LOAN_STATES, allow_blank: true
 
@@ -96,6 +99,7 @@ class LoanReport
       loan_source: "loan_source = ?",
       loan_scheme: "loan_scheme = ?",
       lender_ids: "lender_id IN (?)",
+      created_by_id: "created_by_id = ?",
       facility_letter_start_date: "facility_letter_date >= ?",
       facility_letter_end_date: "facility_letter_date <= ?",
       created_at_start_date: "created_at >= ?",

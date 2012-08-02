@@ -6,6 +6,10 @@ describe LoanReportsController do
 
   describe "#create" do
 
+    def dispatch(params = {})
+      post :create, loan_report: params
+    end
+
     context 'with lender user' do
       let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
 
@@ -13,13 +17,9 @@ describe LoanReportsController do
 
       before { sign_in(current_user) }
 
-      def dispatch
-        post :create, loan_report: { lender_ids: [ loan.lender.id, loan2.lender.id ] }
-      end
-
-      it "should raise exception when trying to access loans belonging to a different user" do
+      it "should raise exception when trying to access loans belonging to a different lender" do
         expect {
-          dispatch
+          dispatch(lender_ids: [ loan.lender.id, loan2.lender.id ])
         }.to raise_error(LoanReport::LenderNotAllowed)
       end
     end

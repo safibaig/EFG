@@ -76,6 +76,11 @@ describe LoanReport do
       loan_report.lender_ids = nil
       loan_report.should_not be_valid
     end
+
+    it 'should be invalid without a numeric created by ID' do
+      loan_report.created_by_id = 'a'
+      loan_report.should_not be_valid
+    end
   end
 
   describe "#count" do
@@ -193,6 +198,36 @@ describe LoanReport do
       loan_report = LoanReport.new(report_attributes(allowed_lender_ids: [ loan1.lender_id ], lender_ids: [ loan1.lender_id ]))
 
       loan_report.loans.should == [ loan1 ]
+    end
+
+    it "should return loans created by a specific user" do
+      user1 = FactoryGirl.create(:user)
+      user2 = FactoryGirl.create(:user)
+
+      loan1 = FactoryGirl.create(:loan, created_by: user1)
+      loan2 = FactoryGirl.create(:loan, created_by: user2)
+
+      loan_report = LoanReport.new(report_attributes(created_by_id: user2.id))
+
+      loan_report.loans.should == [ loan2 ]
+    end
+
+    it "should return no loans when specified created by user does not belong to one of the specified lenders" do
+      user1 = FactoryGirl.create(:user)
+      user2 = FactoryGirl.create(:user)
+
+      loan1 = FactoryGirl.create(:loan, created_by: user1)
+      loan2 = FactoryGirl.create(:loan, created_by: user2)
+
+      loan_report = LoanReport.new(
+        report_attributes(
+          allowed_lender_ids: [ loan1.lender_id ],
+          lender_ids: [ loan1.lender_id ],
+          created_by_id: user2.id
+        )
+      )
+
+      loan_report.loans.should be_empty
     end
 
     it "should raise exception when a specified lender is not allowed" do
