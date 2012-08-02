@@ -165,6 +165,9 @@ class LoanImporter < BaseImporter
         end
 
         value
+      when "CREATED_BY"
+        memo[:created_by_id] = (value.blank?) ? nil : User.find_by_legacy_id(value).try(:id)
+        value
       when "LENDER_CAP_ID"
         memo[:loan_allocation_id] = (value.blank?) ? nil : LoanAllocation.find_by_legacy_id(value.to_i).id
         value
@@ -190,7 +193,11 @@ class LoanImporter < BaseImporter
   # insert extra association fields in columns
   def self.columns
     columns = field_mapping.values
-    { lender_legacy_id: :lender_id, lender_cap_id: :loan_allocation_id }.each do |field1, field2|
+    {
+      lender_legacy_id: :lender_id,
+      lender_cap_id: :loan_allocation_id,
+      created_by_legacy_id: :created_by_id
+    }.each do |field1, field2|
       index = columns.index(field1)
       columns.insert(index, field2)
     end

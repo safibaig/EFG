@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120726154310) do
+ActiveRecord::Schema.define(:version => 20120802100311) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -250,6 +250,7 @@ ActiveRecord::Schema.define(:version => 20120726154310) do
     t.integer  "loan_allocation_id"
     t.integer  "invoice_id"
     t.integer  "transferred_from_id"
+    t.integer  "created_by_id"
   end
 
   add_index "loans", ["legacy_id"], :name => "index_loans_on_legacy_id", :unique => true

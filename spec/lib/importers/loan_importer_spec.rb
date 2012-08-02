@@ -3,7 +3,10 @@ require 'importers'
 
 describe LoanImporter do
 
+  let!(:user) { FactoryGirl.create(:user, legacy_id: "8008769F7E055AEBA0033AD3880965BB0E99142A") }
+
   let!(:lender) { FactoryGirl.create(:lender, legacy_id: 9) }
+
   let!(:loan_allocation) { FactoryGirl.create(:loan_allocation, lender: lender, legacy_id: 47) }
 
   let(:csv_fixture_path) { Rails.root.join('spec/fixtures/import_data/loans.csv') }
@@ -21,6 +24,7 @@ describe LoanImporter do
         :turnover                            => 136500000,
         :state                               => Loan::Guaranteed,
         :created_by_legacy_id                => "8008769F7E055AEBA0033AD3880965BB0E99142A",
+        :created_by_id                       => user.id,
         :created_at                          => Time.parse("19-DEC-05"),
         :updated_at                          => Time.parse("22-OCT-07"),
         :version                             => "11",
@@ -151,6 +155,7 @@ describe LoanImporter do
       loan.turnover.should == Money.new(136500000)
       loan.state.should == Loan::Guaranteed
       loan.created_by_legacy_id.should == "8008769F7E055AEBA0033AD3880965BB0E99142A"
+      loan.created_by_id.should == user.id
       loan.created_at.should == Time.gm(2005, 12, 19)
       loan.updated_at.should_not be_blank # after_import hook will update this to current time
       loan.version.should == 11
