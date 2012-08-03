@@ -2,9 +2,6 @@ require 'active_model/model'
 require 'csv'
 
 class PremiumScheduleReport
-  HEADERS = ['Draw Down Date', 'Lender organisation', 'Loan reference',
-    'Schedule Type', 'Initial Premium Cheque', '1st Collection Date',
-    'No of Payments'] + (1..40).map { |i| "Premium#{i}" }
   LOAN_SCHEMES = ['All', 'SFLG only', 'EFG only']
   LOAN_TYPES = %w(All New Legacy)
   SCHEDULE_TYPES = %w(All New Changed)
@@ -72,10 +69,10 @@ class PremiumScheduleReport
 
   def to_csv
     CSV.generate do |csv|
-      csv << HEADERS
+      csv << PremiumScheduleReportRow::HEADERS
 
-      loans.each do |loan|
-        csv << values_from_loan(loan)
+      PremiumScheduleReportRow.from_loans(loans).each do |row|
+        csv << row.to_csv
       end
     end
   end
@@ -95,17 +92,5 @@ class PremiumScheduleReport
       if schedule_type == 'Changed' && (finish_on.present? || start_on.present?)
         errors.add(:base, :start_or_finish_forbidden)
       end
-    end
-
-    def values_from_loan(loan)
-      [
-        loan._draw_down_date.strftime('%d-%m-%Y'),
-        loan._lender_organisation,
-        loan.reference,
-        loan.state_aid_calculations.last.calc_type,
-        nil,  # Initial Premium Cheque
-        nil,  # 1st Collection Date
-        nil   # No of Payments
-      ] + Array.new(40)
     end
 end
