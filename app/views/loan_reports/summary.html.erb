@@ -6,34 +6,100 @@
 
 <h2>Data extract found <%= pluralize(@loan_report.count, 'row') %></h2>
 
-<%= simple_form_for(@loan_report, url: loan_report_path(format: :csv)) do |f| %>
+<% if @loan_report.count.zero? %>
+  <p>
+  <%= link_to "New criteria", new_loan_report_path, class: 'btn' %></p>
+<% end %>
 
-  <%= f.input :facility_letter_start_date, as: :hidden %>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Criterion</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>The Scheme Facility Letter start date for your report</td>
+      <td><%= @loan_report.facility_letter_start_date.try(:to_s, :screen) %></td>
+    </tr>
+    <tr>
+      <td>The Scheme Facility Letter end date for your report</td>
+      <td><%= @loan_report.facility_letter_end_date.try(:to_s, :screen) %></td>
+    </tr>
+    <tr>
+      <td>The 'created' start date for your report</td>
+      <td><%= @loan_report.created_at_start_date.try(:to_s, :screen) %></td>
+    </tr>
+    <tr>
+      <td>The 'created' end date for your report</td>
+      <td><%= @loan_report.created_at_end_date.try(:to_s, :screen) %></td>
+    </tr>
+    <tr>
+      <td>The 'last modified' start date for your report</td>
+      <td><%= @loan_report.last_modified_start_date.try(:to_s, :screen) %></td>
+    </tr>
+    <tr>
+      <td>The 'last modified' end date for your report</td>
+      <td><%= @loan_report.last_modified_end_date.try(:to_s, :screen) %></td>
+    </tr>
+    <tr>
+      <td>Loan state</td>
+      <td><%= @loan_report.state.try(:humanize) %></td>
+    </tr>
+    <tr>
+      <td>Lender organisation</td>
+      <td><%= loan_report_organisation_names(@loan_report.lender_ids) %></td>
+    </tr>
+    <% if current_user.is_a?(LenderUser) && @loan_report.created_by_id.present? %>
+    <tr>
+      <td>Created by user</td>
+      <td><%= User.find(@loan_report.created_by_id).try(:name) %></td>
+    </tr>
+    <% end %>
+    <tr>
+      <td>Loan type</td>
+      <td><%= loan_source_name(@loan_report.loan_source) %></td>
+    </tr>
+    <tr>
+      <td>Loan scheme</td>
+      <td><%= loan_scheme_name(@loan_report.loan_scheme) %></td>
+    </tr>
+  </tbody>
+</table>
 
-  <%= f.input :facility_letter_end_date, as: :hidden %>
+<% unless @loan_report.count.zero? %>
 
-  <%= f.input :created_at_start_date, as: :hidden %>
+  <%= simple_form_for(@loan_report, url: loan_report_path(format: :csv)) do |f| %>
 
-  <%= f.input :created_at_end_date, as: :hidden %>
+    <%= f.input :facility_letter_start_date, as: :hidden %>
 
-  <%= f.input :last_modified_start_date, as: :hidden %>
+    <%= f.input :facility_letter_end_date, as: :hidden %>
 
-  <%= f.input :last_modified_end_date, as: :hidden %>
+    <%= f.input :created_at_start_date, as: :hidden %>
 
-  <%= f.input :state, as: :hidden %>
+    <%= f.input :created_at_end_date, as: :hidden %>
 
-  <% @loan_report.lender_ids.each do |lender_id| %>
-    <%= hidden_field_tag 'loan_report[lender_ids][]', lender_id  %>
+    <%= f.input :last_modified_start_date, as: :hidden %>
+
+    <%= f.input :last_modified_end_date, as: :hidden %>
+
+    <%= f.input :state, as: :hidden %>
+
+    <% @loan_report.lender_ids.each do |lender_id| %>
+      <%= hidden_field_tag 'loan_report[lender_ids][]', lender_id  %>
+    <% end %>
+
+    <%= f.input :created_by_id, as: :hidden %>
+
+    <%= f.input :loan_source, as: :hidden %>
+
+    <%= f.input :loan_scheme, as: :hidden %>
+
+    <div class="form-actions">
+      <%= f.button :submit, value: 'Download Report', class: 'btn-primary' %>
+    </div>
+
   <% end %>
-
-  <%= f.input :created_by_id, as: :hidden %>
-
-  <%= f.input :loan_source, as: :hidden %>
-
-  <%= f.input :loan_scheme, as: :hidden %>
-
-  <div class="form-actions">
-    <%= f.button :submit, value: 'Download Report', class: 'btn-primary' %>
-  </div>
 
 <% end %>

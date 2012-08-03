@@ -64,7 +64,7 @@ class LoanReport
   end
 
   def count
-    loans.count
+    @count ||= loans.count
   end
 
   def loans
