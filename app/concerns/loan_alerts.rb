@@ -1,5 +1,4 @@
 module LoanAlerts
-  extend ActiveSupport::Concern
 
   def not_progressed_start_date
     183.days.ago.to_date
