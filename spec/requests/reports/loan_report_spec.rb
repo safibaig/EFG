@@ -6,6 +6,10 @@ describe 'Loan report' do
 
   let!(:loan2) { FactoryGirl.create(:loan, :guaranteed) }
 
+  before(:each) do
+    login_as(current_user, scope: :user)
+  end
+
   context 'as a lender user' do
 
     let(:current_user) { FactoryGirl.create(:lender_user, lender: loan1.lender) }
@@ -15,7 +19,7 @@ describe 'Loan report' do
     end
 
     it "should output a CSV report for that specific lender" do
-      visit new_loan_report_path
+      navigate_to_loan_report_form
 
       fill_in_valid_details
       click_button "Submit"
@@ -32,7 +36,7 @@ describe 'Loan report' do
       another_user = FactoryGirl.create(:lender_user, lender: loan1.lender, first_name: "Peter", last_name: "Parker")
       loan1.update_attribute(:created_by_id, another_user.id)
 
-      visit new_loan_report_path
+      navigate_to_loan_report_form
 
       loan1.lender.users.each do |user|
         page.should have_css("#loan_report_created_by_id option", text: user.name)
@@ -56,12 +60,9 @@ describe 'Loan report' do
 
     let!(:current_user) { FactoryGirl.create(:cfe_user) }
 
-    before(:each) do
-      login_as(current_user, scope: :user)
-      visit new_loan_report_path
-    end
-
     it "should output a CSV report for a selection of lenders" do
+      navigate_to_loan_report_form
+
       fill_in_valid_details
       select loan1.lender.name, from: 'loan_report_lender_ids'
       select loan3.lender.name, from: 'loan_report_lender_ids'
@@ -76,12 +77,12 @@ describe 'Loan report' do
     end
 
     it "should not show created by form field" do
-      visit new_loan_report_path
+      navigate_to_loan_report_form
       page.should_not have_css("#loan_report_created_by_id option")
     end
 
     it "should show validation errors" do
-      visit new_loan_report_path
+      navigate_to_loan_report_form
       click_button "Submit"
 
       # 2 errors - empty states multi-select, no loan source checkbox checked
@@ -97,6 +98,11 @@ describe 'Loan report' do
     select 'Eligible', from: 'loan_report[states][]'
     select 'Guaranteed', from: 'loan_report[states][]'
     check :loan_report_loan_source_s
+  end
+
+  def navigate_to_loan_report_form
+    visit root_path
+    click_link 'Generate a loan report'
   end
 
 end
