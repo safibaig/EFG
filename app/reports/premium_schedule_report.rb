@@ -51,6 +51,11 @@ class PremiumScheduleReport
       scope = scope.where(state_aid_calculations: { calc_type: calc_type })
     end
 
+    if loan_scheme.present? && loan_scheme != 'All'
+      scheme = loan_scheme == 'SFLG Only' ? Loan::SFLG_SCHEME : Loan::EFG_SCHEME
+      scope = scope.where(loans: { loan_scheme: scheme })
+    end
+
     scope = scope.where(lender_id: lender_id) if lender_id.present?
     scope = scope.where(reference: loan_reference) if loan_reference.present?
     scope
