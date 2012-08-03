@@ -22,8 +22,8 @@ module LoanReportsHelper
     LOAN_SCHEME_NAMES.to_a
   end
 
-  def loan_source_name(source)
-    LOAN_SOURCE_NAMES.invert[source]
+  def loan_source_name(sources)
+    sources.collect { |source| LOAN_SOURCE_NAMES.invert[source] }.join(', ')
   end
 
   def loan_scheme_name(scheme)

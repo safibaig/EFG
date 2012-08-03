@@ -17,6 +17,7 @@ describe 'Loan report' do
     it "should output a CSV report for that specific lender" do
       visit new_loan_report_path
 
+      fill_in_valid_details
       click_button "Submit"
 
       page.should have_content "Data extract found 1 row"
@@ -41,6 +42,7 @@ describe 'Loan report' do
         page.should_not have_css("#loan_report_created_by_id option", text: another_lender_user.name)
       end
 
+      fill_in_valid_details
       select "Peter Parker", from: "loan_report[created_by_id]"
       click_button "Submit"
 
@@ -60,6 +62,7 @@ describe 'Loan report' do
     end
 
     it "should output a CSV report for a selection of lenders" do
+      fill_in_valid_details
       select loan1.lender.name, from: 'loan_report_lender_ids'
       select loan3.lender.name, from: 'loan_report_lender_ids'
       click_button "Submit"
@@ -77,6 +80,12 @@ describe 'Loan report' do
       page.should_not have_css("#loan_report_created_by_id option")
     end
 
+  end
+
+  private
+
+  def fill_in_valid_details
+    check :loan_report_loan_source_s
   end
 
 end

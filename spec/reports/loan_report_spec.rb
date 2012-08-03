@@ -41,16 +41,16 @@ describe LoanReport do
       loan_report.should_not be_valid
     end
 
-    it 'should be invalid without a loan type' do
-      loan_report.loan_source = nil
+    it 'should be invalid without a loan source' do
+      loan_report.loan_sources = nil
       loan_report.should_not be_valid
     end
 
-    it 'should be invalid without an allowed loan type' do
-      loan_report.loan_source = "Z"
+    it 'should be invalid without an allowed loan source' do
+      loan_report.loan_sources = ["Z"]
       loan_report.should_not be_valid
 
-      loan_report.loan_source = Loan::LEGACY_SFLG_SOURCE
+      loan_report.loan_sources = [ Loan::LEGACY_SFLG_SOURCE ]
       loan_report.should be_valid
     end
 
@@ -133,7 +133,7 @@ describe LoanReport do
       loan1 = FactoryGirl.create(:loan, loan_source: Loan::LEGACY_SFLG_SOURCE)
       loan2 = FactoryGirl.create(:loan)
 
-      loan_report = LoanReport.new(report_attributes(loan_source: Loan::LEGACY_SFLG_SOURCE))
+      loan_report = LoanReport.new(report_attributes(loan_sources: [ Loan::LEGACY_SFLG_SOURCE ]))
       loan_report.loans.should == [ loan1 ]
     end
 

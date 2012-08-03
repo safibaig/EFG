@@ -28,11 +28,7 @@
 
   <%= loan_report_created_by_field(f) %>
 
-  <%= f.input :loan_source,
-              as: :radio_buttons,
-              collection: loan_report_source_options,
-              checked: LoanReport::ALLOWED_LOAN_SOURCES.first,
-              wrapper_html: { class: 'radio-buttons-inline' } %>
+  <%= f.input :loan_sources, as: :check_boxes, collection: loan_report_source_options %>
 
   <%= f.input :loan_scheme, as: :select, collection: loan_report_scheme_options, prompt: 'All' %>
 

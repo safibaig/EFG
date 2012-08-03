@@ -58,8 +58,8 @@
     </tr>
     <% end %>
     <tr>
-      <td>Loan type</td>
-      <td><%= loan_source_name(@loan_report.loan_source) %></td>
+      <td>Loan type(s)</td>
+      <td><%= loan_source_name(@loan_report.loan_sources) %></td>
     </tr>
     <tr>
       <td>Loan scheme</td>
@@ -92,7 +92,9 @@
 
     <%= f.input :created_by_id, as: :hidden %>
 
-    <%= f.input :loan_source, as: :hidden %>
+    <% @loan_report.loan_sources.each do |source| %>
+      <%= hidden_field_tag 'loan_report[loan_sources][]', source  %>
+    <% end %>
 
     <%= f.input :loan_scheme, as: :hidden %>
 
