@@ -130,9 +130,9 @@ describe PremiumScheduleReport do
 
   describe '#loans' do
     let(:premium_schedule_report) { PremiumScheduleReport.new }
-    let(:loan1) { FactoryGirl.create(:loan, :guaranteed, loan_scheme: 'E') }
-    let(:loan2) { FactoryGirl.create(:loan, :guaranteed, loan_scheme: 'E', reference: 'ABC') }
-    let(:loan3) { FactoryGirl.create(:loan, :guaranteed, loan_scheme: 'S') }
+    let(:loan1) { FactoryGirl.create(:loan, :guaranteed, loan_scheme: 'E', loan_source: 'L') }
+    let(:loan2) { FactoryGirl.create(:loan, :guaranteed, loan_scheme: 'E', loan_source: 'S', reference: 'ABC') }
+    let(:loan3) { FactoryGirl.create(:loan, :guaranteed, loan_scheme: 'S', loan_source: 'S') }
     let!(:state_aid_calculation1) { FactoryGirl.create(:state_aid_calculation, loan: loan1, calc_type: 'S') }
     let!(:state_aid_calculation2) { FactoryGirl.create(:state_aid_calculation, loan: loan2, calc_type: 'R') }
     let!(:state_aid_calculation3) { FactoryGirl.create(:state_aid_calculation, loan: loan3, calc_type: 'N') }
@@ -204,6 +204,27 @@ describe PremiumScheduleReport do
         premium_schedule_report.loan_scheme = 'EFG Only'
         premium_schedule_report.loans.should include(loan1)
         premium_schedule_report.loans.should include(loan2)
+        premium_schedule_report.loans.should_not include(loan3)
+      end
+    end
+
+    context 'with a loan_type' do
+      it do
+        premium_schedule_report.loan_type = 'All'
+        premium_schedule_report.loans.length.should == 3
+      end
+
+      it do
+        premium_schedule_report.loan_type = 'New'
+        premium_schedule_report.loans.should_not include(loan1)
+        premium_schedule_report.loans.should include(loan2)
+        premium_schedule_report.loans.should include(loan3)
+      end
+
+      it do
+        premium_schedule_report.loan_type = 'Legacy'
+        premium_schedule_report.loans.should include(loan1)
+        premium_schedule_report.loans.should_not include(loan2)
         premium_schedule_report.loans.should_not include(loan3)
       end
     end

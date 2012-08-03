@@ -56,6 +56,11 @@ class PremiumScheduleReport
       scope = scope.where(loans: { loan_scheme: scheme })
     end
 
+    if loan_type.present? && loan_type != 'All'
+      loan_source = loan_type == 'Legacy' ? Loan::LEGACY_SFLG_SOURCE : Loan::SFLG_SOURCE
+      scope = scope.where(loans: { loan_source: loan_source })
+    end
+
     scope = scope.where(lender_id: lender_id) if lender_id.present?
     scope = scope.where(reference: loan_reference) if loan_reference.present?
     scope
