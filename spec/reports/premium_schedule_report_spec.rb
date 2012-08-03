@@ -136,36 +136,70 @@ describe PremiumScheduleReport do
     let!(:state_aid_calculation1) { FactoryGirl.create(:state_aid_calculation, loan: loan1, calc_type: 'S') }
     let!(:state_aid_calculation2) { FactoryGirl.create(:state_aid_calculation, loan: loan2, calc_type: 'R') }
     let!(:state_aid_calculation3) { FactoryGirl.create(:state_aid_calculation, loan: loan3, calc_type: 'N') }
+    let!(:loan_change_1) { FactoryGirl.create(:loan_change, loan: loan1, date_of_change: '1/1/11') }
+    let!(:loan_change_2) { FactoryGirl.create(:loan_change, loan: loan2, date_of_change: '2/1/11') }
+    let!(:loan_change_3) { FactoryGirl.create(:loan_change, loan: loan3, date_of_change: '3/1/11') }
 
-    before do
-      FactoryGirl.create(:loan_change, loan: loan1)
-      FactoryGirl.create(:loan_change, loan: loan2)
-      FactoryGirl.create(:loan_change, loan: loan3)
-    end
+    let(:loan_ids) { premium_schedule_report.loans.map(&:id) }
 
     it 'returns the loans' do
-      premium_schedule_report.loans.should include(loan1)
-      premium_schedule_report.loans.should include(loan2)
+      loan_ids.should include(loan1.id)
+      loan_ids.should include(loan2.id)
+      loan_ids.should include(loan3.id)
     end
 
-    context 'with a schedule_type' do
+    context 'with schedule_type' do
       it do
         premium_schedule_report.schedule_type = 'All'
-        premium_schedule_report.loans.length.should == 3
+        loan_ids.length.should == 3
       end
 
-      it do
-        premium_schedule_report.schedule_type = 'New'
-        premium_schedule_report.loans.should include(loan1)
-        premium_schedule_report.loans.should_not include(loan2)
-        premium_schedule_report.loans.should include(loan3)
+      context '"New"' do
+        before do
+          FactoryGirl.create(:loan_change, loan: loan1, date_of_change: '11/2/2011')
+          FactoryGirl.create(:loan_change, loan: loan3, date_of_change: '12/2/2011')
+
+          premium_schedule_report.schedule_type = 'New'
+        end
+
+        it do
+          loan_ids.should include(loan1.id)
+          loan_ids.should_not include(loan2.id)
+          loan_ids.should include(loan3.id)
+        end
+
+        it 'pulls the draw_down_date from the first loan_change' do
+          premium_schedule_report.loans.first._draw_down_date.should == Date.new(2011, 1, 1)
+          premium_schedule_report.loans.last._draw_down_date.should == Date.new(2011, 1, 3)
+        end
+
+        it 'pulls the guaranteed_date from the first loan_change' do
+          premium_schedule_report.loans.first._guaranteed_date.should == Date.new(2011, 1, 1)
+          premium_schedule_report.loans.last._guaranteed_date.should == Date.new(2011, 1, 3)
+        end
       end
 
-      it do
-        premium_schedule_report.schedule_type = 'Changed'
-        premium_schedule_report.loans.should_not include(loan1)
-        premium_schedule_report.loans.should include(loan2)
-        premium_schedule_report.loans.should_not include(loan3)
+      context '"Changed"' do
+        before do
+          FactoryGirl.create(:loan_change, loan: loan2, date_of_change: '2/3/2012')
+          FactoryGirl.create(:loan_change, loan: loan2, date_of_change: '3/3/2012')
+
+          premium_schedule_report.schedule_type = 'Changed'
+        end
+
+        it do
+          loan_ids.should_not include(loan1.id)
+          loan_ids.should include(loan2.id)
+          loan_ids.should_not include(loan3.id)
+        end
+
+        it 'pulls the draw_down_date from the first loan_change' do
+          premium_schedule_report.loans.first._draw_down_date.should == Date.new(2011, 1, 2)
+        end
+
+        it 'pulls the guaranteed_date from the last loan_change' do
+          premium_schedule_report.loans.first._guaranteed_date.should == Date.new(2012, 3, 3)
+        end
       end
     end
 
