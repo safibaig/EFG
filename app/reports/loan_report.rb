@@ -24,7 +24,7 @@ class LoanReport
 
   OTHER_FIELDS = %w(
     allowed_lender_ids
-    state
+    states
     loan_sources
     loan_scheme
     lender_ids
@@ -41,17 +41,19 @@ class LoanReport
 
   OTHER_FIELDS.each { |attr| attr_accessor attr }
 
-  validates_presence_of :allowed_lender_ids, :lender_ids, :loan_sources
+  validates_presence_of :allowed_lender_ids, :lender_ids, :loan_sources, :states
 
   validates_numericality_of :created_by_id, allow_blank: true
-
-  validates_inclusion_of :state, in: ALLOWED_LOAN_STATES, allow_blank: true
 
   validates_inclusion_of :loan_scheme, in: ALLOWED_LOAN_SCHEMES, allow_blank: true
 
   validate do
     if loan_sources.present? && loan_sources.any? { |source| !ALLOWED_LOAN_SOURCES.include?(source) }
       errors.add(:loan_sources, :inclusion)
+    end
+
+    if states.present? && states.any? { |state| !ALLOWED_LOAN_STATES.include?(state) }
+      errors.add(:states, :inclusion)
     end
   end
 
@@ -84,6 +86,11 @@ class LoanReport
     @loan_sources = sources.is_a?(Array) ? sources.reject(&:blank?) : sources
   end
 
+  # filter out blank entry in array (added by multiple check_box form helper)
+  def states=(states)
+    @states = states.is_a?(Array) ? states.reject(&:blank?) : states
+  end
+
   private
 
   # return ActiveRecord query array
@@ -104,7 +111,7 @@ class LoanReport
 
   def query_conditions_mapping
     {
-      state: "state = ?",
+      states: "state IN (?)",
       loan_sources: "loan_source IN (?)",
       loan_scheme: "loan_scheme = ?",
       lender_ids: "lender_id IN (?)",

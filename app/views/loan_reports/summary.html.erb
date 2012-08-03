@@ -11,11 +11,11 @@
   <%= link_to "New criteria", new_loan_report_path, class: 'btn' %></p>
 <% end %>
 
-<table class="table table-striped">
+<table class="table table-striped report-summary">
   <thead>
     <tr>
-      <th>Criterion</th>
-      <th>Value</th>
+      <th class='criterion'>Criterion</th>
+      <th class='value'>Value</th>
     </tr>
   </thead>
   <tbody>
@@ -44,8 +44,8 @@
       <td><%= @loan_report.last_modified_end_date.try(:to_s, :screen) %></td>
     </tr>
     <tr>
-      <td>Loan state</td>
-      <td><%= @loan_report.state.try(:humanize) %></td>
+      <td>Loan state(s)</td>
+      <td><%= loan_report_states(@loan_report.states) %></td>
     </tr>
     <tr>
       <td>Lender organisation</td>
@@ -84,16 +84,18 @@
 
     <%= f.input :last_modified_end_date, as: :hidden %>
 
-    <%= f.input :state, as: :hidden %>
+    <% @loan_report.states.each do |state| %>
+      <%= hidden_field_tag 'loan_report[states][]', state %>
+    <% end %>
 
     <% @loan_report.lender_ids.each do |lender_id| %>
-      <%= hidden_field_tag 'loan_report[lender_ids][]', lender_id  %>
+      <%= hidden_field_tag 'loan_report[lender_ids][]', lender_id %>
     <% end %>
 
     <%= f.input :created_by_id, as: :hidden %>
 
     <% @loan_report.loan_sources.each do |source| %>
-      <%= hidden_field_tag 'loan_report[loan_sources][]', source  %>
+      <%= hidden_field_tag 'loan_report[loan_sources][]', source %>
     <% end %>
 
     <%= f.input :loan_scheme, as: :hidden %>

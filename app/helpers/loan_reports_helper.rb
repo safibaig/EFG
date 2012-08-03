@@ -34,6 +34,10 @@ module LoanReportsHelper
     Lender.find(lender_ids).collect(&:name).join(' / ')
   end
 
+  def loan_report_states(states)
+    states.is_a?(Array) && states.collect(&:humanize).join(', ')
+  end
+
   def loan_report_lender_field(form_builder)
     if current_user.lenders.count == 1
       hidden_field_tag 'loan_report[lender_ids][]', current_lender.id

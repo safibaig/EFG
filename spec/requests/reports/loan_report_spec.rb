@@ -80,11 +80,22 @@ describe 'Loan report' do
       page.should_not have_css("#loan_report_created_by_id option")
     end
 
+    it "should show validation errors" do
+      visit new_loan_report_path
+      click_button "Submit"
+
+      # 2 errors - empty states multi-select, no loan source checkbox checked
+      page.should have_css('.control-group.select.required.error #loan_report_lender_ids')
+      page.should have_css('.control-group.check_boxes.required.error #loan_report_loan_sources_s')
+    end
+
   end
 
   private
 
   def fill_in_valid_details
+    select 'Eligible', from: 'loan_report[states][]'
+    select 'Guaranteed', from: 'loan_report[states][]'
     check :loan_report_loan_source_s
   end
 

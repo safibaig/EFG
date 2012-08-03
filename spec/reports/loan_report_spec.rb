@@ -17,21 +17,21 @@ describe LoanReport do
       loan_report.should be_valid
     end
 
-    it 'should be valid when loan state is nil' do
-      loan_report.state = nil
-      loan_report.should be_valid
+    it 'should not be valid when loan states is nil' do
+      loan_report.states = nil
+      loan_report.should_not be_valid
     end
 
-    it 'should be valid with a blank loan state' do
-      loan_report.state = ""
-      loan_report.should be_valid
+    it 'should not be valid with empty loan states' do
+      loan_report.states = ""
+      loan_report.should_not be_valid
     end
 
     it 'should be invalid without an allowed loan state' do
-      loan_report.state = "wrong"
+      loan_report.states = [ "wrong" ]
       loan_report.should_not be_valid
 
-      loan_report.state = Loan::Guaranteed
+      loan_report.states = [ Loan::Guaranteed ]
       loan_report.should be_valid
     end
 
@@ -96,7 +96,7 @@ describe LoanReport do
     end
 
     it "should return the total number of loans with state guaranteed" do
-      loan_report.state = Loan::Guaranteed
+      loan_report.states = [ Loan::Guaranteed ]
       loan_report.count.should == 1
     end
 
@@ -117,7 +117,7 @@ describe LoanReport do
       loan1 = FactoryGirl.create(:loan, :eligible)
       loan2 = FactoryGirl.create(:loan, :guaranteed)
 
-      loan_report = LoanReport.new(report_attributes(state: Loan::Guaranteed))
+      loan_report = LoanReport.new(report_attributes(states: [ Loan::Guaranteed ]))
       loan_report.loans.should == [ loan2 ]
     end
 
