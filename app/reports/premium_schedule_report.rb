@@ -40,6 +40,17 @@ class PremiumScheduleReport
       .joins(:lender, :loan_changes)
       .where(loan_changes: { seq: 0 })
 
+    scope = scope
+      .joins(:state_aid_calculations)
+      .where('state_aid_calculations.seq = (?)',
+        StateAidCalculation.select('MAX(seq)').where(loan_id: 'loans.id').to_sql
+      )
+
+    if schedule_type.present? && schedule_type != 'All'
+      calc_type = schedule_type == 'Changed' ? 'R' : %w(S N)
+      scope = scope.where(state_aid_calculations: { calc_type: calc_type })
+    end
+
     scope = scope.where(lender_id: lender_id) if lender_id.present?
     scope = scope.where(reference: loan_reference) if loan_reference.present?
     scope

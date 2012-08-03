@@ -132,10 +132,15 @@ describe PremiumScheduleReport do
     let(:premium_schedule_report) { PremiumScheduleReport.new }
     let(:loan1) { FactoryGirl.create(:loan, :guaranteed) }
     let(:loan2) { FactoryGirl.create(:loan, :guaranteed, reference: 'ABC') }
+    let(:loan3) { FactoryGirl.create(:loan, :guaranteed) }
+    let!(:state_aid_calculation1) { FactoryGirl.create(:state_aid_calculation, loan: loan1, calc_type: 'S') }
+    let!(:state_aid_calculation2) { FactoryGirl.create(:state_aid_calculation, loan: loan2, calc_type: 'R') }
+    let!(:state_aid_calculation3) { FactoryGirl.create(:state_aid_calculation, loan: loan3, calc_type: 'N') }
 
     before do
       FactoryGirl.create(:loan_change, loan: loan1)
       FactoryGirl.create(:loan_change, loan: loan2)
+      FactoryGirl.create(:loan_change, loan: loan3)
     end
 
     it 'returns the loans' do
@@ -143,11 +148,33 @@ describe PremiumScheduleReport do
       premium_schedule_report.loans.should include(loan2)
     end
 
+    context 'with a schedule_type' do
+      it do
+        premium_schedule_report.schedule_type = 'All'
+        premium_schedule_report.loans.length.should == 3
+      end
+
+      it do
+        premium_schedule_report.schedule_type = 'New'
+        premium_schedule_report.loans.should include(loan1)
+        premium_schedule_report.loans.should_not include(loan2)
+        premium_schedule_report.loans.should include(loan3)
+      end
+
+      it do
+        premium_schedule_report.schedule_type = 'Changed'
+        premium_schedule_report.loans.should_not include(loan1)
+        premium_schedule_report.loans.should include(loan2)
+        premium_schedule_report.loans.should_not include(loan3)
+      end
+    end
+
     context 'with a lender_id' do
       it 'includes only loans from that lender' do
         premium_schedule_report.lender_id = loan1.lender_id
         premium_schedule_report.loans.should include(loan1)
         premium_schedule_report.loans.should_not include(loan2)
+        premium_schedule_report.loans.should_not include(loan3)
       end
     end
 
@@ -156,25 +183,17 @@ describe PremiumScheduleReport do
         premium_schedule_report.loan_reference = 'ABC'
         premium_schedule_report.loans.should_not include(loan1)
         premium_schedule_report.loans.should include(loan2)
+        premium_schedule_report.loans.should_not include(loan3)
       end
     end
   end
 
   describe '#to_csv' do
+    let(:lender) { FactoryGirl.create(:lender, organisation_reference_code: 'Z') }
+    let(:loan) { FactoryGirl.create(:loan, lender: lender, reference: 'ABC') }
+
     before do
-      lender = FactoryGirl.create(:lender, organisation_reference_code: 'Z')
-
-      loan = FactoryGirl.create(:loan,
-        lender: lender,
-        reference: 'ABC'
-      )
-
-      FactoryGirl.create(:loan_change,
-        loan: loan,
-        date_of_change: '3/11/2011'
-      )
-
-      FactoryGirl.create(:state_aid_calculation, loan: loan, calc_type: '_')
+      FactoryGirl.create(:loan_change, loan: loan, date_of_change: '3/11/2011')
       FactoryGirl.create(:state_aid_calculation, loan: loan, calc_type: 'S')
     end
 
