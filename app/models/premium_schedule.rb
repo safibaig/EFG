@@ -21,6 +21,12 @@ class PremiumSchedule
   delegate :fourth_draw_amount, to: :state_aid_calculation
   delegate :fourth_draw_months, to: :state_aid_calculation
 
+  def number_of_payments
+    premiums.count { |amount|
+      amount > 0
+    }
+  end
+
   def premiums
     amount = state_aid_calculation.initial_draw_amount
     quarters = state_aid_calculation.initial_draw_months / 3

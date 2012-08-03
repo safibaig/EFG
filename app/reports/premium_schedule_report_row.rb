@@ -21,6 +21,10 @@ class PremiumScheduleReportRow
     @loan = loan
   end
 
+  def premium_schedule
+    state_aid_calculation.premium_schedule
+  end
+
   def to_csv
     [
       loan._draw_down_date.strftime('%d-%m-%Y'),
@@ -29,7 +33,7 @@ class PremiumScheduleReportRow
       state_aid_calculation.calc_type,
       nil,  # Initial Premium Cheque
       nil,  # 1st Collection Date
-      nil   # No of Payments
-    ] + state_aid_calculation.premium_schedule.premiums.map(&:to_f)
+      premium_schedule.number_of_payments
+    ] + premium_schedule.premiums.map(&:to_f)
   end
 end

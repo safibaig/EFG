@@ -285,6 +285,7 @@ describe PremiumScheduleReport do
       row[2].should == 'ABC'
       row[3].should == 'S'
 
+      row[6].should == '4'
       row[7].should == '61.72'
       row[8].should == '46.29'
       row[9].should == '30.86'
