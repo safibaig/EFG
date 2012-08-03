@@ -1,4 +1,5 @@
 class LoanReportsController < ApplicationController
+  before_filter :verify_create_permission
 
   def new
     @loan_report = LoanReport.new
@@ -26,6 +27,10 @@ class LoanReportsController < ApplicationController
   def loan_report_params
     allowed_lender_ids = current_user.lenders.collect(&:id)
     params[:loan_report].merge(allowed_lender_ids: allowed_lender_ids)
+  end
+
+  def verify_create_permission
+    enforce_create_permission(LoanReport)
   end
 
 end
