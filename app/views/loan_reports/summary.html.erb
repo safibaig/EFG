@@ -54,7 +54,7 @@
     <% if current_user.is_a?(LenderUser) && @loan_report.created_by_id.present? %>
     <tr>
       <td>Created by user</td>
-      <td><%= User.find(@loan_report.created_by_id).try(:name) %></td>
+      <td><%= current_lender.users.find(@loan_report.created_by_id).try(:name) %></td>
     </tr>
     <% end %>
     <tr>
