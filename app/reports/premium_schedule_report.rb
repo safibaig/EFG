@@ -43,10 +43,6 @@ class PremiumScheduleReport
 
     max_state_aid_seq = StateAidCalculation.select('MAX(seq)').where('loan_id = loans.id')
 
-    scope = scope
-      .joins(:state_aid_calculations)
-      .where("state_aid_calculations.seq = (#{max_state_aid_seq.to_sql})")
-
     if schedule_type.present? && schedule_type != 'All'
       if schedule_type == 'Changed'
         # For a "Changed" loan take the guaranteed date to be the last time it
@@ -55,6 +51,12 @@ class PremiumScheduleReport
         scope = scope.where("guaranteed_loan_change.seq = (#{max_change_seq.to_sql})")
 
         calc_type = 'R'
+
+        max_state_aid_seq = max_state_aid_seq.where(calc_type: calc_type)
+
+        if collection_month.present?
+          max_state_aid_seq = max_state_aid_seq.where(premium_cheque_month: collection_month)
+        end
       else
         # Take a "New" loan's guaranteed date from its first change.
         scope = scope.where('guaranteed_loan_change.seq = 0')
@@ -68,6 +70,10 @@ class PremiumScheduleReport
 
       scope = scope.where(state_aid_calculations: { calc_type: calc_type })
     end
+
+    scope = scope
+      .joins(:state_aid_calculations)
+      .where("state_aid_calculations.seq = (#{max_state_aid_seq.to_sql})")
 
     if loan_scheme.present? && loan_scheme != 'All'
       scheme = loan_scheme == 'SFLG Only' ? Loan::SFLG_SCHEME : Loan::EFG_SCHEME
@@ -112,6 +118,10 @@ class PremiumScheduleReport
 
       if schedule_type == 'Changed' && (finish_on.present? || start_on.present?)
         errors.add(:base, :start_or_finish_forbidden)
+      end
+
+      if schedule_type == 'New' && collection_month.present?
+        errors.add(:base, :collection_month_forbidden)
       end
     end
 end

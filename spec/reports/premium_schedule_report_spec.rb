@@ -125,6 +125,12 @@ describe PremiumScheduleReport do
         premium_schedule_report.finish_on = '1/1/11'
         premium_schedule_report.should be_valid
       end
+
+      it 'cannot have collection_month' do
+        premium_schedule_report.start_on = '1/1/11'
+        premium_schedule_report.collection_month = '01/2011'
+        premium_schedule_report.should_not be_valid
+      end
     end
   end
 
@@ -133,9 +139,9 @@ describe PremiumScheduleReport do
     let(:loan1) { FactoryGirl.create(:loan, :guaranteed, loan_scheme: 'E', loan_source: 'L') }
     let(:loan2) { FactoryGirl.create(:loan, :guaranteed, loan_scheme: 'E', loan_source: 'S', reference: 'ABC') }
     let(:loan3) { FactoryGirl.create(:loan, :guaranteed, loan_scheme: 'S', loan_source: 'S') }
-    let!(:state_aid_calculation1) { FactoryGirl.create(:state_aid_calculation, loan: loan1, calc_type: 'S') }
-    let!(:state_aid_calculation2) { FactoryGirl.create(:state_aid_calculation, loan: loan2, calc_type: 'R') }
-    let!(:state_aid_calculation3) { FactoryGirl.create(:state_aid_calculation, loan: loan3, calc_type: 'N') }
+    let!(:state_aid_calculation1) { FactoryGirl.create(:state_aid_calculation, loan: loan1, calc_type: 'S', premium_cheque_month: '01/2011') }
+    let!(:state_aid_calculation2) { FactoryGirl.create(:state_aid_calculation, loan: loan2, calc_type: 'R', premium_cheque_month: '01/2011') }
+    let!(:state_aid_calculation3) { FactoryGirl.create(:state_aid_calculation, loan: loan3, calc_type: 'N', premium_cheque_month: '02/2011') }
     let!(:loan_change_1) { FactoryGirl.create(:loan_change, loan: loan1, date_of_change: '1/1/11', modified_date: '1/1/11') }
     let!(:loan_change_2) { FactoryGirl.create(:loan_change, loan: loan2, date_of_change: '2/1/11', modified_date: '2/1/11') }
     let!(:loan_change_3) { FactoryGirl.create(:loan_change, loan: loan3, date_of_change: '3/1/11', modified_date: '3/1/11') }
@@ -237,9 +243,6 @@ describe PremiumScheduleReport do
 
       context '"Changed"' do
         before do
-          FactoryGirl.create(:loan_change, loan: loan2, date_of_change: '2/3/2012')
-          FactoryGirl.create(:loan_change, loan: loan2, date_of_change: '3/3/2012')
-
           premium_schedule_report.schedule_type = 'Changed'
         end
 
@@ -249,12 +252,52 @@ describe PremiumScheduleReport do
           loan_ids.should_not include(loan3.id)
         end
 
-        it 'pulls the draw_down_date from the first loan_change' do
-          premium_schedule_report.loans.first._draw_down_date.should == Date.new(2011, 1, 2)
+        it 'includes all rescheduled loans' do
+          FactoryGirl.create(:state_aid_calculation, loan: loan1, calc_type: 'R', premium_cheque_month: '03/2011')
+          FactoryGirl.create(:state_aid_calculation, loan: loan3, calc_type: 'R', premium_cheque_month: '03/2011')
+
+          loan_ids.should include(loan1.id)
+          loan_ids.should include(loan2.id)
+          loan_ids.should include(loan3.id)
         end
 
-        it 'pulls the guaranteed_date from the last loan_change' do
-          premium_schedule_report.loans.first._guaranteed_date.should == Date.new(2012, 3, 3)
+        context 'draw_down_date / guaranteed_date' do
+          before do
+            FactoryGirl.create(:loan_change, loan: loan2, date_of_change: '2/3/2012')
+            FactoryGirl.create(:loan_change, loan: loan2, date_of_change: '3/3/2012')
+          end
+
+          it 'pulls the draw_down_date from the first loan_change' do
+            premium_schedule_report.loans.first._draw_down_date.should == Date.new(2011, 1, 2)
+          end
+
+          it 'pulls the guaranteed_date from the last loan_change' do
+            premium_schedule_report.loans.first._guaranteed_date.should == Date.new(2012, 3, 3)
+          end
+        end
+
+        context 'with collection_month' do
+          before do
+            FactoryGirl.create(:state_aid_calculation, loan: loan1, calc_type: 'R', premium_cheque_month: '04/2011')
+            FactoryGirl.create(:state_aid_calculation, loan: loan2, calc_type: 'R', premium_cheque_month: '04/2011')
+            FactoryGirl.create(:state_aid_calculation, loan: loan3, calc_type: 'R', premium_cheque_month: '05/2011')
+          end
+
+          it do
+            premium_schedule_report.collection_month = '04/2011'
+
+            loan_ids.should include(loan1.id)
+            loan_ids.should include(loan2.id)
+            loan_ids.should_not include(loan3.id)
+          end
+
+          it do
+            premium_schedule_report.collection_month = '04/2012'
+
+            loan_ids.should_not include(loan1.id)
+            loan_ids.should_not include(loan2.id)
+            loan_ids.should_not include(loan3.id)
+          end
         end
       end
     end
