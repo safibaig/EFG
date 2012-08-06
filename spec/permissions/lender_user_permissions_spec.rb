@@ -102,6 +102,6 @@ describe LenderUserPermissions do
   end
 
   context 'Search' do
-    it { assert can_create?(Search) }
+    it { assert can_view?(Search) }
   end
 end

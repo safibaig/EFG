@@ -102,6 +102,6 @@ describe PremiumCollectorUser do
   end
 
   context 'Search' do
-    it { refute can_create?(Search) }
+    it { refute can_view?(Search) }
   end
 end
