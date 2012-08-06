@@ -12,7 +12,7 @@ class PremiumScheduleReport
     :loan_type, :schedule_type
   attr_reader :finish_on, :start_on
 
-  validates_format_of :collection_month, with: /\d+\/\d+/, allow_blank: true
+  validates_format_of :collection_month, with: /\A\d+\/\d+\z/, allow_blank: true
   validate :all_the_things
 
   def count
