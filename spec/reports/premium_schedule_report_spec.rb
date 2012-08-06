@@ -270,7 +270,7 @@ describe PremiumScheduleReport do
 
     before do
       FactoryGirl.create(:loan_change, loan: loan, date_of_change: '3/11/2011')
-      FactoryGirl.create(:state_aid_calculation, loan: loan, calc_type: 'S')
+      FactoryGirl.create(:state_aid_calculation, loan: loan, calc_type: 'S', premium_cheque_month: '2/2011')
     end
 
     let(:premium_schedule_report) { PremiumScheduleReport.new }
@@ -285,7 +285,7 @@ describe PremiumScheduleReport do
       row[2].should == 'ABC'
       row[3].should == 'S'
       row[4].should == '61.72'
-
+      row[5].should == '2/2011'
       row[6].should == '3'
       row[7].should == '0.0'
       row[8].should == '46.29'
