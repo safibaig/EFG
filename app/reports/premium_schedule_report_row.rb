@@ -33,7 +33,7 @@ class PremiumScheduleReportRow
       state_aid_calculation.calc_type,
       premium_schedule.premiums.first.to_f,
       state_aid_calculation.premium_cheque_month,
-      premium_schedule.number_of_payments,
+      premium_schedule.number_of_subsequent_payments,
       0.0 # TODO: Zero? Really?
     ] + premium_schedule.subsequent_premiums.map(&:to_f)
   end
