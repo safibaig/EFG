@@ -28,11 +28,13 @@ class PremiumSchedule
   end
 
   def premiums
+    return @premiums if @premiums
+
     amount = state_aid_calculation.initial_draw_amount
     quarters = state_aid_calculation.initial_draw_months.to_f / 3
     per_quarter_payment = quarters < 1 ? amount : amount / quarters
 
-    Array.new(40) do |quarter|
+    @premiums = Array.new(40) do |quarter|
       if quarter <= quarters
         outstanding_capital = amount - (per_quarter_payment * quarter)
         outstanding_capital * PREMIUM_RATE / 4
@@ -43,7 +45,7 @@ class PremiumSchedule
   end
 
   def subsequent_premiums
-    premiums[1..-1]
+    @subsequent_premiums ||= premiums[1..-1]
   end
 
   def total_subsequent_premiums
