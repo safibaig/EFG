@@ -22,7 +22,7 @@ class PremiumSchedule
   delegate :fourth_draw_months, to: :state_aid_calculation
 
   def number_of_payments
-    premiums.count { |amount|
+    subsequent_premiums.count { |amount|
       amount > 0
     }
   end

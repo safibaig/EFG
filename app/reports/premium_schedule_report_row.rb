@@ -31,9 +31,10 @@ class PremiumScheduleReportRow
       loan._lender_organisation,
       loan.reference,
       state_aid_calculation.calc_type,
-      nil,  # Initial Premium Cheque
+      premium_schedule.premiums.first.to_f,
       nil,  # 1st Collection Date
-      premium_schedule.number_of_payments
-    ] + premium_schedule.premiums.map(&:to_f)
+      premium_schedule.number_of_payments,
+      0.0 # TODO: Zero? Really?
+    ] + premium_schedule.subsequent_premiums.map(&:to_f)
   end
 end
