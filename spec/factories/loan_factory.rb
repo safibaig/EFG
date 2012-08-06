@@ -31,6 +31,7 @@ FactoryGirl.define do
     sequence(:legacy_id) { |n| n }
     created_at { Time.now }
     updated_at { Time.now }
+    legacy_small_loan false
 
     trait :eligible do
       state Loan::Eligible
