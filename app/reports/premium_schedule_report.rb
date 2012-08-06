@@ -48,12 +48,19 @@ class PremiumScheduleReport
 
     if schedule_type.present? && schedule_type != 'All'
       if schedule_type == 'Changed'
+        # For a "Changed" loan take the guaranteed date to be the last time it
+        # was changed.
         max_change_seq = LoanChange.select('MAX(seq)').where('loan_id = loans.id')
         scope = scope.where("guaranteed_loan_change.seq = (#{max_change_seq.to_sql})")
 
         calc_type = 'R'
       else
+        # Take a "New" loan's guaranteed date from its first change.
         scope = scope.where('guaranteed_loan_change.seq = 0')
+
+        # TODO: Should this actually use date_of_change instead of modified_date?
+        scope = scope.where('first_loan_change.modified_date >= ?', start_on)  if start_on
+        scope = scope.where('first_loan_change.modified_date <= ?', finish_on) if finish_on
 
         calc_type = %w(S N)
       end

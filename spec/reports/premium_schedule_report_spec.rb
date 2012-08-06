@@ -136,9 +136,9 @@ describe PremiumScheduleReport do
     let!(:state_aid_calculation1) { FactoryGirl.create(:state_aid_calculation, loan: loan1, calc_type: 'S') }
     let!(:state_aid_calculation2) { FactoryGirl.create(:state_aid_calculation, loan: loan2, calc_type: 'R') }
     let!(:state_aid_calculation3) { FactoryGirl.create(:state_aid_calculation, loan: loan3, calc_type: 'N') }
-    let!(:loan_change_1) { FactoryGirl.create(:loan_change, loan: loan1, date_of_change: '1/1/11') }
-    let!(:loan_change_2) { FactoryGirl.create(:loan_change, loan: loan2, date_of_change: '2/1/11') }
-    let!(:loan_change_3) { FactoryGirl.create(:loan_change, loan: loan3, date_of_change: '3/1/11') }
+    let!(:loan_change_1) { FactoryGirl.create(:loan_change, loan: loan1, date_of_change: '1/1/11', modified_date: '1/1/11') }
+    let!(:loan_change_2) { FactoryGirl.create(:loan_change, loan: loan2, date_of_change: '2/1/11', modified_date: '2/1/11') }
+    let!(:loan_change_3) { FactoryGirl.create(:loan_change, loan: loan3, date_of_change: '3/1/11', modified_date: '3/1/11') }
 
     let(:loan_ids) { premium_schedule_report.loans.map(&:id) }
 
@@ -156,26 +156,82 @@ describe PremiumScheduleReport do
 
       context '"New"' do
         before do
-          FactoryGirl.create(:loan_change, loan: loan1, date_of_change: '11/2/2011')
-          FactoryGirl.create(:loan_change, loan: loan3, date_of_change: '12/2/2011')
-
           premium_schedule_report.schedule_type = 'New'
         end
 
-        it do
-          loan_ids.should include(loan1.id)
-          loan_ids.should_not include(loan2.id)
-          loan_ids.should include(loan3.id)
+        context 'draw_down_date / guaranteed_date' do
+          before do
+            FactoryGirl.create(:loan_change, loan: loan1, date_of_change: '11/2/2011')
+            FactoryGirl.create(:loan_change, loan: loan3, date_of_change: '12/2/2011')
+          end
+
+          it do
+            loan_ids.should include(loan1.id)
+            loan_ids.should_not include(loan2.id)
+            loan_ids.should include(loan3.id)
+          end
+
+          it 'pulls the draw_down_date from the first loan_change' do
+            premium_schedule_report.loans.first._draw_down_date.should == Date.new(2011, 1, 1)
+            premium_schedule_report.loans.last._draw_down_date.should == Date.new(2011, 1, 3)
+          end
+
+          it 'pulls the guaranteed_date from the first loan_change' do
+            premium_schedule_report.loans.first._guaranteed_date.should == Date.new(2011, 1, 1)
+            premium_schedule_report.loans.last._guaranteed_date.should == Date.new(2011, 1, 3)
+          end
         end
 
-        it 'pulls the draw_down_date from the first loan_change' do
-          premium_schedule_report.loans.first._draw_down_date.should == Date.new(2011, 1, 1)
-          premium_schedule_report.loans.last._draw_down_date.should == Date.new(2011, 1, 3)
-        end
+        context 'with start_on / finish_on' do
+          it do
+            premium_schedule_report.start_on = '1/1/2011'
 
-        it 'pulls the guaranteed_date from the first loan_change' do
-          premium_schedule_report.loans.first._guaranteed_date.should == Date.new(2011, 1, 1)
-          premium_schedule_report.loans.last._guaranteed_date.should == Date.new(2011, 1, 3)
+            loan_ids.should include(loan1.id)
+            loan_ids.should_not include(loan2.id)
+            loan_ids.should include(loan3.id)
+          end
+
+          it do
+            premium_schedule_report.start_on = '1/1/2011'
+            premium_schedule_report.finish_on = '1/1/2011'
+
+            loan_ids.should include(loan1.id)
+            loan_ids.should_not include(loan2.id)
+            loan_ids.should_not include(loan3.id)
+          end
+
+          it do
+            premium_schedule_report.start_on = '1/1/2011'
+            premium_schedule_report.finish_on = '2/1/2011'
+
+            loan_ids.should include(loan1.id)
+            loan_ids.should_not include(loan2.id)
+            loan_ids.should_not include(loan3.id)
+          end
+
+          it do
+            premium_schedule_report.start_on = '2/1/2011'
+
+            loan_ids.should_not include(loan1.id)
+            loan_ids.should_not include(loan2.id)
+            loan_ids.should include(loan3.id)
+          end
+
+          it do
+            premium_schedule_report.finish_on = '3/1/2011'
+
+            loan_ids.should include(loan1.id)
+            loan_ids.should_not include(loan2.id)
+            loan_ids.should include(loan3.id)
+          end
+
+          it do
+            premium_schedule_report.finish_on = '1/1/2011'
+
+            loan_ids.should include(loan1.id)
+            loan_ids.should_not include(loan2.id)
+            loan_ids.should_not include(loan3.id)
+          end
         end
       end
 
