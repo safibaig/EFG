@@ -29,11 +29,12 @@ class PremiumSchedule
 
   def premiums
     amount = state_aid_calculation.initial_draw_amount
-    quarters = state_aid_calculation.initial_draw_months / 3
+    quarters = state_aid_calculation.initial_draw_months.to_f / 3
+    per_quarter_payment = quarters < 1 ? amount : amount / quarters
 
     Array.new(40) do |quarter|
       if quarter <= quarters
-        outstanding_capital = amount - ((amount / quarters) * quarter)
+        outstanding_capital = amount - (per_quarter_payment * quarter)
         outstanding_capital * PREMIUM_RATE / 4
       else
         Money.new(0)
