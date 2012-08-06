@@ -41,7 +41,7 @@ class StateAidCalculation < ActiveRecord::Base
   RISK_FACTOR = 0.3
 
   def premium_schedule
-    PremiumSchedule.new(self)
+    PremiumSchedule.new(self, loan)
   end
 
   def state_aid_gbp

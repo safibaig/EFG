@@ -22,7 +22,7 @@ class PremiumScheduleReportRow
   end
 
   def premium_schedule
-    state_aid_calculation.premium_schedule
+    @premium_schedule ||= PremiumSchedule.new(state_aid_calculation, loan)
   end
 
   def to_csv

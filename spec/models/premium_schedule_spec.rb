@@ -7,7 +7,9 @@ describe PremiumSchedule do
         initial_draw_amount: Money.new(100_000_00),
         initial_draw_months: 120)
     }
-    let(:premium_schedule) { PremiumSchedule.new(state_aid_calculation) }
+    let(:premium_schedule) {
+      PremiumSchedule.new(state_aid_calculation, state_aid_calculation.loan)
+    }
 
     it "calculates quarterly premiums" do
       [
