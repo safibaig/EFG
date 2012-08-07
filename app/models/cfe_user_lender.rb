@@ -1,4 +1,4 @@
-class CfeLender
+class CfeUserLender
   def loan_allocations
     LoanAllocation.none
   end
