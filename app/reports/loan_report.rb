@@ -75,7 +75,7 @@ class LoanReport
   end
 
   def loans
-    Loan.where(query_conditions)
+    Loan.where(query_conditions).select(select_options)
   end
 
   def to_csv
@@ -120,7 +120,7 @@ class LoanReport
       states: "state IN (?)",
       loan_sources: "loan_source IN (?)",
       loan_scheme: "loan_scheme = ?",
-      lender_ids: "lender_id IN (?)",
+      lender_ids: "loans.lender_id IN (?)",
       created_by_id: "created_by_id = ?",
       facility_letter_start_date: "facility_letter_date >= ?",
       facility_letter_end_date: "facility_letter_date <= ?",
@@ -129,6 +129,19 @@ class LoanReport
       last_modified_start_date: "updated_at >= ?",
       last_modified_end_date: "updated_at <= ?"
     }
+  end
+
+  def select_options
+    [
+      'loans.*',
+      '(SELECT description FROM loan_allocations WHERE id = loans.loan_allocation_id) AS _loan_allocation_description',
+      '(SELECT recovered_on FROM recoveries WHERE loan_id = loans.id ORDER BY recoveries.id DESC LIMIT 1) AS _last_recovery_on',
+      '(SELECT SUM(amount_due_to_dti) FROM recoveries WHERE loan_id = loans.id) AS _total_recoveries',
+      '(SELECT created_at FROM loan_realisations WHERE realised_loan_id = loans.id ORDER BY loan_realisations.id DESC LIMIT 1) AS _last_realisation_at',
+      '(SELECT SUM(realised_amount) FROM loan_realisations WHERE realised_loan_id = loans.id) AS _total_loan_realisations',
+      '(SELECT SUM(amount_drawn) FROM loan_changes WHERE loan_id = loans.id) AS _total_amount_drawn',
+      '(SELECT SUM(lump_sum_repayment) FROM loan_changes WHERE loan_id = loans.id) AS _total_lump_sum_repayment'
+    ].join(',')
   end
 
   def validate_lender_ids

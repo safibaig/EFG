@@ -90,6 +90,7 @@ class LoanReportCsvRow
   # TODO - add DED table data
   # TODO - add invoice to loan
   # TODO - add lender organisation_reference_code
+  # TODO - add a loan's modified by user ID
   def row
     [
       @loan.reference,
@@ -106,7 +107,7 @@ class LoanReportCsvRow
       @loan.amount.to_s,
       @loan.guarantee_rate,
       @loan.premium_rate,
-      @loan.loan_allocation.try(:description),
+      @loan._loan_allocation_description,
       '', # @loan.lender.try(:organisation_reference_code),
       @loan.state,
       @loan.repayment_duration.try(:total_months),
@@ -137,15 +138,15 @@ class LoanReportCsvRow
       '', # @loan.ded.code,
       @loan.dti_reason,
       @loan.dit_break_costs.to_s,
-      @loan.recoveries.last.try(:recovered_on).try(:strftime, '%d-%m-%Y'),
-      Money.new(@loan.recoveries.sum(:amount_due_to_dti)).to_s,
-      @loan.loan_realisations.last.try(:created_at).try(:strftime, '%d-%m-%Y'),
-      Money.new(@loan.loan_realisations.sum(:realised_amount)).to_s,
-      Money.new(@loan.loan_changes.sum(:amount_drawn)).to_s,
-      Money.new(@loan.loan_changes.sum(:lump_sum_repayment)).to_s,
-      @loan.created_by.try(:name),
-      @loan.created_at.strftime("%d-%m-%Y %I:%M %p"),
-      @loan.modified_by.try(:name),
+      @loan._last_recovery_on ? @loan._last_recovery_on.strftime('%d-%m-%Y') : '',
+      @loan._total_recoveries ? Money.new(@loan._total_recoveries).to_s : '',
+      @loan._last_realisation_at ? @loan._last_realisation_at.strftime('%d-%m-%Y') : '',
+      @loan._total_loan_realisations ? Money.new(@loan._total_loan_realisations).to_s : '',
+      @loan._total_amount_drawn ? Money.new(@loan._total_amount_drawn).to_s : '',
+      @loan._total_lump_sum_repayment ? Money.new(@loan._total_lump_sum_repayment).to_s : '',
+      @loan.created_by_id,
+      @loan.created_at.try(:strftime, "%d-%m-%Y %I:%M %p"),
+      '',# @loan.modified_by_id,
       @loan.updated_at.try(:strftime, '%d-%m-%Y'),
       @loan.remove_guarantee_on.try(:strftime, '%d-%m-%Y'),
       @loan.remove_guarantee_outstanding_amount.to_s,
