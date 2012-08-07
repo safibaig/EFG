@@ -257,17 +257,6 @@ describe LoanReport do
   end
 
   describe "#to_csv" do
-    # it "should return all found loans in CSV format" do
-    #   loan1 = FactoryGirl.create(:loan)
-    #   loan2 = FactoryGirl.create(:loan)
-    #
-    #   loan_report = LoanReport.new(report_attributes)
-    #
-    #   csv = CSV.parse(loan_report.to_csv)
-    #   csv.size.should == 3
-    #   csv[0].should == LoanReportCsvRow.header
-    # end
-
     let(:loan_report) { LoanReport.new(report_attributes) }
 
     let(:user) { FactoryGirl.create(:user) }
@@ -275,8 +264,11 @@ describe LoanReport do
     let!(:loan) {
       loan_allocation = FactoryGirl.create(:loan_allocation, description: 'allocation description')
 
+      lender = FactoryGirl.create(:lender, organisation_reference_code: 'ABC123')
+
       loan = FactoryGirl.create(
         :loan,
+        lender: lender,
         reference: 'ABC12345',
         legal_form_id: 1,
         postcode: 'EC1V 3WB',
@@ -390,7 +382,7 @@ describe LoanReport do
       row[12].should == '75.0'                                          # guarantee_rate
       row[13].should == '2.0'                                           # premium_rate
       row[14].should == 'allocation description'                        # lending_limit
-      row[15].should == ''                                              # lender_reference
+      row[15].should == 'ABC123'                                        # lender_reference
       row[16].should == 'eligible'                                      # loan_state
       row[17].should == '24'                                            # loan_term
       row[18].should == RepaymentFrequency.find(1).name                 # repayment_frequency

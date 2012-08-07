@@ -89,7 +89,6 @@ class LoanReportCsvRow
 
   # TODO - add DED table data
   # TODO - add invoice to loan
-  # TODO - add lender organisation_reference_code
   # TODO - add a loan's modified by user ID
   def row
     [
@@ -108,7 +107,7 @@ class LoanReportCsvRow
       @loan.guarantee_rate,
       @loan.premium_rate,
       @loan._loan_allocation_description,
-      '', # @loan.lender.try(:organisation_reference_code),
+      @loan._lender_organisation_reference_code,
       @loan.state,
       @loan.repayment_duration.try(:total_months),
       @loan.repayment_frequency.try(:name),

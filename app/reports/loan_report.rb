@@ -135,6 +135,7 @@ class LoanReport
     [
       'loans.*',
       '(SELECT description FROM loan_allocations WHERE id = loans.loan_allocation_id) AS _loan_allocation_description',
+      '(SELECT organisation_reference_code FROM lenders WHERE id = loans.lender_id) AS _lender_organisation_reference_code',
       '(SELECT recovered_on FROM recoveries WHERE loan_id = loans.id ORDER BY recoveries.id DESC LIMIT 1) AS _last_recovery_on',
       '(SELECT SUM(amount_due_to_dti) FROM recoveries WHERE loan_id = loans.id) AS _total_recoveries',
       '(SELECT created_at FROM loan_realisations WHERE realised_loan_id = loans.id ORDER BY loan_realisations.id DESC LIMIT 1) AS _last_realisation_at',
