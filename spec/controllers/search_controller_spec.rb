@@ -12,6 +12,7 @@ describe SearchController do
     end
 
     it_behaves_like 'CfeAdmin-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
 
     it 'assigns loans for the current lender' do

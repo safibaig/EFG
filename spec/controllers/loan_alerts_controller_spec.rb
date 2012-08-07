@@ -17,6 +17,7 @@ describe LoanAlertsController do
     it_behaves_like "loan alerts controller"
     it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'CfeAdmin-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
@@ -32,6 +33,7 @@ describe LoanAlertsController do
     it_behaves_like "loan alerts controller"
     it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'CfeAdmin-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
@@ -47,6 +49,7 @@ describe LoanAlertsController do
     it_behaves_like "loan alerts controller"
     it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'CfeAdmin-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
@@ -64,6 +67,7 @@ describe LoanAlertsController do
 
     it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'CfeAdmin-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
 
     context "with high priority" do

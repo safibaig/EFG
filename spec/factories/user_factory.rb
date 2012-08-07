@@ -9,6 +9,10 @@ FactoryGirl.define do
     factory :cfe_admin, class: CfeAdmin
     factory :cfe_user, class: CfeUser
 
+    factory :lender_admin, class: LenderAdmin do
+      lender
+    end
+
     factory :lender_user, class: LenderUser do
       lender
     end
