@@ -44,7 +44,7 @@ en:
       business_failure_category_description: Business failure category description
       business_failure_description: Business failure description
       business_failure_code: Business failure code
-      government_demand_reason: Comments on the reason for Demand against the Government Guarantee
+      government_demand_reason: "Comments on the reason for Demand&nbsp;against the Government Guarantee&nbsp;"
       break_cost: Break cost
       latest_recovery_date: Latest Recovered Date
       total_recovered: Total amount recovered
@@ -56,9 +56,9 @@ en:
       created_at: Date and time created
       modified_by: Record last modified by
       modified_date: Record last modified on
-      guarantee_remove_date: What was the date that the Guarantee was removed from this facility?
-      outstanding_balance: "What is the outstanding balance of the facility, as recorded by the Lender, at the date of removal of the Guarantee?"
-      guarantee_remove_reason: Why was the Guarantee removed from this facility?
+      guarantee_remove_date: "What was the date that the Guarantee was removed from this facility?&nbsp;"
+      outstanding_balance: "What is the outstanding balance of the facility, as recorded by the Lender, at the date of removal of the Guarantee? &nbsp;"
+      guarantee_remove_reason: "Why was the Guarantee removed from this facility?&nbsp;"
       state_aid_amount: Amount of De Minimis State Aid applicable to this facility (in Euro)
       settled_date: Settled date
       invoice_reference: Invoice reference
