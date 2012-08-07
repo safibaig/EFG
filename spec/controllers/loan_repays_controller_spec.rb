@@ -8,6 +8,7 @@ describe LoanRepaysController do
       get :new, { loan_id: loan.id }.merge(params)
     end
 
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
     it_behaves_like 'Lender-scoped controller'
@@ -28,6 +29,7 @@ describe LoanRepaysController do
       post :create, { loan_id: loan.id, loan_repay: {} }.merge(params)
     end
 
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
     it_behaves_like 'Lender-scoped controller'

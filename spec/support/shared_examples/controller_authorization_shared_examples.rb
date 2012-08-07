@@ -1,3 +1,15 @@
+shared_examples_for 'AuditorUser-restricted controller' do
+  let(:current_user) { FactoryGirl.create(:auditor_user) }
+
+  before { sign_in(current_user) }
+
+  it do
+    expect {
+      dispatch
+    }.to raise_error(Canable::Transgression)
+  end
+end
+
 shared_examples_for 'CfeUser-restricted controller' do
   let(:current_user) { FactoryGirl.create(:cfe_user) }
 

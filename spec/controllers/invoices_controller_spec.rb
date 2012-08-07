@@ -8,6 +8,7 @@ describe InvoicesController do
       get :show, id: invoice.id
     end
 
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
@@ -17,6 +18,7 @@ describe InvoicesController do
       get :new
     end
 
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
@@ -26,6 +28,7 @@ describe InvoicesController do
       post :select_loans, params
     end
 
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
 
@@ -63,6 +66,7 @@ describe InvoicesController do
       post :create
     end
 
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end

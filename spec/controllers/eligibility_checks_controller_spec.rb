@@ -6,6 +6,7 @@ describe EligibilityChecksController do
       get :new, params
     end
 
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
@@ -15,6 +16,7 @@ describe EligibilityChecksController do
       post :create, { loan_eligibility_check: FactoryGirl.attributes_for(:loan_eligibility_check) }.merge(params)
     end
 
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
 
@@ -34,7 +36,6 @@ describe EligibilityChecksController do
         dispatch
         Loan.last.loan_source.should == Loan::SFLG_SOURCE
       end
-
     end
   end
 end
