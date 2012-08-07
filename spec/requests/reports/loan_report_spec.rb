@@ -28,8 +28,7 @@ describe 'Loan report' do
 
       click_button "Download Report"
 
-      # verify CSV is rendered
-      page.body.should include(LoanCsvExport.new([loan1]).generate)
+      page.response_headers['Content-Type'].should include('text/csv')
     end
 
     it "should only allow selection of loans created by any user belonging to that lender" do
@@ -72,8 +71,7 @@ describe 'Loan report' do
 
       click_button "Download Report"
 
-      # verify CSV is rendered
-      page.body.should include(LoanCsvExport.new([loan1, loan3]).generate)
+      page.response_headers['Content-Type'].should include('text/csv')
     end
 
     it "should not show created by form field" do

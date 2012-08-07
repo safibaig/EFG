@@ -1,3 +1,4 @@
+require 'csv'
 require 'active_model/model'
 
 class LoanReport
@@ -78,7 +79,12 @@ class LoanReport
   end
 
   def to_csv
-    LoanCsvExport.new(loans).generate
+    CSV.generate do |csv|
+      csv << LoanReportCsvRow.header
+      loans.find_each do |loan|
+        csv << LoanReportCsvRow.new(loan).row
+      end
+    end
   end
 
   # filter out blank entry in array (added by multiple check_box form helper)

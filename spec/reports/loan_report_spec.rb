@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'csv'
 
 describe LoanReport do
 
@@ -262,7 +263,10 @@ describe LoanReport do
 
       loan_report = LoanReport.new(report_attributes)
 
-      loan_report.to_csv.should == LoanCsvExport.new([loan1, loan2]).generate
+      csv = CSV.parse(loan_report.to_csv)
+      csv[0].should == LoanReportCsvRow.header
+      csv[1].size.should == LoanReportCsvRow.new(loan1).row.size
+      csv[2].size.should == LoanReportCsvRow.new(loan2).row.size
     end
   end
 
