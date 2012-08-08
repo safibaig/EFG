@@ -9,6 +9,7 @@ class StateAidCalculationsController < ApplicationController
   def update
     enforce_update_permission(StateAidCalculation)
     @state_aid_calculation.attributes = params[:state_aid_calculation]
+    @state_aid_calculation.calc_type = StateAidCalculation::SCHEDULE_TYPE
 
     if @state_aid_calculation.save
       redirect_to leave_state_aid_calculation_path(@loan)

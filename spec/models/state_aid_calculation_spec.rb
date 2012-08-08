@@ -40,6 +40,17 @@ describe StateAidCalculation do
       state_aid_calculation.should be_valid
     end
 
+    it 'requires an allowed calculation type' do
+      state_aid_calculation.calc_type = nil
+      state_aid_calculation.should_not be_valid
+
+      state_aid_calculation.calc_type = "Z"
+      state_aid_calculation.should_not be_valid
+
+      state_aid_calculation.calc_type = StateAidCalculation::SCHEDULE_TYPE
+      state_aid_calculation.should be_valid
+    end
+
     context 'when rescheduling' do
       let(:rescheduled_state_aid_calculation) { FactoryGirl.build(:rescheduled_state_aid_calculation) }
 
@@ -72,6 +83,11 @@ describe StateAidCalculation do
       it "is valid when premium cheque month is next month" do
         rescheduled_state_aid_calculation.premium_cheque_month = Date.today.next_month.strftime('%m/%Y')
         rescheduled_state_aid_calculation.should be_valid
+      end
+
+      it 'requires an allowed calculation type' do
+        state_aid_calculation.calc_type = StateAidCalculation::SCHEDULE_TYPE
+        state_aid_calculation.should be_valid
       end
     end
   end
@@ -119,6 +135,20 @@ describe StateAidCalculation do
       new_state_aid_calculation.valid?
 
       new_state_aid_calculation.seq.should == 1
+    end
+  end
+
+  describe "reschedule?" do
+    let(:state_aid_calculation) { FactoryGirl.build(:state_aid_calculation) }
+
+    it "should return true when reschedule calculation type" do
+      state_aid_calculation.calc_type = StateAidCalculation::RESCHEDULE_TYPE
+      state_aid_calculation.should be_reschedule
+    end
+
+    it "should return false when schedule calculation type" do
+      state_aid_calculation.calc_type = StateAidCalculation::SCHEDULE_TYPE
+      state_aid_calculation.should_not be_reschedule
     end
   end
 end

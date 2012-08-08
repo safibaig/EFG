@@ -8,7 +8,7 @@ class RegenerateSchedulesController < ApplicationController
 
   def create
     @state_aid_calculation = @loan.state_aid_calculations.build(params[:state_aid_calculation])
-    @state_aid_calculation.rescheduling = true
+    @state_aid_calculation.calc_type = StateAidCalculation::RESCHEDULE_TYPE
 
     if @state_aid_calculation.valid?
       redirect_to new_loan_loan_change_path(
