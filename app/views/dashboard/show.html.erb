@@ -21,6 +21,9 @@
     <% if current_user.can_create?(PremiumCollectorUser) %>
       <li><%= link_to 'Manage Premium Collector Users', premium_collector_users_path, class: 'btn btn-info' %></li>
     <% end %>
+    <% if current_user.can_create?(LenderUser) %>
+      <li><%= link_to 'Manage Users', lender_users_path, class: 'btn btn-info' %></li>
+    <% end %>
   </ul>
 </div>
 

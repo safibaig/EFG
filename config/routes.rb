@@ -59,6 +59,7 @@ EFG::Application.routes.draw do
     resources :cfe_admins
     resources :cfe_users
     resources :lender_admins
+    resources :lender_users
     resources :premium_collector_users
   end
 

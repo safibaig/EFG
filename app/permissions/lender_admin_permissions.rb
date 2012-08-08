@@ -1,13 +1,19 @@
 module LenderAdminPermissions
   def can_create?(resource)
-    false
+    [
+      LenderUser
+    ].include?(resource)
   end
 
   def can_update?(resource)
-    false
+    [
+      LenderUser
+    ].include?(resource)
   end
 
   def can_view?(resource)
-    false
+    [
+      LenderUser
+    ].include?(resource)
   end
 end
