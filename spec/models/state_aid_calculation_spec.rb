@@ -49,6 +49,9 @@ describe StateAidCalculation do
 
       state_aid_calculation.calc_type = StateAidCalculation::SCHEDULE_TYPE
       state_aid_calculation.should be_valid
+
+      state_aid_calculation.calc_type = StateAidCalculation::NOTIFIED_AID_TYPE
+      state_aid_calculation.should be_valid
     end
 
     context 'when rescheduling' do

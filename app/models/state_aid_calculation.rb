@@ -1,9 +1,9 @@
 class StateAidCalculation < ActiveRecord::Base
   include FormatterConcern
 
-  SCHEDULE_TYPE = 'S'
-
-  RESCHEDULE_TYPE = 'R'
+  SCHEDULE_TYPE = 'S'.freeze
+  RESCHEDULE_TYPE = 'R'.freeze
+  NOTIFIED_AID_TYPE = 'N'.freeze
 
   belongs_to :loan, inverse_of: :state_aid_calculations
 
@@ -23,7 +23,7 @@ class StateAidCalculation < ActiveRecord::Base
 
   validates_presence_of :premium_cheque_month, if: :reschedule?
 
-  validates_inclusion_of :calc_type, in: [ SCHEDULE_TYPE, RESCHEDULE_TYPE ]
+  validates_inclusion_of :calc_type, in: [ SCHEDULE_TYPE, RESCHEDULE_TYPE, NOTIFIED_AID_TYPE ]
 
   validate do
     if initial_draw_amount.blank? || initial_draw_amount < 0 || initial_draw_amount > Money.new(9_999_999_99)
