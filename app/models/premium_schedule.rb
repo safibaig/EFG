@@ -28,7 +28,7 @@ class PremiumSchedule
     Array.new(40) do |quarter|
       if quarter <= quarters
         outstanding_capital = amount - ((amount / quarters) * quarter)
-        outstanding_capital * PREMIUM_RATE / 4
+        outstanding_capital * (PREMIUM_RATE / 4)
       else
         Money.new(0)
       end
