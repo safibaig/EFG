@@ -7,9 +7,10 @@ describe PremiumSchedule do
         initial_draw_amount: Money.new(100_000_00),
         initial_draw_months: 120)
     }
+
     let(:premium_schedule) { PremiumSchedule.new(state_aid_calculation) }
 
-    it "calcuates quarterly premiums" do
+    it "calculates quarterly premiums" do
       [
         500_00, 487_50, 475_00, 462_50, 450_00, 437_50, 425_00, 412_50, 400_00,
         387_50, 375_00, 362_50, 350_00, 337_50, 325_00, 312_50, 300_00, 287_50,
@@ -23,6 +24,27 @@ describe PremiumSchedule do
 
     it "calculates total premiums" do
       premium_schedule.total_premiums.should == Money.new(10_250_00)
+    end
+  end
+
+  describe "#subsequent_premiums" do
+
+    let(:premium_schedule) { PremiumSchedule.new(state_aid_calculation) }
+
+    context "when standard state aid calculation" do
+      let(:state_aid_calculation) { FactoryGirl.build(:state_aid_calculation) }
+
+      it "should not include first quarter when standard state aid calculation" do
+        premium_schedule.subsequent_premiums.size.should == 39
+      end
+    end
+
+    context "when rescheduled state aid calculation" do
+      let(:state_aid_calculation) { FactoryGirl.build(:rescheduled_state_aid_calculation ) }
+
+      it "should include first quarter when rescheduled state aid calculation" do
+        premium_schedule.subsequent_premiums.size.should == 40
+      end
     end
   end
 

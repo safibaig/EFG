@@ -20,6 +20,7 @@ class PremiumSchedule
   delegate :third_draw_months, to: :state_aid_calculation
   delegate :fourth_draw_amount, to: :state_aid_calculation
   delegate :fourth_draw_months, to: :state_aid_calculation
+  delegate :reschedule?, to: :state_aid_calculation
 
   def premiums
     amount = state_aid_calculation.initial_draw_amount
@@ -36,7 +37,7 @@ class PremiumSchedule
   end
 
   def subsequent_premiums
-    premiums[1..-1]
+    reschedule? ? premiums : premiums[1..-1]
   end
 
   def total_subsequent_premiums
