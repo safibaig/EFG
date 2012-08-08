@@ -34,7 +34,7 @@ shared_examples_for 'CfeUser-restricted controller' do
   end
 end
 
-shared_examples_for 'Lender-scoped controller' do
+shared_examples_for 'LenderUser Lender-scoped controller' do
   let(:current_user) { FactoryGirl.create(:lender_user) }
 
   before { sign_in(current_user) }
