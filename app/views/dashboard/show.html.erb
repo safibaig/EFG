@@ -5,6 +5,22 @@
   <ul id="actions">
     <% if current_user.can_create?(LoanEligibilityCheck) %><li><%= link_to "Start New Loan Application", new_eligibility_check_path, class: "btn btn-primary" %></li><% end %>
     <% if current_user.can_view?(Loan::States) %><li><%= link_to "View Loan Portfolio", loan_states_path, class: "btn btn-info" %></li><% end %>
+
+    <% if current_user.can_create?(CfeAdmin) %>
+      <li><%= link_to 'Manage CfE Admins', cfe_admins_path, class: 'btn btn-info' %></li>
+    <% end %>
+    <% if current_user.can_create?(CfeUser) %>
+      <li><%= link_to 'Manage CfE Users', cfe_users_path, class: 'btn btn-info' %></li>
+    <% end %>
+    <% if current_user.can_create?(LenderAdmin) %>
+      <li><%= link_to 'Manage Lender Admins', lender_admins_path, class: 'btn btn-info' %></li>
+    <% end %>
+    <% if current_user.can_create?(AuditorUser) %>
+      <li><%= link_to 'Manage Auditor Users', auditor_users_path, class: 'btn btn-info' %></li>
+    <% end %>
+    <% if current_user.can_create?(PremiumCollectorUser) %>
+      <li><%= link_to 'Manage Premium Collector Users', premium_collector_users_path, class: 'btn btn-info' %></li>
+    <% end %>
   </ul>
 </div>
 
