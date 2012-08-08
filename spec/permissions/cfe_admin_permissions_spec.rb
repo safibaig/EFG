@@ -139,4 +139,10 @@ describe CfeAdminPermissions do
     it { assert user.can_update?(CfeUser) }
     it { assert user.can_view?(CfeUser) }
   end
+
+  context 'AuditorUsers' do
+    it { assert user.can_create?(AuditorUser) }
+    it { assert user.can_update?(AuditorUser) }
+    it { assert user.can_view?(AuditorUser) }
+  end
 end

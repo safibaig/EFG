@@ -54,6 +54,7 @@ EFG::Application.routes.draw do
     end
   end
 
+  resources :auditor_users, only: [:index, :show, :new, :create, :edit, :update]
   resources :cfe_admins,    only: [:index, :show, :new, :create, :edit, :update]
   resources :cfe_users,     only: [:index, :show, :new, :create, :edit, :update]
   resources :lender_admins, only: [:index, :show, :new, :create, :edit, :update]

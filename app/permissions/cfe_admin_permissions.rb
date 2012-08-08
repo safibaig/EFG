@@ -1,6 +1,7 @@
 module CfeAdminPermissions
   def can_create?(resource)
     [
+      AuditorUser,
       CfeAdmin,
       CfeUser,
       LenderAdmin
@@ -9,6 +10,7 @@ module CfeAdminPermissions
 
   def can_update?(resource)
     [
+      AuditorUser,
       CfeAdmin,
       CfeUser,
       LenderAdmin
@@ -17,6 +19,7 @@ module CfeAdminPermissions
 
   def can_view?(resource)
     [
+      AuditorUser,
       CfeAdmin,
       CfeUser,
       LenderAdmin
