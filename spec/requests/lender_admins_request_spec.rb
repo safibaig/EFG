@@ -38,7 +38,7 @@ describe 'LenderAdmin management' do
       fill_in 'email', 'bob.flemming@example.com'
 
       expect {
-        click_button 'Create Lender admin'
+        click_button 'Create Lender Admin'
       }.to change(LenderAdmin, :count).by(1)
 
       page.should have_content('Bankers')
@@ -65,7 +65,7 @@ describe 'LenderAdmin management' do
       fill_in 'last_name', 'Example'
       fill_in 'email', 'bill.example@example.com'
 
-      click_button 'Update Lender admin'
+      click_button 'Update Lender Admin'
 
       page.should have_content('Bankers')
       page.should have_content('Bill Example')
