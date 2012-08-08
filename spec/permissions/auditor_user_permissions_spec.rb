@@ -145,4 +145,10 @@ describe AuditorUserPermissions do
     it { refute user.can_update?(AuditorUser) }
     it { refute user.can_view?(AuditorUser) }
   end
+
+  context 'PremiumCollectorUsers' do
+    it { refute user.can_create?(PremiumCollectorUser) }
+    it { refute user.can_update?(PremiumCollectorUser) }
+    it { refute user.can_view?(PremiumCollectorUser) }
+  end
 end

@@ -4,7 +4,8 @@ module CfeAdminPermissions
       AuditorUser,
       CfeAdmin,
       CfeUser,
-      LenderAdmin
+      LenderAdmin,
+      PremiumCollectorUser
     ].include?(resource)
   end
 
@@ -13,7 +14,8 @@ module CfeAdminPermissions
       AuditorUser,
       CfeAdmin,
       CfeUser,
-      LenderAdmin
+      LenderAdmin,
+      PremiumCollectorUser
     ].include?(resource)
   end
 
@@ -22,7 +24,8 @@ module CfeAdminPermissions
       AuditorUser,
       CfeAdmin,
       CfeUser,
-      LenderAdmin
+      LenderAdmin,
+      PremiumCollectorUser
     ].include?(resource)
   end
 end

@@ -145,4 +145,10 @@ describe CfeAdminPermissions do
     it { assert user.can_update?(AuditorUser) }
     it { assert user.can_view?(AuditorUser) }
   end
+
+  context 'PremiumCollectorUsers' do
+    it { assert user.can_create?(PremiumCollectorUser) }
+    it { assert user.can_update?(PremiumCollectorUser) }
+    it { assert user.can_view?(PremiumCollectorUser) }
+  end
 end

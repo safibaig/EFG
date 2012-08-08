@@ -51,6 +51,9 @@
             <% if current_user.can_create?(AuditorUser) %>
               <li><%= link_to 'Manage Auditor Users', auditor_users_path %></li>
             <% end %>
+            <% if current_user.can_create?(PremiumCollectorUser) %>
+              <li><%= link_to 'Manage Premium Collector Users', premium_collector_users_path %></li>
+            <% end %>
             <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
             <li class="dropdown">
               <%= link_to '#', "class" => "dropdown-toggle", "data-toggle" => "dropdown" do %>

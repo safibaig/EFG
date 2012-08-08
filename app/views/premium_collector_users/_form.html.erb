@@ -1,0 +1,9 @@
+<%= simple_form_for @user do |f| %>
+  <%= f.input :first_name %>
+  <%= f.input :last_name %>
+  <%= f.input :email %>
+
+  <div class="form-actions">
+    <%= f.button :submit, class: 'btn btn-primary', value: @user.new_record? ? 'Create Premium Collector User' : 'Update Premium Collector User' %>
+  </div>
+<% end %>
