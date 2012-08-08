@@ -39,7 +39,9 @@
             <% if current_user.can_view?(Search) %>
               <li><%= link_to 'Search', new_search_path %></li>
             <% end %>
-            <li><%= link_to 'Manage Users', users_path %></li>
+            <% if current_user.can_create?(LenderAdmin) %>
+              <li><%= link_to 'Manage Lender Admins', lender_admins_path %></li>
+            <% end %>
             <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
             <li class="dropdown">
               <%= link_to '#', "class" => "dropdown-toggle", "data-toggle" => "dropdown" do %>

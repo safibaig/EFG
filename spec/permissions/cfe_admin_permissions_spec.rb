@@ -121,4 +121,10 @@ describe CfeAdminPermissions do
   context 'StateAidCalculation' do
     it { refute user.can_create?(StateAidCalculation) }
   end
+
+  context 'LenderAdmins' do
+    it { assert user.can_create?(LenderAdmin) }
+    it { assert user.can_update?(LenderAdmin) }
+    it { assert user.can_view?(LenderAdmin) }
+  end
 end

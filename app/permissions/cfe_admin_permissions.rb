@@ -1,13 +1,13 @@
 module CfeAdminPermissions
   def can_create?(resource)
-    false
+    resource == LenderAdmin
   end
 
   def can_update?(resource)
-    false
+    resource == LenderAdmin
   end
 
   def can_view?(resource)
-    false
+    resource == LenderAdmin
   end
 end

@@ -121,4 +121,10 @@ describe LenderUserPermissions do
   context 'StateAidCalculation' do
     it { assert user.can_create?(StateAidCalculation) }
   end
+
+  context 'LenderAdmins' do
+    it { refute user.can_create?(LenderAdmin) }
+    it { refute user.can_update?(LenderAdmin) }
+    it { refute user.can_view?(LenderAdmin) }
+  end
 end
