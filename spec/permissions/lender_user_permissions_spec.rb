@@ -105,4 +105,20 @@ describe LenderUserPermissions do
   context 'Search' do
     it { assert user.can_view?(Search) }
   end
+
+  context 'TransferredLoanEntry' do
+    it { assert user.can_create?(TransferredLoanEntry) }
+  end
+
+  context 'LoanTransfer::LegacySflg' do
+    it { assert user.can_create?(LoanTransfer::LegacySflg) }
+  end
+
+  context 'LoanTransfer::Sflg' do
+    it { assert user.can_create?(LoanTransfer::Sflg) }
+  end
+
+  context 'StateAidCalculation' do
+    it { assert user.can_create?(StateAidCalculation) }
+  end
 end

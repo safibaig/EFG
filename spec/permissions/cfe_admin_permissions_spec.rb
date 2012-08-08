@@ -105,4 +105,20 @@ describe CfeAdminPermissions do
   context 'Search' do
     it { refute user.can_view?(Search) }
   end
+
+  context 'TransferredLoanEntry' do
+    it { refute user.can_create?(TransferredLoanEntry) }
+  end
+
+  context 'LoanTransfer::LegacySflg' do
+    it { refute user.can_create?(LoanTransfer::LegacySflg) }
+  end
+
+  context 'LoanTransfer::Sflg' do
+    it { refute user.can_create?(LoanTransfer::Sflg) }
+  end
+
+  context 'StateAidCalculation' do
+    it { refute user.can_create?(StateAidCalculation) }
+  end
 end
