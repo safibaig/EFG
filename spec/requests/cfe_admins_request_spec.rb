@@ -67,6 +67,21 @@ describe 'CfeAdmin management' do
     end
   end
 
+  describe 'unlocking the user' do
+    let!(:user) { FactoryGirl.create(:cfe_admin, first_name: 'Bob', last_name: 'Flemming', locked: true) }
+
+    it do
+      visit root_path
+      click_link 'Manage CfE Admins'
+      click_link 'Bob Flemming'
+
+      uncheck 'Locked'
+      click_button 'Update CfE Admin'
+
+      user.reload.locked.should == false
+    end
+  end
+
   private
     def fill_in(attribute, value)
       page.fill_in "cfe_admin_#{attribute}", with: value

@@ -36,8 +36,10 @@ class PremiumCollectorUsersController < ApplicationController
 
   def update
     @user = PremiumCollectorUser.find(params[:id])
+    @user.attributes = params[:premium_collector_user]
+    @user.locked = params[:premium_collector_user][:locked]
 
-    if @user.update_attributes(params[:premium_collector_user])
+    if @user.save
       redirect_to premium_collector_user_url(@user)
     else
       render :edit

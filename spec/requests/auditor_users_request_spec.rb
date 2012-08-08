@@ -52,7 +52,7 @@ describe 'AuditorUser management' do
 
     it do
       visit root_path
-      click_link 'Manage Auditor User'
+      click_link 'Manage Auditor Users'
 
       click_link 'Bob Flemming'
 
@@ -64,6 +64,21 @@ describe 'AuditorUser management' do
 
       page.should have_content('Bill Example')
       page.should have_content('bill.example@example.com')
+    end
+  end
+
+  describe 'unlocking the user' do
+    let!(:user) { FactoryGirl.create(:auditor_user, first_name: 'Bob', last_name: 'Flemming', locked: true) }
+
+    it do
+      visit root_path
+      click_link 'Manage Auditor Users'
+      click_link 'Bob Flemming'
+
+      uncheck 'Locked'
+      click_button 'Update Auditor User'
+
+      user.reload.locked.should == false
     end
   end
 

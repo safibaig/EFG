@@ -36,8 +36,10 @@ class AuditorUsersController < ApplicationController
 
   def update
     @user = AuditorUser.find(params[:id])
+    @user.attributes = params[:auditor_user]
+    @user.locked = params[:auditor_user][:locked]
 
-    if @user.update_attributes(params[:auditor_user])
+    if @user.save
       redirect_to auditor_user_url(@user)
     else
       render :edit

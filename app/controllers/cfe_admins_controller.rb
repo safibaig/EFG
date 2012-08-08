@@ -36,8 +36,10 @@ class CfeAdminsController < ApplicationController
 
   def update
     @user = CfeAdmin.find(params[:id])
+    @user.attributes = params[:cfe_admin]
+    @user.locked = params[:cfe_admin][:locked]
 
-    if @user.update_attributes(params[:cfe_admin])
+    if @user.save
       redirect_to cfe_admin_url(@user)
     else
       render :edit

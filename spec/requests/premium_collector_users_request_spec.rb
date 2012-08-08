@@ -52,7 +52,7 @@ describe 'PremiumCollectorUser management' do
 
     it do
       visit root_path
-      click_link 'Manage Premium Collector User'
+      click_link 'Manage Premium Collector Users'
 
       click_link 'Bob Flemming'
 
@@ -64,6 +64,21 @@ describe 'PremiumCollectorUser management' do
 
       page.should have_content('Bill Example')
       page.should have_content('bill.example@example.com')
+    end
+  end
+
+  describe 'unlocking the user' do
+    let!(:user) { FactoryGirl.create(:premium_collector_user, first_name: 'Bob', last_name: 'Flemming', locked: true) }
+
+    it do
+      visit root_path
+      click_link 'Manage Premium Collector Users'
+      click_link 'Bob Flemming'
+
+      uncheck 'Locked'
+      click_button 'Update Premium Collector User'
+
+      user.reload.locked.should == false
     end
   end
 

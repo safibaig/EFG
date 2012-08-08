@@ -2,6 +2,7 @@
   <%= f.input :first_name %>
   <%= f.input :last_name %>
   <%= f.input :email %>
+  <%= f.input(:locked, wrapper: :checkbox) unless @user.new_record? %>
 
   <div class="form-actions">
     <%= f.button :submit, class: 'btn btn-primary', value: @user.new_record? ? 'Create CfE User' : 'Update CfE User' %>

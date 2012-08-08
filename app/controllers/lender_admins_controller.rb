@@ -37,8 +37,10 @@ class LenderAdminsController < ApplicationController
 
   def update
     @user = LenderAdmin.find(params[:id])
+    @user.attributes = params[:lender_admin]
+    @user.locked = params[:lender_admin][:locked]
 
-    if @user.update_attributes(params[:lender_admin])
+    if @user.save
       redirect_to lender_admin_url(@user)
     else
       render :edit

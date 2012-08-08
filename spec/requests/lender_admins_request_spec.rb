@@ -73,6 +73,21 @@ describe 'LenderAdmin management' do
     end
   end
 
+  describe 'unlocking the user' do
+    let!(:user) { FactoryGirl.create(:lender_admin, first_name: 'Bob', last_name: 'Flemming', locked: true) }
+
+    it do
+      visit root_path
+      click_link 'Manage Lender Admins'
+      click_link 'Bob Flemming'
+
+      uncheck 'Locked'
+      click_button 'Update Lender Admin'
+
+      user.reload.locked.should == false
+    end
+  end
+
   private
     def fill_in(attribute, value)
       page.fill_in "lender_admin_#{attribute}", with: value

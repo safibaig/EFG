@@ -12,6 +12,7 @@
       <th>Lender</th>
       <th>Name</th>
       <th>Email</th>
+      <th>Locked</th>
     </tr>
   </thead>
   <tbody>
@@ -20,6 +21,7 @@
         <td><%= user.lender.name %></td>
         <td><%= link_to user.name, edit_lender_admin_path(user) %></td>
         <td><%= user.email %></td>
+        <td><%=friendly_boolean user.locked %></td>
       </tr>
     <% end %>
   </tbody>
