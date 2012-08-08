@@ -88,7 +88,6 @@ class LoanReportCsvRow
   end
 
   # TODO - add DED table data
-  # TODO - add invoice to loan
   # TODO - add a loan's modified by user ID
   def row
     [
