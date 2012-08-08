@@ -12,7 +12,7 @@ describe LoanReport do
   end
 
   describe "validation" do
-    let(:loan_report) { LoanReport.new(report_attributes(lender_ids: [1])) }
+    let(:loan_report) { LoanReport.new(report_attributes) }
 
     it 'should have a valid factory' do
       loan_report.should be_valid
@@ -36,10 +36,14 @@ describe LoanReport do
       loan_report.should be_valid
     end
 
-    it 'should be invalid without created by user ID' do
-      pending
-      loan_report.created_by_user_id = nil
+    it 'should be invalid without numeric created by user ID' do
+      loan_report.created_by_id = 'a'
       loan_report.should_not be_valid
+    end
+
+    it 'should be valid with blank created by user ID' do
+      loan_report.created_by_id = ''
+      loan_report.should be_valid
     end
 
     it 'should be invalid without a loan source' do
@@ -105,42 +109,40 @@ describe LoanReport do
 
   describe "#loans" do
 
+    let!(:loan1) { FactoryGirl.create(:loan) }
+
+    let!(:loan2) { FactoryGirl.create(:loan) }
+
     let(:loan_report) { LoanReport.new(report_attributes) }
 
     it "should return all loans when matching the default report criteria" do
-      loan1 = FactoryGirl.create(:loan)
-      loan2 = FactoryGirl.create(:loan)
-
       loan_report.loans.should == [loan1, loan2]
     end
 
     it "should return loans with a specific state" do
-      loan1 = FactoryGirl.create(:loan, :eligible)
-      loan2 = FactoryGirl.create(:loan, :guaranteed)
+      guaranteed_loan = FactoryGirl.create(:loan, :guaranteed)
 
       loan_report = LoanReport.new(report_attributes(states: [ Loan::Guaranteed ]))
-      loan_report.loans.should == [ loan2 ]
+      loan_report.loans.should == [ guaranteed_loan ]
     end
 
     it "should return loans with a specific loan scheme" do
-      loan1 = FactoryGirl.create(:loan, :sflg)
-      loan2 = FactoryGirl.create(:loan)
+      sflg_loan = FactoryGirl.create(:loan, :sflg)
 
       loan_report = LoanReport.new(report_attributes(loan_scheme: Loan::SFLG_SCHEME))
-      loan_report.loans.should == [ loan1 ]
+      loan_report.loans.should == [ sflg_loan ]
     end
 
     it "should return loans with a specific loan source" do
-      loan1 = FactoryGirl.create(:loan, loan_source: Loan::LEGACY_SFLG_SOURCE)
-      loan2 = FactoryGirl.create(:loan)
+      legacy_sflg_loan = FactoryGirl.create(:loan, loan_source: Loan::LEGACY_SFLG_SOURCE)
 
       loan_report = LoanReport.new(report_attributes(loan_sources: [ Loan::LEGACY_SFLG_SOURCE ]))
-      loan_report.loans.should == [ loan1 ]
+      loan_report.loans.should == [ legacy_sflg_loan ]
     end
 
     it "should return loans with a facility letter date after a specified date" do
-      loan1 = FactoryGirl.create(:loan, facility_letter_date: 1.day.ago)
-      loan2 = FactoryGirl.create(:loan, facility_letter_date: 1.day.from_now)
+      loan1.update_attribute(:facility_letter_date, 1.day.ago)
+      loan2.update_attribute(:facility_letter_date, 1.day.from_now)
 
       loan_report = LoanReport.new(report_attributes(facility_letter_start_date: Date.today.strftime('%d/%m/%Y')))
 
@@ -148,8 +150,8 @@ describe LoanReport do
     end
 
     it "should return loans with a facility letter date before a specified date" do
-      loan1 = FactoryGirl.create(:loan, facility_letter_date: 1.day.ago)
-      loan2 = FactoryGirl.create(:loan, facility_letter_date: 1.day.from_now)
+      loan1.update_attribute(:facility_letter_date, 1.day.ago)
+      loan2.update_attribute(:facility_letter_date, 1.day.from_now)
 
       loan_report = LoanReport.new(report_attributes(facility_letter_end_date: Date.today.strftime('%d/%m/%Y')))
 
@@ -157,8 +159,8 @@ describe LoanReport do
     end
 
     it "should return loans with a created at date after a specified date" do
-      loan1 = FactoryGirl.create(:loan, created_at: 1.day.ago)
-      loan2 = FactoryGirl.create(:loan, created_at: 1.day.from_now)
+      loan1.update_attribute(:created_at, 1.day.ago)
+      loan2.update_attribute(:created_at, 1.day.from_now)
 
       loan_report = LoanReport.new(report_attributes(created_at_start_date: Date.today.strftime('%d/%m/%Y')))
 
@@ -166,8 +168,8 @@ describe LoanReport do
     end
 
     it "should return loans with a created at date before a specified date" do
-      loan1 = FactoryGirl.create(:loan, created_at: 1.day.ago)
-      loan2 = FactoryGirl.create(:loan, created_at: 1.day.from_now)
+      loan1.update_attribute(:created_at, 1.day.ago)
+      loan2.update_attribute(:created_at, 1.day.from_now)
 
       loan_report = LoanReport.new(report_attributes(created_at_end_date: Date.today.strftime('%d/%m/%Y')))
 
@@ -175,8 +177,8 @@ describe LoanReport do
     end
 
     it "should return loans with a modified at date after a specified date" do
-      loan1 = FactoryGirl.create(:loan, updated_at: 1.day.ago)
-      loan2 = FactoryGirl.create(:loan, updated_at: 1.day.from_now)
+      loan1.update_attribute(:updated_at, 1.day.ago)
+      loan2.update_attribute(:updated_at, 1.day.from_now)
 
       loan_report = LoanReport.new(report_attributes(last_modified_start_date: Date.today.strftime('%d/%m/%Y')))
 
@@ -184,8 +186,8 @@ describe LoanReport do
     end
 
     it "should return loans with a modified at date before a specified date" do
-      loan1 = FactoryGirl.create(:loan, updated_at: 1.day.ago)
-      loan2 = FactoryGirl.create(:loan, updated_at: 1.day.from_now)
+      loan1.update_attribute(:updated_at, 1.day.ago)
+      loan2.update_attribute(:updated_at, 1.day.from_now)
 
       loan_report = LoanReport.new(report_attributes(last_modified_end_date: Date.today.strftime('%d/%m/%Y')))
 
@@ -193,48 +195,44 @@ describe LoanReport do
     end
 
     it "should return loans belonging to a specific lender" do
-      loan1 = FactoryGirl.create(:loan)
-      loan2 = FactoryGirl.create(:loan)
-
-      loan_report = LoanReport.new(report_attributes(allowed_lender_ids: [ loan1.lender_id ], lender_ids: [ loan1.lender_id ]))
+      loan_report = LoanReport.new(
+        report_attributes(
+          allowed_lender_ids: [ loan1.lender_id ],
+          lender_ids: [ loan1.lender_id ]
+        )
+      )
 
       loan_report.loans.should == [ loan1 ]
     end
 
-    it "should return loans created by a specific user" do
-      user1 = FactoryGirl.create(:user)
-      user2 = FactoryGirl.create(:user)
+    context 'with loans created by specific users' do
+      let(:user1) { FactoryGirl.create(:user) }
+      let(:user2) { FactoryGirl.create(:user) }
 
-      loan1 = FactoryGirl.create(:loan, created_by: user1)
-      loan2 = FactoryGirl.create(:loan, created_by: user2)
+      before(:each) do
+        loan1.update_attribute(:created_by, user1)
+        loan2.update_attribute(:created_by, user2)
+      end
 
-      loan_report = LoanReport.new(report_attributes(created_by_id: user2.id))
+      it "should return loans created by a specific user" do
+        loan_report = LoanReport.new(report_attributes(created_by_id: user2.id))
+        loan_report.loans.should == [ loan2 ]
+      end
 
-      loan_report.loans.should == [ loan2 ]
-    end
-
-    it "should return no loans when specified created by user does not belong to one of the specified lenders" do
-      user1 = FactoryGirl.create(:user)
-      user2 = FactoryGirl.create(:user)
-
-      loan1 = FactoryGirl.create(:loan, created_by: user1)
-      loan2 = FactoryGirl.create(:loan, created_by: user2)
-
-      loan_report = LoanReport.new(
-        report_attributes(
-          allowed_lender_ids: [ loan1.lender_id ],
-          lender_ids: [ loan1.lender_id ],
-          created_by_id: user2.id
+      it "should return no loans when specified created by user does not belong to one of the specified lenders" do
+        loan_report = LoanReport.new(
+          report_attributes(
+            allowed_lender_ids: [ loan1.lender_id ],
+            lender_ids: [ loan1.lender_id ],
+            created_by_id: user2.id
+          )
         )
-      )
 
-      loan_report.loans.should be_empty
+        loan_report.loans.should be_empty
+      end
     end
 
     it "should raise exception when a specified lender is not allowed" do
-      loan1 = FactoryGirl.create(:loan)
-      loan2 = FactoryGirl.create(:loan)
-
       expect {
         LoanReport.new(
           report_attributes(
@@ -246,11 +244,7 @@ describe LoanReport do
     end
 
     it "should ignore blank values" do
-      loan1 = FactoryGirl.create(:loan)
-      loan2 = FactoryGirl.create(:loan)
-
       loan_report = LoanReport.new(report_attributes(facility_letter_start_date: ""))
-
       loan_report.loans.should == [ loan1, loan2 ]
     end
 
@@ -368,7 +362,7 @@ describe LoanReport do
 
     let(:row) { CSV.parse(loan_report.to_csv)[1] }
 
-    it 'should return array of loan values' do
+    it 'should CSV data for loan' do
       row[0].should == "ABC12345"                                       # loan_reference
       row[1].should == LegalForm.find(1).name                           # legal_form
       row[2].should == 'EC1V 3WB'                                       # post_code
@@ -456,11 +450,13 @@ describe LoanReport do
 
   def report_attributes(params = {})
     allowed_lender_ids = Lender.count.zero? ? [ 1 ] : Lender.all.collect(&:id)
+    lender_ids = Lender.count.zero? ? [ 1 ] : Lender.all.collect(&:id)
 
-    FactoryGirl.attributes_for(:loan_report).
-      merge(allowed_lender_ids: allowed_lender_ids).
-      merge(lender_ids: Lender.all.collect(&:id)).
-      merge(params)
+    FactoryGirl.attributes_for(
+      :loan_report,
+      allowed_lender_ids: allowed_lender_ids,
+      lender_ids: lender_ids
+    ).merge(params)
   end
 
 end
