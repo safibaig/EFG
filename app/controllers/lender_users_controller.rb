@@ -2,7 +2,7 @@ require 'memorable_password'
 
 class LenderUsersController < ApplicationController
   before_filter :verify_create_permission, only: [:new, :create]
-  before_filter :verify_update_permission, only: [:edit, :update]
+  before_filter :verify_update_permission, only: [:edit, :update, :reset_password]
   before_filter :verify_view_permission, only: [:index, :show]
 
   def index
@@ -47,6 +47,18 @@ class LenderUsersController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def reset_password
+    @user = current_lender.lender_users.find(params[:id])
+    password = MemorablePassword.generate
+    @user.password = @user.password_confirmation = password
+
+    if @user.save
+      flash[:notice] = "The password has been set to: #{password}"
+    end
+
+    redirect_to lender_user_url(@user)
   end
 
   private

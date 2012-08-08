@@ -87,6 +87,24 @@ describe 'LenderUser management' do
     end
   end
 
+  describe "resetting the user's password" do
+    let!(:user) { FactoryGirl.create(:lender_user, first_name: 'Bob', last_name: 'Flemming', lender: lender, locked: true) }
+
+    before do
+      MemorablePassword.stub!(:generate).and_return('correct horse battery staple')
+    end
+
+    it do
+      visit root_path
+      click_link 'Manage Users'
+      click_link 'Bob Flemming'
+
+      click_button 'Reset Password'
+
+      page.should have_content('correct horse battery staple')
+    end
+  end
+
   private
     def fill_in(attribute, value)
       page.fill_in "lender_user_#{attribute}", with: value
