@@ -206,8 +206,8 @@ en:
         created_at_end_date: What is the 'created' end date for your report? (dd/mm/yyyy)
         last_modified_start_date: What is the 'last modified' start date for your report? (dd/mm/yyyy)
         last_modified_end_date: What is the 'last modified' end date for your report? (dd/mm/yyyy)
-        state: Select loan state
+        states: Select loan state
         lender_ids: What is the name of the lender organisation?
         created_by_id: To refine your data extraction select the user who created the data
-        loan_source: What is the Loan Type?
+        loan_sources: What is the Loan Type?
         loan_scheme: Loan scheme
