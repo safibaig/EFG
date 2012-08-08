@@ -19,6 +19,8 @@ class AuditorUsersController < ApplicationController
 
   def create
     @user = AuditorUser.new(params[:auditor_user])
+    @user.created_by = current_user
+    @user.modified_by = current_user
     password = MemorablePassword.generate
     @user.password = @user.password_confirmation = password
 
@@ -38,6 +40,7 @@ class AuditorUsersController < ApplicationController
     @user = AuditorUser.find(params[:id])
     @user.attributes = params[:auditor_user]
     @user.locked = params[:auditor_user][:locked]
+    @user.modified_by = current_user
 
     if @user.save
       redirect_to auditor_user_url(@user)

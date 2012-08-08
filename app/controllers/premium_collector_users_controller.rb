@@ -19,6 +19,8 @@ class PremiumCollectorUsersController < ApplicationController
 
   def create
     @user = PremiumCollectorUser.new(params[:premium_collector_user])
+    @user.created_by = current_user
+    @user.modified_by = current_user
     password = MemorablePassword.generate
     @user.password = @user.password_confirmation = password
 
@@ -38,6 +40,7 @@ class PremiumCollectorUsersController < ApplicationController
     @user = PremiumCollectorUser.find(params[:id])
     @user.attributes = params[:premium_collector_user]
     @user.locked = params[:premium_collector_user][:locked]
+    @user.modified_by = current_user
 
     if @user.save
       redirect_to premium_collector_user_url(@user)

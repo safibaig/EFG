@@ -19,7 +19,9 @@ class LenderAdminsController < ApplicationController
 
   def create
     @user = LenderAdmin.new(params[:lender_admin])
+    @user.created_by = current_user
     @user.lender = Lender.find(params[:lender_admin][:lender_id])
+    @user.modified_by = current_user
     password = MemorablePassword.generate
     @user.password = @user.password_confirmation = password
 
@@ -39,6 +41,7 @@ class LenderAdminsController < ApplicationController
     @user = LenderAdmin.find(params[:id])
     @user.attributes = params[:lender_admin]
     @user.locked = params[:lender_admin][:locked]
+    @user.modified_by = current_user
 
     if @user.save
       redirect_to lender_admin_url(@user)

@@ -45,13 +45,15 @@ describe 'LenderAdmin management' do
       page.should have_content('Bob Flemming')
       page.should have_content('bob.flemming@example.com')
       page.should have_content('correct horse battery staple')
+
+      user = LenderAdmin.last
+      user.created_by.should == current_user
+      user.modified_by.should == current_user
     end
   end
 
   describe 'update' do
-    before do
-      FactoryGirl.create(:lender_admin, first_name: 'Bob', last_name: 'Flemming', lender: lender)
-    end
+    let!(:user) { FactoryGirl.create(:lender_admin, first_name: 'Bob', last_name: 'Flemming', lender: lender) }
 
     it do
       visit root_path
@@ -70,6 +72,8 @@ describe 'LenderAdmin management' do
       page.should have_content('Bankers')
       page.should have_content('Bill Example')
       page.should have_content('bill.example@example.com')
+
+      user.reload.modified_by.should == current_user
     end
   end
 

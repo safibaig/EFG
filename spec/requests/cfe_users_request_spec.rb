@@ -42,13 +42,15 @@ describe 'CfeUser management' do
       page.should have_content('Bob Flemming')
       page.should have_content('bob.flemming@example.com')
       page.should have_content('correct horse battery staple')
+
+      user = CfeUser.last
+      user.created_by.should == current_user
+      user.modified_by.should == current_user
     end
   end
 
   describe 'update' do
-    before do
-      FactoryGirl.create(:cfe_user, first_name: 'Bob', last_name: 'Flemming')
-    end
+    let!(:user) { FactoryGirl.create(:cfe_user, first_name: 'Bob', last_name: 'Flemming') }
 
     it do
       visit root_path
@@ -64,6 +66,8 @@ describe 'CfeUser management' do
 
       page.should have_content('Bill Example')
       page.should have_content('bill.example@example.com')
+
+      user.reload.modified_by.should == current_user
     end
   end
 

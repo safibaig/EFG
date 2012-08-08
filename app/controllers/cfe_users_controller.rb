@@ -19,6 +19,8 @@ class CfeUsersController < ApplicationController
 
   def create
     @user = CfeUser.new(params[:cfe_user])
+    @user.created_by = current_user
+    @user.modified_by = current_user
     password = MemorablePassword.generate
     @user.password = @user.password_confirmation = password
 
@@ -38,6 +40,7 @@ class CfeUsersController < ApplicationController
     @user = CfeUser.find(params[:id])
     @user.attributes = params[:cfe_user]
     @user.locked = params[:cfe_user][:locked]
+    @user.modified_by = current_user
 
     if @user.save
       redirect_to cfe_user_url(@user)
