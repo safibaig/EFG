@@ -39,6 +39,9 @@
             <% if current_user.can_view?(Search) %>
               <li><%= link_to 'Search', new_search_path %></li>
             <% end %>
+            <% if current_user.can_create?(CfeAdmin) %>
+              <li><%= link_to 'Manage CfE Admins', cfe_admins_path %></li>
+            <% end %>
             <% if current_user.can_create?(LenderAdmin) %>
               <li><%= link_to 'Manage Lender Admins', lender_admins_path %></li>
             <% end %>

@@ -54,6 +54,7 @@ EFG::Application.routes.draw do
     end
   end
 
+  resources :cfe_admins,    only: [:index, :show, :new, :create, :edit, :update]
   resources :lender_admins, only: [:index, :show, :new, :create, :edit, :update]
 
   resource :search, only: [:show, :new], controller: :search do

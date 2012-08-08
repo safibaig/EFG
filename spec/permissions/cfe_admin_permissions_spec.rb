@@ -127,4 +127,10 @@ describe CfeAdminPermissions do
     it { assert user.can_update?(LenderAdmin) }
     it { assert user.can_view?(LenderAdmin) }
   end
+
+  context 'CfeAdmins' do
+    it { assert user.can_create?(CfeAdmin) }
+    it { assert user.can_update?(CfeAdmin) }
+    it { assert user.can_view?(CfeAdmin) }
+  end
 end

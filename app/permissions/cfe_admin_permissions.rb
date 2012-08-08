@@ -1,13 +1,22 @@
 module CfeAdminPermissions
   def can_create?(resource)
-    resource == LenderAdmin
+    [
+      CfeAdmin,
+      LenderAdmin
+    ].include?(resource)
   end
 
   def can_update?(resource)
-    resource == LenderAdmin
+    [
+      CfeAdmin,
+      LenderAdmin
+    ].include?(resource)
   end
 
   def can_view?(resource)
-    resource == LenderAdmin
+    [
+      CfeAdmin,
+      LenderAdmin
+    ].include?(resource)
   end
 end
