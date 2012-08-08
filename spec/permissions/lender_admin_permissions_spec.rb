@@ -133,4 +133,10 @@ describe LenderAdminPermissions do
     it { refute user.can_update?(CfeAdmin) }
     it { refute user.can_view?(CfeAdmin) }
   end
+
+  context 'CfeUsers' do
+    it { refute user.can_create?(CfeUser) }
+    it { refute user.can_update?(CfeUser) }
+    it { refute user.can_view?(CfeUser) }
+  end
 end
