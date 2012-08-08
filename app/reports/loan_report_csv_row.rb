@@ -152,7 +152,7 @@ class LoanReportCsvRow
       @loan.remove_guarantee_reason,
       @loan.state_aid.to_s, # if SIC is notified aid output 'not applicable'
       @loan.settled_on.try(:strftime, '%d-%m-%Y'),
-      '', # @loan.invoice.try(:reference), # need to import legacy references
+      @loan.invoice.try(:reference),
       @loan.loan_category.try(:name),
       @loan.interest_rate_type.try(:name),
       @loan.interest_rate,

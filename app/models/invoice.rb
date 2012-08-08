@@ -39,7 +39,7 @@ class Invoice < ActiveRecord::Base
   after_save :transition_loans
   def transition_loans
     raise LoanStateTransition::IncorrectLoanState unless loans_to_be_settled.all? {|loan| loan.state == Loan::Demanded }
-    loans_to_be_settled.update_all(state: Loan::Settled)
+    loans_to_be_settled.update_all(state: Loan::Settled, invoice_id: self.id)
     self.settled_loans = loans_to_be_settled
   end
 end

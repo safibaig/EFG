@@ -41,6 +41,7 @@ class Loan < ActiveRecord::Base
   belongs_to :lender
   belongs_to :loan_allocation
   belongs_to :created_by, class_name: 'User'
+  belongs_to :invoice
   has_many :state_aid_calculations, inverse_of: :loan, order: :seq
   has_one :transferred_from, class_name: 'Loan', foreign_key: 'id', primary_key: 'transferred_from_id'
   has_many :loan_changes

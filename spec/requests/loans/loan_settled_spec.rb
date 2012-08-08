@@ -54,6 +54,8 @@ describe "loan settled" do
     loan1.reload; loan3.reload
     loan1.state.should == Loan::Settled
     loan3.state.should == Loan::Settled
+    loan1.invoice.should == invoice
+    loan3.invoice.should == invoice
 
     page.should have_content('BSPFDNH-01')
     page.should_not have_content('3PEZRGB-01')

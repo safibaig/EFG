@@ -261,11 +261,11 @@ describe LoanReport do
 
     let(:user) { FactoryGirl.create(:user) }
 
+    let(:loan_allocation) { FactoryGirl.create(:loan_allocation, description: 'allocation description') }
+
+    let(:lender) { FactoryGirl.create(:lender, organisation_reference_code: 'ABC123') }
+
     let!(:loan) {
-      loan_allocation = FactoryGirl.create(:loan_allocation, description: 'allocation description')
-
-      lender = FactoryGirl.create(:lender, organisation_reference_code: 'ABC123')
-
       loan = FactoryGirl.create(
         :loan,
         lender: lender,
@@ -318,7 +318,6 @@ describe LoanReport do
         remove_guarantee_reason: 'removal reason',
         state_aid: 5600,
         settled_on: Date.parse('17/07/2012'),
-        # @loan.invoice.try(:reference)
         loan_category_id: 1,
         interest_rate_type_id: 1,
         interest_rate: 2.0,
@@ -357,6 +356,9 @@ describe LoanReport do
         amount_drawn: 10000,
         lump_sum_repayment: 5000
       )
+
+      # stub invoice so the loan doesn't have to in a settled state
+      Loan.any_instance.stub(:invoice).and_return(FactoryGirl.build(:invoice, reference: '123-INV'))
 
       loan_security1 = FactoryGirl.create(:loan_security, loan: loan, loan_security_type_id: 1)
       loan_security2 = FactoryGirl.create(:loan_security, loan: loan, loan_security_type_id: 2)
@@ -427,7 +429,7 @@ describe LoanReport do
       row[57].should == 'removal reason'                                # guarantee_remove_reason
       row[58].should == '5600.00'                                       # state_aid_amount
       row[59].should == '17-07-2012'                                    # settled_date
-      row[60].should == '' # loan.invoice.try(:reference)               # invoice_reference
+      row[60].should == '123-INV'                                       # invoice_reference
       row[61].should == LoanCategory.find(1).name                       # loan_category
       row[62].should == InterestRateType.find(1).name                   # interest_type
       row[63].should == '2.0'                                           # interest_rate
