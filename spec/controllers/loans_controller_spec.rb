@@ -9,8 +9,8 @@ describe LoansController do
     end
 
     it_behaves_like 'CfeAdmin-restricted controller'
-    it_behaves_like 'Lender-scoped controller'
     it_behaves_like 'LenderAdmin-restricted controller'
+    it_behaves_like 'LenderUser Lender-scoped controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
 
     context 'as a LenderUser from the same lender' do

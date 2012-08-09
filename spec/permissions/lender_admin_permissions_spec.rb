@@ -151,4 +151,10 @@ describe LenderAdminPermissions do
     it { refute user.can_update?(PremiumCollectorUser) }
     it { refute user.can_view?(PremiumCollectorUser) }
   end
+
+  context 'LenderUsers' do
+    it { assert user.can_create?(LenderUser) }
+    it { assert user.can_update?(LenderUser) }
+    it { assert user.can_view?(LenderUser) }
+  end
 end

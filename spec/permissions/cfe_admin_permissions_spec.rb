@@ -151,4 +151,10 @@ describe CfeAdminPermissions do
     it { assert user.can_update?(PremiumCollectorUser) }
     it { assert user.can_view?(PremiumCollectorUser) }
   end
+
+  context 'LenderUsers' do
+    it { refute user.can_create?(LenderUser) }
+    it { refute user.can_update?(LenderUser) }
+    it { refute user.can_view?(LenderUser) }
+  end
 end
