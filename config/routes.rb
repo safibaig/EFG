@@ -77,4 +77,5 @@ EFG::Application.routes.draw do
   resources :loan_transfers, only: [:show, :new, :create]
   resources :legacy_loan_transfers, only: [:show, :new, :create]
 
+  resources :premium_schedule_reports, only: [:new, :create]
 end

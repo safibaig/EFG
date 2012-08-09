@@ -8,8 +8,9 @@ describe TransferredLoanEntriesController do
       get :new, { loan_id: loan.id }.merge(params)
     end
 
-    it_behaves_like 'CfeUser-restricted LoanPresenter controller'
-    it_behaves_like 'LenderUser-restricted LoanPresenter controller'
+    it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
+    it_behaves_like 'Lender-scoped controller'
 
     context 'as a LenderUser from the same lender' do
       let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
@@ -27,8 +28,9 @@ describe TransferredLoanEntriesController do
       post :create, { loan_id: loan.id, transferred_loan_entry: {} }.merge(params)
     end
 
-    it_behaves_like 'CfeUser-restricted LoanPresenter controller'
-    it_behaves_like 'LenderUser-restricted LoanPresenter controller'
+    it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
+    it_behaves_like 'Lender-scoped controller'
 
     context 'as a LenderUser from the same lender' do
       let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }

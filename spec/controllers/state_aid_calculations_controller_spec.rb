@@ -8,8 +8,9 @@ describe StateAidCalculationsController do
       get :edit, { loan_id: loan.id }.merge(params)
     end
 
-    it_behaves_like 'CfeUser-restricted LoanPresenter controller'
-    it_behaves_like 'LenderUser-restricted LoanPresenter controller'
+    it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
+    it_behaves_like 'Lender-scoped controller'
 
     context 'as a LenderUser from the same lender' do
       let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
@@ -27,7 +28,8 @@ describe StateAidCalculationsController do
       put :update, { loan_id: loan.id, state_aid_calculation: {} }.merge(params)
     end
 
-    it_behaves_like 'CfeUser-restricted LoanPresenter controller'
-    it_behaves_like 'LenderUser-restricted LoanPresenter controller'
+    it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
+    it_behaves_like 'Lender-scoped controller'
   end
 end

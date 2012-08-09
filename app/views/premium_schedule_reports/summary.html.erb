@@ -1,0 +1,67 @@
+<div class="page-header">
+  <h1>Premium Schedule Extract Summary</h1>
+</div>
+
+<p>This page summarises the results of your Premium Schedule Search. You can download the report or perform a fresh search using the 'edit' or 'new criteria' functions.</p>
+
+<hr>
+
+<p>Data extract found <%= pluralize @premium_schedule_report.count, 'row' %>.</p>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Criterion</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Month of Collection</th>
+      <td><%= @premium_schedule_report.collection_month %></td>
+    </tr>
+    <tr>
+      <th>Report Start Date</th>
+      <td><%= @premium_schedule_report.start_on %></td>
+    </tr>
+    <tr>
+      <th>Report End Date</th>
+      <td><%= @premium_schedule_report.finish_on %></td>
+    </tr>
+    <tr>
+      <th>Schedule Type</th>
+      <td><%= @premium_schedule_report.schedule_type %></td>
+    </tr>
+    <tr>
+      <th>Loan Source</th>
+      <td><%= @premium_schedule_report.loan_type %></td>
+    </tr>
+    <tr>
+      <th>Loan Scheme</th>
+      <td><%= @premium_schedule_report.loan_scheme %></td>
+    </tr>
+    <tr>
+      <th>Loan Reference</th>
+      <td><%= @premium_schedule_report.loan_reference %></td>
+    </tr>
+    <tr>
+      <th>Lender</th>
+      <td><%= @premium_schedule_report.lender.name if @premium_schedule_report.lender %></td>
+    </tr>
+  </tbody>
+</table>
+
+<%= simple_form_for @premium_schedule_report, format: 'csv' do |f| %>
+  <%= f.hidden_field :collection_month %>
+  <%= f.hidden_field :start_on, value: @premium_schedule_report.start_on.try(:strftime, '%d/%m/%Y') %>
+  <%= f.hidden_field :finish_on, value: @premium_schedule_report.finish_on.try(:strftime, '%d/%m/%Y') %>
+  <%= f.hidden_field :schedule_type %>
+  <%= f.hidden_field :loan_type %>
+  <%= f.hidden_field :loan_reference %>
+  <%= f.hidden_field :lender_id %>
+  <%= f.hidden_field :loan_scheme %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Download', class: 'btn-primary' %>
+  </div>
+<% end %>

@@ -1,6 +1,7 @@
 class LoanAlertsController < ApplicationController
-
   include LoanAlerts
+
+  before_filter :verify_view_permission
 
   def not_progressed
     start_date, end_date = start_and_end_dates(not_progressed_start_date, not_progressed_end_date)
@@ -62,4 +63,7 @@ class LoanAlertsController < ApplicationController
     return start_date.to_date, end_date.to_date
   end
 
+  def verify_view_permission
+    enforce_view_permission(LoanAlerts)
+  end
 end

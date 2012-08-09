@@ -10,5 +10,7 @@ FactoryGirl.define do
     factory :lender_user, class: LenderUser do
       lender
     end
+
+    factory :premium_collector_user, class: PremiumCollectorUser
   end
 end

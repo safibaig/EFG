@@ -174,7 +174,7 @@ class Loan < ActiveRecord::Base
 
   def premium_schedule
     return nil unless self.state_aid_calculation
-    PremiumSchedule.new(self.state_aid_calculation)
+    PremiumSchedule.new(self.state_aid_calculation, self)
   end
 
   def already_transferred?

@@ -6,7 +6,8 @@ describe EligibilityChecksController do
       get :new, params
     end
 
-    it_behaves_like 'CfeUser-restricted LoanPresenter controller'
+    it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
   describe '#create' do
@@ -14,7 +15,8 @@ describe EligibilityChecksController do
       post :create, { loan_eligibility_check: FactoryGirl.attributes_for(:loan_eligibility_check) }.merge(params)
     end
 
-    it_behaves_like 'CfeUser-restricted LoanPresenter controller'
+    it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
 
     context 'as logged in lender user' do
       let(:current_user) { FactoryGirl.create(:lender_user) }

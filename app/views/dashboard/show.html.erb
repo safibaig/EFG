@@ -4,10 +4,11 @@
 
   <ul id="actions">
     <% if current_user.can_create?(LoanEligibilityCheck) %><li><%= link_to "Start New Loan Application", new_eligibility_check_path, class: "btn btn-primary" %></li><% end %>
-    <li><%= link_to "View Loan Portfolio", loan_states_path, class: "btn btn-info" %></li>
+    <% if current_user.can_view?(Loan::States) %><li><%= link_to "View Loan Portfolio", loan_states_path, class: "btn btn-info" %></li><% end %>
   </ul>
 </div>
 
+<% if current_user.can_view?(LoanAlerts) %>
 <div class="dashboard_widgets" id="loan_alerts">
   <h2><%= t('dashboard.loan_alerts.title') %></h2>
 
@@ -40,7 +41,6 @@
   </div>
 </div>
 
-
 <% if @utilisation_presenter.has_allocations? %>
 <div class="dashboard_widgets" id="utilisation_dashboard">
   <h2><%= t('dashboard.utilisation.title')%></h2>
@@ -49,4 +49,5 @@
     <%= render "loan_allocation", loan_allocation_presenter: loan_allocation_presenter, index: index %>
   <% end %>
 </div>
+<% end %>
 <% end %>

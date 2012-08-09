@@ -15,7 +15,12 @@
 
         <% if user_signed_in? %>
           <ul class="nav">
-            <li><%= link_to 'Loan Portfolio', loan_states_path %></li>
+            <% if current_user.can_view?(Loan::States) %>
+              <li><%= link_to 'Loan Portfolio', loan_states_path %></li>
+            <% end %>
+            <% if current_user.can_create?(PremiumScheduleReport) %>
+              <li><%= link_to 'Extract premium schedule information', new_premium_schedule_report_path %></li>
+            <% end %>
             <% if current_user.can_create?(LoanEligibilityCheck) %>
               <li><%= link_to 'New Loan', new_eligibility_check_path %></li>
             <% end %>
@@ -31,7 +36,9 @@
             <% if current_user.can_create?(LoanTransfer::LegacySflg) %>
               <li><%= link_to 'Transfer a legacy loan', new_legacy_loan_transfer_path %></li>
             <% end %>
-            <li><%= link_to 'Search', new_search_path %></li>
+            <% if current_user.can_create?(Search) %>
+              <li><%= link_to 'Search', new_search_path %></li>
+            <% end %>
             <li><%= link_to 'Manage Users', users_path %></li>
             <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
             <li class="dropdown">
@@ -50,9 +57,9 @@
           </ul>
 
           <ul class="nav secondary">
-            <li>
-              <%= render "search/loan_lookup_form" %>
-            </li>
+            <% if current_user.can_create?(Search) %>
+              <li><%= render "search/loan_lookup_form" %></li>
+            <% end %>
           </ul>
         <% end %>
       </div>
