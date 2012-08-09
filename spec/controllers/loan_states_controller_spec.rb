@@ -8,6 +8,8 @@ describe LoanStatesController do
       get :show, { id: 'guaranteed' }.merge(params)
     end
 
+    it_behaves_like 'CfeAdmin-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
 
     context 'when requesting CSV export' do
@@ -27,6 +29,5 @@ describe LoanStatesController do
         response.headers['Content-Disposition'].should match(/filename="#{expected_filename}"/)
       end
     end
-
   end
 end

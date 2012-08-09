@@ -2,6 +2,6 @@ class CfeUser < User
   include CfeUserPermissions
 
   def lender
-    CfeLender.new
+    CfeUserLender.new
   end
 end

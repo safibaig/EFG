@@ -54,7 +54,13 @@ EFG::Application.routes.draw do
     end
   end
 
-  resources :users, only: [:index, :show, :new, :create, :edit, :update]
+  with_options only: [:index, :show, :new, :create, :edit, :update] do
+    resources :auditor_users
+    resources :cfe_admins
+    resources :cfe_users
+    resources :lender_admins
+    resources :premium_collector_users
+  end
 
   resource :search, only: [:show, :new], controller: :search do
     collection do

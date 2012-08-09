@@ -9,9 +9,11 @@ describe LoanGuaranteesController do
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeAdmin-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
-    it_behaves_like 'PremiumCollectorUser-restricted controller'
     it_behaves_like 'Lender-scoped controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
 
     context 'as a LenderUser from the same lender' do
       let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
@@ -30,9 +32,11 @@ describe LoanGuaranteesController do
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeAdmin-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
-    it_behaves_like 'PremiumCollectorUser-restricted controller'
     it_behaves_like 'Lender-scoped controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
 
     context 'as a LenderUser from the same lender' do
       let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
