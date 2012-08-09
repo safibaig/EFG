@@ -21,6 +21,7 @@ gem 'progressbar'
 gem 'exception_notification'
 gem 'aws-ses', :require => 'aws/ses' # Needed by exception_notification
 gem 'lograge'
+gem 'unicorn'
 
 group :passenger_compatibility do
   gem 'rake', '0.9.2'
