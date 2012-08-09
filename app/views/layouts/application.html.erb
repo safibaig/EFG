@@ -36,7 +36,7 @@
             <% if current_user.can_create?(LoanTransfer::LegacySflg) %>
               <li><%= link_to 'Transfer a legacy loan', new_legacy_loan_transfer_path %></li>
             <% end %>
-            <% if current_user.can_create?(Search) %>
+            <% if current_user.can_view?(Search) %>
               <li><%= link_to 'Search', new_search_path %></li>
             <% end %>
             <li><%= link_to 'Manage Users', users_path %></li>
@@ -57,7 +57,7 @@
           </ul>
 
           <ul class="nav secondary">
-            <% if current_user.can_create?(Search) %>
+            <% if current_user.can_view?(Search) %>
               <li><%= render "search/loan_lookup_form" %></li>
             <% end %>
           </ul>

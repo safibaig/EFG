@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe PremiumCollectorUser do
+describe AuditorUserPermissions do
   include RefuteMacro
-  include PremiumCollectorUserPermissions
+  include AuditorUserPermissions
 
   context 'invoices' do
     it { refute can_view?(Invoice) }
@@ -81,7 +81,7 @@ describe PremiumCollectorUser do
   end
 
   context 'loan changes' do
-    it { refute can_view?(LoanChange) }
+    it { assert can_view?(LoanChange) }
     it { refute can_create?(LoanChange) }
   end
 
@@ -90,18 +90,18 @@ describe PremiumCollectorUser do
   end
 
   context 'premium schedule report' do
-    it { assert can_create?(PremiumScheduleReport) }
+    it { refute can_create?(PremiumScheduleReport) }
   end
 
   context 'Loan' do
-    it { refute can_view?(Loan) }
+    it { assert can_view?(Loan) }
   end
 
   context 'Loan::States' do
-    it { refute can_view?(Loan::States) }
+    it { assert can_view?(Loan::States) }
   end
 
   context 'Search' do
-    it { refute can_view?(Search) }
+    it { assert can_view?(Search) }
   end
 end

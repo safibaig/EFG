@@ -15,6 +15,7 @@ describe LoanAlertsController do
     end
 
     it_behaves_like "loan alerts controller"
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
@@ -28,6 +29,7 @@ describe LoanAlertsController do
     end
 
     it_behaves_like "loan alerts controller"
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
@@ -41,6 +43,7 @@ describe LoanAlertsController do
     end
 
     it_behaves_like "loan alerts controller"
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
@@ -56,6 +59,7 @@ describe LoanAlertsController do
       get :assumed_repaid, params
     end
 
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
 
     context "with high priority" do

@@ -6,6 +6,7 @@ describe PremiumScheduleReportsController do
       get :new
     end
 
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'LenderUser-restricted controller'
   end
@@ -15,6 +16,7 @@ describe PremiumScheduleReportsController do
       post :create, { premium_schedule_report: {} }
     end
 
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'LenderUser-restricted controller'
   end

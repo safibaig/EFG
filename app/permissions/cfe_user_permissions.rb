@@ -3,8 +3,7 @@ module CfeUserPermissions
     [
       Invoice,
       LoanRemoveGuarantee,
-      RealisationStatement,
-      Search
+      RealisationStatement
     ].include?(resource)
   end
 
@@ -19,7 +18,8 @@ module CfeUserPermissions
       LoanAlerts,
       LoanRemoveGuarantee,
       Loan::States,
-      RealisationStatement
+      RealisationStatement,
+      Search
     ].include?(resource)
   end
 end

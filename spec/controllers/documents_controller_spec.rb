@@ -11,6 +11,7 @@ describe DocumentsController do
     end
 
     it_behaves_like 'documents controller action'
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
@@ -20,6 +21,7 @@ describe DocumentsController do
     end
 
     it_behaves_like 'documents controller action'
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
@@ -28,6 +30,7 @@ describe DocumentsController do
       get :data_protection_declaration, id: loan.id
     end
 
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
 

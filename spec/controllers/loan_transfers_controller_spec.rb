@@ -8,6 +8,7 @@ describe LoanTransfersController do
       get :show, id: loan.id
     end
 
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
 
@@ -27,6 +28,7 @@ describe LoanTransfersController do
       get :new
     end
 
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
 
@@ -46,6 +48,8 @@ describe LoanTransfersController do
       post :create, loan_transfer: {}
     end
 
+    it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 end
