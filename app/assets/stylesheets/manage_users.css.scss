@@ -15,3 +15,20 @@
     margin: 0;
   }
 }
+
+#password_not_set_dialog {
+  width: 40%;
+  float: right;
+  padding: 1em;
+  background-color: $light_grey;
+  border: 1px solid $medium_grey;
+  border-radius: 10px;
+
+  h4 {
+    margin-bottom: 1em;
+  }
+
+  form {
+    margin: 0;
+  }
+}

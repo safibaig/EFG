@@ -100,8 +100,18 @@ describe 'LenderUser management' do
     end
   end
 
-  describe "sending reset password email to user" do
-    let!(:user) { FactoryGirl.create(:lender_user, first_name: 'Bob', last_name: 'Flemming', lender: lender) }
+  describe "sending reset password email to user without a password" do
+    let!(:user) {
+      user = FactoryGirl.create(
+        :lender_user,
+        first_name: 'Bob',
+        last_name: 'Flemming',
+        lender: lender,
+      )
+      user.encrypted_password = nil
+      user.save(validate: false)
+      user
+    }
 
     before(:each) do
       ActionMailer::Base.deliveries.clear
@@ -129,9 +139,6 @@ describe 'LenderUser management' do
     end
 
     it "can be sent from user list page" do
-      user.encrypted_password = nil
-      user.save(validate: false)
-
       visit root_path
       click_link 'Manage Users'
       click_button 'Send Reset Password Email'
