@@ -7,17 +7,26 @@ describe 'LenderUser management' do
   before { login_as(current_user, scope: :user) }
 
   describe 'list' do
-    before do
-      FactoryGirl.create(:lender_user, first_name: 'Barry', last_name: 'White', lender: lender)
-      FactoryGirl.create(:cfe_admin, first_name: 'David', last_name: 'Bowie')
-    end
+    let!(:lender_user) { FactoryGirl.create(:lender_user, first_name: 'Barry', last_name: 'White', lender: lender) }
 
-    it do
+    let!(:cfe_admin) { FactoryGirl.create(:cfe_admin, first_name: 'David', last_name: 'Bowie') }
+
+    it "should only show users that the current user can manage" do
       visit root_path
       click_link 'Manage Users'
 
       page.should have_content('Barry White')
       page.should_not have_content('David Bowie')
+    end
+
+    it 'shows warning when user does not have email address' do
+      lender_user.email = nil
+      lender_user.save(validate: false)
+
+      visit root_path
+      click_link 'Manage Users'
+
+      page.should have_content('User has no email so cannot login!')
     end
   end
 

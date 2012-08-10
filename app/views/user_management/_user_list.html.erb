@@ -26,7 +26,10 @@
           <td><%= user.email %></td>
           <td class="center"><%=friendly_boolean user.disabled %></td>
           <td class="center"><%=friendly_boolean user.locked %></td>
-          <td class="options"><%= set_password_options(user) %></td>
+          <td class="options">
+            <%= set_email_options(user) %>
+            <%= set_password_options(user) %>
+          </td>
         </tr>
       <% end %>
     </tbody>

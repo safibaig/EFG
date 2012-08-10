@@ -1,12 +1,18 @@
 module UserManagementHelper
 
   def set_password_options(user)
-    unless user.has_password?
+    if user.email.present? && !user.has_password?
       if user.password_reset_pending?
         render "user_management/reset_password_email_sent", user: user
       else
         render "user_management/password_not_set", user: user
       end
+    end
+  end
+
+  def set_email_options(user)
+    if user.email.blank?
+      render "user_management/email_not_set", user: user
     end
   end
 
