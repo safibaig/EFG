@@ -56,8 +56,10 @@ describe 'LenderUser management' do
     it do
       visit root_path
       click_link 'Manage Users'
-
       click_link 'Bob Flemming'
+
+      # user has password, so no warning should be shown
+      page.should_not have_content(I18n.t('manage_users.password_not_set'))
 
       fill_in 'first_name', 'Bill'
       fill_in 'last_name', 'Example'

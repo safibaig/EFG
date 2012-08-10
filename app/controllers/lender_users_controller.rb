@@ -74,7 +74,7 @@ class LenderUsersController < ApplicationController
     end
 
     def check_user_has_password
-      if @user.password.blank?
+      unless @user.has_password?
         flash[:alert] = I18n.t('manage_users.password_not_set')
       end
     end
