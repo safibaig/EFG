@@ -44,6 +44,7 @@ group :import do
 end
 
 group :development, :test do
+  gem 'brakeman'
   gem 'rspec-rails'
   gem 'ci_reporter'
   gem 'simplecov-rcov'
