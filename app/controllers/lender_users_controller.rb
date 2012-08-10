@@ -8,7 +8,7 @@ class LenderUsersController < ApplicationController
   before_filter :find_user, only: [:show, :edit, :update, :reset_password]
 
   def index
-    @users = current_lender.lender_users.scoped
+    @users = current_lender.lender_users.paginate(per_page: 100, page: params[:page])
   end
 
   def show

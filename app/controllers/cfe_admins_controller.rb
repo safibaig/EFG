@@ -6,7 +6,7 @@ class CfeAdminsController < ApplicationController
   before_filter :verify_view_permission, only: [:index, :show]
 
   def index
-    @users = CfeAdmin.scoped
+    @users = CfeAdmin.paginate(per_page: 100, page: params[:page])
   end
 
   def show

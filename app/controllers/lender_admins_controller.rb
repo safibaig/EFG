@@ -6,7 +6,7 @@ class LenderAdminsController < ApplicationController
   before_filter :verify_view_permission, only: [:index, :show]
 
   def index
-    @users = LenderAdmin.includes(:lender)
+    @users = LenderAdmin.includes(:lender).paginate(per_page: 100, page: params[:page])
   end
 
   def show

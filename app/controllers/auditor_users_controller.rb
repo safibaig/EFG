@@ -6,7 +6,7 @@ class AuditorUsersController < ApplicationController
   before_filter :verify_view_permission, only: [:index, :show]
 
   def index
-    @users = AuditorUser.scoped
+    @users = AuditorUser.paginate(per_page: 100, page: params[:page])
   end
 
   def show
