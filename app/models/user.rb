@@ -23,4 +23,10 @@ class User < ActiveRecord::Base
   def password_reset_pending?
     reset_password_token.present? && reset_password_period_valid?
   end
+
+  # Resets reset password token and sends new account notification email
+  def send_new_account_notification
+    generate_reset_password_token! if should_generate_reset_token?
+    UserMailer.new_account_notification(self).deliver
+  end
 end
