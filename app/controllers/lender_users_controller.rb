@@ -52,8 +52,7 @@ class LenderUsersController < ApplicationController
   def reset_password
     render :edit and return unless @user.valid?
     @user.send_reset_password_instructions
-    redirect_to lender_user_url(@user),
-                notice: I18n.t('manage_users.reset_password_sent', email: @user.email)
+    redirect_to :back, notice: I18n.t('manage_users.reset_password_sent', email: @user.email)
   end
 
   private

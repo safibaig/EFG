@@ -18,4 +18,9 @@ class User < ActiveRecord::Base
   def has_password?
     encrypted_password.present?
   end
+
+  # #reset_password_period_valid? defined in Devise::Models::Recoverable
+  def password_reset_pending?
+    reset_password_token.present? && reset_password_period_valid?
+  end
 end

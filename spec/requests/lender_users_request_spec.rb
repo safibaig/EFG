@@ -107,7 +107,7 @@ describe 'LenderUser management' do
       ActionMailer::Base.deliveries.clear
     end
 
-    it do
+    it "can be sent from edit user page" do
       user.reset_password_token.should be_nil
       user.reset_password_sent_at.should be_nil
 
@@ -126,6 +126,19 @@ describe 'LenderUser management' do
       emails = ActionMailer::Base.deliveries
       emails.size.should == 1
       emails.first.to.should == [ user.email ]
+    end
+
+    it "can be sent from user list page" do
+      user.encrypted_password = nil
+      user.save(validate: false)
+
+      visit root_path
+      click_link 'Manage Users'
+      click_button 'Send Reset Password Email'
+
+      page.should have_content(I18n.t('manage_users.reset_password_sent', email: user.email))
+      page.should have_content(I18n.t('manage_users.password_set_time_remaining', time_left: 'about 6 hours'))
+      page.should_not have_css('input', value: 'Send Reset Password Email')
     end
 
     # many imported users will not have an email address

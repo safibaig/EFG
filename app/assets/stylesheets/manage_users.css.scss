@@ -1,0 +1,17 @@
+@import "variables";
+
+#user_list {
+  td.options {
+    width: 30%;
+  }
+}
+
+.user-has-no-password {
+  p {
+    color: $red;
+  }
+
+  form {
+    margin: 0;
+  }
+}
