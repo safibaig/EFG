@@ -6,23 +6,27 @@
   <%= link_to %{<i class="icon-plus"></i> New #{user_type}}.html_safe, url_for(action: :new), class: 'btn' %>
 </div>
 
-<table id="user_list" class="table table-striped">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Locked</th>
-      <th>&nbsp;</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% users.each do |user| %>
+<% if @users.empty? %>
+  <h2>There are currently no <%= user_type %>s</h2>
+<% else %>
+  <table id="user_list" class="table table-striped">
+    <thead>
       <tr>
-        <td><%= link_to user.name, url_for(action: :edit, id: user) %></td>
-        <td><%= user.email %></td>
-        <td><%=friendly_boolean user.locked %></td>
-        <td class="options"><%= set_password_options(user) %></td>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Locked</th>
+        <th>&nbsp;</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% users.each do |user| %>
+        <tr>
+          <td><%= link_to user.name, url_for(action: :edit, id: user) %></td>
+          <td><%= user.email %></td>
+          <td><%=friendly_boolean user.locked %></td>
+          <td class="options"><%= set_password_options(user) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
