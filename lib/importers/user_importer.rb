@@ -54,21 +54,25 @@ class UserImporter < BaseImporter
   private
 
   def self.after_import
-    lender_user_ids = []
-
     klass.find_each do |user|
       user.created_by  = User.find_by_legacy_id(user.created_by_legacy_id)
       user.modified_by = User.find_by_legacy_id(user.modified_by_legacy_id)
-      user.save!(validate: false)
+      user.type        = UserRoleMapper.new(user).user_type
 
-      lender_user_ids << user.id if user.legacy_lender_id
+      # if user is not a LenderAdmin or LenderUser,
+      # disable the account so they can't login. They will be verified manually.
+      unless %w(LenderUser LenderAdmin).include?(user.type)
+        user.legacy_lender_id = nil
+        user.disabled = true
+      end
+
+      user.save!(validate: false)
     end
 
-    User.where(id: lender_user_ids).update_all(type: 'LenderUser')
-
-    LenderUser.find_each do |user|
-      user.lender = Lender.find_by_legacy_id(user.legacy_lender_id)
-      user.save!(validate: false)
+    User.where(type: %w(LenderUser LenderAdmin)).find_each do |lender_user|
+      lender_user.lender = Lender.find_by_legacy_id(lender_user.legacy_lender_id)
+      lender_user.save!(validate: false)
     end
   end
+
 end
