@@ -32,7 +32,7 @@ describe UserImporter do
       user = User.find_by_legacy_id('ahan8063s')
       user.legacy_id.should == "ahan8063s"
       user.legacy_lender_id.should == 9
-      user.encrypted_password.should_not be_blank
+      user.encrypted_password.should be_blank
       user.created_at.should == Time.gm(2005, 11, 18)
       user.updated_at.should_not be_blank
       user.last_sign_in_at.should == Time.gm(2007, 6, 18)

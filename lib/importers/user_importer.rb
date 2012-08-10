@@ -42,6 +42,9 @@ class UserImporter < BaseImporter
           self.class.already_imported_emails << value
           value
         end
+      when 'PASSWORD'
+        # do not import legacy passwords as we don't know the encryption algorithm
+        nil
       else
         value
       end
