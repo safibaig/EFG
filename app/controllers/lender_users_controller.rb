@@ -52,7 +52,7 @@ class LenderUsersController < ApplicationController
     render :edit and return unless @user.valid?
     @user.send_reset_password_instructions
     redirect_to lender_user_url(@user),
-                notice: "An email has been sent to #{@user.email} with instructions for resetting their password."
+                notice: I18n.t('manage_users.reset_password_sent', email: @user.email)
   end
 
   private

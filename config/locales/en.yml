@@ -99,3 +99,6 @@ en:
       assumed_repaid: "Loans assumed to have been <em>Repaid</em> due to <em>lack of updates</em>:"
     utilisation:
       title: Loan Allocation Utilisation
+
+  manage_users:
+    reset_password_sent: "An email has been sent to %{email} with instructions for resetting their password."

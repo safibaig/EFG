@@ -103,7 +103,7 @@ describe 'LenderUser management' do
       click_link 'Bob Flemming'
       click_button 'Send Reset Password Email'
 
-      page.should have_content("An email has been sent to #{user.email} with instructions for resetting their password.")
+      page.should have_content(I18n.t('manage_users.reset_password_sent', email: user.email))
 
       user.reload
       user.reset_password_token.should_not be_nil
