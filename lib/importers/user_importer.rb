@@ -35,13 +35,13 @@ class UserImporter < BaseImporter
   def attributes
     row.inject({}) do |memo, (field_name, value)|
       value = case field_name
-      when "FIRST_NAME"
-        (value == 'FIRSTNAME') ? Faker::Name.first_name : value
-      when "LAST_NAME"
-        (value == 'LASTNAME') ? Faker::Name.last_name : value
       when 'EMAIL_ADDRESS'
-        # Obfuscated data all has the same email address.
-        nil
+        if (value.blank? || self.class.already_imported_emails.include?(value))
+          nil
+        else
+          self.class.already_imported_emails << value
+          value
+        end
       else
         value
       end
@@ -52,6 +52,11 @@ class UserImporter < BaseImporter
   end
 
   private
+
+  def self.already_imported_emails
+    @already_imported_emails ||= []
+  end
+
 
   def self.after_import
     klass.find_each do |user|

@@ -9,15 +9,11 @@ describe UserImporter do
 
   let(:user_roles_csv_fixture_path) { Rails.root.join('spec/fixtures/import_data/user_roles.csv') }
 
-  before(:each) do
-    Faker::Name.stub!(:first_name).and_return('Joe')
-    Faker::Name.stub!(:last_name).and_return('Bloggs')
-  end
-
   describe ".import" do
     before do
       UserImporter.csv_path = csv_fixture_path
       UserRoleMapper.user_roles_csv_path = user_roles_csv_fixture_path
+      UserImporter.instance_variable_set(:@already_imported_emails, [])
     end
 
     def dispatch
@@ -52,7 +48,7 @@ describe UserImporter do
       user.should_not be_locked
       user.ar_timestamp.should == Time.gm(2006, 12, 11)
       user.ar_insert_timestamp.should == Time.gm(2005, 11, 18)
-      user.email.should be_nil
+      user.email.should == 'joe@example.com'
       user.created_by_legacy_id.should == "will8561s"
       user.modified_by_legacy_id.should == "thom5918r"
       user.confirm_t_and_c.should == true
@@ -132,6 +128,12 @@ describe UserImporter do
       user = User.find_by_legacy_id('mull5432n')
       user.type.should == "CfeUser"
       user.lender_id.should be_nil
+    end
+
+    it "should not assign the same email address to multiple users" do
+      dispatch
+
+      User.find_by_legacy_id('thom5918r').email.should be_nil
     end
   end
 
