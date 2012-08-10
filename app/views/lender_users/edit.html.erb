@@ -5,5 +5,5 @@
 <%= render 'form' %>
 
 <%= simple_form_for @user, url: reset_password_lender_user_path, method: :post do |f| %>
-  <%= f.button :submit, class: 'btn btn-primary', value: 'Reset Password' %>
+  <%= f.button :submit, class: 'btn btn-primary', value: 'Send Reset Password Email' %>
 <% end %>

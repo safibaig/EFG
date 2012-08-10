@@ -5,12 +5,13 @@ class LenderUsersController < ApplicationController
   before_filter :verify_update_permission, only: [:edit, :update, :reset_password]
   before_filter :verify_view_permission, only: [:index, :show]
 
+  before_filter :find_user, only: [:show, :edit, :update, :reset_password]
+
   def index
     @users = current_lender.lender_users.scoped
   end
 
   def show
-    @user = current_lender.lender_users.find(params[:id])
   end
 
   def new
@@ -33,11 +34,9 @@ class LenderUsersController < ApplicationController
   end
 
   def edit
-    @user = current_lender.lender_users.find(params[:id])
   end
 
   def update
-    @user = current_lender.lender_users.find(params[:id])
     @user.attributes = params[:lender_user]
     @user.locked = params[:lender_user][:locked]
     @user.modified_by = current_user
@@ -50,15 +49,10 @@ class LenderUsersController < ApplicationController
   end
 
   def reset_password
-    @user = current_lender.lender_users.find(params[:id])
-    password = MemorablePassword.generate
-    @user.password = @user.password_confirmation = password
-
-    if @user.save
-      flash[:notice] = "The password has been set to: #{password}"
-    end
-
-    redirect_to lender_user_url(@user)
+    render :edit and return unless @user.valid?
+    @user.send_reset_password_instructions
+    redirect_to lender_user_url(@user),
+                notice: "An email has been sent to #{@user.email} with instructions for resetting their password."
   end
 
   private
@@ -72,5 +66,9 @@ class LenderUsersController < ApplicationController
 
     def verify_view_permission
       enforce_view_permission(LenderUser)
+    end
+
+    def find_user
+      @user = current_lender.lender_users.find(params[:id])
     end
 end

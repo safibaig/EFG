@@ -87,21 +87,47 @@ describe 'LenderUser management' do
     end
   end
 
-  describe "resetting the user's password" do
-    let!(:user) { FactoryGirl.create(:lender_user, first_name: 'Bob', last_name: 'Flemming', lender: lender, locked: true) }
+  describe "sending reset password email to user" do
+    let!(:user) { FactoryGirl.create(:lender_user, first_name: 'Bob', last_name: 'Flemming', lender: lender) }
 
-    before do
-      MemorablePassword.stub!(:generate).and_return('correct horse battery staple')
+    before(:each) do
+      ActionMailer::Base.deliveries.clear
     end
 
     it do
+      user.reset_password_token.should be_nil
+      user.reset_password_sent_at.should be_nil
+
       visit root_path
       click_link 'Manage Users'
       click_link 'Bob Flemming'
+      click_button 'Send Reset Password Email'
 
-      click_button 'Reset Password'
+      page.should have_content("An email has been sent to #{user.email} with instructions for resetting their password.")
 
-      page.should have_content('correct horse battery staple')
+      user.reload
+      user.reset_password_token.should_not be_nil
+      user.reset_password_sent_at.should_not be_nil
+
+      # verify email is sent to user
+      emails = ActionMailer::Base.deliveries
+      emails.size.should == 1
+      emails.first.to.should == [ user.email ]
+    end
+
+    # many imported users will not have an email address
+    it 'fails when user does not have an email address' do
+      user.email = nil
+      user.save(validate: false)
+
+      visit root_path
+      click_link 'Manage Users'
+      click_link 'Bob Flemming'
+      click_button 'Send Reset Password Email'
+
+      page.should have_content('Edit User')
+      page.should have_content("can't be blank")
+      ActionMailer::Base.deliveries.should be_empty
     end
   end
 
