@@ -70,6 +70,17 @@ describe 'LenderUser management' do
 
       user.reload.modified_by.should == current_user
     end
+
+    it 'shows warning when user has not password' do
+      user.encrypted_password = nil
+      user.save(validate: false)
+
+      visit root_path
+      click_link 'Manage Users'
+      click_link 'Bob Flemming'
+
+      page.should have_content(I18n.t('manage_users.password_not_set'))
+    end
   end
 
   describe 'unlocking the user' do

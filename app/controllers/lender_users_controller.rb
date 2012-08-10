@@ -6,6 +6,7 @@ class LenderUsersController < ApplicationController
   before_filter :verify_view_permission, only: [:index, :show]
 
   before_filter :find_user, only: [:show, :edit, :update, :reset_password]
+  before_filter :check_user_has_password, only: [:edit, :update]
 
   def index
     @users = current_lender.lender_users.scoped
@@ -70,5 +71,11 @@ class LenderUsersController < ApplicationController
 
     def find_user
       @user = current_lender.lender_users.find(params[:id])
+    end
+
+    def check_user_has_password
+      if @user.password.blank?
+        flash[:alert] = I18n.t('manage_users.password_not_set')
+      end
     end
 end
