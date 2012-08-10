@@ -14,7 +14,8 @@
       <tr>
         <th>Name</th>
         <th>Email</th>
-        <th>Locked</th>
+        <th class="center">Disabled</th>
+        <th class="center">Locked</th>
         <th>&nbsp;</th>
       </tr>
     </thead>
@@ -23,7 +24,8 @@
         <tr>
           <td><%= link_to user.name, url_for(action: :edit, id: user) %></td>
           <td><%= user.email %></td>
-          <td><%=friendly_boolean user.locked %></td>
+          <td class="center"><%=friendly_boolean user.disabled %></td>
+          <td class="center"><%=friendly_boolean user.locked %></td>
           <td class="options"><%= set_password_options(user) %></td>
         </tr>
       <% end %>

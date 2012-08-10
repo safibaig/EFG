@@ -8,6 +8,7 @@
   <%= f.input :first_name %>
   <%= f.input :last_name %>
   <%= f.input :email %>
+  <%= f.input(:disabled, wrapper: :checkbox) %>
   <%= f.input(:locked, wrapper: :checkbox) unless @user.new_record? %>
 
   <div class="form-actions">
