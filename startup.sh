@@ -1,5 +1,5 @@
 #!/bin/bash
 
 bundle install
-bundle exec rails s puma -p 3019
+bundle exec unicorn -p 3019
 
