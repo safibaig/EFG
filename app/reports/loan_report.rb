@@ -48,15 +48,9 @@ class LoanReport
 
   validates_inclusion_of :loan_scheme, in: ALLOWED_LOAN_SCHEMES, allow_blank: true
 
-  validate do
-    if loan_sources.present? && loan_sources.any? { |source| !ALLOWED_LOAN_SOURCES.include?(source) }
-      errors.add(:loan_sources, :inclusion)
-    end
+  validate :loan_sources_are_allowed
 
-    if states.present? && states.any? { |state| !ALLOWED_LOAN_STATES.include?(state) }
-      errors.add(:states, :inclusion)
-    end
-  end
+  validate :loan_states_are_allowed
 
   def initialize(attributes = {})
     super
@@ -151,6 +145,18 @@ class LoanReport
     disallowed_lender_ids = lender_ids.collect(&:to_i) - allowed_lender_ids.collect(&:to_i)
     unless disallowed_lender_ids.empty?
       raise LoanReport::LenderNotAllowed, "Access to loans for lender(s) with ID #{disallowed_lender_ids.join(',')} is forbidden for this report"
+    end
+  end
+
+  def loan_sources_are_allowed
+    if loan_sources.present? && loan_sources.any? { |source| !ALLOWED_LOAN_SOURCES.include?(source) }
+      errors.add(:loan_sources, :inclusion)
+    end
+  end
+
+  def loan_states_are_allowed
+    if states.present? && states.any? { |state| !ALLOWED_LOAN_STATES.include?(state) }
+      errors.add(:states, :inclusion)
     end
   end
 
