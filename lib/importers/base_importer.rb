@@ -20,6 +20,9 @@ class BaseImporter
     klass.import(columns, values, validate: false, timestamps: false)
   end
 
+  # An ordered list of database columns that will be INSERTed into the
+  # table. It is imperative that this order matches the order of the
+  # `values` instance method list.
   def self.columns
     field_mapping.values + extra_columns
   end
@@ -72,6 +75,9 @@ class BaseImporter
     @loan_id_from_legacy_id[legacy_id.to_i]
   end
 
+  # An ordered list of values that will be INSERTed into the table using a
+  # VALUES list. It is imperative that this order matches the order of the
+  # `self.class.columns` list.
   def values
     attributes.values
   end
