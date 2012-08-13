@@ -14,7 +14,7 @@ describe 'Resetting password' do
     open_reset_password_page
     submit_change_password_form
 
-    page.should have_content('Your password was changed successfully. You are now signed in.')
+    page.should have_content('Your password was set successfully. You are now signed in.')
   end
 
   it 'fails when allowed time has expired' do

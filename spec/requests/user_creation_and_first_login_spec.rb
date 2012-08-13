@@ -58,7 +58,7 @@ describe 'User creation and first login' do
     fill_in 'user[password_confirmation]', with: 'new-password'
     click_button 'Change Password'
 
-    page.should have_content('Your password was changed successfully. You are now signed in.')
+    page.should have_content('Your password was set successfully. You are now signed in.')
 
     # user logs out and logs in again with new password
     click_link "Logout"
