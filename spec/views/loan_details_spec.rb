@@ -93,8 +93,7 @@ describe "loan details" do
   context "with a repaid from transfer loan" do
     let(:loan) { FactoryGirl.build(:loan, :repaid_from_transfer) }
 
-    pending "needs factory definition"
-    # include_examples 'rendering loan details'
+    include_examples 'rendering loan details'
   end
 
   context "with an auto removed loan" do
