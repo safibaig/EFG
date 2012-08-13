@@ -22,6 +22,16 @@ describe Loan do
       loan.state = 'not-a-known-state-yo'
       loan.should_not be_valid
     end
+
+    it 'requires a creator' do
+      loan.created_by_id = nil
+      loan.should_not be_valid
+    end
+
+    it 'requires a modifier' do
+      loan.modified_by_id = nil
+      loan.should_not be_valid
+    end
   end
 
   describe ".last_updated_between scope" do

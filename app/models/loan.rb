@@ -72,6 +72,8 @@ class Loan < ActiveRecord::Base
 
   validates_inclusion_of :state, in: States, strict: true
   validates_presence_of :lender_id, strict: true
+  validates_presence_of :created_by, strict: true
+  validates_presence_of :modified_by, strict: true
 
   format :amount, with: MoneyFormatter.new
   format :fees, with: MoneyFormatter.new
