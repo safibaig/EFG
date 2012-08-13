@@ -116,14 +116,6 @@ describe Loan do
     end
   end
 
-  describe "#created_by" do
-    pending "currently returns a canned response"
-  end
-
-  describe "#updated_by" do
-    pending "currently returns a canned response"
-  end
-
   describe "#premium_schedule" do
     it "should return a PremiumSchedule for the loan" do
       loan = FactoryGirl.build(:loan)

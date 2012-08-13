@@ -7,10 +7,13 @@ describe LoanImporter do
   describe ".import" do
     let!(:lender) { FactoryGirl.create(:lender, legacy_id: 9) }
     let!(:loan_allocation) { FactoryGirl.create(:loan_allocation, lender: lender, legacy_id: 47) }
+    let!(:creator_user) { FactoryGirl.create(:lender_user, legacy_id: '8008769F7E055AEBA0033AD3880965BB0E99142A') }
+    let!(:modifier_user) { FactoryGirl.create(:lender_user, legacy_id: '8467CE2D5BE4B96EC60E11BD466B61514D1A33D5') }
 
     before do
       LoanImporter.csv_path = csv_fixture_path
       LoanImporter.instance_variable_set(:@lender_id_from_legacy_id, nil)
+      LoanImporter.instance_variable_set(:@user_id_from_legacy_id, nil)
     end
 
     def dispatch
@@ -36,11 +39,13 @@ describe LoanImporter do
       loan.turnover.should == Money.new(136500000)
       loan.state.should == Loan::Guaranteed
       loan.created_by_legacy_id.should == "8008769F7E055AEBA0033AD3880965BB0E99142A"
+      loan.created_by.should == creator_user
       loan.created_at.should == Time.gm(2005, 12, 19)
       loan.updated_at.should_not be_blank # after_import hook will update this to current time
       loan.version.should == 11
       loan.guaranteed_on.should == Date.new(2005, 12, 20)
       loan.modified_by_legacy_id.should == "8467CE2D5BE4B96EC60E11BD466B61514D1A33D5"
+      loan.modified_by.should == modifier_user
       loan.lender_legacy_id.should == 9
       loan.outstanding_amount.should == Money.new(500000)
       loan.standard_cap.should == false

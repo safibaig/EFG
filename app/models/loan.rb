@@ -38,8 +38,10 @@ class Loan < ActiveRecord::Base
   SFLG_SOURCE = 'S'
   LEGACY_SFLG_SOURCE = 'L'
 
+  belongs_to :created_by, class_name: 'User'
   belongs_to :lender
   belongs_to :loan_allocation
+  belongs_to :modified_by, class_name: 'User'
   has_many :state_aid_calculations, inverse_of: :loan, order: :seq
   has_one :transferred_from, class_name: 'Loan', foreign_key: 'id', primary_key: 'transferred_from_id'
   has_many :loan_changes
@@ -158,21 +160,11 @@ class Loan < ActiveRecord::Base
     "to-do"
   end
 
-  # TODO: !
-  def created_by
-    User.first
-  end
-
   def cumulative_total_previous_recoveries
     @cumulative_total_previous_recoveries ||= begin
       total = recoveries.realised.sum(:realisations_attributable)
       Money.new(total)
     end
-  end
-
-  # TODO: !
-  def modified_by
-    User.first
   end
 
   def premium_schedule

@@ -75,6 +75,18 @@ class BaseImporter
     @loan_id_from_legacy_id[legacy_id.to_i]
   end
 
+  def self.user_id_from_legacy_id(legacy_id)
+    @user_id_from_legacy_id ||= begin
+      {}.tap { |lookup|
+        User.select('id, legacy_id').find_each do |user|
+          lookup[user.legacy_id] = user.id
+        end
+      }
+    end
+
+    @user_id_from_legacy_id[legacy_id]
+  end
+
   # An ordered list of values that will be INSERTed into the table using a
   # VALUES list. It is imperative that this order matches the order of the
   # `self.class.columns` list.
