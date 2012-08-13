@@ -24,6 +24,7 @@ gem 'lograge', '0.0.6'
 gem 'unicorn', '4.3.1'
 
 group :assets do
+  gem 'sass-rails', '3.1.4'
   gem 'uglifier', '1.2.4'
   gem 'therubyracer', '0.10.1'
 end
