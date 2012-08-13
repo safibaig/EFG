@@ -4,6 +4,7 @@ class LoanAllocationImporter < BaseImporter
 
   def self.field_mapping
     {
+      "__LENDER_ID__"       => :lender_id,
       "OID"                 => :legacy_id,
       "LENDER_ID"           => :lender_legacy_id,
       "VERSION"             => :version,
@@ -23,16 +24,14 @@ class LoanAllocationImporter < BaseImporter
   end
 
   DATES = %w(START_DATE END_DATE)
-
   TIMES = %w(AR_TIMESTAMP AR_INSERT_TIMESTAMP MODIFIED_DATE)
-
   MONIES = %(ALLOCATION)
 
-  def attributes
-    row.inject({}) do |memo, (field_name, value)|
+  def build_attributes
+    row.each do |field_name, value|
       value = case field_name
       when 'LENDER_ID'
-        memo[:lender_id] = Lender.find_by_legacy_id(value).id unless value.blank?
+        attributes[:lender_id] = Lender.find_by_legacy_id(value).id unless value.blank?
         value
       when *MONIES
         Money.parse(value).cents
@@ -44,15 +43,7 @@ class LoanAllocationImporter < BaseImporter
         value
       end
 
-      memo[self.class.field_mapping[field_name]] = value
-      memo
+      attributes[self.class.field_mapping[field_name]] = value
     end
-  end
-
-  # insert lender_id column
-  def self.columns
-    columns = field_mapping.values
-    index = columns.index(:lender_legacy_id)
-    columns.insert(index, :lender_id)
   end
 end

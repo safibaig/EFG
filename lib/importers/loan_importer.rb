@@ -4,6 +4,8 @@ class LoanImporter < BaseImporter
 
   def self.field_mapping
     {
+      "__LENDER_ID__"                 => :lender_id,
+      "__LOAN_ALLOCATION_ID__"        => :loan_allocation_id,
       "OID"                           => :legacy_id,
       "REF"                           => :reference,
       "AMOUNT"                        => :amount,
@@ -151,8 +153,8 @@ class LoanImporter < BaseImporter
     OVERDRAFT_LIMIT CURRENT_REFINANCED_VALUE FINAL_REFINANCED_VALUE INVOICE_DISCOUNT_LIMIT DTI_BREAK_COSTS)
   TIMES = %w(CREATION_TIME LAST_MODIFIED AR_TIMESTAMP AR_INSERT_TIMESTAMP)
 
-  def attributes
-    row.inject({}) { |memo, (name, value)|
+  def build_attributes
+    row.each do |name, value|
       value = case name
       when "STATUS"
         STATE_MAPPING[value]
@@ -161,12 +163,12 @@ class LoanImporter < BaseImporter
       when "LENDER_OID"
         if value.present?
           lender_id = self.class.lender_id_from_legacy_id(value.to_i)
-          memo[:lender_id] = lender_id
+          attributes[:lender_id] = lender_id
         end
 
         value
       when "LENDER_CAP_ID"
-        memo[:loan_allocation_id] = (value.blank?) ? nil : LoanAllocation.find_by_legacy_id(value.to_i).id
+        attributes[:loan_allocation_id] = (value.blank?) ? nil : LoanAllocation.find_by_legacy_id(value.to_i).id
         value
       when "EFG_INTEREST_TYPE"
         unless value.blank?
@@ -182,18 +184,7 @@ class LoanImporter < BaseImporter
         value
       end
 
-      memo[self.class.field_mapping[name]] = value
-      memo
-    }
-  end
-
-  # insert extra association fields in columns
-  def self.columns
-    columns = field_mapping.values
-    { lender_legacy_id: :lender_id, lender_cap_id: :loan_allocation_id }.each do |field1, field2|
-      index = columns.index(field1)
-      columns.insert(index, field2)
+      attributes[self.class.field_mapping[name]] = value
     end
-    columns
   end
 end

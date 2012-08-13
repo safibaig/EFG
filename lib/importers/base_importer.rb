@@ -12,6 +12,8 @@ class BaseImporter
 
   def initialize(row)
     @row = row
+    @attributes = self.class.empty_attributes.dup
+    build_attributes
   end
 
   def self.bulk_import(values)
@@ -20,6 +22,13 @@ class BaseImporter
 
   def self.columns
     field_mapping.values
+  end
+
+  def self.empty_attributes
+    @empty_attributes ||= columns.inject({}) { |memo, key|
+      memo[key] = nil
+      memo
+    }
   end
 
   def self.field_mapping
@@ -57,13 +66,6 @@ class BaseImporter
     end
 
     @loan_id_from_legacy_id[legacy_id.to_i]
-  end
-
-  def attributes
-    row.inject({}) { |memo, (name, value)|
-      memo[self.class.field_mapping[name]] = value
-      memo
-    }
   end
 
   def values
