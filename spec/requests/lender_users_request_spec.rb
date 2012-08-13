@@ -167,7 +167,6 @@ describe 'LenderUser management' do
       click_link 'Bob Flemming'
       click_button 'Send Reset Password Email'
 
-      page.should have_content('Edit User')
       page.should have_content("can't be blank")
       ActionMailer::Base.deliveries.should be_empty
     end

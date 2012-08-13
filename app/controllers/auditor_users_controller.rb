@@ -2,15 +2,16 @@ require 'memorable_password'
 
 class AuditorUsersController < ApplicationController
   before_filter :verify_create_permission, only: [:new, :create]
-  before_filter :verify_update_permission, only: [:edit, :update]
+  before_filter :verify_update_permission, only: [:edit, :update, :reset_password]
   before_filter :verify_view_permission, only: [:index, :show]
+
+  before_filter :find_user, only: [:show, :edit, :update, :reset_password]
 
   def index
     @users = AuditorUser.paginate(per_page: 100, page: params[:page])
   end
 
   def show
-    @user = AuditorUser.find(params[:id])
   end
 
   def new
@@ -33,11 +34,9 @@ class AuditorUsersController < ApplicationController
   end
 
   def edit
-    @user = AuditorUser.find(params[:id])
   end
 
   def update
-    @user = AuditorUser.find(params[:id])
     @user.attributes = params[:auditor_user]
     @user.locked = params[:auditor_user][:locked]
     @user.modified_by = current_user
@@ -47,6 +46,12 @@ class AuditorUsersController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def reset_password
+    render :edit and return unless @user.valid?
+    @user.send_new_account_notification
+    redirect_to :back, notice: I18n.t('manage_users.reset_password_sent', email: @user.email)
   end
 
   private
@@ -61,4 +66,9 @@ class AuditorUsersController < ApplicationController
     def verify_view_permission
       enforce_view_permission(AuditorUser)
     end
+
+    def find_user
+      @user = AuditorUser.find(params[:id])
+    end
+
 end

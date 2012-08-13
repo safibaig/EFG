@@ -2,15 +2,16 @@ require 'memorable_password'
 
 class CfeUsersController < ApplicationController
   before_filter :verify_create_permission, only: [:new, :create]
-  before_filter :verify_update_permission, only: [:edit, :update]
+  before_filter :verify_update_permission, only: [:edit, :update, :reset_password]
   before_filter :verify_view_permission, only: [:index, :show]
+
+  before_filter :find_user, only: [:show, :edit, :update, :reset_password]
 
   def index
     @users = CfeUser.paginate(per_page: 100, page: params[:page])
   end
 
   def show
-    @user = CfeUser.find(params[:id])
   end
 
   def new
@@ -33,11 +34,9 @@ class CfeUsersController < ApplicationController
   end
 
   def edit
-    @user = CfeUser.find(params[:id])
   end
 
   def update
-    @user = CfeUser.find(params[:id])
     @user.attributes = params[:cfe_user]
     @user.locked = params[:cfe_user][:locked]
     @user.modified_by = current_user
@@ -47,6 +46,12 @@ class CfeUsersController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def reset_password
+    render :edit and return unless @user.valid?
+    @user.send_new_account_notification
+    redirect_to :back, notice: I18n.t('manage_users.reset_password_sent', email: @user.email)
   end
 
   private
@@ -60,5 +65,9 @@ class CfeUsersController < ApplicationController
 
     def verify_view_permission
       enforce_view_permission(CfeUser)
+    end
+
+    def find_user
+      @user = CfeUser.find(params[:id])
     end
 end
