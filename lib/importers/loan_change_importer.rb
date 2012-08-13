@@ -2,10 +2,12 @@ class LoanChangeImporter < BaseImporter
   self.csv_path = Rails.root.join('import_data/SFLG_LOAN_CHANGES_DATA_TABLE.csv')
   self.klass = LoanChange
 
+  def self.extra_columns
+    [:created_by_id, :loan_id]
+  end
+
   def self.field_mapping
     {
-      '__LOAN_ID__' => :loan_id,
-      '__CREATED_BY_ID__' => :created_by_id,
       'OID' => :oid,
       'SEQ' => :seq,
       'DATE_OF_CHANGE' => :date_of_change,

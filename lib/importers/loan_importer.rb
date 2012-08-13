@@ -2,10 +2,12 @@ class LoanImporter < BaseImporter
   self.csv_path = Rails.root.join('import_data/SFLG_LOAN_DATA_TABLE.csv')
   self.klass = Loan
 
+  def self.extra_columns
+    [:lender_id, :loan_allocation_id]
+  end
+
   def self.field_mapping
     {
-      "__LENDER_ID__"                 => :lender_id,
-      "__LOAN_ALLOCATION_ID__"        => :loan_allocation_id,
       "OID"                           => :legacy_id,
       "REF"                           => :reference,
       "AMOUNT"                        => :amount,

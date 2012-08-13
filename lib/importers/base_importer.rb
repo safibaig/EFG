@@ -21,7 +21,7 @@ class BaseImporter
   end
 
   def self.columns
-    field_mapping.values
+    field_mapping.values + extra_columns
   end
 
   def self.empty_attributes
@@ -29,6 +29,10 @@ class BaseImporter
       memo[key] = nil
       memo
     }
+  end
+
+  def self.extra_columns
+    []
   end
 
   def self.field_mapping
