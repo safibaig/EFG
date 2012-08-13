@@ -1,5 +1,3 @@
-require 'memorable_password'
-
 class CfeUsersController < ApplicationController
   before_filter :verify_create_permission, only: [:new, :create]
   before_filter :verify_update_permission, only: [:edit, :update, :reset_password]
@@ -22,11 +20,10 @@ class CfeUsersController < ApplicationController
     @user = CfeUser.new(params[:cfe_user])
     @user.created_by = current_user
     @user.modified_by = current_user
-    password = MemorablePassword.generate
-    @user.password = @user.password_confirmation = password
 
     if @user.save
-      flash[:notice] = "The password has been set to: #{password}"
+      @user.send_new_account_notification
+      flash[:notice] = I18n.t('manage_users.new_account_email_sent', email: @user.email)
       redirect_to cfe_user_url(@user)
     else
       render :new

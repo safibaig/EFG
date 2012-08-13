@@ -1,5 +1,3 @@
-require 'memorable_password'
-
 class LenderAdminsController < ApplicationController
   before_filter :verify_create_permission, only: [:new, :create]
   before_filter :verify_update_permission, only: [:edit, :update, :reset_password]
@@ -23,11 +21,10 @@ class LenderAdminsController < ApplicationController
     @user.created_by = current_user
     @user.lender = Lender.find(params[:lender_admin][:lender_id])
     @user.modified_by = current_user
-    password = MemorablePassword.generate
-    @user.password = @user.password_confirmation = password
 
     if @user.save
-      flash[:notice] = "The password has been set to: #{password}"
+      @user.send_new_account_notification
+      flash[:notice] = I18n.t('manage_users.new_account_email_sent', email: @user.email)
       redirect_to lender_admin_url(@user)
     else
       render :new

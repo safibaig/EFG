@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'memorable_password'
 
 describe 'LenderUser management' do
   let(:lender) { FactoryGirl.create(:lender, name: 'Bankers') }
@@ -32,7 +31,7 @@ describe 'LenderUser management' do
 
   describe 'create' do
     before do
-      MemorablePassword.stub!(:generate).and_return('correct horse battery staple')
+      ActionMailer::Base.deliveries.clear
     end
 
     it do
@@ -51,11 +50,15 @@ describe 'LenderUser management' do
 
       page.should have_content('Bob Flemming')
       page.should have_content('bob.flemming@example.com')
-      page.should have_content('correct horse battery staple')
 
       user = LenderUser.last
       user.created_by.should == current_user
       user.modified_by.should == current_user
+
+      # verify email is sent to user
+      emails = ActionMailer::Base.deliveries
+      emails.size.should == 1
+      emails.first.to.should == [ user.email ]
     end
   end
 

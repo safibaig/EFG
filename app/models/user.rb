@@ -29,4 +29,13 @@ class User < ActiveRecord::Base
     generate_reset_password_token! if should_generate_reset_token?
     UserMailer.new_account_notification(self).deliver
   end
+
+  protected
+
+  # Password is required if it is being set, but not for new records
+  def password_required?
+    return false if new_record?
+    super
+  end
+
 end

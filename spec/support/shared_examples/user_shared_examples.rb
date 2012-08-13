@@ -13,6 +13,22 @@ shared_examples_for 'User' do
       user.last_name = ''
       user.should_not be_valid
     end
+
+    it 'should not require a password when a new record' do
+      user.password = nil
+      user.password_confirmation = nil
+      user.encrypted_password = nil
+
+      user.should be_valid
+    end
+
+    it 'should require a password when being set on an existing user' do
+      user.save!
+      user.password = 'newpassword'
+      user.password_confirmation = ''
+
+      user.should_not be_valid
+    end
   end
 
   describe "#has_password?" do

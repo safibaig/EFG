@@ -5,7 +5,6 @@ gem 'mysql2'
 
 gem 'canable'
 gem 'devise'
-gem 'haddock'
 gem 'jquery-rails', "~> 1.0.19"
 gem 'money'
 gem 'simple_form'

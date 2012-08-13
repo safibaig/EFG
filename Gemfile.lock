@@ -98,7 +98,6 @@ GEM
       thor (>= 0.14.6)
     guard-rspec (0.7.2)
       guard (>= 0.10.0)
-    haddock (0.2.2)
     hike (1.2.1)
     i18n (0.6.0)
     jquery-rails (1.0.19)
@@ -259,7 +258,6 @@ DEPENDENCIES
   factory_girl_rails
   faker
   guard-rspec
-  haddock
   jquery-rails (~> 1.0.19)
   launchy
   lograge
