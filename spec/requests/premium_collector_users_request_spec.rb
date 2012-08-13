@@ -64,6 +64,8 @@ describe 'PremiumCollectorUser management' do
       fill_in 'first_name', 'Bill'
       fill_in 'last_name', 'Example'
       fill_in 'email', 'bill.example@example.com'
+      check 'premium_collector_user_disabled'
+      check 'premium_collector_user_locked'
 
       click_button 'Update Premium Collector User'
 
@@ -71,6 +73,8 @@ describe 'PremiumCollectorUser management' do
       page.should have_content('bill.example@example.com')
 
       user.reload.modified_by.should == current_user
+      user.should be_disabled
+      user.should be_locked
     end
   end
 

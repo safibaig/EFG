@@ -36,6 +36,7 @@ class CfeUsersController < ApplicationController
   def update
     @user.attributes = params[:cfe_user]
     @user.locked = params[:cfe_user][:locked]
+    @user.disabled = params[:cfe_user][:disabled]
     @user.modified_by = current_user
 
     if @user.save

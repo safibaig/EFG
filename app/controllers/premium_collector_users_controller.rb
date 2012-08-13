@@ -36,6 +36,7 @@ class PremiumCollectorUsersController < ApplicationController
   def update
     @user.attributes = params[:premium_collector_user]
     @user.locked = params[:premium_collector_user][:locked]
+    @user.disabled = params[:premium_collector_user][:disabled]
     @user.modified_by = current_user
 
     if @user.save

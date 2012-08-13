@@ -36,6 +36,7 @@ class AuditorUsersController < ApplicationController
   def update
     @user.attributes = params[:auditor_user]
     @user.locked = params[:auditor_user][:locked]
+    @user.disabled = params[:auditor_user][:disabled]
     @user.modified_by = current_user
 
     if @user.save

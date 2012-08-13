@@ -69,6 +69,8 @@ describe 'LenderAdmin management' do
       fill_in 'first_name', 'Bill'
       fill_in 'last_name', 'Example'
       fill_in 'email', 'bill.example@example.com'
+      check 'lender_admin_disabled'
+      check 'lender_admin_locked'
 
       click_button 'Update Lender Admin'
 
@@ -77,6 +79,8 @@ describe 'LenderAdmin management' do
       page.should have_content('bill.example@example.com')
 
       user.reload.modified_by.should == current_user
+      user.should be_disabled
+      user.should be_locked
     end
   end
 

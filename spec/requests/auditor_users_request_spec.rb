@@ -64,6 +64,8 @@ describe 'AuditorUser management' do
       fill_in 'first_name', 'Bill'
       fill_in 'last_name', 'Example'
       fill_in 'email', 'bill.example@example.com'
+      check 'auditor_user_disabled'
+      check 'auditor_user_locked'
 
       click_button 'Update Auditor User'
 
@@ -71,6 +73,8 @@ describe 'AuditorUser management' do
       page.should have_content('bill.example@example.com')
 
       user.reload.modified_by.should == current_user
+      user.should be_disabled
+      user.should be_locked
     end
   end
 

@@ -36,6 +36,7 @@ class LenderUsersController < ApplicationController
   def update
     @user.attributes = params[:lender_user]
     @user.locked = params[:lender_user][:locked]
+    @user.disabled = params[:lender_user][:disabled]
     @user.modified_by = current_user
 
     if @user.save
