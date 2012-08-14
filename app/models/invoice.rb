@@ -36,10 +36,22 @@ class Invoice < ActiveRecord::Base
     @loans_to_be_settled = Loan.where(id: ids)
   end
 
-  after_save :transition_loans
-  def transition_loans
+  def save_and_settle_loans
     raise LoanStateTransition::IncorrectLoanState unless loans_to_be_settled.all? {|loan| loan.state == Loan::Demanded }
-    loans_to_be_settled.update_all(state: Loan::Settled)
-    self.settled_loans = loans_to_be_settled
+
+    transaction do
+      save!
+      settle_loans!
+    end
+
+    true
+  rescue ActiveRecord::RecordInvalid
+    false
   end
+
+  private
+    def settle_loans!
+      loans_to_be_settled.update_all(state: Loan::Settled)
+      self.settled_loans = loans_to_be_settled
+    end
 end
