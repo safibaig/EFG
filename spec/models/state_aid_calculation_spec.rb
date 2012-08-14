@@ -88,6 +88,13 @@ describe StateAidCalculation do
         rescheduled_state_aid_calculation.should be_valid
       end
 
+      it "is valid when premium cheque month number is less than current month but in a future year" do
+        Date.stub(:today).and_return(Date.parse("23/08/2012"))
+
+        rescheduled_state_aid_calculation.premium_cheque_month = "07/2013"
+        rescheduled_state_aid_calculation.should be_valid
+      end
+
       it 'requires an allowed calculation type' do
         state_aid_calculation.calc_type = StateAidCalculation::SCHEDULE_TYPE
         state_aid_calculation.should be_valid

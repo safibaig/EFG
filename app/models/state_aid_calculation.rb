@@ -75,7 +75,7 @@ class StateAidCalculation < ActiveRecord::Base
       cheque_date = Date.parse("01/#{premium_cheque_month}")
       today = Date.today
 
-      unless cheque_date.month > today.month && cheque_date.year >= today.year
+      unless (cheque_date.year > today.year) || (cheque_date.year == today.year && cheque_date.month > today.month)
         errors.add(:premium_cheque_month, :invalid)
       end
     end
