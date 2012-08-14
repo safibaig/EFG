@@ -20,8 +20,7 @@ module CfeUserPermissions
       LoanRemoveGuarantee,
       Loan::States,
       RealisationStatement,
-      Search,
-      LoanReport
+      Search
     ].include?(resource)
   end
 end
