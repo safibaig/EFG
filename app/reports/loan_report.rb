@@ -72,15 +72,6 @@ class LoanReport
     Loan.where(query_conditions).select(select_options)
   end
 
-  def to_csv
-    CSV.generate do |csv|
-      csv << LoanReportCsvRow.header
-      loans.find_each do |loan|
-        csv << LoanReportCsvRow.new(loan).row
-      end
-    end
-  end
-
   # filter out blank entry in array (added by multiple check_box form helper)
   def loan_sources=(sources)
     @loan_sources = sources.is_a?(Array) ? sources.reject(&:blank?) : sources

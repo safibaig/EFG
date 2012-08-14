@@ -12,8 +12,8 @@ class LoanReportsController < ApplicationController
         format.html { render 'summary' }
         format.csv do
           filename = "#{Date.today.to_s(:db)}_loan_report.csv"
-          csv_data = @loan_report.to_csv
-          send_data(csv_data, type: 'text/csv', filename: filename, disposition: 'attachment')
+          csv_export = LoanReportCsvExport.new(@loan_report.loans)
+          send_data(csv_export.generate, type: 'text/csv', filename: filename, disposition: 'attachment')
         end
       end
     else

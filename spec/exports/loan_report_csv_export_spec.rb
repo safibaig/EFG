@@ -1,9 +1,26 @@
 require 'spec_helper'
+require 'csv'
 
-describe LoanReportCsvRow do
+describe LoanReportCsvExport do
+
+  describe "#initialize" do
+    it "should raise exception when argument is not ActiveRecord::Relation object" do
+      expect {
+        LoanReportCsvExport.new("123")
+      }.to raise_error(ArgumentError)
+    end
+
+    it "should not raise error when argument is ActiveRecord::Relation object" do
+      expect {
+        LoanReportCsvExport.new(Loan.scoped)
+      }.to_not raise_error
+    end
+  end
 
   describe ".header" do
-    let(:header) { LoanReportCsvRow.header }
+    let(:loan_report_csv_export) { LoanReportCsvExport.new(Loan.scoped) }
+
+    let(:header) { loan_report_csv_export.header }
 
     it "should return array of strings with correct text" do
       header[0].should == t(:loan_reference)
@@ -87,7 +104,31 @@ describe LoanReportCsvRow do
     end
   end
 
-  # #row method tested in LoanReportSpec
+  describe "#generate" do
+
+    let!(:loan) { FactoryGirl.create(:loan) }
+
+    let(:loan_report_mock) { double(LoanReportCsvRow) }
+
+    let(:row_mock) { Array.new(loan_report_csv_export.header.size) }
+
+    let(:loan_report_csv_export) { LoanReportCsvExport.new(Loan.scoped) }
+
+    let(:parsed_csv) { CSV.parse(loan_report_csv_export.generate) }
+
+    before(:each) do
+      LoanReportCsvRow.should_receive(:new).once.and_return(loan_report_mock)
+      loan_report_mock.should_receive(:row).once.and_return(row_mock)
+    end
+
+    it "should return a row for the header and each loan" do
+      parsed_csv.size.should == 2
+    end
+
+    it "should return the header in the first row" do
+      parsed_csv[0].should == loan_report_csv_export.header
+    end
+  end
 
   private
 
