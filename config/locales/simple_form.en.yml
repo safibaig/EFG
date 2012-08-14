@@ -211,3 +211,13 @@ en:
         created_by_id: To refine your data extraction select the user who created the data
         loan_sources: What is the Loan Type?
         loan_scheme: Loan scheme
+
+      premium_schedule_report:
+        collection_month: 'Month of Collection'
+        start_on: 'To refine your data extraction what is the start date for your report.  This date refers to the first Premium collection following the date when the Premium Payment Schedule was created or updated?'
+        finish_on: 'To refine your data extraction what is the end date for your report.  This date refers to the first Premium collection following the date when the Premium Payment Schedule was created or updated?'
+        schedule_type: 'Schedule Type'
+        loan_type: 'Loan Type'
+        loan_reference: 'Loan Reference'
+        lender_id: 'Lender'
+        scheme: 'Loan Scheme'

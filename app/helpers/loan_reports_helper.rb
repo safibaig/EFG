@@ -52,7 +52,7 @@ module LoanReportsHelper
 
   def loan_report_created_by_field(form_builder)
     if current_user.is_a?(LenderUser)
-      form_builder.input :created_by_id, as: :select, collection: current_lender.users, prompt: 'All'
+      form_builder.input :created_by_id, as: :select, collection: current_lender.lender_users, prompt: 'All'
     end
   end
 

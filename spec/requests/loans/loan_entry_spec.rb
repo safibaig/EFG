@@ -89,7 +89,7 @@ describe 'loan entry' do
 
     visit new_loan_entry_path(loan)
 
-    should_show_only_loan_category_fields(:original_overdraft_proportion, :refinance_security_proportion)
+    should_show_only_loan_category_fields(:loan_security_types, :security_proportion, :original_overdraft_proportion, :refinance_security_proportion)
   end
 
   it 'should show specific questions for loan category D' do
@@ -97,7 +97,7 @@ describe 'loan entry' do
 
     visit new_loan_entry_path(loan)
 
-    should_show_only_loan_category_fields(:refinance_security_proportion, :current_refinanced_value, :final_refinanced_value)
+    should_show_only_loan_category_fields(:loan_security_types, :security_proportion, :refinance_security_proportion, :current_refinanced_value, :final_refinanced_value)
   end
 
   it 'should show specific questions for loan category E' do
@@ -105,7 +105,7 @@ describe 'loan entry' do
 
     visit new_loan_entry_path(loan)
 
-    should_show_only_loan_category_fields(:overdraft_limit, :overdraft_maintained_true, :overdraft_maintained_false)
+    should_show_only_loan_category_fields(:loan_security_types, :security_proportion, :overdraft_limit, :overdraft_maintained_true, :overdraft_maintained_false)
   end
 
   it 'should show specific questions for loan category F' do
@@ -113,7 +113,7 @@ describe 'loan entry' do
 
     visit new_loan_entry_path(loan)
 
-    should_show_only_loan_category_fields(:invoice_discount_limit, :debtor_book_coverage, :debtor_book_topup)
+    should_show_only_loan_category_fields(:loan_security_types, :security_proportion, :invoice_discount_limit, :debtor_book_coverage, :debtor_book_topup)
   end
 
   it "should require recalculation of state aid when the loan repayment duration is changed" do

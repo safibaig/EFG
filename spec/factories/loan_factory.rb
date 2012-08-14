@@ -33,6 +33,7 @@ FactoryGirl.define do
     updated_at { Time.now }
     loan_source Loan::SFLG_SOURCE
     loan_scheme Loan::EFG_SCHEME
+    legacy_small_loan false
 
     trait :eligible do
       state Loan::Eligible

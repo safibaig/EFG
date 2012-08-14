@@ -37,11 +37,11 @@ describe 'Loan report' do
 
       navigate_to_loan_report_form
 
-      loan1.lender.users.each do |user|
+      loan1.lender.lender_users.each do |user|
         page.should have_css("#loan_report_created_by_id option", text: user.name)
       end
 
-      loan2.lender.users.each do |another_lender_user|
+      loan2.lender.lender_users.each do |another_lender_user|
         page.should_not have_css("#loan_report_created_by_id option", text: another_lender_user.name)
       end
 

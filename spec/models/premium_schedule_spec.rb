@@ -7,9 +7,11 @@ describe PremiumSchedule do
         initial_draw_amount: Money.new(100_000_00),
         initial_draw_months: 120)
     }
-    let(:premium_schedule) { PremiumSchedule.new(state_aid_calculation) }
+    let(:premium_schedule) {
+      PremiumSchedule.new(state_aid_calculation, state_aid_calculation.loan)
+    }
 
-    it "calcuates quarterly premiums" do
+    it "calculates quarterly premiums" do
       [
         500_00, 487_50, 475_00, 462_50, 450_00, 437_50, 425_00, 412_50, 400_00,
         387_50, 375_00, 362_50, 350_00, 337_50, 325_00, 312_50, 300_00, 287_50,
@@ -23,6 +25,15 @@ describe PremiumSchedule do
 
     it "calculates total premiums" do
       premium_schedule.total_premiums.should == Money.new(10_250_00)
+    end
+
+    context 'with weird initial_draw_months' do
+      it 'does not blow up if the number of months is less than one quarter' do
+        state_aid_calculation.initial_draw_months = 2
+
+        premium_schedule.premiums[0].should == Money.new(500_00)
+        premium_schedule.premiums[1].should be_zero
+      end
     end
   end
 
