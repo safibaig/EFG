@@ -31,12 +31,11 @@ describe LoanReportsController do
     end
 
     context 'when not a cfe or lender user' do
-      #let(:current_user) { FactoryGirl.create(:another_type_of_user) }
+      let(:current_user) { FactoryGirl.create(:auditor_user) }
 
-      #before { sign_in(current_user) }
+      before { sign_in(current_user) }
 
       it "should not allow access" do
-        pending("need another user type")
         expect {
           dispatch
         }.to raise_error(Canable::Transgression)
@@ -84,12 +83,11 @@ describe LoanReportsController do
     end
 
     context 'when not a cfe or lender user' do
-      #let(:current_user) { FactoryGirl.create(:another_type_of_user) }
+      let(:current_user) { FactoryGirl.create(:auditor_user) }
 
-      #before { sign_in(current_user) }
+      before { sign_in(current_user) }
 
       it "should not allow access" do
-        pending("need another user type")
         expect {
           dispatch
         }.to raise_error(Canable::Transgression)
