@@ -19,21 +19,15 @@ class StateAidCalculation < ActiveRecord::Base
 
   validates_presence_of :initial_draw_months
 
+  validates_inclusion_of :calc_type, in: [ SCHEDULE_TYPE, RESCHEDULE_TYPE, NOTIFIED_AID_TYPE ]
+
   validates_presence_of :initial_draw_year, unless: :reschedule?
 
   validates_presence_of :premium_cheque_month, if: :reschedule?
 
-  validates_inclusion_of :calc_type, in: [ SCHEDULE_TYPE, RESCHEDULE_TYPE, NOTIFIED_AID_TYPE ]
+  validate :premium_cheque_month_in_the_future, if: :reschedule?
 
-  validate do
-    if initial_draw_amount.blank? || initial_draw_amount < 0 || initial_draw_amount > Money.new(9_999_999_99)
-      errors.add(:initial_draw_amount, :invalid)
-    end
-
-    if reschedule?
-      errors.add(:premium_cheque_month, :invalid) unless premium_cheque_month_in_the_future?
-    end
-  end
+  validate :initial_draw_amount_is_within_limit
 
   format :initial_draw_amount, with: MoneyFormatter.new
   format :second_draw_amount, with: MoneyFormatter.new
@@ -71,9 +65,18 @@ class StateAidCalculation < ActiveRecord::Base
       self.seq = (StateAidCalculation.where(loan_id: loan_id).maximum(:seq) || -1) + 1 unless seq
     end
 
-    def premium_cheque_month_in_the_future?
+    def initial_draw_amount_is_within_limit
+      if initial_draw_amount.blank? || initial_draw_amount < 0 || initial_draw_amount > Money.new(9_999_999_99)
+        errors.add(:initial_draw_amount, :invalid)
+      end
+    end
+
+    def premium_cheque_month_in_the_future
       cheque_date = Date.parse("01/#{premium_cheque_month}")
       today = Date.today
-      cheque_date.month > today.month && cheque_date.year >= today.year
+
+      unless cheque_date.month > today.month && cheque_date.year >= today.year
+        errors.add(:premium_cheque_month, :invalid)
+      end
     end
 end
