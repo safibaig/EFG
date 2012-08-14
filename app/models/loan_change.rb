@@ -89,6 +89,7 @@ class LoanChange < ActiveRecord::Base
         loan[change[:attribute]] = change[:value]
       end
 
+      loan.modified_by = created_by
       loan.state = Loan::Guaranteed
       loan.save!
 

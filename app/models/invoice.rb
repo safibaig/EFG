@@ -51,7 +51,10 @@ class Invoice < ActiveRecord::Base
 
   private
     def settle_loans!
-      loans_to_be_settled.update_all(state: Loan::Settled)
+      loans_to_be_settled.update_all(
+        modified_by_id: created_by.id,
+        state: Loan::Settled
+      )
       self.settled_loans = loans_to_be_settled
     end
 end

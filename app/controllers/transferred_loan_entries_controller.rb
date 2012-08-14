@@ -10,6 +10,7 @@ class TransferredLoanEntriesController < ApplicationController
     @loan = current_lender.loans.find(params[:loan_id])
     @transferred_loan_entry = TransferredLoanEntry.new(@loan)
     @transferred_loan_entry.attributes = params[:transferred_loan_entry]
+    @transferred_loan_entry.modified_by = current_user
 
     case params[:commit]
     when 'Save as Incomplete'

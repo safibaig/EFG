@@ -51,9 +51,13 @@ describe "loan settled" do
 
     invoice.settled_loans.should =~ [loan1, loan3]
 
-    loan1.reload; loan3.reload
+    loan1.reload
     loan1.state.should == Loan::Settled
+    loan1.modified_by.should == current_user
+
+    loan3.reload
     loan3.state.should == Loan::Settled
+    loan3.modified_by.should == current_user
 
     page.should have_content('BSPFDNH-01')
     page.should_not have_content('3PEZRGB-01')

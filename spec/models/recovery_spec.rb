@@ -52,7 +52,8 @@ describe Recovery do
 
   describe '#save_and_update_loan' do
     context 'when the recovery is valid' do
-      let(:recovery) { FactoryGirl.build(:recovery) }
+      let(:user) { FactoryGirl.create(:lender_user) }
+      let(:recovery) { FactoryGirl.build(:recovery, created_by: user) }
       let(:loan) { recovery.loan }
 
       it 'saves the recovery' do
@@ -64,6 +65,11 @@ describe Recovery do
       it 'updates the loan state to recovered' do
         recovery.save_and_update_loan
         loan.reload.state.should == Loan::Recovered
+      end
+
+      it 'stores who last modified the loan' do
+        recovery.save_and_update_loan
+        loan.reload.modified_by == user
       end
 
       it 'stores the recovered date on the loan' do

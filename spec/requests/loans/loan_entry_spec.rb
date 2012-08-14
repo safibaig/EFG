@@ -3,9 +3,8 @@
 require 'spec_helper'
 
 describe 'loan entry' do
-  let(:current_lender) { FactoryGirl.create(:lender) }
-  let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
-  let(:loan) { FactoryGirl.create(:loan, lender: current_lender) }
+  let(:current_user) { FactoryGirl.create(:lender_user) }
+  let(:loan) { FactoryGirl.create(:loan, lender: current_user.lender) }
   before { login_as(current_user, scope: :user) }
 
   it 'entering further loan information' do
@@ -38,6 +37,7 @@ describe 'loan entry' do
     loan.interest_rate.should == 2.25
     loan.fees.should == Money.new(12345)
     loan.maturity_date.should == Date.new(2013, 1, 1)
+    loan.modified_by.should == current_user
   end
 
   it 'does not continue with invalid values' do
@@ -56,7 +56,10 @@ describe 'loan entry' do
 
     click_button 'Save as Incomplete'
 
-    loan.reload.state.should == Loan::Incomplete
+    loan.reload
+    loan.state.should == Loan::Incomplete
+    loan.modified_by.should == current_user
+
     current_path.should == loan_path(loan)
   end
 
@@ -74,6 +77,7 @@ describe 'loan entry' do
     current_path.should == loan_path(loan)
 
     loan.state.should == Loan::Completed
+    loan.modified_by.should == current_user
   end
 
   it 'should show specific questions for loan category B' do

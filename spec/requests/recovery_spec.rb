@@ -83,5 +83,6 @@ describe 'loan recovery' do
       loan.reload
       loan.state.should == Loan::Recovered
       loan.recovery_on.should == Date.new(2012, 6, 1)
+      loan.modified_by.should == current_user
     end
 end

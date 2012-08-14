@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 describe 'loan no claim' do
-  let(:current_lender) { FactoryGirl.create(:lender) }
-  let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
-  let(:loan) { FactoryGirl.create(:loan, :lender_demand, lender: current_lender) }
+  let(:current_user) { FactoryGirl.create(:lender_user) }
+  let(:loan) { FactoryGirl.create(:loan, :lender_demand, lender: current_user.lender) }
   before { login_as(current_user, scope: :user) }
 
   it 'progresses a loan to NotDemanded' do
@@ -19,6 +18,7 @@ describe 'loan no claim' do
 
     loan.state.should == Loan::NotDemanded
     loan.no_claim_on.should == Date.new(2012, 6, 1)
+    loan.modified_by.should == current_user
   end
 
   it 'does not continue with invalid values' do

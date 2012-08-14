@@ -14,6 +14,7 @@ class LegacyLoanTransfersController < ApplicationController
     @loan_transfer = LoanTransfer::LegacySflg.new(Loan.new)
     @loan_transfer.attributes = params[:loan_transfer_legacy_sflg]
     @loan_transfer.lender = current_lender
+    @loan_transfer.modified_by = current_user
 
     if @loan_transfer.save
       redirect_to loan_transfer_path(@loan_transfer.new_loan)
