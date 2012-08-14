@@ -42,12 +42,8 @@ module LoanReportsHelper
     if current_user.lenders.count == 1
       hidden_field_tag 'loan_report[lender_ids][]', current_lender.id
     else
-      form_builder.input :lender_ids, as: :select, collection: loan_report_lender_options, input_html: { multiple: true }
+      form_builder.input :lender_ids, as: :select, collection: current_user.lenders.order_by_name, input_html: { multiple: true }
     end
-  end
-
-  def loan_report_lender_options
-    current_user.lenders.map { |lender| [ lender.name, lender.id ] }
   end
 
   def loan_report_created_by_field(form_builder)
