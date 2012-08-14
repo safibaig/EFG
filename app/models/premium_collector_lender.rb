@@ -1,13 +1,13 @@
-class CfeLender
+class PremiumCollectorLender
   def loan_allocations
     LoanAllocation.none
   end
 
   def loans
-    Loan.scoped
+    Loan.none
   end
 
   def users
-    CfeUser.scoped
+    PremiumCollectorUser.scoped
   end
 end

@@ -60,6 +60,14 @@ en:
           attributes:
             state_aid:
               calculated: must be calculated
+        premium_schedule_report:
+          attributes:
+            base:
+              start_or_finish_required: 'At least one of Schedule start date and Schedule end date must be selected for schedule types "All" or "New" if no loan reference is entered'
+              start_or_finish_forbidden: 'Schedule start date and Schedule end date must not be selected for schedule type "Changed"'
+              collection_month_forbidden: 'Month of collection must not be selected for schedule types "New"'
+            collection_month:
+              required: 'Month of collection must be selected for schedule types "All" or "Changed" if no loan reference is entered'
 
   activerecord:
     errors:

@@ -1,4 +1,5 @@
 class LoanStatesController < ApplicationController
+  before_filter :verify_view_permission
 
   def index
     # TODO: Don't do N queries.
@@ -23,4 +24,8 @@ class LoanStatesController < ApplicationController
     end
   end
 
+  private
+    def verify_view_permission
+      enforce_view_permission(Loan::States)
+    end
 end

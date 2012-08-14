@@ -3,11 +3,13 @@ class DashboardController < ApplicationController
   include LoanAlerts
 
   def show
-    @utilisation_presenter           = UtilisationPresenter.new(current_lender)
-    @not_drawn_alerts_presenter      = LoanAlerts::Presenter.new(not_drawn_loans_groups)
-    @demanded_alerts_presenter       = LoanAlerts::Presenter.new(demanded_loans_groups)
-    @not_progressed_alerts_presenter = LoanAlerts::Presenter.new(not_progressed_loans_groups)
-    @assumed_repaid_presenter        = LoanAlerts::Presenter.new(assumed_repaid_loans_groups)
+    if current_user.can_view?(LoanAlerts)
+      @utilisation_presenter           = UtilisationPresenter.new(current_lender)
+      @not_drawn_alerts_presenter      = LoanAlerts::Presenter.new(not_drawn_loans_groups)
+      @demanded_alerts_presenter       = LoanAlerts::Presenter.new(demanded_loans_groups)
+      @not_progressed_alerts_presenter = LoanAlerts::Presenter.new(not_progressed_loans_groups)
+      @assumed_repaid_presenter        = LoanAlerts::Presenter.new(assumed_repaid_loans_groups)
+    end
   end
 
   private
@@ -43,5 +45,3 @@ class DashboardController < ApplicationController
   end
 
 end
-
-

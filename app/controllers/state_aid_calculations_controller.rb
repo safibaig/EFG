@@ -1,13 +1,12 @@
 class StateAidCalculationsController < ApplicationController
+  before_filter :verify_update_permission, only: [:edit, :update]
   before_filter :load_loan, only: [:edit, :update]
   before_filter :load_state_aid_calculation, only: [:edit, :update]
 
   def edit
-    enforce_update_permission(StateAidCalculation)
   end
 
   def update
-    enforce_update_permission(StateAidCalculation)
     @state_aid_calculation.attributes = params[:state_aid_calculation]
     @state_aid_calculation.calc_type = StateAidCalculation::SCHEDULE_TYPE
 
@@ -37,5 +36,9 @@ class StateAidCalculationsController < ApplicationController
     else
       loan_path(loan)
     end
+  end
+
+  def verify_update_permission
+    enforce_update_permission(StateAidCalculation)
   end
 end

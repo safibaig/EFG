@@ -10,7 +10,6 @@ capybara-*.html
 /db/*.sqlite3
 /public/system/*
 /coverage/
-/spec/reports
 /spec/tmp/*
 **.orig
 rerun.txt
@@ -18,3 +17,4 @@ pickle-email-*.html
 config/database.yml
 .DS_Store
 import_data/*
+brakeman-output.tabs

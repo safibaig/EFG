@@ -8,7 +8,9 @@ describe PremiumSchedule do
         initial_draw_months: 120)
     }
 
-    let(:premium_schedule) { PremiumSchedule.new(state_aid_calculation) }
+    let(:premium_schedule) {
+      PremiumSchedule.new(state_aid_calculation, state_aid_calculation.loan)
+    }
 
     it "calculates quarterly premiums" do
       [
@@ -25,11 +27,20 @@ describe PremiumSchedule do
     it "calculates total premiums" do
       premium_schedule.total_premiums.should == Money.new(10_250_00)
     end
+
+    context 'with weird initial_draw_months' do
+      it 'does not blow up if the number of months is less than one quarter' do
+        state_aid_calculation.initial_draw_months = 2
+
+        premium_schedule.premiums[0].should == Money.new(500_00)
+        premium_schedule.premiums[1].should be_zero
+      end
+    end
   end
 
   describe "#subsequent_premiums" do
 
-    let(:premium_schedule) { PremiumSchedule.new(state_aid_calculation) }
+    let(:premium_schedule) { PremiumSchedule.new(state_aid_calculation, state_aid_calculation.loan) }
 
     context "when standard state aid calculation" do
       let(:state_aid_calculation) { FactoryGirl.build(:state_aid_calculation) }

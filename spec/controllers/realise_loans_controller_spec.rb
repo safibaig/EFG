@@ -9,7 +9,11 @@ describe RealiseLoansController do
       get :show, id: realisation_statement.id
     end
 
-    it_behaves_like 'CfeUser-only controller'
+    it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeAdmin-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
+    it_behaves_like 'LenderUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
   describe "GET new" do
@@ -17,7 +21,11 @@ describe RealiseLoansController do
       get :new
     end
 
-    it_behaves_like 'CfeUser-only controller'
+    it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeAdmin-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
+    it_behaves_like 'LenderUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
   describe "POST select_loans" do
@@ -25,7 +33,11 @@ describe RealiseLoansController do
       post :select_loans, params
     end
 
-    it_behaves_like 'CfeUser-only controller'
+    it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeAdmin-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
+    it_behaves_like 'LenderUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
 
     context 'when requesting CSV export' do
       let(:current_user) { FactoryGirl.create(:cfe_user) }
@@ -61,7 +73,11 @@ describe RealiseLoansController do
       post :create
     end
 
-    it_behaves_like 'CfeUser-only controller'
+    it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeAdmin-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
+    it_behaves_like 'LenderUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
 end

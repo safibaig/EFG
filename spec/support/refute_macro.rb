@@ -1,5 +1,5 @@
 module RefuteMacro
-  def refute(val)
-    assert !val
+  def refute(val, message = '')
+    assert !val, message
   end
 end

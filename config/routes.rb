@@ -54,7 +54,18 @@ EFG::Application.routes.draw do
     end
   end
 
-  resources :users, only: [:index, :show, :new, :create, :edit, :update]
+  with_options only: [:index, :show, :new, :create, :edit, :update] do
+    resources :auditor_users
+    resources :cfe_admins
+    resources :cfe_users
+    resources :lender_admins
+    resources :lender_users do
+      member do
+        post :reset_password
+      end
+    end
+    resources :premium_collector_users
+  end
 
   resource :search, only: [:show, :new], controller: :search do
     collection do
@@ -77,4 +88,5 @@ EFG::Application.routes.draw do
   resources :loan_transfers, only: [:show, :new, :create]
   resources :legacy_loan_transfers, only: [:show, :new, :create]
 
+  resources :premium_schedule_reports, only: [:new, :create]
 end

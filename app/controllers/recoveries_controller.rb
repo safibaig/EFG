@@ -21,9 +21,7 @@ class RecoveriesController < ApplicationController
 
   private
     def load_loan
-      @loan = current_lender.loans
-        .where(state: Recovery::VALID_LOAN_STATES)
-        .find(params[:loan_id])
+      @loan = current_lender.loans.recoverable.find(params[:loan_id])
     end
 
     def verify_create_permission

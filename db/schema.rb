@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120726154310) do
+ActiveRecord::Schema.define(:version => 20120808120656) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -334,7 +334,7 @@ ActiveRecord::Schema.define(:version => 20120726154310) do
 
   create_table "users", :force => true do |t|
     t.string   "email"
-    t.string   "encrypted_password",                    :null => false
+    t.string   "encrypted_password",                        :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.integer  "sign_in_count",          :default => 0
@@ -349,13 +349,13 @@ ActiveRecord::Schema.define(:version => 20120726154310) do
     t.integer  "version"
     t.string   "first_name"
     t.string   "last_name"
-    t.boolean  "disabled"
+    t.boolean  "disabled",               :default => false, :null => false
     t.string   "memorable_name"
     t.string   "memorable_place"
     t.string   "memorable_year"
     t.integer  "login_failures"
     t.datetime "password_changed_at"
-    t.boolean  "locked"
+    t.boolean  "locked",                 :default => false, :null => false
     t.string   "created_by_legacy_id"
     t.integer  "created_by_id"
     t.boolean  "confirm_t_and_c"

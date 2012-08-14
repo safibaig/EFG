@@ -1,0 +1,28 @@
+<div class="page-header">
+  <h1>Lender Admin Management</h1>
+</div>
+
+<div class="actions">
+  <%= link_to %{<i class="icon-plus"></i> New Lender Admin}.html_safe, new_lender_admin_path, class: 'btn' %>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Lender</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Locked</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.lender.name %></td>
+        <td><%= link_to user.name, edit_lender_admin_path(user) %></td>
+        <td><%= user.email %></td>
+        <td><%=friendly_boolean user.locked %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -53,6 +53,9 @@ class Loan < ActiveRecord::Base
   scope :guaranteed,     where(state: Loan::Guaranteed)
   scope :recovered,      where(state: Loan::Recovered)
 
+  scope :changeable,  where(state: [Loan::Guaranteed, Loan::LenderDemand])
+  scope :recoverable, where(state: [Loan::Settled, Loan::Recovered, Loan::Realised])
+
   scope :last_updated_between, lambda { |start_date, end_date|
     where("updated_at >= ? AND updated_at <= ?", start_date, end_date)
   }
@@ -174,7 +177,7 @@ class Loan < ActiveRecord::Base
 
   def premium_schedule
     return nil unless self.state_aid_calculation
-    PremiumSchedule.new(self.state_aid_calculation)
+    PremiumSchedule.new(self.state_aid_calculation, self)
   end
 
   def already_transferred?

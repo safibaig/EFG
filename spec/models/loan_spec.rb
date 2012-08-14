@@ -9,27 +9,18 @@ describe Loan do
     end
 
     it 'requires a lender' do
-      pending "This relies on rails 3.2 features"
-      # expect {
-      #   loan.lender = nil
-      #   loan.valid?
-      # }.to raise_error(ActiveModel::StrictValidationFailed)
+      loan.lender = nil
+      loan.should_not be_valid
     end
 
     it 'requires a state' do
-      pending "This relies on rails 3.2 features"
-      # expect {
-      #   loan.state = nil
-      #   loan.valid?
-      # }.to raise_error(ActiveModel::StrictValidationFailed)
+      loan.state = nil
+      loan.should_not be_valid
     end
 
     it 'requires a known state' do
-      pending "This relies on rails 3.2 features"
-      # expect {
-      #   loan.state = 'not-a-known-state-yo'
-      #   loan.valid?
-      # }.to raise_error(ActiveModel::StrictValidationFailed)
+      loan.state = 'not-a-known-state-yo'
+      loan.should_not be_valid
     end
   end
 
