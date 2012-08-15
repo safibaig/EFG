@@ -7,14 +7,15 @@ describe 'LenderAdmin management' do
 
   describe 'list' do
     before do
-      FactoryGirl.create(:lender_admin, first_name: 'Barry', last_name: 'White')
-      FactoryGirl.create(:lender_user, first_name: 'David', last_name: 'Bowie')
+      FactoryGirl.create(:lender_admin, lender: lender, first_name: 'Barry', last_name: 'White')
+      FactoryGirl.create(:lender_user,  lender: lender, first_name: 'David', last_name: 'Bowie')
     end
 
     it do
       visit root_path
       click_link 'Manage Lender Admins'
 
+      page.should have_content('Bankers')
       page.should have_content('Barry White')
       page.should_not have_content('David Bowie')
     end

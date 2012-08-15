@@ -12,6 +12,7 @@
   <table id="user_list" class="table table-striped">
     <thead>
       <tr>
+        <% if user_type == 'Lender Admin' %><th>Lender</th><% end %>
         <th>Name</th>
         <th>Username</th>
         <th>Email</th>
@@ -23,6 +24,7 @@
     <tbody>
       <% users.each do |user| %>
         <tr>
+          <% if user_type == 'Lender Admin' %><td><%= user.lender.name %></td><% end %>
           <td><%= link_to user.name, url_for(action: :edit, id: user) %></td>
           <td><%= user.username %></td>
           <td><%= user.email %></td>
