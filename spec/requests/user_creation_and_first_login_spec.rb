@@ -26,12 +26,12 @@ describe 'User creation and first login' do
 
     # try to login as new lender admin before password is set
     visit root_path
-    fill_in 'user_email', with: 'bob.flemming@example.com'
+    fill_in 'user_username', with: lender_admin.username
     click_button 'Sign In'
 
     page.should have_content('Invalid email or password')
 
-    fill_in 'user_email', with: 'bob.flemming@example.com'
+    fill_in 'user_username', with: lender_admin.username
     fill_in 'user_password', with: 'whatever'
     click_button 'Sign In'
 
@@ -63,7 +63,7 @@ describe 'User creation and first login' do
     # user logs out and logs in again with new password
     click_link "Logout"
 
-    fill_in 'user_email', with: 'bob.flemming@example.com'
+    fill_in 'user_username', with: lender_admin.username
     fill_in 'user_password', with: 'new-password'
     click_button 'Sign In'
 

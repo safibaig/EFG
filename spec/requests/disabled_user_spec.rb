@@ -29,7 +29,7 @@ describe 'disabled user' do
     current_user.save
 
     visit root_path
-    fill_in 'user_email', with: current_user.email
+    fill_in 'user_username', with: current_user.username
     fill_in 'user_password', with: current_user.password
     click_button 'Sign In'
 
