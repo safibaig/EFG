@@ -32,8 +32,8 @@ class UserImporter < BaseImporter
     }
   end
 
-  def attributes
-    row.inject({}) do |memo, (field_name, value)|
+  def build_attributes
+    row.each do |field_name, value|
       value = case field_name
       when 'EMAIL_ADDRESS'
         if (value.blank? || self.class.already_imported_emails.include?(value))
@@ -49,8 +49,7 @@ class UserImporter < BaseImporter
         value
       end
 
-      memo[self.class.field_mapping[field_name]] = value
-      memo
+      attributes[self.class.field_mapping[field_name]] = value
     end
   end
 

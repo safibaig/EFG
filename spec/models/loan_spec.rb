@@ -9,27 +9,28 @@ describe Loan do
     end
 
     it 'requires a lender' do
-      pending "This relies on rails 3.2 features"
-      # expect {
-      #   loan.lender = nil
-      #   loan.valid?
-      # }.to raise_error(ActiveModel::StrictValidationFailed)
+      loan.lender = nil
+      loan.should_not be_valid
     end
 
     it 'requires a state' do
-      pending "This relies on rails 3.2 features"
-      # expect {
-      #   loan.state = nil
-      #   loan.valid?
-      # }.to raise_error(ActiveModel::StrictValidationFailed)
+      loan.state = nil
+      loan.should_not be_valid
     end
 
     it 'requires a known state' do
-      pending "This relies on rails 3.2 features"
-      # expect {
-      #   loan.state = 'not-a-known-state-yo'
-      #   loan.valid?
-      # }.to raise_error(ActiveModel::StrictValidationFailed)
+      loan.state = 'not-a-known-state-yo'
+      loan.should_not be_valid
+    end
+
+    it 'requires a creator' do
+      loan.created_by_id = nil
+      loan.should_not be_valid
+    end
+
+    it 'requires a modifier' do
+      loan.modified_by_id = nil
+      loan.should_not be_valid
     end
   end
 
@@ -123,14 +124,6 @@ describe Loan do
       loan = FactoryGirl.build(:loan, state_aid: '')
       loan.state_aid.should be_nil
     end
-  end
-
-  describe "#created_by" do
-    pending "currently returns a canned response"
-  end
-
-  describe "#updated_by" do
-    pending "currently returns a canned response"
   end
 
   describe "#premium_schedule" do

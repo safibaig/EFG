@@ -1,8 +1,6 @@
 class Recovery < ActiveRecord::Base
   include FormatterConcern
 
-  VALID_LOAN_STATES = [Loan::Settled, Loan::Recovered, Loan::Realised]
-
   belongs_to :loan
   belongs_to :created_by, class_name: 'LenderUser'
   belongs_to :realisation_statement
@@ -58,6 +56,7 @@ class Recovery < ActiveRecord::Base
 
   private
     def update_loan!
+      loan.modified_by = created_by
       loan.recovery_on = recovered_on
       loan.state = Loan::Recovered
       loan.save!

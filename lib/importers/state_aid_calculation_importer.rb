@@ -44,8 +44,8 @@ class StateAidCalculationImporter < BaseImporter
   INTEGERS = %w(SEQ HOLIDAY TOTAL_COST PUBLIC_FUNDING)
   MONIES = %w(INITIAL_DRAW_AMOUNT)
 
-  def attributes
-    row.inject({}) { |memo, (name, value)|
+  def build_attributes
+    row.each do |name, value|
       value = case name
       when *BOOLEANS
         # TODO: Cater for Yes, No and N/A values - true, false, nil.
@@ -62,8 +62,7 @@ class StateAidCalculationImporter < BaseImporter
         value
       end
 
-      memo[self.class.field_mapping[name]] = value
-      memo
-    }
+      attributes[self.class.field_mapping[name]] = value
+    end
   end
 end

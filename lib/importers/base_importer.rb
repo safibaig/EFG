@@ -12,14 +12,30 @@ class BaseImporter
 
   def initialize(row)
     @row = row
+    @attributes = self.class.empty_attributes.dup
+    build_attributes
   end
 
   def self.bulk_import(values)
     klass.import(columns, values, validate: false, timestamps: false)
   end
 
+  # An ordered list of database columns that will be INSERTed into the
+  # table. It is imperative that this order matches the order of the
+  # `values` instance method list.
   def self.columns
-    field_mapping.values
+    field_mapping.values + extra_columns
+  end
+
+  def self.empty_attributes
+    @empty_attributes ||= columns.inject({}) { |memo, key|
+      memo[key] = nil
+      memo
+    }
+  end
+
+  def self.extra_columns
+    []
   end
 
   def self.field_mapping
@@ -59,13 +75,21 @@ class BaseImporter
     @loan_id_from_legacy_id[legacy_id.to_i]
   end
 
-  def attributes
-    row.inject({}) { |memo, (name, value)|
-      memo[self.class.field_mapping[name]] = value
-      memo
-    }
+  def self.user_id_from_username(legacy_id)
+    @user_id_from_username ||= begin
+      {}.tap { |lookup|
+        User.select('id, username').find_each do |user|
+          lookup[user.username] = user.id
+        end
+      }
+    end
+
+    @user_id_from_username[legacy_id]
   end
 
+  # An ordered list of values that will be INSERTed into the table using a
+  # VALUES list. It is imperative that this order matches the order of the
+  # `self.class.columns` list.
   def values
     attributes.values
   end

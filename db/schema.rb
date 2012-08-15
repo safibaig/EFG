@@ -250,6 +250,8 @@ ActiveRecord::Schema.define(:version => 20120814091718) do
     t.integer  "loan_allocation_id"
     t.integer  "invoice_id"
     t.integer  "transferred_from_id"
+    t.integer  "created_by_id",                                                                    :null => false
+    t.integer  "modified_by_id",                                                                   :null => false
   end
 
   add_index "loans", ["legacy_id"], :name => "index_loans_on_legacy_id", :unique => true

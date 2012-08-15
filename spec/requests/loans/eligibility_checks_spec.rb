@@ -1,10 +1,8 @@
 require 'spec_helper'
 
 describe 'eligibility checks' do
-  before do
-    user = FactoryGirl.create(:lender_user)
-    login_as(user, scope: :user)
-  end
+  let(:user) { FactoryGirl.create(:lender_user) }
+  before { login_as(user, scope: :user) }
 
   it 'creates a loan from valid eligibility values' do
     visit root_path
@@ -50,6 +48,8 @@ describe 'eligibility checks' do
     loan.personal_guarantee_required.should be_false
     loan.loan_scheme.should == Loan::EFG_SCHEME
     loan.loan_source.should == Loan::SFLG_SOURCE
+    loan.created_by.should == user
+    loan.modified_by.should == user
   end
 
   it 'does not create an invalid loan' do
