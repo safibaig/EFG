@@ -35,15 +35,7 @@ class UserImporter < BaseImporter
   def build_attributes
     row.each do |field_name, value|
       value = case field_name
-      when 'EMAIL_ADDRESS'
-        if (value.blank? || self.class.already_imported_emails.include?(value))
-          nil
-        else
-          self.class.already_imported_emails << value
-          value
-        end
       when 'PASSWORD'
-        # do not import legacy passwords as we don't know the encryption algorithm
         nil
       else
         value
@@ -54,11 +46,6 @@ class UserImporter < BaseImporter
   end
 
   private
-
-  def self.already_imported_emails
-    @already_imported_emails ||= []
-  end
-
 
   def self.after_import
     klass.find_each do |user|

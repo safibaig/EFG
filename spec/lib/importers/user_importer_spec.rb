@@ -130,12 +130,6 @@ describe UserImporter do
       user.type.should == "CfeUser"
       user.lender_id.should be_nil
     end
-
-    it "should not assign the same email address to multiple users" do
-      dispatch
-
-      User.find_by_username('thom5918r').email.should be_nil
-    end
   end
 
 end
