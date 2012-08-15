@@ -6,7 +6,7 @@ class UserImporter < BaseImporter
 
   def self.field_mapping
     {
-      'USER_ID'              => :legacy_id,
+      'USER_ID'              => :username,
       'LENDER_OID'           => :legacy_lender_id,
       'PASSWORD'             => :encrypted_password,
       'CREATION_TIME'        => :created_at,
@@ -63,8 +63,8 @@ class UserImporter < BaseImporter
 
   def self.after_import
     klass.find_each do |user|
-      user.created_by  = User.find_by_legacy_id(user.created_by_legacy_id)
-      user.modified_by = User.find_by_legacy_id(user.modified_by_legacy_id)
+      user.created_by  = User.find_by_username(user.created_by_legacy_id)
+      user.modified_by = User.find_by_username(user.modified_by_legacy_id)
       user.type        = UserRoleMapper.new(user).user_type
 
       # if user is not a LenderAdmin or LenderUser,

@@ -64,6 +64,7 @@ shared_examples_for 'User' do
 
   describe '#send_new_account_notification' do
     before(:each) do
+      user.save!
       ActionMailer::Base.deliveries.clear
     end
 

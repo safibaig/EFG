@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120813104525) do
+ActiveRecord::Schema.define(:version => 20120814091718) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -362,15 +362,15 @@ ActiveRecord::Schema.define(:version => 20120813104525) do
     t.string   "modified_by_legacy_id"
     t.integer  "modified_by_id"
     t.boolean  "knowledge_resource"
-    t.string   "legacy_id"
+    t.string   "username",                                  :null => false
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
     t.string   "type"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-  add_index "users", ["legacy_id"], :name => "index_users_on_legacy_id", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["type"], :name => "index_users_on_type"
+  add_index "users", ["username"], :name => "index_users_on_username", :unique => true
 
 end

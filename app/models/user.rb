@@ -7,9 +7,11 @@ class User < ActiveRecord::Base
   belongs_to :created_by, class_name: "User", foreign_key: "created_by_id"
   belongs_to :modified_by, class_name: "User", foreign_key: "modified_by_id"
 
+  before_validation :set_unique_username, on: :create
+
   attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
 
-  validates_presence_of :first_name, :last_name
+  validates_presence_of :first_name, :last_name, :username
 
   def name
     "#{first_name} #{last_name}"
@@ -30,7 +32,15 @@ class User < ActiveRecord::Base
     UserMailer.new_account_notification(self).deliver
   end
 
-  protected
+  private
+
+  # Replicate how the existing system generates usernames.
+  def generate_username
+    last = last_name[0..3]
+    number = '%04d' % Random.rand(10000)
+    first = first_name[0]
+    [last, number, first].join('')
+  end
 
   # Password is required if it is being set, but not for new records
   def password_required?
@@ -38,4 +48,11 @@ class User < ActiveRecord::Base
     super
   end
 
+  def set_unique_username
+    self.username ||= generate_username
+
+    while User.where(username: username).exists? do
+      self.username = generate_username
+    end
+  end
 end

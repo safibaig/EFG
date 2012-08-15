@@ -29,8 +29,8 @@ describe UserImporter do
     it "should import data correctly" do
       dispatch
 
-      user = User.find_by_legacy_id('ahan8063s')
-      user.legacy_id.should == "ahan8063s"
+      user = User.find_by_username('ahan8063s')
+      user.username.should == "ahan8063s"
       user.legacy_lender_id.should == 9
       user.encrypted_password.should be_blank
       user.created_at.should == Time.gm(2005, 11, 18)
@@ -58,26 +58,26 @@ describe UserImporter do
     it "should associate lender user with lender" do
       dispatch
 
-      User.find_by_legacy_id('ahan8063s').lender.should == lender
+      User.find_by_username('ahan8063s').lender.should == lender
     end
 
     it "should associate user with user who created record" do
       dispatch
 
-      User.find_by_legacy_id('ahan8063s').created_by.should == User.find_by_legacy_id('will8561s')
+      User.find_by_username('ahan8063s').created_by.should == User.find_by_username('will8561s')
     end
 
     it "should associate user with user who last modified the record" do
       dispatch
 
-      user = User.find_by_legacy_id('ahan8063s')
-      user.modified_by.should == User.find_by_legacy_id('thom5918r')
+      user = User.find_by_username('ahan8063s')
+      user.modified_by.should == User.find_by_username('thom5918r')
     end
 
     it "should assign correct user type for LenderUser" do
       dispatch
 
-      user = User.find_by_legacy_id('ahan8063s')
+      user = User.find_by_username('ahan8063s')
       user.type.should == "LenderUser"
       user.lender_id.should be_present
     end
@@ -85,7 +85,7 @@ describe UserImporter do
     it "should assign correct user type for LenderAdmin" do
       dispatch
 
-      user = User.find_by_legacy_id('will8561s')
+      user = User.find_by_username('will8561s')
       user.type.should == "LenderAdmin"
       user.lender_id.should be_present
     end
@@ -93,7 +93,7 @@ describe UserImporter do
     it "should disable users who are not LenderAdmin or LenderUser" do
       dispatch
 
-      User.find_all_by_legacy_id(%w(thom5918r jaya6359d jack1234e mull5432n)).each do |user|
+      User.find_all_by_username(%w(thom5918r jaya6359d jack1234e mull5432n)).each do |user|
         user.should be_disabled
       end
     end
@@ -101,7 +101,7 @@ describe UserImporter do
     it "should assign correct user type for CfeAdmin users" do
       dispatch
 
-      user = User.find_by_legacy_id('thom5918r')
+      user = User.find_by_username('thom5918r')
       user.type.should == "CfeAdmin"
       user.lender_id.should be_nil
     end
@@ -109,7 +109,7 @@ describe UserImporter do
     it "should assign correct user type for PremiumCollectorUser users" do
       dispatch
 
-      user = User.find_by_legacy_id('jaya6359d')
+      user = User.find_by_username('jaya6359d')
       user.type.should == "PremiumCollectorUser"
       user.lender_id.should be_nil
     end
@@ -117,7 +117,7 @@ describe UserImporter do
     it "should assign correct user type for AuditorUser users" do
       dispatch
 
-      user = User.find_by_legacy_id('jack1234e')
+      user = User.find_by_username('jack1234e')
       user.type.should == "AuditorUser"
       user.lender_id.should be_nil
     end
@@ -125,7 +125,7 @@ describe UserImporter do
     it "should assign correct user type for CfeUser users" do
       dispatch
 
-      user = User.find_by_legacy_id('mull5432n')
+      user = User.find_by_username('mull5432n')
       user.type.should == "CfeUser"
       user.lender_id.should be_nil
     end
@@ -133,7 +133,7 @@ describe UserImporter do
     it "should not assign the same email address to multiple users" do
       dispatch
 
-      User.find_by_legacy_id('thom5918r').email.should be_nil
+      User.find_by_username('thom5918r').email.should be_nil
     end
   end
 

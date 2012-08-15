@@ -43,7 +43,7 @@ class UserRoleMapper
   #   user_role[1] = role name
   #
   def user_type
-    user_roles = self.class.legacy_user_roles[@user.legacy_id]
+    user_roles = self.class.legacy_user_roles[@user.username]
 
     return 'LenderAdmin' if user_roles.include?('lenderAdmin')
     return 'LenderUser' if (user_roles & lender_user_legacy_roles).size > 0

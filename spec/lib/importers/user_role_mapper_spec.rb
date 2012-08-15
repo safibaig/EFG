@@ -19,7 +19,7 @@ describe UserRoleMapper do
       'mull5432n' => 'CfeUser'
     }.each do |username, expected_user_type|
       it "should return correct user type for user #{username}" do
-        user = FactoryGirl.build(:user, legacy_id: username)
+        user = FactoryGirl.build(:user, username: username)
         UserRoleMapper.new(user).user_type.should == expected_user_type
       end
     end
