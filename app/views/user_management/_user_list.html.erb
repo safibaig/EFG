@@ -13,6 +13,7 @@
     <thead>
       <tr>
         <th>Name</th>
+        <th>Username</th>
         <th>Email</th>
         <th class="center">Disabled</th>
         <th class="center">Locked</th>
@@ -23,6 +24,7 @@
       <% users.each do |user| %>
         <tr>
           <td><%= link_to user.name, url_for(action: :edit, id: user) %></td>
+          <td><%= user.username %></td>
           <td><%= user.email %></td>
           <td class="center"><%=friendly_boolean user.disabled %></td>
           <td class="center"><%=friendly_boolean user.locked %></td>
