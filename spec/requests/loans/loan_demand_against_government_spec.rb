@@ -27,6 +27,7 @@ describe 'loan demand against government' do
     loan.dti_demanded_on.should == Date.today
     loan.dti_ded_code.should == 'A.10.10'
     loan.dti_reason.should == 'Something'
+    loan.modified_by.should == current_user
   end
 
   it 'does not continue with invalid values' do

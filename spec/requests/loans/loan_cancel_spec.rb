@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 describe 'loan cancel' do
-  let(:current_lender) { FactoryGirl.create(:lender) }
-  let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
-  let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender) }
+  let(:current_user) { FactoryGirl.create(:lender_user) }
+  let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_user.lender) }
   before { login_as(current_user, scope: :user) }
 
   it 'entering further loan information' do
@@ -24,6 +23,7 @@ describe 'loan cancel' do
     loan.cancelled_on.should == Date.new(2012, 6, 1)
     loan.cancelled_reason_id.should == 4
     loan.cancelled_comment.should == 'No comment'
+    loan.modified_by.should == current_user
   end
 
   it 'cancels an incomplete loan' do

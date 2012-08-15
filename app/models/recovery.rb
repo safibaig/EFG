@@ -56,6 +56,7 @@ class Recovery < ActiveRecord::Base
 
   private
     def update_loan!
+      loan.modified_by = created_by
       loan.recovery_on = recovered_on
       loan.state = Loan::Recovered
       loan.save!

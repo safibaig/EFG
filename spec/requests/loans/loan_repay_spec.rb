@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 describe 'loan repay' do
-  let(:current_lender) { FactoryGirl.create(:lender) }
-  let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
-  let(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_lender) }
+  let(:current_user) { FactoryGirl.create(:lender_user) }
+  let(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_user.lender) }
   before { login_as(current_user, scope: :user) }
 
   it 'repays a loan' do
@@ -19,6 +18,7 @@ describe 'loan repay' do
 
     loan.state.should == Loan::Repaid
     loan.repaid_on.should == Date.new(2012, 6, 1)
+    loan.modified_by.should == current_user
   end
 
   it 'repays a LenderDemand loan' do
@@ -35,6 +35,7 @@ describe 'loan repay' do
 
     loan.state.should == Loan::Repaid
     loan.repaid_on.should == Date.new(2012, 6, 1)
+    loan.modified_by.should == current_user
   end
 
   it 'does not continue with invalid values' do

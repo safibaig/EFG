@@ -48,8 +48,6 @@ describe 'loan change' do
 
     current_path.should == new_loan_loan_change_path(loan)
 
-
-
     # verify state aid calculation is created
     expect {
       click_button 'Submit'
@@ -93,5 +91,6 @@ describe 'loan change' do
 
       loan.reload
       loan.business_name.should == 'updated'
+      loan.modified_by.should == current_user
     end
 end

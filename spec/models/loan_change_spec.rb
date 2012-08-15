@@ -115,8 +115,9 @@ describe LoanChange do
   end
 
   describe '#save_and_update_loan' do
+    let(:user) { FactoryGirl.create(:lender_user) }
     let(:loan) { FactoryGirl.create(:loan, :lender_demand, business_name: 'ACME') }
-    let(:loan_change) { FactoryGirl.build(:loan_change, loan: loan) }
+    let(:loan_change) { FactoryGirl.build(:loan_change, loan: loan, created_by: user) }
 
     it 'works' do
       loan_change.business_name = 'updated'
@@ -124,6 +125,7 @@ describe LoanChange do
       loan_change.save_and_update_loan.should == true
       loan.state.should == Loan::Guaranteed
       loan.business_name.should == 'updated'
+      loan.modified_by.should == user
     end
 
     it 'does not update the Loan if the LoanChange is not valid' do

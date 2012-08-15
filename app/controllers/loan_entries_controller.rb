@@ -10,6 +10,7 @@ class LoanEntriesController < ApplicationController
     @loan = current_lender.loans.find(params[:loan_id])
     @loan_entry = LoanEntry.new(@loan)
     @loan_entry.attributes = params[:loan_entry]
+    @loan_entry.modified_by = current_user
 
     case params[:commit]
     when 'Save as Incomplete'

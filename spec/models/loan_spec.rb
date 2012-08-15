@@ -22,6 +22,16 @@ describe Loan do
       loan.state = 'not-a-known-state-yo'
       loan.should_not be_valid
     end
+
+    it 'requires a creator' do
+      loan.created_by_id = nil
+      loan.should_not be_valid
+    end
+
+    it 'requires a modifier' do
+      loan.modified_by_id = nil
+      loan.should_not be_valid
+    end
   end
 
   describe ".last_updated_between scope" do
@@ -114,14 +124,6 @@ describe Loan do
       loan = FactoryGirl.build(:loan, state_aid: '')
       loan.state_aid.should be_nil
     end
-  end
-
-  describe "#created_by" do
-    pending "currently returns a canned response"
-  end
-
-  describe "#updated_by" do
-    pending "currently returns a canned response"
   end
 
   describe "#premium_schedule" do
