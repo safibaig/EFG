@@ -20,7 +20,7 @@ gem 'progressbar', '0.11.0'
 
 gem 'exception_notification', '2.5.2'
 gem 'aws-ses', :require => 'aws/ses' # Needed by exception_notification
-# gem 'lograge', '0.0.6'
+gem 'lograge', '0.0.6'
 gem 'unicorn', '4.3.1'
 
 group :assets do
