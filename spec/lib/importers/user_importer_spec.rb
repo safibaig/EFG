@@ -14,6 +14,7 @@ describe UserImporter do
       UserImporter.csv_path = csv_fixture_path
       UserRoleMapper.user_roles_csv_path = user_roles_csv_fixture_path
       UserImporter.instance_variable_set(:@already_imported_emails, [])
+      UserImporter.instance_variable_set(:@user_id_from_username, nil)
     end
 
     def dispatch

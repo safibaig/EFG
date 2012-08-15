@@ -62,8 +62,8 @@ class UserImporter < BaseImporter
 
   def self.after_import
     klass.find_each do |user|
-      user.created_by  = User.find_by_username(user.created_by_legacy_id)
-      user.modified_by = User.find_by_username(user.modified_by_legacy_id)
+      user.created_by_id = user_id_from_username(user.created_by_legacy_id)
+      user.modified_by_id = user_id_from_username(user.modified_by_legacy_id)
       user.type        = UserRoleMapper.new(user).user_type
 
       # if user is not a LenderAdmin or LenderUser,
