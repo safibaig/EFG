@@ -20,6 +20,8 @@ class LoanEligibilityCheck
   attribute :loan_scheme
   attribute :loan_source
 
+  delegate :created_by, :created_by=, to: :loan
+
   validates_presence_of :amount, :loan_allocation_id, :repayment_duration,
     :turnover, :trading_date, :sic_code, :loan_category_id, :reason_id
   validates_inclusion_of :viable_proposition, :would_you_lend,

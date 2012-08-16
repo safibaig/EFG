@@ -9,8 +9,8 @@ class LoanSecurityImporter < BaseImporter
     }
   end
 
-  def attributes
-    row.inject({}) do |memo, (field_name, value)|
+  def build_attributes
+    row.each do |field_name, value|
       value = case field_name
       when 'LOAN_OID'
         self.class.loan_id_from_legacy_id(value.to_i)
@@ -18,9 +18,7 @@ class LoanSecurityImporter < BaseImporter
         value
       end
 
-      memo[self.class.field_mapping[field_name]] = value
-      memo
+      attributes[self.class.field_mapping[field_name]] = value
     end
   end
-
 end

@@ -8,6 +8,8 @@ module LoanPresenter
     include ActiveModel::Validations
 
     attr_reader :loan
+
+    delegate :modified_by, :modified_by=, to: :loan
   end
 
   module ClassMethods

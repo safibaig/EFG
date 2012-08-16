@@ -2,6 +2,10 @@ class LoanImporter < BaseImporter
   self.csv_path = Rails.root.join('import_data/SFLG_LOAN_DATA_TABLE.csv')
   self.klass = Loan
 
+  def self.extra_columns
+    [:created_by_id, :lender_id, :loan_allocation_id, :modified_by_id]
+  end
+
   def self.field_mapping
     {
       "OID"                           => :legacy_id,
@@ -151,9 +155,15 @@ class LoanImporter < BaseImporter
     OVERDRAFT_LIMIT CURRENT_REFINANCED_VALUE FINAL_REFINANCED_VALUE INVOICE_DISCOUNT_LIMIT DTI_BREAK_COSTS)
   TIMES = %w(CREATION_TIME LAST_MODIFIED AR_TIMESTAMP AR_INSERT_TIMESTAMP)
 
-  def attributes
-    row.inject({}) { |memo, (name, value)|
+  def build_attributes
+    row.each do |name, value|
       value = case name
+      when 'CREATED_BY'
+        attributes[:created_by_id] = self.class.user_id_from_legacy_id(value)
+        value
+      when 'MODIFIED_BY'
+        attributes[:modified_by_id] = self.class.user_id_from_legacy_id(value)
+        value
       when "STATUS"
         STATE_MAPPING[value]
       when "LOAN_TERM"
@@ -161,12 +171,12 @@ class LoanImporter < BaseImporter
       when "LENDER_OID"
         if value.present?
           lender_id = self.class.lender_id_from_legacy_id(value.to_i)
-          memo[:lender_id] = lender_id
+          attributes[:lender_id] = lender_id
         end
 
         value
       when "LENDER_CAP_ID"
-        memo[:loan_allocation_id] = (value.blank?) ? nil : LoanAllocation.find_by_legacy_id(value.to_i).id
+        attributes[:loan_allocation_id] = (value.blank?) ? nil : LoanAllocation.find_by_legacy_id(value.to_i).id
         value
       when "EFG_INTEREST_TYPE"
         unless value.blank?
@@ -182,18 +192,7 @@ class LoanImporter < BaseImporter
         value
       end
 
-      memo[self.class.field_mapping[name]] = value
-      memo
-    }
-  end
-
-  # insert extra association fields in columns
-  def self.columns
-    columns = field_mapping.values
-    { lender_legacy_id: :lender_id, lender_cap_id: :loan_allocation_id }.each do |field1, field2|
-      index = columns.index(field1)
-      columns.insert(index, field2)
+      attributes[self.class.field_mapping[name]] = value
     end
-    columns
   end
 end

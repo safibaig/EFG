@@ -3,9 +3,8 @@
 require 'spec_helper'
 
 describe 'loan guarantee' do
-  let(:current_lender) { FactoryGirl.create(:lender) }
-  let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
-  let(:loan) { FactoryGirl.create(:loan, :offered, lender: current_lender) }
+  let(:current_user) { FactoryGirl.create(:lender_user) }
+  let(:loan) { FactoryGirl.create(:loan, :offered, lender: current_user.lender) }
   before { login_as(current_user, scope: :user) }
 
   it 'entering further loan information' do
@@ -32,6 +31,7 @@ describe 'loan guarantee' do
     loan.initial_draw_date.should == Date.new(2012, 2, 28)
     loan.initial_draw_value.should == Money.new(1000042)
     loan.maturity_date.should == Date.new(2012, 3, 1)
+    loan.modified_by.should == current_user
   end
 
   it 'does not continue with invalid values' do

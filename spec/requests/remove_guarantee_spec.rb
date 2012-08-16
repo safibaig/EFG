@@ -4,7 +4,7 @@ describe 'Remove guarantee' do
 
   let(:current_user) { FactoryGirl.create(:cfe_user) }
 
-  let!(:loan) { FactoryGirl.create(:loan, :guaranteed) }
+  let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
 
   before do
     login_as(current_user, scope: :user)
@@ -20,7 +20,10 @@ describe 'Remove guarantee' do
     click_button 'Remove Guarantee'
 
     page.should have_content('The Guarantee has been removed in respect of this facility.')
-    loan.reload.state.should == 'removed'
+
+    loan.reload
+    loan.state.should == Loan::Removed
+    loan.modified_by.should == current_user
   end
 
 end

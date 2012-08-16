@@ -87,7 +87,10 @@ class RealisationStatement < ActiveRecord::Base
 
     loan_ids = recoveries_to_be_realised.map(&:loan_id).uniq
 
-    Loan.where(id: loan_ids).update_all(state: Loan::Realised)
+    Loan.where(id: loan_ids).update_all(
+      modified_by_id: created_by.id,
+      state: Loan::Realised
+    )
   end
 
   def realise_recoveries!

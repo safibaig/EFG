@@ -10,6 +10,7 @@ class LoanDemandToBorrowersController < ApplicationController
     @loan = current_lender.loans.find(params[:loan_id])
     @loan_demand_to_borrower = LoanDemandToBorrower.new(@loan)
     @loan_demand_to_borrower.attributes = params[:loan_demand_to_borrower]
+    @loan_demand_to_borrower.modified_by = current_user
 
     if @loan_demand_to_borrower.save
       redirect_to loan_url(@loan)

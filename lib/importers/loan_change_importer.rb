@@ -2,8 +2,8 @@ class LoanChangeImporter < BaseImporter
   self.csv_path = Rails.root.join('import_data/SFLG_LOAN_CHANGES_DATA_TABLE.csv')
   self.klass = LoanChange
 
-  def self.columns
-    [:loan_id, :created_by_id] + super
+  def self.extra_columns
+    [:created_by_id, :loan_id]
   end
 
   def self.field_mapping
@@ -58,18 +58,15 @@ class LoanChangeImporter < BaseImporter
     INITIAL_DRAW_AMOUNT OLD_INITIAL_DRAW_AMOUNT DTIDEMANDOUTAMOUNT
     OLD_DTIDEMANDOUTAMOUNT DTIDEMANDINTEREST OLD_DTIDEMANDINTEREST)
 
-  def attributes
-    # attributes keys must be in the same order as they exist in the db.
-    ordered = { loan_id: nil, created_by_id: nil }
-
-    row.inject(ordered) do |memo, (name, value)|
+  def build_attributes
+    row.each do |name, value|
       value = nil if value.blank?
 
       case name
       when 'MODIFIED_USER'
-        memo[:created_by_id] = self.class.user_id_from_modified_user(value)
+        attributes[:created_by_id] = self.class.user_id_from_modified_user(value)
       when 'OID'
-        memo[:loan_id] = self.class.loan_id_from_legacy_id(value.to_i)
+        attributes[:loan_id] = self.class.loan_id_from_legacy_id(value.to_i)
       when 'SEQ'
         value = value.to_i
       when *DATES
@@ -78,8 +75,7 @@ class LoanChangeImporter < BaseImporter
         value = Money.parse(value).cents if value
       end
 
-      memo[self.class.field_mapping[name]] = value
-      memo
+      attributes[self.class.field_mapping[name]] = value
     end
   end
 end

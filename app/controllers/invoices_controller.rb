@@ -31,7 +31,7 @@ class InvoicesController < ApplicationController
     @invoice = Invoice.new(params[:invoice])
     @invoice.created_by = current_user
 
-    if @invoice.save
+    if @invoice.save_and_settle_loans
       redirect_to invoice_url(@invoice)
     else
       render :select_loans

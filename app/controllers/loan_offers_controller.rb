@@ -10,6 +10,7 @@ class LoanOffersController < ApplicationController
     @loan = current_lender.loans.find(params[:loan_id])
     @loan_offer = LoanOffer.new(@loan)
     @loan_offer.attributes = params[:loan_offer]
+    @loan_offer.modified_by = current_user
 
     if @loan_offer.save
       redirect_to loan_url(@loan_offer.loan)

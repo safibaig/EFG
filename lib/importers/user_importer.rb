@@ -32,8 +32,8 @@ class UserImporter < BaseImporter
     }
   end
 
-  def attributes
-    row.inject({}) do |memo, (field_name, value)|
+  def build_attributes
+    row.each do |field_name, value|
       value = case field_name
       when "FIRST_NAME"
         (value == 'FIRSTNAME') ? Faker::Name.first_name : value
@@ -46,8 +46,7 @@ class UserImporter < BaseImporter
         value
       end
 
-      memo[self.class.field_mapping[field_name]] = value
-      memo
+      attributes[self.class.field_mapping[field_name]] = value
     end
   end
 

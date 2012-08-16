@@ -108,11 +108,11 @@ shared_examples_for 'a loan transfer' do
       end
 
       it 'should create new loan with modified by set to user requesting transfer' do
-        pending
+        new_loan.modified_by.should == loan_transfer.modified_by
       end
 
       it 'should create new loan with created by set to user requesting transfer' do
-        pending
+        new_loan.created_by.should == loan_transfer.modified_by
       end
     end
 

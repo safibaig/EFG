@@ -24,6 +24,7 @@ describe 'loan demand to borrower' do
     loan.state.should == Loan::LenderDemand
     loan.borrower_demanded_on.should == Date.new(2012, 6, 1)
     loan.borrower_demand_outstanding.should == Money.new(5_000_00) # 5000.00
+    loan.modified_by.should == current_user
   end
 
   it 'does not continue with invalid values' do
