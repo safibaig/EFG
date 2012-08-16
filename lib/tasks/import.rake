@@ -7,6 +7,12 @@ namespace :import do
     _import User
   end
 
+  desc 'Associate creators/modifiers of Lenders'
+  task lender_user_associations: [:lenders, :users] do
+    require 'importers'
+    LenderUserAssociationImporter.import
+  end
+
   desc "Import lender data (SFLG_LENDER_DATA_TABLE)"
   task lenders: :environment do
     _import Lender

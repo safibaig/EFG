@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120815123757) do
+ActiveRecord::Schema.define(:version => 20120815162645) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -39,13 +39,15 @@ ActiveRecord::Schema.define(:version => 20120815123757) do
     t.integer  "std_cap_lending_allocation"
     t.integer  "add_cap_lending_allocation"
     t.boolean  "disabled"
-    t.string   "created_by"
-    t.string   "modified_by"
+    t.string   "created_by_legacy_id"
+    t.string   "modified_by_legacy_id"
     t.boolean  "allow_alert_process"
     t.string   "main_point_of_contact_user"
     t.string   "loan_scheme"
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
+    t.integer  "created_by_id"
+    t.integer  "modified_by_id"
   end
 
   add_index "lenders", ["legacy_id"], :name => "index_lenders_on_legacy_id", :unique => true

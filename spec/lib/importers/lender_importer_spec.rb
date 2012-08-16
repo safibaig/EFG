@@ -41,8 +41,8 @@ describe LenderImporter do
       lender.should_not be_disabled
       lender.ar_timestamp.should == Time.gm(2006, 12, 11)
       lender.ar_insert_timestamp.should == Time.gm(2007, 3, 20)
-      lender.created_by.should == "B0A11CFA070A9EB86882BB5199645F1232C47F8E"
-      lender.modified_by.should == "8CD950DED80063E4502DDAD23C4A0D7EF03B7EE3"
+      lender.created_by_legacy_id.should == 'B0A11CFA070A9EB86882BB5199645F1232C47F8E'
+      lender.modified_by_legacy_id.should == '8CD950DED80063E4502DDAD23C4A0D7EF03B7EE3'
       lender.allow_alert_process.should == true
       lender.main_point_of_contact_user.should == "CC0312A05920C0BC0204CB65162AD1B9F5C94033"
       lender.loan_scheme.should == "E"
