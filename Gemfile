@@ -14,6 +14,7 @@ gem "builder", '3.0.0'
 gem "bourbon", '2.1.1'
 gem 'will_paginate', '3.0.3'
 gem 'bootstrap-will_paginate', '0.0.7'
+gem 'plek'
 gem 'prawn', '0.12.0'
 gem 'progressbar', '0.11.0'
 
