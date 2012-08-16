@@ -2,18 +2,19 @@ require 'spec_helper'
 require 'importers'
 
 describe LoanImporter do
+
   let(:csv_fixture_path) { Rails.root.join('spec/fixtures/import_data/loans.csv') }
 
   describe ".import" do
     let!(:lender) { FactoryGirl.create(:lender, legacy_id: 9) }
     let!(:loan_allocation) { FactoryGirl.create(:loan_allocation, lender: lender, legacy_id: 47) }
-    let!(:creator_user) { FactoryGirl.create(:lender_user, legacy_id: '8008769F7E055AEBA0033AD3880965BB0E99142A') }
-    let!(:modifier_user) { FactoryGirl.create(:lender_user, legacy_id: '8467CE2D5BE4B96EC60E11BD466B61514D1A33D5') }
+    let!(:creator_user) { FactoryGirl.create(:lender_user, username: '8008769F7E055AEBA0033AD3880965BB0E99142A') }
+    let!(:modifier_user) { FactoryGirl.create(:lender_user, username: '8467CE2D5BE4B96EC60E11BD466B61514D1A33D5') }
 
     before do
       LoanImporter.csv_path = csv_fixture_path
       LoanImporter.instance_variable_set(:@lender_id_from_legacy_id, nil)
-      LoanImporter.instance_variable_set(:@user_id_from_legacy_id, nil)
+      LoanImporter.instance_variable_set(:@user_id_from_username, nil)
     end
 
     def dispatch

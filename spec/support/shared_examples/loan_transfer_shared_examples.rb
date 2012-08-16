@@ -190,7 +190,7 @@ shared_examples_for 'a loan transfer' do
     end
 
     context 'when loan is an EFG loan' do
-      let!(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation, :efg) }
+      let!(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation) }
 
       it "should return false" do
         loan_transfer.save.should == false

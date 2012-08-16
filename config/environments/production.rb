@@ -66,4 +66,10 @@ EFG::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   config.lograge.enabled = true
+
+  config.action_mailer.default_url_options = {
+    :host => URI.parse(Plek.current.find('efg')).host
+  }
+
+  config.action_mailer.delivery_method = :ses
 end

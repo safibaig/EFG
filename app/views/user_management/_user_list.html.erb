@@ -1,0 +1,43 @@
+<div class="page-header">
+  <h1><%= user_type %> Management</h1>
+</div>
+
+<div class="actions">
+  <%= link_to %{<i class="icon-plus"></i> New #{user_type}}.html_safe, url_for(action: :new), class: 'btn' %>
+</div>
+
+<% if @users.empty? %>
+  <h2>There are currently no <%= user_type %>s</h2>
+<% else %>
+  <table id="user_list" class="table table-striped">
+    <thead>
+      <tr>
+        <% if user_type == 'Lender Admin' %><th>Lender</th><% end %>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th class="center">Disabled</th>
+        <th class="center">Locked</th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% users.each do |user| %>
+        <tr>
+          <% if user_type == 'Lender Admin' %><td><%= user.lender.name %></td><% end %>
+          <td><%= link_to user.name, url_for(action: :edit, id: user) %></td>
+          <td><%= user.username %></td>
+          <td><%= user.email %></td>
+          <td class="center"><%=friendly_boolean user.disabled %></td>
+          <td class="center"><%=friendly_boolean user.locked %></td>
+          <td class="options">
+            <%= set_email_options(user) %>
+            <%= set_password_options(user) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<%= will_paginate @users %>

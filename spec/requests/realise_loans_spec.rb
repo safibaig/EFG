@@ -12,8 +12,7 @@ describe 'Realise loans' do
 
   before(:each) do
     login_as(current_user, scope: :user)
-    visit root_path
-    click_link 'Recoveries statement received'
+    navigate_to_form
   end
 
   it 'should realise recovered loans' do
@@ -87,6 +86,7 @@ describe 'Realise loans' do
   it 'should show error text when there are no loans to recover' do
     loan = FactoryGirl.create(:loan, :recovered, id: 1, recovery_on: Date.new(2011, 2, 20))
 
+    navigate_to_form # go back to form so new loan record lender is in form
     select loan.lender.name, from: 'realisation_statement_lender_id'
     fill_in 'realisation_statement_reference', with: "ABC123"
     select 'March', from: 'realisation_statement_period_covered_quarter'
@@ -114,6 +114,11 @@ describe 'Realise loans' do
     fill_in 'realisation_statement_period_covered_year', with: '2011'
     fill_in 'realisation_statement_received_on', with: '20/05/2011'
     click_button 'Select Loans'
+  end
+
+  def navigate_to_form
+    visit root_path
+    click_link 'Recoveries statement received'
   end
 
 end

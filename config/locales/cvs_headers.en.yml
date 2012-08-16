@@ -1,0 +1,81 @@
+en:
+  csv_headers:
+    loan_report:
+      loan_reference: Loan reference
+      legal_form: Legal form
+      post_code: Post code
+      non_validated_post_code: Non-validated postcode
+      town: Town
+      annual_turnover: Annual turnover
+      trading_date: Trading date
+      sic_code: SIC code
+      sic_code_description: SIC code description
+      parent_sic_code_description: Parent SIC description
+      purpose_of_loan: Purpose of loan
+      facility_amount: Facility Amount
+      guarantee_rate: Guarantee rate
+      premium_rate: Premium rate
+      lending_limit: What is the Lending Limit against which this facility is to be allocated? (Note that the date of the Scheme Facility Letter must fall within the validity of the Lending Limit)
+      lender_reference: What is the lender organisation reference code?
+      loan_state: Loan state
+      loan_term: Loan term
+      repayment_frequency: Repayment frequency
+      maturity_date: Maturity date
+      generic1: Generic lender field 1
+      generic2: Generic lender field 2
+      generic3: Generic lender field 3
+      generic4: Generic lender field 4
+      generic5: Generic lender field 5
+      cancellation_reason: Cancellation reason
+      cancellation_comment: Cancellation comment
+      cancellation_date: Cancellation date
+      scheme_facility_letter_date: Scheme Facility Letter date
+      initial_draw_amount: Initial draw amount
+      initial_draw_date: Initial draw date
+      lender_demand_date: Lender demand date
+      lender_demand_amount: Lender demand amount
+      repaid_date: Repaid date
+      no_claim_date: No Claim date
+      demand_made_date: What was the date that Demand was made against the Guarantee? (dd/mm/yyyy) Please note that this is today's date.
+      outstanding_facility_principal: Outstanding Scheme Facility Principal
+      total_claimed: Total amount claimed under the Government Guarantee
+      outstanding_facility_interest: Outstanding Scheme Facility Interest
+      business_failure_group: Business failure group
+      business_failure_category_description: Business failure category description
+      business_failure_description: Business failure description
+      business_failure_code: Business failure code
+      government_demand_reason: "Comments on the reason for Demand&nbsp;against the Government Guarantee&nbsp;"
+      break_cost: Break cost
+      latest_recovery_date: Latest Recovered Date
+      total_recovered: Total amount recovered
+      latest_realised_date: Latest realised date
+      total_realised: Total amount realised
+      cumulative_amount_drawn: Cumulative amount drawn
+      total_lump_sum_repayments: Total lump sum repayments
+      created_by: Record created by
+      created_at: Date and time created
+      modified_by: Record last modified by
+      modified_date: Record last modified on
+      guarantee_remove_date: "What was the date that the Guarantee was removed from this facility?&nbsp;"
+      outstanding_balance: "What is the outstanding balance of the facility, as recorded by the Lender, at the date of removal of the Guarantee? &nbsp;"
+      guarantee_remove_reason: "Why was the Guarantee removed from this facility?&nbsp;"
+      state_aid_amount: Amount of De Minimis State Aid applicable to this facility (in Euro)
+      settled_date: Settled date
+      invoice_reference: Invoice reference
+      loan_category: Loan category
+      interest_type: EFG Interest Type
+      interest_rate: EFG Interest Rate
+      fees: EFG Fees
+      type_a1: Will the granting of this facility be made conditional upon a new charge being taken over a Principal Private Residence?
+      type_a2: "Will the granting of this facility be made conditional upon the provision of one or more personal guarantees, whether supported or unsupported, by the owners, directors, shareholders or others associated with the borrowing business?"
+      type_b1: "(For Type B only) Based on your normal security valuation criteria, what proportion of the value of the EFG loan is covered by a specific charge over the asset identified?"
+      type_d1: (For Type D only) What is the current outstanding value of the existing facility or facilities intended to be refinanced?
+      type_d2: "(For Type D only) On completion of the refinancing exercise what will be the total outstanding value, including any new funds provided, of the entire refinanced package?"
+      type_c1: (For Type C only) What proportion of the previous overdraft limit will remain available to the applicant following drawing of the replacement loan?
+      security_type: Security type
+      type_c_d1: "(For Types C & D) Based on your normal security valuation policy, what proportion of the total value of the refinanced package will be covered by any security held?"
+      type_e1: (For Type E only) What is the limit of the Applicant's current overdraft facility (prior to the granting of the EFG facility)?
+      type_e2: "(For Type E only) Are you able to confirm that the Applicant's current overdraft facility has not been cancelled or reduced in the preceding three months and, subject to normal account behaviour being maintained, will be maintained while the EFG facility remains in place?"
+      type_f1: (For Type F only) What is the current limit of the Applicant's Invoice Finance facility?
+      type_f2: (For Type F only) What percentage of the Applicant's approved debtor book value is covered by their existing invoice discounting facility?
+      type_f3: (For Type F only) What additional percentage (not exceeding either 100% less the existing approved percentage or 30%) of the Applicant's approved debtor book value will the enhancement represent?

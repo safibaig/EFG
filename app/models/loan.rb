@@ -38,10 +38,11 @@ class Loan < ActiveRecord::Base
   SFLG_SOURCE = 'S'
   LEGACY_SFLG_SOURCE = 'L'
 
-  belongs_to :created_by, class_name: 'User'
   belongs_to :lender
   belongs_to :loan_allocation
+  belongs_to :created_by, class_name: 'User'
   belongs_to :modified_by, class_name: 'User'
+  belongs_to :invoice
   has_many :state_aid_calculations, inverse_of: :loan, order: :seq
   has_one :transferred_from, class_name: 'Loan', foreign_key: 'id', primary_key: 'transferred_from_id'
   has_many :loan_changes
@@ -96,6 +97,7 @@ class Loan < ActiveRecord::Base
   format :dti_demand_outstanding, with: MoneyFormatter.new
   format :dti_amount_claimed, with: MoneyFormatter.new
   format :dti_interest, with: MoneyFormatter.new
+  format :dit_break_costs, with: MoneyFormatter.new
   format :current_refinanced_value, with: MoneyFormatter.new
   format :final_refinanced_value, with: MoneyFormatter.new
   format :borrower_demand_outstanding, with: MoneyFormatter.new

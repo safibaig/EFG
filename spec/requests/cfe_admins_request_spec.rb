@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'memorable_password'
 
 describe 'CfeAdmin management' do
   let(:current_user) { FactoryGirl.create(:cfe_admin) }
@@ -22,7 +21,7 @@ describe 'CfeAdmin management' do
 
   describe 'create' do
     before do
-      MemorablePassword.stub!(:generate).and_return('correct horse battery staple')
+      ActionMailer::Base.deliveries.clear
     end
 
     it do
@@ -41,11 +40,15 @@ describe 'CfeAdmin management' do
 
       page.should have_content('Bob Flemming')
       page.should have_content('bob.flemming@example.com')
-      page.should have_content('correct horse battery staple')
 
       user = CfeAdmin.last
       user.created_by.should == current_user
       user.modified_by.should == current_user
+
+      # verify email is sent to user
+      emails = ActionMailer::Base.deliveries
+      emails.size.should == 1
+      emails.first.to.should == [ user.email ]
     end
   end
 
@@ -61,6 +64,8 @@ describe 'CfeAdmin management' do
       fill_in 'first_name', 'Bill'
       fill_in 'last_name', 'Example'
       fill_in 'email', 'bill.example@example.com'
+      check 'cfe_admin_disabled'
+      check 'cfe_admin_locked'
 
       click_button 'Update CfE Admin'
 
@@ -68,6 +73,8 @@ describe 'CfeAdmin management' do
       page.should have_content('bill.example@example.com')
 
       user.reload.modified_by.should == current_user
+      user.should be_disabled
+      user.should be_locked
     end
   end
 
@@ -83,6 +90,68 @@ describe 'CfeAdmin management' do
       click_button 'Update CfE Admin'
 
       user.reload.locked.should == false
+    end
+  end
+
+  describe "sending reset password email to user without a password" do
+    let!(:user) {
+      user = FactoryGirl.create(
+        :cfe_admin,
+        first_name: 'Bob',
+        last_name: 'Flemming'
+      )
+      user.encrypted_password = nil
+      user.save(validate: false)
+      user
+    }
+
+    before(:each) do
+      ActionMailer::Base.deliveries.clear
+    end
+
+    it "can be sent from edit user page" do
+      user.reset_password_token.should be_nil
+      user.reset_password_sent_at.should be_nil
+
+      visit root_path
+      click_link 'Manage CfE Admins'
+      click_link 'Bob Flemming'
+      click_button 'Send Reset Password Email'
+
+      page.should have_content(I18n.t('manage_users.reset_password_sent', email: user.email))
+
+      user.reload
+      user.reset_password_token.should_not be_nil
+      user.reset_password_sent_at.should_not be_nil
+
+      # verify email is sent to user
+      emails = ActionMailer::Base.deliveries
+      emails.size.should == 1
+      emails.first.to.should == [ user.email ]
+    end
+
+    it "can be sent from user list page" do
+      visit root_path
+      click_link 'Manage CfE Admins'
+      click_button 'Send Reset Password Email'
+
+      page.should have_content(I18n.t('manage_users.reset_password_sent', email: user.email))
+      page.should have_content(I18n.t('manage_users.password_set_time_remaining', time_left: 'about 6 hours'))
+      page.should_not have_css('input', value: 'Send Reset Password Email')
+    end
+
+    # many imported users will not have an email address
+    it 'fails when user does not have an email address' do
+      user.email = nil
+      user.save(validate: false)
+
+      visit root_path
+      click_link 'Manage CfE Admins'
+      click_link 'Bob Flemming'
+      click_button 'Send Reset Password Email'
+
+      page.should have_content("can't be blank")
+      ActionMailer::Base.deliveries.should be_empty
     end
   end
 

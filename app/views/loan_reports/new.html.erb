@@ -1,0 +1,39 @@
+<div class="page-header">
+  <h1>Loan Report</h1>
+</div>
+
+<p>From this page you can generate a loan report based on your chosen criteria.</p>
+
+<p>This functionality reports on loans where actions have been completed on the Web Portal.</p>
+
+<hr>
+
+<%= simple_form_for(@loan_report, url: loan_report_path, html: { class: 'form-horizontal loan-report' }) do |f| %>
+
+  <%= f.input :facility_letter_start_date, as: :quick_date %>
+
+  <%= f.input :facility_letter_end_date, as: :quick_date %>
+
+  <%= f.input :created_at_start_date, as: :quick_date %>
+
+  <%= f.input :created_at_end_date, as: :quick_date %>
+
+  <%= f.input :last_modified_start_date, as: :quick_date %>
+
+  <%= f.input :last_modified_end_date, as: :quick_date %>
+
+  <%= f.input :states, as: :select, collection: loan_report_state_options, input_html: { multiple: true } %>
+
+  <%= loan_report_lender_field(f) %>
+
+  <%= loan_report_created_by_field(f) %>
+
+  <%= f.input :loan_sources, as: :check_boxes, collection: loan_report_source_options %>
+
+  <%= f.input :loan_scheme, as: :select, collection: loan_report_scheme_options, prompt: 'All' %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>
+  </div>
+
+<% end %>

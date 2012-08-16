@@ -10,7 +10,7 @@ module QuickDateFormatter
     when Date, Time
       value.to_date
     else
-      match = value.to_s.match(%r{(\d+)/(\d+)/(\d+)})
+      match = value.to_s.match(%r{^(\d{,2})/(\d{,2})/(\d{,4})$})
       return unless match
       day, month, year = match[1..3].map(&:to_i)
       year += 2000 if year < 2000

@@ -5,7 +5,6 @@ gem 'mysql2', '0.3.11'
 
 gem 'canable', '0.3.0'
 gem 'devise', '2.1.0'
-gem 'haddock', '0.2.2'
 gem 'jquery-rails', "1.0.19"
 gem 'money', '5.0.0'
 gem 'simple_form', '2.0.2'
@@ -19,6 +18,7 @@ gem 'prawn', '0.12.0'
 gem 'progressbar', '0.11.0'
 
 gem 'exception_notification', '2.5.2'
+
 gem 'aws-ses', :require => 'aws/ses' # Needed by exception_notification
 gem 'lograge', '0.0.6'
 gem 'unicorn', '4.3.1'

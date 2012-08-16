@@ -75,16 +75,16 @@ class BaseImporter
     @loan_id_from_legacy_id[legacy_id.to_i]
   end
 
-  def self.user_id_from_legacy_id(legacy_id)
-    @user_id_from_legacy_id ||= begin
+  def self.user_id_from_username(legacy_id)
+    @user_id_from_username ||= begin
       {}.tap { |lookup|
-        User.select('id, legacy_id').find_each do |user|
-          lookup[user.legacy_id] = user.id
+        User.select('id, username').find_each do |user|
+          lookup[user.username] = user.id
         end
       }
     end
 
-    @user_id_from_legacy_id[legacy_id]
+    @user_id_from_username[legacy_id]
   end
 
   # An ordered list of values that will be INSERTed into the table using a
