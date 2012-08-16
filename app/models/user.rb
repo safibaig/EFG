@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   include Canable::Cans
 
   devise :database_authenticatable,
-         :recoverable, :trackable, :validatable
+         :recoverable, :trackable
 
   belongs_to :created_by, class_name: "User", foreign_key: "created_by_id"
   belongs_to :modified_by, class_name: "User", foreign_key: "modified_by_id"
@@ -11,7 +11,13 @@ class User < ActiveRecord::Base
 
   attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
 
-  validates_presence_of :first_name, :last_name, :username
+  validates_presence_of :first_name, :last_name, :username, :email
+
+  validates_format_of :email, :with  => Devise.email_regexp, :allow_blank => true, :if => :email_changed?
+
+  validates_presence_of :password, :if => :password_required?
+  validates_confirmation_of :password, :if => :password_required?
+  validates_length_of :password, :within => Devise.password_length, :allow_blank => true
 
   def name
     "#{first_name} #{last_name}"
@@ -45,7 +51,7 @@ class User < ActiveRecord::Base
   # Password is required if it is being set, but not for new records
   def password_required?
     return false if new_record?
-    super
+    !persisted? || !password.nil? || !password_confirmation.nil?
   end
 
   def set_unique_username

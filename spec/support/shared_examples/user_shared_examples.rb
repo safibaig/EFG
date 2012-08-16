@@ -29,6 +29,13 @@ shared_examples_for 'User' do
 
       user.should_not be_valid
     end
+
+    it 'should not require a unique email address' do
+      user.save!
+      another_user = FactoryGirl.build(user.class.to_s.underscore, email: user.email)
+
+      another_user.should be_valid
+    end
   end
 
   describe "#has_password?" do
