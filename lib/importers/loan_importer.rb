@@ -3,7 +3,8 @@ class LoanImporter < BaseImporter
   self.klass = Loan
 
   def self.extra_columns
-    [:created_by_id, :lender_id, :loan_allocation_id, :modified_by_id]
+    [:created_by_id, :invoice_id, :lender_id, :loan_allocation_id,
+      :modified_by_id]
   end
 
   def self.field_mapping
@@ -149,39 +150,33 @@ class LoanImporter < BaseImporter
 
   def build_attributes
     row.each do |name, value|
-      value = case name
+      case name
       when 'CREATED_BY'
         attributes[:created_by_id] = self.class.user_id_from_username(value)
-        value
       when 'MODIFIED_BY'
         attributes[:modified_by_id] = self.class.user_id_from_username(value)
-        value
+      when 'INVOICE_OID'
+        attributes[:invoice_id] = Invoice.find_by_legacy_id!(value).id if value.present?
       when "STATUS"
-        STATE_MAPPING[value]
+        value = STATE_MAPPING[value]
       when "LOAN_TERM"
-        value.to_i
+        value = value.to_i
       when "LENDER_OID"
         if value.present?
           lender_id = self.class.lender_id_from_legacy_id(value.to_i)
           attributes[:lender_id] = lender_id
         end
-
-        value
       when "LENDER_CAP_ID"
         attributes[:loan_allocation_id] = (value.blank?) ? nil : LoanAllocation.find_by_legacy_id(value.to_i).id
-        value
       when "EFG_INTEREST_TYPE"
-        unless value.blank?
-          value == 'V' ? 1 : 2 # V = variable (id: 1), F = fixed (id: 2)
-        end
+        # V = variable (id: 1), F = fixed (id: 2)
+        value = (value == 'V' ? 1 : 2) if value.present?
       when *DATES
-        Date.parse(value) unless value.blank?
+        value = Date.parse(value) unless value.blank?
       when *MONIES
-        Money.parse(value).cents
+        value = Money.parse(value).cents
       when *TIMES
-        Time.parse(value) unless value.blank?
-      else
-        value
+        value = Time.parse(value) unless value.blank?
       end
 
       attributes[self.class.field_mapping[name]] = value

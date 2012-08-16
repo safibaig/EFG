@@ -24,7 +24,7 @@ namespace :import do
   end
 
   desc "Import loan data (SFLG_LOAN_DATA_TABLE)"
-  task loans: [:lenders, :loan_allocations, :users] do
+  task loans: [:invoices, :loan_allocations] do
     _import Loan
   end
 
