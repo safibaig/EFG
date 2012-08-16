@@ -5,8 +5,14 @@
 <dl>
   <dt>Lender</dt>
   <dd><%= @user.lender.name %></dd>
+  <dt>Username</dt>
+  <dd><%= @user.username %></dd>
   <dt>Email</dt>
   <dd><%= @user.email %></dd>
   <dt>Locked</dt>
   <dd><%=friendly_boolean @user.locked %></dd>
 </dl>
+
+<div class="actions">
+  <%= link_to "Back to Lender Admins", lender_admins_url, class: 'btn' %>
+</div>

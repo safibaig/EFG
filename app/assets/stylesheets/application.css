@@ -20,3 +20,16 @@
 .actions {
   margin: 18px 0;
 }
+
+.alert.error {
+  background-color: #c20;
+  color: #fff;
+  border: 0;
+  text-shadow: 0 1px 0 #333;
+}
+
+.center,
+td.center,
+th.center {
+  text-align: center;
+}

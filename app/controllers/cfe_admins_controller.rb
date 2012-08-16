@@ -1,16 +1,15 @@
-require 'memorable_password'
-
 class CfeAdminsController < ApplicationController
   before_filter :verify_create_permission, only: [:new, :create]
-  before_filter :verify_update_permission, only: [:edit, :update]
+  before_filter :verify_update_permission, only: [:edit, :update, :reset_password]
   before_filter :verify_view_permission, only: [:index, :show]
 
+  before_filter :find_user, only: [:show, :edit, :update, :reset_password]
+
   def index
-    @users = CfeAdmin.scoped
+    @users = CfeAdmin.paginate(per_page: 100, page: params[:page])
   end
 
   def show
-    @user = CfeAdmin.find(params[:id])
   end
 
   def new
@@ -21,11 +20,10 @@ class CfeAdminsController < ApplicationController
     @user = CfeAdmin.new(params[:cfe_admin])
     @user.created_by = current_user
     @user.modified_by = current_user
-    password = MemorablePassword.generate
-    @user.password = @user.password_confirmation = password
 
     if @user.save
-      flash[:notice] = "The password has been set to: #{password}"
+      @user.send_new_account_notification
+      flash[:notice] = I18n.t('manage_users.new_account_email_sent', email: @user.email)
       redirect_to cfe_admin_url(@user)
     else
       render :new
@@ -33,13 +31,12 @@ class CfeAdminsController < ApplicationController
   end
 
   def edit
-    @user = CfeAdmin.find(params[:id])
   end
 
   def update
-    @user = CfeAdmin.find(params[:id])
     @user.attributes = params[:cfe_admin]
     @user.locked = params[:cfe_admin][:locked]
+    @user.disabled = params[:cfe_admin][:disabled]
     @user.modified_by = current_user
 
     if @user.save
@@ -47,6 +44,12 @@ class CfeAdminsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def reset_password
+    render :edit and return unless @user.valid?
+    @user.send_new_account_notification
+    redirect_to :back, notice: I18n.t('manage_users.reset_password_sent', email: @user.email)
   end
 
   private
@@ -60,5 +63,9 @@ class CfeAdminsController < ApplicationController
 
     def verify_view_permission
       enforce_view_permission(CfeAdmin)
+    end
+
+    def find_user
+      @user = CfeAdmin.find(params[:id])
     end
 end

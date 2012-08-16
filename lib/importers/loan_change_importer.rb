@@ -44,8 +44,8 @@ class LoanChangeImporter < BaseImporter
   end
 
   def self.user_id_from_modified_user(modified_user)
-    @user_id_from_modified_user ||= Hash[*User.select('id, legacy_id').map { |user|
-      [user.legacy_id, user.id]
+    @user_id_from_modified_user ||= Hash[*User.select('id, username').map { |user|
+      [user.username, user.id]
     }.flatten]
 
     @user_id_from_modified_user[modified_user]

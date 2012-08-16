@@ -3,10 +3,9 @@ class AddCreatorAndModifierColumnsToLoans < ActiveRecord::Migration
     add_column :loans, :created_by_id, :integer
     add_column :loans, :modified_by_id, :integer
 
-    user_id = User.first.id
     Loan.update_all(
-      created_by_id: user_id,
-      modified_by_id: user_id
+      created_by_id: -1,
+      modified_by_id: -1
     )
 
     change_column_null :loans, :created_by_id, false

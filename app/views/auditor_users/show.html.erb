@@ -3,8 +3,14 @@
 </div>
 
 <dl>
+  <dt>Username</dt>
+  <dd><%= @user.username %></dd>
   <dt>Email</dt>
   <dd><%= @user.email %></dd>
   <dt>Locked</dt>
   <dd><%=friendly_boolean @user.locked %></dd>
 </dl>
+
+<div class="actions">
+  <%= link_to "Back to Auditor Users", auditor_users_url, class: 'btn' %>
+</div>

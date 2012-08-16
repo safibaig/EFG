@@ -6,7 +6,7 @@ class UserImporter < BaseImporter
 
   def self.field_mapping
     {
-      'USER_ID'              => :legacy_id,
+      'USER_ID'              => :username,
       'LENDER_OID'           => :legacy_lender_id,
       'PASSWORD'             => :encrypted_password,
       'CREATION_TIME'        => :created_at,
@@ -35,12 +35,7 @@ class UserImporter < BaseImporter
   def build_attributes
     row.each do |field_name, value|
       value = case field_name
-      when "FIRST_NAME"
-        (value == 'FIRSTNAME') ? Faker::Name.first_name : value
-      when "LAST_NAME"
-        (value == 'LASTNAME') ? Faker::Name.last_name : value
-      when 'EMAIL_ADDRESS'
-        # Obfuscated data all has the same email address.
+      when 'PASSWORD'
         nil
       else
         value
@@ -53,21 +48,25 @@ class UserImporter < BaseImporter
   private
 
   def self.after_import
-    lender_user_ids = []
-
     klass.find_each do |user|
-      user.created_by  = User.find_by_legacy_id(user.created_by_legacy_id)
-      user.modified_by = User.find_by_legacy_id(user.modified_by_legacy_id)
-      user.save!(validate: false)
+      user.created_by_id = user_id_from_username(user.created_by_legacy_id)
+      user.modified_by_id = user_id_from_username(user.modified_by_legacy_id)
+      user.type        = UserRoleMapper.new(user).user_type
 
-      lender_user_ids << user.id if user.legacy_lender_id
+      # if user is not a LenderAdmin or LenderUser,
+      # disable the account so they can't login. They will be verified manually.
+      unless %w(LenderUser LenderAdmin).include?(user.type)
+        user.legacy_lender_id = nil
+        user.disabled = true
+      end
+
+      user.save!(validate: false)
     end
 
-    User.where(id: lender_user_ids).update_all(type: 'LenderUser')
-
-    LenderUser.find_each do |user|
-      user.lender = Lender.find_by_legacy_id(user.legacy_lender_id)
-      user.save!(validate: false)
+    User.where(type: %w(LenderUser LenderAdmin)).find_each do |lender_user|
+      lender_user.lender = Lender.find_by_legacy_id(lender_user.legacy_lender_id)
+      lender_user.save!(validate: false)
     end
   end
+
 end

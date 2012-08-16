@@ -99,3 +99,9 @@ en:
       assumed_repaid: "Loans assumed to have been <em>Repaid</em> due to <em>lack of updates</em>:"
     utilisation:
       title: Loan Allocation Utilisation
+
+  manage_users:
+    new_account_email_sent: "An email has been sent to %{email} with instructions for activating their account."
+    reset_password_sent: "An email has been sent to %{email} with instructions for setting their password."
+    password_not_set: "This user does not have a password, please send them a reset password email or they will not be able to login."
+    password_set_time_remaining: "User has %{time_left} left to set password."

@@ -6,7 +6,7 @@ describe LoanChangeImporter do
 
   describe '.import' do
     let!(:loan) { FactoryGirl.create(:loan, legacy_id: 5099) }
-    let!(:user) { FactoryGirl.create(:user, legacy_id: '51BB5F278B5F9ABCF695A5C8F1C9D75A1E482C8A') }
+    let!(:user) { FactoryGirl.create(:user, username: '51BB5F278B5F9ABCF695A5C8F1C9D75A1E482C8A') }
 
     before do
       LoanChangeImporter.instance_variable_set(:@loan_id_from_legacy_id, nil)
