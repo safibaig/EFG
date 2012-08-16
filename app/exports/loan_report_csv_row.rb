@@ -5,7 +5,6 @@ class LoanReportCsvRow
   end
 
   # TODO - add DED table data
-  # TODO - add a loan's modified by user ID
   def row
     [
       @loan.reference,
@@ -61,7 +60,7 @@ class LoanReportCsvRow
       @loan._total_lump_sum_repayment ? Money.new(@loan._total_lump_sum_repayment).to_s : '',
       @loan.created_by_id,
       @loan.created_at.try(:strftime, "%d-%m-%Y %I:%M %p"),
-      '',# @loan.modified_by_id,
+      @loan.modified_by_id,
       @loan.updated_at.try(:strftime, '%d-%m-%Y'),
       @loan.remove_guarantee_on.try(:strftime, '%d-%m-%Y'),
       @loan.remove_guarantee_outstanding_amount.to_s,

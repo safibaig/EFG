@@ -50,7 +50,7 @@ describe LoanReportCsvRow do
         dit_break_costs: 5000,
         created_by_id: user.id,
         created_at: Time.zone.parse('12/04/2012 14:34'),
-        # modified_by_id: user.id,
+        modified_by_id: user.id,
         updated_at: Time.zone.parse('13/04/2012 14:34'),
         remove_guarantee_on: Date.parse('16/09/2012'),
         remove_guarantee_outstanding_amount: 20000,
@@ -151,7 +151,7 @@ describe LoanReportCsvRow do
       row[50].should == "5000.00"                                       # total_lump_sum_repayments
       row[51].should == user.id                                         # created_by
       row[52].should == '12-04-2012 02:34 PM'                           # created_at
-      row[53].should == ''                                              # modified_by
+      row[53].should == user.id                                         # modified_by
       row[54].should == '13-04-2012'                                    # modified_date
       row[55].should == '16-09-2012'                                    # guarantee_remove_date
       row[56].should == '20000.00'                                      # outstanding_balance
