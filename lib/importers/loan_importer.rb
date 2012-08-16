@@ -159,10 +159,10 @@ class LoanImporter < BaseImporter
     row.each do |name, value|
       value = case name
       when 'CREATED_BY'
-        attributes[:created_by_id] = self.class.user_id_from_legacy_id(value)
+        attributes[:created_by_id] = self.class.user_id_from_username(value)
         value
       when 'MODIFIED_BY'
-        attributes[:modified_by_id] = self.class.user_id_from_legacy_id(value)
+        attributes[:modified_by_id] = self.class.user_id_from_username(value)
         value
       when "STATUS"
         STATE_MAPPING[value]

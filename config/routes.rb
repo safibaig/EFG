@@ -55,16 +55,15 @@ EFG::Application.routes.draw do
   end
 
   with_options only: [:index, :show, :new, :create, :edit, :update] do
-    resources :auditor_users
-    resources :cfe_admins
-    resources :cfe_users
-    resources :lender_admins
-    resources :lender_users do
-      member do
-        post :reset_password
+
+    %w(auditor_users cfe_admins cfe_users lender_admins lender_users premium_collector_users).each do |resource|
+      resources resource do
+        member do
+          post :reset_password
+        end
       end
     end
-    resources :premium_collector_users
+
   end
 
   resource :search, only: [:show, :new], controller: :search do
@@ -91,4 +90,6 @@ EFG::Application.routes.draw do
   resource :loan_report, only: [:new, :create]
 
   resources :premium_schedule_reports, only: [:new, :create]
+
+  resource :account_disabled, controller: 'account_disabled'
 end

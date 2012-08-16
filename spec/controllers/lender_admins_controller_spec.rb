@@ -78,4 +78,18 @@ describe LenderAdminsController do
     it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
+
+  describe '#reset_password' do
+    let(:lender_admin) { FactoryGirl.create(:lender_admin) }
+
+    def dispatch(params = {})
+      post :reset_password, { id: lender_admin.id }.merge(params)
+    end
+
+    it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
+    it_behaves_like 'LenderUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
+  end
 end
