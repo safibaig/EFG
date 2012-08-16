@@ -37,12 +37,12 @@ describe StateAidCalculationImporter do
       state_aid_calculation.initial_draw_amount.should == Money.new(25_425_00)
       state_aid_calculation.initial_draw_months.should == 84
       state_aid_calculation.initial_capital_repayment_holiday.should == 0
-      state_aid_calculation.second_draw_amount.should be_nil
-      state_aid_calculation.second_draw_months.should be_nil
-      state_aid_calculation.third_draw_amount.should be_nil
-      state_aid_calculation.third_draw_months.should be_nil
-      state_aid_calculation.fourth_draw_amount.should be_nil
-      state_aid_calculation.fourth_draw_months.should be_nil
+      state_aid_calculation.second_draw_amount.should == Money.new(15425_00)
+      state_aid_calculation.second_draw_months.should == 3
+      state_aid_calculation.third_draw_amount.should == Money.new(6000_00)
+      state_aid_calculation.third_draw_months.should == 6
+      state_aid_calculation.fourth_draw_amount.should == Money.new(4000_00)
+      state_aid_calculation.fourth_draw_months.should == 9
       state_aid_calculation.total_cost.should == 0
       state_aid_calculation.public_funding.should == 0
       state_aid_calculation.obj1_area.should == false
@@ -76,11 +76,11 @@ describe StateAidCalculationImporter do
       state_aid_calculation.initial_draw_amount.should == Money.new(67_187_50)
       state_aid_calculation.initial_draw_months.should == 43
       state_aid_calculation.initial_capital_repayment_holiday.should == 0
-      state_aid_calculation.second_draw_amount.should be_nil
-      state_aid_calculation.second_draw_months.should be_nil
-      state_aid_calculation.third_draw_amount.should be_nil
-      state_aid_calculation.third_draw_months.should be_nil
-      state_aid_calculation.fourth_draw_amount.should be_nil
+      state_aid_calculation.second_draw_amount.should == Money.new(47197_00)
+      state_aid_calculation.second_draw_months.should == 12
+      state_aid_calculation.third_draw_amount.should == Money.new(20000_00)
+      state_aid_calculation.third_draw_months.should == 18
+      state_aid_calculation.fourth_draw_amount.should == Money.new(0)
       state_aid_calculation.fourth_draw_months.should be_nil
       state_aid_calculation.total_cost.should == 0
       state_aid_calculation.public_funding.should == 0
