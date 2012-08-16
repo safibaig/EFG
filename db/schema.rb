@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120813104525) do
+ActiveRecord::Schema.define(:version => 20120813110926) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -250,7 +250,8 @@ ActiveRecord::Schema.define(:version => 20120813104525) do
     t.integer  "loan_allocation_id"
     t.integer  "invoice_id"
     t.integer  "transferred_from_id"
-    t.integer  "created_by_id"
+    t.integer  "created_by_id",                                                                    :null => false
+    t.integer  "modified_by_id",                                                                   :null => false
   end
 
   add_index "loans", ["legacy_id"], :name => "index_loans_on_legacy_id", :unique => true
@@ -335,7 +336,7 @@ ActiveRecord::Schema.define(:version => 20120813104525) do
 
   create_table "users", :force => true do |t|
     t.string   "email"
-    t.string   "encrypted_password",                        :null => false
+    t.string   "encrypted_password"
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.integer  "sign_in_count",          :default => 0

@@ -10,6 +10,7 @@ class LoanRepaysController < ApplicationController
     @loan = current_lender.loans.find(params[:loan_id])
     @loan_repay = LoanRepay.new(@loan)
     @loan_repay.attributes = params[:loan_repay]
+    @loan_repay.modified_by = current_user
 
     if @loan_repay.save
       redirect_to loan_url(@loan)

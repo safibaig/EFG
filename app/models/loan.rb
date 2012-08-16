@@ -41,6 +41,7 @@ class Loan < ActiveRecord::Base
   belongs_to :lender
   belongs_to :loan_allocation
   belongs_to :created_by, class_name: 'User'
+  belongs_to :modified_by, class_name: 'User'
   belongs_to :invoice
   has_many :state_aid_calculations, inverse_of: :loan, order: :seq
   has_one :transferred_from, class_name: 'Loan', foreign_key: 'id', primary_key: 'transferred_from_id'
@@ -72,6 +73,8 @@ class Loan < ActiveRecord::Base
 
   validates_inclusion_of :state, in: States, strict: true
   validates_presence_of :lender_id, strict: true
+  validates_presence_of :created_by, strict: true
+  validates_presence_of :modified_by, strict: true
 
   format :amount, with: MoneyFormatter.new
   format :fees, with: MoneyFormatter.new
@@ -161,21 +164,11 @@ class Loan < ActiveRecord::Base
     "to-do"
   end
 
-  # TODO: !
-  # def created_by
-  #   User.first
-  # end
-
   def cumulative_total_previous_recoveries
     @cumulative_total_previous_recoveries ||= begin
       total = recoveries.realised.sum(:realisations_attributable)
       Money.new(total)
     end
-  end
-
-  # TODO: !
-  def modified_by
-    User.first
   end
 
   def premium_schedule

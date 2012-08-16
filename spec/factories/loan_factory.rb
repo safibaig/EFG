@@ -2,6 +2,8 @@ FactoryGirl.define do
   factory :loan do
     state Loan::Eligible
     lender
+    association :created_by, factory: :lender_user
+    association :modified_by, factory: :lender_user
     legal_form_id 1
     loan_allocation
     loan_category_id 1

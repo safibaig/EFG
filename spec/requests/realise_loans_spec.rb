@@ -53,8 +53,14 @@ describe 'Realise loans' do
     page.should_not have_content(loan3.reference)
     page.should_not have_content(loan5.reference)
 
-    loan1.reload.state.should == Loan::Realised
-    loan2.reload.state.should == Loan::Realised
+    loan1.reload
+    loan1.state.should == Loan::Realised
+    loan1.modified_by.should == current_user
+
+    loan2.reload
+    loan2.state.should == Loan::Realised
+    loan2.modified_by.should == current_user
+
     loan3.reload.state.should == Loan::Recovered
     loan5.reload.state.should == Loan::Eligible
   end

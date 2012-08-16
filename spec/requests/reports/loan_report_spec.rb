@@ -33,7 +33,8 @@ describe 'Loan report' do
 
     it "should only allow selection of loans created by any user belonging to that lender" do
       another_user = FactoryGirl.create(:lender_user, lender: loan1.lender, first_name: "Peter", last_name: "Parker")
-      loan1.update_attribute(:created_by_id, another_user.id)
+      loan1.created_by = another_user
+      loan1.save!
 
       navigate_to_loan_report_form
 
@@ -48,7 +49,6 @@ describe 'Loan report' do
       fill_in_valid_details
       select "Peter Parker", from: "loan_report[created_by_id]"
       click_button "Submit"
-
       page.should have_content "Data extract found 1 row"
     end
   end

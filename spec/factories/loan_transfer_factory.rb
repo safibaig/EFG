@@ -15,8 +15,8 @@ FactoryGirl.define do
     end
 
     initialize_with {
-      new(Loan.new)
+      loan = FactoryGirl.create(:loan, :guaranteed)
+      new(loan)
     }
-
   end
 end

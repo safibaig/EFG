@@ -28,17 +28,16 @@ class LenderImporter < BaseImporter
     }
   end
 
-  def attributes
-    row.inject({}) do |memo, (field_name, value)|
-      value = case field_name
+  def build_attributes
+    row.each do |key, value|
+      value = case key
       when "NAME"
         (value.to_i > 0) ? Faker::Company.name : value
       else
         value
       end
 
-      memo[self.class.field_mapping[field_name]] = value
-      memo
+      attributes[self.class.field_mapping[key]] = value
     end
   end
 end

@@ -1,6 +1,5 @@
 class LoanTransfer::Base
   include LoanPresenter
-  include LoanStateTransition
 
   ALLOWED_LOAN_TRANSFER_STATES = [Loan::Guaranteed, Loan::Demanded, Loan::Repaid]
 
@@ -30,8 +29,9 @@ class LoanTransfer::Base
 
   def save
     return false unless valid? && loan_can_be_transferred?
-    Loan.transaction do
 
+    Loan.transaction do
+      loan_to_transfer.modified_by = modified_by
       loan_to_transfer.state = Loan::RepaidFromTransfer
       loan_to_transfer.save!
 
@@ -48,8 +48,9 @@ class LoanTransfer::Base
       @new_loan.invoice_id            = ''
       @new_loan.transferred_from_id   = loan_to_transfer.id
       @new_loan.loan_allocation       = lender.loan_allocations.last
+      @new_loan.created_by            = modified_by
+      @new_loan.modified_by           = modified_by
       # TODO - copy loan securities if any are present
-      # TODO - set created_by and modified by fields to user making transfer
 
       (1..5).each do |num|
         @new_loan.send("generic#{num}=", nil)
