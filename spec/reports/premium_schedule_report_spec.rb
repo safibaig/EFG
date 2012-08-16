@@ -383,7 +383,7 @@ describe PremiumScheduleReport do
       row[1].should == 'Z'
       row[2].should == 'ABC'
       row[3].should == 'S'
-      row[4].should == '61.72'
+      row[4].should == '61.73'
       row[5].should == '2/2011'
       row[6].should == '3'
       row[7].should == '0.0'
