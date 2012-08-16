@@ -138,14 +138,6 @@ class LoanImporter < BaseImporter
     "20" => Loan::CompleteLegacy,
   }
 
-  def self.lender_id_from_legacy_id(legacy_id)
-    @lender_id_from_legacy_id ||= Hash[*Lender.select('id, legacy_id').map { |lender|
-      [lender.legacy_id, lender.id]
-    }.flatten]
-
-    @lender_id_from_legacy_id[legacy_id]
-  end
-
   DATES = %w(TRADING_DATE GUARANTEED_DATE BORROWER_DEMAND_DATE CANCELLED_DATE
     REPAID_DATE FACILITY_LETTER_DATE DTI_DEMAND_DATE REALISED_MONEY_DATE
     NO_CLAIM_DATE MATURITY_DATE REMOVE_GUARANTEE_DATE SETTLEMENT_DATE

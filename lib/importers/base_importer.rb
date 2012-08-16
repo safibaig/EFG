@@ -63,6 +63,14 @@ class BaseImporter
     after_import if respond_to?(:after_import, true)
   end
 
+  def self.lender_id_from_legacy_id(legacy_id)
+    @lender_id_from_legacy_id ||= Hash[*Lender.select('id, legacy_id').map { |lender|
+      [lender.legacy_id, lender.id]
+    }.flatten]
+
+    @lender_id_from_legacy_id[legacy_id]
+  end
+
   def self.loan_id_from_legacy_id(legacy_id)
     @loan_id_from_legacy_id ||= begin
       {}.tap { |lookup|

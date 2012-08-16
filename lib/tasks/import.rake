@@ -7,6 +7,11 @@ namespace :import do
     _import User
   end
 
+  desc "Import user data (SFLG_INVOICE_DATA_TABLE)"
+  task invoices: [:lenders, :users] do
+    _import Invoice
+  end
+
   desc 'Associate creators/modifiers of Lenders'
   task lender_user_associations: [:lenders, :users] do
     require 'importers'
