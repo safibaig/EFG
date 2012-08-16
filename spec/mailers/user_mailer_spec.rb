@@ -19,6 +19,10 @@ describe UserMailer do
     it "should contain link to reset password page" do
       @email.body.should match(/\?reset_password_token=#{@user.reset_password_token}/)
     end
+
+    it "should have a from header" do
+      @email.from.should == [ Devise.mailer_sender ]
+    end
   end
 
 end
