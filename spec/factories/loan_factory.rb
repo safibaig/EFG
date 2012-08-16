@@ -33,6 +33,8 @@ FactoryGirl.define do
     sequence(:legacy_id) { |n| n }
     created_at { Time.now }
     updated_at { Time.now }
+    loan_source Loan::SFLG_SOURCE
+    loan_scheme Loan::EFG_SCHEME
     legacy_small_loan false
 
     trait :eligible do
@@ -145,12 +147,6 @@ FactoryGirl.define do
       reference '123456'
       loan_source Loan::LEGACY_SFLG_SOURCE
       loan_scheme Loan::SFLG_SCHEME
-    end
-
-    trait :efg do
-      reference 'ABC1234+01'
-      loan_source Loan::SFLG_SOURCE
-      loan_scheme Loan::EFG_SCHEME
     end
 
   end

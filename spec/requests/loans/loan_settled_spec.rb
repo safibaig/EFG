@@ -53,10 +53,12 @@ describe "loan settled" do
 
     loan1.reload
     loan1.state.should == Loan::Settled
+    loan1.invoice.should == invoice
     loan1.modified_by.should == current_user
 
     loan3.reload
     loan3.state.should == Loan::Settled
+    loan3.invoice.should == invoice
     loan3.modified_by.should == current_user
 
     page.should have_content('BSPFDNH-01')

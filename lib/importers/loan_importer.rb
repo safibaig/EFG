@@ -175,6 +175,9 @@ class LoanImporter < BaseImporter
         end
 
         value
+      when "CREATED_BY"
+        memo[:created_by_id] = (value.blank?) ? nil : User.find_by_legacy_id(value).try(:id)
+        value
       when "LENDER_CAP_ID"
         attributes[:loan_allocation_id] = (value.blank?) ? nil : LoanAllocation.find_by_legacy_id(value.to_i).id
         value
