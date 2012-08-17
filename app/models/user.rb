@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
     last = last_name[0..3]
     number = '%04d' % Random.rand(10000)
     first = first_name[0]
-    [last, number, first].join('')
+    [last, number, first].join('').downcase
   end
 
   # Password is required if it is being set, but not for new records

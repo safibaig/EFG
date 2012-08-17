@@ -95,4 +95,18 @@ shared_examples_for 'User' do
       emails.first.to.should == [ user.email ]
     end
   end
+
+  describe "#username" do
+    it "should be set when user is created" do
+      user.username.should be_blank
+      user.save!
+      user.username.should_not be_blank
+    end
+
+    it "should be lowercase" do
+      user.save!
+      user.username[0,4].should_not match(/[A-Z]/)
+      user.username[-1,1].should_not match(/[A-Z]/)
+    end
+  end
 end
