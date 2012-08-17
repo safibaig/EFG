@@ -90,6 +90,24 @@ describe 'Loan report' do
 
   end
 
+  context "as an Auditor user" do
+
+    let!(:loan3) { FactoryGirl.create(:loan) }
+
+    let!(:current_user) { FactoryGirl.create(:auditor_user) }
+
+    it "should allow access to loan reports" do
+      navigate_to_loan_report_form
+      page.should have_css("#loan_report_facility_letter_start_date")
+    end
+
+    it "should not show created by form field" do
+      navigate_to_loan_report_form
+      page.should_not have_css("#loan_report_created_by_id option")
+    end
+
+  end
+
   private
 
   def fill_in_valid_details
