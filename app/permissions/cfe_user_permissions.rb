@@ -17,6 +17,7 @@ module CfeUserPermissions
       Invoice,
       Loan,
       LoanAlerts,
+      LoanChange,
       LoanRemoveGuarantee,
       Loan::States,
       RealisationStatement,

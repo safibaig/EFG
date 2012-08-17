@@ -82,7 +82,7 @@ describe CfeUserPermissions do
   end
 
   context 'loan changes' do
-    it { refute user.can_view?(LoanChange) }
+    it { assert user.can_view?(LoanChange) }
     it { refute user.can_create?(LoanChange) }
   end
 
