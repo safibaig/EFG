@@ -46,7 +46,6 @@ describe PremiumSchedule do
         FactoryGirl.build(
           :state_aid_calculation,
           loan: loan,
-          initial_draw_year: 2012,
           initial_draw_amount: Money.new(900_000_00),
           initial_draw_months: 12,
           initial_capital_repayment_holiday: 0,
@@ -71,7 +70,6 @@ describe PremiumSchedule do
         FactoryGirl.build(
           :state_aid_calculation,
           loan: loan,
-          initial_draw_year: 2012,
           initial_draw_amount: Money.new(525_000_00),
           initial_draw_months: 12,
           initial_capital_repayment_holiday: 0,
@@ -98,7 +96,6 @@ describe PremiumSchedule do
         FactoryGirl.build(
           :state_aid_calculation,
           loan: loan,
-          initial_draw_year: 2012,
           initial_draw_amount: Money.new(100_000_00),
           initial_draw_months: 12,
           initial_capital_repayment_holiday: 0,
@@ -113,6 +110,28 @@ describe PremiumSchedule do
 
       it 'should correctly calculate premiums' do
         [ 500_00, 625_00, 666_67, 4333_33, 0 ].each.with_index do |premium, quarter|
+          premium_schedule.premiums[quarter].should == Money.new(premium)
+        end
+      end
+    end
+
+    context 'with payment holiday' do
+      let(:loan) {
+        FactoryGirl.build(:loan, amount: Money.new(1_000_000_00), repayment_duration: { months: 12 })
+      }
+
+      let(:state_aid_calculation) {
+        FactoryGirl.build(
+          :state_aid_calculation,
+          loan: loan,
+          initial_draw_amount: Money.new(100_000_00),
+          initial_draw_months: 12,
+          initial_capital_repayment_holiday: 3
+        )
+      }
+
+      it 'should correctly calculate premiums' do
+        [ 500_00, 500_00, 333_33, 166_67, 0 ].each.with_index do |premium, quarter|
           premium_schedule.premiums[quarter].should == Money.new(premium)
         end
       end
