@@ -43,14 +43,6 @@ class LoanChangeImporter < BaseImporter
     }
   end
 
-  def self.user_id_from_modified_user(modified_user)
-    @user_id_from_modified_user ||= Hash[*User.select('id, username').map { |user|
-      [user.username, user.id]
-    }.flatten]
-
-    @user_id_from_modified_user[modified_user]
-  end
-
   DATES = %w(DATE_OF_CHANGE MATURITY_DATE OLD_MATURITY_DATE MODIFIED_DATE
     AR_TIMESTAMP AR_INSERT_TIMESTAMP GUARANTEED_DATE OLD_GUARANTEED_DATE
     INITIAL_DRAW_DATE OLD_INITIAL_DRAW_DATE)
@@ -64,7 +56,7 @@ class LoanChangeImporter < BaseImporter
 
       case name
       when 'MODIFIED_USER'
-        attributes[:created_by_id] = self.class.user_id_from_modified_user(value)
+        attributes[:created_by_id] = self.class.user_id_from_username(value)
       when 'OID'
         attributes[:loan_id] = self.class.loan_id_from_legacy_id(value.to_i)
       when 'SEQ'

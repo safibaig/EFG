@@ -64,9 +64,9 @@ class BaseImporter
   end
 
   def self.lender_id_from_legacy_id(legacy_id)
-    @lender_id_from_legacy_id ||= Hash[*Lender.select('id, legacy_id').map { |lender|
+    @lender_id_from_legacy_id ||= Hash[Lender.select('id, legacy_id').map { |lender|
       [lender.legacy_id.to_s, lender.id]
-    }.flatten]
+    }]
 
     @lender_id_from_legacy_id[legacy_id.to_s]
   end
