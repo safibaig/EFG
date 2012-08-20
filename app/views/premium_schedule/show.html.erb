@@ -67,7 +67,7 @@
     </tr>
     <tr>
       <th>What is the amount of the additional draw? (Second tranche)</th>
-      <td><%= @premium_schedule.second_draw_amount %></td>
+      <td><%= @premium_schedule.second_draw_amount.try(:format) %></td>
     </tr>
     <tr>
       <th>What is the number of months (from this Premium Collection point) to second tranche drawdown?</th>
@@ -75,7 +75,7 @@
     </tr>
     <tr>
       <th>What is the amount of the additional draw? (Third tranche)</th>
-      <td><%= @premium_schedule.third_draw_amount %></td>
+      <td><%= @premium_schedule.third_draw_amount.try(:format) %></td>
     </tr>
     <tr>
       <th>What is the number of months (from this Premium Collection point) to third tranche drawdown?</th>
@@ -83,7 +83,7 @@
     </tr>
     <tr>
       <th>What is the amount of the additional draw? (Fourth tranche)</th>
-      <td><%= @premium_schedule.fourth_draw_amount %></td>
+      <td><%= @premium_schedule.fourth_draw_amount.try(:format) %></td>
     </tr>
     <tr>
       <th>What is the number of months (from this Premium Collection point) to fourth tranche drawdown?</th>
