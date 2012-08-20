@@ -8,7 +8,9 @@
 <%= loan_summary(@loan) do %>
   <div class="form-actions">
     <%= link_to 'Loan Details', details_loan_path(@loan), class: 'btn' %>
-    <%= link_to 'Loan Changes', loan_loan_changes_path(@loan), class: 'btn' %>
+    <% if current_user.can_view?(LoanChange) %>
+      <%= link_to 'Loan Changes', loan_loan_changes_path(@loan), class: 'btn' %>
+    <% end %>
 
     <div class="form-actions">
       <%= render "loans/buttons/#{@loan.state}" %>

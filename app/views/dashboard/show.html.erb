@@ -1,6 +1,5 @@
 <div class="page-header" id="welcome_message">
-  <h1>Welcome back, <%= current_user.first_name %></h1>
-  <p>Your last visit was <%= distance_of_time_in_words_to_now(current_user.last_sign_in_at) %> ago.</p>
+  <%= welcome_message(current_user) %>
 
   <ul id="actions">
     <% if current_user.can_create?(LoanEligibilityCheck) %><li><%= link_to "Start New Loan Application", new_eligibility_check_path, class: "btn btn-primary" %></li><% end %>

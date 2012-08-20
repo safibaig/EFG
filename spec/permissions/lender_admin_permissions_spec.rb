@@ -94,6 +94,12 @@ describe LenderAdminPermissions do
     it { refute user.can_create?(PremiumScheduleReport) }
   end
 
+  context 'loan report' do
+    it { refute user.can_create?(LoanReport) }
+    it { refute user.can_update?(LoanReport) }
+    it { refute user.can_view?(LoanReport) }
+  end
+
   context 'Loan' do
     it { refute user.can_view?(Loan) }
   end

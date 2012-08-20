@@ -29,6 +29,13 @@ shared_examples_for 'User' do
 
       user.should_not be_valid
     end
+
+    it 'should not require a unique email address' do
+      user.save!
+      another_user = FactoryGirl.build(user.class.to_s.underscore, email: user.email)
+
+      another_user.should be_valid
+    end
   end
 
   describe "#has_password?" do
@@ -86,6 +93,20 @@ shared_examples_for 'User' do
       emails = ActionMailer::Base.deliveries
       emails.size.should == 1
       emails.first.to.should == [ user.email ]
+    end
+  end
+
+  describe "#username" do
+    it "should be set when user is created" do
+      user.username.should be_blank
+      user.save!
+      user.username.should_not be_blank
+    end
+
+    it "should be lowercase" do
+      user.save!
+      user.username[0,4].should_not match(/[A-Z]/)
+      user.username[-1,1].should_not match(/[A-Z]/)
     end
   end
 end

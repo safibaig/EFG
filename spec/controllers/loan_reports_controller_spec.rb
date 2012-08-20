@@ -31,7 +31,7 @@ describe LoanReportsController do
     end
 
     context 'when not a cfe or lender user' do
-      let(:current_user) { FactoryGirl.create(:auditor_user) }
+      let(:current_user) { FactoryGirl.create(:premium_collector_user) }
 
       before { sign_in(current_user) }
 
@@ -83,7 +83,7 @@ describe LoanReportsController do
     end
 
     context 'when not a cfe or lender user' do
-      let(:current_user) { FactoryGirl.create(:auditor_user) }
+      let(:current_user) { FactoryGirl.create(:premium_collector_user) }
 
       before { sign_in(current_user) }
 

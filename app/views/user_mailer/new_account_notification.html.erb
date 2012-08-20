@@ -1,9 +1,29 @@
 <p>Hello <%= @user.first_name %>!</p>
 
-<p>A new <strong>Enterprise Finance Guarantee</strong> account has been created for you with the email address <strong><%= @user.email %></strong></p>
+<p>A new <strong>Enterprise Finance Guarantee</strong> account has been created for you.</p>
 
 <p>To login to your account, you must <strong>first setup a password</strong> by following this link:</p>
 
-<p><%= link_to 'Set my password', edit_password_url(@user, reset_password_token: @user.reset_password_token) %></p>
+<p><%= link_to 'Set your password', edit_password_url(@user, reset_password_token: @user.reset_password_token) %></p>
 
 <p>You will not be able to login to your account until you have set your password.</p>
+
+<hr />
+
+<p>There is an extra layer of security on the beta system, therefore in order to access it, you will be asked for the following login details when you first visit the site:</p>
+
+<p>
+  <strong>Username: <font color="#ff0000">betademo</font></strong><br />
+  <strong>Password: <font color="#ff0000">nottobeshared</font></strong>
+</p>
+
+<hr />
+
+<p><strong>For future logins to your account, your username is <%= @user.username %> and you should use the password you have chosen.</strong></p>
+
+<p>
+If you have difficulty logging into your account, please contact <a href="mailto:efg-support@digital.cabinet-office.co.uk">efg-support@digital.cabinet-office.co.uk</a>
+<p>
+Regards,</p>
+<p>
+The EFG Team</p>
