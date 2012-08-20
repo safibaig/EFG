@@ -10,11 +10,29 @@ describe 'Resetting password' do
     )
   }
 
+  it 'sends email to correct user when email address belongs to more than one account' do
+    ActionMailer::Base.deliveries.clear
+    user1 = FactoryGirl.create(:lender_user, email: 'joe1@example.com', username: 'joe1')
+    user2 = FactoryGirl.create(:auditor_user, email: 'joe1@example.com', username: 'joe2')
+
+    visit new_user_password_path
+    fill_in 'user_username', with: 'joe2'
+    click_button 'Send Reset Instructions'
+
+    page.should have_content(I18n.t('devise.passwords.send_paranoid_instructions'))
+
+    user2.reload
+    emails = ActionMailer::Base.deliveries
+    emails.size.should == 1
+    emails.first.to.should == [ user2.email ]
+    emails.first.body.match(/#{user2.reset_password_token}/)
+  end
+
   it 'can successfully reset password' do
     open_reset_password_page
     submit_change_password_form
 
-    page.should have_content('Your password was set successfully. You are now signed in.')
+    page.should have_content(I18n.t('devise.passwords.updated'))
   end
 
   it 'fails when allowed time has expired' do
