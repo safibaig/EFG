@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120816122058) do
+ActiveRecord::Schema.define(:version => 20120816170505) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -131,6 +131,12 @@ ActiveRecord::Schema.define(:version => 20120816122058) do
     t.integer  "realised_amount"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "legacy_loan_id"
+    t.string   "legacy_created_by"
+    t.date     "realised_on"
+    t.string   "seq"
+    t.string   "ar_timestamp"
+    t.string   "ar_insert_timestamp"
   end
 
   add_index "loan_realisations", ["created_by_id"], :name => "index_loan_realisations_on_created_by_id"
