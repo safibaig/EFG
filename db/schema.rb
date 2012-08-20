@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120820112052) do
+ActiveRecord::Schema.define(:version => 20120820143050) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -286,6 +286,13 @@ ActiveRecord::Schema.define(:version => 20120820112052) do
     t.date     "received_on"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "version"
+    t.string   "legacy_id"
+    t.string   "legacy_lender_id"
+    t.string   "legacy_created_by"
+    t.datetime "period_covered_to_date"
+    t.string   "ar_timestamp"
+    t.string   "ar_insert_timestamp"
   end
 
   create_table "recoveries", :force => true do |t|
