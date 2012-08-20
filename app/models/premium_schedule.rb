@@ -19,6 +19,7 @@ class PremiumSchedule
   delegate :fourth_draw_amount, to: :state_aid_calculation
   delegate :fourth_draw_months, to: :state_aid_calculation
   delegate :reschedule?, to: :state_aid_calculation
+  delegate :premium_cheque_month, to: :state_aid_calculation
 
   def number_of_subsequent_payments
     subsequent_premiums.count { |amount|
