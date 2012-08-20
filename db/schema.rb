@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120816170505) do
+ActiveRecord::Schema.define(:version => 20120820112052) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -307,6 +307,11 @@ ActiveRecord::Schema.define(:version => 20120816170505) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "realisation_statement_id"
+    t.string   "ar_insert_timestamp"
+    t.string   "ar_timestamp"
+    t.string   "legacy_created_by"
+    t.string   "legacy_loan_id"
+    t.string   "seq"
   end
 
   create_table "state_aid_calculations", :force => true do |t|

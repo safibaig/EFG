@@ -25,6 +25,12 @@ class Recovery < ActiveRecord::Base
   format :linked_security_proceeds, with: MoneyFormatter.new
   format :realisations_attributable, with: MoneyFormatter.new
   format :amount_due_to_dti, with: MoneyFormatter.new
+  format :total_proceeds_recovered, with: MoneyFormatter.new
+  format :total_liabilities_after_demand, with: MoneyFormatter.new
+  format :total_liabilities_behind, with: MoneyFormatter.new
+  format :additional_break_costs, with: MoneyFormatter.new
+  format :additional_interest_accrued, with: MoneyFormatter.new
+  format :realisations_due_to_gov, with: MoneyFormatter.new
 
   attr_accessible :recovered_on, :outstanding_non_efg_debt,
     :non_linked_security_proceeds, :linked_security_proceeds

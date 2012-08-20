@@ -43,6 +43,11 @@ namespace :import do
     _import LoanChange
   end
 
+  desc "Import SFLG_LOAN_RECOVERED_DATA_TABLE"
+  task recoveries: [:users, :loans] do
+    _import Recovery
+  end
+
   desc "Import state aid calculation data (SFLG_CALCULATORS_DATA_TABLE)"
   task state_aid_calculations: :loans do
     _import StateAidCalculation
