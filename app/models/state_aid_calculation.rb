@@ -4,6 +4,7 @@ class StateAidCalculation < ActiveRecord::Base
   SCHEDULE_TYPE = 'S'.freeze
   RESCHEDULE_TYPE = 'R'.freeze
   NOTIFIED_AID_TYPE = 'N'.freeze
+  MAX_INITIAL_DRAW = Money.new(9_999_999_99)
 
   belongs_to :loan, inverse_of: :state_aid_calculations
 
@@ -66,7 +67,7 @@ class StateAidCalculation < ActiveRecord::Base
     end
 
     def initial_draw_amount_is_within_limit
-      if initial_draw_amount.blank? || initial_draw_amount < 0 || initial_draw_amount > Money.new(9_999_999_99)
+      if initial_draw_amount.blank? || initial_draw_amount < 0 || initial_draw_amount > MAX_INITIAL_DRAW
         errors.add(:initial_draw_amount, :invalid)
       end
     end
