@@ -55,8 +55,8 @@ ActiveRecord::Schema.define(:version => 20120820143050) do
     t.string   "loan_scheme"
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
-    t.integer  "created_by_id"
-    t.integer  "modified_by_id"
+    t.integer  "created_by_id",               :null => false
+    t.integer  "modified_by_id",              :null => false
   end
 
   add_index "lenders", ["legacy_id"], :name => "index_lenders_on_legacy_id", :unique => true
