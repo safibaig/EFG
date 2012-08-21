@@ -5,10 +5,6 @@ describe LenderImporter do
 
   let(:csv_fixture_path) { Rails.root.join('spec/fixtures/import_data/lenders.csv') }
 
-  before(:each) do
-    Faker::Company.stub!(:name).and_return('ACME')
-  end
-
   describe ".import" do
     def dispatch
       LenderImporter.csv_path = csv_fixture_path

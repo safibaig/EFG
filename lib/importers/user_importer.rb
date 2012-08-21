@@ -1,5 +1,3 @@
-require 'faker'
-
 class UserImporter < BaseImporter
   self.csv_path = Rails.root.join('import_data/SFLG_USER_DATA_TABLE.csv')
   self.klass = User

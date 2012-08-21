@@ -95,6 +95,12 @@ class BaseImporter
     @user_id_from_username[legacy_id]
   end
 
+  def build_attributes
+    row.each do |key, value|
+      attributes[self.class.field_mapping[key]] = value
+    end
+  end
+
   # An ordered list of values that will be INSERTed into the table using a
   # VALUES list. It is imperative that this order matches the order of the
   # `self.class.columns` list.

@@ -27,17 +27,4 @@ class LenderImporter < BaseImporter
       "LOAN_SCHEME"                 => :loan_scheme
     }
   end
-
-  def build_attributes
-    row.each do |key, value|
-      value = case key
-      when "NAME"
-        (value.to_i > 0) ? Faker::Company.name : value
-      else
-        value
-      end
-
-      attributes[self.class.field_mapping[key]] = value
-    end
-  end
 end
