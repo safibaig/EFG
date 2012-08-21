@@ -92,4 +92,6 @@ EFG::Application.routes.draw do
   resources :premium_schedule_reports, only: [:new, :create]
 
   resource :account_disabled, controller: 'account_disabled'
+
+  resource :change_password, controller: 'change_password'
 end
