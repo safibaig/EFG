@@ -32,11 +32,9 @@ class UserImporter < BaseImporter
 
   def build_attributes
     row.each do |field_name, value|
-      value = case field_name
+      case field_name
       when 'PASSWORD'
-        nil
-      else
-        value
+        value = nil
       end
 
       attributes[self.class.field_mapping[field_name]] = value
