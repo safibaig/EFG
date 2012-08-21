@@ -13,7 +13,6 @@ describe UserImporter do
     before do
       UserImporter.csv_path = csv_fixture_path
       UserRoleMapper.user_roles_csv_path = user_roles_csv_fixture_path
-      UserImporter.instance_variable_set(:@already_imported_emails, [])
       UserImporter.instance_variable_set(:@user_id_from_username, nil)
     end
 
@@ -49,7 +48,8 @@ describe UserImporter do
       user.should_not be_locked
       user.ar_timestamp.should == Time.gm(2006, 12, 11)
       user.ar_insert_timestamp.should == Time.gm(2005, 11, 18)
-      user.email.should == 'joe@example.com'
+      user.email.should == nil
+      user.legacy_email.should == 'joe@example.com'
       user.created_by_legacy_id.should == "will8561s"
       user.modified_by_legacy_id.should == "thom5918r"
       user.confirm_t_and_c.should == true

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120820143050) do
+ActiveRecord::Schema.define(:version => 20120821103853) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -397,6 +397,7 @@ ActiveRecord::Schema.define(:version => 20120820143050) do
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
     t.string   "type"
+    t.string   "legacy_email"
   end
 
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true

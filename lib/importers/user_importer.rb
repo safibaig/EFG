@@ -24,7 +24,7 @@ class UserImporter < BaseImporter
       'LOCKED'               => :locked,
       'AR_TIMESTAMP'         => :ar_timestamp,
       'AR_INSERT_TIMESTAMP'  => :ar_insert_timestamp,
-      'EMAIL_ADDRESS'        => :email,
+      'EMAIL_ADDRESS'        => :legacy_email,
       'CREATOR_USER_ID'      => :created_by_legacy_id,
       'CONFIRM_T_AND_C'      => :confirm_t_and_c,
       'MODIFIED_BY'          => :modified_by_legacy_id,
