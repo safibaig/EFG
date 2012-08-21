@@ -9,7 +9,7 @@ gem 'jquery-rails', "1.0.19"
 gem 'money', '5.0.0'
 gem 'simple_form', '2.0.2'
 gem 'twitter-bootstrap-rails', '2.0.7'
-gem 'activerecord-import', '0.2.9', git: 'https://github.com/zdennis/activerecord-import.git', ref: '2bb1150e00cd9f01243a03d53ecd02fd82c775da'
+gem 'activerecord-import', '0.2.9'
 gem "builder", '3.0.0'
 gem "bourbon", '2.1.1'
 gem 'will_paginate', '3.0.3'
