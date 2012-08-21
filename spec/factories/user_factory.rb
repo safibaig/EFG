@@ -18,5 +18,10 @@ FactoryGirl.define do
     end
 
     factory :premium_collector_user, class: PremiumCollectorUser
+
+    trait :locked do
+      locked true
+      locked_at Time.now
+    end
   end
 end
