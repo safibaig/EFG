@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   include Canable::Cans
 
-  devise :database_authenticatable, :recoverable, :trackable, :lockable
+  devise :database_authenticatable, :recoverable, :trackable, :lockable, :timeoutable
 
   belongs_to :created_by, class_name: "User", foreign_key: "created_by_id"
   belongs_to :modified_by, class_name: "User", foreign_key: "modified_by_id"
