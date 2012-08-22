@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :lender do
-    name 'Little Tinkers'
+    sequence(:name) { |n| "Little Tinkers #{n}" }
     association :created_by, factory: :cfe_admin
     association :modified_by, factory: :cfe_admin
 

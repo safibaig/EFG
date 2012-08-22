@@ -29,6 +29,13 @@ shared_examples_for 'User' do
 
       user.should_not be_valid
     end
+
+    it 'should not require a unique email address' do
+      user.save!
+      another_user = FactoryGirl.build(user.class.to_s.underscore, email: user.email)
+
+      another_user.should be_valid
+    end
   end
 
   describe "#has_password?" do
@@ -86,6 +93,74 @@ shared_examples_for 'User' do
       emails = ActionMailer::Base.deliveries
       emails.size.should == 1
       emails.first.to.should == [ user.email ]
+    end
+  end
+
+  describe "#username" do
+    it "should be set when user is created" do
+      user.username.should be_blank
+      user.save!
+      user.username.should_not be_blank
+    end
+
+    it "should be lowercase" do
+      user.save!
+      user.username[0,4].should_not match(/[A-Z]/)
+      user.username[-1,1].should_not match(/[A-Z]/)
+    end
+  end
+
+  describe "#set_locked callback" do
+    it "should lock user when locked is true" do
+      user.access_locked?.should be_false
+      user.locked = true
+      user.save!
+
+      user.access_locked?.should == true
+    end
+
+    it "should lock user when locked is false" do
+      user.locked_at = Time.now
+      user.access_locked?.should == true
+      user.locked = true
+      user.save!
+
+      user.locked = false
+      user.save!
+
+      user.access_locked?.should be_false
+    end
+
+    it "should do nothing when locked has not changed" do
+      user.locked_at = Time.now
+      user.access_locked?.should == true
+      user.save!
+
+      user.reload
+      user.save!
+
+      user.access_locked?.should == true
+    end
+  end
+
+  describe "#lock_access!" do
+    it "should set locked to true" do
+      user.locked = false
+      user.save!
+      user.lock_access!
+      user.should be_locked
+    end
+  end
+
+  describe "#unlock_access!" do
+    it "should set locked to false" do
+      user.save!
+      user.lock_access!
+      user.should be_locked
+
+      user.unlock_access!
+
+      user.should_not be_locked
     end
   end
 end

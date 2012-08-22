@@ -4,4 +4,8 @@ class AuditorUser < User
   def lender
     AuditorUserLender.new
   end
+
+  def lenders
+    Lender.scoped
+  end
 end

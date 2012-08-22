@@ -61,6 +61,28 @@ describe 'lender dashboard' do
     end
   end
 
+  context 'user logging in for the first time' do
+    let(:user) { FactoryGirl.create(:cfe_user) }
+
+    before { login_as(user, scope: :user) }
+
+    it 'should show correct welcome message' do
+      visit root_path
+      page.should have_content "Welcome #{user.first_name}"
+    end
+  end
+
+  context 'user logging in for the second time' do
+    let(:user) { FactoryGirl.create(:cfe_user, sign_in_count: 2) }
+
+    before { login_as(user, scope: :user) }
+
+    it 'should show correct welcome message' do
+      visit root_path
+      page.should have_content "Welcome back, #{user.first_name}"
+    end
+  end
+
   context 'CfeUser' do
     let(:lender) { FactoryGirl.create(:lender) }
     let(:user) { FactoryGirl.create(:cfe_user) }

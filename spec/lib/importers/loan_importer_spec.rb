@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'importers'
 
 describe LoanImporter do
+
   let(:csv_fixture_path) { Rails.root.join('spec/fixtures/import_data/loans.csv') }
 
   describe ".import" do

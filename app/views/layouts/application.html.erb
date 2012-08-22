@@ -37,9 +37,13 @@
               <% if current_user.can_create?(LoanTransfer::LegacySflg) %>
                 <li><%= link_to 'Transfer a legacy loan', new_legacy_loan_transfer_path %></li>
               <% end %>
+              <% if current_user.can_create?(LoanReport) %>
+                <li><%= link_to 'Generate a loan report', new_loan_report_path %></li>
+              <% end %>
               <% if current_user.can_view?(Search) %>
                 <li><%= link_to 'Search', new_search_path %></li>
               <% end %>
+              <li><%= link_to 'Change Password', edit_change_password_path %></li>
             <% end %>
             <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
 

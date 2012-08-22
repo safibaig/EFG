@@ -13,7 +13,6 @@ module LoanChangesHelper
         third_draw_months
         fourth_draw_amount
         fourth_draw_months
-        rescheduling
       ).collect do |field|
         hidden_field_tag "state_aid_calculation[#{field}]", hash[field.to_sym]
       end.join.html_safe

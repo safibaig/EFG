@@ -1,25 +1,40 @@
 <div class="page-header">
-  <h1><%= loan_title('Premium Schedule', @loan) %></h1>
+  <h1><%= loan_title(premium_schedule_title(@premium_schedule), @loan) %></h1>
 </div>
 
 <%= loan_summary(@loan) %>
 
 <h4>Lender: <%= @loan.lender.name %></h4>
 
-<p>This Schedule itemises the cost of the Premiums that you (the Borrower) will be paying to the Government each quarter for the duration of this loan. The first Direct Debit payment is due shortly after the loan is drawn down. Future payments are collected quarterly, with collection being made on or around the 14th of the month.</p>
+<% if @premium_schedule.reschedule? %>
 
-<p>You must include a completed Direct Debit Mandate when you accept the loan you have been offered.</p>
+  <p>The revised schedule itemises the remaining Premiums that you (the Borrower) must pay to the Government each quarter for the remaining duration of your loan. It has been prepared to reflect the changes to your loan that you recently agreed with your Lender. Your premium collection cycle remains unchanged so the first premium listed on this schedule is due at your next collection point. You only need to complete a new Direct Debit Mandate if you have either: moved your loan to a different lender, or changed the bank account from which future Premiums are to be collected.</p>
 
-<dl>
-  <dt>Amount of Initial Premium Payment</dt>
-  <dd><%= @premium_schedule.premiums.first.format %></dd>
-  <dt>Month of Second Direct Debit Premium Collection</dt>
-  <dd><%= @premium_schedule.second_premium_collection_month %></dd>
-  <dt>Subsequent Direct Debit Premiums to be Collected</dt>
-  <dd><%= @premium_schedule.total_subsequent_premiums.format %></dd>
-  <dt>Total Premium Payable over the life of the loan</dt>
-  <dd><%= @premium_schedule.total_premiums.format %></dd>
-</dl>
+  <dl>
+    <dt>Schedule Start Date</dt>
+    <dd><%= @premium_schedule.premium_cheque_month %></dd>
+    <dt>Outstanding amount</dt>
+    <dd><%= @premium_schedule.total_premiums.format %></dd>
+  </dl>
+
+<% else %>
+
+  <p>This Schedule itemises the cost of the Premiums that you (the Borrower) will be paying to the Government each quarter for the duration of this loan. The first Direct Debit payment is due shortly after the loan is drawn down. Future payments are collected quarterly, with collection being made on or around the 14th of the month.</p>
+
+  <p>You must include a completed Direct Debit Mandate when you accept the loan you have been offered.</p>
+
+  <dl>
+    <dt>Amount of Initial Premium Payment</dt>
+    <dd><%= @premium_schedule.premiums.first.format %></dd>
+    <dt>Month of Second Direct Debit Premium Collection</dt>
+    <dd><%= @premium_schedule.second_premium_collection_month %></dd>
+    <dt>Subsequent Direct Debit Premiums to be Collected</dt>
+    <dd><%= @premium_schedule.total_subsequent_premiums.format %></dd>
+    <dt>Total Premium Payable over the life of the loan</dt>
+    <dd><%= @premium_schedule.total_premiums.format %></dd>
+  </dl>
+
+<% end %>
 
 <table class="table table-striped">
   <thead>
@@ -30,12 +45,12 @@
       <th>Premium Amount</th>
   </thead>
   <tbody>
-    <% premiums_table_rows(@premium_schedule.subsequent_premiums).each do |(index1, premium1), (index2, premium2)| %>
+    <% premiums_table_rows(@premium_schedule.subsequent_premiums, @premium_schedule.reschedule?).each do |(index1, premium1), (index2, premium2)| %>
       <tr>
-        <td><%= index1 + 1 if index1 %></td>
-        <td><%= premium1.format if premium1 %></td>
-        <td><%= index2 + 1 if index2 %></td>
-        <td><%= premium2.format if premium2 %></td>
+        <%= premium_number_cell(index1) %>
+        <%= premium_amount_cell(premium1) %>
+        <%= premium_number_cell(index2) %>
+        <%= premium_amount_cell(premium2) %>
       </tr>
     <% end %>
   </tbody>
@@ -51,8 +66,18 @@
     </tr>
     <tr>
       <th>What is the date of the Premium Collection point from which this schedule applies? (dd/mm/yyyy)</th>
-      <td><%= @premium_schedule.initial_draw_date %></td>
+      <td><%= @premium_schedule.reschedule? ? @premium_schedule.premium_cheque_month : @premium_schedule.initial_draw_date %></td>
     </tr>
+    <% if @premium_schedule.reschedule? %>
+    <tr>
+      <th>What is the outstanding capital balance at this Premium Collection point?</th>
+      <td><%= @premium_schedule.initial_draw_amount.try(:format) %></td>
+    </tr>
+    <tr>
+      <th>What is the remaining facility term in months at this Premium Collection point?</th>
+      <td><%= @premium_schedule.initial_draw_months %></td>
+    </tr>
+    <% else %>
     <tr>
       <th>What is the amount of the initial draw?</th>
       <td><%= @premium_schedule.initial_draw_amount.try(:format) %></td>
@@ -61,13 +86,14 @@
       <th>What is the loan term in months remaining at this Premium Collection point?</th>
       <td><%= @premium_schedule.initial_draw_months %></td>
     </tr>
+    <% end %>
     <tr>
       <th>What is the length of the initial capital repayment holiday? (Months) (Note that if the facility is being provided on interest-only terms then the value entered here should be equal to the full term of the facility)</th>
       <td><%= @premium_schedule.initial_capital_repayment_holiday %></td>
     </tr>
     <tr>
       <th>What is the amount of the additional draw? (Second tranche)</th>
-      <td><%= @premium_schedule.second_draw_amount %></td>
+      <td><%= @premium_schedule.second_draw_amount.try(:format) %></td>
     </tr>
     <tr>
       <th>What is the number of months (from this Premium Collection point) to second tranche drawdown?</th>
@@ -75,7 +101,7 @@
     </tr>
     <tr>
       <th>What is the amount of the additional draw? (Third tranche)</th>
-      <td><%= @premium_schedule.third_draw_amount %></td>
+      <td><%= @premium_schedule.third_draw_amount.try(:format) %></td>
     </tr>
     <tr>
       <th>What is the number of months (from this Premium Collection point) to third tranche drawdown?</th>
@@ -83,7 +109,7 @@
     </tr>
     <tr>
       <th>What is the amount of the additional draw? (Fourth tranche)</th>
-      <td><%= @premium_schedule.fourth_draw_amount %></td>
+      <td><%= @premium_schedule.fourth_draw_amount.try(:format) %></td>
     </tr>
     <tr>
       <th>What is the number of months (from this Premium Collection point) to fourth tranche drawdown?</th>

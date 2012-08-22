@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
 
   before_filter :authenticate_user!
   before_filter :redirect_disabled_user
+  
+  helper_method :current_lender
 
   def current_lender
     current_user.lender

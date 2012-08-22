@@ -29,13 +29,13 @@ describe 'User creation and first login' do
     fill_in 'user_username', with: lender_admin.username
     click_button 'Sign In'
 
-    page.should have_content('Invalid email or password')
+    page.should have_content('Invalid username or password')
 
     fill_in 'user_username', with: lender_admin.username
     fill_in 'user_password', with: 'whatever'
     click_button 'Sign In'
 
-    page.should have_content('Invalid email or password')
+    page.should have_content('Invalid username or password')
 
     # newly created lender admin sets password
     visit edit_user_password_path(reset_password_token: lender_admin.reset_password_token)

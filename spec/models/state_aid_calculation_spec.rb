@@ -33,10 +33,24 @@ describe StateAidCalculation do
     end
 
     it 'requires initial draw amount to be less than 9,999,999.99' do
-      state_aid_calculation.initial_draw_amount = Money.new(10_000_000_00)
+      state_aid_calculation.initial_draw_amount = StateAidCalculation::MAX_INITIAL_DRAW + Money.new(1)
       state_aid_calculation.should_not be_valid
 
-      state_aid_calculation.initial_draw_amount = 9999999.99
+      state_aid_calculation.initial_draw_amount = StateAidCalculation::MAX_INITIAL_DRAW
+      state_aid_calculation.should be_valid
+    end
+
+    it 'requires an allowed calculation type' do
+      state_aid_calculation.calc_type = nil
+      state_aid_calculation.should_not be_valid
+
+      state_aid_calculation.calc_type = "Z"
+      state_aid_calculation.should_not be_valid
+
+      state_aid_calculation.calc_type = StateAidCalculation::SCHEDULE_TYPE
+      state_aid_calculation.should be_valid
+
+      state_aid_calculation.calc_type = StateAidCalculation::NOTIFIED_AID_TYPE
       state_aid_calculation.should be_valid
     end
 
@@ -73,33 +87,56 @@ describe StateAidCalculation do
         rescheduled_state_aid_calculation.premium_cheque_month = Date.today.next_month.strftime('%m/%Y')
         rescheduled_state_aid_calculation.should be_valid
       end
+
+      it "is valid when premium cheque month number is less than current month but in a future year" do
+        Date.stub(:today).and_return(Date.parse("23/08/2012"))
+
+        rescheduled_state_aid_calculation.premium_cheque_month = "07/2013"
+        rescheduled_state_aid_calculation.should be_valid
+      end
+
+      it 'requires an allowed calculation type' do
+        state_aid_calculation.calc_type = StateAidCalculation::SCHEDULE_TYPE
+        state_aid_calculation.should be_valid
+      end
     end
   end
 
-  describe "calculations" do
+  context do
+
+    let(:loan) { FactoryGirl.build(:loan, amount: Money.new(100_000_00)) }
+
     let(:state_aid_calculation) {
       FactoryGirl.build(:state_aid_calculation,
-        initial_draw_amount: Money.new(100_000_00),
-        initial_draw_months: 120)
+        loan: loan,
+        initial_draw_amount: Money.new(50_000_00),
+        initial_draw_months: 24,
+        initial_capital_repayment_holiday: 4,
+        second_draw_amount: Money.new(25_000_00),
+        second_draw_months: 13,
+        third_draw_amount: Money.new(25_000_00),
+        third_draw_months: 17
+      )
     }
 
-    it "calculates state aid in GBP" do
-      state_aid_calculation.state_aid_gbp.should == Money.new(12_250_00, 'GBP')
+    describe "calculations" do
+      it "calculates state aid in GBP" do
+        state_aid_calculation.state_aid_gbp.should == Money.new(20_847_25, 'GBP')
+      end
+
+      it "calculates state aid in EUR" do
+        state_aid_calculation.state_aid_eur.should == Money.new(24_962_50, 'EUR')
+      end
     end
 
-    it "calculates state aid in EUR" do
-      state_aid_calculation.state_aid_eur.should == Money.new(14_668_15, 'EUR')
-    end
-  end
+    describe "saving a state aid calculation" do
+      it "should store the state aid on the loan" do
+        loan.save!
+        state_aid_calculation.save!
 
-  describe "saving a state aid calculation" do
-    it "should store the state aid on the loan" do
-      state_aid_calculation = FactoryGirl.build(:state_aid_calculation, initial_draw_amount: Money.new(100_000_00), initial_draw_months: 120)
-      loan = state_aid_calculation.loan
-      state_aid_calculation.save
-
-      loan.reload
-      loan.state_aid.should == Money.new(14_668_15, 'EUR')
+        loan.reload
+        loan.state_aid.should == Money.new(24_962_50, 'EUR')
+      end
     end
   end
 
@@ -119,6 +156,20 @@ describe StateAidCalculation do
       new_state_aid_calculation.valid?
 
       new_state_aid_calculation.seq.should == 1
+    end
+  end
+
+  describe "reschedule?" do
+    let(:state_aid_calculation) { FactoryGirl.build(:state_aid_calculation) }
+
+    it "should return true when reschedule calculation type" do
+      state_aid_calculation.calc_type = StateAidCalculation::RESCHEDULE_TYPE
+      state_aid_calculation.should be_reschedule
+    end
+
+    it "should return false when schedule calculation type" do
+      state_aid_calculation.calc_type = StateAidCalculation::SCHEDULE_TYPE
+      state_aid_calculation.should_not be_reschedule
     end
   end
 end

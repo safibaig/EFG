@@ -81,14 +81,17 @@ describe 'LenderAdmin management' do
 
       user.reload.modified_by.should == current_user
       user.should be_disabled
-      user.should be_locked
+      user.reload.access_locked?.should == true
     end
   end
 
   describe 'unlocking the user' do
-    let!(:user) { FactoryGirl.create(:lender_admin, first_name: 'Bob', last_name: 'Flemming', locked: true) }
+    let!(:user) { FactoryGirl.create(:lender_admin, :locked, first_name: 'Bob', last_name: 'Flemming') }
 
     it do
+      # pre-condition
+      user.access_locked?.should == true
+
       visit root_path
       click_link 'Manage Lender Admins'
       click_link 'Bob Flemming'
@@ -96,7 +99,7 @@ describe 'LenderAdmin management' do
       uncheck 'Locked'
       click_button 'Update Lender Admin'
 
-      user.reload.locked.should == false
+      user.reload.access_locked?.should be_nil
     end
   end
 
@@ -144,7 +147,7 @@ describe 'LenderAdmin management' do
       click_button 'Send Reset Password Email'
 
       page.should have_content(I18n.t('manage_users.reset_password_sent', email: user.email))
-      page.should have_content(I18n.t('manage_users.password_set_time_remaining', time_left: 'about 6 hours'))
+      page.should have_content(I18n.t('manage_users.password_set_time_remaining', time_left: '7 days'))
       page.should_not have_css('input', value: 'Send Reset Password Email')
     end
 

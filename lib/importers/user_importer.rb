@@ -2,6 +2,10 @@ class UserImporter < BaseImporter
   self.csv_path = Rails.root.join('import_data/SFLG_USER_DATA_TABLE.csv')
   self.klass = User
 
+  def self.extra_columns
+    [:locked_at]
+  end
+
   def self.field_mapping
     {
       'USER_ID'              => :username,
@@ -35,6 +39,8 @@ class UserImporter < BaseImporter
       case field_name
       when 'PASSWORD'
         value = nil
+      when 'LOCKED'
+        attributes[:locked_at] = Time.now.utc if value == "1"
       end
 
       attributes[self.class.field_mapping[field_name]] = value

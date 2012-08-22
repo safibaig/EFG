@@ -82,7 +82,7 @@ describe CfeUserPermissions do
   end
 
   context 'loan changes' do
-    it { refute user.can_view?(LoanChange) }
+    it { assert user.can_view?(LoanChange) }
     it { refute user.can_create?(LoanChange) }
   end
 
@@ -120,6 +120,12 @@ describe CfeUserPermissions do
 
   context 'StateAidCalculation' do
     it { refute user.can_create?(StateAidCalculation) }
+  end
+
+  context 'LoanReport' do
+    it { assert user.can_create?(LoanReport) }
+    it { refute user.can_update?(LoanReport) }
+    it { refute user.can_view?(LoanReport) }
   end
 
   context 'LenderAdmins' do

@@ -397,6 +397,8 @@ ActiveRecord::Schema.define(:version => 20120821103853) do
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
     t.string   "type"
+    t.integer  "failed_attempts",        :default => 0
+    t.datetime "locked_at"
     t.string   "legacy_email"
   end
 

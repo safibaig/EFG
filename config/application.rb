@@ -61,5 +61,9 @@ module EFG
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    unless %w(development test).include?(Rails.env)
+      config.middleware.use Rack::SslEnforcer
+    end
   end
 end
