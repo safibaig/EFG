@@ -74,14 +74,17 @@ describe 'PremiumCollectorUser management' do
 
       user.reload.modified_by.should == current_user
       user.should be_disabled
-      user.should be_locked
+      user.reload.access_locked?.should == true
     end
   end
 
   describe 'unlocking the user' do
-    let!(:user) { FactoryGirl.create(:premium_collector_user, first_name: 'Bob', last_name: 'Flemming', locked: true) }
+    let!(:user) { FactoryGirl.create(:premium_collector_user, :locked, first_name: 'Bob', last_name: 'Flemming') }
 
     it do
+      # pre-condition
+      user.access_locked?.should == true
+
       visit root_path
       click_link 'Manage Premium Collector Users'
       click_link 'Bob Flemming'
@@ -89,7 +92,7 @@ describe 'PremiumCollectorUser management' do
       uncheck 'Locked'
       click_button 'Update Premium Collector User'
 
-      user.reload.locked.should == false
+      user.reload.access_locked?.should be_nil
     end
   end
 

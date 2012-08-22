@@ -1,13 +1,14 @@
 class User < ActiveRecord::Base
   include Canable::Cans
 
-  devise :database_authenticatable,
-         :recoverable, :trackable
+  devise :database_authenticatable, :recoverable, :trackable, :lockable
 
   belongs_to :created_by, class_name: "User", foreign_key: "created_by_id"
   belongs_to :modified_by, class_name: "User", foreign_key: "modified_by_id"
 
   before_validation :set_unique_username, on: :create
+
+  before_save :set_locked
 
   attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
 
@@ -38,6 +39,16 @@ class User < ActiveRecord::Base
     UserMailer.new_account_notification(self).deliver
   end
 
+  def lock_access!
+    self.locked = true
+    super
+  end
+
+  def unlock_access!
+    self.locked = false
+    super
+  end
+
   private
 
   # Replicate how the existing system generates usernames.
@@ -61,4 +72,16 @@ class User < ActiveRecord::Base
       self.username = generate_username
     end
   end
+
+  def set_locked
+    return unless locked_changed?
+
+    if locked?
+      self.locked_at = Time.now.utc
+    else
+      self.locked_at = nil
+      self.failed_attempts = 0
+    end
+  end
+
 end

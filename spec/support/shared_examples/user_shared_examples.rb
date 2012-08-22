@@ -109,4 +109,58 @@ shared_examples_for 'User' do
       user.username[-1,1].should_not match(/[A-Z]/)
     end
   end
+
+  describe "#set_locked callback" do
+    it "should lock user when locked is true" do
+      user.access_locked?.should be_false
+      user.locked = true
+      user.save!
+
+      user.access_locked?.should == true
+    end
+
+    it "should lock user when locked is false" do
+      user.locked_at = Time.now
+      user.access_locked?.should == true
+      user.locked = true
+      user.save!
+
+      user.locked = false
+      user.save!
+
+      user.access_locked?.should be_false
+    end
+
+    it "should do nothing when locked has not changed" do
+      user.locked_at = Time.now
+      user.access_locked?.should == true
+      user.save!
+
+      user.reload
+      user.save!
+
+      user.access_locked?.should == true
+    end
+  end
+
+  describe "#lock_access!" do
+    it "should set locked to true" do
+      user.locked = false
+      user.save!
+      user.lock_access!
+      user.should be_locked
+    end
+  end
+
+  describe "#unlock_access!" do
+    it "should set locked to false" do
+      user.save!
+      user.lock_access!
+      user.should be_locked
+
+      user.unlock_access!
+
+      user.should_not be_locked
+    end
+  end
 end

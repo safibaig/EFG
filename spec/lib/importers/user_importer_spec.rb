@@ -46,7 +46,8 @@ describe UserImporter do
       user.memorable_year.should == "1900"
       user.login_failures.should == 0
       user.password_changed_at.should == Time.gm(2007, 3, 30)
-      user.should_not be_locked
+      user.should be_locked
+      user.locked_at.should_not be_nil
       user.ar_timestamp.should == Time.gm(2006, 12, 11)
       user.ar_insert_timestamp.should == Time.gm(2005, 11, 18)
       user.email.should == 'joe@example.com'

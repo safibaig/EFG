@@ -10,7 +10,7 @@
   <dt>Email</dt>
   <dd><%= @user.email %></dd>
   <dt>Locked</dt>
-  <dd><%=friendly_boolean @user.locked %></dd>
+  <dd><%=friendly_boolean @user.access_locked? %></dd>
 </dl>
 
 <div class="actions">
