@@ -93,5 +93,7 @@ EFG::Application.routes.draw do
 
   resource :account_disabled, controller: 'account_disabled'
 
+  resource :account_locked, controller: 'account_locked'
+
   resource :change_password, controller: 'change_password'
 end

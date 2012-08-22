@@ -1,14 +1,16 @@
 class User < ActiveRecord::Base
   include Canable::Cans
 
-  devise :database_authenticatable, :recoverable, :trackable, :lockable, :timeoutable
+  MAXIMUM_LOGIN_ATTEMPTS = 3
+
+  devise :database_authenticatable, :recoverable, :trackable, :timeoutable
 
   belongs_to :created_by, class_name: "User", foreign_key: "created_by_id"
   belongs_to :modified_by, class_name: "User", foreign_key: "modified_by_id"
 
   before_validation :set_unique_username, on: :create
 
-  before_save :set_locked
+  before_save :reset_failed_attempts
 
   attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
 
@@ -45,14 +47,23 @@ class User < ActiveRecord::Base
     super if email.present?
   end
 
-  def lock_access!
-    self.locked = true
-    super
-  end
-
-  def unlock_access!
-    self.locked = false
-    super
+  # custom account locking adapted from Devise lockable
+  # - if user successfully authenticates, let them sign in
+  #   regardless of whether they are locked (controller filter prevents access to anything)
+  # - if user does not successfully authenticate and is locked
+  #   persist the login attempt failure and lock the account when limit is reached
+  def valid_for_authentication?
+    if super
+      true
+    else
+      self.failed_attempts ||= 0
+      self.failed_attempts += 1
+      if login_attempts_exceeded? && !locked?
+        self.locked = true
+      end
+      save(validate: false)
+      false
+    end
   end
 
   private
@@ -79,15 +90,14 @@ class User < ActiveRecord::Base
     end
   end
 
-  def set_locked
+  # if unlocking account, reset failed_attempts to 0
+  def reset_failed_attempts
     return unless locked_changed?
+    self.failed_attempts = 0 unless locked?
+  end
 
-    if locked?
-      self.locked_at = Time.now.utc
-    else
-      self.locked_at = nil
-      self.failed_attempts = 0
-    end
+  def login_attempts_exceeded?
+    self.failed_attempts > MAXIMUM_LOGIN_ATTEMPTS
   end
 
 end
