@@ -36,6 +36,7 @@ class StateAidCalculation < ActiveRecord::Base
   format :fourth_draw_amount, with: MoneyFormatter.new
 
   # We believe these are defined in the relevant legislation?
+  # TODO: use loan guarantee rate, if not set, use loan's loan allocation guarantee rate
   GUARANTEE_RATE = 0.75
   RISK_FACTOR = 0.3
 
@@ -44,7 +45,7 @@ class StateAidCalculation < ActiveRecord::Base
   end
 
   def state_aid_gbp
-    (initial_draw_amount * GUARANTEE_RATE * RISK_FACTOR) - premium_schedule.total_premiums
+    (loan.amount * GUARANTEE_RATE * RISK_FACTOR) - premium_schedule.total_premiums
   end
 
   def state_aid_eur

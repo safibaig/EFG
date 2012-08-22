@@ -102,30 +102,41 @@ describe StateAidCalculation do
     end
   end
 
-  describe "calculations" do
+  context do
+
+    let(:loan) { FactoryGirl.build(:loan, amount: Money.new(100_000_00)) }
+
     let(:state_aid_calculation) {
       FactoryGirl.build(:state_aid_calculation,
-        initial_draw_amount: Money.new(100_000_00),
-        initial_draw_months: 120)
+        loan: loan,
+        initial_draw_amount: Money.new(50_000_00),
+        initial_draw_months: 24,
+        initial_capital_repayment_holiday: 4,
+        second_draw_amount: Money.new(25_000_00),
+        second_draw_months: 13,
+        third_draw_amount: Money.new(25_000_00),
+        third_draw_months: 17
+      )
     }
 
-    it "calculates state aid in GBP" do
-      state_aid_calculation.state_aid_gbp.should == Money.new(12_250_00, 'GBP')
+    describe "calculations" do
+      it "calculates state aid in GBP" do
+        state_aid_calculation.state_aid_gbp.should == Money.new(20_847_25, 'GBP')
+      end
+
+      it "calculates state aid in EUR" do
+        state_aid_calculation.state_aid_eur.should == Money.new(24_962_50, 'EUR')
+      end
     end
 
-    it "calculates state aid in EUR" do
-      state_aid_calculation.state_aid_eur.should == Money.new(14_668_15, 'EUR')
-    end
-  end
+    describe "saving a state aid calculation" do
+      it "should store the state aid on the loan" do
+        loan.save!
+        state_aid_calculation.save!
 
-  describe "saving a state aid calculation" do
-    it "should store the state aid on the loan" do
-      state_aid_calculation = FactoryGirl.build(:state_aid_calculation, initial_draw_amount: Money.new(100_000_00), initial_draw_months: 120)
-      loan = state_aid_calculation.loan
-      state_aid_calculation.save
-
-      loan.reload
-      loan.state_aid.should == Money.new(14_668_15, 'EUR')
+        loan.reload
+        loan.state_aid.should == Money.new(24_962_50, 'EUR')
+      end
     end
   end
 
