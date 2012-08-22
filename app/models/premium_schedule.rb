@@ -1,6 +1,4 @@
 class PremiumSchedule
-  # The amount of interest that the government charges for guaranteeing the loan.
-  PREMIUM_RATE = 0.02
 
   def initialize(state_aid_calculation, loan)
     @state_aid_calculation = state_aid_calculation
@@ -20,6 +18,8 @@ class PremiumSchedule
   delegate :third_draw_months, to: :state_aid_calculation
   delegate :fourth_draw_amount, to: :state_aid_calculation
   delegate :fourth_draw_months, to: :state_aid_calculation
+  delegate :reschedule?, to: :state_aid_calculation
+  delegate :premium_cheque_month, to: :state_aid_calculation
 
   def number_of_subsequent_payments
     subsequent_premiums.count { |amount|
@@ -29,23 +29,13 @@ class PremiumSchedule
 
   def premiums
     return @premiums if @premiums
-
-    amount = state_aid_calculation.initial_draw_amount
-    quarters = state_aid_calculation.initial_draw_months.to_f / 3
-    per_quarter_payment = quarters < 1 ? amount : amount / quarters
-
     @premiums = Array.new(40) do |quarter|
-      if quarter <= quarters
-        outstanding_capital = amount - (per_quarter_payment * quarter)
-        outstanding_capital * PREMIUM_RATE / 4
-      else
-        Money.new(0)
-      end
+      PremiumScheduleQuarter.new(quarter, total_quarters, self).premium_amount
     end
   end
 
   def subsequent_premiums
-    @subsequent_premiums ||= premiums[1..-1]
+    @subsequent_premiums ||= reschedule? ? premiums : premiums[1..-1]
   end
 
   def total_subsequent_premiums
@@ -63,4 +53,9 @@ class PremiumSchedule
     return unless initial_draw_date
     initial_draw_date.advance(months: 3).strftime('%m/%Y')
   end
+
+  def total_quarters
+    @total_quarters ||= initial_draw_months.to_f / 3
+  end
+
 end

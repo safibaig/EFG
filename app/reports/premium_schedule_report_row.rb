@@ -34,7 +34,14 @@ class PremiumScheduleReportRow
       premium_schedule.premiums.first.to_f,
       state_aid_calculation.premium_cheque_month,
       premium_schedule.number_of_subsequent_payments,
-      0.0 # TODO: Zero? Really?
-    ] + premium_schedule.subsequent_premiums.map(&:to_f)
+    ] + premiums
+  end
+
+  private
+
+  def premiums
+    array = premium_schedule.subsequent_premiums.map(&:to_f)
+    array.unshift(0.0) unless premium_schedule.reschedule?
+    array
   end
 end

@@ -57,6 +57,7 @@ describe 'loan change' do
     calculation.premium_cheque_month.should == '09/2012'
     calculation.initial_draw_amount.should == Money.new(30_000_00)
     calculation.initial_draw_months.should == 18
+    calculation.should be_reschedule
   end
 
   it 'remembers loan change values when rescheduling is cancelled' do

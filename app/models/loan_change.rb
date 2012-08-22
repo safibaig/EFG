@@ -94,7 +94,9 @@ class LoanChange < ActiveRecord::Base
       loan.save!
 
       if requires_state_aid_recalculation?
-        loan.state_aid_calculations.create!(state_aid_calculation_attributes)
+        state_aid_calculation = loan.state_aid_calculations.build(state_aid_calculation_attributes)
+        state_aid_calculation.calc_type = StateAidCalculation::RESCHEDULE_TYPE
+        state_aid_calculation.save!
       end
     end
 

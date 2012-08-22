@@ -14,8 +14,6 @@
 
   <%= loan_change_hidden_fields(params[:loan_change]) %>
 
-  <%= f.input :rescheduling, as: :hidden, input_html: { value: true } %>
-
   <%= f.input :premium_cheque_month, as: :string, label: reschedule_form_label('premium_cheque_month') %>
   <%= f.input :initial_draw_amount, as: :currency, label: reschedule_form_label('initial_draw_amount') %>
   <%= f.input :initial_draw_months, as: :string, label: reschedule_form_label('initial_draw_months') %>

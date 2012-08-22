@@ -140,7 +140,7 @@ describe PremiumScheduleReport do
     let(:loan2) { FactoryGirl.create(:loan, :guaranteed, loan_scheme: 'E', loan_source: 'S', reference: 'ABC') }
     let(:loan3) { FactoryGirl.create(:loan, :guaranteed, loan_scheme: 'S', loan_source: 'S') }
     let!(:state_aid_calculation1) { FactoryGirl.create(:state_aid_calculation, loan: loan1, calc_type: 'S', premium_cheque_month: '01/2011') }
-    let!(:state_aid_calculation2) { FactoryGirl.create(:state_aid_calculation, loan: loan2, calc_type: 'R', premium_cheque_month: '01/2011') }
+    let!(:state_aid_calculation2) { FactoryGirl.create(:state_aid_calculation, loan: loan2, calc_type: 'R', premium_cheque_month: "01/#{Date.today.year + 1}") }
     let!(:state_aid_calculation3) { FactoryGirl.create(:state_aid_calculation, loan: loan3, calc_type: 'N', premium_cheque_month: '02/2011') }
     let!(:loan_change_1) { FactoryGirl.create(:loan_change, loan: loan1, date_of_change: '1/1/11', modified_date: '1/1/11') }
     let!(:loan_change_2) { FactoryGirl.create(:loan_change, loan: loan2, date_of_change: '2/1/11', modified_date: '2/1/11') }
@@ -253,8 +253,8 @@ describe PremiumScheduleReport do
         end
 
         it 'includes all rescheduled loans' do
-          FactoryGirl.create(:state_aid_calculation, loan: loan1, calc_type: 'R', premium_cheque_month: '03/2011')
-          FactoryGirl.create(:state_aid_calculation, loan: loan3, calc_type: 'R', premium_cheque_month: '03/2011')
+          FactoryGirl.create(:state_aid_calculation, loan: loan1, calc_type: 'R', premium_cheque_month: "03/#{Date.today.year + 1}")
+          FactoryGirl.create(:state_aid_calculation, loan: loan3, calc_type: 'R', premium_cheque_month: "03/#{Date.today.year + 1}")
 
           loan_ids.should include(loan1.id)
           loan_ids.should include(loan2.id)
@@ -278,13 +278,13 @@ describe PremiumScheduleReport do
 
         context 'with collection_month' do
           before do
-            FactoryGirl.create(:state_aid_calculation, loan: loan1, calc_type: 'R', premium_cheque_month: '04/2011')
-            FactoryGirl.create(:state_aid_calculation, loan: loan2, calc_type: 'R', premium_cheque_month: '04/2011')
-            FactoryGirl.create(:state_aid_calculation, loan: loan3, calc_type: 'R', premium_cheque_month: '05/2011')
+            FactoryGirl.create(:state_aid_calculation, loan: loan1, calc_type: 'R', premium_cheque_month: "04/#{Date.today.year + 1}")
+            FactoryGirl.create(:state_aid_calculation, loan: loan2, calc_type: 'R', premium_cheque_month: "04/#{Date.today.year + 1}")
+            FactoryGirl.create(:state_aid_calculation, loan: loan3, calc_type: 'R', premium_cheque_month: "05/#{Date.today.year + 1}")
           end
 
           it do
-            premium_schedule_report.collection_month = '04/2011'
+            premium_schedule_report.collection_month = "04/#{Date.today.year + 1}"
 
             loan_ids.should include(loan1.id)
             loan_ids.should include(loan2.id)
@@ -292,7 +292,7 @@ describe PremiumScheduleReport do
           end
 
           it do
-            premium_schedule_report.collection_month = '04/2012'
+            premium_schedule_report.collection_month = "04/#{Date.today.year + 2}"
 
             loan_ids.should_not include(loan1.id)
             loan_ids.should_not include(loan2.id)
@@ -364,68 +364,94 @@ describe PremiumScheduleReport do
   end
 
   describe '#to_csv' do
-    let(:lender) { FactoryGirl.create(:lender, organisation_reference_code: 'Z') }
-    let(:loan) { FactoryGirl.create(:loan, lender: lender, reference: 'ABC') }
+    let!(:lender) { FactoryGirl.create(:lender, organisation_reference_code: 'Z') }
 
-    before do
-      FactoryGirl.create(:loan_change, loan: loan, date_of_change: '3/11/2011')
-      FactoryGirl.create(:state_aid_calculation, loan: loan, calc_type: 'S', premium_cheque_month: '2/2011')
-    end
+    let!(:loan) { FactoryGirl.create(:loan, lender: lender, reference: 'ABC') }
 
     let(:premium_schedule_report) { PremiumScheduleReport.new }
 
-    it 'works' do
-      csv = CSV.parse(premium_schedule_report.to_csv)
-      csv.length.should == 2
+    let(:csv) { CSV.parse(premium_schedule_report.to_csv) }
 
-      row = csv[1]
-      row[0].should == '03-11-2011'
-      row[1].should == 'Z'
-      row[2].should == 'ABC'
-      row[3].should == 'S'
-      row[4].should == '61.72'
-      row[5].should == '2/2011'
-      row[6].should == '3'
-      row[7].should == '0.0'
-      row[8].should == '46.29'
-      row[9].should == '30.86'
-      row[10].should == '15.43'
-      row[11].should == '0.0'
-      row[12].should == '0.0'
-      row[13].should == '0.0'
-      row[14].should == '0.0'
-      row[15].should == '0.0'
-      row[16].should == '0.0'
-      row[17].should == '0.0'
-      row[18].should == '0.0'
-      row[19].should == '0.0'
-      row[20].should == '0.0'
-      row[21].should == '0.0'
-      row[22].should == '0.0'
-      row[23].should == '0.0'
-      row[24].should == '0.0'
-      row[25].should == '0.0'
-      row[26].should == '0.0'
-      row[27].should == '0.0'
-      row[28].should == '0.0'
-      row[29].should == '0.0'
-      row[30].should == '0.0'
-      row[31].should == '0.0'
-      row[32].should == '0.0'
-      row[33].should == '0.0'
-      row[34].should == '0.0'
-      row[35].should == '0.0'
-      row[36].should == '0.0'
-      row[37].should == '0.0'
-      row[38].should == '0.0'
-      row[39].should == '0.0'
-      row[40].should == '0.0'
-      row[41].should == '0.0'
-      row[42].should == '0.0'
-      row[43].should == '0.0'
-      row[44].should == '0.0'
-      row[45].should == '0.0'
-      row[46].should == '0.0'
+    let(:row) { csv[1] }
+
+    before do
+      FactoryGirl.create(:loan_change, loan: loan, date_of_change: '3/11/2011')
     end
+
+    context 'with standard state aid calculation' do
+
+      before do
+        FactoryGirl.create(:state_aid_calculation, loan: loan, calc_type: 'S', premium_cheque_month: '2/2011')
+      end
+
+      it 'should return 2 rows of data' do
+        csv.length.should == 2
+      end
+
+      it 'should return loan premium schedule details' do
+        row[0].should == '03-11-2011'
+        row[1].should == 'Z'
+        row[2].should == 'ABC'
+        row[3].should == 'S'
+        row[4].should == '61.73'
+        row[5].should == '2/2011'
+        row[6].should == '3'
+        row[7].should == '0.0'
+        row[8].should == '46.29'
+        row[9].should == '30.86'
+        row[10].should == '15.43'
+        row[11].should == '0.0'
+        row[12].should == '0.0'
+        row[13].should == '0.0'
+        row[14].should == '0.0'
+        row[15].should == '0.0'
+        row[16].should == '0.0'
+        row[17].should == '0.0'
+        row[18].should == '0.0'
+        row[19].should == '0.0'
+        row[20].should == '0.0'
+        row[21].should == '0.0'
+        row[22].should == '0.0'
+        row[23].should == '0.0'
+        row[24].should == '0.0'
+        row[25].should == '0.0'
+        row[26].should == '0.0'
+        row[27].should == '0.0'
+        row[28].should == '0.0'
+        row[29].should == '0.0'
+        row[30].should == '0.0'
+        row[31].should == '0.0'
+        row[32].should == '0.0'
+        row[33].should == '0.0'
+        row[34].should == '0.0'
+        row[35].should == '0.0'
+        row[36].should == '0.0'
+        row[37].should == '0.0'
+        row[38].should == '0.0'
+        row[39].should == '0.0'
+        row[40].should == '0.0'
+        row[41].should == '0.0'
+        row[42].should == '0.0'
+        row[43].should == '0.0'
+        row[44].should == '0.0'
+        row[45].should == '0.0'
+        row[46].should == '0.0'
+      end
+    end
+
+    context 'with rescheduled state aid calculation' do
+      before do
+        FactoryGirl.create(:rescheduled_state_aid_calculation, loan: loan)
+      end
+
+      it 'sets schedule type correctly' do
+        row[3].should == 'R'
+      end
+
+      it 'includes first premium amount' do
+        row[7].should == '61.73'
+      end
+    end
+
   end
 end
