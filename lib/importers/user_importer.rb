@@ -47,22 +47,20 @@ class UserImporter < BaseImporter
     klass.find_each do |user|
       user.created_by_id = user_id_from_username(user.created_by_legacy_id)
       user.modified_by_id = user_id_from_username(user.modified_by_legacy_id)
-      user.type        = UserRoleMapper.new(user).user_type
 
-      # if user is not a LenderAdmin or LenderUser,
-      # disable the account so they can't login. They will be verified manually.
-      unless %w(LenderUser LenderAdmin).include?(user.type)
-        user.legacy_lender_id = nil
+      # Special case for existing users in the test environment, the user's
+      # type will always be blank when performing a clean import.
+      user.type = UserRoleMapper.new(user).user_type if user.type.blank?
+
+      if %w(LenderUser LenderAdmin).include?(user.type)
+        user.lender_id = lender_id_from_legacy_id(user.legacy_lender_id)
+      else
+        # Non-LenderAdmin/LenderUsers cannot login until they have been
+        # manually verified
         user.disabled = true
       end
 
       user.save!(validate: false)
     end
-
-    User.where(type: %w(LenderUser LenderAdmin)).find_each do |lender_user|
-      lender_user.lender = Lender.find_by_legacy_id(lender_user.legacy_lender_id)
-      lender_user.save!(validate: false)
-    end
   end
-
 end

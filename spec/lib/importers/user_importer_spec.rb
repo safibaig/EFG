@@ -12,8 +12,11 @@ describe UserImporter do
   describe ".import" do
     before do
       UserImporter.csv_path = csv_fixture_path
-      UserRoleMapper.user_roles_csv_path = user_roles_csv_fixture_path
+      UserImporter.instance_variable_set(:@lender_id_from_legacy_id, nil)
       UserImporter.instance_variable_set(:@user_id_from_username, nil)
+
+      UserRoleMapper.user_roles_csv_path = user_roles_csv_fixture_path
+      UserRoleMapper.instance_variable_set(:@legacy_user_roles, nil)
     end
 
     def dispatch
