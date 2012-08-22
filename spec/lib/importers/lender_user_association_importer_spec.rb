@@ -22,6 +22,7 @@ describe LenderUserAssociationImporter do
 
       lender3.reload
       lender3.created_by.should be_nil
+      lender3.created_by_id.should == -1
       lender3.modified_by.should == user1
     end
   end
