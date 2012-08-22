@@ -39,6 +39,12 @@ class User < ActiveRecord::Base
     UserMailer.new_account_notification(self).deliver
   end
 
+  # Override Devise's default behaviour so that an email with a blank "To" is
+  # not sent.
+  def send_reset_password_instructions
+    super if email.present?
+  end
+
   def lock_access!
     self.locked = true
     super
