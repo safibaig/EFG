@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Resetting password' do
 
-  let!(:user) {
+  let(:user) {
     FactoryGirl.create(
       :lender_user,
       reset_password_token: 'abc123',
@@ -10,8 +10,11 @@ describe 'Resetting password' do
     )
   }
 
-  it 'sends email to correct user when email address belongs to more than one account' do
+  before do
     ActionMailer::Base.deliveries.clear
+  end
+
+  it 'sends email to correct user when email address belongs to more than one account' do
     user1 = FactoryGirl.create(:lender_user, email: 'joe1@example.com', username: 'joe1')
     user2 = FactoryGirl.create(:auditor_user, email: 'joe1@example.com', username: 'joe2')
 
@@ -26,6 +29,18 @@ describe 'Resetting password' do
     emails.size.should == 1
     emails.first.to.should == [ user2.email ]
     emails.first.body.match(/#{user2.reset_password_token}/)
+  end
+
+  it 'does not work if the user has no email' do
+    user = FactoryGirl.build(:lender_user, email: nil, username: 'bob')
+    user.save(validate: false)
+
+    visit new_user_password_path
+    fill_in 'user_username', with: 'bob'
+    click_button 'Send Reset Instructions'
+
+    ActionMailer::Base.deliveries.size.should == 0
+    page.should have_content(I18n.t('devise.passwords.send_paranoid_instructions'))
   end
 
   it 'can successfully reset password' do
