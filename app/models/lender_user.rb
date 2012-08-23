@@ -5,6 +5,10 @@ class LenderUser < User
 
   validates_presence_of :lender
 
+  def active_for_authentication?
+    super && lender.active
+  end
+
   def lenders
     [ lender ]
   end
