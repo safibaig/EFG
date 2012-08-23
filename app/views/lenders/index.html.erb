@@ -1,0 +1,24 @@
+<div class="page-header">
+  <h1>Lenders</h1>
+</div>
+
+<p>From this page you can edit, enable / disable a lender or create a new one. You can also manage Lending Limits.</p>
+
+<div class="actions">
+  <%= link_to %{<i class="icon-plus"></i> New Lender}.html_safe, new_lender_path, class: 'btn' %>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @lenders.each do |lender| %>
+      <tr>
+        <td><%= link_to lender.name, edit_lender_path(lender) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

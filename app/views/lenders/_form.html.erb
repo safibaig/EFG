@@ -1,0 +1,13 @@
+<%= simple_form_for @lender do |f| %>
+  <%= f.input :name %>
+  <%= f.input :organisation_reference_code %>
+  <%= f.input :high_volume, wrapper: :checkbox %>
+  <%= f.input :primary_contact_name %>
+  <%= f.input :primary_contact_phone %>
+  <%= f.input :primary_contact_email %>
+  <%= f.input :can_use_add_cap, wrapper: :checkbox %>
+
+  <div class="form-actions">
+    <%= f.button :submit, class: 'btn btn-primary' %>
+  </div>
+<% end %>

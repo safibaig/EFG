@@ -3,6 +3,8 @@ EFG::Application.routes.draw do
 
   root to: 'dashboard#show'
 
+  resources :lenders
+
   resources :loans, only: [:show] do
     collection do
       resource :eligibility_check, only: [:new, :create]

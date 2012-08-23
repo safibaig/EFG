@@ -39,8 +39,8 @@ ActiveRecord::Schema.define(:version => 20120822163933) do
     t.datetime "updated_at"
     t.integer  "legacy_id"
     t.integer  "version"
-    t.boolean  "high_volume"
-    t.boolean  "can_use_add_cap"
+    t.boolean  "high_volume",                 :default => false, :null => false
+    t.boolean  "can_use_add_cap",             :default => false, :null => false
     t.string   "organisation_reference_code"
     t.string   "primary_contact_name"
     t.string   "primary_contact_phone"
