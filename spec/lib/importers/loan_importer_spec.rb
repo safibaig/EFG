@@ -10,6 +10,7 @@ describe LoanImporter do
     let!(:loan_allocation) { FactoryGirl.create(:loan_allocation, lender: lender, legacy_id: 47) }
     let!(:creator_user) { FactoryGirl.create(:lender_user, username: '8008769F7E055AEBA0033AD3880965BB0E99142A') }
     let!(:modifier_user) { FactoryGirl.create(:lender_user, username: '8467CE2D5BE4B96EC60E11BD466B61514D1A33D5') }
+    let!(:invoice) { FactoryGirl.create(:invoice, legacy_id: 44) }
 
     before do
       LoanImporter.csv_path = csv_fixture_path
@@ -94,6 +95,7 @@ describe LoanImporter do
       loan.remove_guarantee_reason.should == "n/a"
       loan.dti_amount_claimed.should == Money.new(6077668)
       loan.invoice_legacy_id.should == 44
+      loan.invoice_id.should == invoice.id
       loan.settled_on.should == Date.new(2007, 10, 22)
       loan.amount_demanded.should == Money.new(7999996)
       loan.next_borrower_demand_seq.should == 1

@@ -1,5 +1,3 @@
-require 'faker'
-
 class UserImporter < BaseImporter
   self.csv_path = Rails.root.join('import_data/SFLG_USER_DATA_TABLE.csv')
   self.klass = User
@@ -28,7 +26,7 @@ class UserImporter < BaseImporter
       'LOCKED'               => :locked,
       'AR_TIMESTAMP'         => :ar_timestamp,
       'AR_INSERT_TIMESTAMP'  => :ar_insert_timestamp,
-      'EMAIL_ADDRESS'        => :email,
+      'EMAIL_ADDRESS'        => :legacy_email,
       'CREATOR_USER_ID'      => :created_by_legacy_id,
       'CONFIRM_T_AND_C'      => :confirm_t_and_c,
       'MODIFIED_BY'          => :modified_by_legacy_id,
@@ -38,14 +36,11 @@ class UserImporter < BaseImporter
 
   def build_attributes
     row.each do |field_name, value|
-      value = case field_name
+      case field_name
       when 'PASSWORD'
-        nil
+        value = nil
       when 'LOCKED'
         attributes[:locked_at] = Time.now.utc if value == "1"
-        value
-      else
-        value
       end
 
       attributes[self.class.field_mapping[field_name]] = value
@@ -58,22 +53,20 @@ class UserImporter < BaseImporter
     klass.find_each do |user|
       user.created_by_id = user_id_from_username(user.created_by_legacy_id)
       user.modified_by_id = user_id_from_username(user.modified_by_legacy_id)
-      user.type        = UserRoleMapper.new(user).user_type
 
-      # if user is not a LenderAdmin or LenderUser,
-      # disable the account so they can't login. They will be verified manually.
-      unless %w(LenderUser LenderAdmin).include?(user.type)
-        user.legacy_lender_id = nil
+      # Special case for existing users in the test environment, the user's
+      # type will always be blank when performing a clean import.
+      user.type = UserRoleMapper.new(user).user_type if user.type.blank?
+
+      if %w(LenderUser LenderAdmin).include?(user.type)
+        user.lender_id = lender_id_from_legacy_id(user.legacy_lender_id)
+      else
+        # Non-LenderAdmin/LenderUsers cannot login until they have been
+        # manually verified
         user.disabled = true
       end
 
       user.save!(validate: false)
     end
-
-    User.where(type: %w(LenderUser LenderAdmin)).find_each do |lender_user|
-      lender_user.lender = Lender.find_by_legacy_id(lender_user.legacy_lender_id)
-      lender_user.save!(validate: false)
-    end
   end
-
 end

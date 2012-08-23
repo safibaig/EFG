@@ -81,7 +81,8 @@ class RealisationStatement < ActiveRecord::Base
       self.loan_realisations.create!(
         realised_loan: Loan.find(loan_id),
         created_by: created_by,
-        realised_amount: realised_amount
+        realised_amount: realised_amount,
+        realised_on: Date.today
       )
     end
 

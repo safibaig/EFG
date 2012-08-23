@@ -63,6 +63,14 @@ class BaseImporter
     after_import if respond_to?(:after_import, true)
   end
 
+  def self.lender_id_from_legacy_id(legacy_id)
+    @lender_id_from_legacy_id ||= Hash[Lender.select('id, legacy_id').map { |lender|
+      [lender.legacy_id.to_s, lender.id]
+    }]
+
+    @lender_id_from_legacy_id[legacy_id.to_s]
+  end
+
   def self.loan_id_from_legacy_id(legacy_id)
     @loan_id_from_legacy_id ||= begin
       {}.tap { |lookup|
@@ -85,6 +93,12 @@ class BaseImporter
     end
 
     @user_id_from_username[legacy_id]
+  end
+
+  def build_attributes
+    row.each do |key, value|
+      attributes[self.class.field_mapping[key]] = value
+    end
   end
 
   # An ordered list of values that will be INSERTed into the table using a

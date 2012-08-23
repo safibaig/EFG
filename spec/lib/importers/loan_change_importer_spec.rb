@@ -10,7 +10,7 @@ describe LoanChangeImporter do
 
     before do
       LoanChangeImporter.instance_variable_set(:@loan_id_from_legacy_id, nil)
-      LoanChangeImporter.instance_variable_set(:@user_id_from_modified_user, nil)
+      LoanChangeImporter.instance_variable_set(:@user_id_from_username, nil)
       LoanChangeImporter.csv_path = csv_fixture_path
     end
 
@@ -60,16 +60,8 @@ describe LoanChangeImporter do
       loan_change.old_cap_id.should == nil
       loan_change.loan_term.should == nil
       loan_change.old_loan_term.should == nil
-    end
-
-    it do
-      dispatch
-      LoanChange.last.loan.should == loan
-    end
-
-    it do
-      dispatch
-      LoanChange.last.created_by.should == user
+      loan_change.loan.should == loan
+      loan_change.created_by.should == user
     end
   end
 end

@@ -35,10 +35,6 @@ group :development do
   gem 'powder', '0.1.8'
 end
 
-group :import do
-  gem "faker", '1.0.1'
-end
-
 group :development, :test do
   gem 'brakeman', '1.7.0'
   gem 'rspec-rails', '2.10.1'

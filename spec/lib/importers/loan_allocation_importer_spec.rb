@@ -7,32 +7,6 @@ describe LoanAllocationImporter do
 
   let(:csv_fixture_path) { Rails.root.join('spec/fixtures/import_data/loan_allocations.csv') }
 
-  describe "#attributes" do
-    let(:row) { CSV.read(csv_fixture_path, headers: true).first }
-    let(:importer) { LoanAllocationImporter.new(row) }
-
-    it "should return a hash of attributes" do
-      importer.attributes.should == {
-        legacy_id: "646",
-        lender_legacy_id: "260",
-        lender_id: lender.id,
-        version: "1",
-        allocation_type: "1",
-        active: "0",
-        allocation: 50000000,
-        starts_on: Date.parse("01-APR-07"),
-        ends_on: Date.parse("31-MAR-08"),
-        description: "DESCRIPTION",
-        modified_by_legacy_id: "4D726727C893A0437B9D2724C6E678CDDBB88AED",
-        updated_at: Time.parse("13-MAY-09"),
-        ar_timestamp: Time.parse("28-MAR-10"),
-        ar_insert_timestamp: Time.parse("31-MAR-10"),
-        premium_rate: "2",
-        guarantee_rate: "75"
-      }
-    end
-  end
-
   describe ".import" do
     def dispatch
       LoanAllocationImporter.csv_path = csv_fixture_path

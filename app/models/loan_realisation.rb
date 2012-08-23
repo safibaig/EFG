@@ -1,8 +1,3 @@
-# Legacy 'SFLG_LOAN_REALISE_MONEY' table schema mapping:
-#
-#  MODIFIED_DATE => updated_at
-#  REALISED_DATE => created_at
-#
 class LoanRealisation < ActiveRecord::Base
   include FormatterConcern
 
@@ -15,5 +10,4 @@ class LoanRealisation < ActiveRecord::Base
   attr_accessible :realised_loan, :created_by, :realised_amount
 
   format :realised_amount, with: MoneyFormatter.new
-
 end

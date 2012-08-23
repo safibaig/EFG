@@ -12,9 +12,11 @@ describe UserImporter do
   describe ".import" do
     before do
       UserImporter.csv_path = csv_fixture_path
-      UserRoleMapper.user_roles_csv_path = user_roles_csv_fixture_path
-      UserImporter.instance_variable_set(:@already_imported_emails, [])
+      UserImporter.instance_variable_set(:@lender_id_from_legacy_id, nil)
       UserImporter.instance_variable_set(:@user_id_from_username, nil)
+
+      UserRoleMapper.user_roles_csv_path = user_roles_csv_fixture_path
+      UserRoleMapper.instance_variable_set(:@legacy_user_roles, nil)
     end
 
     def dispatch
@@ -33,7 +35,7 @@ describe UserImporter do
       user = User.find_by_username('ahan8063s')
       user.username.should == "ahan8063s"
       user.legacy_lender_id.should == 9
-      user.encrypted_password.should be_blank
+      user.encrypted_password.should == nil
       user.created_at.should == Time.gm(2005, 11, 18)
       user.updated_at.should_not be_blank
       user.last_sign_in_at.should == Time.gm(2007, 6, 18)
@@ -50,7 +52,8 @@ describe UserImporter do
       user.locked_at.should_not be_nil
       user.ar_timestamp.should == Time.gm(2006, 12, 11)
       user.ar_insert_timestamp.should == Time.gm(2005, 11, 18)
-      user.email.should == 'joe@example.com'
+      user.email.should == nil
+      user.legacy_email.should == 'joe@example.com'
       user.created_by_legacy_id.should == "will8561s"
       user.modified_by_legacy_id.should == "thom5918r"
       user.confirm_t_and_c.should == true
