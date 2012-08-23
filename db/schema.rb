@@ -47,16 +47,16 @@ ActiveRecord::Schema.define(:version => 20120822163933) do
     t.string   "primary_contact_email"
     t.integer  "std_cap_lending_allocation"
     t.integer  "add_cap_lending_allocation"
-    t.boolean  "disabled"
+    t.boolean  "disabled",                    :default => false, :null => false
     t.string   "created_by_legacy_id"
     t.string   "modified_by_legacy_id"
-    t.boolean  "allow_alert_process"
+    t.boolean  "allow_alert_process",         :default => false, :null => false
     t.string   "main_point_of_contact_user"
     t.string   "loan_scheme"
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
-    t.integer  "created_by_id",               :null => false
-    t.integer  "modified_by_id",              :null => false
+    t.integer  "created_by_id",                                  :null => false
+    t.integer  "modified_by_id",                                 :null => false
   end
 
   add_index "lenders", ["legacy_id"], :name => "index_lenders_on_legacy_id", :unique => true
