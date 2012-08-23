@@ -163,4 +163,10 @@ describe CfeUserPermissions do
     it { refute user.can_update?(LenderUser) }
     it { refute user.can_view?(LenderUser) }
   end
+
+  context 'Lenders' do
+    it { refute user.can_create?(Lender) }
+    it { refute user.can_update?(Lender) }
+    it { refute user.can_view?(Lender) }
+  end
 end
