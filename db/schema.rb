@@ -386,6 +386,7 @@ ActiveRecord::Schema.define(:version => 20120822163933) do
     t.string   "memorable_year"
     t.integer  "login_failures"
     t.datetime "password_changed_at"
+    t.boolean  "locked",                 :default => false, :null => false
     t.string   "created_by_legacy_id"
     t.integer  "created_by_id"
     t.boolean  "confirm_t_and_c"
@@ -397,8 +398,6 @@ ActiveRecord::Schema.define(:version => 20120822163933) do
     t.datetime "ar_insert_timestamp"
     t.string   "type"
     t.integer  "failed_attempts",        :default => 0
-    t.boolean  "locked",                 :default => false
-    t.datetime "locked_at"
     t.string   "legacy_email"
   end
 
