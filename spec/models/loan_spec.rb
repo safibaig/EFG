@@ -288,4 +288,20 @@ describe Loan do
     end
   end
 
+  describe "#premium_rate" do
+    before do
+      loan.premium_rate = 1.5
+      loan.loan_allocation.premium_rate = 2
+    end
+
+    it "returns the loan's premium rate when present" do
+      loan.premium_rate.should == 1.5
+    end
+
+    it "returns the loan's loan allocation premium rate when present" do
+      loan.premium_rate = nil
+      loan.premium_rate.should == 2
+    end
+  end
+
 end

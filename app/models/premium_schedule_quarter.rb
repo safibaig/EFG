@@ -1,9 +1,5 @@
 class PremiumScheduleQuarter
 
-  # The amount of interest that the government charges for guaranteeing the loan.
-  # TODO: source this from the loan or the loan's loan allocation
-  PREMIUM_RATE = 0.02
-
   attr_reader :quarter, :total_quarters, :premium_schedule, :initial_capital_repayment_holiday
 
   delegate :initial_draw_amount, to: :premium_schedule
@@ -15,6 +11,7 @@ class PremiumScheduleQuarter
   delegate :third_draw_months, to: :premium_schedule
   delegate :fourth_draw_amount, to: :premium_schedule
   delegate :fourth_draw_months, to: :premium_schedule
+  delegate :premium_rate, to: :premium_schedule
 
   def initialize(quarter, total_quarters, premium_schedule)
     @quarter                           = quarter
@@ -25,7 +22,7 @@ class PremiumScheduleQuarter
 
   def premium_amount
     if quarter < total_quarters
-      aggregate_outstanding_amount * (PREMIUM_RATE / 4)
+      aggregate_outstanding_amount * (premium_rate / 100 / 4)
     else
       Money.new(0)
     end
