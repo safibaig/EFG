@@ -58,8 +58,9 @@ import_namespace = namespace :import do
 
   desc 'SFLG_USER_DATA_TABLE'
   task users: :lenders do
-    _import User
-    LenderUserAssociationImporter.import
+    _import User do
+      LenderUserAssociationImporter.import
+    end
   end
 
   def _import(klass)
@@ -67,6 +68,7 @@ import_namespace = namespace :import do
       require 'importers'
       importer = "#{klass.name}Importer".constantize
       importer.import
+      yield if block_given?
     else
       puts "Did not import #{klass.table_name} - table is not empty."
     end

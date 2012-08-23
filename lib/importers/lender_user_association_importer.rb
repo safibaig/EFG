@@ -9,7 +9,7 @@ class LenderUserAssociationImporter
       end
 
       lender.modified_by = User.find_by_username!(lender.modified_by_legacy_id) if lender.modified_by_legacy_id.present?
-      lender.save!
+      lender.save!(validate: false)
 
       progress_bar.try(:set, index)
     end
