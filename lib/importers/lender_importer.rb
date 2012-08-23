@@ -20,24 +20,11 @@ class LenderImporter < BaseImporter
       "DISABLED"                    => :disabled,
       "AR_TIMESTAMP"                => :ar_timestamp,
       "AR_INSERT_TIMESTAMP"         => :ar_insert_timestamp,
-      "CREATED_BY"                  => :created_by,
-      "MODIFIED_BY"                 => :modified_by,
+      "CREATED_BY"                  => :created_by_legacy_id,
+      "MODIFIED_BY"                 => :modified_by_legacy_id,
       "ALLOW_ALERT_PROCESS"         => :allow_alert_process,
       "MAIN_POINT_OF_CONTACT_USER"  => :main_point_of_contact_user,
       "LOAN_SCHEME"                 => :loan_scheme
     }
-  end
-
-  def build_attributes
-    row.each do |key, value|
-      value = case key
-      when "NAME"
-        (value.to_i > 0) ? Faker::Company.name : value
-      else
-        value
-      end
-
-      attributes[self.class.field_mapping[key]] = value
-    end
   end
 end

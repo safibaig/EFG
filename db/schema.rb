@@ -22,6 +22,15 @@ ActiveRecord::Schema.define(:version => 20120822163933) do
     t.integer  "created_by_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "legacy_id"
+    t.integer  "version",                :default => 0, :null => false
+    t.integer  "legacy_lender_oid"
+    t.string   "xref"
+    t.string   "period_covered_to_date"
+    t.string   "created_by_legacy_id"
+    t.string   "creation_time"
+    t.string   "ar_timestamp"
+    t.string   "ar_insert_timestamp"
   end
 
   create_table "lenders", :force => true do |t|
@@ -39,13 +48,15 @@ ActiveRecord::Schema.define(:version => 20120822163933) do
     t.integer  "std_cap_lending_allocation"
     t.integer  "add_cap_lending_allocation"
     t.boolean  "disabled"
-    t.string   "created_by"
-    t.string   "modified_by"
+    t.string   "created_by_legacy_id"
+    t.string   "modified_by_legacy_id"
     t.boolean  "allow_alert_process"
     t.string   "main_point_of_contact_user"
     t.string   "loan_scheme"
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
+    t.integer  "created_by_id",               :null => false
+    t.integer  "modified_by_id",              :null => false
   end
 
   add_index "lenders", ["legacy_id"], :name => "index_lenders_on_legacy_id", :unique => true
@@ -120,6 +131,12 @@ ActiveRecord::Schema.define(:version => 20120822163933) do
     t.integer  "realised_amount"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "legacy_loan_id"
+    t.string   "legacy_created_by"
+    t.date     "realised_on"
+    t.string   "seq"
+    t.string   "ar_timestamp"
+    t.string   "ar_insert_timestamp"
   end
 
   add_index "loan_realisations", ["created_by_id"], :name => "index_loan_realisations_on_created_by_id"
@@ -269,6 +286,13 @@ ActiveRecord::Schema.define(:version => 20120822163933) do
     t.date     "received_on"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "version"
+    t.string   "legacy_id"
+    t.string   "legacy_lender_id"
+    t.string   "legacy_created_by"
+    t.datetime "period_covered_to_date"
+    t.string   "ar_timestamp"
+    t.string   "ar_insert_timestamp"
   end
 
   create_table "recoveries", :force => true do |t|
@@ -290,6 +314,11 @@ ActiveRecord::Schema.define(:version => 20120822163933) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "realisation_statement_id"
+    t.string   "ar_insert_timestamp"
+    t.string   "ar_timestamp"
+    t.string   "legacy_created_by"
+    t.string   "legacy_loan_id"
+    t.string   "seq"
   end
 
   create_table "state_aid_calculations", :force => true do |t|
@@ -369,6 +398,8 @@ ActiveRecord::Schema.define(:version => 20120822163933) do
     t.string   "type"
     t.integer  "failed_attempts",        :default => 0
     t.boolean  "locked",                 :default => false
+    t.datetime "locked_at"
+    t.string   "legacy_email"
   end
 
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true

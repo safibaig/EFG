@@ -195,6 +195,14 @@ class Loan < ActiveRecord::Base
     loan_source == LEGACY_SFLG_SOURCE
   end
 
+  def guarantee_rate
+    read_attribute(:guarantee_rate) || loan_allocation.guarantee_rate
+  end
+
+  def premium_rate
+    read_attribute(:premium_rate) || loan_allocation.premium_rate
+  end
+
   private
 
   def set_reference
