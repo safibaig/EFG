@@ -42,7 +42,7 @@ class Recovery < ActiveRecord::Base
 
     if b > 0
       self.realisations_attributable = b
-      self.amount_due_to_dti = b * StateAidCalculation::GUARANTEE_RATE
+      self.amount_due_to_dti = b * (loan.guarantee_rate / 100)
     else
       self.realisations_attributable = 0
       self.amount_due_to_dti = 0

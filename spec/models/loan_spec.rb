@@ -272,4 +272,20 @@ describe Loan do
     end
   end
 
+  describe "#guarantee_rate" do
+    before do
+      loan.guarantee_rate = 75
+      loan.loan_allocation.guarantee_rate = 85
+    end
+
+    it "returns the loan's guarantee rate when present" do
+      loan.guarantee_rate.should == 75
+    end
+
+    it "returns the loan's loan allocation guarantee rate when present" do
+      loan.guarantee_rate = nil
+      loan.guarantee_rate.should == 85
+    end
+  end
+
 end

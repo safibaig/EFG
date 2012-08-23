@@ -42,6 +42,8 @@ describe LoanCsvExport do
           value.strftime('%d/%m/%Y %H:%M:%S')
         when "Date"
           value.strftime('%d/%m/%Y')
+        when "BigDecimal"
+          value.to_s
         else
           value
         end

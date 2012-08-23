@@ -29,6 +29,16 @@ describe LoanAllocation do
       loan_allocation.should_not be_valid
     end
 
+    it 'requires a guarantee rate' do
+      loan_allocation.guarantee_rate = nil
+      loan_allocation.should_not be_valid
+    end
+
+    it 'requires a premium rate' do
+      loan_allocation.premium_rate = nil
+      loan_allocation.should_not be_valid
+    end
+
   end
 
   it "has many loans using allocation" do

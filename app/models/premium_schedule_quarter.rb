@@ -1,6 +1,7 @@
 class PremiumScheduleQuarter
 
   # The amount of interest that the government charges for guaranteeing the loan.
+  # TODO: source this from the loan or the loan's loan allocation
   PREMIUM_RATE = 0.02
 
   attr_reader :quarter, :total_quarters, :premium_schedule, :initial_capital_repayment_holiday
