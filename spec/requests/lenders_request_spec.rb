@@ -91,6 +91,34 @@ describe 'lenders' do
     end
   end
 
+  describe 'activating a lender' do
+    let(:lender) { FactoryGirl.create(:lender, disabled: true) }
+
+    def dispatch
+      visit edit_lender_path(lender)
+    end
+
+    it do
+      dispatch
+      click_button 'Activate Lender'
+      lender.reload.disabled.should == false
+    end
+  end
+
+  describe 'deactivating a lender' do
+    let(:lender) { FactoryGirl.create(:lender) }
+
+    def dispatch
+      visit edit_lender_path(lender)
+    end
+
+    it do
+      dispatch
+      click_button 'Deactivate Lender'
+      lender.reload.disabled.should == true
+    end
+  end
+
   private
     def check(attribute)
       page.check "lender_#{attribute}"

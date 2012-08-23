@@ -19,4 +19,16 @@ class Lender < ActiveRecord::Base
   validates_presence_of :primary_contact_phone
 
   scope :order_by_name, order(:name)
+
+  def activate!
+    update_attribute :disabled, false
+  end
+
+  def active
+    !disabled
+  end
+
+  def deactivate!
+    update_attribute :disabled, true
+  end
 end

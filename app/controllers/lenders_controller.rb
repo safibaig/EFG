@@ -40,6 +40,18 @@ class LendersController < ApplicationController
     end
   end
 
+  def activate
+    @lender = Lender.find(params[:id])
+    @lender.activate!
+    redirect_to lenders_url
+  end
+
+  def deactivate
+    @lender = Lender.find(params[:id])
+    @lender.deactivate!
+    redirect_to lenders_url
+  end
+
   private
     def verify_create_permission
       enforce_create_permission(Lender)

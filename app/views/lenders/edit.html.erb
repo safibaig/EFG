@@ -3,3 +3,13 @@
 </div>
 
 <%= render 'form' %>
+
+<% if @lender.active %>
+  <%= simple_form_for @lender, url: deactivate_lender_path(@lender), method: :post do |f| %>
+    <%= f.button :submit, value: 'Deactivate Lender' %>
+  <% end %>
+<% else %>
+  <%= simple_form_for @lender, url: activate_lender_path(@lender), method: :post do |f| %>
+    <%= f.button :submit, value: 'Activate Lender' %>
+  <% end %>
+<% end %>
