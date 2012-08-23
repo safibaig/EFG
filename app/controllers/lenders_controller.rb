@@ -1,6 +1,6 @@
 class LendersController < ApplicationController
   before_filter :verify_create_permission, only: [:new, :create]
-  before_filter :verify_update_permission, only: [:edit, :update]
+  before_filter :verify_update_permission, only: [:edit, :update, :activate, :deactivate]
   before_filter :verify_view_permission, only: [:index]
 
   def index

@@ -62,4 +62,28 @@ describe LendersController do
     it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
+
+  describe '#activate' do
+    def dispatch(params = {})
+      post :activate, { id: lender.id }.merge(params)
+    end
+
+    it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
+    it_behaves_like 'LenderUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
+  end
+
+  describe '#deactivate' do
+    def dispatch(params = {})
+      post :deactivate, { id: lender.id }.merge(params)
+    end
+
+    it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
+    it_behaves_like 'LenderUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
+  end
 end
