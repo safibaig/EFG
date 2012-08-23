@@ -110,57 +110,28 @@ shared_examples_for 'User' do
     end
   end
 
-  describe "#set_locked callback" do
-    it "should lock user when locked is true" do
-      user.access_locked?.should be_false
+  describe "#reset_failed_attempts callback" do
+    it 'should set failed_attempts to 0 when user is unlocked' do
       user.locked = true
-      user.save!
+      user.failed_attempts = 3
+      user.save
 
-      user.access_locked?.should == true
+      user.failed_attempts.should == 3
+      user.locked = false
+      user.save
+
+      user.failed_attempts.should == 0
     end
 
-    it "should lock user when locked is false" do
-      user.locked_at = Time.now
-      user.access_locked?.should == true
+    it 'should not change failed_attempts when user is not unlocked' do
       user.locked = true
-      user.save!
+      user.failed_attempts = 3
+      user.save
 
-      user.locked = false
-      user.save!
+      user.locked = true
+      user.save
 
-      user.access_locked?.should be_false
-    end
-
-    it "should do nothing when locked has not changed" do
-      user.locked_at = Time.now
-      user.access_locked?.should == true
-      user.save!
-
-      user.reload
-      user.save!
-
-      user.access_locked?.should == true
-    end
-  end
-
-  describe "#lock_access!" do
-    it "should set locked to true" do
-      user.locked = false
-      user.save!
-      user.lock_access!
-      user.should be_locked
-    end
-  end
-
-  describe "#unlock_access!" do
-    it "should set locked to false" do
-      user.save!
-      user.lock_access!
-      user.should be_locked
-
-      user.unlock_access!
-
-      user.should_not be_locked
+      user.failed_attempts.should == 3
     end
   end
 end

@@ -5,7 +5,8 @@ class ApplicationController < ActionController::Base
 
   before_filter :authenticate_user!
   before_filter :redirect_disabled_user
-  
+  before_filter :redirect_locked_user
+
   helper_method :current_lender
 
   def current_lender
@@ -18,4 +19,12 @@ class ApplicationController < ActionController::Base
       redirect_to account_disabled_path and return
     end
   end
+
+  # if logged in user is locked and not trying to log out...
+  def redirect_locked_user
+    if signed_in? && current_user.locked? && !devise_controller?
+      redirect_to account_locked_path and return
+    end
+  end
+
 end

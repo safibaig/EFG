@@ -86,7 +86,7 @@ describe 'LenderUser management' do
 
       user.reload.modified_by.should == current_user
       user.should be_disabled
-      user.access_locked?.should == true
+      user.should be_locked
     end
 
     it 'shows warning when user has not password' do
@@ -102,11 +102,11 @@ describe 'LenderUser management' do
   end
 
   describe 'unlocking the user' do
-    let!(:user) { FactoryGirl.create(:lender_user, :locked, first_name: 'Bob', last_name: 'Flemming', lender: lender) }
+    let!(:user) { FactoryGirl.create(:lender_user, first_name: 'Bob', last_name: 'Flemming', lender: lender, locked: true) }
 
     it do
       # pre-condition
-      user.access_locked?.should == true
+      user.should be_locked
 
       visit root_path
       click_link 'Manage Users'
@@ -114,7 +114,8 @@ describe 'LenderUser management' do
 
       uncheck 'Locked'
       click_button 'Update User'
-      user.reload.access_locked?.should == nil
+
+      user.reload.should_not be_locked
     end
   end
 

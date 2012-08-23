@@ -74,16 +74,16 @@ describe 'CfeUser management' do
 
       user.reload.modified_by.should == current_user
       user.should be_disabled
-      user.reload.access_locked?.should == true
+      user.reload.should be_locked
     end
   end
 
   describe 'unlocking the user' do
-    let!(:user) { FactoryGirl.create(:cfe_user, :locked, first_name: 'Bob', last_name: 'Flemming') }
+    let!(:user) { FactoryGirl.create(:cfe_user, first_name: 'Bob', last_name: 'Flemming', locked: true) }
 
     it do
       # pre-condition
-      user.access_locked?.should == true
+      user.should be_locked
 
       visit root_path
       click_link 'Manage CfE Users'
@@ -92,7 +92,7 @@ describe 'CfeUser management' do
       uncheck 'Locked'
       click_button 'Update CfE User'
 
-      user.reload.access_locked?.should be_nil
+      user.reload.should_not be_locked
     end
   end
 

@@ -29,7 +29,7 @@
           <td><%= user.username %></td>
           <td><%= user.email %></td>
           <td class="center"><%=friendly_boolean user.disabled %></td>
-          <td class="center"><%=friendly_boolean user.access_locked? %></td>
+          <td class="center"><%=friendly_boolean user.locked? %></td>
           <td class="options">
             <%= set_email_options(user) %>
             <%= set_password_options(user) %>

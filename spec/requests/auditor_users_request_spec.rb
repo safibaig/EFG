@@ -74,16 +74,16 @@ describe 'AuditorUser management' do
 
       user.reload.modified_by.should == current_user
       user.should be_disabled
-      user.access_locked?.should == true
+      user.should be_locked
     end
   end
 
   describe 'unlocking the user' do
-    let!(:user) { FactoryGirl.create(:auditor_user, :locked, first_name: 'Bob', last_name: 'Flemming') }
+    let!(:user) { FactoryGirl.create(:auditor_user, first_name: 'Bob', last_name: 'Flemming', locked: true) }
 
     it do
       # pre-condition
-      user.access_locked?.should == true
+      user.should be_locked
 
       visit root_path
       click_link 'Manage Auditor Users'
@@ -92,7 +92,7 @@ describe 'AuditorUser management' do
       uncheck 'Locked'
       click_button 'Update Auditor User'
 
-      user.reload.access_locked?.should be_nil
+      user.reload.should_not be_locked
     end
   end
 
