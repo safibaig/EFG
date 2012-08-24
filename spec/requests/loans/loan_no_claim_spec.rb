@@ -19,6 +19,8 @@ describe 'loan no claim' do
     loan.state.should == Loan::NotDemanded
     loan.no_claim_on.should == Date.new(2012, 6, 1)
     loan.modified_by.should == current_user
+
+    should_log_loan_state_change(loan, Loan::NotDemanded, 11)
   end
 
   it 'does not continue with invalid values' do

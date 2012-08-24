@@ -28,6 +28,8 @@ describe 'loan demand against government' do
     loan.dti_ded_code.should == 'A.10.10'
     loan.dti_reason.should == 'Something'
     loan.modified_by.should == current_user
+
+    should_log_loan_state_change(loan, Loan::Demanded, 13)
   end
 
   it 'does not continue with invalid values' do

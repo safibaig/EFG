@@ -3,6 +3,7 @@ module LoanPresenter
 
   included do
     extend  ActiveModel::Naming
+    extend  ActiveModel::Callbacks
     include ActiveModel::Conversion
     include ActiveModel::MassAssignmentSecurity
     include ActiveModel::Validations
@@ -10,6 +11,8 @@ module LoanPresenter
     attr_reader :loan
 
     delegate :modified_by, :modified_by=, to: :loan
+
+    define_model_callbacks :save
   end
 
   module ClassMethods
@@ -41,7 +44,11 @@ module LoanPresenter
 
   def save
     return false unless valid?
-    yield loan if block_given?
-    loan.save
+    loan.transaction do
+      run_callbacks :save do
+        loan.save!
+      end
+    end
   end
+
 end

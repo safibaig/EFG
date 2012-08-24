@@ -6,7 +6,7 @@ describe LoanStateTransition do
       include LoanPresenter
       include LoanStateTransition
 
-      transition from: [:a, :b], to: :c
+      transition from: [:a, :b], to: :c, event: :complete
     end
   end
 
@@ -56,7 +56,8 @@ describe LoanStateTransition do
   describe "#save" do
     it "should set the state to the to state" do
       save_result = mock
-      loan = double(Loan, state: :a, save: save_result)
+      loan = double(Loan, id: 1, modified_by: User.new(id: 1), state: :a, save!: save_result)
+      loan.should_receive(:transaction).and_yield
       loan.should_receive(:state=).with(:c)
 
       presenter = klass.new(loan)

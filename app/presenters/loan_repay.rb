@@ -2,7 +2,7 @@ class LoanRepay
   include LoanPresenter
   include LoanStateTransition
 
-  transition from: [Loan::Guaranteed, Loan::LenderDemand], to: Loan::Repaid
+  transition from: [Loan::Guaranteed, Loan::LenderDemand], to: Loan::Repaid, event: :loan_repaid
 
   attribute :repaid_on
 

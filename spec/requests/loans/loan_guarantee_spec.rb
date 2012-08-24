@@ -32,6 +32,8 @@ describe 'loan guarantee' do
     loan.initial_draw_value.should == Money.new(1000042)
     loan.maturity_date.should == Date.new(2012, 3, 1)
     loan.modified_by.should == current_user
+
+    should_log_loan_state_change(loan, Loan::Guaranteed, 7)
   end
 
   it 'does not continue with invalid values' do

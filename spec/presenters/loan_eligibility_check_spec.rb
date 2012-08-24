@@ -109,11 +109,31 @@ describe LoanEligibilityCheck do
       loan_eligibility_check.loan.state.should == Loan::Eligible
     end
 
-    it "should set the state to Rejected if its eligible" do
+    it "should set the state to Rejected if its not eligible" do
       EligibilityCheck.should_receive(:eligible?).and_return(false)
 
       loan_eligibility_check.save
       loan_eligibility_check.loan.state.should == Loan::Rejected
+    end
+
+    it "should create rejected loan state change if its not eligible" do
+      EligibilityCheck.should_receive(:eligible?).and_return(false)
+
+      expect {
+        loan_eligibility_check.save
+      }.to change(LoanStateChange, :count).by(1)
+
+      LoanStateChange.last.event.should == LoanEvent.find(0)
+    end
+
+    it "should create accepted loan state change if its eligible" do
+      EligibilityCheck.should_receive(:eligible?).and_return(true)
+
+      expect {
+        loan_eligibility_check.save
+      }.to change(LoanStateChange, :count).by(1)
+
+      LoanStateChange.last.event.should == LoanEvent.find(1)
     end
   end
 end
