@@ -128,6 +128,16 @@ describe LoanChange do
       loan.modified_by.should == user
     end
 
+    it 'creates a new loan state change record for the state change' do
+      expect {
+        loan_change.save_and_update_loan
+      }.to change(LoanStateChange, :count).by(1)
+
+      state_change = loan.state_changes.last
+      state_change.event_id.should == 9
+      state_change.state.should == Loan::Guaranteed
+    end
+
     it 'does not update the Loan if the LoanChange is not valid' do
       loan_change.business_name = ''
       loan_change.save_and_update_loan.should == false
