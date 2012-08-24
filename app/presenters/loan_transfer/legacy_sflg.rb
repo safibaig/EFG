@@ -35,4 +35,8 @@ class LoanTransfer::LegacySflg < LoanTransfer::Base
     LegacyLoanReference
   end
 
+  def loan_event_id
+    LoanEvent.find(23).id # Transfer (legacy)
+  end
+
 end

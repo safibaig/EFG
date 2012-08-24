@@ -36,29 +36,30 @@ class LoanTransfer::Base
       loan_to_transfer.save!
 
       @new_loan                       = loan_to_transfer.dup
-      @new_loan.lender                = self.lender
-      @new_loan.amount                = self.new_amount
-      @new_loan.reference             = reference_class.new(loan_to_transfer.reference).increment
-      @new_loan.state                 = Loan::Incomplete
-      @new_loan.legacy_id             = nil
-      @new_loan.branch_sortcode       = ''
-      @new_loan.repayment_duration    = 0
-      @new_loan.payment_period        = ''
-      @new_loan.maturity_date         = ''
-      @new_loan.invoice_id            = ''
-      @new_loan.transferred_from_id   = loan_to_transfer.id
-      @new_loan.loan_allocation       = lender.loan_allocations.last
-      @new_loan.created_by            = modified_by
-      @new_loan.modified_by           = modified_by
+      new_loan.lender                = self.lender
+      new_loan.amount                = self.new_amount
+      new_loan.reference             = reference_class.new(loan_to_transfer.reference).increment
+      new_loan.state                 = Loan::Incomplete
+      new_loan.legacy_id             = nil
+      new_loan.branch_sortcode       = ''
+      new_loan.repayment_duration    = 0
+      new_loan.payment_period        = ''
+      new_loan.maturity_date         = ''
+      new_loan.invoice_id            = ''
+      new_loan.transferred_from_id   = loan_to_transfer.id
+      new_loan.loan_allocation       = lender.loan_allocations.last
+      new_loan.created_by            = modified_by
+      new_loan.modified_by           = modified_by
       # TODO - copy loan securities if any are present
 
       (1..5).each do |num|
-        @new_loan.send("generic#{num}=", nil)
+        new_loan.send("generic#{num}=", nil)
       end
 
-      yield @new_loan if block_given?
+      yield new_loan if block_given?
 
-      @new_loan.save!
+      new_loan.save!
+      log_loan_state_changes!
     end
   end
 
@@ -95,6 +96,21 @@ class LoanTransfer::Base
 
   def reference_class
     raise NotImplementedError, "Define in sub-class"
+  end
+
+  def loan_event_id
+    raise NotImplementedError, "Define in sub-class"
+  end
+
+  def log_loan_state_changes!
+    [loan_to_transfer, new_loan].each do |loan|
+      loan.state_changes.create(
+        state: loan.state,
+        modified_on: Date.today,
+        modified_by: loan.modified_by,
+        event_id: loan_event_id
+      )
+    end
   end
 
 end
