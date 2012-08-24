@@ -36,6 +36,10 @@ module Ithc
             password:"password",
             password_confirmation:"password",
             first_name:"Pen", last_name:"Test")
+          if lender
+            result.lender = lender
+            result.save!
+          end
           puts "Created #{user_class} with username '#{result.username}'"
         else
           puts "Found #{user_class} with username '#{existing.username}'"
