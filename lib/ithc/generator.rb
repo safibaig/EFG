@@ -4,17 +4,19 @@ module Ithc
       def seed(email)
         re = /([^@]+)(@.+)/
         match = email.match re
+        result = {}
         %w{CfeAdmin CfeUser PremiumCollectorUser AuditorUser}.each do |user_class|
-          find_or_create(user_class, match)
+          result[user_class] = find_or_create(user_class, match)
         end
 
         biggest_lender = find_biggest_lender
 
         if biggest_lender
           %w{LenderAdmin LenderUser}.each do |user_class|
-            find_or_create(user_class, match, biggest_lender)
+            result[user_class] = find_or_create(user_class, match, biggest_lender)
           end
         end
+        return result
       end
     private
       def create_user_email(user_class, email)
@@ -30,8 +32,8 @@ module Ithc
       def find_or_create(user_class, email, lender = nil)
         email = create_user_email(user_class, email)
         klass = Kernel.const_get(user_class)
-        existing = klass.find_by_email(email)
-        if not existing
+        result = klass.find_by_email(email)
+        if not result
           result = klass.create(email:email,
             password:"password",
             password_confirmation:"password",
@@ -40,9 +42,9 @@ module Ithc
             result.lender = lender
             result.save!
           end
-          puts "Created #{user_class} with username '#{result.username}'"
+          return { created: true, username: result.username }
         else
-          puts "Found #{user_class} with username '#{existing.username}'"
+          return { created: false, username: result.username }
         end
       end
     end

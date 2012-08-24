@@ -5,6 +5,13 @@ namespace :ithc do
 
     require 'ithc'
     base_email = ENV["email"]
-    Ithc::Generator.seed(base_email)
+    result = Ithc::Generator.seed(base_email)
+    result.each do |k, v|
+      if v[:created]
+        puts "Created #{k} with username <#{v[:username]}>"
+      else
+        puts "Found existing #{k} with username <#{v[:username]}>"
+      end
+    end
   end
 end
