@@ -25,8 +25,7 @@ module Ithc
 
       # Return the Lender that has the most loans
       def find_biggest_lender
-        lender_id = Lender.find_by_sql("SELECT le.id, count(*) from lenders le inner join loans lo on lo.lender_id = le.id group by le.id order by count(*) desc").first
-        return Lender.find(lender_id) if lender_id
+        Lender.joins(:loans).group("id").order("count(*) desc").first
       end
 
       def find_or_create(user_class, email, lender = nil)
