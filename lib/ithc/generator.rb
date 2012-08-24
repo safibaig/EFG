@@ -4,7 +4,7 @@ module Ithc
       def seed(email)
         re = /([^@]+)(@.+)/
         match = email.match re
-        result = {}
+        result = {} # collect the results so that calling clients can inspect / display
         %w{CfeAdmin CfeUser PremiumCollectorUser AuditorUser}.each do |user_class|
           result[user_class] = find_or_create(user_class, match)
         end
