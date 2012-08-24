@@ -204,6 +204,10 @@ class Loan < ActiveRecord::Base
     read_attribute(:premium_rate) || loan_allocation.premium_rate
   end
 
+  def state_history
+    @state_history ||= (state_changes.select(:state).collect(&:state) + [state]).uniq
+  end
+
   private
 
   def set_reference
