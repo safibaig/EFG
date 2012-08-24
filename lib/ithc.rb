@@ -1,0 +1,1 @@
+require 'ithc/generator'
