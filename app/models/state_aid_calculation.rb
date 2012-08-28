@@ -17,17 +17,12 @@ class StateAidCalculation < ActiveRecord::Base
   before_validation :set_seq, on: :create
 
   validates_presence_of :loan_id
-
   validates_presence_of :initial_draw_months
-
   validates_inclusion_of :calc_type, in: [ SCHEDULE_TYPE, RESCHEDULE_TYPE, NOTIFIED_AID_TYPE ]
-
   validates_presence_of :initial_draw_year, unless: :reschedule?
-
-  validates_presence_of :premium_cheque_month, if: :reschedule?
+  validates_format_of :premium_cheque_month, with: /\A\d{2}\/\d{4}\z/, if: :reschedule?
 
   validate :premium_cheque_month_in_the_future, if: :reschedule?
-
   validate :initial_draw_amount_is_within_limit
 
   format :initial_draw_amount, with: MoneyFormatter.new
@@ -72,11 +67,13 @@ class StateAidCalculation < ActiveRecord::Base
     end
 
     def premium_cheque_month_in_the_future
-      cheque_date = Date.parse("01/#{premium_cheque_month}")
-      today = Date.today
-
-      unless (cheque_date.year > today.year) || (cheque_date.year == today.year && cheque_date.month > today.month)
+      begin
+        date = Date.parse("01/#{premium_cheque_month}")
+      rescue ArgumentError
         errors.add(:premium_cheque_month, :invalid)
+        return
       end
+
+      errors.add(:premium_cheque_month, :invalid) unless date > Date.today.end_of_month
     end
 end
