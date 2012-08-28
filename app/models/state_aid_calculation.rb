@@ -20,7 +20,7 @@ class StateAidCalculation < ActiveRecord::Base
   validates_presence_of :initial_draw_months
   validates_inclusion_of :calc_type, in: [ SCHEDULE_TYPE, RESCHEDULE_TYPE, NOTIFIED_AID_TYPE ]
   validates_presence_of :initial_draw_year, unless: :reschedule?
-  validates_format_of :premium_cheque_month, with: /\A\d{2}\/\d{4}\z/, if: :reschedule?
+  validates_format_of :premium_cheque_month, with: /\A\d{2}\/\d{4}\z/, if: :reschedule?, message: :invalid_format
 
   validate :premium_cheque_month_in_the_future, if: :reschedule?
   validate :initial_draw_amount_is_within_limit
@@ -70,7 +70,7 @@ class StateAidCalculation < ActiveRecord::Base
       begin
         date = Date.parse("01/#{premium_cheque_month}")
       rescue ArgumentError
-        errors.add(:premium_cheque_month, :invalid)
+        errors.add(:premium_cheque_month, :invalid_format)
         return
       end
 

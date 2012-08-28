@@ -88,6 +88,7 @@ en:
           attributes:
             premium_cheque_month:
               invalid: 'This does not allow enough time for the Premium Collection Agent. Please enter the next Premium date in the schedule'
+              invalid_format: 'must have the format mm/yyyy'
             initial_draw_amount:
               invalid: 'must be between £0 and £9,999,999.99'
   dashboard:
