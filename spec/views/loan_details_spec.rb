@@ -7,18 +7,17 @@ describe 'loans/details' do
 
     let(:all_details) {
       %w(
-        loan_entry
-        loan_cancel
-        loan_offer
-        loan_guarantee
-        loan_demand_to_borrower
-        loan_remove
-        loan_repay
-        loan_no_claim
-        loan_demand_against_government
-        loan_settle_claim
-        loan_recovery
-        loan_realise
+        loan_cancel.cancelled_comment
+        loan_offer.facility_letter_sent
+        loan_guarantee.received_declaration
+        loan_demand_to_borrower.borrower_demanded_on
+        loan_remove.remove_guarantee_outstanding_amount
+        loan_repay.repaid_on
+        loan_no_claim.no_claim_on
+        loan_demand_against_government.dti_demanded_on
+        loan_settle_claim.settled_on
+        loan_recovery.recovery_on
+        loan_realise.realised_money_date
       )
     }
 
@@ -30,6 +29,9 @@ describe 'loans/details' do
       assign(:loan, loan)
 
       render
+
+      # every loan displays loan entry details
+      rendered.should have_content(I18n.t("simple_form.labels.loan_entry.business_name"))
 
       visible_details.each do |key|
         rendered.should have_content(I18n.t("simple_form.labels.#{key}"))

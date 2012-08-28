@@ -12,71 +12,69 @@
   </div>
 <% end %>
 
-<% if loan_state_history_includes?(@loan, Loan::Eligible, Loan::Rejected, Loan::Completed, Loan::Incomplete) %>
-  <h3>Eligibility and Loan Entry</h3>
-  <%= loan_details_table(@loan, 'simple_form.labels.loan_entry') do |table| %>
-    <%= table.row 'lender', header: 'What is the name of the lender organisation?' %>
-    <%= table.row 'reference', header: 'System Generated Identification Reference' %>
-    <%= table.row 'declaration_signed' %>
-    <%= table.row 'business_name' %>
-    <%= table.row 'trading_name' %>
-    <%= table.row 'legal_form', header: t('simple_form.labels.loan_entry.legal_form_id') %>
-    <%= table.row 'company_registration' %>
-    <%= table.row 'turnover' %>
-    <%= table.row 'trading_date' %>
-    <%= table.row 'postcode' %>
-    <%= table.row 'branch_sortcode' %>
-    <%= table.row 'amount' %>
-    <%= table.row 'repayment_duration' %>
-    <%= table.row 'repayment_frequency', header: t('simple_form.labels.loan_entry.repayment_frequency_id') %>
-    <%= table.row 'maturity_date' %>
-    <%= table.row 'loan_allocation', header: t('simple_form.labels.loan_entry.loan_allocation_id') %>
+<h3>Eligibility and Loan Entry</h3>
+<%= loan_details_table(@loan, 'simple_form.labels.loan_entry') do |table| %>
+  <%= table.row 'lender', header: 'What is the name of the lender organisation?' %>
+  <%= table.row 'reference', header: 'System Generated Identification Reference' %>
+  <%= table.row 'declaration_signed' %>
+  <%= table.row 'business_name' %>
+  <%= table.row 'trading_name' %>
+  <%= table.row 'legal_form', header: t('simple_form.labels.loan_entry.legal_form_id') %>
+  <%= table.row 'company_registration' %>
+  <%= table.row 'turnover' %>
+  <%= table.row 'trading_date' %>
+  <%= table.row 'postcode' %>
+  <%= table.row 'branch_sortcode' %>
+  <%= table.row 'amount' %>
+  <%= table.row 'repayment_duration' %>
+  <%= table.row 'repayment_frequency', header: t('simple_form.labels.loan_entry.repayment_frequency_id') %>
+  <%= table.row 'maturity_date' %>
+  <%= table.row 'loan_allocation', header: t('simple_form.labels.loan_entry.loan_allocation_id') %>
 
-    <% if @loan.loan_allocation %>
-      <tr>
-        <th>Guarantee Rate</th>
-        <td><%= @loan.loan_allocation.guarantee_rate %>%</td>
-      </tr>
-      <tr>
-        <th>Premium Rate</th>
-        <td><%= @loan.loan_allocation.premium_rate %>%</td>
-      </tr>
-    <% end %>
-
-    <%= table.row 'sic_code' %>
-    <%= table.row 'sic_code_description' %>
+  <% if @loan.loan_allocation %>
     <tr>
-      <th>Other Business Activities Not Elsewhere Classified</th>
-      <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+      <th>Guarantee Rate</th>
+      <td><%= @loan.loan_allocation.guarantee_rate %>%</td>
     </tr>
-    <%= table.row 'loan_category', header: t('simple_form.labels.loan_entry.loan_category_id') %>
-    <%= table.row 'interest_rate_type', header: t('simple_form.labels.loan_entry.interest_rate_type_id') %>
-    <%= table.row 'interest_rate' %>
-    <%= table.row 'fees' %>
-    <%= table.row 'previous_borrowing', header: t('simple_form.labels.loan_eligibility_check.previous_borrowing') %>
-    <%= table.row 'viable_proposition', header: t('simple_form.labels.loan_eligibility_check.viable_proposition') %>
-    <%= table.row 'would_you_lend', header: t('simple_form.labels.loan_eligibility_check.would_you_lend') %>
-    <%= table.row 'collateral_exhausted', header: t('simple_form.labels.loan_eligibility_check.collateral_exhausted') %>
     <tr>
-      <th>Is the intensity of Notified Aid calculated for this project less than 40% for non-Objective 1 loans or less than 60% for Objective 1 loans?</th>
-      <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+      <th>Premium Rate</th>
+      <td><%= @loan.loan_allocation.premium_rate %>%</td>
     </tr>
-    <%= table.row 'state_aid' %>
-    <%= table.row 'state_aid_is_valid' %>
-    <%= table.row 'generic1', header: 'Generic Lender Field 1' %>
-    <%= table.row 'generic2', header: 'Generic Lender Field 2' %>
-    <%= table.row 'generic3', header: 'Generic Lender Field 3' %>
-    <%= table.row 'generic4', header: 'Generic Lender Field 4' %>
-    <%= table.row 'generic5', header: 'Generic Lender Field 5' %>
-    <%= table.row 'town' %>
-    <%= table.row 'non_validated_postcode' %>
-    <%= table.row 'private_residence_charge_required', header: t('simple_form.labels.loan_eligibility_check.private_residence_charge_required') %>
-    <%= table.row 'personal_guarantee_required', header: t('simple_form.labels.loan_eligibility_check.personal_guarantee_required') %>
-    <%= table.row 'created_by', header: 'Created By' %>
-    <%= table.row 'created_at', header: 'Date and Time Created' %>
-    <%= table.row 'modified_by', header: 'Last Modified By' %>
-    <%= table.row 'updated_at', header: 'Last Modified On' %>
   <% end %>
+
+  <%= table.row 'sic_code' %>
+  <%= table.row 'sic_code_description' %>
+  <tr>
+    <th>Other Business Activities Not Elsewhere Classified</th>
+    <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+  </tr>
+  <%= table.row 'loan_category', header: t('simple_form.labels.loan_entry.loan_category_id') %>
+  <%= table.row 'interest_rate_type', header: t('simple_form.labels.loan_entry.interest_rate_type_id') %>
+  <%= table.row 'interest_rate' %>
+  <%= table.row 'fees' %>
+  <%= table.row 'previous_borrowing', header: t('simple_form.labels.loan_eligibility_check.previous_borrowing') %>
+  <%= table.row 'viable_proposition', header: t('simple_form.labels.loan_eligibility_check.viable_proposition') %>
+  <%= table.row 'would_you_lend', header: t('simple_form.labels.loan_eligibility_check.would_you_lend') %>
+  <%= table.row 'collateral_exhausted', header: t('simple_form.labels.loan_eligibility_check.collateral_exhausted') %>
+  <tr>
+    <th>Is the intensity of Notified Aid calculated for this project less than 40% for non-Objective 1 loans or less than 60% for Objective 1 loans?</th>
+    <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+  </tr>
+  <%= table.row 'state_aid' %>
+  <%= table.row 'state_aid_is_valid' %>
+  <%= table.row 'generic1', header: 'Generic Lender Field 1' %>
+  <%= table.row 'generic2', header: 'Generic Lender Field 2' %>
+  <%= table.row 'generic3', header: 'Generic Lender Field 3' %>
+  <%= table.row 'generic4', header: 'Generic Lender Field 4' %>
+  <%= table.row 'generic5', header: 'Generic Lender Field 5' %>
+  <%= table.row 'town' %>
+  <%= table.row 'non_validated_postcode' %>
+  <%= table.row 'private_residence_charge_required', header: t('simple_form.labels.loan_eligibility_check.private_residence_charge_required') %>
+  <%= table.row 'personal_guarantee_required', header: t('simple_form.labels.loan_eligibility_check.personal_guarantee_required') %>
+  <%= table.row 'created_by', header: 'Created By' %>
+  <%= table.row 'created_at', header: 'Date and Time Created' %>
+  <%= table.row 'modified_by', header: 'Last Modified By' %>
+  <%= table.row 'updated_at', header: 'Last Modified On' %>
 <% end %>
 
 <% if loan_state_history_includes?(@loan, Loan::Cancelled) %>
