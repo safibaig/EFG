@@ -24,6 +24,8 @@ describe 'loan cancel' do
     loan.cancelled_reason_id.should == 4
     loan.cancelled_comment.should == 'No comment'
     loan.modified_by.should == current_user
+
+    should_log_loan_state_change(loan, Loan::Cancelled, 3)
   end
 
   it 'cancels an incomplete loan' do

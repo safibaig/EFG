@@ -76,6 +76,16 @@ describe Recovery do
         recovery.save_and_update_loan
         loan.reload.recovery_on.should == recovery.recovered_on
       end
+
+      it 'creates a new loan state change record for the state change' do
+        expect {
+          recovery.save_and_update_loan
+        }.to change(LoanStateChange, :count).by(1)
+
+        state_change = loan.state_changes.last
+        state_change.event_id.should == 20
+        state_change.state.should == Loan::Recovered
+      end
     end
 
     context 'when the recovery is not valid' do

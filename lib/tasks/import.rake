@@ -36,6 +36,11 @@ import_namespace = namespace :import do
     _import LoanSecurity
   end
 
+  desc 'SFLG_LOAN_AUDIT_DATA_TABLE'
+  task loan_state_changes: :loans do
+    _import LoanStateChange
+  end
+
   desc 'SFLG_LOAN_DATA_TABLE'
   task loans: [:invoices, :loan_allocations] do
     _import Loan

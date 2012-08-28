@@ -49,6 +49,7 @@ class Loan < ActiveRecord::Base
   has_many :loan_realisations, foreign_key: 'realised_loan_id'
   has_many :recoveries
   has_many :loan_securities
+  has_many :state_changes, class_name: 'LoanStateChange'
 
   scope :offered,        where(state: Loan::Offered)
   scope :demanded,       where(state: Loan::Demanded)
@@ -201,6 +202,10 @@ class Loan < ActiveRecord::Base
 
   def premium_rate
     read_attribute(:premium_rate) || loan_allocation.premium_rate
+  end
+
+  def state_history
+    @state_history ||= (state_changes.select(:state).collect(&:state) + [state]).uniq
   end
 
   private

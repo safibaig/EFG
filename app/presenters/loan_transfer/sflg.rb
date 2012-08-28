@@ -19,4 +19,8 @@ class LoanTransfer::Sflg < LoanTransfer::Base
     LoanReference
   end
 
+  def loan_event_id
+    15 # Transfer
+  end
+
 end

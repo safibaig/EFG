@@ -42,6 +42,7 @@ class Invoice < ActiveRecord::Base
     transaction do
       save!
       settle_loans!
+      log_loan_state_change!
     end
 
     true
@@ -57,5 +58,17 @@ class Invoice < ActiveRecord::Base
         invoice_id: self.id
       )
       self.settled_loans = loans_to_be_settled
+    end
+
+    def log_loan_state_change!
+      loans_to_be_settled.each do |loan|
+        LoanStateChange.create(
+          loan_id: loan.id,
+          state: Loan::Settled,
+          modified_on: Date.today,
+          modified_by: loan.modified_by,
+          event_id: 18 # create claim
+        )
+      end
     end
 end

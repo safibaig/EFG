@@ -1,143 +1,210 @@
 require 'spec_helper'
 
-describe "loan details" do
+describe 'loans/details' do
 
-  shared_examples "rendering loan details" do
+  shared_examples "rendered loan_details" do
     before { loan.stub!(id: 1) }
 
-    it "should render loan details" do
+    let(:all_details) {
+      %w(
+        loan_cancel.cancelled_comment
+        loan_offer.facility_letter_sent
+        loan_guarantee.received_declaration
+        loan_demand_to_borrower.borrower_demanded_on
+        loan_remove.remove_guarantee_outstanding_amount
+        loan_repay.repaid_on
+        loan_no_claim.no_claim_on
+        loan_demand_against_government.dti_demanded_on
+        loan_settle_claim.settled_on
+        loan_recovery.recovery_on
+        loan_realise.realised_money_date
+      )
+    }
+
+    let(:not_visible_details) { all_details - visible_details }
+
+    # Define visible_details in each individual spec
+
+    it "should render only details relevant to the loan" do
       assign(:loan, loan)
-      render template: 'loans/details'
+
+      render
+
+      # every loan displays loan entry details
+      rendered.should have_content(I18n.t("simple_form.labels.loan_entry.business_name"))
+
+      visible_details.each do |key|
+        rendered.should have_content(I18n.t("simple_form.labels.#{key}"))
+      end
+
+      not_visible_details.each do |key|
+        rendered.should_not have_content(I18n.t("simple_form.labels.#{key}"))
+      end
+
     end
   end
 
   context "with a rejected loan" do
     let(:loan) { FactoryGirl.build(:loan, :rejected) }
 
-    include_examples 'rendering loan details'
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w(loan_entry.business_name) }
+    end
   end
 
   context "with an eligible loan" do
     let(:loan) { FactoryGirl.build(:loan, :eligible) }
 
-    include_examples 'rendering loan details'
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w(loan_entry.business_name) }
+    end
   end
 
   context "with a cancelled loan" do
     let(:loan) { FactoryGirl.build(:loan, :cancelled) }
 
-    include_examples 'rendering loan details'
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w(loan_cancel.cancelled_comment) }
+    end
   end
 
   context "with an incomplete loan" do
     let(:loan) { FactoryGirl.build(:loan, :incomplete) }
 
-    include_examples 'rendering loan details'
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w(loan_entry.business_name) }
+    end
   end
 
   context "with a completed loan" do
     let(:loan) { FactoryGirl.build(:loan, :completed) }
 
-    include_examples 'rendering loan details'
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w(loan_entry.business_name) }
+    end
   end
 
   context "with an offered loan" do
     let(:loan) { FactoryGirl.build(:loan, :offered) }
 
-    include_examples 'rendering loan details'
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w(loan_offer.facility_letter_sent) }
+    end
   end
 
   context "with a guaranteed loan" do
     let(:loan) { FactoryGirl.build(:loan, :guaranteed) }
 
-    include_examples 'rendering loan details'
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w(loan_guarantee.received_declaration) }
+    end
   end
 
   context "with a lender demanded loan" do
     let(:loan) { FactoryGirl.build(:loan, :lender_demand) }
 
-    include_examples 'rendering loan details'
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w(loan_demand_to_borrower.borrower_demanded_on) }
+    end
   end
 
   context "with a repaid loan" do
     let(:loan) { FactoryGirl.build(:loan, :repaid) }
 
-    include_examples 'rendering loan details'
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w(loan_repay.repaid_on) }
+    end
   end
 
   context "with a not demanded loan" do
     let(:loan) { FactoryGirl.build(:loan, :not_demanded) }
 
-    include_examples 'rendering loan details'
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w(loan_no_claim.no_claim_on) }
+    end
   end
 
   context "with a demanded loan" do
     let(:loan) { FactoryGirl.build(:loan, :demanded) }
 
-    include_examples 'rendering loan details'
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w(loan_demand_against_government.dti_demanded_on) }
+    end
   end
 
   context "with an auto cancelled loan" do
     let(:loan) { FactoryGirl.build(:loan, :auto_cancelled) }
 
     pending "needs factory definition"
-    # include_examples 'rendering loan details'
+    # it_behaves_like 'rendered loan_details'
   end
 
   context "with a removed loan" do
     let(:loan) { FactoryGirl.build(:loan, :removed) }
 
-    include_examples 'rendering loan details'
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w(loan_remove.remove_guarantee_outstanding_amount) }
+    end
   end
 
   context "with a repaid from transfer loan" do
     let(:loan) { FactoryGirl.build(:loan, :repaid_from_transfer) }
 
-    include_examples 'rendering loan details'
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w() }
+    end
   end
 
   context "with an auto removed loan" do
     let(:loan) { FactoryGirl.build(:loan, :auto_removed) }
 
     pending "needs factory definition"
-    # include_examples 'rendering loan details'
+    # it_behaves_like 'rendered loan_details'
   end
 
   context "with a settled loan" do
     let(:loan) { FactoryGirl.build(:loan, :settled) }
 
-    include_examples 'rendering loan details'
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w(loan_settle_claim.settled_on) }
+    end
   end
 
   context "with a realised loan" do
     let(:loan) { FactoryGirl.build(:loan, :realised) }
 
-    include_examples 'rendering loan details'
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w(loan_realise.realised_money_date) }
+    end
   end
 
   context "with a recovered loan" do
     let(:loan) { FactoryGirl.build(:loan, :recovered) }
 
-    include_examples 'rendering loan details'
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w(loan_recovery.recovery_on) }
+    end
   end
 
   context "with an incomplete legacy loan" do
     let(:loan) { FactoryGirl.build(:loan, :incomplete_legacy) }
 
     pending "needs factory definition"
-    # include_examples 'rendering loan details'
+    # it_behaves_like 'rendered loan_details'
   end
 
   context "with a complete legacy loan" do
     let(:loan) { FactoryGirl.build(:loan, :complete_legacy) }
 
     pending "needs factory definition"
-    # include_examples 'rendering loan details'
+    # it_behaves_like 'rendered loan_details'
   end
 
   context 'without a loan allocation' do
     let(:loan) { FactoryGirl.build(:loan, :guaranteed, loan_allocation_id: nil) }
 
-    include_examples 'rendering loan details'
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w(loan_guarantee.received_declaration) }
+    end
   end
 end

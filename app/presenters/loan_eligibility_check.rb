@@ -36,6 +36,18 @@ class LoanEligibilityCheck
   end
 
   def transition_to
-    EligibilityCheck.eligible?(loan) ? Loan::Eligible : Loan::Rejected
+    is_eligible? ? Loan::Eligible : Loan::Rejected
   end
+
+  def event
+    is_eligible? ? LoanEvent.find_by_name("Accept") : LoanEvent.find_by_name("Reject")
+  end
+
+  private
+
+  def is_eligible?
+    return false if @is_eligible == false
+    @is_eligible ||= EligibilityCheck.eligible?(loan)
+  end
+
 end

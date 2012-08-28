@@ -62,6 +62,7 @@ class LoanChange < ActiveRecord::Base
     transaction do
       save!
       update_loan!
+      log_loan_state_change!
     end
 
     true
@@ -98,6 +99,16 @@ class LoanChange < ActiveRecord::Base
         state_aid_calculation.calc_type = StateAidCalculation::RESCHEDULE_TYPE
         state_aid_calculation.save!
       end
+    end
+
+    def log_loan_state_change!
+      LoanStateChange.create(
+        loan_id: loan.id,
+        state: Loan::Guaranteed,
+        modified_on: Date.today,
+        modified_by: loan.modified_by,
+        event_id: 9 # change amount or terms
+      )
     end
 
     def validate_change_type

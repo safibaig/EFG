@@ -2,7 +2,7 @@ class LoanRemoveGuarantee
   include LoanPresenter
   include LoanStateTransition
 
-  transition from: [Loan::Guaranteed], to: Loan::Removed
+  transition from: [Loan::Guaranteed], to: Loan::Removed, event: :remove_guarantee
 
   attribute :remove_guarantee_on
   attribute :remove_guarantee_outstanding_amount

@@ -50,6 +50,8 @@ describe 'eligibility checks' do
     loan.loan_source.should == Loan::SFLG_SOURCE
     loan.created_by.should == user
     loan.modified_by.should == user
+
+    should_log_loan_state_change(loan, Loan::Eligible, 1)
   end
 
   it 'does not create an invalid loan' do

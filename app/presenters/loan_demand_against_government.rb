@@ -2,7 +2,7 @@ class LoanDemandAgainstGovernment
   include LoanPresenter
   include LoanStateTransition
 
-  transition from: Loan::LenderDemand, to: Loan::Demanded
+  transition from: Loan::LenderDemand, to: Loan::Demanded, event: :demand_against_government_guarantee
 
   attribute :amount_demanded
   attribute :dti_demanded_on
