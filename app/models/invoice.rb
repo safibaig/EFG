@@ -67,7 +67,7 @@ class Invoice < ActiveRecord::Base
           state: Loan::Settled,
           modified_on: Date.today,
           modified_by: loan.modified_by,
-          event_id: LoanEvent.find(18).id # create claim
+          event_id: 18 # create claim
         )
       end
     end

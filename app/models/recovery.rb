@@ -75,7 +75,7 @@ class Recovery < ActiveRecord::Base
         state: Loan::Recovered,
         modified_on: Date.today,
         modified_by: loan.modified_by,
-        event_id: LoanEvent.find(20).id # Recovery made
+        event_id: 20 # Recovery made
       )
     end
 end

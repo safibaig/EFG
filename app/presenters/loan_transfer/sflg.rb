@@ -20,7 +20,7 @@ class LoanTransfer::Sflg < LoanTransfer::Base
   end
 
   def loan_event_id
-    LoanEvent.find(15).id # Transfer
+    15 # Transfer
   end
 
 end

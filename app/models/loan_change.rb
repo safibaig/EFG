@@ -107,7 +107,7 @@ class LoanChange < ActiveRecord::Base
         state: Loan::Guaranteed,
         modified_on: Date.today,
         modified_by: loan.modified_by,
-        event_id: LoanEvent.find(9).id # change amount or terms
+        event_id: 9 # change amount or terms
       )
     end
 
