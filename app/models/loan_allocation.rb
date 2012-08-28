@@ -17,6 +17,7 @@ class LoanAllocation < ActiveRecord::Base
   ]
 
   belongs_to :lender
+  belongs_to :modified_by, class_name: 'User'
 
   has_many :loans
 
@@ -36,6 +37,3 @@ class LoanAllocation < ActiveRecord::Base
     [start_date, end_date].join(' - ')
   end
 end
-
-
-

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120822163933) do
+ActiveRecord::Schema.define(:version => 20120828094547) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(:version => 20120822163933) do
     t.integer  "lender_legacy_id"
     t.integer  "version"
     t.integer  "allocation_type"
-    t.boolean  "active"
+    t.boolean  "active",                                                            :default => false, :null => false
     t.integer  "allocation",            :limit => 8
     t.date     "starts_on"
     t.date     "ends_on"
@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(:version => 20120822163933) do
     t.decimal  "guarantee_rate",                     :precision => 16, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "modified_by_id"
   end
 
   add_index "loan_allocations", ["lender_id"], :name => "index_loan_allocations_on_lender_id"

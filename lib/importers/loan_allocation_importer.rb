@@ -3,7 +3,7 @@ class LoanAllocationImporter < BaseImporter
   self.klass = LoanAllocation
 
   def self.extra_columns
-    [:lender_id]
+    [:lender_id, :modified_by_id]
   end
 
   def self.field_mapping
@@ -32,18 +32,17 @@ class LoanAllocationImporter < BaseImporter
 
   def build_attributes
     row.each do |field_name, value|
-      value = case field_name
+      case field_name
       when 'LENDER_ID'
-        attributes[:lender_id] = Lender.find_by_legacy_id(value).id unless value.blank?
-        value
+        attributes[:lender_id] = self.class.lender_id_from_legacy_id(value) unless value.blank?
+      when 'MODIFIED_BY'
+        attributes[:modified_by_id] = self.class.user_id_from_username(value)
       when *MONIES
-        Money.parse(value).cents
+        value = Money.parse(value).cents
       when *DATES
-        Date.parse(value) unless value.blank?
+        value = Date.parse(value) unless value.blank?
       when *TIMES
-        Time.parse(value) unless value.blank?
-      else
-        value
+        value = Time.parse(value) unless value.blank?
       end
 
       attributes[self.class.field_mapping[field_name]] = value
