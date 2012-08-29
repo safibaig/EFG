@@ -11,7 +11,7 @@ class LoanAllocationImporter < BaseImporter
       "OID"                 => :legacy_id,
       "LENDER_ID"           => :lender_legacy_id,
       "VERSION"             => :version,
-      "TYPE"                => :allocation_type,
+      "TYPE"                => :allocation_type_id,
       "ACTIVE"              => :active,
       "ALLOCATION"          => :allocation,
       "START_DATE"          => :starts_on,

@@ -62,21 +62,21 @@ ActiveRecord::Schema.define(:version => 20120828094547) do
   add_index "lenders", ["legacy_id"], :name => "index_lenders_on_legacy_id", :unique => true
 
   create_table "loan_allocations", :force => true do |t|
-    t.integer  "lender_id"
+    t.integer  "lender_id",                                                                            :null => false
     t.integer  "legacy_id"
     t.integer  "lender_legacy_id"
     t.integer  "version"
-    t.integer  "allocation_type"
+    t.integer  "allocation_type_id",                                                                   :null => false
     t.boolean  "active",                                                            :default => false, :null => false
-    t.integer  "allocation",            :limit => 8
-    t.date     "starts_on"
-    t.date     "ends_on"
-    t.string   "description"
+    t.integer  "allocation",            :limit => 8,                                                   :null => false
+    t.date     "starts_on",                                                                            :null => false
+    t.date     "ends_on",                                                                              :null => false
+    t.string   "description",                                                                          :null => false
     t.string   "modified_by_legacy_id"
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
-    t.decimal  "premium_rate",                       :precision => 16, :scale => 2
-    t.decimal  "guarantee_rate",                     :precision => 16, :scale => 2
+    t.decimal  "premium_rate",                       :precision => 16, :scale => 2,                    :null => false
+    t.decimal  "guarantee_rate",                     :precision => 16, :scale => 2,                    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "modified_by_id"

@@ -1,0 +1,13 @@
+<%= simple_form_for [@lender, @loan_allocation], html: { class: 'form-horizontal form-loan-allocation' } do |f| %>
+  <%= f.input :allocation_type_id, as: :radio_buttons, collection: LoanAllocationType.all, label: 'Lender limit type', wrapper_html: { class: 'radio-buttons-inline' } %>
+  <%= f.input :description, label: 'Lending allocation name' %>
+  <%= f.input :starts_on, as: :quick_date, label: 'Lending start date' %>
+  <%= f.input :ends_on, as: :quick_date, label: 'Lending end date' %>
+  <%= f.input :allocation, as: :currency, label: 'Lending allocation' %>
+  <%= f.input :guarantee_rate, as: :string, label: 'Guarantee Rate (%)' %>
+  <%= f.input :premium_rate, as: :string, label: 'Premium Rate (%)' %>
+
+  <div class="form-actions">
+    <%= f.button :submit, class: 'btn btn-primary', value: @loan_allocation.new_record? ? 'Create Lender Limit' : 'Update Lender Limit' %>
+  </div>
+<% end %>

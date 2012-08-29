@@ -30,7 +30,7 @@ describe LoanAllocationImporter do
       loan_allocation.lender_legacy_id == "3"
       loan_allocation.lender.should == lender
       loan_allocation.version == "1"
-      loan_allocation.allocation_type == "1"
+      loan_allocation.allocation_type_id == "1"
       loan_allocation.active == "0"
       loan_allocation.allocation == Money.parse("500000")
       loan_allocation.starts_on == Date.new(2007, 4, 1)

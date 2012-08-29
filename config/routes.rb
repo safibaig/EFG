@@ -8,6 +8,8 @@ EFG::Application.routes.draw do
       post :activate
       post :deactivate
     end
+
+    resources :loan_allocations
   end
 
   resources :loans, only: [:show] do

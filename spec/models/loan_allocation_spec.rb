@@ -39,6 +39,19 @@ describe LoanAllocation do
       loan_allocation.should_not be_valid
     end
 
+    it 'requires a valid allocation_type_id' do
+      loan_allocation.allocation_type_id = ''
+      loan_allocation.should_not be_valid
+      loan_allocation.allocation_type_id = '99'
+      loan_allocation.should_not be_valid
+      loan_allocation.allocation_type_id = '1'
+      loan_allocation.should be_valid
+    end
+
+    it 'requires a description' do
+      loan_allocation.description = ''
+      loan_allocation.should_not be_valid
+    end
   end
 
   it "has many loans using allocation" do

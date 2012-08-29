@@ -1,0 +1,34 @@
+<div class="page-header">
+  <h1>View Lending Limit</h1>
+</div>
+
+<p>This page confirms the amendment to a lender's record.</p>
+
+<div class="actions">
+  <%= link_to %{<i class="icon-plus"></i> New Lender Limit}.html_safe, new_lender_loan_allocation_path(@lender), class: 'btn' %>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Lending allocation name</th>
+      <th>Lending limit type</th>
+      <th>Lending start date</th>
+      <th>Lending end date</th>
+      <th>Lending allocation</th>
+      <th>Active allocation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @loan_allocations.each do |loan_allocation| %>
+      <tr>
+        <td><%= link_to loan_allocation.description, edit_lender_loan_allocation_path(@lender, loan_allocation) %></td>
+        <td><%= loan_allocation.allocation_type.name %></td>
+        <td><%= loan_allocation.starts_on.strftime('%d/%m/%Y') %></td>
+        <td><%= loan_allocation.ends_on.strftime('%d/%m/%Y') %></td>
+        <td><%= loan_allocation.allocation.format %></td>
+        <td><%=friendly_boolean loan_allocation.active %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
