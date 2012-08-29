@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 describe 'Transfer a loan' do
-
-  let(:current_user) { FactoryGirl.create(:lender_user) }
-
+  let(:lender) { FactoryGirl.create(:lender, :with_loan_allocation) }
+  let(:current_user) { FactoryGirl.create(:lender_user, lender: lender) }
   let(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation, :sflg) }
 
   before(:each) do

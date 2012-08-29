@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe 'eligibility checks' do
-  let(:user) { FactoryGirl.create(:lender_user) }
+  let(:lender) { FactoryGirl.create(:lender, :with_loan_allocation) }
+  let(:user) { FactoryGirl.create(:lender_user, lender: lender) }
   before { login_as(user, scope: :user) }
 
   it 'creates a loan from valid eligibility values' do
@@ -12,7 +13,7 @@ describe 'eligibility checks' do
     choose_radio_button 'would_you_lend', true
     choose_radio_button 'collateral_exhausted', true
     fill_in 'amount', '50000.89'
-    select LoanAllocation.last.lender.name, from: 'loan_eligibility_check_loan_allocation_id'
+    select lender.name, from: 'loan_eligibility_check_loan_allocation_id'
     fill_in_duration_input 'repayment_duration', 2, 6
     fill_in 'turnover', '1234567.89'
     fill_in 'trading_date', '31/1/2012'

@@ -93,7 +93,7 @@ describe 'lender dashboard' do
   end
 
   context 'LenderUser' do
-    let(:lender) { FactoryGirl.create(:lender) }
+    let(:lender) { FactoryGirl.create(:lender, :with_loan_allocation) }
     let(:user) { FactoryGirl.create(:lender_user, lender: lender) }
 
     before { login_as(user, scope: :user) }

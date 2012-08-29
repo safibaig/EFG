@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe LoanTransfer::Sflg do
-
-  let!(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation, :sflg) }
-
+  let(:lender) { FactoryGirl.create(:lender, :with_loan_allocation) }
+  let!(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation, :sflg, lender: lender) }
   let(:loan_transfer) {
     FactoryGirl.build(
       :sflg_loan_transfer,
       amount: loan.amount,
+      lender: FactoryGirl.create(:lender, :with_loan_allocation),
       new_amount: loan.amount - Money.new(1000),
       reference: loan.reference,
       facility_letter_date: loan.facility_letter_date,

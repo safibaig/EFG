@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 describe LoanAllocationUtilisationPresenter do
-
-  let(:lender) { FactoryGirl.create(:lender) }
-
+  let(:lender) { FactoryGirl.create(:lender, :with_loan_allocation) }
   let(:loan_allocation) { lender.loan_allocations.first }
 
   let!(:loan1) {
