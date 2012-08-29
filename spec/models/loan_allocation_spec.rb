@@ -2,8 +2,9 @@ require 'spec_helper'
 
 describe LoanAllocation do
 
+  let(:loan_allocation) { FactoryGirl.build(:loan_allocation) }
+
   describe 'validations' do
-    let(:loan_allocation) { FactoryGirl.build(:loan_allocation) }
 
     it 'has a valid Factory' do
       loan_allocation.should be_valid
@@ -39,6 +40,13 @@ describe LoanAllocation do
       loan_allocation.should_not be_valid
     end
 
+  end
+
+  describe "allocation" do
+    it_should_behave_like "money attribute" do
+      let(:record) { loan_allocation }
+      let(:money_attribute) { :allocation }
+    end
   end
 
   it "has many loans using allocation" do

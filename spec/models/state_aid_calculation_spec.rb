@@ -1,8 +1,10 @@
 require 'spec_helper'
 
 describe StateAidCalculation do
+
+  let(:state_aid_calculation) { FactoryGirl.build(:state_aid_calculation) }
+
   describe 'validations' do
-    let(:state_aid_calculation) { FactoryGirl.build(:state_aid_calculation) }
 
     it 'has a valid Factory' do
       state_aid_calculation.should be_valid
@@ -104,6 +106,20 @@ describe StateAidCalculation do
           rescheduled_state_aid_calculation.premium_cheque_month = "07/2013"
           rescheduled_state_aid_calculation.should be_valid
         end
+      end
+    end
+  end
+
+  %w(
+    initial_draw_amount
+    second_draw_amount
+    third_draw_amount
+    fourth_draw_amount
+  ).each do |attribute|
+    describe attribute do
+      it_should_behave_like "money attribute" do
+        let(:record) { state_aid_calculation }
+        let(:money_attribute) { attribute }
       end
     end
   end
