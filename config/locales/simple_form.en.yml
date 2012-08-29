@@ -29,6 +29,15 @@ en:
         private_residence_charge_required: 'Will the granting of this facility be made conditional upon a new charge being taken over a Principal Private Residence?'
         personal_guarantee_required: 'Will the granting of this facility be made conditional upon the provision of one or more personal guarantees, whether supported or unsupported, by the owners, directors, shareholders or others associated with the borrowing business?'
 
+      loan_allocation:
+        allocation: 'Lending allocation'
+        allocation_type_id: 'Lender limit type'
+        description: 'Lending allocation name'
+        ends_on: 'Lending end date'
+        guarantee_rate: 'Guarantee Rate (%)'
+        premium_rate: 'Premium Rate (%)'
+        starts_on: 'Lending start date'
+
       loan_change:
         date_of_change: 'What is the date when the change to be recorded occurred? (dd/mm/yyyy)'
         change_type_id: 'What is the change you wish to make?'
