@@ -169,4 +169,10 @@ describe AuditorUserPermissions do
     it { refute user.can_update?(Lender) }
     it { refute user.can_view?(Lender) }
   end
+
+  context 'LoanAllocations' do
+    it { refute user.can_create?(LoanAllocation) }
+    it { refute user.can_update?(LoanAllocation) }
+    it { refute user.can_view?(LoanAllocation) }
+  end
 end
