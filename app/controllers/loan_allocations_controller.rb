@@ -30,7 +30,7 @@ class LoanAllocationsController < ApplicationController
 
   def update
     @loan_allocation = @lender.loan_allocations.find(params[:id])
-    @loan_allocation.attributes = params[:loan_allocation]
+    @loan_allocation.attributes = params[:loan_allocation].slice(:allocation, :description)
     @loan_allocation.modified_by = current_user
 
     if @loan_allocation.save

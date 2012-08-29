@@ -51,11 +51,11 @@ describe 'LoanAllocations' do
     end
 
     it do
-      page.should_not have_selector('input[name^=loan_allocation_allocation_type_id]')
-      page.should_not have_selector('input[name^=loan_allocation_ends_on]')
-      page.should_not have_selector('input[name^=loan_allocation_guarantee_rate]')
-      page.should_not have_selector('input[name^=loan_allocation_premium_rate]')
-      page.should_not have_selector('input[name^=loan_allocation_starts_on]')
+      page.should_not have_selector('input[id^=loan_allocation_allocation_type_id]')
+      page.should_not have_selector('#loan_allocation_ends_on')
+      page.should_not have_selector('#loan_allocation_guarantee_rate')
+      page.should_not have_selector('#loan_allocation_premium_rate')
+      page.should_not have_selector('#loan_allocation_starts_on')
 
       fill_in :description, 'Updated'
       fill_in :allocation, '9999.99'

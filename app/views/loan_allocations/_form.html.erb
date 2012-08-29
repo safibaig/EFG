@@ -1,11 +1,44 @@
 <%= simple_form_for [@lender, @loan_allocation], html: { class: 'form-horizontal form-loan-allocation' } do |f| %>
-  <%= f.input :allocation_type_id, as: :radio_buttons, collection: LoanAllocationType.all, label: 'Lender limit type', wrapper_html: { class: 'radio-buttons-inline' } %>
+  <% if @loan_allocation.new_record? %>
+    <%= f.input :allocation_type_id, as: :radio_buttons, collection: LoanAllocationType.all, label: 'Lender limit type', wrapper_html: { class: 'radio-buttons-inline' } %>
+  <% else %>
+    <div class="control-group">
+      <div class="control-label">Lender limit type</div>
+      <div class="controls"><%= @loan_allocation.allocation_type.name %></div>
+    </div>
+  <% end %>
+
   <%= f.input :description, label: 'Lending allocation name' %>
-  <%= f.input :starts_on, as: :quick_date, label: 'Lending start date' %>
-  <%= f.input :ends_on, as: :quick_date, label: 'Lending end date' %>
+
+  <% if @loan_allocation.new_record? %>
+    <%= f.input :starts_on, as: :quick_date, label: 'Lending start date' %>
+    <%= f.input :ends_on, as: :quick_date, label: 'Lending end date' %>
+  <% else %>
+    <div class="control-group">
+      <div class="control-label">Lending start date</div>
+      <div class="controls"><%= @loan_allocation.starts_on.to_s(:screen) %></div>
+    </div>
+    <div class="control-group">
+      <div class="control-label">Lending end date</div>
+      <div class="controls"><%= @loan_allocation.ends_on.to_s(:screen) %></div>
+    </div>
+  <% end %>
+
   <%= f.input :allocation, as: :currency, label: 'Lending allocation' %>
-  <%= f.input :guarantee_rate, as: :string, label: 'Guarantee Rate (%)' %>
-  <%= f.input :premium_rate, as: :string, label: 'Premium Rate (%)' %>
+
+  <% if @loan_allocation.new_record? %>
+    <%= f.input :guarantee_rate, as: :string, label: 'Guarantee Rate (%)' %>
+    <%= f.input :premium_rate, as: :string, label: 'Premium Rate (%)' %>
+  <% else %>
+    <div class="control-group">
+      <div class="control-label">Guarantee Rate (%)</div>
+      <div class="controls"><%= @loan_allocation.guarantee_rate %></div>
+    </div>
+    <div class="control-group">
+      <div class="control-label">Premium Rate (%)</div>
+      <div class="controls"><%= @loan_allocation.premium_rate %></div>
+    </div>
+  <% end %>
 
   <div class="form-actions">
     <%= f.button :submit, class: 'btn btn-primary', value: @loan_allocation.new_record? ? 'Create Lender Limit' : 'Update Lender Limit' %>

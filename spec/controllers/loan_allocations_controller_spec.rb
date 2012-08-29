@@ -54,10 +54,10 @@ describe LoanAllocationsController do
   end
 
   describe 'PUT update' do
-    let(:loan_allocation) { FactoryGirl.create(:loan_allocation, description: 'foo', starts_on: '1/1/11') }
+    let(:loan_allocation) { FactoryGirl.create(:loan_allocation, lender: lender, description: 'foo', starts_on: '1/1/11') }
 
-    def dispatch
-      put :update, lender_id: lender.id, id: loan_allocation.id
+    def dispatch(params = {})
+      put :update, { lender_id: lender.id, id: loan_allocation.id }.merge(params)
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
@@ -65,5 +65,17 @@ describe LoanAllocationsController do
     it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
+
+    context 'as a CfeAdmin' do
+      let(:current_user) { FactoryGirl.create(:cfe_admin) }
+      before { sign_in(current_user) }
+
+      it 'does not update starts_on attribute (amongst others)' do
+        dispatch(loan_allocation: { description: 'bar', starts_on: '2/2/12' })
+        loan_allocation.reload
+        loan_allocation.description.should == 'bar'
+        loan_allocation.starts_on.should == Date.new(2011, 1, 1)
+      end
+    end
   end
 end
