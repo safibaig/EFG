@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120823134058) do
+ActiveRecord::Schema.define(:version => 20120829135618) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -168,7 +168,7 @@ ActiveRecord::Schema.define(:version => 20120823134058) do
     t.datetime "updated_at"
   end
 
-  add_index "loan_state_changes", ["loan_id"], :name => "index_loan_state_changes_on_loan_id"
+  add_index "loan_state_changes", ["loan_id", "modified_on", "id"], :name => "loan_association"
 
   create_table "loans", :force => true do |t|
     t.boolean  "viable_proposition",                                                               :null => false
@@ -403,7 +403,6 @@ ActiveRecord::Schema.define(:version => 20120823134058) do
     t.string   "memorable_year"
     t.integer  "login_failures"
     t.datetime "password_changed_at"
-    t.boolean  "locked",                 :default => false, :null => false
     t.string   "created_by_legacy_id"
     t.integer  "created_by_id"
     t.boolean  "confirm_t_and_c"
@@ -415,6 +414,8 @@ ActiveRecord::Schema.define(:version => 20120823134058) do
     t.datetime "ar_insert_timestamp"
     t.string   "type"
     t.integer  "failed_attempts",        :default => 0
+    t.boolean  "locked",                 :default => false
+    t.datetime "locked_at"
     t.string   "legacy_email"
   end
 
