@@ -26,7 +26,7 @@
 
   <%= field_set_tag 'Loan' do %>
     <%= f.input :amount, as: :currency, disabled: true %>
-    <%= f.input :lending_limit_id, as: :select, collection: loan_allocation_options_for_select(@loan_entry.lender), disabled: true, prompt: 'Please select' %>
+    <%= f.input :lending_limit_id, as: :select, collection: @loan_entry.lender.lending_limits.where(id: @loan_entry.lending_limit_id), disabled: true %>
     <%= f.input :repayment_duration, as: :duration %>
     <%= f.input :repayment_frequency_id, as: :select, collection: RepaymentFrequency.all, prompt: 'Please select' %>
     <%= f.input :maturity_date, as: :quick_date %>

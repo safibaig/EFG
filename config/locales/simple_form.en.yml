@@ -32,7 +32,7 @@ en:
       lending_limit:
         allocation: 'Lending allocation'
         allocation_type_id: 'Lender limit type'
-        description: 'Lending allocation name'
+        name: 'Lending allocation name'
         ends_on: 'Lending end date'
         guarantee_rate: 'Guarantee Rate (%)'
         premium_rate: 'Premium Rate (%)'

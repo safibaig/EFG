@@ -22,7 +22,7 @@
   <tbody>
     <% @lending_limits.each do |lending_limit| %>
       <tr>
-        <td><%= link_to lending_limit.description, edit_lender_lending_limit_path(@lender, lending_limit) %></td>
+        <td><%= link_to lending_limit.name, edit_lender_lending_limit_path(@lender, lending_limit) %></td>
         <td><%= lending_limit.allocation_type.name %></td>
         <td><%= lending_limit.starts_on.strftime('%d/%m/%Y') %></td>
         <td><%= lending_limit.ends_on.strftime('%d/%m/%Y') %></td>

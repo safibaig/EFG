@@ -16,7 +16,7 @@ class LendingLimitImporter < BaseImporter
       "ALLOCATION"          => :allocation,
       "START_DATE"          => :starts_on,
       "END_DATE"            => :ends_on,
-      "DESCRIPTION"         => :description,
+      "DESCRIPTION"         => :name,
       "MODIFIED_BY"         => :modified_by_legacy_id,
       "MODIFIED_DATE"       => :updated_at,
       "AR_TIMESTAMP"        => :ar_timestamp,

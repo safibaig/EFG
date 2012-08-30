@@ -35,7 +35,7 @@ describe LendingLimitImporter do
       lending_limit.allocation == Money.parse("500000")
       lending_limit.starts_on == Date.new(2007, 4, 1)
       lending_limit.ends_on == Date.new(2008, 3, 31)
-      lending_limit.description == "DESCRIPTION"
+      lending_limit.name == "DESCRIPTION"
       lending_limit.modified_by_legacy_id == "user1"
       lending_limit.modified_by.should == user1
       lending_limit.updated_at == Time.gm(2009, 5, 13)

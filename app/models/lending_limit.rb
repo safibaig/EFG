@@ -26,16 +26,18 @@ class LendingLimit < ActiveRecord::Base
            conditions: ["loans.state IN (?)", USAGE_LOAN_STATES]
 
   validates_presence_of :lender_id, strict: true
-  validates_presence_of :allocation, :description, :ends_on, :guarantee_rate,
+  validates_presence_of :allocation, :name, :ends_on, :guarantee_rate,
     :premium_rate, :starts_on
   validates_inclusion_of :allocation_type_id, in: [1, 2]
 
-  attr_accessible :allocation, :allocation_type_id, :description, :ends_on,
+  attr_accessible :allocation, :allocation_type_id, :name, :ends_on,
     :guarantee_rate, :premium_rate, :starts_on
 
   format :allocation, with: MoneyFormatter.new
   format :ends_on, with: QuickDateFormatter
   format :starts_on, with: QuickDateFormatter
+
+  scope :active, where(active: true)
 
   def allocation_type
     LendingLimitType.find(allocation_type_id)

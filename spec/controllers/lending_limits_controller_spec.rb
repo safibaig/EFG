@@ -54,7 +54,7 @@ describe LendingLimitsController do
   end
 
   describe 'PUT update' do
-    let(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, description: 'foo', starts_on: '1/1/11') }
+    let(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, name: 'foo', starts_on: '1/1/11') }
 
     def dispatch(params = {})
       put :update, { lender_id: lender.id, id: lending_limit.id }.merge(params)
@@ -71,9 +71,9 @@ describe LendingLimitsController do
       before { sign_in(current_user) }
 
       it 'does not update starts_on attribute (amongst others)' do
-        dispatch(lending_limit: { description: 'bar', starts_on: '2/2/12' })
+        dispatch(lending_limit: { name: 'bar', starts_on: '2/2/12' })
         lending_limit.reload
-        lending_limit.description.should == 'bar'
+        lending_limit.name.should == 'bar'
         lending_limit.starts_on.should == Date.new(2011, 1, 1)
       end
     end

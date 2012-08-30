@@ -30,7 +30,7 @@ class LendingLimitsController < ApplicationController
 
   def update
     @lending_limit = @lender.lending_limits.find(params[:id])
-    @lending_limit.attributes = params[:lending_limit].slice(:allocation, :description)
+    @lending_limit.attributes = params[:lending_limit].slice(:allocation, :name)
     @lending_limit.modified_by = current_user
 
     if @lending_limit.save

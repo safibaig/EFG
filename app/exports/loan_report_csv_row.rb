@@ -21,7 +21,7 @@ class LoanReportCsvRow
       @loan.amount.to_s,
       @loan.guarantee_rate.to_s,
       @loan.premium_rate.to_s,
-      @loan._lending_limit_description,
+      @loan._lending_limit_name,
       @loan._lender_organisation_reference_code,
       @loan.state,
       @loan.repayment_duration.try(:total_months),

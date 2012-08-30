@@ -119,7 +119,7 @@ class LoanReport
   def select_options
     [
       'loans.*',
-      '(SELECT description FROM lending_limits WHERE id = loans.lending_limit_id) AS _lending_limit_description',
+      '(SELECT name FROM lending_limits WHERE id = loans.lending_limit_id) AS _lending_limit_name',
       '(SELECT organisation_reference_code FROM lenders WHERE id = loans.lender_id) AS _lender_organisation_reference_code',
       '(SELECT recovered_on FROM recoveries WHERE loan_id = loans.id ORDER BY recoveries.id DESC LIMIT 1) AS _last_recovery_on',
       '(SELECT SUM(amount_due_to_dti) FROM recoveries WHERE loan_id = loans.id) AS _total_recoveries',

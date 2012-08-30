@@ -48,8 +48,8 @@ describe LendingLimit do
       lending_limit.should be_valid
     end
 
-    it 'requires a description' do
-      lending_limit.description = ''
+    it 'requires a name' do
+      lending_limit.name = ''
       lending_limit.should_not be_valid
     end
   end

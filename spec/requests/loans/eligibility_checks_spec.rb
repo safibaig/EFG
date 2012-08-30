@@ -13,7 +13,7 @@ describe 'eligibility checks' do
     choose_radio_button 'would_you_lend', true
     choose_radio_button 'collateral_exhausted', true
     fill_in 'amount', '50000.89'
-    select lender.name, from: 'loan_eligibility_check_lending_limit_id'
+    select lender.lending_limits.first.name, from: 'loan_eligibility_check_lending_limit_id'
     fill_in_duration_input 'repayment_duration', 2, 6
     fill_in 'turnover', '1234567.89'
     fill_in 'trading_date', '31/1/2012'

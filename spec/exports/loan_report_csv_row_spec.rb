@@ -78,7 +78,7 @@ describe LoanReportCsvRow do
       # stub custom fields that are created by LoanReport SQL query
       loan.stub(
         invoice: FactoryGirl.build(:invoice, reference: '123-INV'),
-        _lending_limit_description: 'allocation description',
+        _lending_limit_name: 'allocation description',
         _lender_organisation_reference_code: 'ABC123',
         _last_recovery_on: Date.parse('18-07-2012'),
         _total_recoveries: 15000000,

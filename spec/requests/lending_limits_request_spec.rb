@@ -20,7 +20,7 @@ describe 'LendingLimits' do
 
     it do
       choose_radio_button :allocation_type_id, 1
-      fill_in :description, 'This year'
+      fill_in :name, 'This year'
       fill_in :starts_on, '1/1/12'
       fill_in :ends_on, '31/12/12'
       fill_in :allocation, '5000000'
@@ -31,7 +31,7 @@ describe 'LendingLimits' do
       lending_limit = LendingLimit.last
       lending_limit.lender.should == lender
       lending_limit.modified_by.should == current_user
-      lending_limit.description.should == 'This year'
+      lending_limit.name.should == 'This year'
       lending_limit.starts_on.should == Date.new(2012, 1, 1)
       lending_limit.ends_on.should == Date.new(2012, 12, 31)
       lending_limit.allocation.should == Money.new(5_000_000_00)
@@ -41,7 +41,7 @@ describe 'LendingLimits' do
   end
 
   describe 'update' do
-    let!(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, description: 'Foo', allocation: 1) }
+    let!(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, name: 'Foo', allocation: 1) }
 
     before do
       visit root_path
@@ -57,14 +57,14 @@ describe 'LendingLimits' do
       page.should_not have_selector('#lending_limit_premium_rate')
       page.should_not have_selector('#lending_limit_starts_on')
 
-      fill_in :description, 'Updated'
+      fill_in :name, 'Updated'
       fill_in :allocation, '9999.99'
       click_button 'Update Lender Limit'
 
       lending_limit.reload
       lending_limit.lender.should == lender
       lending_limit.modified_by.should == current_user
-      lending_limit.description.should == 'Updated'
+      lending_limit.name.should == 'Updated'
       lending_limit.allocation.should == Money.new(9_999_99)
     end
   end

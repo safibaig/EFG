@@ -1,9 +1,10 @@
 FactoryGirl.define do
   factory :lending_limit do
     lender
+    active true
     allocation 1000000
     allocation_type_id 1
-    description 'Annual'
+    sequence(:name) { |n| "lender limit #{n}" }
     starts_on 1.month.ago
     ends_on 11.months.from_now
     premium_rate 2
