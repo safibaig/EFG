@@ -32,11 +32,4 @@ describe LoanRealisation do
 
   end
 
-  describe "realised_amount" do
-    it_should_behave_like "money attribute" do
-      let(:record) { FactoryGirl.build(:loan_realisation) }
-      let(:money_attribute) { :realised_amount }
-    end
-  end
-
 end

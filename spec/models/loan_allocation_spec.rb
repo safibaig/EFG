@@ -42,13 +42,6 @@ describe LoanAllocation do
 
   end
 
-  describe "allocation" do
-    it_should_behave_like "money attribute" do
-      let(:record) { loan_allocation }
-      let(:money_attribute) { :allocation }
-    end
-  end
-
   it "has many loans using allocation" do
     loan_allocation = FactoryGirl.create(:loan_allocation)
 

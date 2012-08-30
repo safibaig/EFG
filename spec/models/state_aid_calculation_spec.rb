@@ -110,20 +110,6 @@ describe StateAidCalculation do
     end
   end
 
-  %w(
-    initial_draw_amount
-    second_draw_amount
-    third_draw_amount
-    fourth_draw_amount
-  ).each do |attribute|
-    describe attribute do
-      it_should_behave_like "money attribute" do
-        let(:record) { state_aid_calculation }
-        let(:money_attribute) { attribute }
-      end
-    end
-  end
-
   context do
 
     let(:loan) { FactoryGirl.build(:loan, amount: Money.new(100_000_00)) }
