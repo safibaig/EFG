@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-describe LoanAllocationUtilisationPresenter do
-  let(:lender) { FactoryGirl.create(:lender, :with_loan_allocation) }
-  let(:loan_allocation) { lender.loan_allocations.first }
+describe LendingLimitUtilisationPresenter do
+  let(:lender) { FactoryGirl.create(:lender, :with_lending_limit) }
+  let(:lending_limit) { lender.lending_limits.first }
 
   let!(:loan1) {
     FactoryGirl.create(
       :loan,
       :guaranteed,
       lender: lender,
-      loan_allocation: loan_allocation,
+      lending_limit: lending_limit,
       amount: 250000
     )
   }
@@ -19,16 +19,16 @@ describe LoanAllocationUtilisationPresenter do
       :loan,
       :guaranteed,
       lender: lender,
-      loan_allocation: loan_allocation,
+      lending_limit: lending_limit,
       amount: 50000
     )
   }
 
-  let(:presenter) { LoanAllocationUtilisationPresenter.new(loan_allocation) }
+  let(:presenter) { LendingLimitUtilisationPresenter.new(lending_limit) }
 
   let(:presenter_with_no_loans) {
-    loan_allocation.loans.clear
-    LoanAllocationUtilisationPresenter.new(loan_allocation)
+    lending_limit.loans.clear
+    LendingLimitUtilisationPresenter.new(lending_limit)
   }
 
   describe "#group_header" do
@@ -47,7 +47,7 @@ describe LoanAllocationUtilisationPresenter do
 
   describe "#title" do
     it "should return formatted start and end date for the loan allocation" do
-      presenter.title.should == "#{loan_allocation.starts_on.strftime('%B %Y')} - #{loan_allocation.ends_on.strftime('%B %Y')}"
+      presenter.title.should == "#{lending_limit.starts_on.strftime('%B %Y')} - #{lending_limit.ends_on.strftime('%B %Y')}"
     end
   end
 
@@ -80,7 +80,7 @@ describe LoanAllocationUtilisationPresenter do
 
   describe "#total_allocation" do
     it "should return loan allocations allocation" do
-      presenter.total_allocation.should == loan_allocation.allocation
+      presenter.total_allocation.should == lending_limit.allocation
     end
   end
 

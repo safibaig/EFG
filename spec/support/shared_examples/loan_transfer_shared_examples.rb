@@ -99,7 +99,7 @@ shared_examples_for 'a loan transfer' do
       end
 
       it 'should assign new loan to the newest loan allocation of the lender receiving transfer' do
-        new_loan.loan_allocation.should == new_loan.lender.loan_allocations.last
+        new_loan.lending_limit.should == new_loan.lender.lending_limits.last
       end
 
       it 'should nullify legacy_id field' do

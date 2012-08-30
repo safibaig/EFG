@@ -5,7 +5,7 @@ FactoryGirl.define do
     association :created_by, factory: :lender_user
     association :modified_by, factory: :lender_user
     legal_form_id 1
-    loan_allocation
+    lending_limit
     loan_category_id 1
     repayment_frequency_id 4
     reason_id 1

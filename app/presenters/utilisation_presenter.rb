@@ -1,17 +1,17 @@
 class UtilisationPresenter
 
   def initialize(lender)
-    @loan_allocations = lender.loan_allocations.where("allocation > 0").order("starts_on DESC")
+    @lending_limits = lender.lending_limits.where("allocation > 0").order("starts_on DESC")
   end
 
-  def each_loan_allocation
-    @loan_allocations.each_with_index do |loan_allocation, index|
-      yield LoanAllocationUtilisationPresenter.new(loan_allocation), index
+  def each_lending_limit
+    @lending_limits.each_with_index do |lending_limit, index|
+      yield LendingLimitUtilisationPresenter.new(lending_limit), index
     end
   end
 
   def has_allocations?
-    @loan_allocations.any?
+    @lending_limits.any?
   end
 
 end

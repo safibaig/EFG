@@ -47,7 +47,7 @@ class LoanTransfer::Base
       @new_loan.maturity_date         = ''
       @new_loan.invoice_id            = ''
       @new_loan.transferred_from_id   = loan_to_transfer.id
-      @new_loan.loan_allocation       = lender.loan_allocations.last
+      @new_loan.lending_limit          = lender.lending_limits.last
       @new_loan.created_by            = modified_by
       @new_loan.modified_by           = modified_by
       # TODO - copy loan securities if any are present

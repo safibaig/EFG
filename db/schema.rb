@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120828094547) do
+ActiveRecord::Schema.define(:version => 20120830091001) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(:version => 20120828094547) do
 
   add_index "lenders", ["legacy_id"], :name => "index_lenders_on_legacy_id", :unique => true
 
-  create_table "loan_allocations", :force => true do |t|
+  create_table "lending_limits", :force => true do |t|
     t.integer  "lender_id",                                                                            :null => false
     t.integer  "legacy_id"
     t.integer  "lender_legacy_id"
@@ -82,7 +82,7 @@ ActiveRecord::Schema.define(:version => 20120828094547) do
     t.integer  "modified_by_id"
   end
 
-  add_index "loan_allocations", ["lender_id"], :name => "index_loan_allocations_on_lender_id"
+  add_index "lending_limits", ["lender_id"], :name => "index_lending_limits_on_lender_id"
 
   create_table "loan_changes", :force => true do |t|
     t.integer  "loan_id",                                  :null => false
@@ -265,7 +265,7 @@ ActiveRecord::Schema.define(:version => 20120828094547) do
     t.integer  "invoice_discount_limit"
     t.decimal  "debtor_book_coverage",                              :precision => 5,  :scale => 2
     t.decimal  "debtor_book_topup",                                 :precision => 5,  :scale => 2
-    t.integer  "loan_allocation_id"
+    t.integer  "lending_limit_id"
     t.integer  "invoice_id"
     t.integer  "transferred_from_id"
     t.integer  "created_by_id",                                                                    :null => false
@@ -274,7 +274,7 @@ ActiveRecord::Schema.define(:version => 20120828094547) do
 
   add_index "loans", ["legacy_id"], :name => "index_loans_on_legacy_id", :unique => true
   add_index "loans", ["lender_id"], :name => "index_loans_on_lender_id"
-  add_index "loans", ["loan_allocation_id"], :name => "index_loans_on_loan_allocation_id"
+  add_index "loans", ["lending_limit_id"], :name => "index_loans_on_lending_limit_id"
   add_index "loans", ["reference"], :name => "index_loans_on_reference", :unique => true
   add_index "loans", ["state"], :name => "index_loans_on_state"
 

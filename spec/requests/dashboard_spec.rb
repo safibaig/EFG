@@ -93,7 +93,7 @@ describe 'lender dashboard' do
   end
 
   context 'LenderUser' do
-    let(:lender) { FactoryGirl.create(:lender, :with_loan_allocation) }
+    let(:lender) { FactoryGirl.create(:lender, :with_lending_limit) }
     let(:user) { FactoryGirl.create(:lender_user, lender: lender) }
 
     before { login_as(user, scope: :user) }
@@ -101,15 +101,15 @@ describe 'lender dashboard' do
     it_behaves_like 'dashboard'
 
     context "with loan allocations" do
-      let(:loan_allocation1) { lender.loan_allocations.first }
-      let(:loan_allocation2) { FactoryGirl.create(:loan_allocation, lender: lender, allocation: 3000000) }
+      let(:lending_limit1) { lender.lending_limits.first }
+      let(:lending_limit2) { FactoryGirl.create(:lending_limit, lender: lender, allocation: 3000000) }
 
       let!(:loan1) {
         FactoryGirl.create(
           :loan,
           :guaranteed,
           lender: lender,
-          loan_allocation: loan_allocation1,
+          lending_limit: lending_limit1,
           amount: 250000
         )
       }
@@ -119,7 +119,7 @@ describe 'lender dashboard' do
           :loan,
           :guaranteed,
           lender: lender,
-          loan_allocation: loan_allocation2,
+          lending_limit: lending_limit2,
           amount: 800000
         )
       }
@@ -128,12 +128,12 @@ describe 'lender dashboard' do
         visit root_path
 
         within '#utilisation_dashboard' do
-          page.should have_content(loan_allocation1.starts_on.strftime('%B %Y') + ' - ' + loan_allocation1.ends_on.strftime('%B %Y'))
+          page.should have_content(lending_limit1.starts_on.strftime('%B %Y') + ' - ' + lending_limit1.ends_on.strftime('%B %Y'))
           page.should have_content('Allocation: £1,000,000.00')
           page.should have_content('Usage: £250,000.00')
           page.should have_content('Utilisation: 25.00%')
 
-          page.should have_content(loan_allocation2.starts_on.strftime('%B %Y') + ' - ' + loan_allocation2.ends_on.strftime('%B %Y'))
+          page.should have_content(lending_limit2.starts_on.strftime('%B %Y') + ' - ' + lending_limit2.ends_on.strftime('%B %Y'))
           page.should have_content('Allocation: £3,000,000.00')
           page.should have_content('Usage: £800,000.00')
           page.should have_content('Utilisation: 26.67%')

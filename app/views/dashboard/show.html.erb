@@ -66,8 +66,8 @@
 <div class="dashboard_widgets" id="utilisation_dashboard">
   <h2><%= t('dashboard.utilisation.title')%></h2>
 
-  <% @utilisation_presenter.each_loan_allocation do |loan_allocation_presenter, index| %>
-    <%= render "loan_allocation", loan_allocation_presenter: loan_allocation_presenter, index: index %>
+  <% @utilisation_presenter.each_lending_limit do |lending_limit_presenter, index| %>
+    <%= render "lending_limit", lending_limit_presenter: lending_limit_presenter, index: index %>
   <% end %>
 </div>
 <% end %>

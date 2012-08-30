@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :loan_allocation do
+  factory :lending_limit do
     lender
     allocation 1000000
     allocation_type_id 1

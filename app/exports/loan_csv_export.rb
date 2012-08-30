@@ -12,8 +12,8 @@ class LoanCsvExport < BaseCsvExport
       InterestRateType => :name.to_proc,
       LegalForm => :name.to_proc,
       Lender => :name.to_proc,
+      LendingLimit => :title.to_proc,
       LenderUser => :name.to_proc,
-      LoanAllocation => :title.to_proc,
       LoanCategory => :name.to_proc,
       LoanReason => :name.to_proc,
       Money => :to_s.to_proc,
@@ -73,7 +73,7 @@ class LoanCsvExport < BaseCsvExport
       legacy_small_loan
       legal_form
       lender
-      loan_allocation
+      lending_limit
       loan_category
       loan_scheme
       loan_source

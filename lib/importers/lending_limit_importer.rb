@@ -1,6 +1,6 @@
-class LoanAllocationImporter < BaseImporter
+class LendingLimitImporter < BaseImporter
   self.csv_path = Rails.root.join('import_data/SFLG_LENDER_CAP_ALLOC_DATA_TABLE.csv')
-  self.klass = LoanAllocation
+  self.klass = LendingLimit
 
   def self.extra_columns
     [:lender_id, :modified_by_id]

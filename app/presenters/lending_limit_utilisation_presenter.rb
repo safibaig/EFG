@@ -1,7 +1,7 @@
-class LoanAllocationUtilisationPresenter
+class LendingLimitUtilisationPresenter
 
-  def initialize(loan_allocation)
-    @loan_allocation = loan_allocation
+  def initialize(lending_limit)
+    @lending_limit = lending_limit
   end
 
   def group_header(index)
@@ -13,7 +13,7 @@ class LoanAllocationUtilisationPresenter
   end
 
   def title
-    @loan_allocation.title
+    @lending_limit.title
   end
 
   def chart_colour
@@ -27,11 +27,11 @@ class LoanAllocationUtilisationPresenter
   end
 
   def total_allocation
-    @total_allocation ||= @loan_allocation.allocation
+    @total_allocation ||= @lending_limit.allocation
   end
 
   def usage_amount
-    @usage_amount ||= Money.new(@loan_allocation.loans_using_allocation.sum(:amount))
+    @usage_amount ||= Money.new(@lending_limit.loans_using_allocation.sum(:amount))
   end
 
   def usage_percentage

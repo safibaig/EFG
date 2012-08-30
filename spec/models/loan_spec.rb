@@ -275,7 +275,7 @@ describe Loan do
   describe "#guarantee_rate" do
     before do
       loan.guarantee_rate = 75
-      loan.loan_allocation.guarantee_rate = 85
+      loan.lending_limit.guarantee_rate = 85
     end
 
     it "returns the loan's guarantee rate when present" do
@@ -291,7 +291,7 @@ describe Loan do
   describe "#premium_rate" do
     before do
       loan.premium_rate = 1.5
-      loan.loan_allocation.premium_rate = 2
+      loan.lending_limit.premium_rate = 2
     end
 
     it "returns the loan's premium rate when present" do

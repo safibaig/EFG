@@ -136,7 +136,7 @@ describe "loan details" do
   end
 
   context 'without a loan allocation' do
-    let(:loan) { FactoryGirl.build(:loan, :guaranteed, loan_allocation_id: nil) }
+    let(:loan) { FactoryGirl.build(:loan, :guaranteed, lending_limit_id: nil) }
 
     include_examples 'rendering loan details'
   end

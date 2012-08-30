@@ -2,9 +2,9 @@ class Lender < ActiveRecord::Base
   belongs_to :created_by, class_name: 'User'
   belongs_to :modified_by, class_name: 'User'
   has_many :lender_admins
+  has_many :lending_limits
   has_many :lender_users
   has_many :loans
-  has_many :loan_allocations
 
   attr_accessible :can_use_add_cap, :high_volume, :name,
     :organisation_reference_code, :primary_contact_email,

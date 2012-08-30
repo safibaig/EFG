@@ -1,4 +1,4 @@
-class LoanAllocation < ActiveRecord::Base
+class LendingLimit < ActiveRecord::Base
   include FormatterConcern
 
   # TODO: verify these are the correct states
@@ -38,7 +38,7 @@ class LoanAllocation < ActiveRecord::Base
   format :starts_on, with: QuickDateFormatter
 
   def allocation_type
-    LoanAllocationType.find(allocation_type_id)
+    LendingLimitType.find(allocation_type_id)
   end
 
   def title

@@ -10,9 +10,9 @@ FactoryGirl.define do
     primary_contact_phone '0123456789'
     primary_contact_email 'bob@example.com'
 
-    trait :with_loan_allocation do
+    trait :with_lending_limit do
       after :create do |lender|
-        FactoryGirl.create(:loan_allocation, lender: lender)
+        FactoryGirl.create(:lending_limit, lender: lender)
       end
     end
   end

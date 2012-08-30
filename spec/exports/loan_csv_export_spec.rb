@@ -28,7 +28,7 @@ describe LoanCsvExport do
         when "CancelReason", "CfeUser", "InterestRateType", "LegalForm", "LegalForm",
              "LenderUser", "LoanCategory", "LoanReason", "Lender", "RepaymentFrequency"
           value.name
-        when "LoanAllocation"
+        when "LendingLimit"
           value.title
         when "MonthDuration"
           value.total_months.to_s

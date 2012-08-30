@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe LoanAllocationsController do
+describe LendingLimitsController do
   let(:lender) { FactoryGirl.create(:lender) }
 
   describe 'GET index' do
@@ -40,10 +40,10 @@ describe LoanAllocationsController do
   end
 
   describe 'GET edit' do
-    let(:loan_allocation) { FactoryGirl.create(:loan_allocation) }
+    let(:lending_limit) { FactoryGirl.create(:lending_limit) }
 
     def dispatch
-      get :edit, lender_id: lender.id, id: loan_allocation.id
+      get :edit, lender_id: lender.id, id: lending_limit.id
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
@@ -54,10 +54,10 @@ describe LoanAllocationsController do
   end
 
   describe 'PUT update' do
-    let(:loan_allocation) { FactoryGirl.create(:loan_allocation, lender: lender, description: 'foo', starts_on: '1/1/11') }
+    let(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, description: 'foo', starts_on: '1/1/11') }
 
     def dispatch(params = {})
-      put :update, { lender_id: lender.id, id: loan_allocation.id }.merge(params)
+      put :update, { lender_id: lender.id, id: lending_limit.id }.merge(params)
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
@@ -71,10 +71,10 @@ describe LoanAllocationsController do
       before { sign_in(current_user) }
 
       it 'does not update starts_on attribute (amongst others)' do
-        dispatch(loan_allocation: { description: 'bar', starts_on: '2/2/12' })
-        loan_allocation.reload
-        loan_allocation.description.should == 'bar'
-        loan_allocation.starts_on.should == Date.new(2011, 1, 1)
+        dispatch(lending_limit: { description: 'bar', starts_on: '2/2/12' })
+        lending_limit.reload
+        lending_limit.description.should == 'bar'
+        lending_limit.starts_on.should == Date.new(2011, 1, 1)
       end
     end
   end

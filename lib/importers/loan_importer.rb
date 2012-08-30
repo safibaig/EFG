@@ -3,7 +3,7 @@ class LoanImporter < BaseImporter
   self.klass = Loan
 
   def self.extra_columns
-    [:created_by_id, :invoice_id, :lender_id, :loan_allocation_id,
+    [:created_by_id, :invoice_id, :lender_id, :lending_limit_id,
       :modified_by_id]
   end
 
@@ -167,7 +167,7 @@ class LoanImporter < BaseImporter
           attributes[:lender_id] = lender_id
         end
       when "LENDER_CAP_ID"
-        attributes[:loan_allocation_id] = (value.blank?) ? nil : LoanAllocation.find_by_legacy_id(value.to_i).id
+        attributes[:lending_limit_id] = (value.blank?) ? nil : LendingLimit.find_by_legacy_id(value.to_i).id
       when "EFG_INTEREST_TYPE"
         # V = variable (id: 1), F = fixed (id: 2)
         value = (value == 'V' ? 1 : 2) if value.present?

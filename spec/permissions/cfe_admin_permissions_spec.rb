@@ -170,9 +170,9 @@ describe CfeAdminPermissions do
     it { assert user.can_view?(Lender) }
   end
 
-  context 'LoanAllocations' do
-    it { assert user.can_create?(LoanAllocation) }
-    it { assert user.can_update?(LoanAllocation) }
-    it { assert user.can_view?(LoanAllocation) }
+  context 'LendingLimits' do
+    it { assert user.can_create?(LendingLimit) }
+    it { assert user.can_update?(LendingLimit) }
+    it { assert user.can_view?(LendingLimit) }
   end
 end

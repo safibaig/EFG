@@ -11,7 +11,7 @@
 
   <%= field_set_tag 'About the Borrower and Their Facility' do %>
     <%= f.input :amount, as: :currency %>
-    <%= f.input :loan_allocation_id, as: :select, collection: loan_allocation_options_for_select(@loan_eligibility_check.lender), prompt: 'Please select' %>
+    <%= f.input :lending_limit_id, as: :select, collection: loan_allocation_options_for_select(@loan_eligibility_check.lender), prompt: 'Please select' %>
     <%= f.input :repayment_duration, as: :duration %>
     <%= f.input :turnover, as: :currency %>
     <%= f.input :trading_date, as: :quick_date %>
