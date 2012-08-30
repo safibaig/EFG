@@ -8,6 +8,7 @@ FactoryGirl.define do
     factory :auditor_user, class: AuditorUser
     factory :cfe_admin, class: CfeAdmin
     factory :cfe_user, class: CfeUser
+    factory :super_user, class: SuperUser
 
     factory :lender_admin, class: LenderAdmin do
       lender
