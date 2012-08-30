@@ -6,7 +6,7 @@ class LoanAuditLogEntries
     @previous_state_change = nil
   end
 
-  # Pass the previous LoanStateChanage record to LoanAuditLog so
+  # Pass the previous LoanStateChange record to LoanAuditLog so
   # the from state can be determined. This mimmicks the legacy system.
   def each
     @loan_state_changes.each do |loan_state_change|
