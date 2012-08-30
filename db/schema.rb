@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120829135618) do
+ActiveRecord::Schema.define(:version => 20120829141527) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -84,36 +84,36 @@ ActiveRecord::Schema.define(:version => 20120829135618) do
   add_index "loan_allocations", ["lender_id"], :name => "index_loan_allocations_on_lender_id"
 
   create_table "loan_changes", :force => true do |t|
-    t.integer  "loan_id",                                  :null => false
-    t.integer  "created_by_id",                            :null => false
+    t.integer  "loan_id",                                               :null => false
+    t.integer  "created_by_id",                                         :null => false
     t.string   "oid"
-    t.integer  "seq",                       :default => 0, :null => false
-    t.date     "date_of_change",                           :null => false
+    t.integer  "seq",                                    :default => 0, :null => false
+    t.date     "date_of_change",                                        :null => false
     t.date     "maturity_date"
     t.date     "old_maturity_date"
     t.string   "business_name"
     t.string   "old_business_name"
-    t.integer  "lump_sum_repayment"
-    t.integer  "amount_drawn"
-    t.date     "modified_date",                            :null => false
+    t.integer  "lump_sum_repayment",        :limit => 8
+    t.integer  "amount_drawn",              :limit => 8
+    t.date     "modified_date",                                         :null => false
     t.string   "modified_user"
     t.string   "change_type_id"
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
-    t.integer  "amount"
-    t.integer  "old_amount"
+    t.integer  "amount",                    :limit => 8
+    t.integer  "old_amount",                :limit => 8
     t.date     "guaranteed_date"
     t.date     "old_guaranteed_date"
     t.date     "initial_draw_date"
     t.date     "old_initial_draw_date"
-    t.integer  "initial_draw_amount"
-    t.integer  "old_initial_draw_amount"
+    t.integer  "initial_draw_amount",       :limit => 8
+    t.integer  "old_initial_draw_amount",   :limit => 8
     t.string   "sortcode"
     t.string   "old_sortcode"
-    t.integer  "dti_demand_out_amount"
-    t.integer  "old_dti_demand_out_amount"
-    t.integer  "dti_demand_interest"
-    t.integer  "old_dti_demand_interest"
+    t.integer  "dti_demand_out_amount",     :limit => 8
+    t.integer  "old_dti_demand_out_amount", :limit => 8
+    t.integer  "dti_demand_interest",       :limit => 8
+    t.integer  "old_dti_demand_interest",   :limit => 8
     t.integer  "cap_id"
     t.integer  "old_cap_id"
     t.integer  "loan_term"
@@ -128,7 +128,7 @@ ActiveRecord::Schema.define(:version => 20120829135618) do
     t.integer  "realised_loan_id"
     t.integer  "realisation_statement_id"
     t.integer  "created_by_id"
-    t.integer  "realised_amount"
+    t.integer  "realised_amount",          :limit => 8
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "legacy_loan_id"
@@ -174,10 +174,10 @@ ActiveRecord::Schema.define(:version => 20120829135618) do
     t.boolean  "viable_proposition",                                                               :null => false
     t.boolean  "would_you_lend",                                                                   :null => false
     t.boolean  "collateral_exhausted",                                                             :null => false
-    t.integer  "amount",                                                                           :null => false
+    t.integer  "amount",                              :limit => 8,                                 :null => false
     t.integer  "lender_cap_id"
     t.integer  "repayment_duration",                                                               :null => false
-    t.integer  "turnover"
+    t.integer  "turnover",                            :limit => 8
     t.date     "trading_date"
     t.string   "sic_code",                                                                         :null => false
     t.integer  "loan_category_id"
@@ -203,7 +203,7 @@ ActiveRecord::Schema.define(:version => 20120829135618) do
     t.string   "town"
     t.integer  "interest_rate_type_id"
     t.decimal  "interest_rate",                                     :precision => 5,  :scale => 2
-    t.integer  "fees"
+    t.integer  "fees",                                :limit => 8
     t.boolean  "state_aid_is_valid"
     t.boolean  "facility_letter_sent"
     t.date     "facility_letter_date"
@@ -211,7 +211,7 @@ ActiveRecord::Schema.define(:version => 20120829135618) do
     t.boolean  "signed_direct_debit_received"
     t.boolean  "first_pp_received"
     t.date     "initial_draw_date"
-    t.integer  "initial_draw_value"
+    t.integer  "initial_draw_value",                  :limit => 8
     t.date     "maturity_date"
     t.string   "state"
     t.integer  "legal_form_id"
@@ -220,11 +220,11 @@ ActiveRecord::Schema.define(:version => 20120829135618) do
     t.integer  "cancelled_reason_id"
     t.text     "cancelled_comment"
     t.date     "borrower_demanded_on"
-    t.integer  "amount_demanded"
+    t.integer  "amount_demanded",                     :limit => 8
     t.date     "repaid_on"
     t.date     "no_claim_on"
     t.date     "dti_demanded_on"
-    t.integer  "dti_demand_outstanding"
+    t.integer  "dti_demand_outstanding",              :limit => 8
     t.text     "dti_reason"
     t.string   "dti_ded_code"
     t.integer  "legacy_id"
@@ -234,20 +234,20 @@ ActiveRecord::Schema.define(:version => 20120829135618) do
     t.date     "guaranteed_on"
     t.string   "modified_by_legacy_id"
     t.integer  "lender_legacy_id"
-    t.integer  "outstanding_amount"
+    t.integer  "outstanding_amount",                  :limit => 8
     t.boolean  "standard_cap"
     t.integer  "next_change_history_seq"
-    t.integer  "borrower_demand_outstanding"
+    t.integer  "borrower_demand_outstanding",         :limit => 8
     t.date     "realised_money_date"
     t.integer  "event_legacy_id"
-    t.integer  "state_aid"
+    t.integer  "state_aid",                           :limit => 8
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
     t.boolean  "notified_aid"
-    t.integer  "remove_guarantee_outstanding_amount"
+    t.integer  "remove_guarantee_outstanding_amount", :limit => 8
     t.date     "remove_guarantee_on"
     t.string   "remove_guarantee_reason"
-    t.integer  "dti_amount_claimed"
+    t.integer  "dti_amount_claimed",                  :limit => 8
     t.integer  "invoice_legacy_id"
     t.date     "settled_on"
     t.integer  "next_borrower_demand_seq"
@@ -259,7 +259,7 @@ ActiveRecord::Schema.define(:version => 20120829135618) do
     t.integer  "transferred_from_legacy_id"
     t.integer  "next_in_calc_seq"
     t.string   "loan_source",                         :limit => 1
-    t.integer  "dit_break_costs"
+    t.integer  "dit_break_costs",                     :limit => 8
     t.decimal  "guarantee_rate",                                    :precision => 16, :scale => 2
     t.decimal  "premium_rate",                                      :precision => 16, :scale => 2
     t.boolean  "legacy_small_loan"
@@ -267,18 +267,18 @@ ActiveRecord::Schema.define(:version => 20120829135618) do
     t.integer  "next_in_recover_seq"
     t.date     "recovery_on"
     t.integer  "recovery_statement_legacy_id"
-    t.integer  "dti_interest"
+    t.integer  "dti_interest",                        :limit => 8
     t.string   "loan_scheme",                         :limit => 1
     t.integer  "business_type"
     t.integer  "payment_period"
     t.decimal  "security_proportion",                               :precision => 5,  :scale => 2
-    t.decimal  "current_refinanced_value",                          :precision => 16, :scale => 2
-    t.decimal  "final_refinanced_value",                            :precision => 16, :scale => 2
+    t.integer  "current_refinanced_value",            :limit => 8
+    t.integer  "final_refinanced_value",              :limit => 8
     t.decimal  "original_overdraft_proportion",                     :precision => 5,  :scale => 2
     t.decimal  "refinance_security_proportion",                     :precision => 5,  :scale => 2
-    t.integer  "overdraft_limit"
+    t.integer  "overdraft_limit",                     :limit => 8
     t.boolean  "overdraft_maintained"
-    t.integer  "invoice_discount_limit"
+    t.integer  "invoice_discount_limit",              :limit => 8
     t.decimal  "debtor_book_coverage",                              :precision => 5,  :scale => 2
     t.decimal  "debtor_book_topup",                                 :precision => 5,  :scale => 2
     t.integer  "loan_allocation_id"
@@ -313,21 +313,21 @@ ActiveRecord::Schema.define(:version => 20120829135618) do
   end
 
   create_table "recoveries", :force => true do |t|
-    t.integer  "loan_id",                                           :null => false
-    t.date     "recovered_on",                                      :null => false
-    t.integer  "total_proceeds_recovered"
-    t.integer  "total_liabilities_after_demand"
-    t.integer  "total_liabilities_behind"
-    t.integer  "additional_break_costs"
-    t.integer  "additional_interest_accrued"
-    t.integer  "amount_due_to_dti",                                 :null => false
-    t.boolean  "realise_flag",                   :default => false, :null => false
-    t.integer  "created_by_id",                                     :null => false
-    t.integer  "outstanding_non_efg_debt",                          :null => false
-    t.integer  "non_linked_security_proceeds",                      :null => false
-    t.integer  "linked_security_proceeds",                          :null => false
-    t.integer  "realisations_attributable",                         :null => false
-    t.integer  "realisations_due_to_gov"
+    t.integer  "loan_id",                                                        :null => false
+    t.date     "recovered_on",                                                   :null => false
+    t.integer  "total_proceeds_recovered",       :limit => 8
+    t.integer  "total_liabilities_after_demand", :limit => 8
+    t.integer  "total_liabilities_behind",       :limit => 8
+    t.integer  "additional_break_costs",         :limit => 8
+    t.integer  "additional_interest_accrued",    :limit => 8
+    t.integer  "amount_due_to_dti",              :limit => 8,                    :null => false
+    t.boolean  "realise_flag",                                :default => false, :null => false
+    t.integer  "created_by_id",                                                  :null => false
+    t.integer  "outstanding_non_efg_debt",       :limit => 8,                    :null => false
+    t.integer  "non_linked_security_proceeds",   :limit => 8,                    :null => false
+    t.integer  "linked_security_proceeds",       :limit => 8,                    :null => false
+    t.integer  "realisations_attributable",      :limit => 8,                    :null => false
+    t.integer  "realisations_due_to_gov",        :limit => 8
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "realisation_statement_id"
@@ -339,16 +339,16 @@ ActiveRecord::Schema.define(:version => 20120829135618) do
   end
 
   create_table "state_aid_calculations", :force => true do |t|
-    t.integer  "loan_id",                                                           :null => false
+    t.integer  "loan_id",                                                                        :null => false
     t.integer  "initial_draw_year"
-    t.integer  "initial_draw_amount",                                               :null => false
+    t.integer  "initial_draw_amount",               :limit => 8,                                 :null => false
     t.integer  "initial_draw_months"
     t.integer  "initial_capital_repayment_holiday"
-    t.integer  "second_draw_amount"
+    t.integer  "second_draw_amount",                :limit => 8
     t.integer  "second_draw_months"
-    t.integer  "third_draw_amount"
+    t.integer  "third_draw_amount",                 :limit => 8
     t.integer  "third_draw_months"
-    t.integer  "fourth_draw_amount"
+    t.integer  "fourth_draw_amount",                :limit => 8
     t.integer  "fourth_draw_months"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -368,9 +368,9 @@ ActiveRecord::Schema.define(:version => 20120829135618) do
     t.boolean  "promote"
     t.boolean  "agriculture"
     t.integer  "guarantee_rate"
-    t.decimal  "npv",                               :precision => 2,  :scale => 1
-    t.decimal  "prem_rate",                         :precision => 2,  :scale => 1
-    t.decimal  "euro_conv_rate",                    :precision => 17, :scale => 14
+    t.decimal  "npv",                                            :precision => 2,  :scale => 1
+    t.decimal  "prem_rate",                                      :precision => 2,  :scale => 1
+    t.decimal  "euro_conv_rate",                                 :precision => 17, :scale => 14
     t.integer  "elsewhere_perc"
     t.integer  "obj1_perc"
     t.datetime "ar_timestamp"

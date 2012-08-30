@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe LoanRealisation do
 
-  describe 'validations' do
+  let(:loan_realisation) { FactoryGirl.build(:loan_realisation) }
 
-    let(:loan_realisation) { FactoryGirl.build(:loan_realisation) }
+  describe 'validations' do
 
     it 'should have a valid factory' do
       loan_realisation.should be_valid
@@ -30,6 +30,13 @@ describe LoanRealisation do
       loan_realisation.should_not be_valid
     end
 
+  end
+
+  describe "realised_amount" do
+    it_should_behave_like "money attribute" do
+      let(:record) { FactoryGirl.build(:loan_realisation) }
+      let(:money_attribute) { :realised_amount }
+    end
   end
 
 end
