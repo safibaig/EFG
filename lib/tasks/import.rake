@@ -68,6 +68,11 @@ import_namespace = namespace :import do
     end
   end
 
+  desc 'SFLG_DED_DATA_TABLE'
+  task ded_code: :environment do
+    _import DedCode
+  end
+
   def _import(klass)
     if klass.count.zero?
       require 'importers'
