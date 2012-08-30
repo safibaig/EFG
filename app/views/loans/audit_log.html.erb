@@ -1,0 +1,34 @@
+<div class="page-header">
+  <h1><%= loan_title('Loan audit', @loan) %></h1>
+</div>
+
+<%= loan_summary(@loan) do %>
+  <div class="form-actions">
+    <%= link_to 'Loan Summary', loan_path(@loan), class: 'btn' %>
+  </div>
+<% end %>
+
+<p>This page provides the loan audit record</p>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>From state</th>
+      <th>To state</th>
+      <th>Modified on</th>
+      <th>By</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @audit_log_entries.each_with_index do |audit_log_entry, index| %>
+      <tr id="loan_state_change<%= index %>">
+        <td><%= audit_log_entry.event_name %></td>
+        <td><%= audit_log_entry.from_state %></td>
+        <td><%= audit_log_entry.to_state %></td>
+        <td><%= audit_log_entry.modified_on %></td>
+        <td><%= audit_log_entry.modified_by %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

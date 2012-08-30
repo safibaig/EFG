@@ -49,7 +49,7 @@ class Loan < ActiveRecord::Base
   has_many :loan_realisations, foreign_key: 'realised_loan_id'
   has_many :recoveries
   has_many :loan_securities
-  has_many :state_changes, class_name: 'LoanStateChange'
+  has_many :state_changes, class_name: 'LoanStateChange', order: [:modified_on, :id]
 
   scope :offered,        where(state: Loan::Offered)
   scope :demanded,       where(state: Loan::Demanded)
