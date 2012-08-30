@@ -1,7 +1,4 @@
 class EligibilityCheck
-  def self.eligible?(loan)
-    EligibilityCheck.new(loan).eligible?
-  end
 
   def initialize(loan)
     @loan = loan
