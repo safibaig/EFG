@@ -65,7 +65,6 @@ describe 'CfeUser management' do
       fill_in 'last_name', 'Example'
       fill_in 'email', 'bill.example@example.com'
       check 'cfe_user_disabled'
-      check 'cfe_user_locked'
 
       click_button 'Update CfE User'
 
@@ -74,7 +73,6 @@ describe 'CfeUser management' do
 
       user.reload.modified_by.should == current_user
       user.should be_disabled
-      user.reload.should be_locked
     end
   end
 
