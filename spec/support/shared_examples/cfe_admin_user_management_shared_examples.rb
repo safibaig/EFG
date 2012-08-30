@@ -63,7 +63,6 @@ shared_examples_for "CfeAdmin user management" do
       fill_in 'last_name', 'Example'
       fill_in 'email', 'bill.example@example.com'
       check 'cfe_admin_disabled'
-      check 'cfe_admin_locked'
 
       click_button 'Update CfE Admin'
 
@@ -72,7 +71,6 @@ shared_examples_for "CfeAdmin user management" do
 
       user.reload.modified_by.should == current_user
       user.should be_disabled
-      user.reload.should be_locked
     end
   end
 
