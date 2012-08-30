@@ -29,7 +29,7 @@ describe LoanStateChangeImporter do
       dispatch
 
       loan_state_change1 = LoanStateChange.first
-      loan_state_change1.legacy_id = 144765
+      loan_state_change1.legacy_id.should == "144765"
       loan_state_change1.version.should == 0
       loan_state_change1.state.should == Loan::Eligible
       loan_state_change1.modified_on.should == Date.parse("24-MAY-07")
@@ -37,7 +37,7 @@ describe LoanStateChangeImporter do
       loan_state_change1.event_id.should == 1
 
       loan_state_change2 = LoanStateChange.last
-      loan_state_change2.legacy_id = 144765
+      loan_state_change2.legacy_id.should == "144765"
       loan_state_change2.version.should == 2
       loan_state_change2.state.should == Loan::Incomplete
       loan_state_change2.modified_on.should == Date.parse("26-MAY-07")
