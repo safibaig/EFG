@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120829141527) do
+ActiveRecord::Schema.define(:version => 20120830115650) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -123,6 +123,18 @@ ActiveRecord::Schema.define(:version => 20120829141527) do
   end
 
   add_index "loan_changes", ["loan_id", "seq"], :name => "index_loan_changes_on_loan_id_and_seq", :unique => true
+
+  create_table "loan_ineligibility_reasons", :force => true do |t|
+    t.integer  "loan_id"
+    t.text     "reason"
+    t.integer  "sequence",            :default => 0, :null => false
+    t.datetime "ar_timestamp"
+    t.datetime "ar_insert_timestamp"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "loan_ineligibility_reasons", ["loan_id"], :name => "index_loan_ineligibility_reasons_on_loan_id"
 
   create_table "loan_realisations", :force => true do |t|
     t.integer  "realised_loan_id"
