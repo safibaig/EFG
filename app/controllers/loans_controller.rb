@@ -17,7 +17,7 @@ class LoansController < ApplicationController
   end
 
   def audit_log
-    @audit_log_entries = LoanAuditLogEntries.new(@loan.state_changes)
+    @audit_log_entries = LoanAuditLog.generate(@loan.state_changes)
   end
 
   private

@@ -2,6 +2,16 @@ class LoanAuditLog
 
   attr_reader :loan_state_change, :previous_state_change
 
+  def self.generate(loan_state_changes)
+    previous_state_change = nil
+
+    loan_state_changes.map do |loan_state_change|
+      loan_audit_log = new(loan_state_change, previous_state_change)
+      previous_state_change = loan_state_change
+      loan_audit_log
+    end
+  end
+
   def initialize(loan_state_change, previous_state_change = nil)
     @loan_state_change = loan_state_change
     @previous_state_change = previous_state_change

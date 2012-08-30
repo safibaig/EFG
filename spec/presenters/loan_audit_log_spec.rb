@@ -6,6 +6,16 @@ describe LoanAuditLog do
 
   let(:loan_audit_log) { LoanAuditLog.new(loan_state_change) }
 
+  describe '.generate' do
+    let(:audit_log_entries) { LoanAuditLog.generate([ loan_state_change ]) }
+
+    it "should return array of LoanAuditLog instances" do
+      audit_log_entries.should be_instance_of(Array)
+      audit_log_entries.size.should == 1
+      audit_log_entries.first.should be_instance_of(LoanAuditLog)
+    end
+  end
+
   describe '#event_name' do
     it 'should return "Check Eligibility" when event name is "Accept"' do
       loan_state_change.event_id = 0
