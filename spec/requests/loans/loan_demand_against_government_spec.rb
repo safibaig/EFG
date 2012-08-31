@@ -6,6 +6,8 @@ describe 'loan demand against government' do
   let(:current_lender) { FactoryGirl.create(:lender) }
   let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
   let(:loan) { FactoryGirl.create(:loan, :lender_demand, lender: current_lender) }
+  let!(:ded_code) { FactoryGirl.create(:ded_code) }
+
   before { login_as(current_user, scope: :user) }
 
   it 'entering further loan information' do
@@ -14,7 +16,7 @@ describe 'loan demand against government' do
 
     fill_in 'amount_demanded', '£10,000.42'
     fill_in 'dti_reason', 'Something'
-    fill_in 'dti_ded_code', 'A.10.10'
+    select ded_code.code, from: 'loan_demand_against_government_dti_ded_code'
 
     click_button 'Submit'
 
