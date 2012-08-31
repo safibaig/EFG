@@ -4,7 +4,6 @@ class LoanReportCsvRow
     @loan = loan
   end
 
-  # TODO - add DED table data
   def row
     [
       @loan.reference,
@@ -46,10 +45,10 @@ class LoanReportCsvRow
       @loan.dti_demand_outstanding.to_s,
       @loan.dti_amount_claimed.to_s,
       @loan.dti_interest,
-      '', # @loan.ded.group_description,
-      '', # @loan.ded.category_description,
-      '', # @loan.ded.code_description,
-      '', # @loan.ded.code,
+      @loan.ded_code.try(:group_description),
+      @loan.ded_code.try(:category_description),
+      @loan.ded_code.try(:code_description),
+      @loan.ded_code.try(:code),
       @loan.dti_reason,
       @loan.dit_break_costs.to_s,
       @loan._last_recovery_on ? @loan._last_recovery_on.strftime('%d-%m-%Y') : '',
