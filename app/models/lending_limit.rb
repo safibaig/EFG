@@ -44,6 +44,11 @@ class LendingLimit < ActiveRecord::Base
     LendingLimitType.find(allocation_type_id)
   end
 
+  def deactivate!
+    self.active = false
+    save(validate: false)
+  end
+
   def title
     start_date = starts_on.strftime('%B %Y')
     end_date = ends_on.strftime('%B %Y')

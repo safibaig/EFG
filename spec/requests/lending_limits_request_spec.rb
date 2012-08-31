@@ -71,6 +71,25 @@ describe 'LendingLimits' do
     end
   end
 
+  describe 'deactivating a LendingLimit' do
+    let!(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, name: 'Foo', allocation: Money.new(1_000_00)) }
+
+    before do
+      visit root_path
+      click_link 'Manage Lenders'
+      click_link '£1,000.00'
+      click_link lending_limit.name
+    end
+
+    it do
+      click_button 'Deactivate Lending Limit'
+
+      lending_limit.reload
+      lending_limit.active.should == false
+      lending_limit.modified_by.should == current_user
+    end
+  end
+
   private
     def choose_radio_button(attribute, value)
       choose "lending_limit_#{attribute}_#{value}"

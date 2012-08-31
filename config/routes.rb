@@ -9,7 +9,11 @@ EFG::Application.routes.draw do
       post :deactivate
     end
 
-    resources :lending_limits
+    resources :lending_limits do
+      member do
+        post :deactivate
+      end
+    end
   end
 
   resources :loans, only: [:show] do

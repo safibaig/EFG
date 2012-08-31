@@ -1,6 +1,6 @@
 class LendingLimitsController < ApplicationController
   before_filter :verify_create_permission, only: [:new, :create]
-  before_filter :verify_update_permission, only: [:edit, :update]
+  before_filter :verify_update_permission, only: [:edit, :update, :deactivate]
   before_filter :verify_view_permission, only: [:index]
   before_filter :loan_lender
 
@@ -38,6 +38,13 @@ class LendingLimitsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def deactivate
+    @lending_limit = @lender.lending_limits.find(params[:id])
+    @lending_limit.modified_by = current_user
+    @lending_limit.deactivate!
+    redirect_to lender_lending_limits_url(@lender)
   end
 
   private

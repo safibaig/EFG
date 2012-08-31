@@ -40,7 +40,7 @@ describe LendingLimitsController do
   end
 
   describe 'GET edit' do
-    let(:lending_limit) { FactoryGirl.create(:lending_limit) }
+    let(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender) }
 
     def dispatch
       get :edit, lender_id: lender.id, id: lending_limit.id
@@ -77,5 +77,19 @@ describe LendingLimitsController do
         lending_limit.starts_on.should == Date.new(2011, 1, 1)
       end
     end
+  end
+
+  describe 'POST deactivate' do
+    let(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender) }
+
+    def dispatch
+      post :deactivate, lender_id: lender.id, id: lending_limit.id
+    end
+
+    it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
+    it_behaves_like 'LenderUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 end
