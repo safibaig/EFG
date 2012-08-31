@@ -17,4 +17,10 @@ class StaticAssociation < Struct.new(:id, :name)
       item.id == id
     }
   end
+
+  def self.find_by_name(name)
+    all.detect { |item|
+      item.name == name
+    }
+  end
 end

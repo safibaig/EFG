@@ -1,6 +1,6 @@
 class LoansController < ApplicationController
   before_filter :verify_view_permission
-  before_filter :load_loan, only: [:show, :details]
+  before_filter :load_loan, only: [:show, :details, :audit_log]
 
   def show
     respond_to do |format|
@@ -14,6 +14,10 @@ class LoansController < ApplicationController
       format.html
       format.csv { generate_csv(@loan) }
     end
+  end
+
+  def audit_log
+    @audit_log_entries = LoanAuditLog.generate(@loan.state_changes)
   end
 
   private

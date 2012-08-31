@@ -37,4 +37,8 @@ module LoanHelper
     yield if block_given? && loan_category_ids.include?(loan.loan_category_id)
   end
 
+  def loan_state_history_includes?(loan, *states)
+    (loan.state_history & states).size > 0
+  end
+
 end

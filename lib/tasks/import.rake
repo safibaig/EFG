@@ -36,6 +36,11 @@ import_namespace = namespace :import do
     _import LoanSecurity
   end
 
+  desc 'SFLG_LOAN_AUDIT_DATA_TABLE'
+  task loan_state_changes: :loans do
+    _import LoanStateChange
+  end
+
   desc 'SFLG_LOAN_DATA_TABLE'
   task loans: [:invoices, :lending_limits] do
     _import Loan
@@ -61,6 +66,11 @@ import_namespace = namespace :import do
     _import User do
       LenderUserAssociationImporter.import
     end
+  end
+
+  desc 'SFLG_LOAN_RR_DATA_TABLE'
+  task loan_ineligibility_reasons: [:loans] do
+    _import LoanIneligibilityReason
   end
 
   def _import(klass)

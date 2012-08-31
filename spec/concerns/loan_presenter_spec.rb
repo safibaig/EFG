@@ -78,7 +78,8 @@ describe LoanPresenter do
 
   describe "#save" do
     it "should delegate to loan" do
-      loan.should_receive(:save).and_return(true)
+      loan.should_receive(:transaction).and_yield
+      loan.should_receive(:save!).and_return(true)
 
       transition.save.should == true
     end

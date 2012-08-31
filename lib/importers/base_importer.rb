@@ -10,6 +10,29 @@ class BaseImporter
 
   attr_accessor :attributes, :row
 
+  LOAN_STATE_MAPPING = {
+    "1" => Loan::Rejected,
+    "2" => Loan::Eligible,
+    "3" => Loan::Cancelled,
+    "4" => Loan::Incomplete,
+    "5" => Loan::Completed,
+    "6" => Loan::Offered,
+    "7" => Loan::AutoCancelled,
+    "8" => Loan::Guaranteed,
+    "9" => Loan::LenderDemand,
+    "10" => Loan::Repaid,
+    "11" => Loan::Removed,
+    "12" => Loan::RepaidFromTransfer,
+    "13" => Loan::AutoRemoved,
+    "14" => Loan::NotDemanded,
+    "15" => Loan::Demanded,
+    "16" => Loan::Settled,
+    "17" => Loan::Realised,
+    "18" => Loan::Recovered,
+    "19" => Loan::IncompleteLegacy,
+    "20" => Loan::CompleteLegacy,
+  }
+
   def initialize(row)
     @row = row
     @attributes = self.class.empty_attributes.dup

@@ -304,4 +304,25 @@ describe Loan do
     end
   end
 
+  describe "#state_history" do
+    it "should return array of unique states a loan has or previously had" do
+      loan.state = Loan::Demanded
+      loan.save!
+
+      FactoryGirl.create(:loan_state_change, loan: loan, state: Loan::Eligible)
+      FactoryGirl.create(:loan_state_change, loan: loan, state: Loan::Completed)
+      FactoryGirl.create(:loan_state_change, loan: loan, state: Loan::Offered)
+      FactoryGirl.create(:loan_state_change, loan: loan, state: Loan::Guaranteed)
+      FactoryGirl.create(:loan_state_change, loan: loan, state: Loan::Guaranteed)
+
+      loan.state_history.should == [
+        Loan::Eligible,
+        Loan::Completed,
+        Loan::Offered,
+        Loan::Guaranteed,
+        Loan::Demanded
+      ]
+    end
+  end
+
 end

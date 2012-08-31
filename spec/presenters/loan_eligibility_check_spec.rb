@@ -103,17 +103,50 @@ describe LoanEligibilityCheck do
     let(:loan_eligibility_check) { FactoryGirl.build(:loan_eligibility_check) }
 
     it "should set the state to Eligible if its eligible" do
-      EligibilityCheck.should_receive(:eligible?).and_return(true)
+      EligibilityCheck.any_instance.stub(:eligible?).and_return(true)
 
       loan_eligibility_check.save
       loan_eligibility_check.loan.state.should == Loan::Eligible
     end
 
-    it "should set the state to Rejected if its eligible" do
-      EligibilityCheck.should_receive(:eligible?).and_return(false)
+    it "should set the state to Rejected if its not eligible" do
+      EligibilityCheck.any_instance.stub(:eligible?).and_return(false)
+      EligibilityCheck.any_instance.stub(:reasons).and_return([ "Reason 1", "Reason 2" ])
 
       loan_eligibility_check.save
       loan_eligibility_check.loan.state.should == Loan::Rejected
+    end
+
+    it "should create rejected loan state change if its not eligible" do
+      EligibilityCheck.any_instance.stub(:eligible?).and_return(false)
+      EligibilityCheck.any_instance.stub(:reasons).and_return([ "Reason 1", "Reason 2" ])
+
+      expect {
+        loan_eligibility_check.save
+      }.to change(LoanStateChange, :count).by(1)
+
+      LoanStateChange.last.event.should == LoanEvent.find(0)
+    end
+
+    it "should create accepted loan state change if its eligible" do
+      EligibilityCheck.any_instance.stub(:eligible?).and_return(true)
+
+      expect {
+        loan_eligibility_check.save
+      }.to change(LoanStateChange, :count).by(1)
+
+      LoanStateChange.last.event.should == LoanEvent.find(1)
+    end
+
+    it "should create loan ineligibility record if its not eligible" do
+      EligibilityCheck.any_instance.stub(:eligible?).and_return(false)
+      EligibilityCheck.any_instance.stub(:reasons).and_return([ "Reason 1", "Reason 2" ])
+
+      expect {
+        loan_eligibility_check.save
+      }.to change(LoanIneligibilityReason, :count).by(1)
+
+      LoanIneligibilityReason.last.reason.should == "Reason 1\nReason 2"
     end
   end
 end

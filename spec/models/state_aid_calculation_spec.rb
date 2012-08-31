@@ -1,8 +1,10 @@
 require 'spec_helper'
 
 describe StateAidCalculation do
+
+  let(:state_aid_calculation) { FactoryGirl.build(:state_aid_calculation) }
+
   describe 'validations' do
-    let(:state_aid_calculation) { FactoryGirl.build(:state_aid_calculation) }
 
     it 'has a valid Factory' do
       state_aid_calculation.should be_valid

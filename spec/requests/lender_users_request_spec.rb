@@ -77,7 +77,6 @@ describe 'LenderUser management' do
       fill_in 'last_name', 'Example'
       fill_in 'email', 'bill.example@example.com'
       check 'lender_user_disabled'
-      check 'lender_user_locked'
 
       click_button 'Update User'
 
@@ -86,7 +85,6 @@ describe 'LenderUser management' do
 
       user.reload.modified_by.should == current_user
       user.should be_disabled
-      user.should be_locked
     end
 
     it 'shows warning when user has not password' do

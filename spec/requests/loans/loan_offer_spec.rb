@@ -22,6 +22,8 @@ describe 'loan offer' do
     loan.facility_letter_date.should == Date.new(2012, 5, 24)
     loan.facility_letter_sent.should == true
     loan.modified_by.should == current_user
+
+    should_log_loan_state_change(loan, Loan::Offered, 5)
   end
 
   it 'does not continue with invalid values' do

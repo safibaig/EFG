@@ -2,7 +2,7 @@ class LoanDemandToBorrower
   include LoanPresenter
   include LoanStateTransition
 
-  transition from: Loan::Guaranteed, to: Loan::LenderDemand
+  transition from: Loan::Guaranteed, to: Loan::LenderDemand, event: :demand_to_borrower
 
   attribute :borrower_demanded_on
   attribute :borrower_demand_outstanding

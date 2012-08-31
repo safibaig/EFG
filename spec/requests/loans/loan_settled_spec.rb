@@ -66,6 +66,9 @@ describe "loan settled" do
     page.should have_content('LOGIHLJ-02')
     page.should_not have_content('MF6XT4Z-01')
     page.should_not have_content('HJD4JF8-01')
+
+    should_log_loan_state_change(loan1, Loan::Settled, 18)
+    should_log_loan_state_change(loan3, Loan::Settled, 18)
   end
 
   it "validate the details" do

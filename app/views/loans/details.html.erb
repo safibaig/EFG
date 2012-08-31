@@ -77,85 +77,107 @@
   <%= table.row 'updated_at', header: 'Last Modified On' %>
 <% end %>
 
-<h3>Application cancelled</h3>
-<%= loan_details_table(@loan, 'simple_form.labels.loan_cancel') do |table| %>
-  <%= table.row 'cancelled_reason', header: t('simple_form.labels.loan_cancel.cancelled_reason_id') %>
-  <%= table.row 'cancelled_comment' %>
-  <%= table.row 'cancelled_on' %>
+<% if loan_state_history_includes?(@loan, Loan::Cancelled) %>
+  <h3>Application cancelled</h3>
+  <%= loan_details_table(@loan, 'simple_form.labels.loan_cancel') do |table| %>
+    <%= table.row 'cancelled_reason', header: t('simple_form.labels.loan_cancel.cancelled_reason_id') %>
+    <%= table.row 'cancelled_comment' %>
+    <%= table.row 'cancelled_on' %>
+  <% end %>
 <% end %>
 
-<h3>Offer Scheme Facility</h3>
-<%= loan_details_table(@loan, 'simple_form.labels.loan_offer') do |table| %>
-  <%= table.row 'facility_letter_sent' %>
-  <%= table.row 'facility_letter_date' %>
+<% if loan_state_history_includes?(@loan, Loan::Offered) %>
+  <h3>Offer Scheme Facility</h3>
+  <%= loan_details_table(@loan, 'simple_form.labels.loan_offer') do |table| %>
+    <%= table.row 'facility_letter_sent' %>
+    <%= table.row 'facility_letter_date' %>
+  <% end %>
 <% end %>
 
-<h3>Guarantee and Initial Draw</h3>
-<%= loan_details_table(@loan, 'simple_form.labels.loan_guarantee') do |table| %>
-  <%= table.row 'received_declaration' %>
-  <%= table.row 'first_pp_received' %>
-  <%= table.row 'signed_direct_debit_received' %>
-  <%= table.row 'initial_draw_date' %>
-  <%= table.row 'initial_draw_value' %>
-  <tr>
-    <th>Cumulative amount drawn to date</th>
-    <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
-  </tr>
-  <tr>
-    <th>Cumulative amount of lump sum(s) repaid to date</th>
-    <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
-  </tr>
+<% if loan_state_history_includes?(@loan, Loan::Guaranteed) %>
+  <h3>Guarantee and Initial Draw</h3>
+  <%= loan_details_table(@loan, 'simple_form.labels.loan_guarantee') do |table| %>
+    <%= table.row 'received_declaration' %>
+    <%= table.row 'first_pp_received' %>
+    <%= table.row 'signed_direct_debit_received' %>
+    <%= table.row 'initial_draw_date' %>
+    <%= table.row 'initial_draw_value' %>
+    <tr>
+      <th>Cumulative amount drawn to date</th>
+      <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+    </tr>
+    <tr>
+      <th>Cumulative amount of lump sum(s) repaid to date</th>
+      <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+    </tr>
+  <% end %>
 <% end %>
 
-<h3>Demand on Borrower</h3>
-<%= loan_details_table(@loan, 'simple_form.labels.loan_demand_to_borrower') do |table| %>
-  <%= table.row 'borrower_demanded_on' %>
-  <%= table.row 'borrower_demand_outstanding' %>
+<% if loan_state_history_includes?(@loan, Loan::LenderDemand) %>
+  <h3>Demand on Borrower</h3>
+  <%= loan_details_table(@loan, 'simple_form.labels.loan_demand_to_borrower') do |table| %>
+    <%= table.row 'borrower_demanded_on' %>
+    <%= table.row 'borrower_demand_outstanding' %>
+  <% end %>
 <% end %>
 
-<h3>Remove Guarantee</h3>
-<%= loan_details_table(@loan, 'simple_form.labels.loan_remove') do |table| %>
-  <%= table.row 'remove_guarantee_outstanding_amount' %>
-  <%= table.row 'remove_guarantee_on' %>
-  <%= table.row 'remove_guarantee_reason' %>
+<% if loan_state_history_includes?(@loan, Loan::Removed) %>
+  <h3>Remove Guarantee</h3>
+  <%= loan_details_table(@loan, 'simple_form.labels.loan_remove') do |table| %>
+    <%= table.row 'remove_guarantee_outstanding_amount' %>
+    <%= table.row 'remove_guarantee_on' %>
+    <%= table.row 'remove_guarantee_reason' %>
+  <% end %>
 <% end %>
 
-<h3>Loan Repaid</h3>
-<%= loan_details_table(@loan, 'simple_form.labels.loan_repay') do |table| %>
-  <%= table.row 'repaid_on' %>
+<% if loan_state_history_includes?(@loan, Loan::Repaid) %>
+  <h3>Loan Repaid</h3>
+  <%= loan_details_table(@loan, 'simple_form.labels.loan_repay') do |table| %>
+    <%= table.row 'repaid_on' %>
+  <% end %>
 <% end %>
 
-<h3>No Demand Made Against Government Guarantee</h3>
-<%= loan_details_table(@loan, 'simple_form.labels.loan_no_claim') do |table| %>
-  <%= table.row 'no_claim_on' %>
+<% if loan_state_history_includes?(@loan, Loan::NotDemanded) %>
+  <h3>No Demand Made Against Government Guarantee</h3>
+  <%= loan_details_table(@loan, 'simple_form.labels.loan_no_claim') do |table| %>
+    <%= table.row 'no_claim_on' %>
+  <% end %>
 <% end %>
 
-<h3>Demand against Government Guarantee</h3>
-<%= loan_details_table(@loan, 'simple_form.labels.loan_demand_against_government') do |table| %>
-  <%= table.row 'dti_demanded_on' %>
-  <%= table.row 'dti_demand_outstanding' %>
-  <%= table.row 'dti_ded_code' %>
-  <% # TODO: Include further DED association details. %>
-  <%= table.row 'dti_reason' %>
+<% if loan_state_history_includes?(@loan, Loan::Demanded) %>
+  <h3>Demand against Government Guarantee</h3>
+  <%= loan_details_table(@loan, 'simple_form.labels.loan_demand_against_government') do |table| %>
+    <%= table.row 'dti_demanded_on' %>
+    <%= table.row 'dti_demand_outstanding' %>
+    <%= table.row 'dti_ded_code' %>
+    <% # TODO: Include further DED association details. %>
+    <%= table.row 'dti_reason' %>
+  <% end %>
 <% end %>
 
-<h3>Make demand against Government Guarantee</h3>
-<%= loan_details_table(@loan, 'simple_form.labels.loan_settle_claim') do |table| %>
-  <%= table.row 'settled_on' %>
-  <% # TODO: Not sure where 2 more fields come from. %>
+<% if loan_state_history_includes?(@loan, Loan::Settled) %>
+  <h3>Make demand against Government Guarantee</h3>
+  <%= loan_details_table(@loan, 'simple_form.labels.loan_settle_claim') do |table| %>
+    <%= table.row 'settled_on' %>
+    <% # TODO: Not sure where 2 more fields come from. %>
+  <% end %>
 <% end %>
 
-<h3>Recover</h3>
-<%= loan_details_table(@loan, 'simple_form.labels.loan_recovery') do |table| %>
-  <tr>
-    <th>Total of all previous recoveries</th>
-    <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
-  </tr>
-  <%= table.row 'recovery_on' %>
+<% if loan_state_history_includes?(@loan, Loan::Recovered) %>
+  <h3>Recover</h3>
+  <%= loan_details_table(@loan, 'simple_form.labels.loan_recovery') do |table| %>
+    <tr>
+      <th>Total of all previous recoveries</th>
+      <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+    </tr>
+    <%= table.row 'recovery_on' %>
+  <% end %>
 <% end %>
 
-<h3>Realise Money</h3>
-<%= loan_details_table(@loan, 'simple_form.labels.loan_realise') do |table| %>
-  <%= table.row 'realised_money_date' %>
-  <% # TODO: More Realised fields. %>
+<% if loan_state_history_includes?(@loan, Loan::Realised) %>
+  <h3>Realise Money</h3>
+  <%= loan_details_table(@loan, 'simple_form.labels.loan_realise') do |table| %>
+    <%= table.row 'realised_money_date' %>
+    <% # TODO: More Realised fields. %>
+  <% end %>
 <% end %>

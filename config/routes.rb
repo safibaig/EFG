@@ -23,6 +23,7 @@ EFG::Application.routes.draw do
 
     member do
       get :details
+      get :audit_log
     end
 
     resource :cancel, only: [:new, :create], controller: 'loan_cancels'

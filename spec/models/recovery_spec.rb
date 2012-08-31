@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Recovery do
-  describe 'validations' do
-    let(:recovery) { FactoryGirl.build(:recovery) }
+  let(:recovery) { FactoryGirl.build(:recovery) }
 
+  describe 'validations' do
     it 'has a valid Factory' do
       recovery.should be_valid
     end
@@ -75,6 +75,16 @@ describe Recovery do
       it 'stores the recovered date on the loan' do
         recovery.save_and_update_loan
         loan.reload.recovery_on.should == recovery.recovered_on
+      end
+
+      it 'creates a new loan state change record for the state change' do
+        expect {
+          recovery.save_and_update_loan
+        }.to change(LoanStateChange, :count).by(1)
+
+        state_change = loan.state_changes.last
+        state_change.event_id.should == 20
+        state_change.state.should == Loan::Recovered
       end
     end
 

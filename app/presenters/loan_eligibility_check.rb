@@ -35,7 +35,28 @@ class LoanEligibilityCheck
     errors.add(:repayment_duration, :greater_than, count: 0) unless repayment_duration && repayment_duration.total_months > 0
   end
 
+  after_save :save_ineligibility_reasons, unless: :is_eligible?
+
   def transition_to
-    EligibilityCheck.eligible?(loan) ? Loan::Eligible : Loan::Rejected
+    is_eligible? ? Loan::Eligible : Loan::Rejected
   end
+
+  def event
+    is_eligible? ? LoanEvent.find_by_name("Accept") : LoanEvent.find_by_name("Reject")
+  end
+
+  private
+
+  def eligibility_check
+    @eligibility_check ||= EligibilityCheck.new(loan)
+  end
+
+  def is_eligible?
+    eligibility_check.eligible?
+  end
+
+  def save_ineligibility_reasons
+    loan.ineligibility_reasons.create!(reason: eligibility_check.reasons.join("\n"))
+  end
+
 end

@@ -88,6 +88,22 @@ describe LoanTransfer::LegacySflg do
       end
     end
 
+    it 'should create a new loan state change record for the transferred loan' do
+      original_loan.state_changes.count.should == 1
+
+      state_change = original_loan.state_changes.last
+      state_change.event_id.should == 23
+      state_change.state.should == Loan::RepaidFromTransfer
+    end
+
+    it 'should create a new loan state change record for the newly created loan' do
+      new_loan.state_changes.count.should == 1
+
+      state_change = new_loan.state_changes.last
+      state_change.event_id.should == 23
+      state_change.state.should == Loan::Incomplete
+    end
+
   end
 
 end

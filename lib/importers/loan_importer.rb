@@ -116,29 +116,6 @@ class LoanImporter < BaseImporter
     }
   end
 
-  STATE_MAPPING = {
-    "1" => Loan::Rejected,
-    "2" => Loan::Eligible,
-    "3" => Loan::Cancelled,
-    "4" => Loan::Incomplete,
-    "5" => Loan::Completed,
-    "6" => Loan::Offered,
-    "7" => Loan::AutoCancelled,
-    "8" => Loan::Guaranteed,
-    "9" => Loan::LenderDemand,
-    "10" => Loan::Repaid,
-    "11" => Loan::Removed,
-    "12" => Loan::RepaidFromTransfer,
-    "13" => Loan::AutoRemoved,
-    "14" => Loan::NotDemanded,
-    "15" => Loan::Demanded,
-    "16" => Loan::Settled,
-    "17" => Loan::Realised,
-    "18" => Loan::Recovered,
-    "19" => Loan::IncompleteLegacy,
-    "20" => Loan::CompleteLegacy,
-  }
-
   DATES = %w(TRADING_DATE GUARANTEED_DATE BORROWER_DEMAND_DATE CANCELLED_DATE
     REPAID_DATE FACILITY_LETTER_DATE DTI_DEMAND_DATE REALISED_MONEY_DATE
     NO_CLAIM_DATE MATURITY_DATE REMOVE_GUARANTEE_DATE SETTLEMENT_DATE
@@ -158,7 +135,7 @@ class LoanImporter < BaseImporter
       when 'INVOICE_OID'
         attributes[:invoice_id] = Invoice.find_by_legacy_id!(value).id if value.present?
       when "STATUS"
-        value = STATE_MAPPING[value]
+        value = LOAN_STATE_MAPPING[value]
       when "LOAN_TERM"
         value = value.to_i
       when "LENDER_OID"
