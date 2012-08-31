@@ -1,18 +1,16 @@
-require 'spec_helper'
+shared_examples_for "CfeAdmin user management" do
 
-describe 'AuditorUser management' do
-  let(:current_user) { FactoryGirl.create(:cfe_admin) }
   before { login_as(current_user, scope: :user) }
 
   describe 'list' do
     before do
-      FactoryGirl.create(:auditor_user, first_name: 'Barry', last_name: 'White')
+      FactoryGirl.create(:cfe_admin, first_name: 'Barry', last_name: 'White')
       FactoryGirl.create(:lender_user, first_name: 'David', last_name: 'Bowie')
     end
 
     it do
       visit root_path
-      click_link 'Manage Auditor Users'
+      click_link 'Manage CfE Admins'
 
       page.should have_content('Barry White')
       page.should_not have_content('David Bowie')
@@ -26,22 +24,22 @@ describe 'AuditorUser management' do
 
     it do
       visit root_path
-      click_link 'Manage Auditor Users'
+      click_link 'Manage CfE Admins'
 
-      click_link 'New Auditor User'
+      click_link 'New CfE Admin'
 
       fill_in 'first_name', 'Bob'
       fill_in 'last_name', 'Flemming'
       fill_in 'email', 'bob.flemming@example.com'
 
       expect {
-        click_button 'Create Auditor User'
-      }.to change(AuditorUser, :count).by(1)
+        click_button 'Create CfE Admin'
+      }.to change(CfeAdmin, :count).by(1)
 
       page.should have_content('Bob Flemming')
       page.should have_content('bob.flemming@example.com')
 
-      user = AuditorUser.last
+      user = CfeAdmin.last
       user.created_by.should == current_user
       user.modified_by.should == current_user
 
@@ -53,20 +51,20 @@ describe 'AuditorUser management' do
   end
 
   describe 'update' do
-    let!(:user) { FactoryGirl.create(:auditor_user, first_name: 'Bob', last_name: 'Flemming') }
+    let!(:user) { FactoryGirl.create(:cfe_admin, first_name: 'Bob', last_name: 'Flemming') }
 
     it do
       visit root_path
-      click_link 'Manage Auditor Users'
+      click_link 'Manage CfE Admins'
 
       click_link 'Bob Flemming'
 
       fill_in 'first_name', 'Bill'
       fill_in 'last_name', 'Example'
       fill_in 'email', 'bill.example@example.com'
-      check 'auditor_user_disabled'
+      check 'cfe_admin_disabled'
 
-      click_button 'Update Auditor User'
+      click_button 'Update CfE Admin'
 
       page.should have_content('Bill Example')
       page.should have_content('bill.example@example.com')
@@ -77,18 +75,18 @@ describe 'AuditorUser management' do
   end
 
   describe 'unlocking the user' do
-    let!(:user) { FactoryGirl.create(:auditor_user, first_name: 'Bob', last_name: 'Flemming', locked: true) }
+    let!(:user) { FactoryGirl.create(:cfe_admin, first_name: 'Bob', last_name: 'Flemming', locked: true) }
 
     it do
       # pre-condition
       user.should be_locked
 
       visit root_path
-      click_link 'Manage Auditor Users'
+      click_link 'Manage CfE Admins'
       click_link 'Bob Flemming'
 
       uncheck 'Locked'
-      click_button 'Update Auditor User'
+      click_button 'Update CfE Admin'
 
       user.reload.should_not be_locked
     end
@@ -97,7 +95,7 @@ describe 'AuditorUser management' do
   describe "sending reset password email to user without a password" do
     let!(:user) {
       user = FactoryGirl.create(
-        :auditor_user,
+        :cfe_admin,
         first_name: 'Bob',
         last_name: 'Flemming'
       )
@@ -115,7 +113,7 @@ describe 'AuditorUser management' do
       user.reset_password_sent_at.should be_nil
 
       visit root_path
-      click_link 'Manage Auditor Users'
+      click_link 'Manage CfE Admins'
       click_link 'Bob Flemming'
       click_button 'Send Reset Password Email'
 
@@ -133,7 +131,7 @@ describe 'AuditorUser management' do
 
     it "can be sent from user list page" do
       visit root_path
-      click_link 'Manage Auditor Users'
+      click_link 'Manage CfE Admins'
       click_button 'Send Reset Password Email'
 
       page.should have_content(I18n.t('manage_users.reset_password_sent', email: user.email))
@@ -147,7 +145,7 @@ describe 'AuditorUser management' do
       user.save(validate: false)
 
       visit root_path
-      click_link 'Manage Auditor Users'
+      click_link 'Manage CfE Admins'
       click_link 'Bob Flemming'
       click_button 'Send Reset Password Email'
 
@@ -157,11 +155,13 @@ describe 'AuditorUser management' do
   end
 
   private
-    def fill_in(attribute, value)
-      page.fill_in "auditor_user_#{attribute}", with: value
-    end
 
-    def select(attribute, value)
-      page.select value, from: "auditor_user_#{attribute}"
-    end
+  def fill_in(attribute, value)
+    page.fill_in "cfe_admin_#{attribute}", with: value
+  end
+
+  def select(attribute, value)
+    page.select value, from: "cfe_admin_#{attribute}"
+  end
+
 end

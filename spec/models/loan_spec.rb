@@ -34,34 +34,6 @@ describe Loan do
     end
   end
 
-  %w(
-    amount
-    fees
-    initial_draw_value
-    turnover
-    outstanding_amount
-    amount_demanded
-    dti_demand_outstanding
-    dti_amount_claimed
-    dti_interest
-    dit_break_costs
-    current_refinanced_value
-    final_refinanced_value
-    borrower_demand_outstanding
-    state_aid
-    overdraft_limit
-    invoice_discount_limit
-    remove_guarantee_outstanding_amount
-  ).each do |attribute|
-    describe attribute do
-      it_should_behave_like "money attribute" do
-        let(:record) { loan }
-        let(:money_attribute) { attribute }
-        let(:currency) { attribute == 'state_aid' ? 'EUR' : 'GBP' }
-      end
-    end
-  end
-
   describe ".last_updated_between scope" do
     let!(:loan1) { FactoryGirl.create(:loan, updated_at: 3.days.ago) }
     let!(:loan2) { FactoryGirl.create(:loan, updated_at: 1.day.ago) }

@@ -102,26 +102,6 @@ describe LoanChange do
     end
   end
 
-  %w(
-    lump_sum_repayment
-    amount_drawn
-    amount
-    old_amount
-    initial_draw_amount
-    old_initial_draw_amount
-    dti_demand_out_amount
-    old_dti_demand_out_amount
-    dti_demand_interest
-    old_dti_demand_interest
-  ).each do |attribute|
-    describe attribute do
-      it_should_behave_like "money attribute" do
-        let(:record) { FactoryGirl.build(:loan_change) }
-        let(:money_attribute) { attribute }
-      end
-    end
-  end
-
   describe '#changes' do
     let(:loan_change) { FactoryGirl.build(:loan_change) }
 

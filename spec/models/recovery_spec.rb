@@ -97,25 +97,4 @@ describe Recovery do
       end
     end
   end
-
-  %w(
-    outstanding_non_efg_debt
-    non_linked_security_proceeds
-    linked_security_proceeds
-    realisations_attributable
-    amount_due_to_dti
-    total_proceeds_recovered
-    total_liabilities_after_demand
-    total_liabilities_behind
-    additional_break_costs
-    additional_interest_accrued
-    realisations_due_to_gov
-  ).each do |attribute|
-    describe attribute do
-      it_should_behave_like "money attribute" do
-        let(:record) { recovery }
-        let(:money_attribute) { attribute }
-      end
-    end
-  end
 end
