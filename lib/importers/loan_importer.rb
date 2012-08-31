@@ -116,6 +116,22 @@ class LoanImporter < BaseImporter
     }
   end
 
+  def self.invoice_id_from_legacy_id(legacy_id)
+    @invoice_id_from_legacy_id ||= Hash[Invoice.select('id, legacy_id').map { |invoice|
+      [invoice.legacy_id.to_s, invoice.id]
+    }]
+
+    @invoice_id_from_legacy_id[legacy_id.to_s]
+  end
+
+  def self.lending_limit_id_from_legacy_id(legacy_id)
+    @lending_limit_id_from_legacy_id ||= Hash[LendingLimit.select('id, legacy_id').map { |lending_limit|
+      [lending_limit.legacy_id.to_s, lending_limit.id]
+    }]
+
+    @lending_limit_id_from_legacy_id[legacy_id.to_s]
+  end
+
   DATES = %w(TRADING_DATE GUARANTEED_DATE BORROWER_DEMAND_DATE CANCELLED_DATE
     REPAID_DATE FACILITY_LETTER_DATE DTI_DEMAND_DATE REALISED_MONEY_DATE
     NO_CLAIM_DATE MATURITY_DATE REMOVE_GUARANTEE_DATE SETTLEMENT_DATE
@@ -133,7 +149,7 @@ class LoanImporter < BaseImporter
       when 'MODIFIED_BY'
         attributes[:modified_by_id] = self.class.user_id_from_username(value)
       when 'INVOICE_OID'
-        attributes[:invoice_id] = Invoice.find_by_legacy_id!(value).id if value.present?
+        attributes[:invoice_id] = self.class.invoice_id_from_legacy_id(value) if value.present?
       when "STATUS"
         value = LOAN_STATE_MAPPING[value]
       when "LOAN_TERM"
@@ -144,7 +160,7 @@ class LoanImporter < BaseImporter
           attributes[:lender_id] = lender_id
         end
       when "LENDER_CAP_ID"
-        attributes[:lending_limit_id] = (value.blank?) ? nil : LendingLimit.find_by_legacy_id(value.to_i).id
+        attributes[:lending_limit_id] = self.class.lending_limit_id_from_legacy_id(value) if value.present?
       when "EFG_INTEREST_TYPE"
         # V = variable (id: 1), F = fixed (id: 2)
         value = (value == 'V' ? 1 : 2) if value.present?

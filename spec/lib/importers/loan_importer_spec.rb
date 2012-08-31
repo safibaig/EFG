@@ -14,7 +14,9 @@ describe LoanImporter do
 
     before do
       LoanImporter.csv_path = csv_fixture_path
+      LoanImporter.instance_variable_set(:@invoice_id_from_legacy_id, nil)
       LoanImporter.instance_variable_set(:@lender_id_from_legacy_id, nil)
+      LoanImporter.instance_variable_set(:@lending_limit_id_from_legacy_id, nil)
       LoanImporter.instance_variable_set(:@user_id_from_username, nil)
     end
 
