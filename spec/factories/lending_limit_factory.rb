@@ -4,7 +4,7 @@ FactoryGirl.define do
     active true
     allocation 1000000
     allocation_type_id 1
-    sequence(:name) { |n| "lender limit #{n}" }
+    sequence(:name) { |n| "lending limit #{n}" }
     starts_on 1.month.ago
     ends_on 11.months.from_now
     premium_rate 2

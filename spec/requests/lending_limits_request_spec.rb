@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe 'LendingLimits' do
@@ -9,12 +11,12 @@ describe 'LendingLimits' do
     before do
       visit root_path
       click_link 'Manage Lenders'
-      click_link 'Annual'
-      click_link 'New Lender Limit'
+      click_link '£0.00'
+      click_link 'New Lending Limit'
     end
 
     it 'does not continue with invalid values' do
-      click_button 'Create Lender Limit'
+      click_button 'Create Lending Limit'
       current_path.should == lender_lending_limits_path(lender)
     end
 
@@ -26,7 +28,7 @@ describe 'LendingLimits' do
       fill_in :allocation, '5000000'
       fill_in :guarantee_rate, '75'
       fill_in :premium_rate, '2'
-      click_button 'Create Lender Limit'
+      click_button 'Create Lending Limit'
 
       lending_limit = LendingLimit.last
       lending_limit.lender.should == lender
@@ -41,12 +43,12 @@ describe 'LendingLimits' do
   end
 
   describe 'update' do
-    let!(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, name: 'Foo', allocation: 1) }
+    let!(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, name: 'Foo', allocation: Money.new(1_000_00)) }
 
     before do
       visit root_path
       click_link 'Manage Lenders'
-      click_link 'Annual'
+      click_link '£1,000.00'
       click_link 'Foo'
     end
 
@@ -59,7 +61,7 @@ describe 'LendingLimits' do
 
       fill_in :name, 'Updated'
       fill_in :allocation, '9999.99'
-      click_button 'Update Lender Limit'
+      click_button 'Update Lending Limit'
 
       lending_limit.reload
       lending_limit.lender.should == lender

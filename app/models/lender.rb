@@ -3,6 +3,7 @@ class Lender < ActiveRecord::Base
   belongs_to :modified_by, class_name: 'User'
   has_many :lender_admins
   has_many :lending_limits
+  has_many :active_lending_limits, class_name: 'LendingLimit', conditions: { active: true }
   has_many :lender_users
   has_many :loans
 
@@ -31,4 +32,29 @@ class Lender < ActiveRecord::Base
   def deactivate!
     update_attribute :disabled, true
   end
+
+  def current_annual_lending_limit_allocation
+    current_lending_limit_allocation_for_type(1)
+  end
+
+  def current_lending_limits
+    today = Date.current
+
+    active_lending_limits.select { |lending_limit|
+      today.between?(lending_limit.starts_on, lending_limit.ends_on)
+    }
+  end
+
+  def current_specific_lending_limit_allocation
+    current_lending_limit_allocation_for_type(2)
+  end
+
+  private
+    def current_lending_limit_allocation_for_type(type_id)
+      current_lending_limits.select { |lending_limit|
+        lending_limit.allocation_type_id == type_id
+      }.inject(Money.new(0)) { |memo, lending_limit|
+        memo += lending_limit.allocation
+      }
+    end
 end

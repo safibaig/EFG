@@ -52,6 +52,12 @@ describe LendingLimit do
       lending_limit.name = ''
       lending_limit.should_not be_valid
     end
+
+    it 'requires ends_on to be after starts_on' do
+      lending_limit.starts_on = Date.new(2012, 1, 2)
+      lending_limit.ends_on = Date.new(2012, 1, 1)
+      lending_limit.should_not be_valid
+    end
   end
 
   it "has many loans using allocation" do

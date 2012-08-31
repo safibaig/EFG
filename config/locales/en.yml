@@ -84,12 +84,17 @@ en:
               required: "can't be blank"
             lump_sum_repayment:
               not_be_negative: "can't be negative"
+        lender_limit:
+          attributes:
+            ends_on:
+              must_be_after_starts_on: 'must be after start date'
         state_aid_calculation:
           attributes:
             premium_cheque_month:
               invalid: 'This does not allow enough time for the Premium Collection Agent. Please enter the next Premium date in the schedule'
             initial_draw_amount:
               invalid: 'must be between £0 and £9,999,999.99'
+
   dashboard:
     loan_alerts:
       title: Loan Alerts For The Next 60 Days

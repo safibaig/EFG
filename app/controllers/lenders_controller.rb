@@ -4,7 +4,7 @@ class LendersController < ApplicationController
   before_filter :verify_view_permission, only: [:index]
 
   def index
-    @lenders = Lender.all
+    @lenders = Lender.includes(:active_lending_limits)
   end
 
   def new
