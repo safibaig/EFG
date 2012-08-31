@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120830115650) do
+ActiveRecord::Schema.define(:version => 20120831150215) do
 
   create_table "ded_codes", :force => true do |t|
     t.string   "legacy_id"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(:version => 20120830115650) do
     t.datetime "updated_at"
   end
 
-  add_index "ded_codes", ["group_description"], :name => "index_ded_codes_on_group_description"
+  add_index "ded_codes", ["code"], :name => "index_ded_codes_on_code", :unique => true
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"

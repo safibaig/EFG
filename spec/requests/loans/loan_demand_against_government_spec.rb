@@ -27,7 +27,7 @@ describe 'loan demand against government' do
     loan.state.should == Loan::Demanded
     loan.amount_demanded.should == Money.new(10_000_42) # £10,000.42
     loan.dti_demanded_on.should == Date.today
-    loan.dti_ded_code.should == 'A.10.10'
+    loan.ded_code.should == DedCode.find_by_code('A.10.10')
     loan.dti_reason.should == 'Something'
     loan.modified_by.should == current_user
 
