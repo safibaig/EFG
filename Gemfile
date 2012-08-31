@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.1.8'
+gem 'rails', '3.2.8'
 gem 'mysql2', '0.3.11'
 
 gem 'canable', '0.3.0'
@@ -25,7 +25,7 @@ gem 'lograge', '0.0.6'
 gem 'unicorn', '4.3.1'
 
 group :assets do
-  gem 'sass-rails', '3.1.4'
+  gem 'sass-rails', '3.2.5'
   gem 'uglifier', '1.2.4'
   gem 'therubyracer', '0.10.1'
 end
