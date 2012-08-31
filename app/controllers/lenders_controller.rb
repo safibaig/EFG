@@ -42,12 +42,14 @@ class LendersController < ApplicationController
 
   def activate
     @lender = Lender.find(params[:id])
+    @lender.modified_by = current_user
     @lender.activate!
     redirect_to lenders_url
   end
 
   def deactivate
     @lender = Lender.find(params[:id])
+    @lender.modified_by = current_user
     @lender.deactivate!
     redirect_to lenders_url
   end

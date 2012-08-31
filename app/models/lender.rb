@@ -22,7 +22,8 @@ class Lender < ActiveRecord::Base
   scope :order_by_name, order(:name)
 
   def activate!
-    update_attribute :disabled, false
+    self.disabled = false
+    save(validate: false)
   end
 
   def active
@@ -30,7 +31,8 @@ class Lender < ActiveRecord::Base
   end
 
   def deactivate!
-    update_attribute :disabled, true
+    self.disabled = true
+    save(validate: false)
   end
 
   def current_annual_lending_limit_allocation
