@@ -6,7 +6,7 @@
 
 <p><%= link_to 'Set your password', edit_password_url(@user, reset_password_token: @user.reset_password_token) %></p>
 
-<p>For security purposes, this link will expire after 7 days. If the link has expired, just go back to the <%= link_to 'login page', root_path %> and reset your password and you'll receive a new link.</p>
+<p>For security purposes, this link will expire after 7 days. If the link has expired, just go back to the <%= link_to 'login page', root_url %> and reset your password and you'll receive a new link.</p>
 
 <p>You will not be able to login to your account until you have set your password.</p>
 
