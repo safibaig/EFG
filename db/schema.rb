@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120831150215) do
+ActiveRecord::Schema.define(:version => 20120903090712) do
 
   create_table "ded_codes", :force => true do |t|
     t.string   "legacy_id"
@@ -285,7 +285,7 @@ ActiveRecord::Schema.define(:version => 20120831150215) do
     t.integer  "transferred_from_legacy_id"
     t.integer  "next_in_calc_seq"
     t.string   "loan_source",                         :limit => 1
-    t.integer  "dit_break_costs",                     :limit => 8
+    t.integer  "dti_break_costs",                     :limit => 8
     t.decimal  "guarantee_rate",                                    :precision => 16, :scale => 2
     t.decimal  "premium_rate",                                      :precision => 16, :scale => 2
     t.boolean  "legacy_small_loan"

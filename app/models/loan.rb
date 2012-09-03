@@ -100,7 +100,7 @@ class Loan < ActiveRecord::Base
   format :dti_demand_outstanding, with: MoneyFormatter.new
   format :dti_amount_claimed, with: MoneyFormatter.new
   format :dti_interest, with: MoneyFormatter.new
-  format :dit_break_costs, with: MoneyFormatter.new
+  format :dti_break_costs, with: MoneyFormatter.new
   format :current_refinanced_value, with: MoneyFormatter.new
   format :final_refinanced_value, with: MoneyFormatter.new
   format :borrower_demand_outstanding, with: MoneyFormatter.new

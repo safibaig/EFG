@@ -50,7 +50,7 @@ describe LoanReportCsvRow do
         dti_interest: 5000,
         dti_ded_code: ded_code.code,
         dti_reason: 'failure!',
-        dit_break_costs: 5000,
+        dti_break_costs: 5000,
         created_by_id: user.id,
         created_at: Time.zone.parse('12/04/2012 14:34'),
         modified_by_id: user.id,

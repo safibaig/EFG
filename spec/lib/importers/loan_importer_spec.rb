@@ -110,7 +110,7 @@ describe LoanImporter do
       loan.next_in_calc_seq.should == 2
       loan.dti_reason.should == "n/a"
       loan.loan_source.should == "S"
-      loan.dit_break_costs.should == Money.new(0)
+      loan.dti_break_costs.should == Money.new(0)
       loan.guarantee_rate.should == 70
       loan.premium_rate.should == 0
       loan.legacy_small_loan.should == false

@@ -50,7 +50,7 @@ class LoanReportCsvRow
       @loan.ded_code.try(:code_description),
       @loan.ded_code.try(:code),
       @loan.dti_reason,
-      @loan.dit_break_costs.to_s,
+      @loan.dti_break_costs.to_s,
       @loan._last_recovery_on ? @loan._last_recovery_on.strftime('%d-%m-%Y') : '',
       @loan._total_recoveries ? Money.new(@loan._total_recoveries).to_s : '',
       @loan._last_realisation_at ? @loan._last_realisation_at.strftime('%d-%m-%Y') : '',
