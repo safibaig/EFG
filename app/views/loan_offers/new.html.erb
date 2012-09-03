@@ -12,7 +12,11 @@
 
   <div class="control-group">
     <div class="control-label">Loan lending limit details:</div>
-    <div class="controls"><%= @loan_offer.lending_limit_details %></div>
+    <div class="controls">
+      <%= @loan_offer.lending_limit.name %>
+      (<%= @loan_offer.lending_limit.starts_on.to_s(:screen) %> -
+      <%= @loan_offer.lending_limit.ends_on.to_s(:screen) %>)
+    </div>
   </div>
 
   <%= f.input :facility_letter_date, as: :quick_date %>

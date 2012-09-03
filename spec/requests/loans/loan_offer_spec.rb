@@ -35,7 +35,7 @@ describe 'loan offer' do
       loan.reload
     }.to_not change(loan, :state)
 
-    current_path.should == "/loans/#{loan.id}/offer"
+    current_path.should == loan_offer_path(loan)
   end
 
   private
