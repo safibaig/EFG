@@ -40,7 +40,9 @@ describe 'loan change' do
 
     click_button "Reschedule"
 
-    fill_in "state_aid_calculation_premium_cheque_month", with: "09/2012"
+    premium_cheque_date = Date.today.advance(months: 1).strftime('%m/%Y')
+
+    fill_in "state_aid_calculation_premium_cheque_month", with: premium_cheque_date
     fill_in "state_aid_calculation_initial_draw_amount", with: "30000"
     fill_in "state_aid_calculation_initial_draw_months", with: "18"
 
@@ -54,7 +56,7 @@ describe 'loan change' do
     }.to change(StateAidCalculation, :count).by(1)
 
     calculation = StateAidCalculation.last
-    calculation.premium_cheque_month.should == '09/2012'
+    calculation.premium_cheque_month.should == premium_cheque_date
     calculation.initial_draw_amount.should == Money.new(30_000_00)
     calculation.initial_draw_months.should == 18
     calculation.should be_reschedule
