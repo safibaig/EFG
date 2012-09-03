@@ -26,7 +26,7 @@ class LoanChangesController < ApplicationController
     @loan_change.state_aid_calculation_attributes = params[:state_aid_calculation]
 
     if @loan_change.save_and_update_loan
-      redirect_to @loan
+      redirect_to loan_url(@loan)
     else
       render :new
     end
