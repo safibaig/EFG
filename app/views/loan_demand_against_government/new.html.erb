@@ -11,7 +11,7 @@
 <%= simple_form_for(@loan_demand_against_government, url: loan_demand_against_government_path(@loan), html: { class: 'form-horizontal form-loan-demand-against-government' }) do |f| %>
   <%= f.input :dti_demanded_on, as: :quick_date, input_html: { disabled: true } %>
   <%= f.input :amount_demanded, as: :currency %>
-  <%= f.input :dti_ded_code, as: :string %>
+  <%= f.input :dti_ded_code, as: :ded_code, select_options: ded_code_options_for_select, prompt: "Select failure reason" %>
   <%= f.input :dti_reason, as: :string %>
 
   <div class="form-actions">

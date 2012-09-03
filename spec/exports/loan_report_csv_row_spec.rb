@@ -6,6 +6,8 @@ describe LoanReportCsvRow do
 
     let(:user) { FactoryGirl.create(:user) }
 
+    let!(:ded_code) { FactoryGirl.create(:ded_code) }
+
     let!(:loan) {
       loan = FactoryGirl.create(
         :loan,
@@ -46,6 +48,7 @@ describe LoanReportCsvRow do
         dti_demand_outstanding: 50000,
         dti_amount_claimed: 40000,
         dti_interest: 5000,
+        dti_ded_code: ded_code.code,
         dti_reason: 'failure!',
         dit_break_costs: 5000,
         created_by_id: user.id,
@@ -137,10 +140,10 @@ describe LoanReportCsvRow do
       row[36].should == "50000.00"                                      # outstanding_facility_principal
       row[37].should == "40000.00"                                      # total_claimed
       row[38].should == "5000.00"                                       # outstanding_facility_interest
-      row[39].should == '' #loan.ded.group_description                  # business_failure_group
-      row[40].should == '' #loan.ded.category_description               # business_failure_category_description
-      row[41].should == '' # loan.ded.code_description                  # business_failure_description
-      row[42].should == '' # loan.ded.code                              # business_failure_code
+      row[39].should == ded_code.group_description                      # business_failure_group
+      row[40].should == ded_code.category_description                   # business_failure_category_description
+      row[41].should == ded_code.code_description                       # business_failure_description
+      row[42].should == ded_code.code                                   # business_failure_code
       row[43].should == 'failure!'                                      # government_demand_reason
       row[44].should == "5000.00"                                       # break_cost
       row[45].should == '18-07-2012'                                    # latest_recovery_date

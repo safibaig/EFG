@@ -68,6 +68,11 @@ import_namespace = namespace :import do
     end
   end
 
+  desc 'SFLG_DED_DATA_TABLE'
+  task ded_code: :environment do
+    _import DedCode
+  end
+
   desc 'SFLG_LOAN_RR_DATA_TABLE'
   task loan_ineligibility_reasons: [:loans] do
     _import LoanIneligibilityReason
