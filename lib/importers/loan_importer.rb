@@ -82,7 +82,7 @@ class LoanImporter < BaseImporter
       "NEXT_IN_CALC_SEQ"              => :next_in_calc_seq,
       "DTI_REASON_TEXT"               => :dti_reason,
       "LOAN_SOURCE"                   => :loan_source,
-      "DTI_BREAK_COSTS"               => :dit_break_costs,
+      "DTI_BREAK_COSTS"               => :dti_break_costs,
       "GUARANTEE_RATE"                => :guarantee_rate,
       "PREMIUM_RATE"                  => :premium_rate,
       "LEGACY_SMALL_LOAN"             => :legacy_small_loan,

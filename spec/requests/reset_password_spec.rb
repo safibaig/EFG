@@ -57,7 +57,7 @@ describe 'Resetting password' do
     open_reset_password_page
     submit_change_password_form
 
-    page.should have_content('Reset password token has expired, please request a new one')
+    page.should have_content('Reset password token has expired')
   end
 
   it 'fails with invalid token' do

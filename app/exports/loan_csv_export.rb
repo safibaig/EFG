@@ -46,7 +46,7 @@ class LoanCsvExport < BaseCsvExport
       debtor_book_coverage
       debtor_book_topup
       declaration_signed
-      dit_break_costs
+      dti_break_costs
       dti_amount_claimed
       dti_ded_code
       dti_demand_outstanding
