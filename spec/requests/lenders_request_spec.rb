@@ -101,7 +101,9 @@ describe 'lenders' do
     it do
       dispatch
       click_button 'Activate Lender'
-      lender.reload.disabled.should == false
+      lender.reload
+      lender.disabled.should == false
+      lender.modified_by.should == current_user
     end
   end
 
@@ -115,7 +117,9 @@ describe 'lenders' do
     it do
       dispatch
       click_button 'Deactivate Lender'
-      lender.reload.disabled.should == true
+      lender.reload
+      lender.disabled.should == true
+      lender.modified_by.should == current_user
     end
   end
 

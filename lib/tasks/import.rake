@@ -17,8 +17,8 @@ import_namespace = namespace :import do
   end
 
   desc 'SFLG_LENDER_CAP_ALLOC_DATA_TABLE)'
-  task loan_allocations: :lenders do
-    _import LoanAllocation
+  task lending_limits: :lenders do
+    _import LendingLimit
   end
 
   desc 'SFLG_LOAN_CHANGES_DATA_TABLE'
@@ -42,7 +42,7 @@ import_namespace = namespace :import do
   end
 
   desc 'SFLG_LOAN_DATA_TABLE'
-  task loans: [:invoices, :loan_allocations] do
+  task loans: [:invoices, :lending_limits] do
     _import Loan
   end
 

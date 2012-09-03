@@ -84,6 +84,10 @@ en:
               required: "can't be blank"
             lump_sum_repayment:
               not_be_negative: "can't be negative"
+        lender_limit:
+          attributes:
+            ends_on:
+              must_be_after_starts_on: 'must be after start date'
         state_aid_calculation:
           attributes:
             premium_cheque_month:
@@ -91,6 +95,7 @@ en:
               invalid_format: 'must have the format mm/yyyy'
             initial_draw_amount:
               invalid: 'must be between £0 and £9,999,999.99'
+
   dashboard:
     loan_alerts:
       title: Loan Alerts For The Next 60 Days

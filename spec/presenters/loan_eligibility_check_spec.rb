@@ -11,7 +11,7 @@ describe LoanEligibilityCheck do
     %w(
       amount
       repayment_duration
-      loan_allocation_id
+      lending_limit_id
       turnover
       trading_date
       sic_code

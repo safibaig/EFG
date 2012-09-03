@@ -7,14 +7,16 @@ describe LoanImporter do
 
   describe ".import" do
     let!(:lender) { FactoryGirl.create(:lender, legacy_id: 9) }
-    let!(:loan_allocation) { FactoryGirl.create(:loan_allocation, lender: lender, legacy_id: 47) }
+    let!(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, legacy_id: 47) }
     let!(:creator_user) { FactoryGirl.create(:lender_user, username: '8008769F7E055AEBA0033AD3880965BB0E99142A') }
     let!(:modifier_user) { FactoryGirl.create(:lender_user, username: '8467CE2D5BE4B96EC60E11BD466B61514D1A33D5') }
     let!(:invoice) { FactoryGirl.create(:invoice, legacy_id: 44) }
 
     before do
       LoanImporter.csv_path = csv_fixture_path
+      LoanImporter.instance_variable_set(:@invoice_id_from_legacy_id, nil)
       LoanImporter.instance_variable_set(:@lender_id_from_legacy_id, nil)
+      LoanImporter.instance_variable_set(:@lending_limit_id_from_legacy_id, nil)
       LoanImporter.instance_variable_set(:@user_id_from_username, nil)
     end
 
@@ -33,7 +35,7 @@ describe LoanImporter do
 
       loan = Loan.last
       loan.lender.should == lender
-      loan.loan_allocation.should == loan_allocation
+      loan.lending_limit.should == lending_limit
       loan.legacy_id.should == 685
       loan.reference.should == "BCHNIQ5-01"
       loan.amount.should == Money.new(10000000)

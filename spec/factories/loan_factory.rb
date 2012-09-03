@@ -5,7 +5,6 @@ FactoryGirl.define do
     association :created_by, factory: :lender_user
     association :modified_by, factory: :lender_user
     legal_form_id 1
-    loan_allocation
     loan_category_id 1
     repayment_frequency_id 4
     reason_id 1
@@ -36,6 +35,10 @@ FactoryGirl.define do
     loan_source Loan::SFLG_SOURCE
     loan_scheme Loan::EFG_SCHEME
     legacy_small_loan false
+
+    after :build do |loan|
+      loan.lending_limit ||= FactoryGirl.create(:lending_limit, lender: loan.lender)
+    end
 
     trait :eligible do
       state Loan::Eligible
@@ -148,6 +151,5 @@ FactoryGirl.define do
       loan_source Loan::LEGACY_SFLG_SOURCE
       loan_scheme Loan::SFLG_SCHEME
     end
-
   end
 end

@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe LoanTransfer::Sflg do
-
-  let!(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation, :sflg) }
-
+  let(:lender) { FactoryGirl.create(:lender, :with_lending_limit) }
+  let!(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation, :sflg, lender: lender) }
   let(:loan_transfer) {
     FactoryGirl.build(
       :sflg_loan_transfer,
       amount: loan.amount,
+      lender: FactoryGirl.create(:lender, :with_lending_limit),
       new_amount: loan.amount - Money.new(1000),
       reference: loan.reference,
       facility_letter_date: loan.facility_letter_date,
@@ -39,7 +39,7 @@ describe LoanTransfer::Sflg do
       fields_not_copied = %w(
         id lender_id reference state branch_sortcode repayment_duration amount
         payment_period maturity_date invoice_id generic1 generic2 generic3
-        generic4 generic5 transferred_from_id loan_allocation_id created_at
+        generic4 generic5 transferred_from_id lending_limit_id created_at
         updated_at legacy_id created_by_id
       )
 

@@ -16,7 +16,7 @@ class LoanEntry
   attribute :amount, read_only: true
   attribute :turnover, read_only: true
   attribute :trading_date, read_only: true
-  attribute :loan_allocation_id, read_only: true
+  attribute :lending_limit_id, read_only: true
   attribute :lender, read_only: true
 
   attribute :repayment_duration

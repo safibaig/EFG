@@ -6,7 +6,7 @@ class LoanEligibilityCheck
   attribute :would_you_lend
   attribute :collateral_exhausted
   attribute :lender
-  attribute :loan_allocation_id
+  attribute :lending_limit_id
   attribute :sic_code
   attribute :loan_category_id
   attribute :reason_id
@@ -22,7 +22,7 @@ class LoanEligibilityCheck
 
   delegate :created_by, :created_by=, to: :loan
 
-  validates_presence_of :amount, :loan_allocation_id, :repayment_duration,
+  validates_presence_of :amount, :lending_limit_id, :repayment_duration,
     :turnover, :trading_date, :sic_code, :loan_category_id, :reason_id
   validates_inclusion_of :viable_proposition, :would_you_lend,
     :collateral_exhausted, :previous_borrowing,

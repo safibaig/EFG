@@ -1,0 +1,13 @@
+<div class="page-header">
+  <h1>Edit Lending Limit</h1>
+</div>
+
+<p>From this page you can edit a lender's allocated Lending Limit.</p>
+
+<%= render 'form' %>
+
+<% if @lending_limit.active %>
+  <%= simple_form_for @lending_limit, url: deactivate_lender_lending_limit_path(@lender, @lending_limit), method: :post do |f| %>
+    <%= f.button :submit, value: 'Deactivate Lending Limit' %>
+  <% end %>
+<% end %>

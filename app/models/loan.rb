@@ -39,7 +39,7 @@ class Loan < ActiveRecord::Base
   LEGACY_SFLG_SOURCE = 'L'
 
   belongs_to :lender
-  belongs_to :loan_allocation
+  belongs_to :lending_limit
   belongs_to :created_by, class_name: 'User'
   belongs_to :modified_by, class_name: 'User'
   belongs_to :invoice
@@ -199,11 +199,11 @@ class Loan < ActiveRecord::Base
   end
 
   def guarantee_rate
-    read_attribute(:guarantee_rate) || loan_allocation.guarantee_rate
+    read_attribute(:guarantee_rate) || lending_limit.guarantee_rate
   end
 
   def premium_rate
-    read_attribute(:premium_rate) || loan_allocation.premium_rate
+    read_attribute(:premium_rate) || lending_limit.premium_rate
   end
 
   def state_history

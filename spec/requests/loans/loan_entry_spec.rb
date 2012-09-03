@@ -3,8 +3,9 @@
 require 'spec_helper'
 
 describe 'loan entry' do
-  let(:current_user) { FactoryGirl.create(:lender_user) }
-  let(:loan) { FactoryGirl.create(:loan, lender: current_user.lender) }
+  let(:lender) { FactoryGirl.create(:lender) }
+  let(:current_user) { FactoryGirl.create(:lender_user, lender: lender) }
+  let(:loan) { FactoryGirl.create(:loan, lender: lender) }
   before { login_as(current_user, scope: :user) }
 
   it 'entering further loan information' do

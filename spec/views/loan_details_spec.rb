@@ -200,8 +200,12 @@ describe 'loans/details' do
     # it_behaves_like 'rendered loan_details'
   end
 
-  context 'without a loan allocation' do
-    let(:loan) { FactoryGirl.build(:loan, :guaranteed, loan_allocation_id: nil) }
+  context 'without a LendingLimit' do
+    let(:loan) { FactoryGirl.build(:loan, :guaranteed) }
+
+    before do
+      loan.lending_limit = nil
+    end
 
     it_behaves_like 'rendered loan_details' do
       let(:visible_details) { %w(loan_guarantee.received_declaration) }

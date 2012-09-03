@@ -1,6 +1,6 @@
 class CfeUserLender
-  def loan_allocations
-    LoanAllocation.none
+  def lending_limits
+    LendingLimit.none
   end
 
   def loans

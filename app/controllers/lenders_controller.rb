@@ -4,7 +4,7 @@ class LendersController < ApplicationController
   before_filter :verify_view_permission, only: [:index]
 
   def index
-    @lenders = Lender.all
+    @lenders = Lender.includes(:active_lending_limits)
   end
 
   def new
@@ -42,12 +42,14 @@ class LendersController < ApplicationController
 
   def activate
     @lender = Lender.find(params[:id])
+    @lender.modified_by = current_user
     @lender.activate!
     redirect_to lenders_url
   end
 
   def deactivate
     @lender = Lender.find(params[:id])
+    @lender.modified_by = current_user
     @lender.deactivate!
     redirect_to lenders_url
   end

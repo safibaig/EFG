@@ -169,4 +169,10 @@ describe CfeUserPermissions do
     it { refute user.can_update?(Lender) }
     it { refute user.can_view?(Lender) }
   end
+
+  context 'LendingLimits' do
+    it { refute user.can_create?(LendingLimit) }
+    it { refute user.can_update?(LendingLimit) }
+    it { refute user.can_view?(LendingLimit) }
+  end
 end
