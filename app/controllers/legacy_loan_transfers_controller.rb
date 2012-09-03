@@ -17,7 +17,7 @@ class LegacyLoanTransfersController < ApplicationController
     @loan_transfer.modified_by = current_user
 
     if @loan_transfer.save
-      redirect_to loan_transfer_path(@loan_transfer.new_loan)
+      redirect_to loan_transfer_url(@loan_transfer.new_loan)
     else
       render :new
     end

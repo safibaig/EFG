@@ -9,7 +9,7 @@ class AccountLockedController < ApplicationController
   private
 
   def redirect_active_user
-    redirect_to root_path unless current_user.locked?
+    redirect_to root_url unless current_user.locked?
   end
 
 end

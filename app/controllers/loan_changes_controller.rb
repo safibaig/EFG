@@ -18,7 +18,7 @@ class LoanChangesController < ApplicationController
 
   def create
     if params[:commit] == 'Reschedule'
-      redirect_to new_loan_regenerate_schedule_path(loan_change: params[:loan_change]) and return
+      redirect_to new_loan_regenerate_schedule_url(loan_change: params[:loan_change]) and return
     end
     @loan_change = @loan.loan_changes.new(params[:loan_change])
     @loan_change.created_by = current_user

@@ -16,7 +16,7 @@ describe AccountDisabledController do
     it 'should redirect to root path when user is not disabled' do
       sign_in(active_user)
       get :show
-      response.should redirect_to(root_path)
+      response.should redirect_to(root_url)
     end
   end
 

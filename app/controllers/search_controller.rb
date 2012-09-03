@@ -16,7 +16,7 @@ class SearchController < ApplicationController
     respond_to do |format|
       format.html do
         if @results.count == 1
-          redirect_to loan_path(@results.first, term: params[:term]) and return
+          redirect_to loan_url(@results.first, term: params[:term]) and return
         end
         render template: "search/results"
       end
