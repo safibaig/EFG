@@ -1,7 +1,6 @@
 class LendingLimit < ActiveRecord::Base
   include FormatterConcern
 
-  # TODO: verify these are the correct states
   USAGE_LOAN_STATES = [
     Loan::Guaranteed,
     Loan::LenderDemand,
