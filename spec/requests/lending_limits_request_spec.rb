@@ -33,6 +33,7 @@ describe 'LendingLimits' do
       lending_limit = LendingLimit.last
       lending_limit.lender.should == lender
       lending_limit.modified_by.should == current_user
+      lending_limit.active.should == true
       lending_limit.name.should == 'This year'
       lending_limit.starts_on.should == Date.new(2012, 1, 1)
       lending_limit.ends_on.should == Date.new(2012, 12, 31)
@@ -66,6 +67,7 @@ describe 'LendingLimits' do
       lending_limit.reload
       lending_limit.lender.should == lender
       lending_limit.modified_by.should == current_user
+      lending_limit.active.should == true
       lending_limit.name.should == 'Updated'
       lending_limit.allocation.should == Money.new(9_999_99)
     end
