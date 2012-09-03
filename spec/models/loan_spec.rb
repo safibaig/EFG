@@ -282,7 +282,7 @@ describe Loan do
       loan.guarantee_rate.should == 75
     end
 
-    it "returns the loan's loan allocation guarantee rate when present" do
+    it "otherwise returns the loan's LendingLimit guarantee rate" do
       loan.guarantee_rate = nil
       loan.guarantee_rate.should == 85
     end
@@ -298,7 +298,7 @@ describe Loan do
       loan.premium_rate.should == 1.5
     end
 
-    it "returns the loan's loan allocation premium rate when present" do
+    it "otherwise returns the loan's LendingLimit premium rate" do
       loan.premium_rate = nil
       loan.premium_rate.should == 2
     end

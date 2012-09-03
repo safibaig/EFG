@@ -46,7 +46,7 @@ describe LendingLimitUtilisationPresenter do
   end
 
   describe "#title" do
-    it "should return formatted start and end date for the loan allocation" do
+    it "should return formatted start and end date for the LendingLimit" do
       presenter.title.should == "#{lending_limit.starts_on.strftime('%B %Y')} - #{lending_limit.ends_on.strftime('%B %Y')}"
     end
   end
@@ -79,7 +79,7 @@ describe LendingLimitUtilisationPresenter do
   end
 
   describe "#total_allocation" do
-    it "should return loan allocations allocation" do
+    it "should return LendingLimit's allocation" do
       presenter.total_allocation.should == lending_limit.allocation
     end
   end

@@ -21,7 +21,7 @@ class LendingLimit < ActiveRecord::Base
 
   has_many :loans
 
-  has_many :loans_using_allocation,
+  has_many :loans_using_lending_limit,
            class_name: "Loan",
            conditions: ["loans.state IN (?)", USAGE_LOAN_STATES]
 

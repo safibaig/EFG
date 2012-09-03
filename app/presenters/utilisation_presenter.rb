@@ -10,7 +10,7 @@ class UtilisationPresenter
     end
   end
 
-  def has_allocations?
+  def has_lending_limits?
     @lending_limits.any?
   end
 

@@ -31,7 +31,7 @@ class LendingLimitUtilisationPresenter
   end
 
   def usage_amount
-    @usage_amount ||= Money.new(@lending_limit.loans_using_allocation.sum(:amount))
+    @usage_amount ||= Money.new(@lending_limit.loans_using_lending_limit.sum(:amount))
   end
 
   def usage_percentage

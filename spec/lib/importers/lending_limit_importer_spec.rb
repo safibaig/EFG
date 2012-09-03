@@ -16,7 +16,7 @@ describe LendingLimitImporter do
       LendingLimitImporter.import
     end
 
-    it "should create new loan allocation record" do
+    it do
       expect {
         dispatch
       }.to change(LendingLimit, :count).by(1)

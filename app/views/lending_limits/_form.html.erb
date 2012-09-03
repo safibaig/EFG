@@ -1,4 +1,4 @@
-<%= simple_form_for [@lender, @lending_limit], html: { class: 'form-horizontal form-loan-allocation' } do |f| %>
+<%= simple_form_for [@lender, @lending_limit], html: { class: 'form-horizontal form-lending-limit' } do |f| %>
   <% if @lending_limit.new_record? %>
     <%= f.input :allocation_type_id, as: :radio_buttons, collection: LendingLimitType.all, wrapper_html: { class: 'radio-buttons-inline' } %>
   <% else %>

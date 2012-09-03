@@ -100,7 +100,7 @@ describe 'lender dashboard' do
 
     it_behaves_like 'dashboard'
 
-    context "with loan allocations" do
+    context "with LendingLimits" do
       let(:lending_limit1) { lender.lending_limits.first }
       let(:lending_limit2) { FactoryGirl.create(:lending_limit, lender: lender, allocation: 3000000) }
 
@@ -124,7 +124,7 @@ describe 'lender dashboard' do
         )
       }
 
-      it "should display loan allocation summary" do
+      it "should display LendingLimit summary" do
         visit root_path
 
         within '#utilisation_dashboard' do

@@ -69,7 +69,7 @@ describe LendingLimit do
 
     eligible_loan = FactoryGirl.create(:loan, :eligible, lending_limit: lending_limit)
 
-    lending_limit.loans_using_allocation.should == expected_loans
+    lending_limit.loans_using_lending_limit.should == expected_loans
   end
 
 end
