@@ -74,12 +74,16 @@ class LoanReport
 
   # filter out blank entry in array (added by multiple check_box form helper)
   def loan_sources=(sources)
-    @loan_sources = sources.is_a?(Array) ? sources.reject(&:blank?) : sources
+    @loan_sources = filter_blank_multi_select(sources)
   end
 
   # filter out blank entry in array (added by multiple check_box form helper)
   def states=(states)
-    @states = states.is_a?(Array) ? states.reject(&:blank?) : states
+    @states = filter_blank_multi_select(states)
+  end
+
+  def lender_ids=(lender_ids)
+    @lender_ids = filter_blank_multi_select(lender_ids)
   end
 
   private
@@ -149,6 +153,11 @@ class LoanReport
     if states.present? && states.any? { |state| !ALLOWED_LOAN_STATES.include?(state) }
       errors.add(:states, :inclusion)
     end
+  end
+
+  # See http://stackoverflow.com/questions/8929230/why-is-the-first-element-always-blank-in-my-rails-multi-select
+  def filter_blank_multi_select(values)
+    values.is_a?(Array) ? values.reject(&:blank?) : values
   end
 
 end
