@@ -25,8 +25,8 @@
 <% if @loan.state == Loan::Rejected %>
   <h3>Rejection Reasons</h3>
   <ol>
-    <% @loan.eligibility_check.reasons.each do |reason| %>
-      <li><%= reason %></li>
+    <% @loan.ineligibility_reasons.each do |ineligibility_reason| %>
+      <li><%= ineligibility_reason.reason %></li>
     <% end %>
   </ol>
 <% end %>
