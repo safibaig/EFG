@@ -27,8 +27,8 @@ class PremiumScheduleReportRow
 
   def to_csv
     [
-      loan._draw_down_date.strftime('%d-%m-%Y'),
-      loan._lender_organisation,
+      loan.draw_down_date.strftime('%d-%m-%Y'),
+      loan.lender_organisation,
       loan.reference,
       state_aid_calculation.calc_type,
       premium_schedule.premiums.first.to_f,

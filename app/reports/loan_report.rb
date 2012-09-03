@@ -119,14 +119,14 @@ class LoanReport
   def select_options
     [
       'loans.*',
-      '(SELECT name FROM lending_limits WHERE id = loans.lending_limit_id) AS _lending_limit_name',
-      '(SELECT organisation_reference_code FROM lenders WHERE id = loans.lender_id) AS _lender_organisation_reference_code',
-      '(SELECT recovered_on FROM recoveries WHERE loan_id = loans.id ORDER BY recoveries.id DESC LIMIT 1) AS _last_recovery_on',
-      '(SELECT SUM(amount_due_to_dti) FROM recoveries WHERE loan_id = loans.id) AS _total_recoveries',
-      '(SELECT created_at FROM loan_realisations WHERE realised_loan_id = loans.id ORDER BY loan_realisations.id DESC LIMIT 1) AS _last_realisation_at',
-      '(SELECT SUM(realised_amount) FROM loan_realisations WHERE realised_loan_id = loans.id) AS _total_loan_realisations',
-      '(SELECT SUM(amount_drawn) FROM loan_changes WHERE loan_id = loans.id) AS _total_amount_drawn',
-      '(SELECT SUM(lump_sum_repayment) FROM loan_changes WHERE loan_id = loans.id) AS _total_lump_sum_repayment'
+      '(SELECT name FROM lending_limits WHERE id = loans.lending_limit_id) AS lending_limit_name',
+      '(SELECT organisation_reference_code FROM lenders WHERE id = loans.lender_id) AS lender_organisation_reference_code',
+      '(SELECT recovered_on FROM recoveries WHERE loan_id = loans.id ORDER BY recoveries.id DESC LIMIT 1) AS last_recovery_on',
+      '(SELECT SUM(amount_due_to_dti) FROM recoveries WHERE loan_id = loans.id) AS total_recoveries',
+      '(SELECT created_at FROM loan_realisations WHERE realised_loan_id = loans.id ORDER BY loan_realisations.id DESC LIMIT 1) AS last_realisation_at',
+      '(SELECT SUM(realised_amount) FROM loan_realisations WHERE realised_loan_id = loans.id) AS total_loan_realisations',
+      '(SELECT SUM(amount_drawn) FROM loan_changes WHERE loan_id = loans.id) AS total_amount_drawn',
+      '(SELECT SUM(lump_sum_repayment) FROM loan_changes WHERE loan_id = loans.id) AS total_lump_sum_repayment'
     ].join(',')
   end
 
