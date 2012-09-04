@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120903090712) do
+ActiveRecord::Schema.define(:version => 20120904095711) do
 
   create_table "ded_codes", :force => true do |t|
     t.string   "legacy_id"
@@ -364,6 +364,14 @@ ActiveRecord::Schema.define(:version => 20120903090712) do
     t.string   "legacy_loan_id"
     t.string   "seq"
   end
+
+  create_table "sic_codes", :force => true do |t|
+    t.string  "code"
+    t.string  "description"
+    t.boolean "eligible",    :default => false
+  end
+
+  add_index "sic_codes", ["code"], :name => "index_sic_codes_on_code"
 
   create_table "state_aid_calculations", :force => true do |t|
     t.integer  "loan_id",                                                                        :null => false
