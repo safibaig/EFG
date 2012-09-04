@@ -74,12 +74,16 @@ class LoanReport
 
   # filter out blank entry in array (added by multiple check_box form helper)
   def loan_sources=(sources)
-    @loan_sources = sources.is_a?(Array) ? sources.reject(&:blank?) : sources
+    @loan_sources = filter_blank_multi_select(sources)
   end
 
   # filter out blank entry in array (added by multiple check_box form helper)
   def states=(states)
-    @states = states.is_a?(Array) ? states.reject(&:blank?) : states
+    @states = filter_blank_multi_select(states)
+  end
+
+  def lender_ids=(lender_ids)
+    @lender_ids = filter_blank_multi_select(lender_ids)
   end
 
   private
@@ -119,14 +123,14 @@ class LoanReport
   def select_options
     [
       'loans.*',
-      '(SELECT name FROM lending_limits WHERE id = loans.lending_limit_id) AS _lending_limit_name',
-      '(SELECT organisation_reference_code FROM lenders WHERE id = loans.lender_id) AS _lender_organisation_reference_code',
-      '(SELECT recovered_on FROM recoveries WHERE loan_id = loans.id ORDER BY recoveries.id DESC LIMIT 1) AS _last_recovery_on',
-      '(SELECT SUM(amount_due_to_dti) FROM recoveries WHERE loan_id = loans.id) AS _total_recoveries',
-      '(SELECT created_at FROM loan_realisations WHERE realised_loan_id = loans.id ORDER BY loan_realisations.id DESC LIMIT 1) AS _last_realisation_at',
-      '(SELECT SUM(realised_amount) FROM loan_realisations WHERE realised_loan_id = loans.id) AS _total_loan_realisations',
-      '(SELECT SUM(amount_drawn) FROM loan_changes WHERE loan_id = loans.id) AS _total_amount_drawn',
-      '(SELECT SUM(lump_sum_repayment) FROM loan_changes WHERE loan_id = loans.id) AS _total_lump_sum_repayment'
+      '(SELECT name FROM lending_limits WHERE id = loans.lending_limit_id) AS lending_limit_name',
+      '(SELECT organisation_reference_code FROM lenders WHERE id = loans.lender_id) AS lender_organisation_reference_code',
+      '(SELECT recovered_on FROM recoveries WHERE loan_id = loans.id ORDER BY recoveries.id DESC LIMIT 1) AS last_recovery_on',
+      '(SELECT SUM(amount_due_to_dti) FROM recoveries WHERE loan_id = loans.id) AS total_recoveries',
+      '(SELECT created_at FROM loan_realisations WHERE realised_loan_id = loans.id ORDER BY loan_realisations.id DESC LIMIT 1) AS last_realisation_at',
+      '(SELECT SUM(realised_amount) FROM loan_realisations WHERE realised_loan_id = loans.id) AS total_loan_realisations',
+      '(SELECT SUM(amount_drawn) FROM loan_changes WHERE loan_id = loans.id) AS total_amount_drawn',
+      '(SELECT SUM(lump_sum_repayment) FROM loan_changes WHERE loan_id = loans.id) AS total_lump_sum_repayment'
     ].join(',')
   end
 
@@ -149,6 +153,11 @@ class LoanReport
     if states.present? && states.any? { |state| !ALLOWED_LOAN_STATES.include?(state) }
       errors.add(:states, :inclusion)
     end
+  end
+
+  # See http://stackoverflow.com/questions/8929230/why-is-the-first-element-always-blank-in-my-rails-multi-select
+  def filter_blank_multi_select(values)
+    values.is_a?(Array) ? values.reject(&:blank?) : values
   end
 
 end

@@ -9,9 +9,11 @@ describe LendingLimit do
       lending_limit.should be_valid
     end
 
-    it 'requires a lender' do
-      lending_limit.lender = nil
-      lending_limit.should_not be_valid
+    it 'strictly requires a lender' do
+      expect {
+        lending_limit.lender = nil
+        lending_limit.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed) 
     end
 
     it 'requires an allocation' do
