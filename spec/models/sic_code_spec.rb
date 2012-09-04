@@ -23,6 +23,11 @@ describe SicCode do
       sic_code.eligible = nil
       sic_code.should_not be_valid
     end
+
+    it 'requires public_sector_restricted' do
+      sic_code.public_sector_restricted = nil
+      sic_code.should_not be_valid
+    end
   end
 
 end

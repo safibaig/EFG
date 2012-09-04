@@ -3,5 +3,6 @@ FactoryGirl.define do
     code '01120'
     description 'Growing of rice'
     eligible true
+    public_sector_restricted false
   end
 end
