@@ -4,7 +4,7 @@ class DashboardController < ApplicationController
 
   def show
     if current_user.can_view?(LoanAlerts)
-      @utilisation_presenter           = UtilisationPresenter.new(current_lender)
+      @lending_limit_utilisations      = setup_lending_limit_utilisations
       @not_drawn_alerts_presenter      = LoanAlerts::Presenter.new(not_drawn_loans_groups)
       @demanded_alerts_presenter       = LoanAlerts::Presenter.new(demanded_loans_groups)
       @not_progressed_alerts_presenter = LoanAlerts::Presenter.new(not_progressed_loans_groups)
@@ -13,6 +13,12 @@ class DashboardController < ApplicationController
   end
 
   private
+
+  def setup_lending_limit_utilisations
+    current_lender.lending_limits.active.map do |lending_limit|
+      LendingLimitUtilisation.new(lending_limit)
+    end
+  end
 
   def not_drawn_loans_groups
     LoanAlerts::PriorityGrouping.new(not_drawn_loans, not_drawn_start_date, not_drawn_end_date).groups_hash

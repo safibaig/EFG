@@ -103,8 +103,6 @@ en:
       demanded: "<em>Lender Demand</em> loans that will be removed if not moved to <em>Demanded</em>:"
       not_progressed: "<em>Eligible</em> Loans which will be removed if not <em>Progressed</em>:"
       assumed_repaid: "Loans assumed to have been <em>Repaid</em> due to <em>lack of updates</em>:"
-    utilisation:
-      title: Loan Allocation Utilisation
 
   manage_users:
     new_account_email_sent: "An email has been sent to %{email} with instructions for activating their account."

@@ -1,18 +1,14 @@
-<%== lending_limit_presenter.group_header(index) %>
-
 <div class="utilisation-year">
   <div class="content">
+    <h3><%= lending_limit.name %></h3>
 
-    <h3><%= lending_limit_presenter.title %></h3>
-
-    <%= content_tag :span, "#{lending_limit_presenter.usage_percentage}/100", :class => 'pie', 'data-colour' => lending_limit_presenter.chart_colour, 'data-diameter' => '80' %>
+    <%= content_tag :span, "#{lending_limit.usage_percentage}/100", :class => 'pie', 'data-colour' => lending_limit.chart_colour, 'data-diameter' => '80' %>
 
     <ul>
-      <li><strong>Allocation:</strong> <%= lending_limit_presenter.total_allocation.format %></li>
-      <li><strong>Usage:</strong> <%= lending_limit_presenter.usage_amount.format %></li>
-      <li><strong>Utilisation:</strong> <%= lending_limit_presenter.usage_percentage %>%</li>
+      <li><strong>Allocation:</strong> <%= lending_limit.allocation.format %></li>
+      <li><strong>Usage:</strong> <%= lending_limit.usage_amount.format %></li>
+      <li><strong>Utilisation:</strong> <%= lending_limit.usage_percentage %>%</li>
     </ul>
 
   </div>
 </div>
-
