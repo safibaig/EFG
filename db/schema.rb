@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120904102036) do
+ActiveRecord::Schema.define(:version => 20120904161740) do
 
   create_table "ded_codes", :force => true do |t|
     t.string   "legacy_id"
@@ -373,7 +373,8 @@ ActiveRecord::Schema.define(:version => 20120904102036) do
   create_table "sic_codes", :force => true do |t|
     t.string  "code"
     t.string  "description"
-    t.boolean "eligible",    :default => false
+    t.boolean "eligible",                 :default => false
+    t.boolean "public_sector_restricted", :default => false
   end
 
   add_index "sic_codes", ["code"], :name => "index_sic_codes_on_code"
