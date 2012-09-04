@@ -78,6 +78,11 @@ import_namespace = namespace :import do
     _import LoanIneligibilityReason
   end
 
+  desc 'SIC_2007_DATA'
+  task sic_code: :environment do
+    _import SicCode
+  end
+
   def _import(klass)
     if klass.count.zero?
       require 'importers'
