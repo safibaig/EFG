@@ -59,7 +59,7 @@ describe 'eligibility checks' do
 
     fill_in_valid_details(lender)
     # make loan fail eligibility check
-    fill_in(:turnover, '6000000')
+    fill_in(:amount, '6000000')
 
     expect {
       click_button 'Check'
@@ -68,8 +68,8 @@ describe 'eligibility checks' do
     loan = Loan.last
     loan.state.should == Loan::Rejected
     loan.ineligibility_reasons.count.should == 1
-    loan.ineligibility_reasons.last.reason.should == I18n.t('eligibility_check.attributes.turnover.invalid')
-    page.should have_content(I18n.t('eligibility_check.attributes.turnover.invalid'))
+    loan.ineligibility_reasons.last.reason.should == I18n.t('eligibility_check.attributes.amount.invalid')
+    page.should have_content(I18n.t('eligibility_check.attributes.amount.invalid'))
   end
 
   private

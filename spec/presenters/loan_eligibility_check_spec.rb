@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'spec_helper'
 
 describe LoanEligibilityCheck do
@@ -95,6 +96,13 @@ describe LoanEligibilityCheck do
       it 'is valid when "S"' do
         loan_eligibility_check.loan_source = Loan::SFLG_SOURCE
         loan_eligibility_check.should be_valid
+      end
+    end
+
+    describe "#turnover" do
+      it "is invalid when greater than £41,000,000" do
+        loan_eligibility_check.turnover = Money.new(41_000_000_01)
+        loan_eligibility_check.should_not be_valid
       end
     end
   end

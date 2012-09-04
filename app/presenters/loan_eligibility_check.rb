@@ -2,6 +2,8 @@ class LoanEligibilityCheck
   include LoanPresenter
   include LoanStateTransition
 
+  MAX_ALLOWED_TURNOVER = Money.new(41_000_000_00)
+
   attribute :viable_proposition
   attribute :would_you_lend
   attribute :collateral_exhausted
@@ -29,6 +31,7 @@ class LoanEligibilityCheck
     :private_residence_charge_required, :personal_guarantee_required, in: [true, false]
   validates_inclusion_of :loan_scheme, in: [ Loan::EFG_SCHEME ]
   validates_inclusion_of :loan_source, in: [ Loan::SFLG_SOURCE ]
+  validates_numericality_of :turnover, less_than_or_equal_to: MAX_ALLOWED_TURNOVER.to_f
 
   validate do
     errors.add(:amount, :greater_than, count: 0) unless amount && amount.cents > 0
