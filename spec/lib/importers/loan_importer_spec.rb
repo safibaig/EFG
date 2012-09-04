@@ -92,6 +92,7 @@ describe LoanImporter do
       loan.state_aid_is_valid.should == true
       loan.notified_aid.should == false
       loan.sic_code.should == "K74.87/9.013"
+      loan.legacy_sic_code.should == "K74.87/9.013"
       loan.remove_guarantee_outstanding_amount.should == Money.new(40000)
       loan.remove_guarantee_on.should == Date.new(2009, 5, 8)
       loan.remove_guarantee_reason.should == "n/a"
@@ -102,9 +103,13 @@ describe LoanImporter do
       loan.amount_demanded.should == Money.new(7999996)
       loan.next_borrower_demand_seq.should == 1
       loan.sic_desc.should == "Franchisers"
+      loan.legacy_sic_desc.should == "Franchisers"
       loan.sic_parent_desc.should == "Other business activities not elsewhere classified"
+      loan.legacy_sic_parent_desc.should == "Other business activities not elsewhere classified"
       loan.sic_notified_aid.should == false
+      loan.legacy_sic_notified_aid.should == false
       loan.sic_eligible.should == true
+      loan.legacy_sic_eligible.should == true
       loan.lender_cap_id.should == 47
       loan.town.should == "London"
       loan.non_val_postcode.should == "ec1123"
