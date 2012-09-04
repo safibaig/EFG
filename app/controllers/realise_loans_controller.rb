@@ -34,7 +34,7 @@ class RealiseLoansController < ApplicationController
     @realisation_statement.created_by = current_user
 
     if @realisation_statement.save_and_realise_loans
-      redirect_to realise_loan_path(@realisation_statement)
+      redirect_to realise_loan_url(@realisation_statement)
     else
       render :select_loans
     end

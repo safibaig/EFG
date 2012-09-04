@@ -15,6 +15,7 @@ class LendingLimitsController < ApplicationController
   def create
     @lending_limit = @lender.lending_limits.new
     @lending_limit.attributes = params[:lending_limit]
+    @lending_limit.active = true
     @lending_limit.modified_by = current_user
 
     if @lending_limit.save

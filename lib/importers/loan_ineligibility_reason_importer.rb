@@ -16,13 +16,11 @@ class LoanIneligibilityReasonImporter < BaseImporter
 
   def build_attributes
     row.each do |field_name, value|
-      value = case field_name
+      case field_name
       when 'OID'
-        self.class.loan_id_from_legacy_id(value.to_i)
+        value = self.class.loan_id_from_legacy_id(value)
       when 'REASON'
-        value.gsub("<br/>", "\n")
-      else
-        value
+        value.gsub!("<br/>", "\n")
       end
 
       attributes[self.class.field_mapping[field_name]] = value

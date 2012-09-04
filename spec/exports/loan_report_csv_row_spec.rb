@@ -81,15 +81,14 @@ describe LoanReportCsvRow do
       # stub custom fields that are created by LoanReport SQL query
       loan.stub(
         invoice: FactoryGirl.build(:invoice, reference: '123-INV'),
-        _lending_limit_name: 'allocation description',
-        _lender_organisation_reference_code: 'ABC123',
-        _last_recovery_on: Date.parse('18-07-2012'),
-        _total_recoveries: 15000000,
-        _last_realisation_at: Date.parse('06-08-2012'),
-        _total_loan_realisations: 300000,
-        _total_amount_drawn: 1000000,
-        _total_lump_sum_repayment: 500000,
-
+        lending_limit_name: 'allocation description',
+        lender_organisation_reference_code: 'ABC123',
+        last_recovery_on: Date.parse('18-07-2012'),
+        total_recoveries: 15000000,
+        last_realisation_at: Date.parse('06-08-2012'),
+        total_loan_realisations: 300000,
+        total_amount_drawn: 1000000,
+        total_lump_sum_repayment: 500000,
       )
 
       loan_security1 = FactoryGirl.create(:loan_security, loan: loan, loan_security_type_id: 1)

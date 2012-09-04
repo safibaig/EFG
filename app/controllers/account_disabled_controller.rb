@@ -9,7 +9,7 @@ class AccountDisabledController < ApplicationController
   private
 
   def redirect_active_user
-    redirect_to root_path unless current_user.disabled?
+    redirect_to root_url unless current_user.disabled?
   end
 
 end

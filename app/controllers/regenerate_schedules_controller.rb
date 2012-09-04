@@ -11,7 +11,7 @@ class RegenerateSchedulesController < ApplicationController
     @state_aid_calculation.calc_type = StateAidCalculation::RESCHEDULE_TYPE
 
     if @state_aid_calculation.valid?
-      redirect_to new_loan_loan_change_path(
+      redirect_to new_loan_loan_change_url(
         state_aid_calculation: params[:state_aid_calculation],
         loan_change: params[:loan_change]
       )

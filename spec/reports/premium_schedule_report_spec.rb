@@ -178,13 +178,13 @@ describe PremiumScheduleReport do
           end
 
           it 'pulls the draw_down_date from the first loan_change' do
-            premium_schedule_report.loans.first._draw_down_date.should == Date.new(2011, 1, 1)
-            premium_schedule_report.loans.last._draw_down_date.should == Date.new(2011, 1, 3)
+            premium_schedule_report.loans.first.draw_down_date.should == Date.new(2011, 1, 1)
+            premium_schedule_report.loans.last.draw_down_date.should == Date.new(2011, 1, 3)
           end
 
           it 'pulls the guaranteed_date from the first loan_change' do
-            premium_schedule_report.loans.first._guaranteed_date.should == Date.new(2011, 1, 1)
-            premium_schedule_report.loans.last._guaranteed_date.should == Date.new(2011, 1, 3)
+            premium_schedule_report.loans.first.guaranteed_date.should == Date.new(2011, 1, 1)
+            premium_schedule_report.loans.last.guaranteed_date.should == Date.new(2011, 1, 3)
           end
         end
 
@@ -268,11 +268,11 @@ describe PremiumScheduleReport do
           end
 
           it 'pulls the draw_down_date from the first loan_change' do
-            premium_schedule_report.loans.first._draw_down_date.should == Date.new(2011, 1, 2)
+            premium_schedule_report.loans.first.draw_down_date.should == Date.new(2011, 1, 2)
           end
 
           it 'pulls the guaranteed_date from the last loan_change' do
-            premium_schedule_report.loans.first._guaranteed_date.should == Date.new(2012, 3, 3)
+            premium_schedule_report.loans.first.guaranteed_date.should == Date.new(2012, 3, 3)
           end
         end
 

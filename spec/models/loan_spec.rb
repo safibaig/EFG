@@ -8,29 +8,39 @@ describe Loan do
       loan.should be_valid
     end
 
-    it 'requires a lender' do
-      loan.lender = nil
-      loan.should_not be_valid
+    it 'strictly requires a lender' do
+      expect {
+        loan.lender = nil
+        loan.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed)
     end
 
     it 'requires a state' do
-      loan.state = nil
-      loan.should_not be_valid
+      expect {
+        loan.state = nil
+        loan.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed)
     end
 
     it 'requires a known state' do
-      loan.state = 'not-a-known-state-yo'
-      loan.should_not be_valid
+      expect {
+        loan.state = 'not-a-known-state-yo'
+        loan.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed)
     end
 
     it 'requires a creator' do
-      loan.created_by_id = nil
-      loan.should_not be_valid
+      expect {
+        loan.created_by_id = nil
+        loan.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed)
     end
 
     it 'requires a modifier' do
-      loan.modified_by_id = nil
-      loan.should_not be_valid
+      expect {
+        loan.modified_by_id = nil
+        loan.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed)
     end
   end
 

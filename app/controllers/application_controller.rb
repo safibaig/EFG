@@ -16,14 +16,14 @@ class ApplicationController < ActionController::Base
   # if logged in user is disabled and not trying to log out...
   def redirect_disabled_user
     if signed_in? && current_user.disabled? && !devise_controller?
-      redirect_to account_disabled_path and return
+      redirect_to account_disabled_url and return
     end
   end
 
   # if logged in user is locked and not trying to log out...
   def redirect_locked_user
     if signed_in? && current_user.locked? && !devise_controller?
-      redirect_to account_locked_path and return
+      redirect_to account_locked_url and return
     end
   end
 

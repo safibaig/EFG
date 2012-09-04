@@ -18,7 +18,7 @@ class EligibilityChecksController < ApplicationController
     @loan_eligibility_check.loan_source = Loan::SFLG_SOURCE
 
     if @loan_eligibility_check.save
-      redirect_to @loan_eligibility_check.loan
+      redirect_to loan_url(@loan_eligibility_check.loan)
     else
       render :new
     end

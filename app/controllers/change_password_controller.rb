@@ -9,7 +9,7 @@ class ChangePasswordController < ApplicationController
     sign_in(current_user, bypass: true) # refresh session credentials so user stays logged in
 
     if current_user.save
-      redirect_to root_path, notice: 'Your password has been successfully changed'
+      redirect_to root_url, notice: 'Your password has been successfully changed'
     else
       render :edit
     end

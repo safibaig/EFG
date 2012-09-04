@@ -89,7 +89,7 @@ describe LoanChangesController do
       context 'and regenerating schedule' do
         it 'should redirect to regenerate schedule controller with loan changes in params' do
           dispatch(commit: 'Reschedule')
-          response.should redirect_to(new_loan_regenerate_schedule_path(loan_change: { business_name: 'acme' }))
+          response.should redirect_to(new_loan_regenerate_schedule_url(loan_change: { business_name: 'acme' }))
         end
       end
     end
