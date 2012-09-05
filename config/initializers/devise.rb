@@ -1,5 +1,7 @@
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
+require "statsd"
+
 Devise.setup do |config|
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
@@ -213,4 +215,12 @@ Devise.setup do |config|
   #   manager.intercept_401 = false
   #   manager.default_strategies(scope: :user).unshift :some_external_strategy
   # end
+
+  Warden::Manager.after_authentication do |user,auth,opts|
+    Statsd.new(::STATSD_HOST).increment("efg.logins.success")
+  end
+
+  Warden::Manager.before_failure do |env, opts|
+    Statsd.new(::STATSD_HOST).increment("efg.logins.failure")
+  end
 end
