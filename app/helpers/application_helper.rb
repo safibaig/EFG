@@ -10,7 +10,7 @@ module ApplicationHelper
   def google_analytics
     return unless Rails.env.production?
 
-    account, domain = request.host.include?('.preview.') ?
+    account, domain = Plek.current.environment == "preview" ?
       ['UA-34504094-2', 'preview.alphagov.co.uk'] :
       ['UA-34504094-1', 'production.alphagov.co.uk']
 
