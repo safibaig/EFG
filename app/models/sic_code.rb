@@ -4,4 +4,6 @@ class SicCode < ActiveRecord::Base
   validates_presence_of :code, :description
   validates_inclusion_of :eligible, in: [true, false]
   validates_inclusion_of :public_sector_restricted, in: [true, false]
+
+  default_scope order(:code)
 end

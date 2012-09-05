@@ -15,7 +15,7 @@
     <%= f.input :repayment_duration, as: :duration %>
     <%= f.input :turnover, as: :currency %>
     <%= f.input :trading_date, as: :quick_date %>
-    <%= f.input :sic_code, as: :sic_code %>
+    <%= f.input :sic_code, as: :select, collection: sic_code_options, prompt: 'Please select' %>
     <%= f.input :loan_category_id, as: :select, collection: LoanCategory.all, prompt: 'Please select' %>
     <%= f.input :reason_id, as: :select, collection: LoanReason.all, prompt: 'Please select' %>
     <%= f.input :previous_borrowing, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
