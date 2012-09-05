@@ -15,7 +15,7 @@ describe 'loan guarantee' do
     choose_radio_button 'signed_direct_debit_received', true
     choose_radio_button 'first_pp_received', true
     fill_in 'initial_draw_date', '28/02/12'
-    fill_in 'initial_draw_value', '£10,000.42'
+    fill_in 'initial_draw_amount', '£10,000.42'
     fill_in 'maturity_date', '01/03/12'
 
     click_button 'Submit'
@@ -29,7 +29,7 @@ describe 'loan guarantee' do
     loan.signed_direct_debit_received.should == true
     loan.first_pp_received.should == true
     loan.initial_draw_date.should == Date.new(2012, 2, 28)
-    loan.initial_draw_value.should == Money.new(1000042)
+    loan.initial_draw_amount.should == Money.new(1000042)
     loan.maturity_date.should == Date.new(2012, 3, 1)
     loan.modified_by.should == current_user
 

@@ -67,8 +67,8 @@
     <% end %>
 
     <% for_loan_in_categories(@loan_entry, 4) do %>
-      <%= f.input :current_refinanced_value, as: :currency %>
-      <%= f.input :final_refinanced_value, as: :currency %>
+      <%= f.input :current_refinanced_amount, as: :currency %>
+      <%= f.input :final_refinanced_amount, as: :currency %>
     <% end %>
 
     <% for_loan_in_categories(@loan_entry, 5) do %>

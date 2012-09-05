@@ -104,7 +104,7 @@ describe 'loan entry' do
 
     visit new_loan_entry_path(loan)
 
-    should_show_only_loan_category_fields(:loan_security_types, :security_proportion, :refinance_security_proportion, :current_refinanced_value, :final_refinanced_value)
+    should_show_only_loan_category_fields(:loan_security_types, :security_proportion, :refinance_security_proportion, :current_refinanced_amount, :final_refinanced_amount)
   end
 
   it 'should show specific questions for loan category E' do
@@ -187,8 +187,8 @@ describe 'loan entry' do
         :security_proportion,
         :original_overdraft_proportion,
         :refinance_security_proportion,
-        :current_refinanced_value,
-        :final_refinanced_value,
+        :current_refinanced_amount,
+        :final_refinanced_amount,
         :overdraft_limit,
         :overdraft_maintained,
         :invoice_discount_limit,

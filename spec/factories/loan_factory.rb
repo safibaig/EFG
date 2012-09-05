@@ -75,7 +75,7 @@ FactoryGirl.define do
       signed_direct_debit_received true
       first_pp_received true
       initial_draw_date { Date.today }
-      initial_draw_value Money.new(10000)
+      initial_draw_amount Money.new(10000)
       maturity_date { 10.years.from_now }
     end
 

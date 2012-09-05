@@ -134,8 +134,8 @@ describe LoanImporter do
       loan.private_residence_charge_required.should == false
       loan.personal_guarantee_required.should == false
       loan.security_proportion.should == 50
-      loan.current_refinanced_value.should == Money.new(480000)
-      loan.final_refinanced_value.should == Money.new(550000)
+      loan.current_refinanced_amount.should == Money.new(480000)
+      loan.final_refinanced_amount.should == Money.new(550000)
       loan.original_overdraft_proportion.should == 30
       loan.refinance_security_proportion.should == 50
       loan.overdraft_limit.should == Money.new(40000)

@@ -8,10 +8,10 @@ class LoanGuarantee
   attribute :signed_direct_debit_received
   attribute :first_pp_received
   attribute :initial_draw_date
-  attribute :initial_draw_value
+  attribute :initial_draw_amount
   attribute :maturity_date
 
-  validates_presence_of :initial_draw_date, :initial_draw_value, :maturity_date
+  validates_presence_of :initial_draw_date, :initial_draw_amount, :maturity_date
 
   validate do
     errors.add(:received_declaration, :accepted) unless self.received_declaration

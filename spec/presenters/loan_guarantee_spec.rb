@@ -29,7 +29,7 @@ describe LoanGuarantee do
     end
 
     it "should be invalid without an initial draw value" do
-      loan_guarantee.initial_draw_value = ''
+      loan_guarantee.initial_draw_amount = ''
       loan_guarantee.should_not be_valid
     end
 
