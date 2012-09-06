@@ -54,7 +54,7 @@ Please note that all the information within Facility Entry can be revised, howev
     <% unless @transferred_loan_entry.legacy_loan? %>
       <%= f.input :turnover, as: :currency, disabled: true %>
       <%= f.input :trading_date, as: :quick_date, disabled: true %>
-      <%= f.input :sic_code, as: :sic_code, disabled: true %>
+      <%= f.input :sic_code, as: :sic_code, collection: SicCode.all, disabled: true %>
       <%= f.input :loan_category_id, as: :radio_buttons, collection: LoanCategory.all, disabled: true %>
       <%= f.input :reason_id, as: :radio_buttons, collection: LoanReason.all, disabled: true %>
       <%= f.input :previous_borrowing, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>

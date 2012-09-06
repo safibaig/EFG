@@ -25,6 +25,7 @@ class EligibilityCheck
     add_error(:previous_borrowing) unless loan.previous_borrowing?
     add_error(:private_residence_charge_required) if loan.private_residence_charge_required?
     add_error(:repayment_duration) unless loan.repayment_duration.between?(MonthDuration.new(3), MonthDuration.new(120))
+    add_error(:sic_code) unless loan.sic_eligible?
   end
 
   def add_error(attribute)

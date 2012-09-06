@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120904161740) do
+ActiveRecord::Schema.define(:version => 20120906111906) do
 
   create_table "ded_codes", :force => true do |t|
     t.string   "legacy_id"
@@ -377,7 +377,7 @@ ActiveRecord::Schema.define(:version => 20120904161740) do
     t.boolean "public_sector_restricted", :default => false
   end
 
-  add_index "sic_codes", ["code"], :name => "index_sic_codes_on_code"
+  add_index "sic_codes", ["code"], :name => "index_sic_codes_on_code", :unique => true
 
   create_table "state_aid_calculations", :force => true do |t|
     t.integer  "loan_id",                                                                        :null => false

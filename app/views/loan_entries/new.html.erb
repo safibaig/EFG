@@ -32,7 +32,7 @@
     <%= f.input :maturity_date, as: :quick_date %>
     <%= f.input :turnover, as: :currency, disabled: true %>
     <%= f.input :trading_date, as: :quick_date, disabled: true %>
-    <%= f.input :sic_code, as: :sic_code, disabled: true %>
+    <%= f.input :sic_code, as: :sic_code, collection: SicCode.all, disabled: true %>
     <%= f.input :reason_id, as: :select, collection: LoanReason.all, disabled: true, prompt: 'Please select' %>
     <%= f.input :interest_rate_type_id, as: :radio_buttons, collection: InterestRateType.all, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :interest_rate, as: :string %>

@@ -3,6 +3,7 @@ require 'spec_helper'
 describe 'eligibility checks' do
   let(:lender) { FactoryGirl.create(:lender, :with_lending_limit) }
   let(:user) { FactoryGirl.create(:lender_user, lender: lender) }
+  let!(:sic_code) { FactoryGirl.create(:sic_code) }
   before { login_as(user, scope: :user) }
 
   it 'creates a loan from valid eligibility values' do
@@ -28,7 +29,7 @@ describe 'eligibility checks' do
     loan.repayment_duration.should == MonthDuration.new(30)
     loan.turnover.should == Money.new(123456789)
     loan.trading_date.should == Date.new(2012, 1, 31)
-    loan.sic_code.should == 'DA15.61/1'
+    loan.sic_code.should == sic_code.code
     loan.loan_category_id.should == 2
     loan.reason_id.should == 3
     loan.previous_borrowing.should be_true
@@ -95,7 +96,7 @@ describe 'eligibility checks' do
       fill_in_duration_input 'repayment_duration', 2, 6
       fill_in 'turnover', '1234567.89'
       fill_in 'trading_date', '31/1/2012'
-      fill_in 'sic_code', 'DA15.61/1'
+      select sic_code.code, from: 'loan_eligibility_check_sic_code'
       select LoanCategory.find(2).name, from: 'loan_eligibility_check_loan_category_id'
       select LoanReason.find(3).name, from: 'loan_eligibility_check_reason_id'
       choose_radio_button 'previous_borrowing', true

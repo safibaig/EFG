@@ -23,6 +23,8 @@ FactoryGirl.define do
     turnover 12345
     trading_date 2.years.ago
     sic_code '12345'
+    sic_desc 'Growing of rice'
+    sic_eligible true
     previous_borrowing true
     private_residence_charge_required false
     personal_guarantee_required false
