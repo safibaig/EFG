@@ -70,7 +70,7 @@ class Recovery < ActiveRecord::Base
     end
 
     def log_loan_state_change!
-      LoanStateChange.create(
+      LoanStateChange.create!(
         loan_id: loan.id,
         state: Loan::Recovered,
         modified_on: Date.today,

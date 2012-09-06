@@ -102,7 +102,7 @@ class LoanChange < ActiveRecord::Base
     end
 
     def log_loan_state_change!
-      LoanStateChange.create(
+      LoanStateChange.create!(
         loan_id: loan.id,
         state: Loan::Guaranteed,
         modified_on: Date.today,
