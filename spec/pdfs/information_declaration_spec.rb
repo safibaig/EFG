@@ -49,7 +49,7 @@ describe InformationDeclaration do
       pdf_content.should include(loan.repayment_frequency.name)
       pdf_content.should include(loan.maturity_date.strftime('%d-%m-%Y'))
       pdf_content.should include(loan.sic_code)
-      pdf_content.should include(loan.sic_code_description)
+      pdf_content.should include(loan.sic_desc)
       pdf_content.should include("Category Name")
       pdf_content.should include(loan.reason.name)
       pdf_content.should include(loan.previous_borrowing ? "Yes" : "No")
