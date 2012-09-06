@@ -113,5 +113,12 @@ describe EligibilityCheck do
       eligibility_check.should_not be_eligible
       eligibility_check.errors[:previous_borrowing].should_not be_empty
     end
+
+    it "should be ineligible when SIC code is ineligible" do
+      loan.sic_eligible = false
+
+      eligibility_check.should_not be_eligible
+      eligibility_check.errors[:sic_code].should_not be_empty
+    end
   end
 end
