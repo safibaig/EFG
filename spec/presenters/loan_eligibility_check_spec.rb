@@ -2,9 +2,9 @@
 require 'spec_helper'
 
 describe LoanEligibilityCheck do
-  describe 'validations' do
-    let(:loan_eligibility_check) { FactoryGirl.build(:loan_eligibility_check) }
+  let(:loan_eligibility_check) { FactoryGirl.build(:loan_eligibility_check) }
 
+  describe 'validations' do
     it 'has a valid factory' do
       loan_eligibility_check.should be_valid
     end
@@ -105,11 +105,16 @@ describe LoanEligibilityCheck do
         loan_eligibility_check.should_not be_valid
       end
     end
+
+    describe "#sic_code" do
+      it "is invalid when blank" do
+        loan_eligibility_check.sic_code = ''
+        loan_eligibility_check.should_not be_valid
+      end
+    end
   end
 
   describe '#save' do
-    let(:loan_eligibility_check) { FactoryGirl.build(:loan_eligibility_check) }
-
     it "should set the state to Eligible if its eligible" do
       EligibilityCheck.any_instance.stub(:eligible?).and_return(true)
 
@@ -155,6 +160,20 @@ describe LoanEligibilityCheck do
       }.to change(LoanIneligibilityReason, :count).by(1)
 
       LoanIneligibilityReason.last.reason.should == "Reason 1\nReason 2"
+    end
+  end
+
+  describe "#sic_code=" do
+    let(:sic_code) { FactoryGirl.create(:sic_code, code: '86900', description: 'My SIC description', eligible: false) }
+
+    it "should cache SIC code description and eligibility on the loan" do
+      loan_eligibility_check.loan.sic_desc = nil
+      loan_eligibility_check.loan.sic_eligible = nil
+
+      loan_eligibility_check.sic_code = sic_code.code
+
+      loan_eligibility_check.loan.sic_desc.should == sic_code.description
+      loan_eligibility_check.loan.sic_eligible.should == sic_code.eligible
     end
   end
 end

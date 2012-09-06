@@ -24,6 +24,10 @@ en:
   activemodel:
     errors:
       models:
+        loan_eligibility_check:
+          attributes:
+            sic_code:
+              not_recognised: The specified SIC code is not recognised
         loan_entry:
           attributes:
             declaration_signed:
