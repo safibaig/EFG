@@ -5,3 +5,6 @@
 # block your application. You do not need to have a statsd process
 # running locally on your development environment.
 STATSD_HOST = "localhost"
+
+# The common prefix for EFG metrics to be stored using statsd.
+STATSD_PREFIX = "govuk.app.efg"
