@@ -19,6 +19,7 @@ describe LoanSicCodeUpdateImporter do
 
     before do
       LoanSicCodeUpdateImporter.csv_path = csv_fixture_path
+      LoanSicCodeUpdateImporter.instance_variable_set(:@sic_codes, nil)
     end
 
     def dispatch

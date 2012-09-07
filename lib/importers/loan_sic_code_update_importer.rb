@@ -22,7 +22,7 @@ class LoanSicCodeUpdateImporter
         new_sic_code   = row['SIC 2007'].rjust(5, '0')
 
         if loan = Loan.find_by_reference(loan_reference)
-          sic_code              = SicCode.find_by_code(new_sic_code)
+          sic_code              = lookup_sic_code(new_sic_code)
           loan.sic_code         = sic_code.code
           loan.sic_desc         = sic_code.description
           loan.sic_eligible     = sic_code.eligible
@@ -34,6 +34,11 @@ class LoanSicCodeUpdateImporter
 
       Loan.record_timestamps = true
     end
+  end
+
+  def self.lookup_sic_code(code)
+    @sic_codes ||= SicCode.all
+    @sic_codes.detect { |sic_code| sic_code.code == code }
   end
 
 end
