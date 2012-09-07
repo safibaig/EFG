@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120905105012) do
+ActiveRecord::Schema.define(:version => 20120907100300) do
 
   create_table "ded_codes", :force => true do |t|
     t.string   "legacy_id"
@@ -237,8 +237,6 @@ ActiveRecord::Schema.define(:version => 20120905105012) do
     t.boolean  "received_declaration"
     t.boolean  "signed_direct_debit_received"
     t.boolean  "first_pp_received"
-    t.date     "initial_draw_date"
-    t.integer  "initial_draw_amount",                 :limit => 8
     t.date     "maturity_date"
     t.string   "state"
     t.integer  "legal_form_id"

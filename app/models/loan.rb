@@ -47,6 +47,7 @@ class Loan < ActiveRecord::Base
   has_many :state_aid_calculations, inverse_of: :loan, order: :seq
   has_one :transferred_from, class_name: 'Loan', foreign_key: 'id', primary_key: 'transferred_from_id'
   has_many :loan_changes
+  has_one :initial_loan_change, class_name: 'LoanChange', conditions: { seq: 0 }
   has_many :loan_realisations, foreign_key: 'realised_loan_id'
   has_many :recoveries
   has_many :loan_securities
@@ -81,7 +82,6 @@ class Loan < ActiveRecord::Base
 
   format :amount, with: MoneyFormatter.new
   format :fees, with: MoneyFormatter.new
-  format :initial_draw_amount, with: MoneyFormatter.new
   format :turnover, with: MoneyFormatter.new
   format :outstanding_amount, with: MoneyFormatter.new
   format :repayment_duration, with: MonthDurationFormatter
@@ -89,8 +89,6 @@ class Loan < ActiveRecord::Base
   format :cancelled_on, with: QuickDateFormatter
   format :borrower_demanded_on, with: QuickDateFormatter
   format :trading_date, with: QuickDateFormatter
-  format :maturity_date, with: QuickDateFormatter
-  format :initial_draw_date, with: QuickDateFormatter
   format :maturity_date, with: QuickDateFormatter
   format :facility_letter_date, with: QuickDateFormatter
   format :repaid_on, with: QuickDateFormatter
