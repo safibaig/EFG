@@ -128,12 +128,12 @@ describe 'lender dashboard' do
         visit root_path
 
         within '#utilisation_dashboard' do
-          page.should have_content(lending_limit1.starts_on.strftime('%B %Y') + ' - ' + lending_limit1.ends_on.strftime('%B %Y'))
+          page.should have_content(lending_limit1.name)
           page.should have_content('Allocation: £1,000,000.00')
           page.should have_content('Usage: £250,000.00')
           page.should have_content('Utilisation: 25.00%')
 
-          page.should have_content(lending_limit2.starts_on.strftime('%B %Y') + ' - ' + lending_limit2.ends_on.strftime('%B %Y'))
+          page.should have_content(lending_limit2.name)
           page.should have_content('Allocation: £3,000,000.00')
           page.should have_content('Usage: £800,000.00')
           page.should have_content('Utilisation: 26.67%')

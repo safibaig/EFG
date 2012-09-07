@@ -168,11 +168,6 @@ class Loan < ActiveRecord::Base
     end
   end
 
-  # TODO: implement SIC code description
-  def sic_code_description
-    "to-do"
-  end
-
   def cumulative_total_previous_recoveries
     @cumulative_total_previous_recoveries ||= begin
       total = recoveries.realised.sum(:realisations_attributable)

@@ -69,13 +69,6 @@ describe EligibilityCheck do
       eligibility_check.errors[:amount].should_not be_empty
     end
 
-    it "should be ineligible if the turnover is greater than £5,600,000" do
-      loan.turnover = Money.new(560000001) # £5,600,000.01
-
-      eligibility_check.should_not be_eligible
-      eligibility_check.errors[:turnover].should_not be_empty
-    end
-
     it "should be ineligible if the repayment duration is less than 3 months" do
       loan.repayment_duration = {months: 2}
 
@@ -119,6 +112,13 @@ describe EligibilityCheck do
 
       eligibility_check.should_not be_eligible
       eligibility_check.errors[:previous_borrowing].should_not be_empty
+    end
+
+    it "should be ineligible when SIC code is ineligible" do
+      loan.sic_eligible = false
+
+      eligibility_check.should_not be_eligible
+      eligibility_check.errors[:sic_code].should_not be_empty
     end
   end
 end

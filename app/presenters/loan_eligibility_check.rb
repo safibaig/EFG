@@ -2,6 +2,8 @@ class LoanEligibilityCheck
   include LoanPresenter
   include LoanStateTransition
 
+  MAX_ALLOWED_TURNOVER = Money.new(41_000_000_00)
+
   attribute :viable_proposition
   attribute :would_you_lend
   attribute :collateral_exhausted
@@ -29,10 +31,12 @@ class LoanEligibilityCheck
     :private_residence_charge_required, :personal_guarantee_required, in: [true, false]
   validates_inclusion_of :loan_scheme, in: [ Loan::EFG_SCHEME ]
   validates_inclusion_of :loan_source, in: [ Loan::SFLG_SOURCE ]
+  validates_numericality_of :turnover, less_than_or_equal_to: MAX_ALLOWED_TURNOVER.to_f
 
   validate do
     errors.add(:amount, :greater_than, count: 0) unless amount && amount.cents > 0
     errors.add(:repayment_duration, :greater_than, count: 0) unless repayment_duration && repayment_duration.total_months > 0
+    errors.add(:sic_code, :not_recognised) if sic_code.blank?
   end
 
   after_save :save_ineligibility_reasons, unless: :is_eligible?
@@ -43,6 +47,16 @@ class LoanEligibilityCheck
 
   def event
     is_eligible? ? LoanEvent.find_by_name("Accept") : LoanEvent.find_by_name("Reject")
+  end
+
+  # cache sic code data on loan, as per legacy system
+  def sic_code=(code)
+    loan.sic_code = loan.sic_desc = loan.sic_eligible = nil
+    if sic_code = SicCode.find_by_code(code)
+      loan.sic_code = sic_code.code
+      loan.sic_desc = sic_code.description
+      loan.sic_eligible = sic_code.eligible
+    end
   end
 
   private

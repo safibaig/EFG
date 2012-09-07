@@ -62,13 +62,11 @@
   </div>
 </div>
 
-<% if @utilisation_presenter.has_lending_limits? %>
-<div class="dashboard_widgets" id="utilisation_dashboard">
-  <h2><%= t('dashboard.utilisation.title')%></h2>
-
-  <% @utilisation_presenter.each_lending_limit do |lending_limit_presenter, index| %>
-    <%= render "lending_limit", lending_limit_presenter: lending_limit_presenter, index: index %>
+  <% unless @lending_limit_utilisations.empty? %>
+    <div class="dashboard_widgets" id="utilisation_dashboard">
+      <h2>Lending Limit Utilisation</h2>
+      <%= render partial: "lending_limit", collection: @lending_limit_utilisations %>
+    </div>
   <% end %>
-</div>
-<% end %>
+
 <% end %>

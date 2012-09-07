@@ -8,7 +8,7 @@ FactoryGirl.define do
     repayment_duration({ years: '1', months: '6' })
     turnover '12345'
     trading_date '31/1/2011'
-    sic_code '12345'
+    sic_code { FactoryGirl.create(:sic_code).code }
     loan_category_id '1'
     reason_id '1'
     previous_borrowing 'true'

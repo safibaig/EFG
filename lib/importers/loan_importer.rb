@@ -4,7 +4,9 @@ class LoanImporter < BaseImporter
 
   def self.extra_columns
     [:created_by_id, :invoice_id, :lender_id, :lending_limit_id,
-      :modified_by_id]
+      :modified_by_id, :legacy_sic_code, :legacy_sic_desc,
+      :legacy_sic_parent_desc, :legacy_sic_notified_aid,
+      :legacy_sic_eligible]
   end
 
   def self.field_mapping
@@ -140,6 +142,7 @@ class LoanImporter < BaseImporter
     AMOUNT_DEMANDED STATE_AID REMOVE_GUARANTEE_OUTSTD_AMT DTI_AMOUNT_CLAIMED DTI_INTEREST
     OVERDRAFT_LIMIT CURRENT_REFINANCED_VALUE FINAL_REFINANCED_VALUE INVOICE_DISCOUNT_LIMIT DTI_BREAK_COSTS)
   TIMES = %w(CREATION_TIME LAST_MODIFIED AR_TIMESTAMP AR_INSERT_TIMESTAMP)
+  SIC_CODE_FIELDS = %w(SIC_DESC SIC_PARENT_DESC SIC_NOTIFIED_AID SIC_ELIGIBLE)
 
   def build_attributes
     row.each do |name, value|
@@ -164,6 +167,10 @@ class LoanImporter < BaseImporter
       when "EFG_INTEREST_TYPE"
         # V = variable (id: 1), F = fixed (id: 2)
         value = (value == 'V' ? 1 : 2) if value.present?
+      when "SIC_SFLG_CODE"
+        attributes[:legacy_sic_code] = value
+      when *SIC_CODE_FIELDS
+        attributes["legacy_#{name.downcase}".to_sym] = value
       when *DATES
         value = Date.parse(value) unless value.blank?
       when *MONIES

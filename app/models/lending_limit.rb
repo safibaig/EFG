@@ -39,6 +39,8 @@ class LendingLimit < ActiveRecord::Base
 
   default_scope order('ends_on DESC, allocation_type_id DESC')
 
+  scope :active, where(active: true)
+
   def allocation_type
     LendingLimitType.find(allocation_type_id)
   end
