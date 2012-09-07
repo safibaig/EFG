@@ -114,6 +114,16 @@ shared_examples_for 'a loan transfer' do
       it 'should create new loan with created by set to user requesting transfer' do
         new_loan.created_by.should == loan_transfer.modified_by
       end
+
+      it 'should create an initial LoanChange' do
+        loan_change = new_loan.initial_loan_change
+        loan_change.amount_drawn.should == original_loan.cumulative_drawn_amount
+        loan_change.change_type_id.should == nil
+        loan_change.created_by.should == original_loan.modified_by
+        loan_change.date_of_change.should == original_loan.initial_loan_change.date_of_change
+        loan_change.modified_date.should == Date.current
+        loan_change.seq.should == 0
+      end
     end
 
     context 'when new loan amount is greater than the amount of the loan being transferred' do

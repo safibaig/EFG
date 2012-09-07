@@ -118,6 +118,14 @@ class Loan < ActiveRecord::Base
     CancelReason.find(cancelled_reason_id)
   end
 
+  def cumulative_drawn_amount
+    Money.new(loan_changes.sum(:amount_drawn))
+  end
+
+  def cumulative_lump_sum_amount
+    Money.new(loan_changes.sum(:lump_sum_repayment))
+  end
+
   def state_aid_calculation
     state_aid_calculations.last
   end

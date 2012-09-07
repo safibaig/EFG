@@ -74,9 +74,16 @@ FactoryGirl.define do
       received_declaration true
       signed_direct_debit_received true
       first_pp_received true
-      initial_draw_date { Date.today }
-      initial_draw_amount Money.new(10000)
       maturity_date { 10.years.from_now }
+
+      after :create do |loan|
+        FactoryGirl.create(:loan_change,
+          amount_drawn: loan.amount,
+          date_of_change: Date.current,
+          loan: loan,
+          seq: 0
+        )
+      end
     end
 
     trait :removed do

@@ -42,7 +42,7 @@
 
   <div class="control-group">
     <div class="control-label">Date of initial draw of funds</div>
-    <div class="controls"><%= @loan.initial_draw_date %></div>
+    <div class="controls"><%= @loan.initial_loan_change.date_of_change.to_s(:screen) %></div>
   </div>
   <div class="control-group">
     <div class="control-label">Current maturity date</div>

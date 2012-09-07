@@ -1,4 +1,13 @@
+require 'initial_draw_attributes'
+
 class LoanCsvExport < BaseCsvExport
+  def initialize(loans)
+    loans.each do |loan|
+      loan.extend(InitialDrawAttributes)
+    end
+
+    super
+  end
 
   private
 

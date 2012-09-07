@@ -38,8 +38,6 @@ describe LoanReportCsvRow do
         cancelled_comment: 'cancel comment',
         cancelled_on: Date.parse('22/01/2012'),
         facility_letter_date: Date.parse('16/05/2012'),
-        initial_draw_amount: 10000,
-        initial_draw_date: Date.parse('17/05/2012'),
         borrower_demanded_on: Date.parse('18/06/2012'),
         amount_demanded: 10000,
         repaid_on: Date.parse('15/09/2012'),
@@ -76,6 +74,13 @@ describe LoanReportCsvRow do
         invoice_discount_limit: 6000,
         debtor_book_coverage: 30,
         debtor_book_topup: 5
+      )
+
+      FactoryGirl.create(:loan_change,
+        amount_drawn: Money.new(10_000_00),
+        date_of_change: Date.new(2012, 5, 17),
+        loan: loan,
+        seq: 0
       )
 
       # stub custom fields that are created by LoanReport SQL query

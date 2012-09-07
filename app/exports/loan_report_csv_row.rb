@@ -1,7 +1,10 @@
+require 'initial_draw_attributes'
+
 class LoanReportCsvRow
 
   def initialize(loan)
     @loan = loan
+    @loan.extend(InitialDrawAttributes)
   end
 
   def row

@@ -60,10 +60,23 @@ class LoanTransfer::Base
 
       new_loan.save!
       log_loan_state_changes!
+      create_initial_loan_change!
     end
+
+    true
   end
 
   private
+
+  def create_initial_loan_change!
+    loan_change = new_loan.loan_changes.new
+    loan_change.amount_drawn = loan_to_transfer.cumulative_drawn_amount
+    loan_change.created_by = modified_by
+    loan_change.date_of_change = loan_to_transfer.initial_loan_change.date_of_change
+    loan_change.modified_date = Date.current
+    loan_change.seq = 0
+    loan_change.save!
+  end
 
   def loan_can_be_transferred?
     unless loan_to_transfer.is_a?(Loan)
