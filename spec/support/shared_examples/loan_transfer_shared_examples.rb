@@ -98,8 +98,8 @@ shared_examples_for 'a loan transfer' do
         new_loan.transferred_from_id.should == loan.id
       end
 
-      it 'should assign new loan to the newest LendingLimit of the lender receiving transfer' do
-        new_loan.lending_limit.should == new_loan.lender.lending_limits.last
+      it 'should assign new loan to the newest active LendingLimit of the lender receiving transfer' do
+        new_loan.lending_limit.should == new_loan.lender.lending_limits.active.first
       end
 
       it 'should nullify legacy_id field' do
