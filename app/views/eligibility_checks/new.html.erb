@@ -17,7 +17,7 @@
     <%= f.input :trading_date, as: :quick_date %>
     <%= f.input :sic_code, as: :sic_code, collection: SicCode.all %>
     <%= f.input :loan_category_id, as: :select, collection: LoanCategory.all, prompt: 'Please select' %>
-    <%= f.input :reason_id, as: :select, collection: LoanReason.all, prompt: 'Please select' %>
+    <%= f.input :reason_id, as: :select, collection: LoanReason.active, prompt: 'Please select' %>
     <%= f.input :previous_borrowing, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :private_residence_charge_required, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :personal_guarantee_required, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
