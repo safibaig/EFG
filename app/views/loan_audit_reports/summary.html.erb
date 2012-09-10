@@ -1,0 +1,41 @@
+<div class="page-header">
+  <h1>Loan Audit Report Summary</h1>
+</div>
+
+<p>This page summarises the results of your audit search criteria. You can download the report or perform a fresh search using edited or new criteria.</p>
+
+<h2>Data extract found <%= pluralize(@loan_audit_report.count, 'row') %></h2>
+
+<% unless @loan_audit_report.count.zero? %>
+
+  <%= simple_form_for(@loan_audit_report, url: loan_audit_report_path(format: :csv)) do |f| %>
+
+    <%= f.input :facility_letter_start_date, as: :hidden %>
+
+    <%= f.input :facility_letter_end_date, as: :hidden %>
+
+    <%= f.input :created_at_start_date, as: :hidden %>
+
+    <%= f.input :created_at_end_date, as: :hidden %>
+
+    <%= f.input :last_modified_start_date, as: :hidden %>
+
+    <%= f.input :last_modified_end_date, as: :hidden %>
+
+    <%= f.input :event_id, as: :hidden %>
+
+    <%= f.input :audit_records_start_date, as: :hidden %>
+
+    <%= f.input :audit_records_end_date, as: :hidden %>
+
+    <%= f.input :state, as: :hidden %>
+
+    <%= f.input :lender_id, as: :hidden %>
+
+    <div class="form-actions">
+      <%= f.button :submit, value: 'Download Report', class: 'btn-primary' %>
+    </div>
+
+  <% end %>
+
+<% end %>
