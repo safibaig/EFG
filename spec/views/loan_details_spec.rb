@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'loans/details' do
 
   shared_examples "rendered loan_details" do
-    before { loan.stub!(id: 1) }
+    before { loan.stub!(id: 1) if loan.new_record? }
 
     let(:all_details) {
       %w(
@@ -93,7 +93,7 @@ describe 'loans/details' do
   end
 
   context "with a guaranteed loan" do
-    let(:loan) { FactoryGirl.build(:loan, :guaranteed) }
+    let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
 
     it_behaves_like 'rendered loan_details' do
       let(:visible_details) { %w(loan_guarantee.received_declaration) }
@@ -201,7 +201,7 @@ describe 'loans/details' do
   end
 
   context 'without a LendingLimit' do
-    let(:loan) { FactoryGirl.build(:loan, :guaranteed) }
+    let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
 
     before do
       loan.lending_limit = nil

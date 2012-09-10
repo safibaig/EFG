@@ -98,8 +98,8 @@ shared_examples_for 'a loan transfer' do
         new_loan.transferred_from_id.should == loan.id
       end
 
-      it 'should assign new loan to the newest LendingLimit of the lender receiving transfer' do
-        new_loan.lending_limit.should == new_loan.lender.lending_limits.last
+      it 'should assign new loan to the newest active LendingLimit of the lender receiving transfer' do
+        new_loan.lending_limit.should == new_loan.lender.lending_limits.active.first
       end
 
       it 'should nullify legacy_id field' do
@@ -113,6 +113,16 @@ shared_examples_for 'a loan transfer' do
 
       it 'should create new loan with created by set to user requesting transfer' do
         new_loan.created_by.should == loan_transfer.modified_by
+      end
+
+      it 'should create an initial LoanChange' do
+        loan_change = new_loan.initial_loan_change
+        loan_change.amount_drawn.should == original_loan.cumulative_drawn_amount
+        loan_change.change_type_id.should == nil
+        loan_change.created_by.should == original_loan.modified_by
+        loan_change.date_of_change.should == original_loan.initial_loan_change.date_of_change
+        loan_change.modified_date.should == Date.current
+        loan_change.seq.should == 0
       end
     end
 

@@ -31,7 +31,7 @@ describe 'eligibility checks' do
     loan.trading_date.should == Date.new(2012, 1, 31)
     loan.sic_code.should == sic_code.code
     loan.loan_category_id.should == 2
-    loan.reason_id.should == 3
+    loan.reason_id.should == LoanReason.active.first.id
     loan.previous_borrowing.should be_true
     loan.private_residence_charge_required.should be_false
     loan.personal_guarantee_required.should be_false
@@ -98,7 +98,7 @@ describe 'eligibility checks' do
       fill_in 'trading_date', '31/1/2012'
       select sic_code.code, from: 'loan_eligibility_check_sic_code'
       select LoanCategory.find(2).name, from: 'loan_eligibility_check_loan_category_id'
-      select LoanReason.find(3).name, from: 'loan_eligibility_check_reason_id'
+      select LoanReason.active.first.name, from: 'loan_eligibility_check_reason_id'
       choose_radio_button 'previous_borrowing', true
       choose_radio_button 'private_residence_charge_required', false
       choose_radio_button 'personal_guarantee_required', false

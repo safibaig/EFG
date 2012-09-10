@@ -37,8 +37,8 @@ FactoryGirl.define do
 
     factory :loan_entry_type_d do
       refinance_security_proportion 20.0
-      current_refinanced_value 10000.00
-      final_refinanced_value 20000.00
+      current_refinanced_amount 10000.00
+      final_refinanced_amount 20000.00
 
       initialize_with {
         loan = FactoryGirl.build(:loan, :with_state_aid_calculation, loan_category_id: 4)

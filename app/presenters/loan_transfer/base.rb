@@ -47,7 +47,7 @@ class LoanTransfer::Base
       new_loan.maturity_date         = ''
       new_loan.invoice_id            = ''
       new_loan.transferred_from_id   = loan_to_transfer.id
-      new_loan.lending_limit         = lender.lending_limits.last
+      new_loan.lending_limit         = lender.lending_limits.active.first
       new_loan.created_by            = modified_by
       new_loan.modified_by           = modified_by
       # TODO - copy loan securities if any are present
@@ -60,10 +60,23 @@ class LoanTransfer::Base
 
       new_loan.save!
       log_loan_state_changes!
+      create_initial_loan_change!
     end
+
+    true
   end
 
   private
+
+  def create_initial_loan_change!
+    loan_change = new_loan.loan_changes.new
+    loan_change.amount_drawn = loan_to_transfer.cumulative_drawn_amount
+    loan_change.created_by = modified_by
+    loan_change.date_of_change = loan_to_transfer.initial_loan_change.date_of_change
+    loan_change.modified_date = Date.current
+    loan_change.seq = 0
+    loan_change.save!
+  end
 
   def loan_can_be_transferred?
     unless loan_to_transfer.is_a?(Loan)
@@ -104,7 +117,7 @@ class LoanTransfer::Base
 
   def log_loan_state_changes!
     [loan_to_transfer, new_loan].each do |loan|
-      loan.state_changes.create(
+      loan.state_changes.create!(
         state: loan.state,
         modified_on: Date.today,
         modified_by: loan.modified_by,

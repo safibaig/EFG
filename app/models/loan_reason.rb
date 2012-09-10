@@ -40,4 +40,8 @@ class LoanReason < StaticAssociation
     { id: 37, name: 'Replacing existing finance' },
     { id: 38, name: 'Financing an export order' }
   ].sort_by {|data| data[:name] }
+
+  def self.active
+    (28..38).collect { |id| find(id) }
+  end
 end

@@ -14,10 +14,6 @@ describe 'Loan report' do
 
     let(:current_user) { FactoryGirl.create(:lender_user, lender: loan1.lender) }
 
-    before(:each) do
-      login_as(current_user, scope: :user)
-    end
-
     it "should output a CSV report for that specific lender" do
       navigate_to_loan_report_form
 
@@ -59,9 +55,11 @@ describe 'Loan report' do
 
     let!(:current_user) { FactoryGirl.create(:cfe_user) }
 
-    it "should output a CSV report for a selection of lenders" do
+    before(:each) do
       navigate_to_loan_report_form
+    end
 
+    it "should output a CSV report for a selection of lenders" do
       fill_in_valid_details
       select loan1.lender.name, from: 'loan_report_lender_ids'
       select loan3.lender.name, from: 'loan_report_lender_ids'
@@ -75,12 +73,10 @@ describe 'Loan report' do
     end
 
     it "should not show created by form field" do
-      navigate_to_loan_report_form
       page.should_not have_css("#loan_report_created_by_id option")
     end
 
     it "should show validation errors" do
-      navigate_to_loan_report_form
       click_button "Submit"
 
       # 2 errors - empty states multi-select, no loan source checkbox checked
@@ -95,6 +91,10 @@ describe 'Loan report' do
     let!(:loan3) { FactoryGirl.create(:loan) }
 
     let!(:current_user) { FactoryGirl.create(:auditor_user) }
+
+    before(:each) do
+      navigate_to_loan_report_form
+    end
 
     it "should allow access to loan reports" do
       navigate_to_loan_report_form

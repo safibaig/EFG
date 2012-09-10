@@ -45,8 +45,8 @@ class LoanEntry
   attribute :security_proportion
   attribute :original_overdraft_proportion
   attribute :refinance_security_proportion
-  attribute :current_refinanced_value
-  attribute :final_refinanced_value
+  attribute :current_refinanced_amount
+  attribute :final_refinanced_amount
   attribute :overdraft_limit
   attribute :overdraft_maintained
   attribute :invoice_discount_limit
@@ -90,7 +90,7 @@ class LoanEntry
 
   # TYPE D LOANS
 
-  validates_presence_of :current_refinanced_value, :final_refinanced_value,
+  validates_presence_of :current_refinanced_amount, :final_refinanced_amount,
                         if: lambda { loan_category_id == 4 }
 
   # TYPE E LOANS

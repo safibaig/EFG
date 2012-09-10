@@ -28,14 +28,50 @@ describe LoanGuarantee do
       loan_guarantee.should_not be_valid
     end
 
-    it "should be invalid without an initial draw value" do
-      loan_guarantee.initial_draw_value = ''
+    it "should be invalid without an initial_draw_amount" do
+      loan_guarantee.initial_draw_amount = ''
       loan_guarantee.should_not be_valid
     end
 
     it "should should be invalid without a maturity date" do
       loan_guarantee.maturity_date = ''
       loan_guarantee.should_not be_valid
+    end
+  end
+
+  describe '#save' do
+    let(:lender_user) { FactoryGirl.create(:lender_user) }
+    let(:loan) { loan_guarantee.loan }
+    let(:loan_guarantee) {
+      FactoryGirl.build(:loan_guarantee,
+        initial_draw_amount: Money.new(5_000_00),
+        initial_draw_date: '1/1/11',
+        modified_by: lender_user
+      )
+    }
+
+    it 'creates an initial loan_change' do
+      loan_guarantee.save.should == true
+
+      loan.loan_changes.count.should == 1
+
+      initial_change = loan.loan_changes.first!
+      initial_change.amount_drawn.should == Money.new(5_000_00)
+      initial_change.change_type_id.should == nil
+      initial_change.created_by.should == lender_user
+      initial_change.date_of_change.should == Date.new(2011)
+      initial_change.modified_date.should == Date.current
+      initial_change.seq.should == 0
+    end
+
+    it 'creates a LoanStateChange' do
+      expect {
+        loan_guarantee.save.should == true
+      }.to change(LoanStateChange, :count).by(1)
+
+      state_change = loan.state_changes.last
+      state_change.event_id.should == 7
+      state_change.state.should == Loan::Guaranteed
     end
   end
 end
