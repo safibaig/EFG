@@ -41,7 +41,7 @@ module LoanStateTransition
   end
 
   def log_state_change
-    LoanStateChange.create(
+    LoanStateChange.create!(
       loan_id: loan.id,
       state: loan.state,
       modified_on: Date.today,

@@ -16,7 +16,7 @@ class LoanChange < ActiveRecord::Base
   validates_presence_of :loan
   validates_presence_of :created_by
   validates_presence_of :date_of_change, :modified_date
-  validates_inclusion_of :change_type_id, in: ChangeType.all.map(&:id)
+  validates_inclusion_of :change_type_id, in: ChangeType.all.map(&:id) << nil
 
   validate :validate_change_type
   validate :validate_non_negative_amounts
@@ -102,7 +102,7 @@ class LoanChange < ActiveRecord::Base
     end
 
     def log_loan_state_change!
-      LoanStateChange.create(
+      LoanStateChange.create!(
         loan_id: loan.id,
         state: Loan::Guaranteed,
         modified_on: Date.today,

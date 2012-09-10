@@ -138,12 +138,12 @@ describe LoanEntry do
       end
 
       it "should require current refinanced value" do
-        loan_entry.current_refinanced_value = nil
+        loan_entry.current_refinanced_amount = nil
         loan_entry.should_not be_valid
       end
 
       it "should require final refinanced value" do
-        loan_entry.final_refinanced_value = nil
+        loan_entry.final_refinanced_amount = nil
         loan_entry.should_not be_valid
       end
     end

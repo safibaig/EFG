@@ -62,7 +62,7 @@ class Invoice < ActiveRecord::Base
 
     def log_loan_state_change!
       loans_to_be_settled.each do |loan|
-        LoanStateChange.create(
+        LoanStateChange.create!(
           loan_id: loan.id,
           state: Loan::Settled,
           modified_on: Date.today,

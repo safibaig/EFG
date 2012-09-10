@@ -10,7 +10,7 @@ describe LoanTransfer::LegacySflg do
       lender: FactoryGirl.create(:lender, :with_lending_limit),
       new_amount: loan.amount - Money.new(1000),
       reference: loan.reference,
-      initial_draw_date: loan.initial_draw_date,
+      initial_draw_date: loan.initial_loan_change.date_of_change,
     )
   }
 

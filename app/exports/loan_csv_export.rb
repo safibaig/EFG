@@ -1,4 +1,13 @@
+require 'initial_draw_attributes'
+
 class LoanCsvExport < BaseCsvExport
+  def initialize(loans)
+    loans.each do |loan|
+      loan.extend(InitialDrawAttributes)
+    end
+
+    super
+  end
 
   private
 
@@ -42,7 +51,7 @@ class LoanCsvExport < BaseCsvExport
       company_registration
       created_at
       created_by
-      current_refinanced_value
+      current_refinanced_amount
       debtor_book_coverage
       debtor_book_topup
       declaration_signed
@@ -56,7 +65,7 @@ class LoanCsvExport < BaseCsvExport
       facility_letter_date
       facility_letter_sent
       fees
-      final_refinanced_value
+      final_refinanced_amount
       first_pp_received
       generic1
       generic2
@@ -66,7 +75,7 @@ class LoanCsvExport < BaseCsvExport
       guarantee_rate
       guaranteed_on
       initial_draw_date
-      initial_draw_value
+      initial_draw_amount
       interest_rate
       interest_rate_type
       invoice_discount_limit

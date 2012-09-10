@@ -1,18 +1,22 @@
 class LoanTransfer::LegacySflg < LoanTransfer::Base
 
   attr_accessor :legacy_loan
-
-  attribute :initial_draw_date
+  attr_reader :initial_draw_date
+  attr_accessible :initial_draw_date
 
   validates_presence_of :initial_draw_date
 
+  def initial_draw_date=(value)
+    @initial_draw_date = value.present? ? QuickDateFormatter.parse(value) : nil
+  end
+
   def loan_to_transfer
-    @loan_to_transfer ||= Loan.where(
-      reference: reference,
+    @loan_to_transfer ||= Loan.joins(:initial_loan_change).where(
       amount: amount.cents,
-      initial_draw_date: initial_draw_date,
+      loan_changes: { date_of_change: initial_draw_date },
+      reference: reference,
       state: ALLOWED_LOAN_TRANSFER_STATES
-    ).first
+    ).first(readonly: false)
   end
 
   def save

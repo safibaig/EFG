@@ -82,8 +82,8 @@ en:
         security_proportion: 'Based on your normal security valuation criteria, what proportion of the value of the EFG loan is covered by a specific charge over the asset identified?'
         original_overdraft_proportion: What proportion of the previous overdraft limit will remain available to the applicant following drawing of the replacement loan?
         refinance_security_proportion: 'Based on your normal security valuation policy, what proportion of the total value of the refinanced package will be covered by any security held?'
-        current_refinanced_value: What is the current outstanding value of the existing facility or facilities intended to be refinanced?
-        final_refinanced_value: 'On completion of the refinancing exercise what will be the total outstanding value, including any new funds provided, of the entire refinanced package?'
+        current_refinanced_amount: What is the current outstanding value of the existing facility or facilities intended to be refinanced?
+        final_refinanced_amount: 'On completion of the refinancing exercise what will be the total outstanding value, including any new funds provided, of the entire refinanced package?'
         overdraft_limit: What is the limit of the Applicant's current overdraft facility (prior to the granting of the EFG facility)?
         overdraft_maintained: "Are you able to confirm that the Applicant's current overdraft facility has not been cancelled or reduced in the preceding three months and, subject to normal account behaviour being maintained, will be maintained while the EFG facility remains in place?"
         invoice_discount_limit: What is the current limit of the Applicant's Invoice Finance facility?
@@ -102,7 +102,7 @@ en:
         first_pp_received: 'Has the Applicant the means to settle the first Scheme Guarantee Premium from the date of Guarantee and Initial Draw?  Please note that the first and all subsequent Quarterly Premiums will be collected by the Premium Collection Agent by Direct Debit.'
         signed_direct_debit_received: 'Has a completed Direct Debit Mandate signed by the Applicant been received and forwarded to the Premium Collection Agent?'
         initial_draw_date: 'On what date was the initial draw of funds made?'
-        initial_draw_value: 'What was the value of the initial draw?'
+        initial_draw_amount: 'What was the value of the initial draw?'
         maturity_date: 'On what date is the loan to be repaid (maturity date)?'
 
       state_aid_calculation:

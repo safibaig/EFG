@@ -15,12 +15,12 @@ describe 'loan guarantee' do
     choose_radio_button 'signed_direct_debit_received', true
     choose_radio_button 'first_pp_received', true
     fill_in 'initial_draw_date', '28/02/12'
-    fill_in 'initial_draw_value', '£10,000.42'
+    fill_in 'initial_draw_amount', '£10,000.42'
     fill_in 'maturity_date', '01/03/12'
 
     click_button 'Submit'
 
-    loan = Loan.last
+    loan = Loan.last!
 
     current_path.should == loan_path(loan)
 
@@ -28,12 +28,18 @@ describe 'loan guarantee' do
     loan.received_declaration.should == true
     loan.signed_direct_debit_received.should == true
     loan.first_pp_received.should == true
-    loan.initial_draw_date.should == Date.new(2012, 2, 28)
-    loan.initial_draw_value.should == Money.new(1000042)
     loan.maturity_date.should == Date.new(2012, 3, 1)
     loan.modified_by.should == current_user
 
     should_log_loan_state_change(loan, Loan::Guaranteed, 7)
+
+    loan_change = loan.initial_loan_change
+    loan_change.amount_drawn.should == Money.new(10_000_42)
+    loan_change.change_type_id.should == nil
+    loan_change.created_by.should == current_user
+    loan_change.date_of_change.should == Date.new(2012, 2, 28)
+    loan_change.modified_date.should == Date.current
+    loan_change.seq.should == 0
   end
 
   it 'does not continue with invalid values' do

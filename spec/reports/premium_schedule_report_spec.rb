@@ -142,9 +142,16 @@ describe PremiumScheduleReport do
     let!(:state_aid_calculation1) { FactoryGirl.create(:state_aid_calculation, loan: loan1, calc_type: 'S', premium_cheque_month: '01/2011') }
     let!(:state_aid_calculation2) { FactoryGirl.create(:state_aid_calculation, loan: loan2, calc_type: 'R', premium_cheque_month: "01/#{Date.today.year + 1}") }
     let!(:state_aid_calculation3) { FactoryGirl.create(:state_aid_calculation, loan: loan3, calc_type: 'N', premium_cheque_month: '02/2011') }
-    let!(:loan_change_1) { FactoryGirl.create(:loan_change, loan: loan1, date_of_change: '1/1/11', modified_date: '1/1/11') }
-    let!(:loan_change_2) { FactoryGirl.create(:loan_change, loan: loan2, date_of_change: '2/1/11', modified_date: '2/1/11') }
-    let!(:loan_change_3) { FactoryGirl.create(:loan_change, loan: loan3, date_of_change: '3/1/11', modified_date: '3/1/11') }
+
+    before do
+      loan1.initial_loan_change.update_attribute :date_of_change, '1/1/11'
+      loan2.initial_loan_change.update_attribute :date_of_change, '2/1/11'
+      loan3.initial_loan_change.update_attribute :date_of_change, '3/1/11'
+
+      loan1.initial_loan_change.update_attribute :modified_date, '1/1/11'
+      loan2.initial_loan_change.update_attribute :modified_date, '2/1/11'
+      loan3.initial_loan_change.update_attribute :modified_date, '3/1/11'
+    end
 
     let(:loan_ids) { premium_schedule_report.loans.map(&:id) }
 
