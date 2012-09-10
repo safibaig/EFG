@@ -24,8 +24,8 @@ class LoanChangeImporter < BaseImporter
       'AR_INSERT_TIMESTAMP' => :ar_insert_timestamp,
       'AMOUNT' => :amount,
       'OLD_AMOUNT' => :old_amount,
-      'GUARANTEED_DATE' => :guaranteed_date,
-      'OLD_GUARANTEED_DATE' => :old_guaranteed_date,
+      'GUARANTEED_DATE' => :guaranteed_on,
+      'OLD_GUARANTEED_DATE' => :old_guaranteed_on,
       'INITIAL_DRAW_DATE' => :initial_draw_date,
       'OLD_INITIAL_DRAW_DATE' => :old_initial_draw_date,
       'INITIAL_DRAW_AMOUNT' => :initial_draw_amount,
@@ -36,8 +36,8 @@ class LoanChangeImporter < BaseImporter
       'OLD_DTIDEMANDOUTAMOUNT' => :old_dti_demand_out_amount,
       'DTIDEMANDINTEREST' => :dti_demand_interest,
       'OLD_DTIDEMANDINTEREST' => :old_dti_demand_interest,
-      'CAP_ID' => :cap_id,
-      'OLD_CAP_ID' => :old_cap_id,
+      'CAP_ID' => :lending_limit_id,
+      'OLD_CAP_ID' => :old_lending_limit_id,
       'LOAN_TERM' => :loan_term,
       'OLD_LOAN_TERM' => :old_loan_term
     }

@@ -37,7 +37,7 @@ describe LoanTransfer::Sflg do
 
     it "should create new loan with a copy of some of the original loan's data" do
       fields_not_copied = %w(
-        id lender_id reference state branch_sortcode repayment_duration amount
+        id lender_id reference state sortcode repayment_duration amount
         payment_period maturity_date invoice_id generic1 generic2 generic3
         generic4 generic5 transferred_from_id lending_limit_id created_at
         updated_at legacy_id created_by_id

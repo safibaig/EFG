@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120907100300) do
+ActiveRecord::Schema.define(:version => 20120910102514) do
 
   create_table "ded_codes", :force => true do |t|
     t.string   "legacy_id"
@@ -117,8 +117,8 @@ ActiveRecord::Schema.define(:version => 20120907100300) do
     t.datetime "ar_insert_timestamp"
     t.integer  "amount",                    :limit => 8
     t.integer  "old_amount",                :limit => 8
-    t.date     "guaranteed_date"
-    t.date     "old_guaranteed_date"
+    t.date     "guaranteed_on"
+    t.date     "old_guaranteed_on"
     t.date     "initial_draw_date"
     t.date     "old_initial_draw_date"
     t.integer  "initial_draw_amount",       :limit => 8
@@ -129,8 +129,8 @@ ActiveRecord::Schema.define(:version => 20120907100300) do
     t.integer  "old_dti_demand_out_amount", :limit => 8
     t.integer  "dti_demand_interest",       :limit => 8
     t.integer  "old_dti_demand_interest",   :limit => 8
-    t.integer  "cap_id"
-    t.integer  "old_cap_id"
+    t.integer  "lending_limit_id"
+    t.integer  "old_lending_limit_id"
     t.integer  "loan_term"
     t.integer  "old_loan_term"
     t.datetime "created_at",                                            :null => false
@@ -221,7 +221,7 @@ ActiveRecord::Schema.define(:version => 20120907100300) do
     t.string   "company_registration"
     t.string   "postcode"
     t.string   "non_validated_postcode"
-    t.string   "branch_sortcode"
+    t.string   "sortcode"
     t.string   "generic1"
     t.string   "generic2"
     t.string   "generic3"

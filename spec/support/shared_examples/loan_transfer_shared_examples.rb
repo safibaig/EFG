@@ -69,7 +69,7 @@ shared_examples_for 'a loan transfer' do
       end
 
       it 'should create new loan with no value for branch sort code' do
-        new_loan.branch_sortcode.should be_blank
+        new_loan.sortcode.should be_blank
       end
 
       it 'should create new loan with repayment duration of 0' do

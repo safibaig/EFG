@@ -27,7 +27,7 @@ describe 'loan entry' do
     loan.company_registration.should == '0123456789'
     loan.postcode.should == 'N8 4HF'
     loan.non_validated_postcode.should == 'JF3 8HF'
-    loan.branch_sortcode.should == '03-12-45'
+    loan.sortcode.should == '03-12-45'
     loan.generic1.should == 'Generic 1'
     loan.generic2.should == 'Generic 2'
     loan.generic3.should == 'Generic 3'
@@ -156,7 +156,7 @@ describe 'loan entry' do
       select LegalForm.find(1).name, from: 'loan_entry_legal_form_id'
       fill_in 'postcode', 'N8 4HF'
       fill_in 'non_validated_postcode', 'JF3 8HF'
-      fill_in 'branch_sortcode', '03-12-45'
+      fill_in 'sortcode', '03-12-45'
       select RepaymentFrequency.find(1).name, from: 'loan_entry_repayment_frequency_id'
       fill_in 'maturity_date', '01/01/2013'
 

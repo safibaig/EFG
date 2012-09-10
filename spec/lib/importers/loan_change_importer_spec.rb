@@ -44,8 +44,8 @@ describe LoanChangeImporter do
       loan_change.ar_insert_timestamp.should == Date.new(2006, 8, 31)
       loan_change.amount.should == nil
       loan_change.old_amount.should == nil
-      loan_change.guaranteed_date.should == nil
-      loan_change.old_guaranteed_date.should == nil
+      loan_change.guaranteed_on.should == nil
+      loan_change.old_guaranteed_on.should == nil
       loan_change.initial_draw_date.should == nil
       loan_change.old_initial_draw_date.should == nil
       loan_change.initial_draw_amount.should == nil
@@ -56,8 +56,8 @@ describe LoanChangeImporter do
       loan_change.old_dti_demand_out_amount.should == nil
       loan_change.dti_demand_interest.should == nil
       loan_change.old_dti_demand_interest.should == nil
-      loan_change.cap_id.should == nil
-      loan_change.old_cap_id.should == nil
+      loan_change.lending_limit_id.should == nil
+      loan_change.old_lending_limit_id.should == nil
       loan_change.loan_term.should == nil
       loan_change.old_loan_term.should == nil
       loan_change.loan.should == loan

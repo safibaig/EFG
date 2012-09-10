@@ -13,7 +13,7 @@ describe 'Transferred loan entry' do
 
   it 'should transition transferred loan to completed' do
     choose 'transferred_loan_entry_declaration_signed_true'
-    fill_in 'transferred_loan_entry_branch_sortcode', with: '03-12-45'
+    fill_in 'transferred_loan_entry_sortcode', with: '03-12-45'
     choose 'transferred_loan_entry_repayment_frequency_id_1'
     fill_in "transferred_loan_entry_repayment_duration_years", with: 1
     fill_in "transferred_loan_entry_repayment_duration_months", with: 6
@@ -38,7 +38,7 @@ describe 'Transferred loan entry' do
     loan.reload
     loan.state.should == Loan::Completed
     loan.declaration_signed.should be_true
-    loan.branch_sortcode.should == '03-12-45'
+    loan.sortcode.should == '03-12-45'
     loan.maturity_date.should == Date.new(2013, 1, 1)
     loan.repayment_frequency_id.should == 1
     loan.repayment_duration.should == MonthDuration.new(18)
