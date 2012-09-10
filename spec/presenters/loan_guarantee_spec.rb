@@ -63,5 +63,15 @@ describe LoanGuarantee do
       initial_change.modified_date.should == Date.current
       initial_change.seq.should == 0
     end
+
+    it 'creates a LoanStateChange' do
+      expect {
+        loan_guarantee.save.should == true
+      }.to change(LoanStateChange, :count).by(1)
+
+      state_change = loan.state_changes.last
+      state_change.event_id.should == 7
+      state_change.state.should == Loan::Guaranteed
+    end
   end
 end
