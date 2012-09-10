@@ -42,4 +42,28 @@ class LoanStateChangeImporter < BaseImporter
       attributes[self.class.field_mapping[name]] = value
     end
   end
+
+  # FIXME: cater properly for loan#modified_by being nil (probably due to legacy value being 'system' or 'migration')
+  def self.after_import
+    counter = 0
+
+    unless Rails.env.test?
+      progress_bar ||= ProgressBar.new('After import', Loan.count())
+    end
+
+    Loan.find_each do |loan|
+      progress_bar.try(:set, counter += 1)
+
+      loan.state_changes.create(
+        state: loan.state,
+        event_id: loan.event_legacy_id,
+        modified_on: loan.updated_at,
+        modified_by: loan.modified_by || loan.lender.lender_users.first || CfeUser.first,
+        version: loan.version
+      )
+    end
+
+    progress_bar.try(:finish)
+  end
+
 end
