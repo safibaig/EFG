@@ -37,8 +37,8 @@ class PremiumScheduleReport
         'state_aid_calculations.id AS state_aid_calculation_id'
       ].join(', '))
       .joins(:lender)
-      .joins('INNER JOIN loan_changes AS guaranteed_loan_change ON guaranteed_loan_change.loan_id = loans.id')
-      .joins('INNER JOIN loan_changes AS first_loan_change ON first_loan_change.loan_id = loans.id AND first_loan_change.seq = 0')
+      .joins('INNER JOIN loan_modifications AS guaranteed_loan_change ON guaranteed_loan_change.loan_id = loans.id')
+      .joins('INNER JOIN loan_modifications AS first_loan_change ON first_loan_change.loan_id = loans.id AND first_loan_change.seq = 0')
       .where(loans: { legacy_small_loan: false })
 
     max_state_aid_seq = StateAidCalculation.select('MAX(seq)').where('loan_id = loans.id')

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120910102514) do
+ActiveRecord::Schema.define(:version => 20120911100906) do
 
   create_table "ded_codes", :force => true do |t|
     t.string   "legacy_id"
@@ -98,7 +98,19 @@ ActiveRecord::Schema.define(:version => 20120910102514) do
 
   add_index "lending_limits", ["lender_id"], :name => "index_lending_limits_on_lender_id"
 
-  create_table "loan_changes", :force => true do |t|
+  create_table "loan_ineligibility_reasons", :force => true do |t|
+    t.integer  "loan_id"
+    t.text     "reason"
+    t.integer  "sequence",            :default => 0, :null => false
+    t.datetime "ar_timestamp"
+    t.datetime "ar_insert_timestamp"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "loan_ineligibility_reasons", ["loan_id"], :name => "index_loan_ineligibility_reasons_on_loan_id"
+
+  create_table "loan_modifications", :force => true do |t|
     t.integer  "loan_id",                                               :null => false
     t.integer  "created_by_id",                                         :null => false
     t.string   "oid"
@@ -133,23 +145,12 @@ ActiveRecord::Schema.define(:version => 20120910102514) do
     t.integer  "old_lending_limit_id"
     t.integer  "loan_term"
     t.integer  "old_loan_term"
-    t.datetime "created_at",                                            :null => false
-    t.datetime "updated_at",                                            :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "type"
   end
 
-  add_index "loan_changes", ["loan_id", "seq"], :name => "index_loan_changes_on_loan_id_and_seq", :unique => true
-
-  create_table "loan_ineligibility_reasons", :force => true do |t|
-    t.integer  "loan_id"
-    t.text     "reason"
-    t.integer  "sequence",            :default => 0, :null => false
-    t.datetime "ar_timestamp"
-    t.datetime "ar_insert_timestamp"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
-  end
-
-  add_index "loan_ineligibility_reasons", ["loan_id"], :name => "index_loan_ineligibility_reasons_on_loan_id"
+  add_index "loan_modifications", ["loan_id", "seq"], :name => "index_loan_changes_on_loan_id_and_seq", :unique => true
 
   create_table "loan_realisations", :force => true do |t|
     t.integer  "realised_loan_id"

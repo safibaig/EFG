@@ -1,9 +1,9 @@
-class LoanChangeImporter < BaseImporter
+class LoanModificationImporter < BaseImporter
   self.csv_path = Rails.root.join('import_data/SFLG_LOAN_CHANGES_DATA_TABLE.csv')
   self.klass = LoanChange
 
   def self.extra_columns
-    [:created_by_id, :loan_id]
+    [:created_by_id, :loan_id, :type]
   end
 
   def self.field_mapping
@@ -55,6 +55,8 @@ class LoanChangeImporter < BaseImporter
       value = nil if value.blank?
 
       case name
+      when 'CHANGE_TYPE'
+        attributes[:type] = 'LoanChange'
       when 'MODIFIED_USER'
         attributes[:created_by_id] = self.class.user_id_from_username(value)
       when 'OID'

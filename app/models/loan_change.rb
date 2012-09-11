@@ -1,6 +1,4 @@
-class LoanChange < ActiveRecord::Base
-  include FormatterConcern
-
+class LoanChange < LoanModification
   attr_accessor :state_aid_calculation_attributes
 
   ATTRIBUTES_FOR_INITIAL_CHANGE = %w(initial_draw_amount initial_draw_date)
@@ -10,40 +8,12 @@ class LoanChange < ActiveRecord::Base
     facility_letter_date initial_draw_date initial_draw_amount sortcode
     dti_demand_out_amount dti_demand_interest lending_limit_id loan_term)
 
-  belongs_to :created_by, class_name: 'User'
-  belongs_to :loan
-
-  before_validation :set_seq, on: :create
-  before_save :store_old_values, on: :create
-
-  validates_presence_of :loan
-  validates_presence_of :created_by
-  validates_presence_of :date_of_change
-  validates_presence_of :modified_date
   validates_inclusion_of :change_type_id, in: ChangeType.all.map(&:id) << nil
 
   validate :validate_change_type
   validate :validate_non_negative_amounts
   validate :validate_amount
   validate :state_aid_recalculated, if: :requires_state_aid_recalculation?
-
-  format :amount, with: MoneyFormatter.new
-  format :amount_drawn, with: MoneyFormatter.new
-  format :date_of_change, with: QuickDateFormatter
-  format :dti_demand_interest, with: MoneyFormatter.new
-  format :dti_demand_out_amount, with: MoneyFormatter.new
-  format :facility_letter_date, with: QuickDateFormatter
-  format :initial_draw_amount, with: MoneyFormatter.new
-  format :initial_draw_date, with: QuickDateFormatter
-  format :lump_sum_repayment, with: MoneyFormatter.new
-  format :maturity_date, with: QuickDateFormatter
-  format :modified_date, with: QuickDateFormatter
-  format :old_amount, with: MoneyFormatter.new
-  format :old_dti_demand_interest, with: MoneyFormatter.new
-  format :old_dti_demand_out_amount, with: MoneyFormatter.new
-  format :old_facility_letter_date, with: QuickDateFormatter
-  format :old_initial_draw_amount, with: MoneyFormatter.new
-  format :old_initial_draw_date, with: QuickDateFormatter
 
   attr_accessible :amount, :amount_drawn, :business_name, :change_type_id,
     :date_of_change, :facility_letter_date, :initial_draw_amount,

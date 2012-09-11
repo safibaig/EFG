@@ -1,21 +1,21 @@
 require 'spec_helper'
 require 'importers'
 
-describe LoanChangeImporter do
-  let(:csv_fixture_path) { Rails.root.join('spec/fixtures/import_data/loan_changes.csv') }
+describe LoanModificationImporter do
+  let(:csv_fixture_path) { Rails.root.join('spec/fixtures/import_data/loan_modifications.csv') }
 
   describe '.import' do
     let!(:loan) { FactoryGirl.create(:loan, legacy_id: 5099) }
     let!(:user) { FactoryGirl.create(:user, username: '51BB5F278B5F9ABCF695A5C8F1C9D75A1E482C8A') }
 
     before do
-      LoanChangeImporter.instance_variable_set(:@loan_id_from_legacy_id, nil)
-      LoanChangeImporter.instance_variable_set(:@user_id_from_username, nil)
-      LoanChangeImporter.csv_path = csv_fixture_path
+      LoanModificationImporter.instance_variable_set(:@loan_id_from_legacy_id, nil)
+      LoanModificationImporter.instance_variable_set(:@user_id_from_username, nil)
+      LoanModificationImporter.csv_path = csv_fixture_path
     end
 
     def dispatch
-      LoanChangeImporter.import
+      LoanModificationImporter.import
     end
 
     it 'should create new user records' do
