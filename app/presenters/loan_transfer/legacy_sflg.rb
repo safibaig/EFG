@@ -11,7 +11,7 @@ class LoanTransfer::LegacySflg < LoanTransfer::Base
   end
 
   def loan_to_transfer
-    @loan_to_transfer ||= Loan.joins(:initial_loan_change).where(
+    @loan_to_transfer ||= Loan.joins(:initial_draw_change).where(
       amount: amount.cents,
       loan_modifications: { date_of_change: initial_draw_date },
       reference: reference,

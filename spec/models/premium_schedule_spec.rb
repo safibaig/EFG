@@ -165,19 +165,19 @@ describe PremiumSchedule do
     let(:premium_schedule) { loan.premium_schedule }
 
     it "should return formatted date string 3 months from the initial draw date " do
-      loan.initial_loan_change.update_attribute :date_of_change, Date.new(2012, 2, 24)
+      loan.initial_draw_change.update_attribute :date_of_change, Date.new(2012, 2, 24)
 
       premium_schedule.second_premium_collection_month.should == '05/2012'
     end
 
     it "should not screw up with end of month dates" do
-      loan.initial_loan_change.update_attribute :date_of_change, Date.new(2011, 11, 30)
+      loan.initial_draw_change.update_attribute :date_of_change, Date.new(2011, 11, 30)
 
       premium_schedule.second_premium_collection_month.should == '02/2012'
     end
 
     it "should return nil if there is no initial draw date" do
-      loan.loan_changes.delete_all
+      loan.loan_modifications.delete_all
 
       premium_schedule.second_premium_collection_month.should be_nil
     end

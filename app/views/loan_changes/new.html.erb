@@ -30,7 +30,7 @@
   <%= simple_form_row 'Current business name', @loan.business_name %>
   <%= f.input :business_name %>
 
-  <%= simple_form_row 'Date of initial draw of funds', @loan.initial_loan_change.date_of_change.to_s(:screen) %>
+  <%= simple_form_row 'Date of initial draw of funds', @loan.initial_draw_change.date_of_change.to_s(:screen) %>
   <%= simple_form_row 'Current maturity date', @loan.maturity_date.to_s(:screen) %>
 
   <%= f.input :maturity_date, as: :quick_date %>

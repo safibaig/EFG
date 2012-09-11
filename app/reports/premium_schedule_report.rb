@@ -47,7 +47,7 @@ class PremiumScheduleReport
       if schedule_type == 'Changed'
         # For a "Changed" loan take the guaranteed date to be the last time it
         # was changed.
-        max_change_seq = LoanChange.select('MAX(seq)').where('loan_id = loans.id')
+        max_change_seq = LoanModification.select('MAX(seq)').where('loan_id = loans.id')
         scope = scope.where("guaranteed_loan_change.seq = (#{max_change_seq.to_sql})")
 
         calc_type = 'R'

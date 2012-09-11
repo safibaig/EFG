@@ -3,33 +3,21 @@
 require 'spec_helper'
 
 describe LoanChange do
+  it_behaves_like 'LoanModification'
+
   describe 'validations' do
     let(:loan_change) { FactoryGirl.build(:loan_change) }
 
-    it 'has a valid Factory' do
-      loan_change.should be_valid
-    end
-
-    it 'requires a loan' do
-      loan_change.loan = nil
+    it 'requires a change_type_id' do
+      loan_change.change_type_id = ''
       loan_change.should_not be_valid
     end
 
-    it 'requires a creator' do
-      loan_change.created_by = nil
+    it 'must have a valid change_type_id' do
+      loan_change.change_type_id = '9'
       loan_change.should_not be_valid
-    end
-
-    it 'requires a valid change_type_id' do
       loan_change.change_type_id = 'zzz'
       loan_change.should_not be_valid
-    end
-
-    %w(change_type_id date_of_change modified_date).each do |attr|
-      it "requires #{attr}" do
-        loan_change.send("#{attr}=", '')
-        loan_change.should_not be_valid
-      end
     end
 
     it 'must not have a negative amount_drawn' do
@@ -90,41 +78,6 @@ describe LoanChange do
           loan_change.should be_valid
         end
       end
-
-      context '9 - Data correction' do
-        before do
-          loan_change.change_type_id = '9'
-        end
-
-        it 'must have something that has changed' do
-          loan_change.amount = nil
-          loan_change.lending_limit_id = nil
-          loan_change.facility_letter_date = nil
-          loan_change.initial_draw_date = nil
-          loan_change.initial_draw_amount = nil
-          loan_change.sortcode = nil
-          loan_change.should_not be_valid
-        end
-
-        context '#amount' do
-          it 'must be between £1,000 and £1,000,000' do
-            loan_change.amount = '999.99'
-            loan_change.should_not be_valid
-            loan_change.amount = '1000000.01'
-            loan_change.should_not be_valid
-            loan_change.amount = '999999.99'
-            loan_change.should be_valid
-          end
-
-          it 'must be >= total amount_drawn' do
-            FactoryGirl.create(:loan_change, loan: loan_change.loan, amount_drawn: Money.new(3_000_00))
-            FactoryGirl.create(:loan_change, loan: loan_change.loan, amount_drawn: Money.new(2_000_00))
-
-            loan_change.amount = Money.new(4_999_99)
-            loan_change.should_not be_valid
-          end
-        end
-      end
     end
 
     context 'when state aid recalculation is required' do
@@ -182,44 +135,6 @@ describe LoanChange do
       loan.state.should == Loan::LenderDemand
     end
 
-    context 'when the LoanChange is a data correction' do
-      before do
-        loan_change.change_type_id = '9'
-      end
-
-      it 'updates Loan values (but not its state)' do
-        loan_change.amount = Money.new(6_000_00)
-        loan_change.save_and_update_loan.should == true
-
-        loan.reload
-        loan.amount.should == Money.new(6_000_00)
-        loan.state.should == Loan::LenderDemand
-      end
-
-      it 'creates a new loan state change record for the state change' do
-        expect {
-          loan_change.amount = Money.new(6_000_00)
-          loan_change.save_and_update_loan
-        }.to change(LoanStateChange, :count).by(1)
-
-        state_change = loan.state_changes.last
-        state_change.event_id.should == 22
-        state_change.state.should == Loan::LenderDemand
-      end
-
-      context 'and modifying a StateAidCalculation value' do
-        it 'updates the initial loan change' do
-          loan_change.initial_draw_amount = Money.new(3_000_00)
-          loan_change.initial_draw_date = Date.current
-          loan_change.save_and_update_loan.should == true
-
-          initial_loan_change = loan.initial_loan_change
-          initial_loan_change.initial_draw_amount.should == Money.new(3_000_00)
-          initial_loan_change.initial_draw_date.should == Date.current
-        end
-      end
-    end
-
     context 'when state aid recalculation is required' do
       it 'creates new state aid calculation for the Loan' do
         loan_change.change_type_id = '2'
@@ -247,14 +162,14 @@ describe LoanChange do
   end
 
   describe '#seq' do
-    let(:loan) { FactoryGirl.create(:loan) }
+    let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
 
     it 'is incremented for each change' do
-      change0 = FactoryGirl.create(:loan_change, loan: loan)
       change1 = FactoryGirl.create(:loan_change, loan: loan)
+      change2 = FactoryGirl.create(:loan_change, loan: loan)
 
-      change0.seq.should == 0
       change1.seq.should == 1
+      change2.seq.should == 2
     end
   end
 

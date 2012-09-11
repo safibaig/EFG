@@ -3,18 +3,16 @@ class DataCorrectionsController < ApplicationController
   before_filter :load_loan
 
   def new
-    @loan_change = @loan.loan_changes.new
+    @data_correction = @loan.data_corrections.new
   end
 
   def create
-    @loan_change = @loan.loan_changes.new
-    @loan_change.attributes = params[:loan_change]
-    @loan_change.date_of_change = Date.current
-    @loan_change.change_type_id = '9' # Used for all data corrections.
-    @loan_change.created_by = current_user
-    @loan_change.modified_date = Date.current
+    @data_correction = @loan.data_corrections.new(params[:data_correction])
+    @data_correction.date_of_change = Date.current
+    @data_correction.created_by = current_user
+    @data_correction.modified_date = Date.current
 
-    if @loan_change.save_and_update_loan
+    if @data_correction.save_and_update_loan
       redirect_to loan_url(@loan)
     else
       render :new

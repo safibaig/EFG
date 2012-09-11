@@ -80,15 +80,18 @@ en:
   activerecord:
     errors:
       models:
-        loan_change:
+        data_correction:
           attributes:
             base:
-              required_for_data_correction: 'No changes have been requested'
-              required_lender_demand_satisfied: 'At least one of the following values must be entered: Amount Drawn, Lump Sum Repayment or Maturity Date'
-              state_aid_not_recalculated: 'Calculator input values have not been entered, please reschedule'
+              must_have_a_change: 'No changes have been requested'
             amount:
               must_be_eligible_amount: 'Corrected Loan Amount is not in the range £1,000 to £1,000,000'
               must_be_gte_total_amount_drawn: 'The Corrected Loan Amount must be greater than or equal to the Correct total amount drawn to date'
+        loan_change:
+          attributes:
+            base:
+              required_lender_demand_satisfied: 'At least one of the following values must be entered: Amount Drawn, Lump Sum Repayment or Maturity Date'
+              state_aid_not_recalculated: 'Calculator input values have not been entered, please reschedule'
             amount_drawn:
               required: "can't be blank"
               not_be_negative: "can't be negative"

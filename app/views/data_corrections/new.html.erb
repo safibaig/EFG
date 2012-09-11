@@ -8,7 +8,7 @@
 
 <hr>
 
-<%= simple_form_for(@loan_change, url: loan_data_corrections_path(@loan), html: { class: 'form-horizontal form-data-correction' }) do |f| %>
+<%= simple_form_for(@data_correction, url: loan_data_corrections_path(@loan), html: { class: 'form-horizontal form-data-correction' }) do |f| %>
   <%= render_errors_on_base(f.object.errors) %>
 
   <%= simple_form_row 'Original Loan Amount', @loan.amount.format %>
@@ -20,14 +20,14 @@
   <%= simple_form_row 'Original Facility Letter Date', @loan.facility_letter_date.to_s(:screen) %>
   <%= f.input :facility_letter_date, as: :quick_date %>
 
-  <%= simple_form_row 'Original Date of Guarantee and Initial Draw of Funds', @loan.initial_loan_change.date_of_change.to_s(:screen) %>
+  <%= simple_form_row 'Original Date of Guarantee and Initial Draw of Funds', @loan.initial_draw_change.date_of_change.to_s(:screen) %>
   <%= f.input :initial_draw_date, as: :quick_date %>
 
-  <%= simple_form_row 'Original Value of Initial Draw', @loan.initial_loan_change.amount_drawn.format %>
+  <%= simple_form_row 'Original Value of Initial Draw', @loan.initial_draw_change.amount_drawn.format %>
   <%= f.input :initial_draw_amount, as: :currency %>
 
   <%= simple_form_row 'Original Branch Sort Code (nnnnnn)', @loan.sortcode %>
-  <%= f.input :sortcode %>
+  <%= f.input :sortcode, placeholder: 'nnnnnn' %>
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>

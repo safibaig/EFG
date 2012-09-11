@@ -46,13 +46,13 @@ en:
         business_name: 'What is the new business name?'
         maturity_date: 'What is the new maturity date?'
 
-        # data correction
+      data_correction:
         amount: 'Corrected Loan Amount'
         lending_limit_id: 'Correct Lending Limit'
         facility_letter_date: 'Correct Facility Letter Date'
         initial_draw_date: 'Correct Date of Guarantee and Initial Draw of Funds'
         initial_draw_amount: 'Correct Value of Initial Draw'
-        sortcode: 'Correct Branch Sort Code (nnnnnn)'
+        sortcode: 'Correct Branch Sort Code'
 
       loan_eligibility_check:
         <<: *loan

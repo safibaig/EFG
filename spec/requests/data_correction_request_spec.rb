@@ -28,13 +28,13 @@ describe 'data correction' do
       fill_in 'amount', '6000'
       click_button 'Submit'
 
-      loan_change = loan.loan_changes.last!
-      loan_change.change_type_id.should == '9'
-      loan_change.old_amount.should == Money.new(5_000_00)
-      loan_change.amount.should == Money.new(6_000_00)
-      loan_change.date_of_change.should == Date.current
-      loan_change.modified_date.should == Date.current
-      loan_change.created_by.should == current_user
+      data_correction = loan.data_corrections.last!
+      data_correction.old_amount.should == Money.new(5_000_00)
+      data_correction.amount.should == Money.new(6_000_00)
+      data_correction.change_type_id.should == '9'
+      data_correction.date_of_change.should == Date.current
+      data_correction.modified_date.should == Date.current
+      data_correction.created_by.should == current_user
 
       loan.reload
       loan.amount.should == Money.new(6_000_00)
@@ -44,6 +44,6 @@ describe 'data correction' do
 
   private
     def fill_in(attribute, value)
-      page.fill_in "loan_change_#{attribute}", with: value
+      page.fill_in "data_correction_#{attribute}", with: value
     end
 end
