@@ -14,7 +14,6 @@ describe LoanAuditReportCsvRow do
         maturity_date: Date.parse('28/05/2011'),
         cancelled_on: Date.parse('30/12/2012'),
         facility_letter_date: Date.parse('16/06/2012'),
-        initial_draw_date: Date.parse('03/06/2012'),
         borrower_demanded_on: Date.parse('16/08/2012'),
         repaid_on: Date.parse('19/02/2014'),
         no_claim_on: Date.parse('13/08/2012'),
@@ -41,7 +40,8 @@ describe LoanAuditReportCsvRow do
         loan_state_change_to_state: Loan::Guaranteed,
         loan_state_change_event_id: 3,
         loan_state_change_modified_on: Date.parse('11/06/2012'),
-        loan_state_change_modified_by: user.username
+        loan_state_change_modified_by: user.username,
+        loan_initial_draw_date: Date.parse('03/06/2012')
       )
 
       loan

@@ -48,6 +48,7 @@ class LoanAuditReport
     Loan.
       select(select_options).
       joins("RIGHT OUTER JOIN loan_state_changes ON loans.id = loan_state_changes.loan_id").
+      joins("LEFT JOIN loan_changes AS first_loan_change ON loans.id = first_loan_change.loan_id AND first_loan_change.seq = 0").
       where("loans.modified_by_legacy_id != 'migration'").
       where(query_conditions).
       order("loans.reference, loan_state_changes.version")
@@ -94,6 +95,7 @@ class LoanAuditReport
       'loan_state_changes.event_id AS loan_state_change_event_id',
       'loan_state_changes.state AS loan_state_change_to_state',
       'loan_state_changes.modified_on AS loan_state_change_modified_on',
+      'first_loan_change.date_of_change AS loan_initial_draw_date',
       '(SELECT username FROM users WHERE id = loans.created_by_id) AS loan_created_by',
       '(SELECT username FROM users WHERE id = loans.modified_by_id) AS loan_modified_by',
       '(SELECT username FROM users WHERE id = loan_state_changes.modified_by_id) AS loan_state_change_modified_by',

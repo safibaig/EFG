@@ -14,7 +14,7 @@ class LoanAuditReportCsvRow
       @loan.maturity_date.try(:strftime, '%d-%m-%Y'),
       @loan.cancelled_on.try(:strftime, '%d-%m-%Y'),
       @loan.facility_letter_date.try(:strftime, '%d-%m-%Y'),
-      @loan.initial_draw_date.try(:strftime, '%d-%m-%Y'),
+      @loan.loan_initial_draw_date.try(:strftime, '%d-%m-%Y'),
       @loan.borrower_demanded_on.try(:strftime, '%d-%m-%Y'),
       @loan.repaid_on.try(:strftime, '%d-%m-%Y'),
       @loan.no_claim_on.try(:strftime, '%d-%m-%Y'),
