@@ -3,9 +3,12 @@ class LoanChange < ActiveRecord::Base
 
   attr_accessor :state_aid_calculation_attributes
 
-  OLD_ATTRIBUTES_TO_STORE = %w(maturity_date business_name amount
-    guaranteed_date initial_draw_date initial_draw_amount sortcode
-    dti_demand_out_amount dti_demand_interest cap_id loan_term)
+  ATTRIBUTES_FOR_INITIAL_CHANGE = %w(initial_draw_amount initial_draw_date)
+  ATTRIBUTES_FOR_LOAN = %w(amount business_name lending_limit_id maturity_date
+    sortcode)
+  ATTRIBUTES_FOR_OLD = %w(maturity_date business_name amount
+    facility_letter_date initial_draw_date initial_draw_amount sortcode
+    dti_demand_out_amount dti_demand_interest lending_limit_id loan_term)
 
   belongs_to :created_by, class_name: 'User'
   belongs_to :loan
@@ -15,36 +18,44 @@ class LoanChange < ActiveRecord::Base
 
   validates_presence_of :loan
   validates_presence_of :created_by
-  validates_presence_of :date_of_change, :modified_date
+  validates_presence_of :date_of_change
+  validates_presence_of :modified_date
   validates_inclusion_of :change_type_id, in: ChangeType.all.map(&:id) << nil
 
   validate :validate_change_type
   validate :validate_non_negative_amounts
+  validate :validate_amount
   validate :state_aid_recalculated, if: :requires_state_aid_recalculation?
 
+  format :amount, with: MoneyFormatter.new
+  format :amount_drawn, with: MoneyFormatter.new
   format :date_of_change, with: QuickDateFormatter
+  format :dti_demand_interest, with: MoneyFormatter.new
+  format :dti_demand_out_amount, with: MoneyFormatter.new
+  format :facility_letter_date, with: QuickDateFormatter
+  format :initial_draw_amount, with: MoneyFormatter.new
+  format :initial_draw_date, with: QuickDateFormatter
+  format :lump_sum_repayment, with: MoneyFormatter.new
   format :maturity_date, with: QuickDateFormatter
   format :modified_date, with: QuickDateFormatter
-  format :lump_sum_repayment, with: MoneyFormatter.new
-  format :amount_drawn, with: MoneyFormatter.new
-  format :amount, with: MoneyFormatter.new
   format :old_amount, with: MoneyFormatter.new
-  format :initial_draw_amount, with: MoneyFormatter.new
-  format :old_initial_draw_amount, with: MoneyFormatter.new
-  format :dti_demand_out_amount, with: MoneyFormatter.new
-  format :old_dti_demand_out_amount, with: MoneyFormatter.new
-  format :dti_demand_interest, with: MoneyFormatter.new
   format :old_dti_demand_interest, with: MoneyFormatter.new
+  format :old_dti_demand_out_amount, with: MoneyFormatter.new
+  format :old_facility_letter_date, with: QuickDateFormatter
+  format :old_initial_draw_amount, with: MoneyFormatter.new
+  format :old_initial_draw_date, with: QuickDateFormatter
 
-  attr_accessible :amount_drawn, :business_name, :date_of_change,
-    :change_type_id, :lump_sum_repayment, :maturity_date
+  attr_accessible :amount, :amount_drawn, :business_name, :change_type_id,
+    :date_of_change, :facility_letter_date, :initial_draw_amount,
+    :initial_draw_date, :lending_limit_id, :lump_sum_repayment,
+    :maturity_date, :sortcode
 
   def change_type
     ChangeType.find(change_type_id)
   end
 
   def changes
-    attributes.slice(*OLD_ATTRIBUTES_TO_STORE).select { |_, value|
+    attributes.slice(*ATTRIBUTES_FOR_OLD).select { |_, value|
       value.present?
     }.keys.map { |attribute|
       old_attribute = "old_#{attribute}"
@@ -62,6 +73,7 @@ class LoanChange < ActiveRecord::Base
     transaction do
       save!
       update_loan!
+      update_initial_loan_change!
       log_loan_state_change!
     end
 
@@ -75,23 +87,46 @@ class LoanChange < ActiveRecord::Base
   end
 
   private
+    def data_correction?
+      change_type_id == '9'
+    end
+
     def set_seq
       self.seq = (LoanChange.where(loan_id: loan_id).maximum(:seq) || -1) + 1
     end
 
     def store_old_values
-      attributes.slice(*OLD_ATTRIBUTES_TO_STORE).each do |name, value|
+      attributes.slice(*ATTRIBUTES_FOR_OLD).each do |name, value|
         self["old_#{name}"] = loan[name] if value.present?
       end
     end
 
+    def update_initial_loan_change!
+      initial_change_attributes = attributes
+        .slice(*ATTRIBUTES_FOR_INITIAL_CHANGE)
+        .select { |_, value| value.present? }
+
+      if initial_change_attributes.any?
+        initial_loan_change = loan.initial_loan_change
+
+        # Ensure formatters are respected by using accessors.
+        initial_change_attributes.each do |key, value|
+          initial_loan_change[key] = value
+        end
+
+        initial_loan_change.save!
+      end
+    end
+
     def update_loan!
-      changes.each do |change|
-        loan[change[:attribute]] = change[:value]
+      attributes.slice(*ATTRIBUTES_FOR_LOAN).select { |_, value|
+        value.present?
+      }.each do |name, value|
+        loan[name] = value
       end
 
       loan.modified_by = created_by
-      loan.state = Loan::Guaranteed
+      loan.state = Loan::Guaranteed unless data_correction?
       loan.save!
 
       if requires_state_aid_recalculation?
@@ -104,10 +139,10 @@ class LoanChange < ActiveRecord::Base
     def log_loan_state_change!
       LoanStateChange.create!(
         loan_id: loan.id,
-        state: Loan::Guaranteed,
+        state: loan.state,
         modified_on: Date.today,
         modified_by: loan.modified_by,
-        event_id: 9 # change amount or terms
+        event_id: data_correction? ? 22 : 9
       )
     end
 
@@ -119,6 +154,29 @@ class LoanChange < ActiveRecord::Base
         errors.add(:base, :required_lender_demand_satisfied) unless amount_drawn.present? || lump_sum_repayment.present? || maturity_date.present?
       when '7'
         errors.add(:amount_drawn, :required) unless amount_drawn
+      when '9'
+        all_blank = [
+          amount,
+          facility_letter_date,
+          initial_draw_amount,
+          initial_draw_date,
+          lending_limit_id,
+          sortcode
+        ].all?(&:blank?)
+
+        errors.add(:base, :required_for_data_correction) if all_blank
+      end
+    end
+
+    def validate_amount
+      return if amount.blank?
+
+      # TODO: Extract this duplicated logic.
+      if amount.between?(Money.new(1_000_00), Money.new(1_000_000_00))
+        total_amount_drawn = Money.new(loan.loan_changes.sum(:amount_drawn))
+        errors.add(:amount, :must_be_gte_total_amount_drawn) unless amount >= total_amount_drawn
+      else
+        errors.add(:amount, :must_be_eligible_amount)
       end
     end
 

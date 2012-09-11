@@ -22,32 +22,16 @@
   <%= f.input :date_of_change, as: :quick_date %>
   <%= f.input :change_type_id, as: :select, collection: ChangeType.for_loan_change, prompt: 'Please select' %>
 
-  <div class="control-group">
-    <div class="control-label">
-      Cumulative amount drawn against this facility prior to this change
-    </div>
-    <% # TODO: Get cumulative amount drawn from somewhere. %>
-    <div class="controls"></div>
-  </div>
-
+  <% # TODO: Get cumulative amount drawn from somewhere. %>
+  <%= simple_form_row 'Cumulative amount drawn against this facility prior to this change', '' %>
   <%= f.input :amount_drawn, as: :currency %>
   <%= f.input :lump_sum_repayment, as: :currency %>
 
-  <div class="control-group">
-    <div class="control-label">Current business name</div>
-    <div class="controls"><%= @loan.business_name %></div>
-  </div>
-
+  <%= simple_form_row 'Current business name', @loan.business_name %>
   <%= f.input :business_name %>
 
-  <div class="control-group">
-    <div class="control-label">Date of initial draw of funds</div>
-    <div class="controls"><%= @loan.initial_loan_change.date_of_change.to_s(:screen) %></div>
-  </div>
-  <div class="control-group">
-    <div class="control-label">Current maturity date</div>
-    <div class="controls"><%= @loan.maturity_date %></div>
-  </div>
+  <%= simple_form_row 'Date of initial draw of funds', @loan.initial_loan_change.date_of_change.to_s(:screen) %>
+  <%= simple_form_row 'Current maturity date', @loan.maturity_date.to_s(:screen) %>
 
   <%= f.input :maturity_date, as: :quick_date %>
 
