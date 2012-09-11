@@ -117,8 +117,8 @@ ActiveRecord::Schema.define(:version => 20120910102514) do
     t.datetime "ar_insert_timestamp"
     t.integer  "amount",                    :limit => 8
     t.integer  "old_amount",                :limit => 8
-    t.date     "guaranteed_on"
-    t.date     "old_guaranteed_on"
+    t.date     "facility_letter_date"
+    t.date     "old_facility_letter_date"
     t.date     "initial_draw_date"
     t.date     "old_initial_draw_date"
     t.integer  "initial_draw_amount",       :limit => 8

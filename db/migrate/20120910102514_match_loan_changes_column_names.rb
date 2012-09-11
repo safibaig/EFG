@@ -2,8 +2,8 @@ class MatchLoanChangesColumnNames < ActiveRecord::Migration
   def up
     rename_column :loan_changes, :cap_id, :lending_limit_id
     rename_column :loan_changes, :old_cap_id, :old_lending_limit_id
-    rename_column :loan_changes, :guaranteed_date, :guaranteed_on
-    rename_column :loan_changes, :old_guaranteed_date, :old_guaranteed_on
+    rename_column :loan_changes, :guaranteed_date, :facility_letter_date
+    rename_column :loan_changes, :old_guaranteed_date, :old_facility_letter_date
     rename_column :loans, :branch_sortcode, :sortcode
   end
 

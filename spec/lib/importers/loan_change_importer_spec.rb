@@ -44,8 +44,8 @@ describe LoanChangeImporter do
       loan_change.ar_insert_timestamp.should == Date.new(2006, 8, 31)
       loan_change.amount.should == nil
       loan_change.old_amount.should == nil
-      loan_change.guaranteed_on.should == nil
-      loan_change.old_guaranteed_on.should == nil
+      loan_change.facility_letter_date.should == nil
+      loan_change.old_facility_letter_date.should == nil
       loan_change.initial_draw_date.should == nil
       loan_change.old_initial_draw_date.should == nil
       loan_change.initial_draw_amount.should == nil
