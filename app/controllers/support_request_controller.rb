@@ -1,4 +1,5 @@
 class SupportRequestController < ApplicationController
+  before_filter :verify_create_permission
 
   def new
     @support_request = SupportRequest.new
@@ -26,6 +27,10 @@ class SupportRequestController < ApplicationController
 
   def user_agent
     @user_agent ||= UserAgent.parse(request.env['HTTP_USER_AGENT'])
+  end
+
+  def verify_create_permission
+    enforce_create_permission(SupportRequest)
   end
 
 end

@@ -175,4 +175,10 @@ describe AuditorUserPermissions do
     it { refute user.can_update?(LendingLimit) }
     it { refute user.can_view?(LendingLimit) }
   end
+
+  context 'SupportRequest' do
+    it { refute user.can_create?(SupportRequest) }
+    it { refute user.can_update?(SupportRequest) }
+    it { refute user.can_view?(SupportRequest) }
+  end
 end

@@ -1,7 +1,8 @@
 module LenderAdminPermissions
   def can_create?(resource)
     [
-      LenderUser
+      LenderUser,
+      SupportRequest
     ].include?(resource)
   end
 
