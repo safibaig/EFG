@@ -175,4 +175,10 @@ describe SuperUserPermissions do
     it { refute user.can_update?(Lender) }
     it { refute user.can_view?(Lender) }
   end
+
+  context 'SupportRequest' do
+    it { refute user.can_create?(SupportRequest) }
+    it { refute user.can_update?(SupportRequest) }
+    it { refute user.can_view?(SupportRequest) }
+  end
 end

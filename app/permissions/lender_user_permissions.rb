@@ -16,7 +16,8 @@ module LenderUserPermissions
       Recovery,
       StateAidCalculation,
       TransferredLoanEntry,
-      LoanReport
+      LoanReport,
+      SupportRequest
     ].include?(resource)
   end
 
