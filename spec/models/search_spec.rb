@@ -66,16 +66,16 @@ describe Search do
       Search.new(lender, params)
     end
 
-    it "should return loans by business name" do
-      search('business_name' => loan2.business_name).results.should == [loan2]
+    it "should return loans by partial business name" do
+      search('business_name' => 'er-sl').results.should == [loan2]
     end
 
-    it "should return loans by trading name" do
-      search('trading_name' => loan2.trading_name).results.should == [loan2]
+    it "should return loans by partial trading name" do
+      search('trading_name' => 'ce-int').results.should == [loan2]
     end
 
-    it "should return loans by company registration" do
-      search('company_registration' => loan2.company_registration).results.should == [loan2]
+    it "should return loans by partial company registration" do
+      search('company_registration' => '887').results.should == [loan2]
     end
 
     it "should return loans by specific state" do
