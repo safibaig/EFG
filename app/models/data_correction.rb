@@ -1,12 +1,10 @@
 class DataCorrection < LoanModification
-  ATTRIBUTES_FOR_LOAN = %w(amount facility_letter_date lending_limit_id
-    sortcode)
-  ATTRIBUTES_FOR_INITIAL_CHANGE = %w(initial_draw_amount initial_draw_date)
+  ATTRIBUTES_FOR_OLD = %w(amount facility_letter_date initial_draw_amount
+    initial_draw_date lending_limit_id sortcode)
 
   before_validation :set_change_type_id
-  before_save :store_old_values
-  after_save_and_update_loan :update_loan!
-  after_save_and_update_loan :update_initial_draw_change!
+  before_save :set_all_attributes
+  after_save_and_update_loan :update_loan_and_initial_draw_change!
   after_save_and_update_loan :create_loan_state_change!
 
   validate :presence_of_a_field
@@ -14,6 +12,8 @@ class DataCorrection < LoanModification
 
   attr_accessible :amount, :facility_letter_date, :initial_draw_amount,
     :initial_draw_date, :lending_limit_id, :sortcode
+
+  delegate :initial_draw_change, to: :loan
 
   private
     def create_loan_state_change!
@@ -43,42 +43,33 @@ class DataCorrection < LoanModification
       self.change_type_id = '9'
     end
 
-    def store_old_values
-      attributes.slice(*ATTRIBUTES_FOR_LOAN).each do |name, value|
-        self["old_#{name}"] = loan[name] if value.present?
+    def set_all_attributes
+      attributes.slice(*ATTRIBUTES_FOR_OLD).select { |_, value|
+        value.present?
+      }.each do |key, value|
+        case key
+        when 'initial_draw_amount'
+          self.old_initial_draw_amount = initial_draw_change.amount_drawn
+          initial_draw_change.amount_drawn = initial_draw_amount
+        when 'initial_draw_date'
+          self.old_initial_draw_date = initial_draw_change.date_of_change
+          initial_draw_change.date_of_change = initial_draw_date
+        when 'lending_limit_id'
+          self.old_lending_limit_id = loan.lending_limit_id
+          # TODO: Don't allow setting another lender's lending limit.
+          loan.lending_limit = LendingLimit.find(value)
+        else
+          self["old_#{key}"] = loan[key] if value.present?
+          loan[key] = value
+        end
       end
     end
 
-    def update_initial_draw_change!
-      initial_change_attributes = attributes
-        .slice(*ATTRIBUTES_FOR_INITIAL_CHANGE)
-        .select { |_, value| value.present? }
-
-      if initial_change_attributes.any?
-        initial_draw_change = loan.initial_draw_change
-
-        initial_change_attributes.each do |key, value|
-          initial_draw_change[key] = value
-        end
-
-        initial_draw_change.save!
-      end
-    end
-
-    def update_loan!
-      attributes.slice(*self.class::ATTRIBUTES_FOR_LOAN).each do |name, value|
-        if value.present?
-          if name == 'lending_limit_id'
-            # TODO: Don't allow setting another lender's lending limit.
-            loan.lending_limit = LendingLimit.find(value)
-          else
-            loan[name] = value
-          end
-        end
-      end
-
+    def update_loan_and_initial_draw_change!
       loan.modified_by = created_by
       loan.save!
+
+      initial_draw_change.save! if initial_draw_amount || initial_draw_date
     end
 
     def validate_amount

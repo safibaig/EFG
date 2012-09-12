@@ -44,6 +44,13 @@ describe DataCorrection do
     let(:lending_limit_1) { FactoryGirl.create(:lending_limit, lender: lender) }
     let(:lending_limit_2) { FactoryGirl.create(:lending_limit, lender: lender) }
     let(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: lender, lending_limit: lending_limit_1, amount: Money.new(5_000_00), facility_letter_date: Date.new(2012, 1, 1), sortcode: '123456') }
+    let!(:initial_draw_change) {
+      loan.initial_draw_change.tap { |initial_draw_change|
+        initial_draw_change.amount_drawn = Money.new(1_000_00)
+        initial_draw_change.date_of_change = Date.new(2012, 3, 4)
+        initial_draw_change.save!
+      }
+    }
     let(:data_correction) {
       DataCorrection.new do |data_correction|
         data_correction.created_by = user
@@ -69,6 +76,24 @@ describe DataCorrection do
 
       loan.reload
       loan.facility_letter_date.should == Date.new(2012, 2, 2)
+    end
+
+    it 'works with #initial_draw_amount / #initial_draw_date' do
+      data_correction.initial_draw_amount = Money.new(2_000_00)
+      data_correction.save_and_update_loan.should == true
+      data_correction.old_initial_draw_amount.should == Money.new(1_000_00)
+
+      initial_draw_change.reload
+      initial_draw_change.amount_drawn.should == Money.new(2_000_00)
+    end
+
+    it 'works with #initial_draw_amount / #initial_draw_date' do
+      data_correction.initial_draw_date = Date.new(2012, 4, 3)
+      data_correction.save_and_update_loan.should == true
+      data_correction.old_initial_draw_date = Date.new(2012, 3, 4)
+
+      initial_draw_change.reload
+      initial_draw_change.date_of_change.should == Date.new(2012, 4, 3)
     end
 
     it 'works with #lending_limit_id' do
@@ -98,16 +123,6 @@ describe DataCorrection do
       state_change = loan.state_changes.last
       state_change.event_id.should == 22
       state_change.state.should == Loan::Guaranteed
-    end
-
-    it 'updates the initial loan change' do
-      data_correction.initial_draw_amount = Money.new(3_000_00)
-      data_correction.initial_draw_date = Date.current
-      data_correction.save_and_update_loan.should == true
-
-      initial_draw_change = loan.initial_draw_change
-      initial_draw_change.initial_draw_amount.should == Money.new(3_000_00)
-      initial_draw_change.initial_draw_date.should == Date.current
     end
   end
 
