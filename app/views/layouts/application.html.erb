@@ -41,6 +41,9 @@
               <% if current_user.can_create?(LoanReport) %>
                 <li><%= link_to 'Generate a loan report', new_loan_report_path %></li>
               <% end %>
+              <% if current_user.can_create?(LoanAuditReport) %>
+                <li><%= link_to 'Generate loan audit report', new_loan_audit_report_path %></li>
+              <% end %>
               <% if current_user.can_view?(Search) %>
                 <li><%= link_to 'Search', new_search_path %></li>
               <% end %>

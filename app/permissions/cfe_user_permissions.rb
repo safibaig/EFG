@@ -4,7 +4,8 @@ module CfeUserPermissions
       Invoice,
       LoanRemoveGuarantee,
       RealisationStatement,
-      LoanReport
+      LoanReport,
+      LoanAuditReport
     ].include?(resource)
   end
 
