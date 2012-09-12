@@ -100,6 +100,12 @@ describe AuditorUserPermissions do
     it { refute user.can_view?(LoanReport) }
   end
 
+  context 'LoanAuditReport' do
+    it { assert user.can_create?(LoanAuditReport) }
+    it { refute user.can_update?(LoanAuditReport) }
+    it { refute user.can_view?(LoanAuditReport) }
+  end
+
   context 'Loan' do
     it { assert user.can_view?(Loan) }
   end

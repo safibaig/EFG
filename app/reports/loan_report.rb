@@ -1,46 +1,16 @@
-require 'csv'
-require 'active_model/model'
+class LoanReport < BaseLoanReport
 
-class LoanReport
   class LenderNotAllowed < ArgumentError; end
-end
-
-class LoanReport
-  include ActiveModel::Model
-
-  ALLOWED_LOAN_STATES = Loan::States.sort.freeze
 
   ALLOWED_LOAN_SOURCES = [ Loan::SFLG_SOURCE, Loan::LEGACY_SFLG_SOURCE ].freeze
 
   ALLOWED_LOAN_SCHEMES = [ Loan::EFG_SCHEME, Loan::SFLG_SCHEME ].freeze
 
-  DATE_FIELDS = %w(
-    facility_letter_start_date
-    facility_letter_end_date
-    created_at_start_date
-    created_at_end_date
-    last_modified_start_date
-    last_modified_end_date
-  ).freeze
+  attr_accessor :allowed_lender_ids, :states, :loan_sources, :loan_scheme, :lender_ids, :created_by_id
 
-  OTHER_FIELDS = %w(
-    allowed_lender_ids
-    states
-    loan_sources
-    loan_scheme
-    lender_ids
-    created_by_id
-  ).freeze
-
-  DATE_FIELDS.each do |field|
-    attr_reader field
-
-    define_method "#{field}=" do |value|
-      instance_variable_set "@#{field}", QuickDateFormatter.parse(value)
-    end
-  end
-
-  OTHER_FIELDS.each { |attr| attr_accessor attr }
+  date_attribute :facility_letter_start_date, :facility_letter_end_date,
+                 :created_at_start_date, :created_at_end_date,
+                 :last_modified_start_date, :last_modified_end_date
 
   validates_presence_of :allowed_lender_ids, :lender_ids, :loan_sources, :states
 
@@ -57,27 +27,26 @@ class LoanReport
     validate_lender_ids
   end
 
-  def attributes
-    (DATE_FIELDS + OTHER_FIELDS).inject({}) do |memo, field|
-      memo[field] = send(field)
-      memo
-    end
-  end
-
-  def count
-    @count ||= loans.count
-  end
-
   def loans
-    Loan.where(query_conditions).select(select_options)
+    Loan.select(
+      [
+        'loans.*',
+        '(SELECT name FROM lending_limits WHERE id = loans.lending_limit_id) AS lending_limit_name',
+        '(SELECT organisation_reference_code FROM lenders WHERE id = loans.lender_id) AS lender_organisation_reference_code',
+        '(SELECT recovered_on FROM recoveries WHERE loan_id = loans.id ORDER BY recoveries.id DESC LIMIT 1) AS last_recovery_on',
+        '(SELECT SUM(amount_due_to_dti) FROM recoveries WHERE loan_id = loans.id) AS total_recoveries',
+        '(SELECT created_at FROM loan_realisations WHERE realised_loan_id = loans.id ORDER BY loan_realisations.id DESC LIMIT 1) AS last_realisation_at',
+        '(SELECT SUM(realised_amount) FROM loan_realisations WHERE realised_loan_id = loans.id) AS total_loan_realisations',
+        '(SELECT SUM(amount_drawn) FROM loan_changes WHERE loan_id = loans.id) AS total_amount_drawn',
+        '(SELECT SUM(lump_sum_repayment) FROM loan_changes WHERE loan_id = loans.id) AS total_lump_sum_repayment'
+      ].join(',')
+    ).where(query_conditions)
   end
 
-  # filter out blank entry in array (added by multiple check_box form helper)
   def loan_sources=(sources)
     @loan_sources = filter_blank_multi_select(sources)
   end
 
-  # filter out blank entry in array (added by multiple check_box form helper)
   def states=(states)
     @states = filter_blank_multi_select(states)
   end
@@ -87,22 +56,6 @@ class LoanReport
   end
 
   private
-
-  # return ActiveRecord query array
-  # e.g. ["facility_letter_date >= ? AND loan_scheme = ?", Date Object, 'E']
-  def query_conditions
-    conditions = []
-    values = []
-
-    query_conditions_mapping.each do |field, condition|
-      value = send(field)
-      next if value.blank?
-      conditions << condition
-      values << value
-    end
-
-    [conditions.join(" AND "), *values]
-  end
 
   def query_conditions_mapping
     {
@@ -118,20 +71,6 @@ class LoanReport
       last_modified_start_date: "updated_at >= ?",
       last_modified_end_date: "updated_at <= ?"
     }
-  end
-
-  def select_options
-    [
-      'loans.*',
-      '(SELECT name FROM lending_limits WHERE id = loans.lending_limit_id) AS lending_limit_name',
-      '(SELECT organisation_reference_code FROM lenders WHERE id = loans.lender_id) AS lender_organisation_reference_code',
-      '(SELECT recovered_on FROM recoveries WHERE loan_id = loans.id ORDER BY recoveries.id DESC LIMIT 1) AS last_recovery_on',
-      '(SELECT SUM(amount_due_to_dti) FROM recoveries WHERE loan_id = loans.id) AS total_recoveries',
-      '(SELECT created_at FROM loan_realisations WHERE realised_loan_id = loans.id ORDER BY loan_realisations.id DESC LIMIT 1) AS last_realisation_at',
-      '(SELECT SUM(realised_amount) FROM loan_realisations WHERE realised_loan_id = loans.id) AS total_loan_realisations',
-      '(SELECT SUM(amount_drawn) FROM loan_changes WHERE loan_id = loans.id) AS total_amount_drawn',
-      '(SELECT SUM(lump_sum_repayment) FROM loan_changes WHERE loan_id = loans.id) AS total_lump_sum_repayment'
-    ].join(',')
   end
 
   def validate_lender_ids

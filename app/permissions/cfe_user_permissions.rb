@@ -5,6 +5,7 @@ module CfeUserPermissions
       LoanRemoveGuarantee,
       RealisationStatement,
       LoanReport,
+      LoanAuditReport,
       SupportRequest
     ].include?(resource)
   end

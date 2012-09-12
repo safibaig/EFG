@@ -221,6 +221,19 @@ en:
         loan_sources: What is the Loan Type?
         loan_scheme: Loan scheme
 
+      loan_audit_report:
+        facility_letter_start_date: What is the date of Scheme Facility Letter start date for your report? (dd/mm/yyyy)
+        facility_letter_end_date: What is the date of Scheme Facility Letter end date for your report? (dd/mm/yyyy)
+        created_at_start_date: What is the 'created' start date for your report? (dd/mm/yyyy)
+        created_at_end_date: What is the 'created' end date for your report? (dd/mm/yyyy)
+        last_modified_start_date: What is the 'last modified' start date for your report? (dd/mm/yyyy)
+        last_modified_end_date: What is the 'last modified' end date for your report? (dd/mm/yyyy)
+        event_id: Select the audit function to refine your data extraction
+        audit_records_start_date: What is the audit records start date for your report? (dd/mm/yyyy)
+        audit_records_end_date: What is the audit records end date for your report? (dd/mm/yyyy)
+        state: To refine your data extraction select the 'loan state' for your report
+        lender_id: What is the name of the lender organisation?
+
       premium_schedule_report:
         collection_month: 'Month of Collection'
         start_on: 'To refine your data extraction what is the start date for your report.  This date refers to the first Premium collection following the date when the Premium Payment Schedule was created or updated?'
