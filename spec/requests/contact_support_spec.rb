@@ -20,7 +20,7 @@ describe 'Contact support' do
       navigate_to_contact_support_form
       send_support_request
 
-      ActionMailer::Base.deliveries.should == 1
+      ActionMailer::Base.deliveries.size.should == 1
       email = ActionMailer::Base.deliveries.first
       email.to.should == [ lender_admin1.email, lender_admin2.email ]
     end
@@ -45,7 +45,7 @@ describe 'Contact support' do
       navigate_to_contact_support_form
       send_support_request
 
-      ActionMailer::Base.deliveries.should == 1
+      ActionMailer::Base.deliveries.size.should == 1
       email = ActionMailer::Base.deliveries.first
       email.to.should == [ cfe_user1.email, cfe_user2.email ]
     end
@@ -62,7 +62,7 @@ describe 'Contact support' do
       navigate_to_contact_support_form
       send_support_request
 
-      ActionMailer::Base.deliveries.should == 1
+      ActionMailer::Base.deliveries.size.should == 1
       email = ActionMailer::Base.deliveries.first
       email.to.should == [ super_user1.email, super_user2.email ]
     end

@@ -5,10 +5,10 @@ class SupportRequestController < ApplicationController
   end
 
   def create
-    @support_request = SupportRequest.new(params[:support_request])
+    @support_request = SupportRequest.new(params[:support_request].merge(user: current_user))
     if @support_request.valid?
-      # send email
-      redirect_to :back, notice: 'Your support request has been sent'
+      SupportRequestMailer.notification_email(@support_request, nil, nil).deliver
+      redirect_to root_url, notice: 'Your support request has been sent'
     else
       render :new
     end
