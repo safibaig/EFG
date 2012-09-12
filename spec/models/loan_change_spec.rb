@@ -78,6 +78,19 @@ describe LoanChange do
           loan_change.should be_valid
         end
       end
+
+      context 'a - Decrease term' do
+        let(:state_aid_calculation_attributes) { FactoryGirl.attributes_for(:rescheduled_state_aid_calculation, loan: loan_change.loan) }
+
+        it 'requires a maturity_date' do
+          loan_change.change_type_id = 'a'
+          loan_change.state_aid_calculation_attributes = state_aid_calculation_attributes
+          loan_change.maturity_date = ''
+          loan_change.should_not be_valid
+          loan_change.maturity_date = Date.new(2020)
+          loan_change.should be_valid
+        end
+      end
     end
 
     context 'when state aid recalculation is required' do
@@ -106,33 +119,93 @@ describe LoanChange do
 
   describe '#save_and_update_loan' do
     let(:user) { FactoryGirl.create(:lender_user) }
-    let(:loan) { FactoryGirl.create(:loan, :guaranteed, :lender_demand, business_name: 'ACME', amount: Money.new(5_000_00)) }
-    let(:loan_change) { FactoryGirl.build(:loan_change, loan: loan, created_by: user) }
+    let(:loan) { FactoryGirl.create(:loan, :guaranteed, :lender_demand, business_name: 'ACME', maturity_date: Date.new(2020, 3, 2)) }
+    let(:loan_change) {
+      LoanChange.new do |loan_change|
+        loan_change.created_by = user
+        loan_change.date_of_change = Date.current
+        loan_change.loan = loan
+        loan_change.modified_date = Date.current
+      end
+    }
+    let(:state_aid_calculation_attributes) { FactoryGirl.attributes_for(:rescheduled_state_aid_calculation, loan: loan) }
 
-    it 'works' do
-      loan_change.business_name = 'updated'
+    context 'change types' do
+      context '1 - business name' do
+        before do
+          loan_change.change_type_id = '1'
+          loan_change.business_name = 'Foo'
+        end
 
-      loan_change.save_and_update_loan.should == true
-      loan.state.should == Loan::Guaranteed
-      loan.business_name.should == 'updated'
-      loan.modified_by.should == user
+        it 'works' do
+          loan_change.save_and_update_loan.should == true
+          loan_change.old_business_name.should == 'ACME'
+
+          loan.reload
+          loan.business_name.should == 'Foo'
+          loan.modified_by.should == user
+          loan.state.should == Loan::Guaranteed
+
+          state_change = loan.state_changes.last!
+          state_change.event_id.should == 9
+          state_change.state.should == Loan::Guaranteed
+        end
+
+        it 'does not update Loan#maturity_date' do
+          loan_change.maturity_date = Date.new(2021, 4, 3)
+          loan_change.save_and_update_loan.should == true
+          loan_change.old_maturity_date.should == nil
+
+          loan.reload
+          loan.maturity_date.should == Date.new(2020, 3, 2)
+        end
+      end
+
+      context 'a - Decrease term' do
+        before do
+          loan_change.change_type_id = 'a'
+          loan_change.maturity_date = Date.new(2021, 4, 3)
+          loan_change.state_aid_calculation_attributes = state_aid_calculation_attributes
+        end
+
+        it 'works' do
+          loan_change.save_and_update_loan.should == true
+          loan_change.old_maturity_date.should == Date.new(2020, 3, 2)
+
+          loan.reload
+          loan.maturity_date.should == Date.new(2021, 4, 3)
+          loan.modified_by.should == user
+          loan.state.should == Loan::Guaranteed
+
+          state_change = loan.state_changes.last!
+          state_change.event_id.should == 9
+          state_change.state.should == Loan::Guaranteed
+        end
+
+        it 'does not update Loan#business_name' do
+          loan_change.business_name = 'Foo'
+          loan_change.save_and_update_loan.should == true
+          loan_change.old_business_name.should == nil
+
+          loan.reload
+          loan.business_name.should == 'ACME'
+        end
+      end
     end
 
-    it 'creates a new loan state change record for the state change' do
-      expect {
-        loan_change.save_and_update_loan
-      }.to change(LoanStateChange, :count).by(1)
+    context 'when not valid' do
+      it 'does not update the Loan' do
+        loan_change.save_and_update_loan.should == false
+        loan.reload
+        loan.business_name.should == 'ACME'
+        loan.state.should == Loan::LenderDemand
+      end
 
-      state_change = loan.state_changes.last
-      state_change.event_id.should == 9
-      state_change.state.should == Loan::Guaranteed
-    end
-
-    it 'does not update the Loan if the LoanChange is not valid' do
-      loan_change.business_name = ''
-      loan_change.save_and_update_loan.should == false
-      loan.business_name.should == 'ACME'
-      loan.state.should == Loan::LenderDemand
+      it 'does not create a LoanStateChange' do
+        expect {
+          loan_change.save_and_update_loan.should == false
+        }.to change(LoanStateChange, :count).by(0)
+      end
     end
 
     context 'when state aid recalculation is required' do
@@ -155,8 +228,9 @@ describe LoanChange do
 
         loan_change.save_and_update_loan.should == false
 
-        loan.reload.business_name.should == 'ACME'
-        loan.reload.state.should == Loan::LenderDemand
+        loan.reload
+        loan.business_name.should == 'ACME'
+        loan.state.should == Loan::LenderDemand
       end
     end
   end

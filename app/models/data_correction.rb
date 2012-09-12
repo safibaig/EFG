@@ -4,6 +4,8 @@ class DataCorrection < LoanModification
   ATTRIBUTES_FOR_INITIAL_CHANGE = %w(initial_draw_amount initial_draw_date)
 
   before_validation :set_change_type_id
+  before_save :store_old_values
+  after_save_and_update_loan :update_loan!
   after_save_and_update_loan :update_initial_draw_change!
   after_save_and_update_loan :create_loan_state_change!
 
@@ -41,6 +43,12 @@ class DataCorrection < LoanModification
       self.change_type_id = '9'
     end
 
+    def store_old_values
+      attributes.slice(*ATTRIBUTES_FOR_LOAN).each do |name, value|
+        self["old_#{name}"] = loan[name] if value.present?
+      end
+    end
+
     def update_initial_draw_change!
       initial_change_attributes = attributes
         .slice(*ATTRIBUTES_FOR_INITIAL_CHANGE)
@@ -55,6 +63,22 @@ class DataCorrection < LoanModification
 
         initial_draw_change.save!
       end
+    end
+
+    def update_loan!
+      attributes.slice(*self.class::ATTRIBUTES_FOR_LOAN).each do |name, value|
+        if value.present?
+          if name == 'lending_limit_id'
+            # TODO: Don't allow setting another lender's lending limit.
+            loan.lending_limit = LendingLimit.find(value)
+          else
+            loan[name] = value
+          end
+        end
+      end
+
+      loan.modified_by = created_by
+      loan.save!
     end
 
     def validate_amount

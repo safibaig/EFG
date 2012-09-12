@@ -1,8 +1,8 @@
 class LoanChange < LoanModification
   attr_accessor :state_aid_calculation_attributes
 
-  ATTRIBUTES_FOR_LOAN = %w(business_name maturity_date)
-
+  before_save :set_old_and_loan_attributes
+  after_save_and_update_loan :update_loan!
   after_save_and_update_loan :create_loan_state_change!
 
   validates_inclusion_of :change_type_id, in: %w(1 2 3 4 5 6 7 8 a)
@@ -16,21 +16,6 @@ class LoanChange < LoanModification
 
   def change_type
     ChangeType.find(change_type_id)
-  end
-
-  def changes
-    attributes.slice(*ATTRIBUTES_FOR_LOAN).select { |_, value|
-      value.present?
-    }.keys.map { |attribute|
-      old_attribute = "old_#{attribute}"
-
-      {
-        old_attribute: old_attribute,
-        old_value: self[old_attribute],
-        attribute: attribute,
-        value: self[attribute]
-      }
-    }
   end
 
   def requires_state_aid_recalculation?
@@ -48,13 +33,18 @@ class LoanChange < LoanModification
       )
     end
 
-    def update_loan!
-      attributes.slice(*ATTRIBUTES_FOR_LOAN).select { |_, value|
-        value.present?
-      }.each do |name, value|
-        loan[name] = value
+    def set_old_and_loan_attributes
+      case change_type_id
+      when '1'
+        self.old_business_name = loan.business_name
+        loan.business_name = business_name
+      when 'a'
+        self.old_maturity_date = loan.maturity_date
+        loan.maturity_date = maturity_date
       end
+    end
 
+    def update_loan!
       loan.modified_by = created_by
       loan.state = Loan::Guaranteed
       loan.save!
@@ -71,9 +61,11 @@ class LoanChange < LoanModification
       when '1'
         errors.add(:business_name, :required) unless business_name.present?
       when '5'
-        errors.add(:base, :required_lender_demand_satisfied) unless amount_drawn.present? || lump_sum_repayment.present? || maturity_date.present?
+        errors.add(:base, :required_lender_demand_satisfied) unless amount_drawn || lump_sum_repayment || maturity_date.present?
       when '7'
         errors.add(:amount_drawn, :required) unless amount_drawn
+      when 'a'
+        errors.add(:maturity_date, :required) unless maturity_date
       end
     end
 

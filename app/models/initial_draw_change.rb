@@ -13,8 +13,4 @@ class InitialDrawChange < LoanModification
     def set_seq
       self.seq = 0
     end
-
-    # The loan isn't updated on initial draw.
-    def update_loan!
-    end
 end

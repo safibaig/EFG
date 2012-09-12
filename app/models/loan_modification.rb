@@ -4,8 +4,6 @@ class LoanModification < ActiveRecord::Base
   define_model_callbacks :save_and_update_loan
 
   before_validation :set_seq, on: :create
-  before_save :store_old_values
-  after_save_and_update_loan :update_loan!
 
   belongs_to :created_by, class_name: 'User'
   belongs_to :loan
@@ -34,6 +32,22 @@ class LoanModification < ActiveRecord::Base
   format :old_initial_draw_date, with: QuickDateFormatter
   format :old_maturity_date, with: QuickDateFormatter
 
+  def changes
+    attributes.select { |key, value|
+      key[0..3] == 'old_' && value.present?
+    }.keys.map { |name|
+      old_name = name
+      new_name = name.slice(4..-1)
+
+      {
+        old_attribute: old_name,
+        old_value: self[old_name],
+        attribute: new_name,
+        value: self[new_name]
+      }
+    }
+  end
+
   def save_and_update_loan
     return false unless valid?
 
@@ -49,20 +63,5 @@ class LoanModification < ActiveRecord::Base
   private
     def set_seq
       self.seq = (LoanModification.where(loan_id: loan_id).maximum(:seq) || -1) + 1
-    end
-
-    def store_old_values
-      attributes.slice(*self.class::ATTRIBUTES_FOR_LOAN).each do |name, value|
-        self["old_#{name}"] = loan[name] if value.present?
-      end
-    end
-
-    def update_loan!
-      attributes.slice(*self.class::ATTRIBUTES_FOR_LOAN).each do |name, value|
-        loan[name] = value if value.present?
-      end
-
-      loan.modified_by = created_by
-      loan.save!
     end
 end
