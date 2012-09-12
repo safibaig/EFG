@@ -24,6 +24,14 @@ describe 'Contact support' do
       email = ActionMailer::Base.deliveries.first
       email.to.should == [ lender_admin1.email, lender_admin2.email ]
     end
+
+    it "with blank message" do
+      navigate_to_contact_support_form
+      click_button "Submit"
+
+      page.should have_content "can't be blank"
+      ActionMailer::Base.deliveries.should be_empty
+    end
   end
 
   context 'as a Lender Admin' do
@@ -69,8 +77,8 @@ describe 'Contact support' do
 
   def send_support_request
     fill_in "support_request_message", with: "HELP!!!!"
-    click_button "Contact Support"
-    page.should have_content(I18n.t('support_request.request_sent'))
+    click_button "Submit"
+    page.should have_content('Your support request has been sent')
   end
 
 end

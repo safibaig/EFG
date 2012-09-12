@@ -44,6 +44,7 @@
               <% if current_user.can_view?(Search) %>
                 <li><%= link_to 'Search', new_search_path %></li>
               <% end %>
+              <li><%= link_to 'Contact Support', new_contact_support_path %></li>
               <li><%= link_to 'Change Password', edit_change_password_path %></li>
             <% end %>
             <li><%= link_to 'Logout', destroy_user_session_path %></li>

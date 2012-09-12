@@ -230,3 +230,6 @@ en:
         loan_reference: 'Loan Reference'
         lender_id: 'Lender'
         scheme: 'Loan Scheme'
+
+      support_request:
+        message: Your message
