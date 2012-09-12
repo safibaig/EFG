@@ -1,4 +1,5 @@
 class LoanAuditReportsController < ApplicationController
+  before_filter :verify_create_permission
 
   def new
     @loan_audit_report = LoanAuditReport.new
@@ -19,6 +20,12 @@ class LoanAuditReportsController < ApplicationController
     else
       render :new
     end
+  end
+
+  private
+
+  def verify_create_permission
+    enforce_create_permission(LoanAuditReport)
   end
 
 end

@@ -128,6 +128,12 @@ describe LenderUserPermissions do
     it { refute user.can_view?(LoanReport) }
   end
 
+  context 'LoanAuditReport' do
+    it { refute user.can_create?(LoanAuditReport) }
+    it { refute user.can_update?(LoanAuditReport) }
+    it { refute user.can_view?(LoanAuditReport) }
+  end
+
   context 'LenderAdmins' do
     it { refute user.can_create?(LenderAdmin) }
     it { refute user.can_update?(LenderAdmin) }
