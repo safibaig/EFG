@@ -56,13 +56,19 @@ class LoanModificationImporter < BaseImporter
 
       case name
       when 'CHANGE_TYPE'
-        attributes[:type] = 'LoanChange'
+        case value
+        when '9'
+          attributes[:type] = 'DataCorrection'
+        when *%w(1 2 3 4 5 6 7 8 a)
+          attributes[:type] = 'LoanChange'
+        end
       when 'MODIFIED_USER'
         attributes[:created_by_id] = self.class.user_id_from_username(value)
       when 'OID'
         attributes[:loan_id] = self.class.loan_id_from_legacy_id(value.to_i)
       when 'SEQ'
         value = value.to_i
+        attributes[:type] = 'InitialDrawChange' if value == 0
       when *DATES
         value = Date.parse(value) if value
       when *MONIES
