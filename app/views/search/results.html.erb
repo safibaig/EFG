@@ -5,7 +5,29 @@
 <h3><%= search_results_count(@results) %></h3>
 
 <% unless @results.empty? %>
-  <%= render 'loan_states/loans_listing', loans: @results %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Reference</th>
+        <th>Business name</th>
+        <th>Trading Name</th>
+        <th>Amount</th>
+        <th>Last Updated</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @results.each do |loan| %>
+        <tr>
+          <td><%= link_to(loan.reference, loan) %></td>
+          <td><%= link_to(loan_business_name(loan), loan) %></td>
+          <td><%= loan.trading_name %></td>
+          <td><%= loan.amount.format %></td>
+          <td><%= loan.updated_at.strftime("%d %B %Y") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
 <% end %>
 
 <%= will_paginate @results %>
