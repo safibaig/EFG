@@ -6,7 +6,11 @@ describe DataCorrection do
   it_behaves_like 'LoanModification'
 
   describe 'validations' do
-    let(:data_correction) { FactoryGirl.build(:data_correction) }
+    let(:lender) { FactoryGirl.create(:lender) }
+    let(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, starts_on: Date.new(2011, 4), ends_on: Date.new(2012, 3, 31)) }
+    let(:loan) { FactoryGirl.create(:loan, lender: lender, lending_limit: lending_limit, amount: Money.new(10_000_00), facility_letter_date: Date.new(2011, 8)) }
+    let(:data_correction) { FactoryGirl.build(:data_correction, loan: loan) }
+    let!(:initial_draw_change) { FactoryGirl.create(:initial_draw_change, loan: loan, amount_drawn: Money.new(5_000_00), date_of_change: Date.new(2011, 11)) }
 
     it 'must have something set' do
       data_correction.amount = ''
@@ -19,6 +23,16 @@ describe DataCorrection do
     end
 
     context '#amount' do
+      it 'must not be the same as currently is' do
+        data_correction.amount = data_correction.loan.amount
+        data_correction.should_not be_valid
+      end
+
+      it 'must not be negative' do
+        data_correction.amount = Money.new(-1)
+        data_correction.should_not be_valid
+      end
+
       it 'must be between £1,000 and £1,000,000' do
         data_correction.amount = '999.99'
         data_correction.should_not be_valid
@@ -28,11 +42,91 @@ describe DataCorrection do
         data_correction.should be_valid
       end
 
-      it 'must be >= total amount_drawn' do
-        FactoryGirl.create(:loan_change, loan: data_correction.loan, amount_drawn: Money.new(3_000_00))
-        FactoryGirl.create(:loan_change, loan: data_correction.loan, amount_drawn: Money.new(2_000_00))
+      it 'must be >= total cumulative amount drawn' do
+        FactoryGirl.create(:loan_change, loan: loan, amount_drawn: Money.new(1_000_00))
 
-        data_correction.amount = Money.new(4_999_99)
+        data_correction.amount = Money.new(5_999_99)
+        data_correction.should_not be_valid
+      end
+
+      it 'must be >= total cumulative amount drawn (including changes to initial_draw_amount)' do
+        FactoryGirl.create(:loan_change, loan: loan, amount_drawn: Money.new(1_000_00))
+
+        data_correction.amount = Money.new(6_999_99)
+        data_correction.initial_draw_amount = Money.new(6_000_00)
+        data_correction.should_not be_valid
+      end
+    end
+
+    context '#facility_letter_date' do
+      it 'must not be in the future' do
+        data_correction.facility_letter_date = Date.current.advance(days: 1)
+        data_correction.should_not be_valid
+      end
+
+      it 'must be no more than 6 months before the initial draw date' do
+        data_correction.facility_letter_date = Date.new(2011, 4, 30)
+        data_correction.should_not be_valid
+        data_correction.facility_letter_date = Date.new(2011, 5)
+        data_correction.should be_valid
+      end
+
+      it 'must be no more than 6 months before the initial draw date (including change to the initial_draw_date)' do
+        data_correction.facility_letter_date = Date.new(2011, 5, 31)
+        data_correction.initial_draw_date = Date.new(2011, 12, 1)
+        data_correction.should_not be_valid
+        data_correction.facility_letter_date = Date.new(2011, 6)
+        data_correction.should be_valid
+      end
+
+      it 'must be between the lending limit start/end dates' do
+        data_correction.facility_letter_date = Date.new(2011, 3, 31)
+        data_correction.initial_draw_date = Date.new(2011, 7)
+        data_correction.should_not be_valid
+        data_correction.facility_letter_date = Date.new(2011, 4)
+        data_correction.should be_valid
+      end
+
+      it 'must be between the lending limit start/end dates (including change to the lending limit)' do
+        data_correction.lending_limit_id = FactoryGirl.create(:lending_limit, lender: lender, starts_on: Date.new(2011, 5, 6), ends_on: Date.new(2011, 5, 31)).id
+        data_correction.facility_letter_date = Date.new(2011, 5, 5)
+        data_correction.should_not be_valid
+        data_correction.facility_letter_date = Date.new(2011, 6)
+        data_correction.should_not be_valid
+        data_correction.facility_letter_date = Date.new(2011, 5, 6)
+        data_correction.should be_valid
+      end
+    end
+
+    context '#initial_draw_amount' do
+      it 'must not take the cumulative amount drawn over the loan amount' do
+        FactoryGirl.create(:loan_change, loan: loan, amount_drawn: Money.new(5_000_00))
+
+        data_correction.initial_draw_amount = Money.new(5_000_01)
+        data_correction.should_not be_valid
+        data_correction.initial_draw_amount = Money.new(5_000_00)
+        data_correction.should be_valid
+      end
+
+      it 'must not take the cumulative amount drawn over the loan amount (including change to amount)' do
+        FactoryGirl.create(:loan_change, loan: loan, amount_drawn: Money.new(5_000_00))
+
+        data_correction.amount = Money.new(11_000_00)
+        data_correction.initial_draw_amount = Money.new(6_000_01)
+        data_correction.should_not be_valid
+        data_correction.initial_draw_amount = Money.new(6_000_00)
+        data_correction.should be_valid
+      end
+    end
+
+    context '#initial_draw_date' do
+      it 'must not be in the future' do
+        data_correction.initial_draw_date = Date.current.advance(days: 1)
+        data_correction.should_not be_valid
+      end
+
+      it "must not be before the loan's facility letter date" do
+        data_correction.initial_draw_date = Date.new(2011, 7, 31)
         data_correction.should_not be_valid
       end
     end
@@ -41,7 +135,7 @@ describe DataCorrection do
   describe '#save_and_update_loan' do
     let(:lender) { FactoryGirl.create(:lender) }
     let(:user) { FactoryGirl.create(:lender_user, lender: lender) }
-    let(:lending_limit_1) { FactoryGirl.create(:lending_limit, lender: lender) }
+    let(:lending_limit_1) { FactoryGirl.create(:lending_limit, lender: lender, starts_on: Date.new(2012)) }
     let(:lending_limit_2) { FactoryGirl.create(:lending_limit, lender: lender) }
     let(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: lender, lending_limit: lending_limit_1, amount: Money.new(5_000_00), facility_letter_date: Date.new(2012, 1, 1), sortcode: '123456') }
     let!(:initial_draw_change) {

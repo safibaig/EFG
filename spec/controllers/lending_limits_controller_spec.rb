@@ -54,7 +54,7 @@ describe LendingLimitsController do
   end
 
   describe 'PUT update' do
-    let(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, name: 'foo', starts_on: '1/1/11') }
+    let(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, name: 'foo', starts_on: Date.new(2011)) }
 
     def dispatch(params = {})
       put :update, { lender_id: lender.id, id: lending_limit.id }.merge(params)

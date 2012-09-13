@@ -9,6 +9,9 @@ class DataCorrection < LoanModification
 
   validate :presence_of_a_field
   validate :validate_amount, if: :amount?
+  validate :validate_facility_letter_date, if: :facility_letter_date?
+  validate :validate_initial_draw_amount, if: :initial_draw_amount?
+  validate :validate_initial_draw_date, if: :initial_draw_date?
 
   attr_accessible :amount, :facility_letter_date, :initial_draw_amount,
     :initial_draw_date, :lending_limit_id, :sortcode
@@ -28,6 +31,19 @@ class DataCorrection < LoanModification
   end
 
   private
+    def amount_ineligible?
+      # TODO: Extract this duplicated business logic.
+      !amount.between?(Money.new(1_000_00), Money.new(1_000_000_00))
+    end
+
+    def amount_less_than_cumulative_amount_drawn?
+      amount < cumulative_drawn_amount
+    end
+
+    def amount_unchanged?
+      amount == loan.amount
+    end
+
     def create_loan_state_change!
       LoanStateChange.create!(
         loan_id: loan.id,
@@ -36,6 +52,46 @@ class DataCorrection < LoanModification
         modified_by: created_by,
         event_id: 22
       )
+    end
+
+    def cumulative_drawn_amount
+      if initial_draw_amount
+        loan.cumulative_drawn_amount - initial_draw_change.amount_drawn + initial_draw_amount
+      else
+        loan.cumulative_drawn_amount
+      end
+    end
+
+    def facility_letter_date_does_not_fall_within_lending_limit?
+      lending_limit_for_check = lending_limit || loan.lending_limit
+      starts_on = lending_limit_for_check.starts_on
+      ends_on = lending_limit_for_check.ends_on
+
+      !facility_letter_date.between?(starts_on, ends_on)
+    end
+
+    def facility_letter_date_in_future?
+      facility_letter_date > Date.current
+    end
+
+    def facility_letter_date_more_than_six_months_before_initial_draw_date?
+      six_months_before_initial_draw_date = (
+        initial_draw_date || initial_draw_change.date_of_change
+      ).months_ago(6)
+
+      facility_letter_date < six_months_before_initial_draw_date
+    end
+
+    def initial_draw_amount_takes_cumulative_amount_drawn_over_amount?
+      cumulative_drawn_amount > (amount || loan.amount)
+    end
+
+    def initial_draw_date_before_facility_letter_date?
+      initial_draw_date < (facility_letter_date || loan.facility_letter_date)
+    end
+
+    def initial_draw_date_in_future?
+      initial_draw_date > Date.current
     end
 
     def presence_of_a_field
@@ -85,11 +141,36 @@ class DataCorrection < LoanModification
     end
 
     def validate_amount
-      # TODO: Extract this duplicated logic.
-      if amount.between?(Money.new(1_000_00), Money.new(1_000_000_00))
-        errors.add(:amount, :must_be_gte_total_amount_drawn) unless amount >= loan.cumulative_drawn_amount
-      else
+      if amount_unchanged?
+        errors.add(:amount, :must_have_changed)
+      elsif amount_ineligible?
         errors.add(:amount, :must_be_eligible_amount)
+      elsif amount_less_than_cumulative_amount_drawn?
+        errors.add(:amount, :must_be_gte_cumulative_amount_drawn)
+      end
+    end
+
+    def validate_facility_letter_date
+      if facility_letter_date_in_future?
+        errors.add(:facility_letter_date, :must_not_be_in_the_future)
+      elsif facility_letter_date_does_not_fall_within_lending_limit?
+        errors.add(:facility_letter_date, :must_fall_within_lending_limit)
+      elsif facility_letter_date_more_than_six_months_before_initial_draw_date?
+        errors.add(:facility_letter_date, :must_be_no_less_than_six_months_before_initial_draw_date)
+      end
+    end
+
+    def validate_initial_draw_amount
+      if initial_draw_amount_takes_cumulative_amount_drawn_over_amount?
+        errors.add(:initial_draw_amount, :must_not_take_cumulative_amount_drawn_over_amount)
+      end
+    end
+
+    def validate_initial_draw_date
+      if initial_draw_date_in_future?
+        errors.add(:initial_draw_date, :must_not_be_in_the_future)
+      elsif initial_draw_date_before_facility_letter_date?
+        errors.add(:initial_draw_date, :must_not_be_before_facility_letter_date)
       end
     end
 end
