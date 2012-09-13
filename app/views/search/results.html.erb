@@ -12,6 +12,7 @@
         <th>Business name</th>
         <th>Trading Name</th>
         <th>Amount</th>
+        <th>Maturity Date</th>
         <th>Last Updated</th>
       </tr>
     </thead>
@@ -22,7 +23,8 @@
           <td><%= link_to(loan_business_name(loan), loan) %></td>
           <td><%= loan.trading_name %></td>
           <td><%= loan.amount.format %></td>
-          <td><%= loan.updated_at.strftime("%d %B %Y") %></td>
+          <td><%= loan.maturity_date.try(:strftime, "%d %B %Y") %></td>
+          <td><%= loan.updated_at.try(:strftime, "%d %B %Y") %></td>
         </tr>
       <% end %>
     </tbody>

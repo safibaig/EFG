@@ -2,10 +2,16 @@ class Search
   extend ActiveModel::Naming
   include ActiveModel::Conversion
 
-  ExactMatchFilters   = %w(state).freeze
-  PartialMatchFilters = %w(business_name trading_name company_registration).freeze
-  AllFilters          = (PartialMatchFilters + ExactMatchFilters).freeze
+  MoneyAttributes     = %w(amount_from amount_to).freeze
+  DateAttributes      = %w(maturity_date_from maturity_date_to updated_at_from updated_at_to).freeze
   SortableAttributes  = %w(business_name trading_name amount postcode maturity_date updated_at).freeze
+
+  ExactMatchFilters   = %w(state lending_limit_id reason_id modified_by_id).freeze
+  PartialMatchFilters = %w(business_name trading_name company_registration postcode
+                           generic1 generic2 generic3 generic4 generic5).freeze
+  RangeFilters        = (MoneyAttributes + DateAttributes).freeze
+  AllFilters          = (PartialMatchFilters + ExactMatchFilters + RangeFilters).freeze
+
   SortOrders          = {'Ascending' => 'ASC', 'Descending' => 'DESC'}.freeze
   DefaultSortBy       = 'updated_at'.freeze
   DefaultSortOrder    = 'DESC'.freeze
@@ -35,11 +41,16 @@ class Search
     query = lender.loans
 
     attributes.each do |key, value|
-      query = if ExactMatchFilters.include?(key)
-        query.where(key => value)
-      elsif PartialMatchFilters.include?(key)
-        query.where("#{key} LIKE ?", "%#{value}%")
+      condition = case key
+      when *ExactMatchFilters
+        { key => value }
+      when *PartialMatchFilters
+        ["#{key} LIKE ?", "%#{value}%"]
+      when *RangeFilters
+        range_condition(key, value)
       end
+
+      query = query.where(condition)
     end
 
     query = query.order("#{sort_by} #{sort_order}")
@@ -56,8 +67,8 @@ class Search
     @sort_by = sanitize(SortableAttributes, attributes.delete('sort_by'))
     @sort_order = sanitize(SortOrders.values, attributes.delete('sort_order'))
     @attributes = attributes.slice(*AllFilters).inject({}) do |memo, (key, value)|
-      value = filter_blank_multi_select(value)
-      memo[key] = value if value.present?
+      filter_value = format_filter_value(key, value)
+      memo[key] = filter_value if filter_value.present?
       memo
     end
   end
@@ -66,8 +77,24 @@ class Search
     options.detect {|option| option == value}
   end
 
+  def format_filter_value(key, value)
+    return nil if value.blank?
+    return filter_blank_multi_select(value) if value.is_a?(Array)
+    return Money.parse(value) if MoneyAttributes.include?(key)
+    return Date.parse(value) if DateAttributes.include?(key)
+    return value
+  end
+
   # See http://stackoverflow.com/questions/8929230/why-is-the-first-element-always-blank-in-my-rails-multi-select
   def filter_blank_multi_select(value)
     value.is_a?(Array) ? value.reject(&:blank?) : value
   end
+
+  def range_condition(key, value)
+    field    = key.gsub(/_from|_to/, '')
+    operator = key.include?('_from') ? ">=" : "<="
+    value    = value.is_a?(Money) ? value.cents : value
+    ["#{field} #{operator} ?", value]
+  end
+
 end
