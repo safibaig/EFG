@@ -1,5 +1,5 @@
 class DataCorrectionsController < ApplicationController
-  before_filter :verify_create_permission, only: [:new, :create]
+  before_filter :verify_create_permission
   before_filter :load_loan
 
   def new
@@ -25,6 +25,6 @@ class DataCorrectionsController < ApplicationController
     end
 
     def verify_create_permission
-      enforce_create_permission(LoanChange)
+      enforce_create_permission(DataCorrection)
     end
 end

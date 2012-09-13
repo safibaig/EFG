@@ -5,6 +5,10 @@ class InitialDrawChange < LoanModification
 
   validates_presence_of :amount_drawn, strict: true
 
+  def change_type_name
+    'Initial draw and guarantee'
+  end
+
   private
     def set_change_type_id
       self.change_type_id = nil

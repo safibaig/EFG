@@ -18,6 +18,10 @@ class LoanChange < LoanModification
     ChangeType.find(change_type_id)
   end
 
+  def change_type_name
+    change_type.name
+  end
+
   def requires_state_aid_recalculation?
     %w(2 3 4 6 8 a).include?(change_type_id)
   end

@@ -15,6 +15,10 @@ class DataCorrection < LoanModification
 
   delegate :initial_draw_change, to: :loan
 
+  def change_type_name
+    'Data correction'
+  end
+
   private
     def create_loan_state_change!
       LoanStateChange.create!(
