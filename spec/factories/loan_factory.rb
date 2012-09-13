@@ -4,6 +4,7 @@ FactoryGirl.define do
     lender
     association :created_by, factory: :lender_user
     association :modified_by, factory: :lender_user
+    modified_by_legacy_id 'system'
     legal_form_id 1
     loan_category_id 1
     repayment_frequency_id 4

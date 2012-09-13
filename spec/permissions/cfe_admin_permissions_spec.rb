@@ -100,6 +100,12 @@ describe CfeAdminPermissions do
     it { refute user.can_view?(LoanReport) }
   end
 
+  context 'LoanAuditReport' do
+    it { refute user.can_create?(LoanAuditReport) }
+    it { refute user.can_update?(LoanAuditReport) }
+    it { refute user.can_view?(LoanAuditReport) }
+  end
+
   context 'Loan' do
     it { refute user.can_view?(Loan) }
   end
@@ -186,5 +192,11 @@ describe CfeAdminPermissions do
     it { refute user.can_create?(LoanModification) }
     it { refute user.can_update?(LoanModification) }
     it { refute user.can_view?(LoanModification) }
+  end
+
+  context 'SupportRequest' do
+    it { refute user.can_create?(SupportRequest) }
+    it { refute user.can_update?(SupportRequest) }
+    it { refute user.can_view?(SupportRequest) }
   end
 end

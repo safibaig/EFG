@@ -2,6 +2,14 @@
   <h1>Search</h1>
 </div>
 
+<p>From this page you can locate an EFG/SFLG loan using basic or advanced search criteria.</p>
+
+<p>(Tip. If required, you can select more than one option by using the Ctrl and Shift keys in conjunction with your mouse).</p>
+
+<p>When you have entered your Search criteria click on the 'Submit' button.<p>
+
+<hr />
+
 <%= simple_form_for(@search, url: search_path, method: :get, html: {id: 'search', class: 'form-horizontal'}) do |f| %>
   <%= f.input :business_name %>
   <%= f.input :trading_name %>
@@ -9,9 +17,47 @@
   <%= f.input :state, collection: Loan::States.map(&:titleize), input_html: {multiple: true} %>
 
   <%= field_set_tag 'Sorting' do %>
-    <%= f.input :sort_by, collection: Search::SortableAttributes.map {|attribute| [I18n.t(attribute, scope: [:simple_form, :labels, :search]), attribute]} %>
+    <%= f.input :sort_by, collection: search_sort_options, prompt: false, selected: nil %>
     <%= f.input :sort_order, as: :radio_buttons, collection: Search::SortOrders, wrapper_html: {class: 'radio-buttons-inline'} %>
   <% end %>
+
+  <%= field_set_tag 'Advanced', id: 'advanced_search_options' do %>
+
+    <%= f.input :lending_limit_id, collection: current_lender.lending_limits, input_html: {multiple: true} %>
+
+    <%= f.input :amount_from, as: :currency %>
+
+    <%= f.input :amount_to, as: :currency %>
+
+    <%= f.input :maturity_date_from, as: :quick_date %>
+
+    <%= f.input :maturity_date_to, as: :quick_date %>
+
+    <%= f.input :reason_id, collection: LoanReason.all, input_html: {multiple: true} %>
+
+    <%= f.input :postcode %>
+
+    <%= f.input :updated_at_from, as: :quick_date %>
+
+    <%= f.input :updated_at_to, as: :quick_date %>
+
+    <%= f.input :modified_by_id, collection: modified_by_options, prompt: "All" %>
+
+    <%= f.input :generic1 %>
+
+    <%= f.input :generic2 %>
+
+    <%= f.input :generic3 %>
+
+    <%= f.input :generic4 %>
+
+    <%= f.input :generic5 %>
+
+  <% end %>
+
+  <p class="icon-search">
+    <a href="#" id="toggle_advanced_search">Show Advanced Search Options</a>
+  </p>
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Search', class: 'btn-primary' %>

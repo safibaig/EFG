@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
   belongs_to :created_by, class_name: "User", foreign_key: "created_by_id"
   belongs_to :modified_by, class_name: "User", foreign_key: "modified_by_id"
 
+  scope :with_email, where("email IS NOT NULL")
+
   before_validation :set_unique_username, on: :create
 
   before_save :reset_failed_attempts
@@ -21,6 +23,8 @@ class User < ActiveRecord::Base
   validates_presence_of :password, :if => :password_required?
   validates_confirmation_of :password, :if => :password_required?
   validates_length_of :password, :within => Devise.password_length, :allow_blank => true
+
+  scope :order_by_username, order("username")
 
   def name
     "#{first_name} #{last_name}"

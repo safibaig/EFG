@@ -79,3 +79,36 @@ en:
       type_f1: (For Type F only) What is the current limit of the Applicant's Invoice Finance facility?
       type_f2: (For Type F only) What percentage of the Applicant's approved debtor book value is covered by their existing invoice discounting facility?
       type_f3: (For Type F only) What additional percentage (not exceeding either 100% less the existing approved percentage or 30%) of the Applicant's approved debtor book value will the enhancement represent?
+
+    loan_audit_report:
+      loan_reference: Loan reference
+      lender_id: Lender organisation
+      facility_amount: Facility amount
+      maturity_date: Maturity date
+      cancellation_date: Cancellation date
+      scheme_facility_letter_date: Scheme Facility Letter date
+      initial_draw_date: Initial draw of funds date
+      lender_demand_date: Date of demand on borrower
+      repaid_date: Loan repaid date
+      no_claim_date: No claim date
+      government_demand_date: 'Date of Demand&nbsp;against the Guarantee&nbsp;'
+      settled_date: Settle date
+      guarantee_remove_date: Guarantee removed date
+      generic1: Generic lender field 1
+      generic2: Generic lender field 2
+      generic3: Generic lender field 3
+      generic4: Generic lender field 4
+      generic5: Generic lender field 5
+      loan_reason: Reason for loan
+      loan_category: Loan category
+      loan_state: Loan state for report
+      created_at: Date and time created
+      created_by: Record created by
+      modified_date: Record last modified on
+      modified_by: Record last modified by
+      audit_record_sequence: Audit record sequence
+      from_state: From state
+      to_state: To state
+      loan_function: Loan function
+      audit_record_modified_date: Modified date (audit record)
+      audit_record_modified_by: Modified user (audit record)

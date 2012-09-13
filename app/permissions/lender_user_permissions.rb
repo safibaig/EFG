@@ -17,6 +17,7 @@ module LenderUserPermissions
       LoanTransfer::Sflg,
       Recovery,
       StateAidCalculation,
+      SupportRequest,
       TransferredLoanEntry
     ].include?(resource)
   end

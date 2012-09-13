@@ -14,10 +14,10 @@ describe "search" do
     visit new_search_path
 
     within "#search" do
-      fill_in "Business Name", with: loan1.business_name
-      fill_in "Trading Name", with: loan1.trading_name
-      fill_in "Company Registration", with: loan1.company_registration
-      select "Guaranteed", from: "State"
+      fill_in 'search[business_name]', with: loan1.business_name
+      fill_in 'search[trading_name]', with: loan1.trading_name
+      fill_in 'search[company_registration]', with: loan1.company_registration
+      select "Guaranteed", from: 'search[state][]'
       click_button "Search"
     end
 
@@ -30,7 +30,7 @@ describe "search" do
     visit new_search_path
 
     within "#search" do
-      select "Guaranteed", from: "State"
+      select "Guaranteed", from: 'search[state][]'
       click_button "Search"
     end
 
