@@ -29,17 +29,17 @@
 
     <%= f.input :amount_to, as: :currency %>
 
-    <%= f.input :maturity_date_from %>
+    <%= f.input :maturity_date_from, as: :quick_date %>
 
-    <%= f.input :maturity_date_to %>
+    <%= f.input :maturity_date_to, as: :quick_date %>
 
     <%= f.input :reason_id, collection: LoanReason.all, input_html: {multiple: true} %>
 
     <%= f.input :postcode %>
 
-    <%= f.input :updated_at_from %>
+    <%= f.input :updated_at_from, as: :quick_date %>
 
-    <%= f.input :updated_at_to %>
+    <%= f.input :updated_at_to, as: :quick_date %>
 
     <%= f.input :modified_by_id, collection: modified_by_options, prompt: "All" %>
 
