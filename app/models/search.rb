@@ -81,7 +81,7 @@ class Search
     return nil if value.blank?
     return value.reject(&:blank?) if value.is_a?(Array)
     return Money.parse(value) if MoneyAttributes.include?(key)
-    return Date.parse(value) if DateAttributes.include?(key)
+    return QuickDateFormatter.parse(value) if DateAttributes.include?(key)
     return value
   end
 
