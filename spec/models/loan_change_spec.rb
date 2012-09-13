@@ -80,11 +80,10 @@ describe LoanChange do
       end
 
       context 'a - Decrease term' do
-        let(:state_aid_calculation_attributes) { FactoryGirl.attributes_for(:rescheduled_state_aid_calculation, loan: loan_change.loan) }
+        let(:loan_change) { FactoryGirl.build(:loan_change, :reschedule) }
 
         it 'requires a maturity_date' do
           loan_change.change_type_id = 'a'
-          loan_change.state_aid_calculation_attributes = state_aid_calculation_attributes
           loan_change.maturity_date = ''
           loan_change.should_not be_valid
           loan_change.maturity_date = Date.new(2020)

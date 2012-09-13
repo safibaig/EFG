@@ -35,6 +35,13 @@
       </tr>
     <% end %>
 
+    <% if @loan_modification.lump_sum_repayment %>
+      <tr>
+        <th>Lump sum repayment</th>
+        <td colspan="3"><%= @loan_modification.lump_sum_repayment.format %></td>
+      </tr>
+    <% end %>
+
     <tr>
       <th>Modified on</th>
       <td><%= @loan_modification.modified_date.to_s(:screen) %></td>

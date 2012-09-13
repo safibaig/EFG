@@ -31,23 +31,34 @@ describe 'LoanModifications' do
       loan.initial_draw_change.save!
 
       visit loan_path(loan)
-      click_link 'Loan Changes'
     end
 
     it 'includes the amount drawn for an InitialDrawChange' do
+      click_link 'Loan Changes'
       click_link 'Initial draw and guarantee'
 
       page.should have_content('£5,000.00')
     end
 
     it 'includes new and old values for a LoanChange' do
+      click_link 'Loan Changes'
       click_link 'Business name'
 
       page.should have_content('Foo')
       page.should have_content('Bar')
     end
 
+    it 'includes LoanChange#lump_sum_repayment' do
+      FactoryGirl.create(:loan_change, :reschedule, loan: loan, change_type_id: '6', lump_sum_repayment: Money.new(1_234_56))
+
+      click_link 'Loan Changes'
+      click_link 'Lump sum repayment'
+
+      page.should have_content('£1,234.56')
+    end
+
     it 'includes new and old values for a DataCorrection' do
+      click_link 'Loan Changes'
       click_link 'Data correction'
 
       page.should have_content('654321')
