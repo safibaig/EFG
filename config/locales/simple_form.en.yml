@@ -178,15 +178,34 @@ en:
         declaration_signed: 'Before proceeding, have you received the Data Protection and Disclosure Declaration signed by the Applicant?'
 
       search:
-        sort_by: Sort By
-        sort_order: Sort Order
-        business_name: Business Name
-        trading_name: Trading Name
-        company_registration: Company Registration
-        updated_at: Last Modified Date
-        amount: Amount
-        postcode: Postcode
-        maturity_date: Maturity Date
+        business_name: What is the legal name of the Applicant business?
+        trading_name: What is the trading name?
+        company_registration: What is the company registration number?
+        state: What is the Loan State?
+        lending_limit_id: What is the appropriate Lending Limit?
+        amount_from: Loan amount from
+        amount_to: Loan amount to
+        maturity_date_from: Loan maturity date from
+        maturity_date_to: Loan maturity date to
+        reason_id: What is the appropriate loan purpose?
+        postcode: What is the post code of the Applicant's main business address?
+        updated_at_from: Last modified date from
+        updated_at_to: Last modified date to
+        modified_by_id: Who was the last modified user?
+        generic1: Generic lender field 1
+        generic2: Generic lender field 2
+        generic3: Generic lender field 3
+        generic4: Generic lender field 4
+        generic5: Generic lender field 5
+        sort_by: Select the sort option
+        sort_order: Select the sort order
+        sort_business_name: Business Name
+        sort_trading_name: Trading Name
+        sort_company_registration: Company Registration
+        sort_updated_at: Last Modified Date
+        sort_amount: Amount
+        sort_postcode: Postcode
+        sort_maturity_date: Maturity Date
 
       invoice:
         lender_id: Name of the Lender submitting the invoice?

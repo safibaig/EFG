@@ -9,7 +9,7 @@
   <%= f.input :state, collection: Loan::States.map(&:titleize), input_html: {multiple: true} %>
 
   <%= field_set_tag 'Sorting' do %>
-    <%= f.input :sort_by, collection: Search::SortableAttributes.map {|attribute| [I18n.t(attribute, scope: [:simple_form, :labels, :search]), attribute]} %>
+    <%= f.input :sort_by, collection: search_sort_options, prompt: false, selected: nil %>
     <%= f.input :sort_order, as: :radio_buttons, collection: Search::SortOrders, wrapper_html: {class: 'radio-buttons-inline'} %>
   <% end %>
 
