@@ -3,6 +3,8 @@ module LoanModificationsHelper
     case value
     when Date
       value.to_s(:screen)
+    when LendingLimit
+      value.name
     when Money
       value.format
     else

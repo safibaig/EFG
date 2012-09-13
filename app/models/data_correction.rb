@@ -19,6 +19,14 @@ class DataCorrection < LoanModification
     'Data correction'
   end
 
+  def lending_limit
+    LendingLimit.where(id: lending_limit_id).first
+  end
+
+  def old_lending_limit
+    LendingLimit.where(id: old_lending_limit_id).first
+  end
+
   private
     def create_loan_state_change!
       LoanStateChange.create!(

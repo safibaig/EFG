@@ -64,5 +64,17 @@ describe 'LoanModifications' do
       page.should have_content('654321')
       page.should have_content('123456')
     end
+
+    it 'includes new and old values for a LendingLimit DataCorrection' do
+      old_lending_limit_name = loan.lending_limit.name
+      lending_limit = FactoryGirl.create(:lending_limit, lender: loan.lender, name: 'Foo')
+      FactoryGirl.create(:data_correction, loan: loan, lending_limit_id: lending_limit.id)
+
+      click_link 'Loan Changes'
+      page.all('table tbody a').last.click
+
+      page.should have_content(old_lending_limit_name)
+      page.should have_content('Foo')
+    end
   end
 end

@@ -36,8 +36,8 @@ class LoanModification < ActiveRecord::Base
     attributes.select { |key, value|
       key[0..3] == 'old_' && value.present?
     }.keys.map { |name|
-      old_name = name
-      new_name = name.slice(4..-1)
+      old_name = name.sub(/_id$/, '')
+      new_name = old_name.slice(4..-1)
 
       {
         old_attribute: old_name,
