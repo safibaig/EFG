@@ -79,15 +79,10 @@ class Search
 
   def format_filter_value(key, value)
     return nil if value.blank?
-    return filter_blank_multi_select(value) if value.is_a?(Array)
+    return value.reject(&:blank?) if value.is_a?(Array)
     return Money.parse(value) if MoneyAttributes.include?(key)
     return Date.parse(value) if DateAttributes.include?(key)
     return value
-  end
-
-  # See http://stackoverflow.com/questions/8929230/why-is-the-first-element-always-blank-in-my-rails-multi-select
-  def filter_blank_multi_select(value)
-    value.is_a?(Array) ? value.reject(&:blank?) : value
   end
 
   def range_condition(key, value)
