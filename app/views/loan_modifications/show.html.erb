@@ -14,7 +14,7 @@
   <tbody>
     <tr>
       <th>Change date</th>
-      <td><%= @loan_modification.date_of_change %></td>
+      <td><%= @loan_modification.date_of_change.to_s(:screen) %></td>
       <th>Change type</th>
       <td><%= @loan_modification.change_type_name %></td>
     </tr>
@@ -22,9 +22,9 @@
     <% @loan_modification.changes.each do |change| %>
       <tr>
         <th><%= change[:old_attribute].humanize %></th>
-        <td><%= change[:old_value] %></td>
+        <td><%= format_modification_value change[:old_value] %></td>
         <th><%= change[:attribute].humanize %></th>
-        <td><%= change[:value] %></td>
+        <td><%= format_modification_value change[:value] %></td>
       </tr>
     <% end %>
 
@@ -37,7 +37,7 @@
 
     <tr>
       <th>Modified on</th>
-      <td><%= @loan_modification.modified_date %></td>
+      <td><%= @loan_modification.modified_date.to_s(:screen) %></td>
       <th>Modified by</th>
       <td><%= @loan_modification.created_by.name %></td>
     </tr>

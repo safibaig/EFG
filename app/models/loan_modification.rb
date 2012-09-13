@@ -41,9 +41,9 @@ class LoanModification < ActiveRecord::Base
 
       {
         old_attribute: old_name,
-        old_value: self[old_name],
+        old_value: self.send(old_name),
         attribute: new_name,
-        value: self[new_name]
+        value: self.send(new_name)
       }
     }
   end
