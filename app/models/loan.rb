@@ -210,6 +210,10 @@ class Loan < ActiveRecord::Base
     read_attribute(:premium_rate) || lending_limit.premium_rate
   end
 
+  def sflg?
+    loan_source == SFLG_SOURCE && loan_scheme == SFLG_SCHEME
+  end
+
   def state_history
     @state_history ||= (state_changes.select(:state).collect(&:state) + [state]).uniq
   end

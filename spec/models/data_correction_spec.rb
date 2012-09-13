@@ -56,6 +56,23 @@ describe DataCorrection do
         data_correction.initial_draw_amount = Money.new(6_000_00)
         data_correction.should_not be_valid
       end
+
+      context 'for SFLG loans' do
+        before do
+          loan.loan_source = Loan::SFLG_SOURCE
+          loan.loan_scheme = Loan::SFLG_SCHEME
+          loan.save!
+        end
+
+        it 'must be between £5,000 and £250,000' do
+          data_correction.amount = '4999.99'
+          data_correction.should_not be_valid
+          data_correction.amount = '250000.01'
+          data_correction.should_not be_valid
+          data_correction.amount = '249999.99'
+          data_correction.should be_valid
+        end
+      end
     end
 
     context '#facility_letter_date' do

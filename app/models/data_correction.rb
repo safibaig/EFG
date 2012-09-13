@@ -32,8 +32,12 @@ class DataCorrection < LoanModification
 
   private
     def amount_ineligible?
-      # TODO: Extract this duplicated business logic.
-      !amount.between?(Money.new(1_000_00), Money.new(1_000_000_00))
+      if loan.sflg?
+        !amount.between?(Money.new(5_000_00), Money.new(250_000_00))
+      else
+        # TODO: Extract this duplicated business logic.
+        !amount.between?(Money.new(1_000_00), Money.new(1_000_000_00))
+      end
     end
 
     def amount_less_than_cumulative_amount_drawn?
