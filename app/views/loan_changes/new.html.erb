@@ -22,8 +22,7 @@
   <%= f.input :date_of_change, as: :quick_date %>
   <%= f.input :change_type_id, as: :select, collection: ChangeType.for_loan_change, prompt: 'Please select' %>
 
-  <% # TODO: Get cumulative amount drawn from somewhere. %>
-  <%= simple_form_row 'Cumulative amount drawn against this facility prior to this change', '' %>
+  <%= simple_form_row 'Cumulative amount drawn against this facility prior to this change', @loan.cumulative_drawn_amount.format %>
   <%= f.input :amount_drawn, as: :currency %>
   <%= f.input :lump_sum_repayment, as: :currency %>
 
