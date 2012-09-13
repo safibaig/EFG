@@ -2,6 +2,14 @@
   <h1>Search</h1>
 </div>
 
+<p>From this page you can locate an EFG/SFLG loan using basic or advanced search criteria.</p>
+
+<p>(Tip. If required, you can select more than one option by using the Ctrl and Shift keys in conjunction with your mouse).</p>
+
+<p>When you have entered your Search criteria click on the 'Submit' button.<p>
+
+<hr />
+
 <%= simple_form_for(@search, url: search_path, method: :get, html: {id: 'search', class: 'form-horizontal'}) do |f| %>
   <%= f.input :business_name %>
   <%= f.input :trading_name %>
@@ -13,7 +21,7 @@
     <%= f.input :sort_order, as: :radio_buttons, collection: Search::SortOrders, wrapper_html: {class: 'radio-buttons-inline'} %>
   <% end %>
 
-  <%= field_set_tag 'Advanced' do %>
+  <%= field_set_tag 'Advanced', id: 'advanced_search_options' do %>
 
     <%= f.input :lending_limit_id, collection: current_lender.lending_limits, input_html: {multiple: true} %>
 
@@ -46,6 +54,10 @@
     <%= f.input :generic5 %>
 
   <% end %>
+
+  <p class="icon-search">
+    <a href="#" id="toggle_advanced_search">Show Advanced Search Options</a>
+  </p>
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Search', class: 'btn-primary' %>

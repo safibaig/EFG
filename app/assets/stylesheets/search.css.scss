@@ -1,5 +1,11 @@
 @import 'variables';
 
+#search {
+  #advanced_search_options {
+    display: none;
+  }
+}
+
 #loan_lookup {
   margin: 0.5em 0 0 0;
 
