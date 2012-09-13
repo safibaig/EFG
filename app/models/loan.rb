@@ -122,7 +122,7 @@ class Loan < ActiveRecord::Base
   end
 
   def cumulative_drawn_amount
-    Money.new(loan_changes.sum(:amount_drawn))
+    Money.new(loan_modifications.sum(:amount_drawn))
   end
 
   def cumulative_lump_sum_amount
