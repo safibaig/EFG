@@ -22,11 +22,11 @@
     </tr>
     <tr>
       <th>Report Start Date</th>
-      <td><%= @premium_schedule_report.start_on %></td>
+      <td><%= @premium_schedule_report.start_on.try(:to_s, :screen) %></td>
     </tr>
     <tr>
       <th>Report End Date</th>
-      <td><%= @premium_schedule_report.finish_on %></td>
+      <td><%= @premium_schedule_report.finish_on.try(:to_s, :screen) %></td>
     </tr>
     <tr>
       <th>Schedule Type</th>
