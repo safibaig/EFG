@@ -182,4 +182,22 @@ describe PremiumSchedule do
       premium_schedule.second_premium_collection_month.should be_nil
     end
   end
+
+  describe "#initial_premium_cheque" do
+    context 'when reschedule' do
+      let(:premium_schedule) { FactoryGirl.build(:rescheduled_state_aid_calculation).premium_schedule }
+
+      it "returns 0 money" do
+        premium_schedule.initial_premium_cheque.should == Money.new(0)
+      end
+    end
+
+    context 'when not reschedule' do
+      let(:premium_schedule) { FactoryGirl.build(:state_aid_calculation).premium_schedule }
+
+      it "returns first premium amount" do
+        premium_schedule.initial_premium_cheque.should == premium_schedule.premiums.first
+      end
+    end
+  end
 end

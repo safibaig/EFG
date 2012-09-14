@@ -62,4 +62,8 @@ class PremiumSchedule
     @total_quarters ||= initial_draw_months.to_f / 3
   end
 
+  def initial_premium_cheque
+    reschedule? ? Money.new(0) : premiums.first
+  end
+
 end

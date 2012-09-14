@@ -31,7 +31,7 @@ class PremiumScheduleReportRow
       loan.lender_organisation,
       loan.reference,
       state_aid_calculation.calc_type,
-      premium_schedule.premiums.first.to_f,
+      premium_schedule.initial_premium_cheque.to_f,
       state_aid_calculation.premium_cheque_month,
       premium_schedule.number_of_subsequent_payments,
     ] + premiums
