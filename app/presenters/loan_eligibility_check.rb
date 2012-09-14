@@ -50,8 +50,13 @@ class LoanEligibilityCheck
   end
 
   def lending_limit_id=(id)
-    lending_limit = loan.lender.lending_limits.active.where(id: id).first
-    loan.lending_limit = lending_limit
+    if id.present?
+      lending_limit = loan.lender.lending_limits.active.find(id)
+      loan.lending_limit = lending_limit
+    else
+      loan.lending_limit = nil
+    end
+
     loan.lending_limit_id
   end
 

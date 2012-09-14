@@ -117,18 +117,20 @@ describe LoanEligibilityCheck do
   describe '#lending_limit_id=' do
     let(:lender) { loan_eligibility_check.loan.lender }
 
-    it 'does not allow a LendingLimit from another Lender to be set' do
+    it 'blows up if attempting to set a LendingLimit belonging to another Lender' do
       another_lending_limit = FactoryGirl.create(:lending_limit)
 
-      loan_eligibility_check.lending_limit_id = another_lending_limit.id
-      loan_eligibility_check.lending_limit_id.should == nil
+      expect {
+        loan_eligibility_check.lending_limit_id = another_lending_limit.id
+      }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
-    it 'does not allow an inactive LendingLimit to be set' do
+    it 'blows up when attempting to set an inactive LendingLimit' do
       another_lending_limit = FactoryGirl.create(:lending_limit, active: false, lender: lender)
 
-      loan_eligibility_check.lending_limit_id = another_lending_limit.id
-      loan_eligibility_check.lending_limit_id.should == nil
+      expect {
+        loan_eligibility_check.lending_limit_id = another_lending_limit.id
+      }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 

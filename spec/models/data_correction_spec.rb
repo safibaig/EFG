@@ -168,21 +168,23 @@ describe DataCorrection do
     let(:lending_limit) { FactoryGirl.build(:lending_limit) }
     let(:data_correction) { FactoryGirl.build(:data_correction) }
 
-    it 'does not allow a LendingLimit from another Lender to be set' do
+    it 'blows up if attempting to set a LendingLimit belonging to another Lender' do
       another_lending_limit = FactoryGirl.create(:lending_limit)
 
-      data_correction.lending_limit_id = another_lending_limit.id
-      data_correction.lending_limit_id.should == nil
+      expect {
+        data_correction.lending_limit_id = another_lending_limit.id
+      }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
-    it 'does not allow an inactive LendingLimit to be set' do
+    it 'blows up when attempting to set an inactive LendingLimit' do
       another_lending_limit = FactoryGirl.create(:lending_limit,
         active: false,
         lender: data_correction.loan.lender
       )
 
-      data_correction.lending_limit_id = another_lending_limit.id
-      data_correction.lending_limit_id.should == nil
+      expect {
+        data_correction.lending_limit_id = another_lending_limit.id
+      }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 

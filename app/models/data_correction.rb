@@ -26,8 +26,13 @@ class DataCorrection < LoanModification
     LendingLimit.where(id: lending_limit_id).first
   end
 
-  def lending_limit_id=(value)
-    super loan.lender.lending_limits.active.where(id: value).pluck(:id).first
+  def lending_limit_id=(id)
+    if id.present?
+      lending_limit = loan.lender.lending_limits.active.find(id)
+      super lending_limit.id
+    else
+      super nil
+    end
   end
 
   def old_lending_limit
