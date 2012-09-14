@@ -2,20 +2,25 @@ module LoanDetailsTableHelper
   class LoanDetailsTable < ActionView::Base
     Formats = {
       ActiveSupport::TimeWithZone => ->(time) { time.strftime('%d/%m/%Y %H:%M:%S') },
+      AuditorUser => :name.to_proc,
       CancelReason => :name.to_proc,
+      CfeAdmin => :name.to_proc,
       CfeUser => :name.to_proc,
       Date => ->(date) { date.strftime('%d/%m/%Y') },
       FalseClass => 'No',
       InterestRateType => :name.to_proc,
       LegalForm => :name.to_proc,
       Lender => :name.to_proc,
-      LendingLimit => :title.to_proc,
+      LenderAdmin => :name.to_proc,
       LenderUser => :name.to_proc,
+      LendingLimit => :title.to_proc,
       LoanCategory => :name.to_proc,
       Money => :format.to_proc,
       MonthDuration => :format.to_proc,
       NilClass => 'Not Set',
+      PremiumCollectorUser => :name.to_proc,
       RepaymentFrequency => :name.to_proc,
+      SuperUser => :name.to_proc,
       TrueClass => 'Yes'
     }
 
