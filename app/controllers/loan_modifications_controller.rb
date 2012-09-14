@@ -3,7 +3,7 @@ class LoanModificationsController < ApplicationController
   before_filter :load_loan
 
   def index
-    @loan_modifications = @loan.loan_modifications
+    @loan_modifications = @loan.loan_modifications.desc
   end
 
   def show

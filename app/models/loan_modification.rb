@@ -32,6 +32,8 @@ class LoanModification < ActiveRecord::Base
   format :old_initial_draw_date, with: QuickDateFormatter
   format :old_maturity_date, with: QuickDateFormatter
 
+  scope :desc, order('date_of_change DESC, id DESC')
+
   def changes
     attributes.select { |key, value|
       key[0..3] == 'old_' && value.present?
