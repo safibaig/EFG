@@ -102,6 +102,14 @@ class DataCorrection < LoanModification
       initial_draw_date > Date.current
     end
 
+    def initial_draw_date_more_than_six_months_after_facility_letter_date?
+      six_months_after_facility_letter_date = (
+        facility_letter_date || loan.facility_letter_date
+      ).advance(months: 6)
+
+      initial_draw_date > six_months_after_facility_letter_date
+    end
+
     def presence_of_a_field
       all_blank = [
         amount,
@@ -178,6 +186,8 @@ class DataCorrection < LoanModification
         errors.add(:initial_draw_date, :must_not_be_in_the_future)
       elsif initial_draw_date_before_facility_letter_date?
         errors.add(:initial_draw_date, :must_not_be_before_facility_letter_date)
+      elsif initial_draw_date_more_than_six_months_after_facility_letter_date?
+        errors.add(:initial_draw_date, :must_not_be_more_than_six_months_after_facility_letter_date)
       end
     end
 end

@@ -146,6 +146,21 @@ describe DataCorrection do
         data_correction.initial_draw_date = Date.new(2011, 7, 31)
         data_correction.should_not be_valid
       end
+
+      it "must not be more than six months after the loan's facility letter date" do
+        data_correction.initial_draw_date = Date.new(2012, 2, 2)
+        data_correction.should_not be_valid
+        data_correction.initial_draw_date = Date.new(2012, 2, 1)
+        data_correction.should be_valid
+      end
+
+      it "must not be more than six months after the loan's facility letter date (including change to facility letter date)" do
+        data_correction.facility_letter_date = Date.new(2011, 9)
+        data_correction.initial_draw_date = Date.new(2012, 3, 2)
+        data_correction.should_not be_valid
+        data_correction.initial_draw_date = Date.new(2012, 3, 1)
+        data_correction.should be_valid
+      end
     end
   end
 
@@ -211,7 +226,7 @@ describe DataCorrection do
       loan.facility_letter_date.should == Date.new(2012, 2, 2)
     end
 
-    it 'works with #initial_draw_amount / #initial_draw_date' do
+    it 'works with #initial_draw_amount' do
       data_correction.initial_draw_amount = Money.new(2_000_00)
       data_correction.save_and_update_loan.should == true
       data_correction.old_initial_draw_amount.should == Money.new(1_000_00)
@@ -220,7 +235,7 @@ describe DataCorrection do
       initial_draw_change.amount_drawn.should == Money.new(2_000_00)
     end
 
-    it 'works with #initial_draw_amount / #initial_draw_date' do
+    it 'works with #initial_draw_date' do
       data_correction.initial_draw_date = Date.new(2012, 4, 3)
       data_correction.save_and_update_loan.should == true
       data_correction.old_initial_draw_date = Date.new(2012, 3, 4)

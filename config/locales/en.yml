@@ -97,6 +97,7 @@ en:
             initial_draw_date:
               must_not_be_in_the_future: 'must not be later than today'
               must_not_be_before_facility_letter_date: 'must not be before the date of the Original Facility Letter Date'
+              must_not_be_more_than_six_months_after_facility_letter_date: 'must not be more than six months after the Facility Letter Date'
         loan_change:
           attributes:
             base:
