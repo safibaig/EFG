@@ -100,14 +100,18 @@
     <%= table.row 'received_declaration' %>
     <%= table.row 'first_pp_received' %>
     <%= table.row 'signed_direct_debit_received' %>
-    <tr>
-      <th>On what date was the initial draw of funds made?</th>
-      <td><%= @loan.initial_draw_change.date_of_change.to_s(:screen) %></td>
-    </tr>
-    <tr>
-      <th>What was the value of the initial draw?</th>
-      <td><%= @loan.initial_draw_change.amount_drawn.format %></td>
-    </tr>
+
+    <% if @loan.initial_draw_change %>
+      <tr>
+        <th>On what date was the initial draw of funds made?</th>
+        <td><%= @loan.initial_draw_change.date_of_change.to_s(:screen) %></td>
+      </tr>
+      <tr>
+        <th>What was the value of the initial draw?</th>
+        <td><%= @loan.initial_draw_change.amount_drawn.format %></td>
+      </tr>
+    <% end %>
+
     <tr>
       <th>Cumulative amount drawn to date</th>
       <td><%= @loan.cumulative_drawn_amount.format %></td>

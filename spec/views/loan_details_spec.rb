@@ -98,6 +98,17 @@ describe 'loans/details' do
     it_behaves_like 'rendered loan_details' do
       let(:visible_details) { %w(loan_guarantee.received_declaration) }
     end
+
+    context 'without an initial_draw_change' do
+      before do
+        loan.loan_modifications.delete_all
+      end
+
+      it 'does not blow up' do
+        assign(:loan, loan)
+        render
+      end
+    end
   end
 
   context "with a lender demanded loan" do
