@@ -26,6 +26,10 @@ class DataCorrection < LoanModification
     LendingLimit.where(id: lending_limit_id).first
   end
 
+  def lending_limit_id=(value)
+    super loan.lender.lending_limits.active.where(id: value).pluck(:id).first
+  end
+
   def old_lending_limit
     LendingLimit.where(id: old_lending_limit_id).first
   end
@@ -128,8 +132,7 @@ class DataCorrection < LoanModification
           initial_draw_change.date_of_change = initial_draw_date
         when 'lending_limit_id'
           self.old_lending_limit_id = loan.lending_limit_id
-          # TODO: Don't allow setting another lender's lending limit.
-          loan.lending_limit = LendingLimit.find(value)
+          loan.lending_limit = lending_limit
         else
           self["old_#{key}"] = loan[key] if value.present?
           loan[key] = value

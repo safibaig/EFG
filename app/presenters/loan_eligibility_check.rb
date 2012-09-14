@@ -8,7 +8,7 @@ class LoanEligibilityCheck
   attribute :would_you_lend
   attribute :collateral_exhausted
   attribute :lender
-  attribute :lending_limit_id
+  attribute :lending_limit_id, readonly: true
   attribute :sic_code
   attribute :loan_category_id
   attribute :reason_id
@@ -47,6 +47,12 @@ class LoanEligibilityCheck
 
   def event
     is_eligible? ? LoanEvent.find_by_name("Accept") : LoanEvent.find_by_name("Reject")
+  end
+
+  def lending_limit_id=(id)
+    lending_limit = loan.lender.lending_limits.active.where(id: id).first
+    loan.lending_limit = lending_limit
+    loan.lending_limit_id
   end
 
   # cache sic code data on loan, as per legacy system

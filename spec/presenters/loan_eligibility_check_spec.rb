@@ -114,6 +114,24 @@ describe LoanEligibilityCheck do
     end
   end
 
+  describe '#lending_limit_id=' do
+    let(:lender) { loan_eligibility_check.loan.lender }
+
+    it 'does not allow a LendingLimit from another Lender to be set' do
+      another_lending_limit = FactoryGirl.create(:lending_limit)
+
+      loan_eligibility_check.lending_limit_id = another_lending_limit.id
+      loan_eligibility_check.lending_limit_id.should == nil
+    end
+
+    it 'does not allow an inactive LendingLimit to be set' do
+      another_lending_limit = FactoryGirl.create(:lending_limit, active: false, lender: lender)
+
+      loan_eligibility_check.lending_limit_id = another_lending_limit.id
+      loan_eligibility_check.lending_limit_id.should == nil
+    end
+  end
+
   describe '#save' do
     it "should set the state to Eligible if its eligible" do
       EligibilityCheck.any_instance.stub(:eligible?).and_return(true)

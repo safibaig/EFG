@@ -7,7 +7,8 @@ class DataCorrectionsController < ApplicationController
   end
 
   def create
-    @data_correction = @loan.data_corrections.new(params[:data_correction])
+    @data_correction = @loan.data_corrections.new
+    @data_correction.attributes = params[:data_correction]
     @data_correction.date_of_change = Date.current
     @data_correction.created_by = current_user
     @data_correction.modified_date = Date.current

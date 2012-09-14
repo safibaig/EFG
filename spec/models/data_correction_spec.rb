@@ -149,6 +149,28 @@ describe DataCorrection do
     end
   end
 
+  describe '#lending_limit_id=' do
+    let(:lending_limit) { FactoryGirl.build(:lending_limit) }
+    let(:data_correction) { FactoryGirl.build(:data_correction) }
+
+    it 'does not allow a LendingLimit from another Lender to be set' do
+      another_lending_limit = FactoryGirl.create(:lending_limit)
+
+      data_correction.lending_limit_id = another_lending_limit.id
+      data_correction.lending_limit_id.should == nil
+    end
+
+    it 'does not allow an inactive LendingLimit to be set' do
+      another_lending_limit = FactoryGirl.create(:lending_limit,
+        active: false,
+        lender: data_correction.loan.lender
+      )
+
+      data_correction.lending_limit_id = another_lending_limit.id
+      data_correction.lending_limit_id.should == nil
+    end
+  end
+
   describe '#save_and_update_loan' do
     let(:lender) { FactoryGirl.create(:lender) }
     let(:user) { FactoryGirl.create(:lender_user, lender: lender) }
