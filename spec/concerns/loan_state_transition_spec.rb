@@ -6,7 +6,7 @@ describe LoanStateTransition do
       include LoanPresenter
       include LoanStateTransition
 
-      transition from: [:a, :b], to: :c, event: :complete
+      transition from: [Loan::AutoCancelled, Loan::AutoRemoved], to: Loan::Offered, event: :complete
     end
   end
 
@@ -22,7 +22,7 @@ describe LoanStateTransition do
 
   describe "#initialize" do
     it "should accept a loan in a correct from state" do
-      loan = double(Loan, state: :b)
+      loan = double(Loan, state: Loan::AutoCancelled)
 
       expect {
         klass.new(loan)
@@ -45,25 +45,17 @@ describe LoanStateTransition do
         klass.new(loan)
       }.to raise_error(LoanStateTransition::IncorrectLoanState)
     end
-
-    it "should initialize the loan" do
-      loan = double(Loan, state: :a)
-      presenter = klass.new(loan)
-      presenter.loan.should == loan
-    end
   end
 
   describe "#save" do
+    let(:loan) { FactoryGirl.build(:loan, state: Loan::AutoRemoved) }
     let(:user) { FactoryGirl.create(:user) }
 
-    it "should set the state to the to state" do
-      save_result = mock
-      loan = double(Loan, id: 1, modified_by: user, state: :a, save!: save_result)
-      loan.should_receive(:transaction).and_yield
-      loan.should_receive(:state=).with(:c)
-
+    it "should change the state of the loan" do
       presenter = klass.new(loan)
-      presenter.save.should == save_result
+      presenter.save
+
+      loan.state.should == Loan::Offered
     end
   end
 end
