@@ -22,7 +22,7 @@ en:
         turnover: 'What is the current annual turnover of the Applicant business?'
         trading_date: 'What is the Commencement of Trading Date of the Applicant business? (dd/mm/yyyy)'
         sic_code: 'Which Standard Industrial Classification (SIC) code best describes the business sector in which the guaranteed facility will be used?'
-        sic_code_description: 'SIC code activity description'
+        sic_desc: 'SIC code activity description'
         loan_category_id: 'Which EFG Lending Type which most accurately describes the facility to be guaranteed?'
         reason_id: 'What is the principal purpose that this facility will be used for?'
         previous_borrowing: "Including this facility, will the total outstanding balances and / or available limits of the Applicant's current EFG facilities be no more than £1 million?"
