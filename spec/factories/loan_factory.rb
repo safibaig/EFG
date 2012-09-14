@@ -80,11 +80,9 @@ FactoryGirl.define do
       maturity_date { 10.years.from_now }
 
       after :create do |loan|
-        FactoryGirl.create(:loan_change,
+        FactoryGirl.create(:initial_draw_change,
           amount_drawn: loan.amount,
-          date_of_change: Date.current,
-          loan: loan,
-          seq: 0
+          loan: loan
         )
       end
     end

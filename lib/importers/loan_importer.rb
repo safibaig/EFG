@@ -30,7 +30,7 @@ class LoanImporter < BaseImporter
       "TRADING_NAME"                  => :trading_name,
       "COMPANY_REG"                   => :company_registration,
       "POSTCODE"                      => :postcode,
-      "BRANCH_SORTCODE"               => :branch_sortcode,
+      "BRANCH_SORTCODE"               => :sortcode,
       "LOAN_TERM"                     => :repayment_duration,
       "CANCEL_COMMENTS"               => :cancelled_comment,
       "NEXT_CHANGE_HISTORY_SEQ"       => :next_change_history_seq,

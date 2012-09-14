@@ -41,7 +41,7 @@ class LoanCsvExport < BaseCsvExport
       amount_demanded
       borrower_demand_outstanding
       borrower_demanded_on
-      branch_sortcode
+      sortcode
       business_name
       business_type
       cancelled_comment

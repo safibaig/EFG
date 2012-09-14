@@ -18,10 +18,10 @@
     </tr>
   </thead>
   <tbody>
-    <% @loan_changes.each do |loan_change| %>
+    <% @loan_modifications.each do |loan_modification| %>
       <tr>
-        <td><%= link_to loan_change.date_of_change, loan_loan_change_path(@loan, loan_change) %></td>
-        <td><%= loan_change.change_type.name if loan_change.change_type_id %></td>
+        <td><%= link_to loan_modification.date_of_change.to_s(:screen), loan_loan_modification_path(@loan, loan_modification) %></td>
+        <td><%= link_to loan_modification.change_type_name, loan_loan_modification_path(@loan, loan_modification) %></td>
       </tr>
     <% end %>
   </tbody>

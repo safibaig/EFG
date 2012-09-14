@@ -23,7 +23,7 @@ class LoanAuditReport < BaseLoanReport
         ].join(', ')
       ).
       joins("RIGHT OUTER JOIN loan_state_changes ON loans.id = loan_state_changes.loan_id").
-      joins("LEFT JOIN loan_changes AS first_loan_change ON loans.id = first_loan_change.loan_id AND first_loan_change.seq = 0").
+      joins("LEFT JOIN loan_modifications AS first_loan_change ON loans.id = first_loan_change.loan_id AND first_loan_change.seq = 0").
       where("loans.modified_by_legacy_id != 'migration'").
       where(query_conditions).
       order("loans.reference, loan_state_changes.version")

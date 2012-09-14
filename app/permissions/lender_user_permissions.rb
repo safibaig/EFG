@@ -1,6 +1,7 @@
 module LenderUserPermissions
   def can_create?(resource)
     [
+      DataCorrection,
       LoanCancel,
       LoanChange,
       LoanDemandAgainstGovernment,
@@ -11,13 +12,13 @@ module LenderUserPermissions
       LoanNoClaim,
       LoanOffer,
       LoanRepay,
+      LoanReport,
       LoanTransfer::LegacySflg,
       LoanTransfer::Sflg,
       Recovery,
       StateAidCalculation,
-      TransferredLoanEntry,
-      LoanReport,
-      SupportRequest
+      SupportRequest,
+      TransferredLoanEntry
     ].include?(resource)
   end
 
@@ -33,9 +34,10 @@ module LenderUserPermissions
       DataProtectionDeclaration,
       InformationDeclaration,
       Loan,
+      Loan::States,
       LoanAlerts,
       LoanChange,
-      Loan::States,
+      LoanModification,
       PremiumSchedule,
       Search,
       StateAidLetter

@@ -57,7 +57,7 @@ describe LoanImporter do
       loan.trading_name.should == "ACME"
       loan.company_registration.should == "COMPANYREG"
       loan.postcode.should == "AA11 2BB"
-      loan.branch_sortcode.should == "990099"
+      loan.sortcode.should == "990099"
       loan.repayment_duration.should == MonthDuration.new(60)
       loan.cancelled_comment.should == "n/a"
       loan.next_change_history_seq.should == 3

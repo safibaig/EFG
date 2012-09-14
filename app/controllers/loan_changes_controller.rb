@@ -1,16 +1,6 @@
 class LoanChangesController < ApplicationController
-  before_filter :verify_view_permission, only: [:index, :show]
-  before_filter :verify_create_permission, only: [:new, :create]
-  before_filter :load_loan, only: [:index, :show]
-  before_filter :load_changeable_loan, only: [:new, :create]
-
-  def index
-    @loan_changes = @loan.loan_changes
-  end
-
-  def show
-    @loan_change = @loan.loan_changes.find(params[:id])
-  end
+  before_filter :verify_create_permission
+  before_filter :load_loan
 
   def new
     @loan_change = @loan.loan_changes.new(params[:loan_change])
@@ -34,18 +24,10 @@ class LoanChangesController < ApplicationController
 
   private
     def load_loan
-      @loan = current_lender.loans.find(params[:loan_id])
-    end
-
-    def load_changeable_loan
       @loan = current_lender.loans.changeable.find(params[:loan_id])
     end
 
     def verify_create_permission
       enforce_create_permission(LoanChange)
-    end
-
-    def verify_view_permission
-      enforce_view_permission(LoanChange)
     end
 end

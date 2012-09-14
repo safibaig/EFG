@@ -24,7 +24,7 @@
   <%= table.row 'turnover' %>
   <%= table.row 'trading_date' %>
   <%= table.row 'postcode' %>
-  <%= table.row 'branch_sortcode' %>
+  <%= table.row 'sortcode' %>
   <%= table.row 'amount' %>
   <%= table.row 'repayment_duration' %>
   <%= table.row 'repayment_frequency', header: t('simple_form.labels.loan_entry.repayment_frequency_id') %>
@@ -102,11 +102,11 @@
     <%= table.row 'signed_direct_debit_received' %>
     <tr>
       <th>On what date was the initial draw of funds made?</th>
-      <td><%= @loan.initial_loan_change.date_of_change.to_s(:screen) %></td>
+      <td><%= @loan.initial_draw_change.date_of_change.to_s(:screen) %></td>
     </tr>
     <tr>
       <th>What was the value of the initial draw?</th>
-      <td><%= @loan.initial_loan_change.amount_drawn.format %></td>
+      <td><%= @loan.initial_draw_change.amount_drawn.format %></td>
     </tr>
     <tr>
       <th>Cumulative amount drawn to date</th>

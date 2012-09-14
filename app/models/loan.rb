@@ -45,9 +45,11 @@ class Loan < ActiveRecord::Base
   belongs_to :invoice
   belongs_to :ded_code, foreign_key: 'dti_ded_code', primary_key: 'code'
   has_many :state_aid_calculations, inverse_of: :loan, order: :seq
+  has_one :initial_draw_change
   has_one :transferred_from, class_name: 'Loan', foreign_key: 'id', primary_key: 'transferred_from_id'
+  has_many :data_corrections
   has_many :loan_changes
-  has_one :initial_loan_change, class_name: 'LoanChange', conditions: { seq: 0 }
+  has_many :loan_modifications
   has_many :loan_realisations, foreign_key: 'realised_loan_id'
   has_many :recoveries
   has_many :loan_securities
@@ -61,6 +63,7 @@ class Loan < ActiveRecord::Base
   scope :recovered,      where(state: Loan::Recovered)
 
   scope :changeable,  where(state: [Loan::Guaranteed, Loan::LenderDemand])
+  scope :correctable, where(state: [Loan::Guaranteed, Loan::LenderDemand, Loan::Demanded])
   scope :recoverable, where(state: [Loan::Settled, Loan::Recovered, Loan::Realised])
 
   scope :last_updated_between, lambda { |start_date, end_date|
@@ -119,7 +122,7 @@ class Loan < ActiveRecord::Base
   end
 
   def cumulative_drawn_amount
-    Money.new(loan_changes.sum(:amount_drawn))
+    Money.new(loan_modifications.sum(:amount_drawn))
   end
 
   def cumulative_lump_sum_amount
@@ -205,6 +208,10 @@ class Loan < ActiveRecord::Base
 
   def premium_rate
     read_attribute(:premium_rate) || lending_limit.premium_rate
+  end
+
+  def sflg?
+    loan_source == SFLG_SOURCE && loan_scheme == SFLG_SCHEME
   end
 
   def state_history

@@ -14,7 +14,7 @@ describe 'Transfer a legacy loan' do
   it 'should transfer legacy loan from one lender to another' do
     fill_in 'loan_transfer_legacy_sflg_reference', with: loan.reference
     fill_in 'loan_transfer_legacy_sflg_amount', with: loan.amount.to_s
-    fill_in 'loan_transfer_legacy_sflg_initial_draw_date', with: loan.initial_loan_change.date_of_change.to_s(:screen)
+    fill_in 'loan_transfer_legacy_sflg_initial_draw_date', with: loan.initial_draw_change.date_of_change.to_s(:screen)
     fill_in 'loan_transfer_legacy_sflg_new_amount', with: loan.amount - Money.new(500)
     choose 'loan_transfer_legacy_sflg_declaration_signed_true'
 

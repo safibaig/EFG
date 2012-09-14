@@ -4,7 +4,6 @@ FactoryGirl.define do
     would_you_lend 'true'
     collateral_exhausted 'true'
     amount '12345'
-    lending_limit_id '1'
     repayment_duration({ years: '1', months: '6' })
     turnover '12345'
     trading_date '31/1/2011'
@@ -22,5 +21,12 @@ FactoryGirl.define do
       loan.state = nil
       new(loan)
     }
+
+    after :build do |loan_eligibility_check|
+      loan_eligibility_check.lending_limit_id ||= begin
+        lender = loan_eligibility_check.loan.lender
+        FactoryGirl.build(:lending_limit, lender: lender)
+      end
+    end
   end
 end

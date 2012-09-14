@@ -28,7 +28,7 @@ class LoanEntry
   attribute :company_registration
   attribute :postcode
   attribute :non_validated_postcode
-  attribute :branch_sortcode
+  attribute :sortcode
   attribute :repayment_frequency_id
   attribute :generic1
   attribute :generic2
