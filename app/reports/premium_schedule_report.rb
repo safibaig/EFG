@@ -30,53 +30,23 @@ class PremiumScheduleReport
   def loans
     scope = Loan
       .select([
+        'first_loan_change.date_of_change AS draw_down_date',
         'loans.*', # TODO: restrict to required columns.
-        'guaranteed_loan_change.date_of_change AS guaranteed_on',
         'first_loan_change.date_of_change AS draw_down_date',
         'lenders.organisation_reference_code AS lender_organisation',
         'state_aid_calculations.id AS state_aid_calculation_id'
       ].join(', '))
-      .joins(:lender)
-      .joins('INNER JOIN loan_modifications AS guaranteed_loan_change ON guaranteed_loan_change.loan_id = loans.id')
-      .joins('INNER JOIN loan_modifications AS first_loan_change ON first_loan_change.loan_id = loans.id AND first_loan_change.seq = 0')
+      .joins(:lender, :state_aid_calculations, :loan_modifications)
+      .joins('INNER JOIN loan_modifications AS first_loan_change
+                ON first_loan_change.loan_id = loans.id AND first_loan_change.seq = 0')
       .where(loans: { legacy_small_loan: false })
+      .where(schedule_type_conditions)
 
-    max_state_aid_seq = StateAidCalculation.select('MAX(seq)').where('loan_id = loans.id')
-
-    if schedule_type.present? && schedule_type != 'All'
-      if schedule_type == 'Changed'
-        # For a "Changed" loan take the guaranteed date to be the last time it
-        # was changed.
-        max_change_seq = LoanModification.select('MAX(seq)').where('loan_id = loans.id')
-        scope = scope.where("guaranteed_loan_change.seq = (#{max_change_seq.to_sql})")
-
-        calc_type = 'R'
-
-        max_state_aid_seq = max_state_aid_seq.where(calc_type: calc_type)
-
-        if collection_month.present?
-          max_state_aid_seq = max_state_aid_seq.where(premium_cheque_month: collection_month)
-        end
-      else
-        # Take a "New" loan's guaranteed date from its first change.
-        scope = scope.where('guaranteed_loan_change.seq = 0')
-
-        # TODO: Should this actually use date_of_change instead of modified_date?
-        scope = scope.where('first_loan_change.modified_date >= ?', start_on)  if start_on
-        scope = scope.where('first_loan_change.modified_date <= ?', finish_on) if finish_on
-
-        calc_type = %w(S N)
-      end
-
-      scope = scope.where(state_aid_calculations: { calc_type: calc_type })
-    end
-
-    scope = scope
-      .joins(:state_aid_calculations)
-      .where("state_aid_calculations.seq = (#{max_state_aid_seq.to_sql})")
+    scope = scope.where(lender_id: lender_id) if lender_id.present?
+    scope = scope.where(reference: loan_reference) if loan_reference.present?
 
     if loan_scheme.present? && loan_scheme != 'All'
-      scheme = loan_scheme == 'SFLG Only' ? Loan::SFLG_SCHEME : Loan::EFG_SCHEME
+      scheme = loan_scheme =~ /SFLG/ ? Loan::SFLG_SCHEME : Loan::EFG_SCHEME
       scope = scope.where(loans: { loan_scheme: scheme })
     end
 
@@ -85,8 +55,6 @@ class PremiumScheduleReport
       scope = scope.where(loans: { loan_source: loan_source })
     end
 
-    scope = scope.where(lender_id: lender_id) if lender_id.present?
-    scope = scope.where(reference: loan_reference) if loan_reference.present?
     scope
   end
 
@@ -123,5 +91,53 @@ class PremiumScheduleReport
       if schedule_type == 'New' && collection_month.present?
         errors.add(:base, :collection_month_forbidden)
       end
+    end
+
+    def schedule_type_conditions
+      conditions = []
+
+      if %w(All New).include?(schedule_type)
+        max_state_aid_seq = StateAidCalculation.
+                              select("max(seq)").
+                              where("loans.id = state_aid_calculations.loan_id").
+                              where("calc_type = 'S' OR calc_type = 'N'")
+
+        if start_on
+          max_state_aid_seq = max_state_aid_seq.where("loan_modifications.modified_date >= ?", start_on)
+        end
+
+        if finish_on
+          max_state_aid_seq = max_state_aid_seq.where("loan_modifications.modified_date <= ?", finish_on)
+        end
+
+        conditions << Loan
+          .where("(state_aid_calculations.calc_type = 'S' or state_aid_calculations.calc_type = 'N')")
+          .where('loan_modifications.seq = 0')
+          .where("state_aid_calculations.seq = (#{max_state_aid_seq.to_sql})")
+          .where_values
+          .join(" AND ")
+      end
+
+      if %w(All Changed).include?(schedule_type)
+        max_state_aid_seq = StateAidCalculation.
+                              select("max(seq)").
+                              where("loans.id = state_aid_calculations.loan_id").
+                              where("calc_type = 'R'")
+
+        if collection_month
+          max_state_aid_seq = max_state_aid_seq.where(premium_cheque_month: collection_month)
+        end
+
+        max_loan_change_seq = LoanModification.select('max(seq)').where('loan_modifications.loan_id = loans.id')
+
+        conditions << Loan
+          .where("state_aid_calculations.calc_type = 'R'")
+          .where("loan_modifications.seq = (#{max_loan_change_seq.to_sql})")
+          .where("state_aid_calculations.seq = (#{max_state_aid_seq.to_sql})")
+          .where_values
+          .join(" AND ")
+      end
+
+      conditions.map { |condition| "(#{condition})" }.join(" OR ")
     end
 end

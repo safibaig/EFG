@@ -161,6 +161,19 @@ describe PremiumScheduleReport do
       loan_ids.should include(loan3.id)
     end
 
+    context 'with combination of conditions' do
+      it do
+        premium_schedule_report.loan_type = 'Legacy'
+        premium_schedule_report.loan_scheme = 'EFG only'
+        premium_schedule_report.schedule_type = 'All'
+        premium_schedule_report.collection_month = '01/2011'
+        premium_schedule_report.start_on = '01/01/2011'
+
+        premium_schedule_report.should be_valid
+        loan_ids.should == [ loan1.id ]
+      end
+    end
+
     context 'with schedule_type' do
       it do
         premium_schedule_report.schedule_type = 'All'
@@ -172,7 +185,7 @@ describe PremiumScheduleReport do
           premium_schedule_report.schedule_type = 'New'
         end
 
-        context 'draw_down_date / guaranteed_on' do
+        context 'draw_down_date' do
           before do
             FactoryGirl.create(:loan_change, loan: loan1, date_of_change: '11/2/2011')
             FactoryGirl.create(:loan_change, loan: loan3, date_of_change: '12/2/2011')
@@ -187,11 +200,6 @@ describe PremiumScheduleReport do
           it 'pulls the draw_down_date from the first loan_change' do
             premium_schedule_report.loans.first.draw_down_date.should == Date.new(2011, 1, 1)
             premium_schedule_report.loans.last.draw_down_date.should == Date.new(2011, 1, 3)
-          end
-
-          it 'pulls the guaranteed_on from the first loan_change' do
-            premium_schedule_report.loans.first.guaranteed_on.should == Date.new(2011, 1, 1)
-            premium_schedule_report.loans.last.guaranteed_on.should == Date.new(2011, 1, 3)
           end
         end
 
@@ -268,7 +276,7 @@ describe PremiumScheduleReport do
           loan_ids.should include(loan3.id)
         end
 
-        context 'draw_down_date / guaranteed_on' do
+        context 'draw_down_date' do
           before do
             FactoryGirl.create(:loan_change, loan: loan2, date_of_change: '2/3/2012')
             FactoryGirl.create(:loan_change, loan: loan2, date_of_change: '3/3/2012')
@@ -276,10 +284,6 @@ describe PremiumScheduleReport do
 
           it 'pulls the draw_down_date from the first loan_change' do
             premium_schedule_report.loans.first.draw_down_date.should == Date.new(2011, 1, 2)
-          end
-
-          it 'pulls the guaranteed_on from the last loan_change' do
-            premium_schedule_report.loans.first.guaranteed_on.should == Date.new(2012, 3, 3)
           end
         end
 
