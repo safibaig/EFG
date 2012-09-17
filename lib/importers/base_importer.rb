@@ -91,7 +91,7 @@ class BaseImporter
       [lender.legacy_id.to_s, lender.id]
     }]
 
-    @lender_id_from_legacy_id[legacy_id.to_s]
+    @lender_id_from_legacy_id.fetch(legacy_id.to_s)
   end
 
   def self.loan_id_from_legacy_id(legacy_id)
@@ -103,7 +103,7 @@ class BaseImporter
       }
     end
 
-    @loan_id_from_legacy_id[legacy_id.to_i]
+    @loan_id_from_legacy_id.fetch(legacy_id.to_i)
   end
 
   def self.user_id_from_username(legacy_id)
@@ -115,7 +115,7 @@ class BaseImporter
       }
     end
 
-    @user_id_from_username[legacy_id]
+    @user_id_from_username.fetch(legacy_id)
   end
 
   def build_attributes

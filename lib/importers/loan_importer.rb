@@ -123,7 +123,7 @@ class LoanImporter < BaseImporter
       [invoice.legacy_id.to_s, invoice.id]
     }]
 
-    @invoice_id_from_legacy_id[legacy_id.to_s]
+    @invoice_id_from_legacy_id.fetch(legacy_id.to_s)
   end
 
   def self.lending_limit_id_from_legacy_id(legacy_id)
@@ -131,7 +131,7 @@ class LoanImporter < BaseImporter
       [lending_limit.legacy_id.to_s, lending_limit.id]
     }]
 
-    @lending_limit_id_from_legacy_id[legacy_id.to_s]
+    @lending_limit_id_from_legacy_id.fetch(legacy_id.to_s)
   end
 
   DATES = %w(TRADING_DATE GUARANTEED_DATE BORROWER_DEMAND_DATE CANCELLED_DATE

@@ -11,6 +11,8 @@ describe UserImporter do
 
   describe ".import" do
     before do
+      User.delete_all # Remove FactoryGirl-created users.
+
       UserImporter.csv_path = csv_fixture_path
       UserImporter.instance_variable_set(:@lender_id_from_legacy_id, nil)
       UserImporter.instance_variable_set(:@user_id_from_username, nil)

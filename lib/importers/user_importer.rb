@@ -50,9 +50,7 @@ class UserImporter < BaseImporter
       user.created_by_id = user_id_from_username(user.created_by_legacy_id)
       user.modified_by_id = user_id_from_username(user.modified_by_legacy_id)
 
-      # Special case for existing users in the test environment, the user's
-      # type will always be blank when performing a clean import.
-      user.type = UserRoleMapper.new(user).user_type if user.type.blank?
+      user.type = UserRoleMapper.new(user).user_type
 
       if %w(LenderUser LenderAdmin).include?(user.type)
         user.lender_id = lender_id_from_legacy_id(user.legacy_lender_id)
