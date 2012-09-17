@@ -48,7 +48,9 @@ class UserImporter < BaseImporter
   def self.after_import
     klass.find_each do |user|
       user.created_by_id = user_id_from_username(user.created_by_legacy_id)
-      user.modified_by_id = user_id_from_username(user.modified_by_legacy_id)
+      user.modified_by_id = user.modified_by_legacy_id.present? ?
+        user_id_from_username(user.modified_by_legacy_id) :
+        user.created_by_id
 
       user.type = UserRoleMapper.new(user).user_type
 
