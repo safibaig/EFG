@@ -80,6 +80,24 @@ en:
   activerecord:
     errors:
       models:
+        data_correction:
+          attributes:
+            base:
+              must_have_a_change: 'No changes have been requested'
+            amount:
+              must_have_changed: 'has not changed'
+              must_be_eligible_amount: 'is not in the range £1,000 to £1,000,000'
+              must_be_gte_cumulative_amount_drawn: 'must be greater than or equal to the Correct total amount drawn to date'
+            facility_letter_date:
+              must_not_be_in_the_future: 'must not be later than today'
+              must_fall_within_lending_limit: 'must be within the changed lending limit date range'
+              must_be_no_less_than_six_months_before_initial_draw_date: 'must be on or after the date six months before the date of the original initial draw'
+            initial_draw_amount:
+              must_not_take_cumulative_amount_drawn_over_amount: 'must less than or equal to the loan amount minus subsequent draw downs'
+            initial_draw_date:
+              must_not_be_in_the_future: 'must not be later than today'
+              must_not_be_before_facility_letter_date: 'must not be before the date of the Original Facility Letter Date'
+              must_not_be_more_than_six_months_after_facility_letter_date: 'must not be more than six months after the Facility Letter Date'
         loan_change:
           attributes:
             base:

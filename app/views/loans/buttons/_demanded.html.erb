@@ -1,1 +1,2 @@
+<%= link_to('Data Correction', new_loan_data_correction_path(@loan), class: 'btn') if current_user.can_create?(DataCorrection) %>
 <%= link_to_state_aid_letter(@loan) %>

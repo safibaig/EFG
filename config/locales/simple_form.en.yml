@@ -22,7 +22,7 @@ en:
         turnover: 'What is the current annual turnover of the Applicant business?'
         trading_date: 'What is the Commencement of Trading Date of the Applicant business? (dd/mm/yyyy)'
         sic_code: 'Which Standard Industrial Classification (SIC) code best describes the business sector in which the guaranteed facility will be used?'
-        sic_code_description: 'SIC code activity description'
+        sic_desc: 'SIC code activity description'
         loan_category_id: 'Which EFG Lending Type which most accurately describes the facility to be guaranteed?'
         reason_id: 'What is the principal purpose that this facility will be used for?'
         previous_borrowing: "Including this facility, will the total outstanding balances and / or available limits of the Applicant's current EFG facilities be no more than £1 million?"
@@ -46,6 +46,14 @@ en:
         business_name: 'What is the new business name?'
         maturity_date: 'What is the new maturity date?'
 
+      data_correction:
+        amount: 'Corrected Loan Amount'
+        lending_limit_id: 'Correct Lending Limit'
+        facility_letter_date: 'Correct Facility Letter Date'
+        initial_draw_date: 'Correct Date of Guarantee and Initial Draw of Funds'
+        initial_draw_amount: 'Correct Value of Initial Draw'
+        sortcode: 'Correct Branch Sort Code'
+
       loan_eligibility_check:
         <<: *loan
 
@@ -63,7 +71,7 @@ en:
         company_registration: "What is the Applicant's Company Registration Number (if applicable)?"
         trading_date: 'What is the Commencement of Trading Date of the Applicant business? (dd/mm/yyyy)'
         postcode: "What is the postcode of the Applicant's main business address? (In instances where the Applicant's postcode cannot be validated please enter the lender's branch postcode and complete the two fields at the bottom of the page)."
-        branch_sortcode: '(For banks only) What is the Sort Code of the bank branch or business centre which originated this application? (nnnnnn)'
+        sortcode: '(For banks only) What is the Sort Code of the bank branch or business centre which originated this application? (nnnnnn)'
         repayment_frequency_id: At what frequency will the Applicant make repayments of the principal of the facility?
         maturity_date: On what date is the facility expected to be fully repaid (maturity date)?
         generic1: Enter any lender specific information to be captured for this application. (For optional internal use). Field 1.

@@ -20,7 +20,7 @@ class LoanStatesController < ApplicationController
         @loans = scope.paginate(per_page: 50, page: params[:page])
       }
       format.csv {
-        loans = scope.includes(:initial_loan_change)
+        loans = scope.includes(:initial_draw_change)
         csv_export = LoanCsvExport.new(loans)
         filename = "#{params[:id]}_loans_#{Date.today.to_s(:db)}.csv"
         send_data(csv_export.generate, type: 'text/csv', filename: filename, disposition: 'attachment')

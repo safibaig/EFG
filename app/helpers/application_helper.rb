@@ -28,4 +28,11 @@ module ApplicationHelper
   })();
 </script>).html_safe
   end
+
+  def simple_form_row(label, control)
+    content_tag :div, class: 'control-group' do
+      content_tag(:div, label, class: 'control-label') +
+        content_tag(:div, control, class: 'controls')
+    end
+  end
 end

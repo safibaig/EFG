@@ -22,8 +22,8 @@ import_namespace = namespace :import do
   end
 
   desc 'SFLG_LOAN_CHANGES_DATA_TABLE'
-  task loan_changes: :loans do
-    _import LoanChange
+  task loan_modification: :loans do
+    _import LoanModification
   end
 
   desc 'SFLG_LOAN_REALISE_MONEY_DATA_TABLE'

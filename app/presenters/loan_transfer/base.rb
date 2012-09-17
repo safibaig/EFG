@@ -41,7 +41,7 @@ class LoanTransfer::Base
       new_loan.reference             = reference_class.new(loan_to_transfer.reference).increment
       new_loan.state                 = Loan::Incomplete
       new_loan.legacy_id             = nil
-      new_loan.branch_sortcode       = ''
+      new_loan.sortcode              = ''
       new_loan.repayment_duration    = 0
       new_loan.payment_period        = ''
       new_loan.maturity_date         = ''
@@ -60,7 +60,7 @@ class LoanTransfer::Base
 
       new_loan.save!
       log_loan_state_changes!
-      create_initial_loan_change!
+      create_initial_draw_change!
     end
 
     true
@@ -68,14 +68,14 @@ class LoanTransfer::Base
 
   private
 
-  def create_initial_loan_change!
-    loan_change = new_loan.loan_changes.new
-    loan_change.amount_drawn = loan_to_transfer.cumulative_drawn_amount
-    loan_change.created_by = modified_by
-    loan_change.date_of_change = loan_to_transfer.initial_loan_change.date_of_change
-    loan_change.modified_date = Date.current
-    loan_change.seq = 0
-    loan_change.save!
+  def create_initial_draw_change!
+    InitialDrawChange.create! do |initial_draw_change|
+      initial_draw_change.amount_drawn = loan_to_transfer.cumulative_drawn_amount
+      initial_draw_change.created_by = modified_by
+      initial_draw_change.date_of_change = loan_to_transfer.initial_draw_change.date_of_change
+      initial_draw_change.loan = new_loan
+      initial_draw_change.modified_date = Date.current
+    end
   end
 
   def loan_can_be_transferred?

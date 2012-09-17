@@ -30,15 +30,15 @@ class PremiumScheduleReport
   def loans
     scope = Loan
       .select([
-        'guaranteed_loan_change.date_of_change AS guaranteed_date',
-        'first_loan_change.date_of_change AS draw_down_date',
         'loans.*', # TODO: restrict to required columns.
+        'guaranteed_loan_change.date_of_change AS guaranteed_on',
+        'first_loan_change.date_of_change AS draw_down_date',
         'lenders.organisation_reference_code AS lender_organisation',
         'state_aid_calculations.id AS state_aid_calculation_id'
       ].join(', '))
       .joins(:lender)
-      .joins('INNER JOIN loan_changes AS guaranteed_loan_change ON guaranteed_loan_change.loan_id = loans.id')
-      .joins('INNER JOIN loan_changes AS first_loan_change ON first_loan_change.loan_id = loans.id AND first_loan_change.seq = 0')
+      .joins('INNER JOIN loan_modifications AS guaranteed_loan_change ON guaranteed_loan_change.loan_id = loans.id')
+      .joins('INNER JOIN loan_modifications AS first_loan_change ON first_loan_change.loan_id = loans.id AND first_loan_change.seq = 0')
       .where(loans: { legacy_small_loan: false })
 
     max_state_aid_seq = StateAidCalculation.select('MAX(seq)').where('loan_id = loans.id')
@@ -47,7 +47,7 @@ class PremiumScheduleReport
       if schedule_type == 'Changed'
         # For a "Changed" loan take the guaranteed date to be the last time it
         # was changed.
-        max_change_seq = LoanChange.select('MAX(seq)').where('loan_id = loans.id')
+        max_change_seq = LoanModification.select('MAX(seq)').where('loan_id = loans.id')
         scope = scope.where("guaranteed_loan_change.seq = (#{max_change_seq.to_sql})")
 
         calc_type = 'R'

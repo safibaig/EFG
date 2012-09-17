@@ -10,7 +10,7 @@ describe LoanTransfer::LegacySflg do
       lender: FactoryGirl.create(:lender, :with_lending_limit),
       new_amount: loan.amount - Money.new(1000),
       reference: loan.reference,
-      initial_draw_date: loan.initial_loan_change.date_of_change,
+      initial_draw_date: loan.initial_draw_change.date_of_change,
     )
   }
 
@@ -73,7 +73,7 @@ describe LoanTransfer::LegacySflg do
 
     it "should create new loan with a copy of some of the original loan's data" do
       fields_not_copied = %w(
-        id lender_id reference state branch_sortcode repayment_duration amount
+        id lender_id reference state sortcode repayment_duration amount
         payment_period maturity_date invoice_id generic1 generic2 generic3 generic4
         generic5 transferred_from_id lending_limit_id created_at updated_at
         facility_letter_date declaration_signed state_aid state_aid_is_valid

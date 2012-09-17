@@ -1,0 +1,35 @@
+<div class="page-header">
+  <h1>Data Correction</h1>
+</div>
+
+<p>From this page you can correct the facility information described below.</p>
+
+<p><span class="label label-important">Please note that an amendment may result in a change being required to the Premium Payment Schedule. This can be updated using the Change Amount or Terms page.</span></p>
+
+<hr>
+
+<%= simple_form_for(@data_correction, url: loan_data_corrections_path(@loan), html: { class: 'form-horizontal form-data-correction' }) do |f| %>
+  <%= render_errors_on_base(f.object.errors) %>
+
+  <%= simple_form_row 'Original Loan Amount', @loan.amount.format %>
+  <%= f.input :amount, as: :currency %>
+
+  <%= simple_form_row 'Original Lending Limit', @loan.lending_limit.name %>
+  <%= f.input :lending_limit_id, as: :select, collection: @loan.lender.current_lending_limits, prompt: 'Please select' %>
+
+  <%= simple_form_row 'Original Facility Letter Date', @loan.facility_letter_date.to_s(:screen) %>
+  <%= f.input :facility_letter_date, as: :quick_date %>
+
+  <%= simple_form_row 'Original Date of Guarantee and Initial Draw of Funds', @loan.initial_draw_change.date_of_change.to_s(:screen) %>
+  <%= f.input :initial_draw_date, as: :quick_date %>
+
+  <%= simple_form_row 'Original Value of Initial Draw', @loan.initial_draw_change.amount_drawn.format %>
+  <%= f.input :initial_draw_amount, as: :currency %>
+
+  <%= simple_form_row 'Original Branch Sort Code (nnnnnn)', @loan.sortcode %>
+  <%= f.input :sortcode, placeholder: 'nnnnnn' %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>
+  </div>
+<% end %>

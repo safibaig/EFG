@@ -6,5 +6,11 @@ FactoryGirl.define do
     change_type_id '1'
     modified_date '3/4/12'
     business_name 'ACME'
+
+    trait :reschedule do
+      state_aid_calculation_attributes { |loan_change|
+        FactoryGirl.attributes_for(:rescheduled_state_aid_calculation, loan: loan_change.loan)
+      }
+    end
   end
 end

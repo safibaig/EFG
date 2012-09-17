@@ -1,73 +1,25 @@
-class LoanChange < ActiveRecord::Base
-  include FormatterConcern
-
+class LoanChange < LoanModification
   attr_accessor :state_aid_calculation_attributes
 
-  OLD_ATTRIBUTES_TO_STORE = %w(maturity_date business_name amount
-    guaranteed_date initial_draw_date initial_draw_amount sortcode
-    dti_demand_out_amount dti_demand_interest cap_id loan_term)
+  before_save :set_old_and_loan_attributes
+  after_save_and_update_loan :update_loan!
+  after_save_and_update_loan :create_loan_state_change!
 
-  belongs_to :created_by, class_name: 'User'
-  belongs_to :loan
-
-  before_validation :set_seq, on: :create
-  before_save :store_old_values, on: :create
-
-  validates_presence_of :loan
-  validates_presence_of :created_by
-  validates_presence_of :date_of_change, :modified_date
-  validates_inclusion_of :change_type_id, in: ChangeType.all.map(&:id) << nil
+  validates_inclusion_of :change_type_id, in: %w(1 2 3 4 5 6 7 8 a)
 
   validate :validate_change_type
   validate :validate_non_negative_amounts
   validate :state_aid_recalculated, if: :requires_state_aid_recalculation?
 
-  format :date_of_change, with: QuickDateFormatter
-  format :maturity_date, with: QuickDateFormatter
-  format :modified_date, with: QuickDateFormatter
-  format :lump_sum_repayment, with: MoneyFormatter.new
-  format :amount_drawn, with: MoneyFormatter.new
-  format :amount, with: MoneyFormatter.new
-  format :old_amount, with: MoneyFormatter.new
-  format :initial_draw_amount, with: MoneyFormatter.new
-  format :old_initial_draw_amount, with: MoneyFormatter.new
-  format :dti_demand_out_amount, with: MoneyFormatter.new
-  format :old_dti_demand_out_amount, with: MoneyFormatter.new
-  format :dti_demand_interest, with: MoneyFormatter.new
-  format :old_dti_demand_interest, with: MoneyFormatter.new
-
-  attr_accessible :amount_drawn, :business_name, :date_of_change,
-    :change_type_id, :lump_sum_repayment, :maturity_date
+  attr_accessible :amount_drawn, :business_name, :change_type_id,
+    :date_of_change, :lump_sum_repayment, :maturity_date
 
   def change_type
     ChangeType.find(change_type_id)
   end
 
-  def changes
-    attributes.slice(*OLD_ATTRIBUTES_TO_STORE).select { |_, value|
-      value.present?
-    }.keys.map { |attribute|
-      old_attribute = "old_#{attribute}"
-
-      {
-        old_attribute: old_attribute,
-        old_value: self[old_attribute],
-        attribute: attribute,
-        value: self[attribute]
-      }
-    }
-  end
-
-  def save_and_update_loan
-    transaction do
-      save!
-      update_loan!
-      log_loan_state_change!
-    end
-
-    true
-  rescue ActiveRecord::RecordInvalid
-    false
+  def change_type_name
+    change_type.name
   end
 
   def requires_state_aid_recalculation?
@@ -75,21 +27,28 @@ class LoanChange < ActiveRecord::Base
   end
 
   private
-    def set_seq
-      self.seq = (LoanChange.where(loan_id: loan_id).maximum(:seq) || -1) + 1
+    def create_loan_state_change!
+      LoanStateChange.create!(
+        loan_id: loan.id,
+        state: loan.state,
+        modified_on: Date.today,
+        modified_by: created_by,
+        event_id: 9
+      )
     end
 
-    def store_old_values
-      attributes.slice(*OLD_ATTRIBUTES_TO_STORE).each do |name, value|
-        self["old_#{name}"] = loan[name] if value.present?
+    def set_old_and_loan_attributes
+      case change_type_id
+      when '1'
+        self.old_business_name = loan.business_name
+        loan.business_name = business_name
+      when 'a'
+        self.old_maturity_date = loan.maturity_date
+        loan.maturity_date = maturity_date
       end
     end
 
     def update_loan!
-      changes.each do |change|
-        loan[change[:attribute]] = change[:value]
-      end
-
       loan.modified_by = created_by
       loan.state = Loan::Guaranteed
       loan.save!
@@ -101,24 +60,16 @@ class LoanChange < ActiveRecord::Base
       end
     end
 
-    def log_loan_state_change!
-      LoanStateChange.create!(
-        loan_id: loan.id,
-        state: Loan::Guaranteed,
-        modified_on: Date.today,
-        modified_by: loan.modified_by,
-        event_id: 9 # change amount or terms
-      )
-    end
-
     def validate_change_type
       case change_type_id
       when '1'
         errors.add(:business_name, :required) unless business_name.present?
       when '5'
-        errors.add(:base, :required_lender_demand_satisfied) unless amount_drawn.present? || lump_sum_repayment.present? || maturity_date.present?
+        errors.add(:base, :required_lender_demand_satisfied) unless amount_drawn || lump_sum_repayment || maturity_date.present?
       when '7'
         errors.add(:amount_drawn, :required) unless amount_drawn
+      when 'a'
+        errors.add(:maturity_date, :required) unless maturity_date
       end
     end
 

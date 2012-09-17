@@ -176,6 +176,18 @@ describe SuperUserPermissions do
     it { refute user.can_view?(Lender) }
   end
 
+  context 'DataCorrection' do
+    it { refute user.can_create?(DataCorrection) }
+    it { refute user.can_update?(DataCorrection) }
+    it { refute user.can_view?(DataCorrection) }
+  end
+
+  context 'LoanModification' do
+    it { refute user.can_create?(LoanModification) }
+    it { refute user.can_update?(LoanModification) }
+    it { refute user.can_view?(LoanModification) }
+  end
+
   context 'SupportRequest' do
     it { refute user.can_create?(SupportRequest) }
     it { refute user.can_update?(SupportRequest) }

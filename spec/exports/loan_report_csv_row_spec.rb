@@ -76,11 +76,10 @@ describe LoanReportCsvRow do
         debtor_book_topup: 5
       )
 
-      FactoryGirl.create(:loan_change,
+      FactoryGirl.create(:initial_draw_change,
         amount_drawn: Money.new(10_000_00),
         date_of_change: Date.new(2012, 5, 17),
-        loan: loan,
-        seq: 0
+        loan: loan
       )
 
       # stub custom fields that are created by LoanReport SQL query

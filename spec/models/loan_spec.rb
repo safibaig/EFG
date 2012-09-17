@@ -215,6 +215,19 @@ describe Loan do
     end
   end
 
+  describe '#cumulative_drawn_amount' do
+    before do
+      loan.save!
+    end
+
+    it 'sums amount_drawn' do
+      FactoryGirl.create(:initial_draw_change, loan: loan, amount_drawn: Money.new(123_45))
+      FactoryGirl.create(:loan_change, loan: loan, amount_drawn: Money.new(678_90), change_type_id: '7')
+
+      loan.cumulative_drawn_amount.should == Money.new(802_35)
+    end
+  end
+
   describe '#efg_loan?' do
     it "returns true when loan source is SFLG and loan type is EFG" do
       loan.loan_source = Loan::SFLG_SOURCE

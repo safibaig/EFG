@@ -50,18 +50,16 @@ describe LoanGuarantee do
       )
     }
 
-    it 'creates an initial loan_change' do
+    it 'creates an InitialDrawChange' do
       loan_guarantee.save.should == true
 
-      loan.loan_changes.count.should == 1
-
-      initial_change = loan.loan_changes.first!
-      initial_change.amount_drawn.should == Money.new(5_000_00)
-      initial_change.change_type_id.should == nil
-      initial_change.created_by.should == lender_user
-      initial_change.date_of_change.should == Date.new(2011)
-      initial_change.modified_date.should == Date.current
-      initial_change.seq.should == 0
+      initial_draw_change = loan.initial_draw_change
+      initial_draw_change.amount_drawn.should == Money.new(5_000_00)
+      initial_draw_change.change_type_id.should == nil
+      initial_draw_change.created_by.should == lender_user
+      initial_draw_change.date_of_change.should == Date.new(2011)
+      initial_draw_change.modified_date.should == Date.current
+      initial_draw_change.seq.should == 0
     end
 
     it 'creates a LoanStateChange' do

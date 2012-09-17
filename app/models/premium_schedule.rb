@@ -22,7 +22,7 @@ class PremiumSchedule
   delegate :premium_rate, to: :loan
 
   def initial_draw_date
-    loan.initial_loan_change.try :date_of_change
+    loan.initial_draw_change.try :date_of_change
   end
 
   def number_of_subsequent_payments
