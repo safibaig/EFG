@@ -4,7 +4,7 @@ describe "search" do
   let(:current_lender) { FactoryGirl.create(:lender) }
   let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
   let!(:loan1) { FactoryGirl.create(:loan, :guaranteed, reference: "9BCI17R-01", lender: current_lender) }
-  let!(:loan2) { FactoryGirl.create(:loan, :guaranteed, reference: "9BCI17R-02", lender: current_lender, business_name: "Inter-slice") }
+  let!(:loan2) { FactoryGirl.create(:loan, :offered, reference: "9BCI17R-02", lender: current_lender, business_name: "Inter-slice") }
 
   before do
     login_as(current_user, scope: :user)
@@ -31,6 +31,7 @@ describe "search" do
 
     within "#search" do
       select "Guaranteed", from: 'search[state][]'
+      select "Offered", from: 'search[state][]'
       click_button "Search"
     end
 

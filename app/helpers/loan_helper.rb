@@ -41,4 +41,8 @@ module LoanHelper
     (loan.state_history & states).size > 0
   end
 
+  def loan_state_options(states)
+    states.map { |state| [state.humanize, state] }
+  end
+
 end

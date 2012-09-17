@@ -10,10 +10,6 @@ module LoanReportsHelper
     'EFG Only'  => Loan::EFG_SCHEME
   }
 
-  def loan_report_state_options(states)
-    states.map { |state| [state.humanize, state] }
-  end
-
   def loan_report_source_options
     LOAN_SOURCE_NAMES.to_a
   end
