@@ -22,7 +22,7 @@ import_namespace = namespace :import do
   end
 
   desc 'SFLG_LOAN_CHANGES_DATA_TABLE'
-  task loan_modification: :loans do
+  task loan_modifications: :loans do
     _import LoanModification
   end
 
@@ -47,7 +47,7 @@ import_namespace = namespace :import do
   end
 
   desc 'SFLG_RECOVERY_STATEMENT_DATA_TABLE'
-  task realisation_statement: [:users, :loans] do
+  task realisation_statements: [:users, :loans] do
     _import RealisationStatement
   end
 
@@ -69,7 +69,7 @@ import_namespace = namespace :import do
   end
 
   desc 'SFLG_DED_DATA_TABLE'
-  task ded_code: :environment do
+  task ded_codes: :environment do
     _import DedCode
   end
 
@@ -79,7 +79,7 @@ import_namespace = namespace :import do
   end
 
   desc 'SIC_2007_DATA'
-  task sic_code: :environment do
+  task sic_codes: :environment do
     _import SicCode
   end
 
