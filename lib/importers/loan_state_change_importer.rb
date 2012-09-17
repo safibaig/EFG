@@ -54,7 +54,7 @@ class LoanStateChangeImporter < BaseImporter
     Loan.find_each do |loan|
       progress_bar.try(:set, counter += 1)
 
-      loan.state_changes.create(
+      loan.state_changes.create!(
         state: loan.state,
         event_id: loan.event_legacy_id,
         modified_on: loan.updated_at,
