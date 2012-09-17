@@ -115,7 +115,8 @@ class BaseImporter
       }
     end
 
-    @user_id_from_username.fetch(legacy_id)
+    # TODO: Use fetch when we have a "migration"/"System" user.
+    @user_id_from_username[legacy_id]
   end
 
   def build_attributes
