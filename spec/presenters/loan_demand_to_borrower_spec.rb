@@ -15,8 +15,8 @@ describe LoanDemandToBorrower do
       loan_demand_to_borrower.should_not be_valid
     end
 
-    it 'should be invalid without borrower demanded amount' do
-      loan_demand_to_borrower.borrower_demand_outstanding = ''
+    it 'should be invalid without amount_demanded' do
+      loan_demand_to_borrower.amount_demanded = ''
       loan_demand_to_borrower.should_not be_valid
     end
   end
@@ -24,8 +24,8 @@ describe LoanDemandToBorrower do
   describe '#save' do
     let(:loan_demand_to_borrower) {
       FactoryGirl.build(:loan_demand_to_borrower,
-        borrower_demanded_on: '5/6/07',
-        borrower_demand_outstanding: '£1,000'
+        amount_demanded: '£1,000',
+        borrower_demanded_on: '5/6/07'
       )
     }
     let(:loan) { loan_demand_to_borrower.loan }
