@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe LoanDemandToBorrower do
@@ -16,6 +18,31 @@ describe LoanDemandToBorrower do
     it 'should be invalid without borrower demanded amount' do
       loan_demand_to_borrower.borrower_demand_outstanding = ''
       loan_demand_to_borrower.should_not be_valid
+    end
+  end
+
+  describe '#save' do
+    let(:loan_demand_to_borrower) {
+      FactoryGirl.build(:loan_demand_to_borrower,
+        borrower_demanded_on: '5/6/07',
+        borrower_demand_outstanding: '£1,000'
+      )
+    }
+    let(:loan) { loan_demand_to_borrower.loan }
+
+    before do
+      loan.save!
+    end
+
+    it 'creates a corresponding DemandToBorrower' do
+      expect {
+        loan_demand_to_borrower.save.should == true
+      }.to change(DemandToBorrower, :count).by(1)
+
+      demand_to_borrower = DemandToBorrower.last!
+      demand_to_borrower.loan.should == loan
+      demand_to_borrower.date_of_demand.should == Date.new(2007, 6, 5)
+      demand_to_borrower.demanded_amount.should == Money.new(1_000_00)
     end
   end
 end

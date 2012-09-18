@@ -27,6 +27,12 @@ describe 'loan demand to borrower' do
     loan.modified_by.should == current_user
 
     should_log_loan_state_change(loan, Loan::LenderDemand, 10)
+
+    demand_to_borrower = loan.demand_to_borrowers.last!
+    demand_to_borrower.created_by.should == current_user
+    demand_to_borrower.date_of_demand.should == Date.new(2012, 6, 1)
+    demand_to_borrower.demanded_amount.should == Money.new(5_000_00)
+    demand_to_borrower.modified_date.should == Date.current
   end
 
   it 'does not continue with invalid values' do
