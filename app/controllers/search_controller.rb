@@ -2,13 +2,13 @@ class SearchController < ApplicationController
   before_filter :verify_view_permission
 
   def show
-    @search = Search.new(current_lender, params[:search])
+    @search = Search.new(current_user, params[:search])
     @results = @search.results.paginate(page: params[:page])
     render template: "search/results"
   end
 
   def new
-    @search = Search.new(current_lender, params[:search])
+    @search = Search.new(current_user)
   end
 
   def lookup
@@ -28,4 +28,5 @@ class SearchController < ApplicationController
     def verify_view_permission
       enforce_view_permission(Search)
     end
+
 end

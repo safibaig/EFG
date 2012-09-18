@@ -23,7 +23,13 @@
 
   <%= field_set_tag 'Advanced', id: 'advanced_search_options' do %>
 
-    <%= f.input :lending_limit_id, collection: current_lender.lending_limits, input_html: {multiple: true} %>
+    <%= search_lender_id_input(f, @search) %>
+
+    <%= f.input :lending_limit_id,
+                as: :grouped_select,
+                collection: @search.lending_limits.group_by { |lending_limit| lending_limit.lender.name },
+                group_method: :last,
+                input_html: {multiple: true} %>
 
     <%= f.input :amount_from, as: :currency %>
 
@@ -41,7 +47,7 @@
 
     <%= f.input :updated_at_to, as: :quick_date %>
 
-    <%= f.input :modified_by_id, collection: modified_by_options, prompt: "All" %>
+    <%= f.input :modified_by_id, collection: @search.modified_by_users.map { |user| [ user.username, user.id ] }, prompt: "All" %>
 
     <%= f.input :generic1 %>
 

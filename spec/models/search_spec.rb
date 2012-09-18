@@ -1,50 +1,108 @@
 require 'spec_helper'
 
 describe Search do
-  describe "setting search filters" do
-    let(:lender) { double(Lender) }
+  let(:default_search_params) { { 'lender_id' => "1" } }
 
+  let(:user) { double(LenderUser, lenders: double(Lender, id: 1)) }
+
+  def search(params = {})
+    Search.new(user, default_search_params.merge(params))
+  end
+
+  describe "setting search filters" do
     it "should remove blank values" do
-      search = Search.new(lender, 'business_name' => '')
-      search.business_name.should be_nil
+      search('business_name' => '').business_name.should be_nil
     end
   end
 
   describe "#sort_by" do
-    let(:lender) { double(Lender) }
-
     it "should return the default" do
-      search = Search.new(lender)
       search.sort_by.should == Search::DefaultSortBy
     end
 
     it "should return a valid, user supplied value" do
-      search = Search.new(lender, {'sort_by' => 'trading_name'})
-      search.sort_by.should == 'trading_name'
+      search('sort_by' => 'trading_name').sort_by.should == 'trading_name'
     end
 
     it "should return the default, if passed an invalid value" do
-      search = Search.new(lender, {'sort_by' => 'fake_attribute'})
-      search.sort_by.should == Search::DefaultSortBy
+      search('sort_by' => 'fake_attribute').sort_by.should == Search::DefaultSortBy
     end
   end
 
   describe "#sort_order" do
-    let(:lender) { double(Lender) }
-
     it "should return the default" do
-      search = Search.new(lender)
       search.sort_order.should == Search::DefaultSortOrder
     end
 
     it "should return a valid, user supplied value" do
-      search = Search.new(lender, {'sort_order' => 'ASC'})
-      search.sort_order.should == 'ASC'
+      search('sort_order' => 'ASC').sort_order.should == 'ASC'
     end
 
     it "should return the default, if passed an invalid value" do
-      search = Search.new(lender, {'sort_by' => 'JUNK'})
-      search.sort_order.should == Search::DefaultSortOrder
+      search('sort_by' => 'JUNK').sort_order.should == Search::DefaultSortOrder
+    end
+  end
+
+  describe "#lending_limits" do
+    let!(:lending_limit1) { FactoryGirl.create(:lending_limit) }
+    let!(:lending_limit2) { FactoryGirl.create(:lending_limit) }
+    let(:search) { Search.new(user) }
+
+    context "when a lender user" do
+      let!(:user) { FactoryGirl.create(:lender_user, lender: lending_limit1.lender) }
+
+      it "should return all of the user's lender's lending limits" do
+        search.lending_limits.should == [ lending_limit1 ]
+      end
+    end
+
+    context "when not a lender user" do
+      let(:user) { FactoryGirl.build(:auditor_user) }
+
+      it "should return all lending limits when " do
+        search.lending_limits.should == [ lending_limit1, lending_limit2 ]
+      end
+    end
+  end
+
+  describe "#modified_by_users" do
+    let!(:lender1) { FactoryGirl.create(:lender) }
+    let!(:lender2) { FactoryGirl.create(:lender) }
+    let!(:lender_user1) { FactoryGirl.create(:lender_user, lender: lender1) }
+    let!(:lender_user2) { FactoryGirl.create(:lender_user, lender: lender2) }
+    let!(:auditor_user) { FactoryGirl.create(:auditor_user) }
+    let(:search) { Search.new(user) }
+
+    context "when a lender user" do
+      let(:user) { FactoryGirl.create(:lender_user, lender: lender1) }
+
+      it "should return all of the user's lender's users" do
+        modified_by_users = search.modified_by_users
+
+        modified_by_users.size.should == 2
+        modified_by_users.should include(user)
+        modified_by_users.should include(lender_user1)
+      end
+    end
+
+    context "when not a lender user" do
+      let(:user) { FactoryGirl.build(:auditor_user) }
+
+      it "should return all lender users" do
+        modified_by_users = search.modified_by_users
+
+        modified_by_users.size.should == 2
+        modified_by_users.should include(lender_user1)
+        modified_by_users.should include(lender_user2)
+      end
+    end
+  end
+
+  describe "#allowed_lenders" do
+    let!(:user) { FactoryGirl.create(:lender_user) }
+
+    it "should return array of lenders for the specified user" do
+      search.allowed_lenders.should == [ user.lender ]
     end
   end
 
@@ -75,7 +133,26 @@ describe Search do
     }
 
     def search(params = {})
-      Search.new(lender, params)
+      Search.new(user, { 'lender_id' => lender.id }.merge(params))
+    end
+
+    context 'with forbidden lender ID' do
+      let!(:allowed_lender) { FactoryGirl.create(:lender) }
+      let!(:forbidden_lender) { FactoryGirl.create(:lender) }
+
+      it "should raise exception" do
+        expect {
+          search('lender_id' => 'wrong').results
+        }.to raise_error(Search::LenderNotAllowed)
+      end
+    end
+
+    context 'with no lender ID' do
+      it "should raise exception" do
+        expect {
+          search('lender_id' => nil).results
+        }.to raise_error(ActiveModel::StrictValidationFailed)
+      end
     end
 
     it "should return loans by partial business name" do
@@ -94,8 +171,15 @@ describe Search do
       search('state' => Loan::Guaranteed).results.should == [loan2]
     end
 
+    it "should return loans for specific lenders" do
+      loan2.lender = FactoryGirl.create(:lender)
+      loan2.save!
+
+      search('lender_id' => lender.id).results.should == [loan1]
+    end
+
     it "should return loans by specific lending limit" do
-      search('lending_limit_id' => loan2.lending_limit_id).results.should == [loan2]
+      search('lending_limit_id' => [ loan2.lending_limit_id ]).results.should == [loan2]
     end
 
     it "should return loans on or above a specific amount" do
@@ -115,11 +199,7 @@ describe Search do
     end
 
     it "should return loans by specific loan reason" do
-      search('reason_id' => loan2.reason_id).results.should == [loan2]
-    end
-
-    it "should return loans by specific loan reason" do
-      search('reason_id' => loan2.reason_id).results.should == [loan2]
+      search('reason_id' => [ loan2.reason_id ]).results.should == [loan2]
     end
 
     it "should return loans by partial postcode" do

@@ -39,4 +39,25 @@ describe "search" do
     page.should have_content(loan1.reference)
     page.should have_content(loan2.reference)
   end
+
+  context 'as an auditor user' do
+    let(:current_user) { FactoryGirl.create(:auditor_user) }
+
+    let!(:another_lender) { FactoryGirl.create(:lender, name: 'Boris Bank') }
+
+    let!(:loan3) { FactoryGirl.create(:loan, lender: another_lender) }
+
+    it 'should allow searching by a specific lender' do
+      visit new_search_path
+
+      within "#search" do
+        select "Boris Bank", from: 'search[lender_id]'
+        click_button "Search"
+      end
+
+      page.should have_content("1 result found")
+      page.should have_content(loan3.reference)
+    end
+
+  end
 end
