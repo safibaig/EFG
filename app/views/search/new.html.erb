@@ -27,7 +27,7 @@
 
     <%= f.input :lending_limit_id,
                 as: :grouped_select,
-                collection: @search.lending_limits.group_by { |lending_limit| lending_limit.lender.name },
+                collection: @search.lending_limits.group_by { |lending_limit| lending_limit.lender.name }.sort,
                 group_method: :last,
                 input_html: {multiple: true} %>
 

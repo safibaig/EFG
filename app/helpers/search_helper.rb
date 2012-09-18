@@ -9,7 +9,7 @@ module SearchHelper
     if search.lender_user?
       form_builder.input :lender_id, as: :hidden, input_html: { value: current_user.lender.id }
     else
-      form_builder.input :lender_id, as: :select, collection: search.allowed_lenders, prompt: 'All'
+      form_builder.input :lender_id, as: :select, collection: search.allowed_lenders.order_by_name, prompt: 'All'
     end
   end
 end
