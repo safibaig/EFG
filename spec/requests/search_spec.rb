@@ -40,24 +40,39 @@ describe "search" do
     page.should have_content(loan2.reference)
   end
 
-  context 'as an auditor user' do
-    let(:current_user) { FactoryGirl.create(:auditor_user) }
+  %w(auditor_user cfe_user).each do |user_type|
+    context "as a #{user_type.humanize}" do
+      let(:current_user) { FactoryGirl.create(user_type) }
 
-    let!(:another_lender) { FactoryGirl.create(:lender, name: 'Boris Bank') }
+      let!(:another_lender) { FactoryGirl.create(:lender, name: 'Boris Bank') }
 
-    let!(:loan3) { FactoryGirl.create(:loan, lender: another_lender) }
+      let!(:loan3) { FactoryGirl.create(:loan, lender: another_lender) }
 
-    it 'should allow searching by a specific lender' do
-      visit new_search_path
+      it 'should allow searching by a specific lender' do
+        visit new_search_path
 
-      within "#search" do
-        select "Boris Bank", from: 'search[lender_id]'
-        click_button "Search"
+        within "#search" do
+          select "Boris Bank", from: 'search[lender_id]'
+          click_button "Search"
+        end
+
+        page.should have_content("1 result found")
+        page.should have_content(loan3.reference)
       end
-
-      page.should have_content("1 result found")
-      page.should have_content(loan3.reference)
     end
-
   end
+
+
+  %w(cfe_admin premium_collector_user super_user).each do |user_type|
+    context "as a #{user_type}" do
+      let(:current_user) { FactoryGirl.create(user_type) }
+
+      it 'should not allow searching' do
+        expect {
+          visit new_search_path
+        }.to raise_error(Canable::Transgression)
+      end
+    end
+  end
+
 end
