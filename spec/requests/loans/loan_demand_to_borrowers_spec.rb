@@ -43,6 +43,14 @@ describe 'loan demand to borrower' do
     demand_to_borrower.modified_date.should == Date.current
   end
 
+  it 'does not display previous DemandToBorrow details' do
+    loan.update_attribute(:amount_demanded, 1234)
+
+    visit loan_path(loan)
+    click_link 'Demand to Borrower'
+    page.find('#loan_demand_to_borrower_amount_demanded').value.should be_blank
+  end
+
   it 'does not continue with invalid values' do
     visit loan_path(loan)
     click_link 'Demand to Borrower'

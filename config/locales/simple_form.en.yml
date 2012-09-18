@@ -139,7 +139,7 @@ en:
 
       loan_demand_to_borrower:
         borrower_demand_outstanding: 'What was the amount for which demand was made on the borrower (as recorded on the demand letter)?'
-        borrower_demanded_on: 'What was the date that demand was made on the borrower (date of demand letter)? (dd/mm/yyyy)'
+        borrower_demanded_on: 'What was the date that demand was made on the borrower (date of demand letter)?'
 
       loan_repay:
         repaid_on: 'What was the date the facility was repaid by the borrower? (dd/mm/yyyy)'
