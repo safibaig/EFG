@@ -6,7 +6,15 @@ describe 'loan demand to borrower' do
   let(:current_lender) { FactoryGirl.create(:lender) }
   let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
   let(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_lender) }
-  before { login_as(current_user, scope: :user) }
+
+  before do
+    initial_draw_change = loan.initial_draw_change
+    initial_draw_change.amount_drawn = loan.amount
+    initial_draw_change.date_of_change = Date.new(2012)
+    initial_draw_change.save!
+
+    login_as(current_user, scope: :user)
+  end
 
   it 'entering further loan information' do
     visit loan_path(loan)

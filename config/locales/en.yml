@@ -26,6 +26,12 @@ en:
   activemodel:
     errors:
       models:
+        loan_demand_to_borrower:
+          attributes:
+            amount_demanded:
+              must_be_lte_loan_cumulative_drawn_amount: 'Balance being demanded must be less than or equal to the current total amount drawn'
+            borrower_demanded_on:
+              must_be_before_loan_initial_draw_date: 'Demand date cannot be before initial draw date'
         loan_eligibility_check:
           attributes:
             sic_code:
