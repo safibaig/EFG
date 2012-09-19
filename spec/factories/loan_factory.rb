@@ -148,6 +148,12 @@ FactoryGirl.define do
       end
     end
 
+    trait :with_loan_securities do
+      after(:build) do |loan|
+        loan.loan_security_types = [ 1, 2 ]
+      end
+    end
+
     trait :sflg do
       reference 'ABC1234-01'
       loan_source Loan::SFLG_SOURCE

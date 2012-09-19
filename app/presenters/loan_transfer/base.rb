@@ -35,7 +35,7 @@ class LoanTransfer::Base
       loan_to_transfer.state = Loan::RepaidFromTransfer
       loan_to_transfer.save!
 
-      @new_loan                       = loan_to_transfer.dup
+      @new_loan                      = loan_to_transfer.dup
       new_loan.lender                = self.lender
       new_loan.amount                = self.new_amount
       new_loan.reference             = reference_class.new(loan_to_transfer.reference).increment
@@ -50,7 +50,7 @@ class LoanTransfer::Base
       new_loan.lending_limit         = lender.lending_limits.active.first
       new_loan.created_by            = modified_by
       new_loan.modified_by           = modified_by
-      # TODO - copy loan securities if any are present
+      new_loan.loan_security_types   = loan_to_transfer.loan_security_types.collect(&:id)
 
       (1..5).each do |num|
         new_loan.send("generic#{num}=", nil)

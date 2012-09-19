@@ -2,7 +2,11 @@ require 'spec_helper'
 
 describe LoanTransfer::LegacySflg do
   let(:lender) { FactoryGirl.create(:lender, :with_lending_limit) }
-  let!(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation, :legacy_sflg, lender: lender) }
+
+  let!(:loan) {
+    FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation, :with_loan_securities, :legacy_sflg, lender: lender)
+  }
+
   let(:loan_transfer) {
     FactoryGirl.build(
       :legacy_sflg_loan_transfer,
