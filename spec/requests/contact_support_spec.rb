@@ -34,37 +34,48 @@ describe 'Contact support' do
     end
   end
 
-  context 'as a Lender Admin' do
-    let!(:current_user) { FactoryGirl.create(:lender_admin) }
+  %w(
+    auditor_user
+    lender_admin
+    premium_collector_user
+  ).each do |user_type|
+    context "as a #{user_type.humanize}" do
+      let!(:current_user) { FactoryGirl.create(user_type) }
 
-    let!(:cfe_user1) { FactoryGirl.create(:cfe_user) }
+      let!(:cfe_user1) { FactoryGirl.create(:cfe_user) }
 
-    let!(:cfe_user2) { FactoryGirl.create(:cfe_user) }
+      let!(:cfe_user2) { FactoryGirl.create(:cfe_user) }
 
-    it 'should send email to CfE users' do
-      navigate_to_contact_support_form
-      send_support_request
+      it 'should send email to CfE users' do
+        navigate_to_contact_support_form
+        send_support_request
 
-      ActionMailer::Base.deliveries.size.should == 1
-      email = ActionMailer::Base.deliveries.first
-      email.to.should == [ cfe_user1.email, cfe_user2.email ]
+        ActionMailer::Base.deliveries.size.should == 1
+        email = ActionMailer::Base.deliveries.first
+        email.to.should == [ cfe_user1.email, cfe_user2.email ]
+      end
     end
   end
 
-  context 'as a CfE User' do
-    let!(:current_user) { FactoryGirl.create(:cfe_user) }
+  %w(
+    cfe_admin
+    cfe_user
+  ).each do |user_type|
+    context "as a #{user_type.humanize}" do
+      let!(:current_user) { FactoryGirl.create(user_type) }
 
-    let!(:super_user1) { FactoryGirl.create(:super_user) }
+      let!(:super_user1) { FactoryGirl.create(:super_user) }
 
-    let!(:super_user2) { FactoryGirl.create(:super_user) }
+      let!(:super_user2) { FactoryGirl.create(:super_user) }
 
-    it 'should send email to super users' do
-      navigate_to_contact_support_form
-      send_support_request
+      it 'should send email to super users' do
+        navigate_to_contact_support_form
+        send_support_request
 
-      ActionMailer::Base.deliveries.size.should == 1
-      email = ActionMailer::Base.deliveries.first
-      email.to.should == [ super_user1.email, super_user2.email ]
+        ActionMailer::Base.deliveries.size.should == 1
+        email = ActionMailer::Base.deliveries.first
+        email.to.should == [ super_user1.email, super_user2.email ]
+      end
     end
   end
 
