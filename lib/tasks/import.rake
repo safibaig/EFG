@@ -73,6 +73,11 @@ import_namespace = namespace :import do
     end
   end
 
+  desc 'SFLG_USER_AUDIT_DATA_TABLE'
+  task user_audits: :users do
+    _import UserAudit
+  end
+
   desc 'SFLG_DED_DATA_TABLE'
   task ded_codes: :environment do
     _import DedCode
