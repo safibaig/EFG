@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120914152943) do
+ActiveRecord::Schema.define(:version => 20120918102755) do
 
   create_table "ded_codes", :force => true do |t|
     t.string   "legacy_id"
@@ -26,6 +26,23 @@ ActiveRecord::Schema.define(:version => 20120914152943) do
   end
 
   add_index "ded_codes", ["code"], :name => "index_ded_codes_on_code", :unique => true
+
+  create_table "demand_to_borrowers", :force => true do |t|
+    t.integer  "loan_id",                          :null => false
+    t.integer  "seq",                              :null => false
+    t.integer  "created_by_id",                    :null => false
+    t.date     "date_of_demand",                   :null => false
+    t.integer  "demanded_amount",     :limit => 8, :null => false
+    t.date     "modified_date",                    :null => false
+    t.integer  "legacy_loan_id"
+    t.string   "legacy_created_by"
+    t.datetime "ar_timestamp"
+    t.datetime "ar_insert_timestamp"
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+  end
+
+  add_index "demand_to_borrowers", ["loan_id", "seq"], :name => "index_demand_to_borrowers_on_loan_id_and_seq", :unique => true
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"

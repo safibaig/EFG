@@ -9,7 +9,7 @@
 <hr>
 
 <%= simple_form_for(@loan_demand_to_borrower, url: loan_demand_to_borrower_path(@loan), html: { class: 'form-horizontal form-loan-demand-to-borrower' }) do |f| %>
-  <%= f.input :borrower_demand_outstanding, as: :currency %>
+  <%= f.input :amount_demanded, as: :currency %>
   <%= f.input :borrower_demanded_on, as: :quick_date %>
 
   <div class="form-actions">

@@ -39,7 +39,6 @@ class LoanCsvExport < BaseCsvExport
       reference
       amount
       amount_demanded
-      borrower_demand_outstanding
       borrower_demanded_on
       sortcode
       business_name
