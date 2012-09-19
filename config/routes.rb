@@ -1,6 +1,7 @@
 EFG::Application.routes.draw do
   devise_for :users, :controllers => {
-    :sessions => "sessions"
+    :sessions => "sessions",
+    :passwords => "passwords"
   }
 
   root to: 'dashboard#show'
