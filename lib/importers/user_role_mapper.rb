@@ -6,8 +6,8 @@ class UserRoleMapper
 
   self.user_roles_csv_path = Rails.root.join('import_data/SFLG_USER_ROLE_DATA_TABLE.csv')
 
-  # TODO: add support for SuperUser type, maps to 'btAdmin'
   ROLE_MAPPING = {
+    'btAdmin'      => 'SuperUser',
     'sflgAdmin'    => 'CfeAdmin',
     'sflgUser'     => 'CfeUser',
     'sflgRole1'    => 'CfeUser',

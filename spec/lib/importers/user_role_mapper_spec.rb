@@ -11,6 +11,7 @@ describe UserRoleMapper do
     end
 
     {
+      'park1234p' => 'SuperUser',
       'ahan8063s' => 'LenderUser',
       'will8561s' => 'LenderAdmin',
       'thom5918r' => 'CfeAdmin',
