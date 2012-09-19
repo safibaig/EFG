@@ -1,4 +1,5 @@
 require 'importers/base_importer'
+require 'importers/admin_audit_importer'
 require 'importers/state_aid_calculation_importer'
 require 'importers/user_importer'
 require 'importers/user_role_mapper'

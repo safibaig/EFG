@@ -126,14 +126,6 @@ class LoanImporter < BaseImporter
     @invoice_id_from_legacy_id.fetch(legacy_id.to_s)
   end
 
-  def self.lending_limit_id_from_legacy_id(legacy_id)
-    @lending_limit_id_from_legacy_id ||= Hash[LendingLimit.select('id, legacy_id').map { |lending_limit|
-      [lending_limit.legacy_id.to_s, lending_limit.id]
-    }]
-
-    @lending_limit_id_from_legacy_id.fetch(legacy_id.to_s)
-  end
-
   DATES = %w(TRADING_DATE GUARANTEED_DATE BORROWER_DEMAND_DATE CANCELLED_DATE
     REPAID_DATE FACILITY_LETTER_DATE DTI_DEMAND_DATE REALISED_MONEY_DATE
     NO_CLAIM_DATE MATURITY_DATE REMOVE_GUARANTEE_DATE SETTLEMENT_DATE
