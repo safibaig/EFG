@@ -22,6 +22,7 @@ class CfeAdminsController < ApplicationController
     @user.modified_by = current_user
 
     if @user.save
+      AdminAudit.log(AdminAudit::UserCreated, @user, current_user)
       @user.send_new_account_notification
       flash[:notice] = I18n.t('manage_users.new_account_email_sent', email: @user.email)
       redirect_to cfe_admin_url(@user)
@@ -40,6 +41,7 @@ class CfeAdminsController < ApplicationController
     @user.modified_by = current_user
 
     if @user.save
+      AdminAudit.log(AdminAudit::UserEdited, @user, current_user)
       redirect_to cfe_admin_url(@user)
     else
       render :edit

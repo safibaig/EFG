@@ -39,9 +39,15 @@ shared_examples_for "CfeAdmin user management" do
       page.should have_content('Bob Flemming')
       page.should have_content('bob.flemming@example.com')
 
-      user = CfeAdmin.last
+      user = CfeAdmin.last!
       user.created_by.should == current_user
       user.modified_by.should == current_user
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::UserCreated
+      admin_audit.auditable.should == user
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
 
       # verify email is sent to user
       emails = ActionMailer::Base.deliveries
@@ -71,6 +77,12 @@ shared_examples_for "CfeAdmin user management" do
 
       user.reload.modified_by.should == current_user
       user.should be_disabled
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::UserEdited
+      admin_audit.auditable.should == user
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
     end
   end
 

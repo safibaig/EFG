@@ -118,7 +118,7 @@ describe AdminAuditImporter do
       admin_audits[9].modified_by.should == user2
       admin_audits[9].modified_on.should == Date.new(2007, 4, 2)
 
-      admin_audits[10].action.should == 'User created'
+      admin_audits[10].action.should == AdminAudit::UserCreated
       admin_audits[10].auditable.should == user4
       admin_audits[10].auditable_type.should == 'User'
       admin_audits[10].legacy_id.should == 851
@@ -138,7 +138,7 @@ describe AdminAuditImporter do
       admin_audits[11].modified_by.should == user4
       admin_audits[11].modified_on.should == Date.new(2007, 5, 8)
 
-      admin_audits[12].action.should == 'User edited'
+      admin_audits[12].action.should == AdminAudit::UserEdited
       admin_audits[12].auditable.should == user1
       admin_audits[12].auditable_type.should == 'User'
       admin_audits[12].legacy_id.should == 820

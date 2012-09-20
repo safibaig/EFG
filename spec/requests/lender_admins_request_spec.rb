@@ -45,9 +45,15 @@ describe 'LenderAdmin management' do
       page.should have_content('Bob Flemming')
       page.should have_content('bob.flemming@example.com')
 
-      user = LenderAdmin.last
+      user = LenderAdmin.last!
       user.created_by.should == current_user
       user.modified_by.should == current_user
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::UserCreated
+      admin_audit.auditable.should == user
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
 
       # verify email is sent to user
       emails = ActionMailer::Base.deliveries
@@ -73,6 +79,12 @@ describe 'LenderAdmin management' do
       check 'lender_admin_disabled'
 
       click_button 'Update Lender Admin'
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::UserEdited
+      admin_audit.auditable.should == user
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
 
       page.should have_content('Bankers')
       page.should have_content('Bill Example')
