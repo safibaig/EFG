@@ -22,9 +22,9 @@ class Search
 
   attr_reader :attributes, :user
 
-  validates_presence_of :lender_id, strict: true
+  validates_presence_of :lender_id, strict: true, if: :lender_user?
 
-  validate :lender_id_is_allowed
+  validate :lender_id_is_allowed, if: Proc.new { lender_id.present? }
 
   def initialize(user, attributes = {})
     @user = user

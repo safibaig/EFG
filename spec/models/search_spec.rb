@@ -148,10 +148,30 @@ describe Search do
     end
 
     context 'with no lender ID' do
-      it "should raise exception" do
-        expect {
-          search('lender_id' => nil).results
-        }.to raise_error(ActiveModel::StrictValidationFailed)
+      context "and specified user is a LenderUser" do
+        it "should raise exception" do
+          expect {
+            search('lender_id' => nil).results
+          }.to raise_error(ActiveModel::StrictValidationFailed)
+        end
+      end
+
+      context "and specified user is a LenderAdmin" do
+        let(:user) { FactoryGirl.create(:lender_admin) }
+
+        it "should raise exception when the specified user is a LenderAdmin" do
+          expect {
+            search('lender_id' => nil).results
+          }.to raise_error(ActiveModel::StrictValidationFailed)
+        end
+      end
+
+      context "and specified user is not a LenderUser or LenderAdmin" do
+        let(:user) { FactoryGirl.create(:cfe_user) }
+
+        it "should be allowed when the specified user can access multiple lenders" do
+          search('lender_id' => nil).results.should_not be_empty
+        end
       end
     end
 

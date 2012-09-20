@@ -59,9 +59,21 @@ describe "search" do
         page.should have_content("1 result found")
         page.should have_content(loan3.reference)
       end
+
+      it 'should allow searching by all lenders' do
+        visit new_search_path
+
+        within "#search" do
+          click_button "Search"
+        end
+
+        page.should have_content("3 results found")
+        page.should have_content(loan1.reference)
+        page.should have_content(loan2.reference)
+        page.should have_content(loan3.reference)
+      end
     end
   end
-
 
   %w(cfe_admin premium_collector_user super_user).each do |user_type|
     context "as a #{user_type}" do
