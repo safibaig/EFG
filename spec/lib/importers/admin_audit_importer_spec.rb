@@ -64,7 +64,7 @@ describe AdminAuditImporter do
       admin_audits[3].modified_by.should == user3
       admin_audits[3].modified_on.should == Date.new(2007, 4, 30)
 
-      admin_audits[4].action.should == 'Lender created'
+      admin_audits[4].action.should == AdminAudit::LenderCreated
       admin_audits[4].auditable.should == lender1
       admin_audits[4].legacy_id.should == 818
       admin_audits[4].legacy_object_id.should == '441'
@@ -73,7 +73,7 @@ describe AdminAuditImporter do
       admin_audits[4].modified_by.should == user1
       admin_audits[4].modified_on.should == Date.new(2007, 4, 24)
 
-      admin_audits[5].action.should == 'Lender disabled'
+      admin_audits[5].action.should == AdminAudit::LenderDisabled
       admin_audits[5].auditable.should == lender2
       admin_audits[5].legacy_id.should == 666
       admin_audits[5].legacy_object_id.should == '81'
@@ -82,7 +82,7 @@ describe AdminAuditImporter do
       admin_audits[5].modified_by.should == user1
       admin_audits[5].modified_on.should == Date.new(2007, 4, 10)
 
-      admin_audits[6].action.should == 'Lender edited'
+      admin_audits[6].action.should == AdminAudit::LenderEdited
       admin_audits[6].auditable.should == lender1
       admin_audits[6].legacy_id.should == 638
       admin_audits[6].legacy_object_id.should == '441'
@@ -91,7 +91,7 @@ describe AdminAuditImporter do
       admin_audits[6].modified_by.should == user1
       admin_audits[6].modified_on.should == Date.new(2007, 2, 9)
 
-      admin_audits[7].action.should == 'Lender enabled'
+      admin_audits[7].action.should == AdminAudit::LenderEnabled
       admin_audits[7].auditable.should == lender3
       admin_audits[7].legacy_id.should == 776
       admin_audits[7].legacy_object_id.should == '123'

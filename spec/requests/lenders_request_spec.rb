@@ -34,7 +34,7 @@ describe 'lenders' do
 
       click_button 'Create Lender'
 
-      lender = Lender.last
+      lender = Lender.last!
       lender.created_by.should == current_user
       lender.modified_by.should == current_user
       lender.name.should == 'Bankers'
@@ -45,6 +45,12 @@ describe 'lenders' do
       lender.primary_contact_phone.should == '0123456789'
       lender.primary_contact_email.should == 'bob@example.com'
       lender.can_use_add_cap.should == false
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::LenderCreated
+      admin_audit.auditable.should == lender
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
     end
   end
 
@@ -88,6 +94,12 @@ describe 'lenders' do
       lender.primary_contact_phone.should == '987654321'
       lender.primary_contact_email.should == 'flob@example.com'
       lender.can_use_add_cap.should == true
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::LenderEdited
+      admin_audit.auditable.should == lender
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
     end
   end
 
@@ -104,6 +116,12 @@ describe 'lenders' do
       lender.reload
       lender.disabled.should == false
       lender.modified_by.should == current_user
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::LenderEnabled
+      admin_audit.auditable.should == lender
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
     end
   end
 
@@ -120,6 +138,12 @@ describe 'lenders' do
       lender.reload
       lender.disabled.should == true
       lender.modified_by.should == current_user
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::LenderDisabled
+      admin_audit.auditable.should == lender
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
     end
   end
 

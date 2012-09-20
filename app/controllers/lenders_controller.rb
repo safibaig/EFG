@@ -18,6 +18,7 @@ class LendersController < ApplicationController
     @lender.modified_by = current_user
 
     if @lender.save
+      AdminAudit.log(AdminAudit::LenderCreated, @lender, current_user)
       redirect_to lenders_url
     else
       render :new
@@ -34,6 +35,7 @@ class LendersController < ApplicationController
     @lender.modified_by = current_user
 
     if @lender.save
+      AdminAudit.log(AdminAudit::LenderEdited, @lender, current_user)
       redirect_to lenders_url
     else
       render :edit
@@ -44,6 +46,7 @@ class LendersController < ApplicationController
     @lender = Lender.find(params[:id])
     @lender.modified_by = current_user
     @lender.activate!
+    AdminAudit.log(AdminAudit::LenderEnabled, @lender, current_user)
     redirect_to lenders_url
   end
 
@@ -51,6 +54,7 @@ class LendersController < ApplicationController
     @lender = Lender.find(params[:id])
     @lender.modified_by = current_user
     @lender.deactivate!
+    AdminAudit.log(AdminAudit::LenderDisabled, @lender, current_user)
     redirect_to lenders_url
   end
 
