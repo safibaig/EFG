@@ -18,7 +18,7 @@
       <tr>
         <td><%= loan.reference %></td>
         <td><%= loan.business_name %></td>
-        <td><%= @invoice.created_at.strftime('%d/%m/%Y') %></td>
+        <td><%= @invoice.created_at.to_s(:screen) %></td>
         <td><%= loan.state.humanize %></td>
       </tr>
     <% end %>

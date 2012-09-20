@@ -6,7 +6,7 @@ module LoanDetailsTableHelper
       CancelReason => :name.to_proc,
       CfeAdmin => :name.to_proc,
       CfeUser => :name.to_proc,
-      Date => ->(date) { date.strftime('%d/%m/%Y') },
+      Date => ->(date) { date.to_s(:screen) },
       FalseClass => 'No',
       InterestRateType => :name.to_proc,
       LegalForm => :name.to_proc,

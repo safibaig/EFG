@@ -42,7 +42,7 @@
             <td><%= check_box_tag "#{f.object_name}[recoveries_to_be_realised_ids][]", recovery.id %></td>
             <td><%= recovery.loan.reference %></td>
             <td><%= recovery.loan.business_name %></td>
-            <td><%= recovery.recovered_on.strftime('%d/%m/%Y') %></td>
+            <td><%= recovery.recovered_on.to_s(:screen) %></td>
             <% # TODO: confirm this is the correct value to use %>
             <td><%= recovery.loan.dti_demand_outstanding.try(:format) %></td>
             <td><%= recovery.amount_due_to_dti.format %></td>

@@ -24,8 +24,8 @@
       <tr>
         <td><%= link_to lending_limit.name, edit_lender_lending_limit_path(@lender, lending_limit) %></td>
         <td><%= lending_limit.allocation_type.name %></td>
-        <td><%= lending_limit.starts_on.strftime('%d/%m/%Y') %></td>
-        <td><%= lending_limit.ends_on.strftime('%d/%m/%Y') %></td>
+        <td><%= lending_limit.starts_on.to_s(:screen) %></td>
+        <td><%= lending_limit.ends_on.to_s(:screen) %></td>
         <td><%= lending_limit.allocation.format %></td>
         <td><%=friendly_boolean lending_limit.active %></td>
       </tr>
