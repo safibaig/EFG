@@ -12,7 +12,7 @@ describe 'loan demand against government' do
 
   it 'entering further loan information' do
     visit loan_path(loan)
-    click_link 'Demand Against Guarantee Guarantee'
+    click_link 'Demand Against Guarantee'
 
     fill_in 'amount_demanded', '£10,000.42'
     fill_in 'dti_reason', 'Something'
@@ -36,7 +36,7 @@ describe 'loan demand against government' do
 
   it 'does not continue with invalid values' do
     visit loan_path(loan)
-    click_link 'Demand Against Guarantee Guarantee'
+    click_link 'Demand Against Guarantee'
 
     loan.state.should == Loan::LenderDemand
     expect {
