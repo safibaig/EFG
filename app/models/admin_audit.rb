@@ -4,7 +4,10 @@ class AdminAudit < ActiveRecord::Base
   LenderEdited = 'Lender edited'
   LenderEnabled = 'Lender enabled'
   UserCreated = 'User created'
+  UserDisabled = 'User disabled'
   UserEdited = 'User edited'
+  UserEnabled = 'User enabled'
+  UserUnlocked = 'User unlocked'
 
   belongs_to :auditable, polymorphic: true
   belongs_to :modified_by, class_name: 'User'

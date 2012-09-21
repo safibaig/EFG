@@ -94,10 +94,15 @@ describe 'CfeUser management' do
       visit root_path
       click_link 'Manage CfE Users'
       click_link 'Bob Flemming'
-
       click_button 'Unlock User'
 
       user.reload.should_not be_locked
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::UserUnlocked
+      admin_audit.auditable.should == user
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
     end
   end
 
@@ -109,7 +114,14 @@ describe 'CfeUser management' do
       click_link 'Manage CfE Users'
       click_link 'Bob Flemming'
       click_button 'Disable User'
+
       user.reload.should be_disabled
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::UserDisabled
+      admin_audit.auditable.should == user
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
     end
   end
 
@@ -121,7 +133,14 @@ describe 'CfeUser management' do
       click_link 'Manage CfE Users'
       click_link 'Bob Flemming'
       click_button 'Enable User'
+
       user.reload.should_not be_disabled
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::UserEnabled
+      admin_audit.auditable.should == user
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
     end
   end
 

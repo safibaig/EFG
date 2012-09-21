@@ -53,16 +53,19 @@ class CfeUsersController < ApplicationController
 
   def unlock
     @user.unlock!
+    AdminAudit.log(AdminAudit::UserUnlocked, @user, current_user)
     redirect_to cfe_user_url(@user)
   end
 
   def disable
     @user.disable!
+    AdminAudit.log(AdminAudit::UserDisabled, @user, current_user)
     redirect_to cfe_user_url(@user)
   end
 
   def enable
     @user.enable!
+    AdminAudit.log(AdminAudit::UserEnabled, @user, current_user)
     redirect_to cfe_user_url(@user)
   end
 
