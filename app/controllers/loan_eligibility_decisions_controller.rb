@@ -13,7 +13,7 @@ class LoanEligibilityDecisionsController < ApplicationController
       @eligibility_decision_email.deliver_email
       redirect_to loan_path(@loan), notice: "Your email was sent successfully"
     else
-      render :show
+      render @loan.state
     end
   end
 
