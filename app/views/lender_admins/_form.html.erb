@@ -8,7 +8,6 @@
   <%= f.input :first_name %>
   <%= f.input :last_name %>
   <%= f.input :email %>
-  <%= f.input(:disabled, wrapper: :checkbox) unless @user.new_record? %>
 
   <div class="form-actions">
     <%= f.button :submit, class: 'btn btn-primary', value: @user.new_record? ? 'Create Lender Admin' : 'Update Lender Admin' %>
@@ -18,5 +17,17 @@
 <% if @user.persisted? && @user.locked? %>
   <%= simple_form_for @user, url: unlock_lender_admin_path(@user), method: :post do |f| %>
     <%= f.button :submit, value: 'Unlock User' %>
+  <% end %>
+<% end %>
+
+<% if @user.persisted? %>
+  <% if @user.disabled? %>
+    <%= simple_form_for @user, url: enable_lender_admin_path(@user), method: :post do |f| %>
+      <%= f.button :submit, value: 'Enable User' %>
+    <% end %>
+  <% else %>
+    <%= simple_form_for @user, url: disable_lender_admin_path(@user), method: :post do |f| %>
+      <%= f.button :submit, value: 'Disable User' %>
+    <% end %>
   <% end %>
 <% end %>

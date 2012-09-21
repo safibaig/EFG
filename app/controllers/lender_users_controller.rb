@@ -1,8 +1,8 @@
 class LenderUsersController < ApplicationController
   before_filter :verify_create_permission, only: [:new, :create]
-  before_filter :verify_update_permission, only: [:edit, :update, :reset_password, :unlock]
+  before_filter :verify_update_permission, only: [:edit, :update, :reset_password, :unlock, :disable, :enable]
   before_filter :verify_view_permission, only: [:index, :show]
-  before_filter :find_user, only: [:show, :edit, :update, :reset_password, :unlock]
+  before_filter :find_user, only: [:show, :edit, :update, :reset_password, :unlock, :disable, :enable]
 
   def index
     @users = current_lender.lender_users.paginate(per_page: 100, page: params[:page])
@@ -35,7 +35,6 @@ class LenderUsersController < ApplicationController
 
   def update
     @user.attributes = params[:lender_user]
-    @user.disabled = params[:lender_user][:disabled]
     @user.modified_by = current_user
 
     if @user.save
@@ -54,6 +53,16 @@ class LenderUsersController < ApplicationController
 
   def unlock
     @user.unlock!
+    redirect_to lender_user_url(@user)
+  end
+
+  def disable
+    @user.disable!
+    redirect_to lender_user_url(@user)
+  end
+
+  def enable
+    @user.enable!
     redirect_to lender_user_url(@user)
   end
 

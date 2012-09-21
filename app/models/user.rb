@@ -26,6 +26,14 @@ class User < ActiveRecord::Base
 
   scope :order_by_username, order("username")
 
+  def disable!
+    update_attribute :disabled, true
+  end
+
+  def enable!
+    update_attribute :disabled, false
+  end
+
   def name
     "#{first_name} #{last_name}"
   end

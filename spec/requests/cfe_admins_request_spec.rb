@@ -69,15 +69,14 @@ describe 'Managing CfeAdmins as CfeAdmin' do
       fill_in 'first_name', 'Bill'
       fill_in 'last_name', 'Example'
       fill_in 'email', 'bill.example@example.com'
-      check 'cfe_admin_disabled'
 
       click_button 'Update CfE Admin'
 
-      page.should have_content('Bill Example')
-      page.should have_content('bill.example@example.com')
-
-      user.reload.modified_by.should == current_user
-      user.should be_disabled
+      user.reload
+      user.email.should == 'bill.example@example.com'
+      user.first_name.should == 'Bill'
+      user.last_name.should == 'Example'
+      user.modified_by.should == current_user
 
       admin_audit = AdminAudit.last!
       admin_audit.action.should == AdminAudit::UserEdited
@@ -98,6 +97,30 @@ describe 'Managing CfeAdmins as CfeAdmin' do
       click_button 'Unlock User'
 
       user.reload.should_not be_locked
+    end
+  end
+
+  describe 'disabling the user' do
+    let!(:user) { FactoryGirl.create(:cfe_admin, first_name: 'Bob', last_name: 'Flemming') }
+
+    it do
+      visit root_path
+      click_link 'Manage CfE Admins'
+      click_link 'Bob Flemming'
+      click_button 'Disable User'
+      user.reload.should be_disabled
+    end
+  end
+
+  describe 'enabling the user' do
+    let!(:user) { FactoryGirl.create(:cfe_admin, first_name: 'Bob', last_name: 'Flemming', disabled: true) }
+
+    it do
+      visit root_path
+      click_link 'Manage CfE Admins'
+      click_link 'Bob Flemming'
+      click_button 'Enable User'
+      user.reload.should_not be_disabled
     end
   end
 

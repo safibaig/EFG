@@ -106,4 +106,32 @@ describe AuditorUsersController do
     it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
+
+  describe '#disable' do
+    let(:auditor_user) { FactoryGirl.create(:auditor_user) }
+
+    def dispatch
+      post :disable, id: auditor_user.id
+    end
+
+    it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
+    it_behaves_like 'LenderUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
+  end
+
+  describe '#enable' do
+    let(:auditor_user) { FactoryGirl.create(:auditor_user) }
+
+    def dispatch
+      post :enable, id: auditor_user.id
+    end
+
+    it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
+    it_behaves_like 'LenderUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
+  end
 end
