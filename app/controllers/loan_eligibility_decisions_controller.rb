@@ -11,7 +11,7 @@ class LoanEligibilityDecisionsController < ApplicationController
     @eligibility_decision_email = EligibilityDecisionEmail.new(@loan, params[:eligibility_decision_email])
     if @eligibility_decision_email.valid?
       @eligibility_decision_email.deliver_email
-      redirect_to loan_path(@loan)
+      redirect_to loan_path(@loan), notice: "Your email was sent successfully"
     else
       render :show
     end

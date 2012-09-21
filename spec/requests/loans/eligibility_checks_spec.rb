@@ -56,6 +56,7 @@ describe 'eligibility checks' do
     emails.first.to.should == [ 'joe@example.com' ]
 
     current_path.should == loan_path(loan)
+    page.should have_content("Your email was sent successfully")
   end
 
   it 'does not create an invalid loan' do
@@ -101,6 +102,7 @@ describe 'eligibility checks' do
     emails.first.body.should include(loan.ineligibility_reasons.first.reason)
 
     current_path.should == loan_path(loan)
+    page.should have_content("Your email was sent successfully")
   end
 
   private
