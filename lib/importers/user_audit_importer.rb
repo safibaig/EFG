@@ -23,13 +23,11 @@ class UserAuditImporter < BaseImporter
 
   def build_attributes
     row.each do |field_name, value|
-      value = case field_name
+      case field_name
       when 'USER_ID'
         attributes[:user_id] = self.class.user_id_from_username(value)
       when 'MODIFIED_BY'
         attributes[:modified_by_id] = self.class.user_id_from_username(value)
-      else
-        value
       end
 
       attributes[self.class.field_mapping[field_name]] = value

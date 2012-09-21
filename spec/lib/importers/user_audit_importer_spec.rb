@@ -29,6 +29,8 @@ describe UserAuditImporter do
       dispatch
 
       user_audit1 = UserAudit.first
+      user_audit1.legacy_id.should == 'wald5654r'
+      user_audit1.modified_by_legacy_id.should == 'scar6628c'
       user_audit1.user.should == user1
       user_audit1.version.should == 1
       user_audit1.updated_at.should == Time.gm(2010, 5, 11)
@@ -39,6 +41,8 @@ describe UserAuditImporter do
       user_audit1.ar_insert_timestamp.should == Time.gm(2006, 10, 27)
 
       user_audit2 = UserAudit.last
+      user_audit2.legacy_id.should == 'scar6628c'
+      user_audit2.modified_by_legacy_id.should == 'wald5654r'
       user_audit2.user.should == user2
       user_audit2.version.should == 2
       user_audit2.updated_at.should == Time.gm(2011, 6, 20)
