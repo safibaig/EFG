@@ -28,6 +28,7 @@ class ChangePasswordController < ApplicationController
       modified_by: current_user,
       password: current_user.encrypted_password
     )
+    AdminAudit.log(AdminAudit::UserPasswordChanged, current_user, current_user)
   end
 
 end

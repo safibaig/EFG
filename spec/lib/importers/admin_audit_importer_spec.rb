@@ -44,7 +44,7 @@ describe AdminAuditImporter do
       admin_audits[1].modified_by.should == user1
       admin_audits[1].modified_on.should == Date.new(2007, 5, 16)
 
-      admin_audits[2].action.should == 'Initial login'
+      admin_audits[2].action.should == AdminAudit::UserInitialLogin
       admin_audits[2].auditable.should == user2
       admin_audits[2].auditable_type.should == 'User'
       admin_audits[2].legacy_id.should == 828
@@ -158,7 +158,7 @@ describe AdminAuditImporter do
       admin_audits[13].modified_by.should == user4
       admin_audits[13].modified_on.should == Date.new(2007, 4, 24)
 
-      admin_audits[14].action.should == 'User password changed'
+      admin_audits[14].action.should == AdminAudit::UserPasswordChanged
       admin_audits[14].auditable.should == user3
       admin_audits[14].auditable_type.should == 'User'
       admin_audits[14].legacy_id.should == 840

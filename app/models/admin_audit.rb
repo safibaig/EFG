@@ -10,6 +10,8 @@ class AdminAudit < ActiveRecord::Base
   UserDisabled = 'User disabled'
   UserEdited = 'User edited'
   UserEnabled = 'User enabled'
+  UserInitialLogin = 'Initial login'
+  UserPasswordChanged = 'User password changed'
   UserUnlocked = 'User unlocked'
 
   belongs_to :auditable, polymorphic: true
