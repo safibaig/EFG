@@ -50,8 +50,8 @@ FactoryGirl.define do
     trait :rejected do
       state Loan::Rejected
 
-      after(:build) do |loan|
-        loan.ineligibility_reasons.build(reason: "Loan amount exceeds allowed limits")
+      after(:create) do |loan|
+        loan.ineligibility_reasons.create(reason: "Loan amount exceeds allowed limits")
       end
     end
 

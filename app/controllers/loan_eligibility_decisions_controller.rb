@@ -1,5 +1,6 @@
 class LoanEligibilityDecisionsController < ApplicationController
 
+  before_filter :verify_create_permission
   before_filter :find_loan
 
   def show
@@ -21,6 +22,10 @@ class LoanEligibilityDecisionsController < ApplicationController
 
   def find_loan
     @loan = current_lender.loans.where(state: [ Loan::Eligible, Loan::Rejected ]).find(params[:loan_id])
+  end
+
+  def verify_create_permission
+    enforce_create_permission(LoanEligibilityCheck)
   end
 
 end
