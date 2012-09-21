@@ -26,6 +26,12 @@ en:
   activemodel:
     errors:
       models:
+        loan_demand_to_borrower:
+          attributes:
+            amount_demanded:
+              must_be_lte_loan_cumulative_drawn_amount: 'Balance being demanded must be less than or equal to the current total amount drawn'
+            borrower_demanded_on:
+              must_be_before_loan_initial_draw_date: 'Demand date cannot be before initial draw date'
         loan_eligibility_check:
           attributes:
             sic_code:
@@ -53,6 +59,10 @@ en:
               accepted: An initial payment for the correct amount of the first Scheme Guarantee Premium payment has not been received from the Applicant.
             signed_direct_debit_received:
               accepted: A signed Direct Debit mandate must have been received before the initial draw down can occur.
+        loan_no_claim:
+          attributes:
+            no_claim_on:
+              must_be_gte_last_demand_to_borrower: 'Date of decision that no claim will be made cannot be before the most recent date of borrower demand'
         loan_transfer/sflg: &loan_transfer
           attributes:
             base:

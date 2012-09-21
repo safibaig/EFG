@@ -48,6 +48,7 @@ class Loan < ActiveRecord::Base
   has_one :initial_draw_change
   has_one :transferred_from, class_name: 'Loan', foreign_key: 'id', primary_key: 'transferred_from_id'
   has_many :data_corrections
+  has_many :demand_to_borrowers
   has_many :loan_changes
   has_many :loan_modifications
   has_many :loan_realisations, foreign_key: 'realised_loan_id'
@@ -166,7 +167,7 @@ class Loan < ActiveRecord::Base
   end
 
   def loan_security_types=(security_type_ids)
-    security_type_ids.each do |id|
+    security_type_ids.reject(&:blank?).each do |id|
       self.loan_securities.build(loan_security_type_id: id)
     end
   end

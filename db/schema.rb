@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120919101126) do
+ActiveRecord::Schema.define(:version => 20120919141355) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -43,6 +43,23 @@ ActiveRecord::Schema.define(:version => 20120919101126) do
   end
 
   add_index "ded_codes", ["code"], :name => "index_ded_codes_on_code", :unique => true
+
+  create_table "demand_to_borrowers", :force => true do |t|
+    t.integer  "loan_id",                          :null => false
+    t.integer  "seq",                              :null => false
+    t.integer  "created_by_id",                    :null => false
+    t.date     "date_of_demand",                   :null => false
+    t.integer  "demanded_amount",     :limit => 8, :null => false
+    t.date     "modified_date",                    :null => false
+    t.integer  "legacy_loan_id"
+    t.string   "legacy_created_by"
+    t.datetime "ar_timestamp"
+    t.datetime "ar_insert_timestamp"
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+  end
+
+  add_index "demand_to_borrowers", ["loan_id", "seq"], :name => "index_demand_to_borrowers_on_loan_id_and_seq", :unique => true
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"
@@ -121,8 +138,8 @@ ActiveRecord::Schema.define(:version => 20120919101126) do
     t.integer  "sequence",            :default => 0, :null => false
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
   add_index "loan_ineligibility_reasons", ["loan_id"], :name => "index_loan_ineligibility_reasons_on_loan_id"
@@ -162,8 +179,8 @@ ActiveRecord::Schema.define(:version => 20120919101126) do
     t.integer  "old_lending_limit_id"
     t.integer  "loan_term"
     t.integer  "old_loan_term"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                            :null => false
+    t.datetime "updated_at",                                            :null => false
     t.string   "type"
   end
 
@@ -436,6 +453,23 @@ ActiveRecord::Schema.define(:version => 20120919101126) do
 
   add_index "state_aid_calculations", ["legacy_loan_id"], :name => "index_state_aid_calculations_on_legacy_loan_id"
   add_index "state_aid_calculations", ["loan_id", "seq"], :name => "index_state_aid_calculations_on_loan_id_and_seq", :unique => true
+
+  create_table "user_audits", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "legacy_id"
+    t.integer  "version"
+    t.integer  "modified_by_id"
+    t.string   "modified_by_legacy_id"
+    t.string   "password"
+    t.string   "function"
+    t.datetime "ar_timestamp"
+    t.datetime "ar_insert_timestamp"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
+  add_index "user_audits", ["modified_by_id"], :name => "index_user_audits_on_modified_by_id"
+  add_index "user_audits", ["user_id"], :name => "index_user_audits_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email"

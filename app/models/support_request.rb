@@ -15,9 +15,9 @@ class SupportRequest
   def recipients
     if user.is_a?(LenderUser)
       user.lender.lender_admins.with_email.collect(&:email)
-    elsif user.is_a?(LenderAdmin)
+    elsif [ LenderAdmin, AuditorUser, PremiumCollectorUser ].include?(user.class)
       CfeUser.with_email.collect(&:email)
-    elsif user.is_a?(CfeUser)
+    elsif [ CfeUser, CfeAdmin ].include?(user.class)
       SuperUser.with_email.collect(&:email)
     end
   end

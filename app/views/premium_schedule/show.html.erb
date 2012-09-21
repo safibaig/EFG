@@ -66,7 +66,7 @@
     </tr>
     <tr>
       <th>What is the date of the Premium Collection point from which this schedule applies? (dd/mm/yyyy)</th>
-      <td><%= @premium_schedule.reschedule? ? @premium_schedule.premium_cheque_month : @premium_schedule.initial_draw_date %></td>
+      <td><%= @premium_schedule.reschedule? ? @premium_schedule.premium_cheque_month : @premium_schedule.initial_draw_date.try(:to_s, :screen) %></td>
     </tr>
     <% if @premium_schedule.reschedule? %>
     <tr>

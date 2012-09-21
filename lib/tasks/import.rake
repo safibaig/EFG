@@ -11,6 +11,11 @@ import_namespace = namespace :import do
     _import AdminAudit
   end
 
+  desc 'SFLG_DEMAND_TO_BORROWER_DATA_TABLE'
+  task demand_to_borrowers: [:loans, :users] do
+    _import DemandToBorrower
+  end
+
   desc 'SFLG_INVOICE_DATA_TABLE'
   task invoices: [:lenders, :users] do
     _import Invoice
@@ -71,6 +76,11 @@ import_namespace = namespace :import do
     _import User do
       LenderUserAssociationImporter.import
     end
+  end
+
+  desc 'SFLG_USER_AUDIT_DATA_TABLE'
+  task user_audits: :users do
+    _import UserAudit
   end
 
   desc 'SFLG_DED_DATA_TABLE'

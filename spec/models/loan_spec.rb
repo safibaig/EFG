@@ -284,14 +284,16 @@ describe Loan do
 
     let(:security_type2) { LoanSecurityType.find(5) }
 
-    let!(:loan) {
-      loan = FactoryGirl.create(:loan)
-      loan.loan_security_types = [ security_type1.id, security_type2.id ]
-      loan
-    }
+    let!(:loan) { FactoryGirl.create(:loan) }
 
     it "should return all loan security types for a loan" do
+      loan.loan_security_types = [ security_type1.id, security_type2.id ]
       loan.loan_security_types.should == [ security_type1, security_type2 ]
+    end
+
+    it "should ignore blank values when setting loan security types" do
+      loan.loan_security_types = [ nil ]
+      loan.loan_security_types.should be_empty
     end
   end
 

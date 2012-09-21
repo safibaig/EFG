@@ -2,4 +2,4 @@
 <%= form.hidden_field :reference %>
 <%= form.hidden_field :period_covered_quarter %>
 <%= form.hidden_field :period_covered_year %>
-<%= form.hidden_field :received_on, value: form.object.received_on.strftime('%d/%m/%Y') %>
+<%= form.hidden_field :received_on, value: form.object.received_on.to_s(:screen) %>

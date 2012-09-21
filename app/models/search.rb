@@ -1,12 +1,16 @@
 class Search
+
+  class LenderNotAllowed < ArgumentError; end
+
   extend ActiveModel::Naming
   include ActiveModel::Conversion
+  include ActiveModel::Validations
 
   MoneyAttributes     = %w(amount_from amount_to).freeze
   DateAttributes      = %w(maturity_date_from maturity_date_to updated_at_from updated_at_to).freeze
   SortableAttributes  = %w(business_name trading_name amount postcode maturity_date updated_at).freeze
 
-  ExactMatchFilters   = %w(state lending_limit_id reason_id modified_by_id).freeze
+  ExactMatchFilters   = %w(state lender_id lending_limit_id reason_id modified_by_id).freeze
   PartialMatchFilters = %w(business_name trading_name company_registration postcode
                            generic1 generic2 generic3 generic4 generic5).freeze
   RangeFilters        = (MoneyAttributes + DateAttributes).freeze
@@ -16,12 +20,16 @@ class Search
   DefaultSortBy       = 'updated_at'.freeze
   DefaultSortOrder    = 'DESC'.freeze
 
-  def initialize(lender, attributes = {})
-    @lender = lender
+  attr_reader :attributes, :user
+
+  validates_presence_of :lender_id, strict: true, if: :lender_user?
+
+  validate :lender_id_is_allowed, if: Proc.new { lender_id.present? }
+
+  def initialize(user, attributes = {})
+    @user = user
     parse_attributes(attributes)
   end
-
-  attr_reader :lender, :attributes
 
   AllFilters.each do |filter|
     define_method(filter) do
@@ -37,8 +45,26 @@ class Search
     @sort_order || DefaultSortOrder
   end
 
+  def lending_limits
+    lender_user? ? user.lender.lending_limits.includes(:lender) : LendingLimit.includes(:lender)
+  end
+
+  def modified_by_users
+    lender_user? ? user.lender.lender_users.order_by_username : LenderUser.order_by_username
+  end
+
+  def allowed_lenders
+    user.lenders
+  end
+
+  def lender_user?
+    [LenderUser, LenderAdmin].include?(user.class)
+  end
+
   def results
-    query = lender.loans
+    return if !valid?
+
+    query = Loan.scoped
 
     attributes.each do |key, value|
       condition = case key
@@ -62,6 +88,14 @@ class Search
   end
 
   private
+
+  def lender_id_is_allowed
+    unless allowed_lenders.collect(&:id).include?(lender_id.to_i)
+      raise Search::LenderNotAllowed,
+        "Access to loans for lender with ID #{lender_id} is forbidden for this search"
+    end
+  end
+
   def parse_attributes(attributes)
     attributes ||= {}
     @sort_by = sanitize(SortableAttributes, attributes.delete('sort_by'))

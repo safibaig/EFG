@@ -1,5 +1,8 @@
 EFG::Application.routes.draw do
-  devise_for :users
+  devise_for :users, :controllers => {
+    :sessions => "sessions",
+    :passwords => "passwords"
+  }
 
   root to: 'dashboard#show'
 
@@ -24,6 +27,12 @@ EFG::Application.routes.draw do
     member do
       get :details
       get :audit_log
+    end
+
+    resource :eligibility_decision, only: [:show], controller: 'loan_eligibility_decisions' do
+      member do
+        post :email
+      end
     end
 
     resource :cancel, only: [:new, :create], controller: 'loan_cancels'

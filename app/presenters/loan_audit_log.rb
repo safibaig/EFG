@@ -32,7 +32,7 @@ class LoanAuditLog
   end
 
   def modified_on
-    loan_state_change.modified_on.strftime("%d/%m/%Y")
+    loan_state_change.modified_on.to_s(:screen)
   end
 
   def modified_by

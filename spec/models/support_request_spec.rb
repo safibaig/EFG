@@ -33,31 +33,43 @@ describe SupportRequest do
       end
     end
 
-    context "as a lender admin" do
-      let!(:lender_admin) { FactoryGirl.create(:lender_admin) }
+    %w(
+      auditor_user
+      lender_admin
+      premium_collector_user
+    ).each do |user_type|
+      context "as a #{user_type.humanize}" do
+        let!(:user) { FactoryGirl.create(user_type) }
 
-      let!(:cfe_user1) { FactoryGirl.create(:cfe_user) }
+        let!(:cfe_user1) { FactoryGirl.create(:cfe_user) }
 
-      let!(:cfe_user2) { FactoryGirl.create(:cfe_user) }
+        let!(:cfe_user2) { FactoryGirl.create(:cfe_user) }
 
-      it "should return array of email addresses for all CfE users" do
-        support_request.user = lender_admin
-        support_request.recipients.should == [ cfe_user1.email, cfe_user2.email ]
+        it "should return array of email addresses for all CfE users" do
+          support_request.user = user
+          support_request.recipients.should == [ cfe_user1.email, cfe_user2.email ]
+        end
       end
     end
 
-    context "as a CfE user" do
-      let!(:cfe_user) { FactoryGirl.create(:cfe_user) }
+    %w(
+      cfe_user
+      cfe_admin
+    ).each do |user_type|
+      context "as a #{user_type.humanize}" do
+        let!(:user) { FactoryGirl.create(user_type) }
 
-      let!(:super_user1) { FactoryGirl.create(:super_user) }
+        let!(:super_user1) { FactoryGirl.create(:super_user) }
 
-      let!(:super_user2) { FactoryGirl.create(:super_user) }
+        let!(:super_user2) { FactoryGirl.create(:super_user) }
 
-      it "should return array of email addresses for all CfE users" do
-        support_request.user = cfe_user
-        support_request.recipients.should == [ super_user1.email, super_user2.email ]
+        it "should return array of email addresses for all super users" do
+          support_request.user = user
+          support_request.recipients.should == [ super_user1.email, super_user2.email ]
+        end
       end
     end
+
   end
 
 end

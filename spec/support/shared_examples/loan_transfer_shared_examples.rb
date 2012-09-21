@@ -124,6 +124,11 @@ shared_examples_for 'a loan transfer' do
         loan_change.modified_date.should == Date.current
         loan_change.seq.should == 0
       end
+
+      it 'should copy existing loan securities to new loan' do
+        original_loan.loan_security_types.should_not be_empty
+        new_loan.loan_security_types.should == original_loan.loan_security_types
+      end
     end
 
     context 'when new loan amount is greater than the amount of the loan being transferred' do

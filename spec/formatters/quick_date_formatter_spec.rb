@@ -14,6 +14,10 @@ describe QuickDateFormatter do
       QuickDateFormatter.parse('3/2/1995').should == Date.new(1995, 2, 3)
     end
 
+    it 'allows the date 1599' do
+      QuickDateFormatter.parse('3/2/1599').should == Date.new(1599, 2, 3)
+    end
+
     it 'does not blow up for a nil value' do
       QuickDateFormatter.parse(nil).should be_nil
     end

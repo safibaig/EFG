@@ -49,6 +49,10 @@ FactoryGirl.define do
 
     trait :rejected do
       state Loan::Rejected
+
+      after(:create) do |loan|
+        loan.ineligibility_reasons.create(reason: "Loan amount exceeds allowed limits")
+      end
     end
 
     trait :cancelled do
@@ -114,8 +118,8 @@ FactoryGirl.define do
 
     trait :lender_demand do
       state Loan::LenderDemand
-      borrower_demanded_on { Date.today }
-      borrower_demand_outstanding Money.new(10_000_00)
+      amount_demanded Money.new(10_000_00)
+      borrower_demanded_on Date.new(2012, 6, 1)
     end
 
     trait :settled do
@@ -145,6 +149,12 @@ FactoryGirl.define do
     trait :with_state_aid_calculation do
       after(:build) do |loan|
         loan.state_aid_calculations = [ FactoryGirl.build(:state_aid_calculation) ]
+      end
+    end
+
+    trait :with_loan_securities do
+      after(:build) do |loan|
+        loan.loan_security_types = [ 1, 2 ]
       end
     end
 

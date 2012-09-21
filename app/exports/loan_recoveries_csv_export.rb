@@ -16,7 +16,7 @@ class LoanRecoveriesCsvExport < BaseCsvExport
     [
       record.loan.reference,
       record.loan.business_name,
-      record.recovered_on.strftime('%d/%m/%Y'),
+      record.recovered_on.to_s(:screen),
       record.loan.dti_demand_outstanding.try(:format),
       record.amount_due_to_dti.try(:format)
     ]

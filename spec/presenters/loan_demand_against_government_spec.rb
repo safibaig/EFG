@@ -13,11 +13,6 @@ describe LoanDemandAgainstGovernment do
       loan_demand_against_government.should_not be_valid
     end
 
-    it 'should be invalid without demanded reason' do
-      loan_demand_against_government.dti_reason = ''
-      loan_demand_against_government.should_not be_valid
-    end
-
     it 'should be invalid without a demanded date' do
       loan_demand_against_government.dti_demanded_on = ''
       loan_demand_against_government.should_not be_valid
