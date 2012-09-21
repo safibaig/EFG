@@ -3,12 +3,8 @@ class LoanEligibilityDecisionsController < ApplicationController
   before_filter :find_loan
 
   def show
-    if @loan.state == Loan::Eligible
-      @eligibility_decision_email = EligibilityDecisionEmail.new
-      render "eligible"
-    else
-      render "ineligible"
-    end
+    @eligibility_decision_email = EligibilityDecisionEmail.new
+    render @loan.state
   end
 
   def email
@@ -23,7 +19,7 @@ class LoanEligibilityDecisionsController < ApplicationController
   private
 
   def find_loan
-    @loan = current_lender.loans.where(state: Loan::Eligible).find(params[:loan_id])
+    @loan = current_lender.loans.where(state: [ Loan::Eligible, Loan::Rejected ]).find(params[:loan_id])
   end
 
 end

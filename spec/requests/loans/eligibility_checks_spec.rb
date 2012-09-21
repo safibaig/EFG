@@ -49,7 +49,7 @@ describe 'eligibility checks' do
 
     emails = ActionMailer::Base.deliveries
     emails.size.should == 1
-    emails.to.should == [ 'joe@example.com' ]
+    emails.first.to.should == [ 'joe@example.com' ]
 
     current_path.should == loan_path(loan)
   end
@@ -78,10 +78,25 @@ describe 'eligibility checks' do
     }.to change(Loan, :count).by(1)
 
     loan = Loan.last
+
+    current_url.should == loan_eligibility_decision_url(loan.id)
+
     loan.state.should == Loan::Rejected
     loan.ineligibility_reasons.count.should == 1
     loan.ineligibility_reasons.last.reason.should == I18n.t('eligibility_check.attributes.amount.invalid')
     page.should have_content(I18n.t('eligibility_check.attributes.amount.invalid'))
+
+    # email eligibility decision
+
+    fill_in :eligibility_decision_email, with: 'joe@example.com'
+    click_button "Send"
+
+    emails = ActionMailer::Base.deliveries
+    emails.size.should == 1
+    emails.first.to.should == [ 'joe@example.com' ]
+    emails.first.body.should match(/#{loan.ineligibility_reasons.first.reason}/)
+
+    current_path.should == loan_path(loan)
   end
 
   private

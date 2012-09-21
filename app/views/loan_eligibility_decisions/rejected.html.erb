@@ -1,0 +1,23 @@
+<div class="page-header">
+  <h1>Facility is ineligible</h1>
+</div>
+
+<p>Your loan reference is: <strong><%= @loan.reference %></strong></p>
+
+<p>Your loan application was rejected for the following reasons:</p>
+
+<%= render "ineligibility_reasons", loan: @loan %>
+
+<p>This page confirms your application is not eligible for SFLG and cannot be progressed any further.</p>
+
+<p>This eligibility decision can be e-mailed for your convenience (for internal use only).</p>
+
+<%= simple_form_for(@eligibility_decision_email, url: email_loan_eligibility_decision_path, html: { class: 'form-horizontal' }) do |f| %>
+
+  <%= f.input :email %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Send', class: 'btn-primary' %>
+  </div>
+
+<% end %>

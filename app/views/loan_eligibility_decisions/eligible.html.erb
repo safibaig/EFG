@@ -2,18 +2,10 @@
   <h1>Facility is eligible</h1>
 </div>
 
-<p>Your loan reference is: <%= @loan.reference %></p>
+<p>Your loan reference is: <strong><%= @loan.reference %></strong></p>
 
 <p>This page confirms that your application is most likely to be eligible. You will need to complete the Loan Entry process before a final decision can be made.</p>
 
 <p>This eligibility decision can be e-mailed for convenience (for internal use only).</p>
 
-<%= simple_form_for(@eligibility_decision_email, url: email_loan_eligibility_decision_path, html: { class: 'form-horizontal' }) do |f| %>
-
-  <%= f.input :email %>
-
-  <div class="form-actions">
-    <%= f.button :submit, value: 'Send', class: 'btn-primary' %>
-  </div>
-
-<% end %>
+<%= render "form" %>

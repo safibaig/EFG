@@ -1,0 +1,5 @@
+<ol class="ineligibility-reasons">
+  <% loan.ineligibility_reasons.each do |ineligibility_reason| %>
+    <li><%= ineligibility_reason.reason.html_safe %></li>
+  <% end %>
+</ol>
