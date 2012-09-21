@@ -7,6 +7,7 @@ class EligibilityDecisionEmail
   attr_accessor :email, :loan
 
   validates_presence_of :email, :loan
+  validates_format_of :email, with: Devise.email_regexp
 
   def initialize(loan, params = {})
     @loan = loan

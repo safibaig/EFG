@@ -14,6 +14,17 @@ describe EligibilityDecisionEmail do
       eligibility_decision_email.should_not be_valid
     end
 
+    it "must have a valid email address" do
+      eligibility_decision_email.email = "wrong"
+      eligibility_decision_email.should_not be_valid
+      eligibility_decision_email.email = "wrong@wrong"
+      eligibility_decision_email.should_not be_valid
+      eligibility_decision_email.email = "@wrong.com"
+      eligibility_decision_email.should_not be_valid
+      eligibility_decision_email.email = "right@right.com"
+      eligibility_decision_email.should be_valid
+    end
+
     it "must have a loan" do
       eligibility_decision_email.loan = nil
       eligibility_decision_email.should_not be_valid
