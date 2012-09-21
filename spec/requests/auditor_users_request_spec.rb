@@ -92,15 +92,11 @@ describe 'AuditorUser management' do
     let!(:user) { FactoryGirl.create(:auditor_user, first_name: 'Bob', last_name: 'Flemming', locked: true) }
 
     it do
-      # pre-condition
-      user.should be_locked
-
       visit root_path
       click_link 'Manage Auditor Users'
       click_link 'Bob Flemming'
 
-      uncheck 'Locked'
-      click_button 'Update Auditor User'
+      click_button 'Unlock User'
 
       user.reload.should_not be_locked
     end

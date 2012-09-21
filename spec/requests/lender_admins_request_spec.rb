@@ -99,15 +99,11 @@ describe 'LenderAdmin management' do
     let!(:user) { FactoryGirl.create(:lender_admin, first_name: 'Bob', last_name: 'Flemming', locked: true) }
 
     it do
-      # pre-condition
-      user.should be_locked
-
       visit root_path
       click_link 'Manage Lender Admins'
       click_link 'Bob Flemming'
 
-      uncheck 'Locked'
-      click_button 'Update Lender Admin'
+      click_button 'Unlock User'
 
       user.reload.should_not be_locked
     end

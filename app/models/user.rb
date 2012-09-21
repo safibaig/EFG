@@ -51,6 +51,10 @@ class User < ActiveRecord::Base
     super if email.present?
   end
 
+  def unlock!
+    update_attribute :locked, false
+  end
+
   # custom account locking adapted from Devise lockable
   # - if user successfully authenticates, let them sign in
   #   regardless of whether they are locked (controller filter prevents access to anything)

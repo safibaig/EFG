@@ -92,15 +92,11 @@ describe 'PremiumCollectorUser management' do
     let!(:user) { FactoryGirl.create(:premium_collector_user, first_name: 'Bob', last_name: 'Flemming', locked: true) }
 
     it do
-      # pre-condition
-      user.should be_locked
-
       visit root_path
       click_link 'Manage Premium Collector Users'
       click_link 'Bob Flemming'
 
-      uncheck 'Locked'
-      click_button 'Update Premium Collector User'
+      click_button 'Unlock User'
 
       user.reload.should_not be_locked
     end

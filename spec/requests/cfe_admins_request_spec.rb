@@ -95,8 +95,7 @@ describe 'Managing CfeAdmins as CfeAdmin' do
       click_link 'Manage CfE Admins'
       click_link 'Bob Flemming'
 
-      uncheck 'Locked'
-      click_button 'Update CfE Admin'
+      click_button 'Unlock User'
 
       user.reload.should_not be_locked
     end

@@ -1,9 +1,8 @@
 class CfeUsersController < ApplicationController
   before_filter :verify_create_permission, only: [:new, :create]
-  before_filter :verify_update_permission, only: [:edit, :update, :reset_password]
+  before_filter :verify_update_permission, only: [:edit, :update, :reset_password, :unlock]
   before_filter :verify_view_permission, only: [:index, :show]
-
-  before_filter :find_user, only: [:show, :edit, :update, :reset_password]
+  before_filter :find_user, only: [:show, :edit, :update, :reset_password, :unlock]
 
   def index
     @users = CfeUser.paginate(per_page: 100, page: params[:page])
@@ -36,7 +35,6 @@ class CfeUsersController < ApplicationController
 
   def update
     @user.attributes = params[:cfe_user]
-    @user.locked = params[:cfe_user][:locked]
     @user.disabled = params[:cfe_user][:disabled]
     @user.modified_by = current_user
 
@@ -52,6 +50,11 @@ class CfeUsersController < ApplicationController
     render :edit and return unless @user.valid?
     @user.send_new_account_notification
     redirect_to :back, notice: I18n.t('manage_users.reset_password_sent', email: @user.email)
+  end
+
+  def unlock
+    @user.unlock!
+    redirect_to cfe_user_url(@user)
   end
 
   private

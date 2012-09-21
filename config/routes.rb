@@ -76,6 +76,7 @@ EFG::Application.routes.draw do
       resources resource do
         member do
           post :reset_password
+          post :unlock
         end
       end
     end

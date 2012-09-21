@@ -5,9 +5,14 @@
   <%= f.input :last_name %>
   <%= f.input :email %>
   <%= f.input(:disabled, wrapper: :checkbox) unless @user.new_record? %>
-  <%= f.input(:locked, wrapper: :checkbox) unless @user.new_record? || !@user.locked? %>
 
   <div class="form-actions">
     <%= f.button :submit, class: 'btn btn-primary', value: @user.new_record? ? 'Create CfE Admin' : 'Update CfE Admin' %>
   </div>
+<% end %>
+
+<% if @user.persisted? && @user.locked? %>
+  <%= simple_form_for @user, url: unlock_cfe_admin_path(@user), method: :post do |f| %>
+    <%= f.button :submit, value: 'Unlock User' %>
+  <% end %>
 <% end %>

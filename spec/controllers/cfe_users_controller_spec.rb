@@ -40,8 +40,8 @@ describe CfeUsersController do
   end
 
   describe '#create' do
-    def dispatch(params = {})
-      post :create, params
+    def dispatch
+      post :create
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
@@ -68,8 +68,8 @@ describe CfeUsersController do
   describe '#update' do
     let(:cfe_user) { FactoryGirl.create(:cfe_user) }
 
-    def dispatch(params = {})
-      put :update, { id: cfe_user.id }.merge(params)
+    def dispatch
+      put :update, id: cfe_user.id
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
@@ -80,10 +80,24 @@ describe CfeUsersController do
   end
 
   describe '#reset_password' do
-    let(:cfe_admin) { FactoryGirl.create(:cfe_admin) }
+    let(:cfe_user) { FactoryGirl.create(:cfe_user) }
 
-    def dispatch(params = {})
-      post :reset_password, { id: cfe_admin.id }.merge(params)
+    def dispatch
+      post :reset_password, id: cfe_user.id
+    end
+
+    it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
+    it_behaves_like 'LenderUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
+  end
+
+  describe '#unlock' do
+    let(:cfe_user) { FactoryGirl.create(:cfe_user) }
+
+    def dispatch
+      post :unlock, id: cfe_user.id
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
