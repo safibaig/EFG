@@ -18,7 +18,7 @@ describe 'eligibility checks' do
 
     loan = Loan.last
 
-    current_url.should == loan_eligible_url(loan.id)
+    current_url.should == loan_eligibility_decision_url(loan.id)
 
     loan.state.should == Loan::Eligible
     loan.viable_proposition.should be_true
