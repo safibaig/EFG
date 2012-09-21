@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
 
   MAXIMUM_LOGIN_ATTEMPTS = 3
 
-  devise :database_authenticatable, :recoverable, :trackable, :timeoutable, :authenticatable
+  devise :database_authenticatable, :recoverable, :trackable, :timeoutable, :authenticatable, :encryptable
 
   belongs_to :created_by, class_name: "User", foreign_key: "created_by_id"
   belongs_to :modified_by, class_name: "User", foreign_key: "modified_by_id"

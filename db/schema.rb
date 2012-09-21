@@ -518,6 +518,7 @@ ActiveRecord::Schema.define(:version => 20120927092910) do
     t.string   "type"
     t.integer  "failed_attempts",        :default => 0
     t.string   "legacy_email"
+    t.string   "password_salt"
   end
 
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
