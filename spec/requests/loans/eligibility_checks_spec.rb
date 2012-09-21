@@ -18,7 +18,7 @@ describe 'eligibility checks' do
 
     loan = Loan.last
 
-    current_path.should == loan_path(loan)
+    current_url.should == loan_eligible_url(loan.id)
 
     loan.state.should == Loan::Eligible
     loan.viable_proposition.should be_true
@@ -41,6 +41,17 @@ describe 'eligibility checks' do
     loan.modified_by.should == user
 
     should_log_loan_state_change(loan, Loan::Eligible, 1)
+
+    # email eligibility decision
+
+    fill_in :eligibility_decision_email, with: 'joe@example.com'
+    click_button "Send"
+
+    emails = ActionMailer::Base.deliveries
+    emails.size.should == 1
+    emails.to.should == [ 'joe@example.com' ]
+
+    current_path.should == loan_path(loan)
   end
 
   it 'does not create an invalid loan' do
@@ -60,7 +71,7 @@ describe 'eligibility checks' do
 
     fill_in_valid_details(lender)
     # make loan fail eligibility check
-    fill_in(:amount, '6000000')
+    fill_in :loan_eligibility_check_amount, with: '6000000'
 
     expect {
       click_button 'Check'
@@ -78,24 +89,20 @@ describe 'eligibility checks' do
       choose "loan_eligibility_check_#{attribute}_#{value}"
     end
 
-    def fill_in(attribute, value)
-      page.fill_in "loan_eligibility_check_#{attribute}", with: value
-    end
-
     def fill_in_duration_input(attribute, years, months)
-      fill_in "#{attribute}_years", years
-      fill_in "#{attribute}_months", months
+      fill_in "loan_eligibility_check_#{attribute}_years", with: years
+      fill_in "loan_eligibility_check_#{attribute}_months", with: months
     end
 
     def fill_in_valid_details(lender)
       choose_radio_button 'viable_proposition', true
       choose_radio_button 'would_you_lend', true
       choose_radio_button 'collateral_exhausted', true
-      fill_in 'amount', '50000.89'
+      fill_in 'loan_eligibility_check_amount', with: '50000.89'
       select lender.lending_limits.first.name, from: 'loan_eligibility_check_lending_limit_id'
       fill_in_duration_input 'repayment_duration', 2, 6
-      fill_in 'turnover', '1234567.89'
-      fill_in 'trading_date', '31/1/2012'
+      fill_in 'loan_eligibility_check_turnover', with: '1234567.89'
+      fill_in 'loan_eligibility_check_trading_date', with: '31/1/2012'
       select sic_code.code, from: 'loan_eligibility_check_sic_code'
       select LoanCategory.find(2).name, from: 'loan_eligibility_check_loan_category_id'
       select LoanReason.active.first.name, from: 'loan_eligibility_check_reason_id'
