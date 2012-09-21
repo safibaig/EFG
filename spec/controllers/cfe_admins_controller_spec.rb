@@ -7,6 +7,7 @@ describe CfeAdminsController do
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeAdmin-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'LenderUser-restricted controller'
@@ -21,6 +22,7 @@ describe CfeAdminsController do
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeAdmin-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'LenderUser-restricted controller'
@@ -33,6 +35,7 @@ describe CfeAdminsController do
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeAdmin-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'LenderUser-restricted controller'
@@ -45,6 +48,7 @@ describe CfeAdminsController do
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeAdmin-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'LenderUser-restricted controller'
@@ -59,6 +63,7 @@ describe CfeAdminsController do
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeAdmin-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'LenderUser-restricted controller'
@@ -73,6 +78,7 @@ describe CfeAdminsController do
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeAdmin-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'LenderUser-restricted controller'
@@ -87,6 +93,7 @@ describe CfeAdminsController do
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeAdmin-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'LenderUser-restricted controller'
