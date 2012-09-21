@@ -43,9 +43,9 @@ describe LoanStateChange do
       }.to raise_error(ActiveModel::StrictValidationFailed)
     end
 
-    it 'strictly requires a modified_by' do
+    it 'strictly requires a modified_by_id' do
       expect {
-        loan_state_change.modified_by = nil
+        loan_state_change.modified_by_id = nil
         loan_state_change.valid?
       }.to raise_error(ActiveModel::StrictValidationFailed)
     end
