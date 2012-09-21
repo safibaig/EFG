@@ -26,7 +26,7 @@ describe AdminAuditImporter do
       admin_audits = AdminAudit.all
       admin_audits.length.should == 17
 
-      admin_audits[0].action.should == 'Add Lender Lending limit'
+      admin_audits[0].action.should == AdminAudit::LendingLimitCreated
       admin_audits[0].auditable.should == lending_limit1
       admin_audits[0].legacy_id.should == 805
       admin_audits[0].legacy_object_id.should == '324'
@@ -35,7 +35,7 @@ describe AdminAuditImporter do
       admin_audits[0].modified_by.should == user1
       admin_audits[0].modified_on.should == Date.new(2007, 4, 24)
 
-      admin_audits[1].action.should == 'Edit Lending limit'
+      admin_audits[1].action.should == AdminAudit::LendingLimitEdited
       admin_audits[1].auditable.should == lending_limit2
       admin_audits[1].legacy_id.should == 963
       admin_audits[1].legacy_object_id.should == '164'
@@ -109,7 +109,7 @@ describe AdminAuditImporter do
       admin_audits[8].modified_by.should == user3
       admin_audits[8].modified_on.should == Date.new(2007, 4, 27)
 
-      admin_audits[9].action.should == 'Remove Lender Lending limit'
+      admin_audits[9].action.should == AdminAudit::LendingLimitRemoved
       admin_audits[9].auditable.should == lending_limit3
       admin_audits[9].legacy_id.should == 665
       admin_audits[9].legacy_object_id.should == '205'

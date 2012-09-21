@@ -19,6 +19,7 @@ class LendingLimitsController < ApplicationController
     @lending_limit.modified_by = current_user
 
     if @lending_limit.save
+      AdminAudit.log(AdminAudit::LendingLimitCreated, @lending_limit, current_user)
       redirect_to lender_lending_limits_url(@lender)
     else
       render :new
@@ -35,6 +36,7 @@ class LendingLimitsController < ApplicationController
     @lending_limit.modified_by = current_user
 
     if @lending_limit.save
+      AdminAudit.log(AdminAudit::LendingLimitEdited, @lending_limit, current_user)
       redirect_to lender_lending_limits_url(@lender)
     else
       render :edit
@@ -45,6 +47,7 @@ class LendingLimitsController < ApplicationController
     @lending_limit = @lender.lending_limits.find(params[:id])
     @lending_limit.modified_by = current_user
     @lending_limit.deactivate!
+    AdminAudit.log(AdminAudit::LendingLimitRemoved, @lending_limit, current_user)
     redirect_to lender_lending_limits_url(@lender)
   end
 
