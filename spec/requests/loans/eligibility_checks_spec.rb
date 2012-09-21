@@ -4,7 +4,11 @@ describe 'eligibility checks' do
   let(:lender) { FactoryGirl.create(:lender, :with_lending_limit) }
   let(:user) { FactoryGirl.create(:lender_user, lender: lender) }
   let!(:sic_code) { FactoryGirl.create(:sic_code) }
-  before { login_as(user, scope: :user) }
+
+  before(:each) do
+    ActionMailer::Base.deliveries.clear
+    login_as(user, scope: :user)
+  end
 
   it 'creates a loan from valid eligibility values' do
     visit root_path
@@ -94,7 +98,7 @@ describe 'eligibility checks' do
     emails = ActionMailer::Base.deliveries
     emails.size.should == 1
     emails.first.to.should == [ 'joe@example.com' ]
-    emails.first.body.should match(/#{loan.ineligibility_reasons.first.reason}/)
+    emails.first.body.should include(loan.ineligibility_reasons.first.reason)
 
     current_path.should == loan_path(loan)
   end

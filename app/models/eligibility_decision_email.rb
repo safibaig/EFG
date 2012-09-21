@@ -4,12 +4,21 @@ class EligibilityDecisionEmail
   include ActiveModel::Conversion
   include ActiveModel::Validations
 
-  attr_accessor :email
+  attr_accessor :email, :loan
 
-  validates_presence_of :email
+  validates_presence_of :email, :loan
 
-  def initialize(params = {})
+  def initialize(loan, params = {})
+    @loan = loan
     @email = params[:email]
+  end
+
+  def deliver_email
+    if loan.state == Loan::Eligible
+      LoanEligibilityDecisionMailer.loan_eligible_email(email, loan).deliver
+    elsif loan.state == Loan::Rejected
+      LoanEligibilityDecisionMailer.loan_ineligible_email(email, loan).deliver
+    end
   end
 
   def persisted?

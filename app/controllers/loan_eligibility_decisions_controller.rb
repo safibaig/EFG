@@ -3,14 +3,15 @@ class LoanEligibilityDecisionsController < ApplicationController
   before_filter :find_loan
 
   def show
-    @eligibility_decision_email = EligibilityDecisionEmail.new
+    @eligibility_decision_email = EligibilityDecisionEmail.new(@loan)
     render @loan.state
   end
 
   def email
-    @eligibility_decision_email = EligibilityDecisionEmail.new(params[:eligibility_decision_email])
+    @eligibility_decision_email = EligibilityDecisionEmail.new(@loan, params[:eligibility_decision_email])
     if @eligibility_decision_email.valid?
-      # send email
+      @eligibility_decision_email.deliver_email
+      redirect_to loan_path(@loan)
     else
       render :show
     end
