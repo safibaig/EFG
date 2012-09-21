@@ -29,6 +29,12 @@ EFG::Application.routes.draw do
       get :audit_log
     end
 
+    resource :eligibility_decision, only: [:show], controller: 'loan_eligibility_decisions' do
+      member do
+        post :email
+      end
+    end
+
     resource :cancel, only: [:new, :create], controller: 'loan_cancels'
     resource :entry, only: [:new, :create], controller: 'loan_entries'
     resource :offer, only: [:new, :create], controller: 'loan_offers'

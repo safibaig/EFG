@@ -1,0 +1,13 @@
+<h1>Loan application is ineligible for EFG</h1>
+
+<p>Loan reference is: <strong><%= @loan.reference %></strong></p>
+
+<p>Sorry, but based on the information that has been provided the application has been rejected and is not eligible for an EFG Guarantee.</p>
+
+<p>The information within this email highlights the areas where the application has been rejected. For further guidance regarding eligibility, please see the EFG Scheme Manual.</p>
+
+<p>The reasons are as follows:</p>
+
+<%= render "loan_eligibility_decisions/ineligibility_reasons", loan: @loan %>
+
+<p>A new charge may not not be taken over a principal private residence in connection with providing an EFG-backed facility.</p>

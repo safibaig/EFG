@@ -24,9 +24,5 @@
 <% # TODO: Can a CfeUser view loan rejection details? %>
 <% if @loan.state == Loan::Rejected %>
   <h3>Rejection Reasons</h3>
-  <ol>
-    <% @loan.ineligibility_reasons.each do |ineligibility_reason| %>
-      <li><%= ineligibility_reason.reason %></li>
-    <% end %>
-  </ol>
+  <%= render "loan_eligibility_decisions/ineligibility_reasons", loan: @loan %>
 <% end %>
