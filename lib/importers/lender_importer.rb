@@ -27,4 +27,29 @@ class LenderImporter < BaseImporter
       "LOAN_SCHEME"                 => :loan_scheme
     }
   end
+
+  def build_attributes
+    row.each do |field_name, value|
+      case field_name
+      when 'ORGANISATION_REFERENCE_CODE'
+        value = unique_organisation_reference_code(value)
+      else
+        value
+      end
+
+      attributes[self.class.field_mapping[field_name]] = value
+    end
+  end
+
+  def self.organisation_reference_codes
+    @organisation_reference_codes ||= {}
+  end
+
+  # add incrementing integer to duplicate organisation reference codes
+  def unique_organisation_reference_code(ref_code)
+    self.class.organisation_reference_codes[ref_code.downcase] ||= 0
+    ref_code_count = self.class.organisation_reference_codes[ref_code.downcase] += 1
+    ref_code_count > 1 ? ref_code + ref_code_count.to_s : ref_code
+  end
+
 end

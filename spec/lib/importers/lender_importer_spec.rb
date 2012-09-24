@@ -7,6 +7,7 @@ describe LenderImporter do
 
   describe ".import" do
     def dispatch
+      LenderImporter.instance_variable_set(:@organisation_reference_codes, nil)
       LenderImporter.csv_path = csv_fixture_path
       LenderImporter.import
     end
@@ -14,13 +15,13 @@ describe LenderImporter do
     it "should create new records" do
       expect {
         dispatch
-      }.to change(Lender, :count).by(1)
+      }.to change(Lender, :count).by(3)
     end
 
     it "should import data correctly" do
       dispatch
 
-      lender = Lender.last
+      lender = Lender.first
       lender.legacy_id.should == 465
       lender.name.should == "ACME"
       lender.created_at.should == Time.gm(2010, 4, 1)
@@ -43,6 +44,16 @@ describe LenderImporter do
       lender.main_point_of_contact_user.should == "CC0312A05920C0BC0204CB65162AD1B9F5C94033"
       lender.loan_scheme.should == "E"
     end
+
+    it "should ensure organisation reference code is unique" do
+      dispatch
+
+      lenders = Lender.all
+      lenders[0].organisation_reference_code.should == "LC"
+      lenders[1].organisation_reference_code.should == "LC2"
+      lenders[2].organisation_reference_code.should == "LC3"
+    end
+
   end
 
 end
