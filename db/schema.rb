@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120919141355) do
+ActiveRecord::Schema.define(:version => 20120924102014) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -108,6 +108,7 @@ ActiveRecord::Schema.define(:version => 20120919141355) do
   end
 
   add_index "lenders", ["legacy_id"], :name => "index_lenders_on_legacy_id", :unique => true
+  add_index "lenders", ["organisation_reference_code"], :name => "index_lenders_on_organisation_reference_code", :unique => true
 
   create_table "lending_limits", :force => true do |t|
     t.integer  "lender_id",                                                                            :null => false

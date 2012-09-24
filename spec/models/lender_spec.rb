@@ -18,6 +18,12 @@ describe Lender do
       lender.should_not be_valid
     end
 
+    it 'requires a unique organisation_reference_code' do
+      lender.save!
+      new_lender = FactoryGirl.build(:lender, organisation_reference_code: lender.organisation_reference_code)
+      new_lender.should_not be_valid
+    end
+
     it 'requires high_volume' do
       lender.high_volume = ''
       lender.should_not be_valid

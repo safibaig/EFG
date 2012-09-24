@@ -15,6 +15,7 @@ class Lender < ActiveRecord::Base
   validates_inclusion_of :high_volume, in: [true, false]
   validates_presence_of :name
   validates_presence_of :organisation_reference_code
+  validates_uniqueness_of :organisation_reference_code
   validates_presence_of :primary_contact_email
   validates_presence_of :primary_contact_name
   validates_presence_of :primary_contact_phone
