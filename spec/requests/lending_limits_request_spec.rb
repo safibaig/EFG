@@ -40,6 +40,12 @@ describe 'LendingLimits' do
       lending_limit.allocation.should == Money.new(5_000_000_00)
       lending_limit.guarantee_rate.should == 75
       lending_limit.premium_rate.should == 2
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::LendingLimitCreated
+      admin_audit.auditable.should == lending_limit
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
     end
   end
 
@@ -70,6 +76,12 @@ describe 'LendingLimits' do
       lending_limit.active.should == true
       lending_limit.name.should == 'Updated'
       lending_limit.allocation.should == Money.new(9_999_99)
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::LendingLimitEdited
+      admin_audit.auditable.should == lending_limit
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
     end
   end
 
@@ -89,6 +101,12 @@ describe 'LendingLimits' do
       lending_limit.reload
       lending_limit.active.should == false
       lending_limit.modified_by.should == current_user
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::LendingLimitRemoved
+      admin_audit.auditable.should == lending_limit
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
     end
   end
 

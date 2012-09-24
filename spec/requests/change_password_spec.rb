@@ -23,6 +23,12 @@ describe 'Change password' do
       fill_in "#{user_type}_password_confirmation", with: 'new-password'
       click_button 'Update Password'
 
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::UserPasswordChanged
+      admin_audit.auditable.should == current_user
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
+
       page.should have_content('Your password has been successfully changed')
       page.current_url.should == root_url
 

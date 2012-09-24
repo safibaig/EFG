@@ -34,6 +34,7 @@ class ApplicationController < ActionController::Base
         modified_by: current_user,
         password: current_user.encrypted_password
       )
+      AdminAudit.log(AdminAudit::UserInitialLogin, current_user, current_user)
     end
   end
 

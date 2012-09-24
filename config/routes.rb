@@ -84,7 +84,10 @@ EFG::Application.routes.draw do
     %w(auditor_users cfe_admins cfe_users lender_admins lender_users premium_collector_users).each do |resource|
       resources resource do
         member do
+          post :disable
+          post :enable
           post :reset_password
+          post :unlock
         end
       end
     end

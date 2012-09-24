@@ -40,8 +40,8 @@ describe PremiumCollectorUsersController do
   end
 
   describe '#create' do
-    def dispatch(params = {})
-      post :create, params
+    def dispatch
+      post :create
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
@@ -68,8 +68,8 @@ describe PremiumCollectorUsersController do
   describe '#update' do
     let(:premium_collector_user) { FactoryGirl.create(:premium_collector_user) }
 
-    def dispatch(params = {})
-      put :update, { id: premium_collector_user.id }.merge(params)
+    def dispatch
+      put :update, id: premium_collector_user.id
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
@@ -82,8 +82,50 @@ describe PremiumCollectorUsersController do
   describe '#reset_password' do
     let(:premium_collector_user) { FactoryGirl.create(:premium_collector_user) }
 
-    def dispatch(params = {})
-      post :reset_password, { id: premium_collector_user.id }.merge(params)
+    def dispatch
+      post :reset_password, id: premium_collector_user.id
+    end
+
+    it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
+    it_behaves_like 'LenderUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
+  end
+
+  describe '#unlock' do
+    let(:premium_collector_user) { FactoryGirl.create(:premium_collector_user) }
+
+    def dispatch
+      post :unlock, id: premium_collector_user.id
+    end
+
+    it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
+    it_behaves_like 'LenderUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
+  end
+
+  describe '#disable' do
+    let(:premium_collector_user) { FactoryGirl.create(:premium_collector_user) }
+
+    def dispatch
+      post :disable, id: premium_collector_user.id
+    end
+
+    it_behaves_like 'AuditorUser-restricted controller'
+    it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'LenderAdmin-restricted controller'
+    it_behaves_like 'LenderUser-restricted controller'
+    it_behaves_like 'PremiumCollectorUser-restricted controller'
+  end
+
+  describe '#enable' do
+    let(:premium_collector_user) { FactoryGirl.create(:premium_collector_user) }
+
+    def dispatch
+      post :enable, id: premium_collector_user.id
     end
 
     it_behaves_like 'AuditorUser-restricted controller'

@@ -13,6 +13,23 @@
 
 ActiveRecord::Schema.define(:version => 20120919141355) do
 
+  create_table "admin_audits", :force => true do |t|
+    t.string   "auditable_type",        :null => false
+    t.integer  "auditable_id",          :null => false
+    t.integer  "modified_by_id",        :null => false
+    t.date     "modified_on",           :null => false
+    t.string   "action",                :null => false
+    t.integer  "legacy_id"
+    t.string   "legacy_object_id"
+    t.string   "legacy_object_type"
+    t.integer  "legacy_object_version"
+    t.string   "legacy_modified_by"
+    t.string   "ar_timestamp"
+    t.string   "ar_insert_timestamp"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
   create_table "ded_codes", :force => true do |t|
     t.string   "legacy_id"
     t.string   "group_description"

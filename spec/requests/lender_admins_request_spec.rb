@@ -45,9 +45,15 @@ describe 'LenderAdmin management' do
       page.should have_content('Bob Flemming')
       page.should have_content('bob.flemming@example.com')
 
-      user = LenderAdmin.last
+      user = LenderAdmin.last!
       user.created_by.should == current_user
       user.modified_by.should == current_user
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::UserCreated
+      admin_audit.auditable.should == user
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
 
       # verify email is sent to user
       emails = ActionMailer::Base.deliveries
@@ -70,16 +76,20 @@ describe 'LenderAdmin management' do
       fill_in 'first_name', 'Bill'
       fill_in 'last_name', 'Example'
       fill_in 'email', 'bill.example@example.com'
-      check 'lender_admin_disabled'
 
       click_button 'Update Lender Admin'
 
-      page.should have_content('Bankers')
-      page.should have_content('Bill Example')
-      page.should have_content('bill.example@example.com')
+      user.reload
+      user.email.should == 'bill.example@example.com'
+      user.first_name.should == 'Bill'
+      user.last_name.should == 'Example'
+      user.modified_by.should == current_user
 
-      user.reload.modified_by.should == current_user
-      user.should be_disabled
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::UserEdited
+      admin_audit.auditable.should == user
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
     end
   end
 
@@ -87,17 +97,56 @@ describe 'LenderAdmin management' do
     let!(:user) { FactoryGirl.create(:lender_admin, first_name: 'Bob', last_name: 'Flemming', locked: true) }
 
     it do
-      # pre-condition
-      user.should be_locked
-
       visit root_path
       click_link 'Manage Lender Admins'
       click_link 'Bob Flemming'
-
-      uncheck 'Locked'
-      click_button 'Update Lender Admin'
+      click_button 'Unlock User'
 
       user.reload.should_not be_locked
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::UserUnlocked
+      admin_audit.auditable.should == user
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
+    end
+  end
+
+  describe 'disabling the user' do
+    let!(:user) { FactoryGirl.create(:lender_admin, first_name: 'Bob', last_name: 'Flemming') }
+
+    it do
+      visit root_path
+      click_link 'Manage Lender Admins'
+      click_link 'Bob Flemming'
+      click_button 'Disable User'
+
+      user.reload.should be_disabled
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::UserDisabled
+      admin_audit.auditable.should == user
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
+    end
+  end
+
+  describe 'enabling the user' do
+    let!(:user) { FactoryGirl.create(:lender_admin, first_name: 'Bob', last_name: 'Flemming', disabled: true) }
+
+    it do
+      visit root_path
+      click_link 'Manage Lender Admins'
+      click_link 'Bob Flemming'
+      click_button 'Enable User'
+
+      user.reload.should_not be_disabled
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::UserEnabled
+      admin_audit.auditable.should == user
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
     end
   end
 

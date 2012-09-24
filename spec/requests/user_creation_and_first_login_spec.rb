@@ -20,9 +20,15 @@ describe 'User creation and first login' do
     fill_in 'lender_admin_email', with: 'bob.flemming@example.com'
     click_button 'Create Lender Admin'
 
-    click_link "Logout"
+    lender_admin = LenderAdmin.last!
 
-    lender_admin = LenderAdmin.last
+    admin_audit = AdminAudit.last!
+    admin_audit.action.should == AdminAudit::UserCreated
+    admin_audit.auditable.should == lender_admin
+    admin_audit.modified_by.should == cfe_admin
+    admin_audit.modified_on.should == Date.current
+
+    click_link "Logout"
 
     # try to login as new lender admin before password is set
     visit root_path
@@ -59,6 +65,12 @@ describe 'User creation and first login' do
     click_button 'Change Password'
 
     page.should have_content('Your password was set successfully. You are now signed in.')
+
+    admin_audit = AdminAudit.last!
+    admin_audit.action.should == AdminAudit::UserInitialLogin
+    admin_audit.auditable.should == lender_admin
+    admin_audit.modified_by.should == lender_admin
+    admin_audit.modified_on.should == Date.current
 
     # user logs out and logs in again with new password
     click_link "Logout"

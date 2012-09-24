@@ -94,6 +94,14 @@ class BaseImporter
     @lender_id_from_legacy_id.fetch(legacy_id.to_s)
   end
 
+  def self.lending_limit_id_from_legacy_id(legacy_id)
+    @lending_limit_id_from_legacy_id ||= Hash[LendingLimit.select('id, legacy_id').map { |lending_limit|
+      [lending_limit.legacy_id.to_s, lending_limit.id]
+    }]
+
+    @lending_limit_id_from_legacy_id.fetch(legacy_id.to_s)
+  end
+
   def self.loan_id_from_legacy_id(legacy_id)
     @loan_id_from_legacy_id ||= begin
       {}.tap { |lookup|
