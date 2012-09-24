@@ -5,7 +5,7 @@ FactoryGirl.define do
     sequence(:name) { |n| "Little Tinkers #{n}" }
     association :created_by, factory: :cfe_admin
     association :modified_by, factory: :cfe_admin
-    organisation_reference_code 'LT'
+    sequence(:organisation_reference_code) { |n| "LT#{n}" }
     primary_contact_name 'Bob Flemming'
     primary_contact_phone '0123456789'
     primary_contact_email 'bob@example.com'

@@ -15,10 +15,6 @@ describe StateAidLetter do
 
   describe "#render" do
 
-    it "should contain a placeholder header" do
-      pdf_content.should include(I18n.t('pdfs.letterhead_placeholder').upcase)
-    end
-
     it "should contain address fields" do
       pdf_content.should include('Name')
       pdf_content.should include('Address')
