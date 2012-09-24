@@ -14,7 +14,7 @@ class StateAidLetter < Prawn::Document
   private
 
   def build
-    letterhead_placeholder
+    letterhead
     address
     title
     loan_details
@@ -23,10 +23,15 @@ class StateAidLetter < Prawn::Document
     body_text2
   end
 
-  def letterhead_placeholder
-    move_down 20
-    text I18n.t('pdfs.letterhead_placeholder').upcase, style: :bold
+  def letterhead
+    if File.exists?(logo_image_path)
+      image logo_image_path, height: 50
+    end
     move_down 40
+  end
+
+  def logo_image_path
+    Rails.root + "public/system/logos/#{@loan.lender.organisation_reference_code.upcase}.jpg"
   end
 
   def address
