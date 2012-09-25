@@ -7,6 +7,12 @@ class ApplicationController < ActionController::Base
   before_filter :redirect_disabled_user
   before_filter :redirect_locked_user
 
+  before_filter do
+    headers["X-Frame-Options"] = "SAMEORIGIN"
+    headers["X-Content-Type-Options"] = "nosniff"
+    headers["X-XSS-Protection"] = "1; mode=block"
+  end
+
   helper_method :current_lender
 
   def current_lender
