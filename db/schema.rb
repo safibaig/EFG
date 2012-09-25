@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120924102014) do
+ActiveRecord::Schema.define(:version => 20120925114835) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -508,6 +508,7 @@ ActiveRecord::Schema.define(:version => 20120924102014) do
     t.string   "type"
     t.integer  "failed_attempts",        :default => 0
     t.string   "legacy_email"
+    t.boolean  "expert",                 :default => false, :null => false
   end
 
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true

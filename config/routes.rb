@@ -6,6 +6,10 @@ EFG::Application.routes.draw do
 
   root to: 'dashboard#show'
 
+  namespace :help do
+    resource :ask_cfe, controller: :ask_cfe, only: [:create, :new]
+  end
+
   resources :lenders do
     member do
       post :activate

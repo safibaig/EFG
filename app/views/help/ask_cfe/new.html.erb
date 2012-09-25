@@ -1,0 +1,22 @@
+<div class="page-header">
+  <h1>Ask CfE</h1>
+</div>
+
+<p>Please fill in your support request below and we'll respond as soon as possible.</p>
+
+<hr>
+
+<%= simple_form_for @ask_cfe, url: help_ask_cfe_path, html: { class: 'form-horizontal form-ask-cfe' } do |f| %>
+  <div class="control-group to">
+    <div class="control-label">To</div>
+    <div class="controls">
+      <span class="badge badge-info">CfE Support</span>
+    </div>
+  </div>
+
+  <%= f.input :message, as: :text, input_html: { cols: 80, rows: 8 } %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>
+  </div>
+<% end %>

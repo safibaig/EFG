@@ -273,3 +273,6 @@ en:
 
       support_request:
         message: Your message
+
+      ask_cfe:
+        message: Your message
