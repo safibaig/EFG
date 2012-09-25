@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120924102014) do
+ActiveRecord::Schema.define(:version => 20120925163436) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -323,7 +323,7 @@ ActiveRecord::Schema.define(:version => 20120924102014) do
     t.integer  "dti_break_costs",                     :limit => 8
     t.decimal  "guarantee_rate",                                    :precision => 16, :scale => 2
     t.decimal  "premium_rate",                                      :precision => 16, :scale => 2
-    t.boolean  "legacy_small_loan"
+    t.boolean  "legacy_small_loan",                                                                :default => false, :null => false
     t.integer  "next_in_realise_seq"
     t.integer  "next_in_recover_seq"
     t.date     "recovery_on"
