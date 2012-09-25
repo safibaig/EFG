@@ -1,7 +1,6 @@
 FactoryGirl.define do
   factory :lender do
     can_use_add_cap false
-    high_volume true
     sequence(:name) { |n| "Little Tinkers #{n}" }
     association :created_by, factory: :cfe_admin
     association :modified_by, factory: :cfe_admin

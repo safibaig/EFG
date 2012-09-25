@@ -24,11 +24,6 @@ describe Lender do
       new_lender.should_not be_valid
     end
 
-    it 'requires high_volume' do
-      lender.high_volume = ''
-      lender.should_not be_valid
-    end
-
     it 'requires a primary_contact_name' do
       lender.primary_contact_name = ''
       lender.should_not be_valid

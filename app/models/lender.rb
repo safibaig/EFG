@@ -7,12 +7,11 @@ class Lender < ActiveRecord::Base
   has_many :lender_users
   has_many :loans
 
-  attr_accessible :can_use_add_cap, :high_volume, :name,
+  attr_accessible :can_use_add_cap, :name,
     :organisation_reference_code, :primary_contact_email,
     :primary_contact_name, :primary_contact_phone
 
   validates_inclusion_of :can_use_add_cap, in: [true, false]
-  validates_inclusion_of :high_volume, in: [true, false]
   validates_presence_of :name
   validates_presence_of :organisation_reference_code
   validates_uniqueness_of :organisation_reference_code
