@@ -295,6 +295,13 @@ describe Loan do
       loan.loan_security_types = [ nil ]
       loan.loan_security_types.should be_empty
     end
+
+    it "should remove existing loan securities" do
+      loan.loan_security_types = [ security_type1.id ]
+      loan.loan_security_types.should == [ security_type1 ]
+      loan.loan_security_types = [ security_type2.id ]
+      loan.loan_security_types.should == [ security_type2 ]
+    end
   end
 
   describe "#guarantee_rate" do

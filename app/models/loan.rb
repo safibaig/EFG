@@ -167,8 +167,9 @@ class Loan < ActiveRecord::Base
   end
 
   def loan_security_types=(security_type_ids)
+    loan_securities.clear
     security_type_ids.reject(&:blank?).each do |id|
-      self.loan_securities.build(loan_security_type_id: id)
+      loan_securities.build(loan_security_type_id: id)
     end
   end
 
