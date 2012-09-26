@@ -217,4 +217,22 @@ describe LenderUserPermissions do
       it { refute user.can_view?(AskCfe) }
     end
   end
+
+  context 'AskAnExpert' do
+    context 'as an expert' do
+      before do
+        user.expert = true
+      end
+
+      it { refute user.can_create?(AskAnExpert) }
+      it { refute user.can_update?(AskAnExpert) }
+      it { refute user.can_view?(AskAnExpert) }
+    end
+
+    context 'as a non-expert' do
+      it { assert user.can_create?(AskAnExpert) }
+      it { refute user.can_update?(AskAnExpert) }
+      it { refute user.can_view?(AskAnExpert) }
+    end
+  end
 end

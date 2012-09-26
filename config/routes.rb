@@ -7,6 +7,7 @@ EFG::Application.routes.draw do
   root to: 'dashboard#show'
 
   namespace :help do
+    resource :ask_an_expert, controller: :ask_an_expert, only: [:create, :new]
     resource :ask_cfe, controller: :ask_cfe, only: [:create, :new]
   end
 

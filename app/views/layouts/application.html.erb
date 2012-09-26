@@ -63,6 +63,9 @@
                   <% if current_user.can_create?(AskCfe) %>
                     <li><%= link_to 'Ask CfE', new_help_ask_cfe_path %></li>
                   <% end %>
+                  <% if current_user.can_create?(AskAnExpert) %>
+                    <li><%= link_to 'Ask an Expert', new_help_ask_an_expert_path %></li>
+                  <% end %>
                 </ul>
               </li>
             <% end %>

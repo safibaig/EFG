@@ -205,4 +205,10 @@ describe CfeAdminPermissions do
     it { refute user.can_update?(AskCfe) }
     it { refute user.can_view?(AskCfe) }
   end
+
+  context 'AskAnExpert' do
+    it { refute user.can_create?(AskAnExpert) }
+    it { refute user.can_update?(AskAnExpert) }
+    it { refute user.can_view?(AskAnExpert) }
+  end
 end

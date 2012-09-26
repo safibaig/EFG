@@ -1,6 +1,8 @@
 module LenderAdminPermissions
   def can_create?(resource)
-    if resource == AskCfe
+    if resource == AskAnExpert
+      !expert?
+    elsif resource == AskCfe
       expert?
     else
       [

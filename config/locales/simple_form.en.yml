@@ -274,5 +274,8 @@ en:
       support_request:
         message: Your message
 
+      ask_an_expert:
+        message: Your message
+
       ask_cfe:
         message: Your message
