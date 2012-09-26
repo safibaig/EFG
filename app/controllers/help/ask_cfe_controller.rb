@@ -8,6 +8,7 @@ class Help::AskCfeController < ApplicationController
   def create
     @ask_cfe = AskCfe.new(params[:ask_cfe])
     @ask_cfe.user = current_user
+    @ask_cfe.user_agent = UserAgent.parse(request.env['HTTP_USER_AGENT'])
 
     if @ask_cfe.valid?
       @ask_cfe.deliver

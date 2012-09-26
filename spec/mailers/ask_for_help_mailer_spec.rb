@@ -30,6 +30,12 @@ describe AskForHelpMailer do
       AskCfe.new.tap { |ask_an_expert|
         ask_an_expert.message = 'Excellent!'
         ask_an_expert.user = user
+        ask_an_expert.user_agent = OpenStruct.new(
+          browser: 'Lynx',
+          os: 'ABC',
+          platform: 'Foo',
+          version: '1.2.3'
+        )
       }
     }
     let(:email) { AskForHelpMailer.ask_cfe_email(ask_cfe) }
@@ -42,6 +48,8 @@ describe AskForHelpMailer do
     it do
       email.body.should include(user.name)
       email.body.should include('Excellent!')
+      email.body.should include('Lynx, 1.2.3')
+      email.body.should include('Foo, ABC')
       email.from.should == [Devise.mailer_sender]
       email.reply_to.should == [user.email]
       email.to.should == ['foo@example.com']
