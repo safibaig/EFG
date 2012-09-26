@@ -15,8 +15,12 @@
         <%= link_to 'Enterprise Finance Guarantee', root_path, class: 'brand' %>
 
         <% if user_signed_in? %>
-          <ul class="nav">
-            <% unless current_user_access_restricted? %>
+          <% if current_user_access_restricted? %>
+            <ul class="nav">
+              <li><%= link_to 'Logout', destroy_user_session_path %></li>
+            </ul>
+          <% else %>
+            <ul class="nav">
               <% if current_user.can_view?(Loan::States) %>
                 <li><%= link_to 'Loan Portfolio', loan_states_path %></li>
               <% end %>
@@ -51,10 +55,9 @@
                 <li><%= link_to 'Contact Support', new_contact_support_path %></li>
               <% end %>
               <li><%= link_to 'Change Password', edit_change_password_path %></li>
-            <% end %>
-            <li><%= link_to 'Logout', destroy_user_session_path %></li>
 
-            <% unless current_user_access_restricted? %>
+              <li><%= link_to 'Logout', destroy_user_session_path %></li>
+
               <li class="dropdown">
                 <%= link_to '#', "class" => "dropdown-toggle", "data-toggle" => "dropdown" do %>
                   Help <b class="caret"></b>
@@ -68,10 +71,8 @@
                   <% end %>
                 </ul>
               </li>
-            <% end %>
-          </ul>
+            </ul>
 
-          <% unless current_user_access_restricted? %>
             <ul class="nav secondary">
               <% if current_user.can_view?(Search) %>
                 <li><%= render "search/loan_lookup_form" %></li>
