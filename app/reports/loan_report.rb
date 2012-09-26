@@ -18,14 +18,11 @@ class LoanReport < BaseLoanReport
 
   validates_inclusion_of :loan_scheme, in: ALLOWED_LOAN_SCHEMES, allow_blank: true
 
+  validate :lender_ids_are_allowed
+
   validate :loan_sources_are_allowed
 
   validate :loan_states_are_allowed
-
-  def initialize(attributes = {})
-    super
-    validate_lender_ids
-  end
 
   def loans
     Loan.select(
@@ -73,7 +70,7 @@ class LoanReport < BaseLoanReport
     }
   end
 
-  def validate_lender_ids
+  def lender_ids_are_allowed
     return if lender_ids.blank?
 
     disallowed_lender_ids = lender_ids.collect(&:to_i) - allowed_lender_ids.collect(&:to_i)
