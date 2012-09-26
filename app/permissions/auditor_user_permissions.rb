@@ -3,8 +3,7 @@ module AuditorUserPermissions
     [
       AskCfe,
       LoanReport,
-      LoanAuditReport,
-      SupportRequest
+      LoanAuditReport
     ].include?(resource)
   end
 

@@ -6,8 +6,7 @@ module CfeAdminPermissions
       Lender,
       LenderAdmin,
       LendingLimit,
-      PremiumCollectorUser,
-      SupportRequest
+      PremiumCollectorUser
     ].include?(resource)
   end
 

@@ -6,8 +6,7 @@ module LenderAdminPermissions
       expert?
     else
       [
-        LenderUser,
-        SupportRequest
+        LenderUser
       ].include?(resource)
     end
   end

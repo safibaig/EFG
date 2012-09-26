@@ -194,12 +194,6 @@ describe LenderUserPermissions do
     it { assert user.can_view?(LoanModification) }
   end
 
-  context 'SupportRequest' do
-    it { assert user.can_create?(SupportRequest) }
-    it { refute user.can_update?(SupportRequest) }
-    it { refute user.can_view?(SupportRequest) }
-  end
-
   context 'AskCfe' do
     context 'as an expert' do
       before do

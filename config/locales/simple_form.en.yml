@@ -271,9 +271,6 @@ en:
         lender_id: 'Lender'
         scheme: 'Loan Scheme'
 
-      support_request:
-        message: Your message
-
       ask_an_expert:
         message: Your message
 

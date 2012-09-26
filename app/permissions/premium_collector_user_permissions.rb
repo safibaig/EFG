@@ -2,8 +2,7 @@ module PremiumCollectorUserPermissions
   def can_create?(resource)
     [
       AskCfe,
-      PremiumScheduleReport,
-      SupportRequest
+      PremiumScheduleReport
     ].include?(resource)
   end
 

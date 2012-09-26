@@ -194,12 +194,6 @@ describe AuditorUserPermissions do
     it { refute user.can_view?(LoanModification) }
   end
 
-  context 'SupportRequest' do
-    it { assert user.can_create?(SupportRequest) }
-    it { refute user.can_update?(SupportRequest) }
-    it { refute user.can_view?(SupportRequest) }
-  end
-
   context 'AskCfe' do
     it { assert user.can_create?(AskCfe) }
     it { refute user.can_update?(AskCfe) }

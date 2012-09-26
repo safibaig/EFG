@@ -131,6 +131,4 @@ EFG::Application.routes.draw do
   resource :account_locked, controller: 'account_locked'
 
   resource :change_password, controller: 'change_password'
-
-  resource :contact_support, controller: 'support_request'
 end
