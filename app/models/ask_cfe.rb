@@ -1,6 +1,8 @@
 require 'active_model/model'
 
 class AskCfe
+  TO_EMAIL = ENV['ASK_CFE_SUPPORT_EMAIL']
+
   include ActiveModel::Model
 
   attr_accessor :message, :user
@@ -21,6 +23,6 @@ class AskCfe
   end
 
   def to
-    ENV['ASK_CFE_SUPPORT_EMAIL']
+    TO_EMAIL
   end
 end
