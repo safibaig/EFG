@@ -14,7 +14,6 @@ class LendersController < ApplicationController
   def create
     @lender = Lender.new(params[:lender])
     @lender.created_by = current_user
-    @lender.loan_scheme = Loan::EFG_SCHEME
     @lender.modified_by = current_user
 
     if @lender.save

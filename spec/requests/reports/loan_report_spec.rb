@@ -12,7 +12,9 @@ describe 'Loan report' do
 
   context 'as a lender user' do
 
-    let(:current_user) { FactoryGirl.create(:lender_user, lender: loan1.lender) }
+    let(:lender) { loan1.lender }
+
+    let(:current_user) { FactoryGirl.create(:lender_user, lender: lender) }
 
     it "should output a CSV report for that specific lender" do
       navigate_to_loan_report_form
@@ -46,6 +48,18 @@ describe 'Loan report' do
       select "Peter Parker", from: "loan_report[created_by_id]"
       click_button "Submit"
       page.should have_content "Data extract found 1 row"
+    end
+
+    context 'with "EFG only" loan scheme access' do
+      before(:each) do
+        lender.loan_scheme = Lender::EFG_SCHEME
+        lender.save!
+      end
+
+      it 'should not allow selecting which loan schemes to report on' do
+        navigate_to_loan_report_form
+        page.should_not have_css("#loan_report_loan_scheme")
+      end
     end
   end
 

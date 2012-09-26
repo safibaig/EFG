@@ -216,6 +216,23 @@ shared_examples_for 'a loan transfer' do
         loan_transfer.errors[:base].should include(error_string('base.cannot_be_transferred'))
       end
     end
+
+    context 'when lender making transfer can only access EFG scheme loans' do
+      let!(:lender) { FactoryGirl.create(:lender, loan_scheme: Lender::EFG_SCHEME) }
+
+      before(:each) do
+        loan_transfer.lender = lender
+      end
+
+      it "should return false" do
+        loan_transfer.save.should == false
+      end
+
+      it "should add error to base" do
+        loan_transfer.save
+        loan_transfer.errors[:base].should include(error_string('base.cannot_be_transferred'))
+      end
+    end
   end
 
   private

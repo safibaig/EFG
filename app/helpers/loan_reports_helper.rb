@@ -48,4 +48,10 @@ module LoanReportsHelper
     end
   end
 
+  def loan_report_scheme_field(form_builder)
+    if current_lender.can_access_all_loan_schemes?
+      form_builder.input :loan_scheme, as: :select, collection: loan_report_scheme_options, prompt: 'All'
+    end
+  end
+
 end

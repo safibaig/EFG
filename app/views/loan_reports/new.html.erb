@@ -30,7 +30,7 @@
 
   <%= f.input :loan_sources, as: :check_boxes, collection: loan_report_source_options %>
 
-  <%= f.input :loan_scheme, as: :select, collection: loan_report_scheme_options, prompt: 'All' %>
+  <%= loan_report_scheme_field(f) %>
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>

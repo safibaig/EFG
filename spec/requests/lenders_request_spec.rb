@@ -27,6 +27,7 @@ describe 'lenders' do
       dispatch
 
       fill_in 'name', 'Bankers'
+      select 'loan_scheme', 'EFG only'
       fill_in 'organisation_reference_code', 'BK'
       fill_in 'primary_contact_name', 'Bob Flemming'
       fill_in 'primary_contact_phone', '0123456789'

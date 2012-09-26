@@ -10,4 +10,8 @@ class PremiumCollectorLender
   def users
     PremiumCollectorUser.scoped
   end
+
+  def can_access_all_loan_schemes?
+    true
+  end
 end
