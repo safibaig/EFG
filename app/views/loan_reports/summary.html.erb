@@ -61,10 +61,12 @@
       <td>Loan type(s)</td>
       <td><%= loan_source_name(@loan_report.loan_sources) %></td>
     </tr>
+    <% if current_lender.can_access_all_loan_schemes? %>
     <tr>
       <td>Loan scheme</td>
       <td><%= loan_scheme_name(@loan_report.loan_scheme) %></td>
     </tr>
+    <% end %>
   </tbody>
 </table>
 
@@ -98,7 +100,9 @@
       <%= hidden_field_tag 'loan_report[loan_sources][]', source %>
     <% end %>
 
-    <%= f.input :loan_scheme, as: :hidden %>
+    <% if current_lender.can_access_all_loan_schemes? %>
+      <%= f.input :loan_scheme, as: :hidden %>
+    <% end %>
 
     <div class="form-actions">
       <%= f.button :submit, value: 'Download Report', class: 'btn-primary' %>
