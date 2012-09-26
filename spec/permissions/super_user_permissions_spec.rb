@@ -193,4 +193,10 @@ describe SuperUserPermissions do
     it { refute user.can_update?(SupportRequest) }
     it { refute user.can_view?(SupportRequest) }
   end
+
+  context 'AskCfe' do
+    it { refute user.can_create?(AskCfe) }
+    it { refute user.can_update?(AskCfe) }
+    it { refute user.can_view?(AskCfe) }
+  end
 end

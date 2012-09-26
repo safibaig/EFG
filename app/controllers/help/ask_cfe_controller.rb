@@ -1,4 +1,6 @@
 class Help::AskCfeController < ApplicationController
+  before_filter :verify_create_permission
+
   def new
     @ask_cfe = AskCfe.new
   end
@@ -13,4 +15,9 @@ class Help::AskCfeController < ApplicationController
       render :new
     end
   end
+
+  private
+    def verify_create_permission
+      enforce_create_permission(AskCfe)
+    end
 end

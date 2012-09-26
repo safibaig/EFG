@@ -1,9 +1,13 @@
 module LenderAdminPermissions
   def can_create?(resource)
-    [
-      LenderUser,
-      SupportRequest
-    ].include?(resource)
+    if resource == AskCfe
+      expert?
+    else
+      [
+        LenderUser,
+        SupportRequest
+      ].include?(resource)
+    end
   end
 
   def can_update?(resource)

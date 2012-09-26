@@ -4,24 +4,39 @@ describe 'ask CfE' do
   before do
     ActionMailer::Base.deliveries.clear
     login_as(current_user, scope: :user)
+    visit root_path
+    click_link 'Ask CfE'
   end
 
-  context 'as an Auditor' do
+  [
+    :auditor_user,
+    :lender_admin,
+    :lender_user,
+    :premium_collector_user
+  ].each do |type|
+    context "as a #{type}" do
+      let(:current_user) { FactoryGirl.create(type, expert: true) }
+
+      it 'works' do
+        fill_in 'ask_cfe_message', with: 'blah blah'
+        click_button 'Submit'
+
+        ActionMailer::Base.deliveries.size.should == 1
+
+        email = ActionMailer::Base.deliveries.last
+        email.reply_to.should == [current_user.email]
+        email.body.should match(/blah blah/)
+        email.body.should match(/#{current_user.name}/)
+
+        page.should have_content('Thanks')
+      end
+    end
+  end
+
+  context 'with invalid values' do
     let(:current_user) { FactoryGirl.create(:auditor_user) }
 
-    before do
-      visit root_path
-      click_link 'Ask CfE'
-    end
-
-    it 'works' do
-      fill_in 'ask_cfe_message', with: 'blah blah'
-      click_button 'Submit'
-      ActionMailer::Base.deliveries.size.should == 1
-      page.should have_content('Thanks')
-    end
-
-    it 'does nothing with no message' do
+    it 'does nothing' do
       click_button 'Submit'
       ActionMailer::Base.deliveries.size.should == 0
     end

@@ -60,7 +60,9 @@
                   Help <b class="caret"></b>
                 <% end %>
                 <ul class="dropdown-menu">
-                  <li><%= link_to 'Ask CfE', new_help_ask_cfe_path %></li>
+                  <% if current_user.can_create?(AskCfe) %>
+                    <li><%= link_to 'Ask CfE', new_help_ask_cfe_path %></li>
+                  <% end %>
                 </ul>
               </li>
             <% end %>
