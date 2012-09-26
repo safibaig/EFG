@@ -19,5 +19,10 @@ FactoryGirl.define do
     end
 
     factory :premium_collector_user, class: PremiumCollectorUser
+
+    factory :system_user, class: SystemUser do
+      id -1
+      username 'system'
+    end
   end
 end
