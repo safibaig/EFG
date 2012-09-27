@@ -6,14 +6,20 @@
   <thead>
     <tr>
       <th>State</th>
-      <th>Total</th>
+      <th class="center">Legacy SFLG</th>
+      <th class="center">SFLG</th>
+      <th class="center">EFG</th>
+      <th class="center">Total</th>
     </tr>
   </thead>
   <tbody>
-    <% @states.each do |state| %>
-      <tr>
-        <th><%= link_to state.name, loan_state_path(state.id) %></th>
-        <td><%= state.loan_count %></td>
+    <% @loan_states.each do |loan_state| %>
+      <tr id="<%= loan_state.state %>_loans">
+        <th><%= link_to loan_state.state.titleize, loan_state_path(loan_state.state) %></th>
+        <td class="center"><%= loan_state.legacy_sflg_loans_count %></td>
+        <td class="center"><%= loan_state.sflg_loans_count %></td>
+        <td class="center"><%= loan_state.efg_loans_count %></td>
+        <td class="center"><%= loan_state.total_loans %></td>
       </tr>
     <% end %>
   </tbody>

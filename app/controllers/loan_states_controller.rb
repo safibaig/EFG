@@ -2,14 +2,7 @@ class LoanStatesController < ApplicationController
   before_filter :verify_view_permission
 
   def index
-    # TODO: Don't do N queries.
-    @states = Loan::States.map { |state|
-      OpenStruct.new(
-        id: state,
-        loan_count: current_lender.loans.where(state: state).count,
-        name: state.titleize
-      )
-    }
+    @loan_states = LoanStates.new(current_lender).states
   end
 
   def show
