@@ -6,7 +6,7 @@ class ExpertUsersController < ApplicationController
   def index
     @experts = current_lender.experts.includes(:user)
     @expert = current_lender.experts.new
-    @users = current_lender.users
+    @users = current_lender.users.non_experts.order_by_name
   end
 
   def create

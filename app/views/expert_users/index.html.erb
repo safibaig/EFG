@@ -2,8 +2,8 @@
   <h1>Experts</h1>
 </div>
 
-<%= simple_form_for @expert, url: expert_users_path, html: { class: 'form-inline' } do |f| %>
-  <%= f.input :user_id, collection: @users %>
+<%= simple_form_for @expert, url: expert_users_path do |f| %>
+  <%= f.input_field :user_id, collection: @users, 'data-placeholder' => 'Select a user' %>
   <%= f.button :submit, value: 'Add Expert', class: 'btn-primary' %>
 <% end %>
 
@@ -19,7 +19,7 @@
       <tr>
         <td><%= expert.user.name %></td>
         <td>
-          <%= button_to 'Remove', expert_user_path(expert), method: :delete, confirm: 'Are you sure?', class: 'btn btn-danger', form_class: 'form-inline' %>
+          <%= button_to 'Remove', expert_user_path(expert), method: :delete, confirm: 'Are you sure?', class: 'btn btn-danger btn-mini', form_class: 'form-inline' %>
         </td>
       </tr>
     <% end %>
