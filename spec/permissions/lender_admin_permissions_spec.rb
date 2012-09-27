@@ -229,4 +229,11 @@ describe LenderAdminPermissions do
       it { refute user.can_view?(AskAnExpert) }
     end
   end
+
+  context 'Expert' do
+    it { assert user.can_create?(Expert) }
+    it { assert user.can_destroy?(Expert) }
+    it { assert user.can_update?(Expert) }
+    it { assert user.can_view?(Expert) }
+  end
 end

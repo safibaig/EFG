@@ -6,19 +6,26 @@ module LenderAdminPermissions
       expert?
     else
       [
+        Expert,
         LenderUser
       ].include?(resource)
     end
   end
 
+  def can_destroy?(resource)
+    resource == Expert
+  end
+
   def can_update?(resource)
     [
+      Expert,
       LenderUser
     ].include?(resource)
   end
 
   def can_view?(resource)
     [
+      Expert,
       LenderUser
     ].include?(resource)
   end

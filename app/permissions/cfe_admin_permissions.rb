@@ -10,6 +10,10 @@ module CfeAdminPermissions
     ].include?(resource)
   end
 
+  def can_destroy?(resource)
+    false
+  end
+
   def can_update?(resource)
     [
       AuditorUser,
@@ -25,6 +29,7 @@ module CfeAdminPermissions
     [
       AuditorUser,
       CfeUser,
+      Expert,
       Lender,
       LenderAdmin,
       LendingLimit,

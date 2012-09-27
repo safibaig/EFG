@@ -27,6 +27,10 @@ module LenderUserPermissions
     end
   end
 
+  def can_destroy?(resource)
+    false
+  end
+
   def can_update?(resource)
     [
       PremiumSchedule,

@@ -229,4 +229,11 @@ describe LenderUserPermissions do
       it { refute user.can_view?(AskAnExpert) }
     end
   end
+
+  context 'Expert' do
+    it { refute user.can_create?(Expert) }
+    it { refute user.can_destroy?(Expert) }
+    it { refute user.can_update?(Expert) }
+    it { refute user.can_view?(Expert) }
+  end
 end

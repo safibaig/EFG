@@ -1,0 +1,27 @@
+<div class="page-header">
+  <h1>Experts</h1>
+</div>
+
+<%= simple_form_for @expert, url: expert_users_path, html: { class: 'form-inline' } do |f| %>
+  <%= f.input :user_id, collection: @users %>
+  <%= f.button :submit, value: 'Add Expert', class: 'btn-primary' %>
+<% end %>
+
+<table class="table table-striped table-expert-users">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @experts.each do |expert| %>
+      <tr>
+        <td><%= expert.user.name %></td>
+        <td>
+          <%= button_to 'Remove', expert_user_path(expert), method: :delete, confirm: 'Are you sure?', class: 'btn btn-danger', form_class: 'form-inline' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

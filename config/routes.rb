@@ -11,6 +11,8 @@ EFG::Application.routes.draw do
     resource :ask_cfe, controller: :ask_cfe, only: [:create, :new]
   end
 
+  resources :expert_users
+
   resources :lenders do
     member do
       post :activate

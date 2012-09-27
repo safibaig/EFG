@@ -205,4 +205,11 @@ describe AuditorUserPermissions do
     it { refute user.can_update?(AskAnExpert) }
     it { refute user.can_view?(AskAnExpert) }
   end
+
+  context 'Expert' do
+    it { refute user.can_create?(Expert) }
+    it { refute user.can_destroy?(Expert) }
+    it { refute user.can_update?(Expert) }
+    it { refute user.can_view?(Expert) }
+  end
 end

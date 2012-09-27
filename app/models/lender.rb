@@ -8,6 +8,7 @@ class Lender < ActiveRecord::Base
   has_many :active_lending_limits, class_name: 'LendingLimit', conditions: { active: true }
   has_many :lender_users
   has_many :loans
+  has_many :users, class_name: 'User', conditions: { type: %w(LenderAdmin LenderUser) }
 
   attr_accessible :can_use_add_cap, :high_volume, :name,
     :organisation_reference_code, :primary_contact_email,
