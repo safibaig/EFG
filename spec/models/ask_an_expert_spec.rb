@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe AskAnExpert do
   describe 'validations' do
-    let(:user) { FactoryGirl.build(:lender_user, expert: false) }
+    let(:user) { FactoryGirl.build(:lender_user) }
     let(:ask_an_expert) { AskAnExpert.new(message: 'qwerty', user: user) }
 
     it 'requires a message' do

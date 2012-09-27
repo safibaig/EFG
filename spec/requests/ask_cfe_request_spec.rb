@@ -10,12 +10,12 @@ describe 'ask CfE' do
 
   [
     :auditor_user,
-    :lender_admin,
-    :lender_user,
+    :expert_lender_admin,
+    :expert_lender_user,
     :premium_collector_user
   ].each do |type|
     context "as a #{type}" do
-      let(:current_user) { FactoryGirl.create(type, expert: true) }
+      let(:current_user) { FactoryGirl.create(type) }
 
       it 'works' do
         fill_in 'ask_cfe_message', with: 'blah blah'

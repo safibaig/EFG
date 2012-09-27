@@ -12,9 +12,9 @@ describe 'ask an expert' do
     :lender_user
   ].each do |type|
     context "as a #{type}" do
-      let(:current_user) { FactoryGirl.create(type, expert: false) }
-      let!(:expert1) { FactoryGirl.create(:lender_admin, lender: current_user.lender, expert: true) }
-      let!(:expert2) { FactoryGirl.create(:lender_user, lender: current_user.lender, expert: true) }
+      let(:current_user) { FactoryGirl.create(type) }
+      let!(:expert1) { FactoryGirl.create(:expert_lender_admin, lender: current_user.lender) }
+      let!(:expert2) { FactoryGirl.create(:expert_lender_user, lender: current_user.lender) }
 
       it 'works' do
         click_link 'Ask an Expert'
@@ -38,8 +38,8 @@ describe 'ask an expert' do
   end
 
   context 'with invalid values' do
-    let(:current_user) { FactoryGirl.create(:lender_user, expert: false) }
-    let!(:expert1) { FactoryGirl.create(:lender_admin, lender: current_user.lender, expert: true) }
+    let(:current_user) { FactoryGirl.create(:lender_user) }
+    let!(:expert1) { FactoryGirl.create(:expert_lender_admin, lender: current_user.lender) }
 
     it 'does nothing' do
       click_link 'Ask an Expert'
@@ -49,7 +49,7 @@ describe 'ask an expert' do
   end
 
   context 'when the lender has no experts' do
-    let(:current_user) { FactoryGirl.create(:lender_user, expert: false) }
+    let(:current_user) { FactoryGirl.create(:lender_user) }
 
     it do
       click_link 'Ask an Expert'

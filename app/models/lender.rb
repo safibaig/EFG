@@ -1,7 +1,8 @@
 class Lender < ActiveRecord::Base
   belongs_to :created_by, class_name: 'User'
   belongs_to :modified_by, class_name: 'User'
-  has_many :experts, class_name: 'User', conditions: { expert: true }
+  has_many :experts
+  has_many :expert_users, through: :experts, source: :user
   has_many :lender_admins
   has_many :lending_limits
   has_many :active_lending_limits, class_name: 'LendingLimit', conditions: { active: true }

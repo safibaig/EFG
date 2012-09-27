@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe AskForHelpMailer do
   describe '#ask_an_expert' do
-    let(:expert1) { FactoryGirl.build(:lender_admin, expert: true)}
-    let(:expert2) { FactoryGirl.build(:lender_user, expert: true)}
+    let(:expert_user1) { FactoryGirl.build(:expert_lender_admin) }
+    let(:expert_user2) { FactoryGirl.build(:expert_lender_user) }
     let(:user) { FactoryGirl.build(:lender_user) }
     let(:ask_an_expert) {
       AskAnExpert.new.tap { |ask_an_expert|
-        ask_an_expert.experts = [expert1, expert2]
+        ask_an_expert.expert_users = [expert_user2, expert_user1]
         ask_an_expert.message = 'Hello'
         ask_an_expert.user = user
       }
@@ -19,8 +19,8 @@ describe AskForHelpMailer do
       email.body.should include('Hello')
       email.from.should == [Devise.mailer_sender]
       email.reply_to.should == [user.email]
-      email.to.should include(expert1.email)
-      email.to.should include(expert2.email)
+      email.to.should include(expert_user1.email)
+      email.to.should include(expert_user2.email)
     end
   end
 

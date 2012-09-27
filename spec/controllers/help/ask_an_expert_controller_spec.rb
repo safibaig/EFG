@@ -12,12 +12,12 @@ describe Help::AskAnExpertController do
       :auditor_user,
       :cfe_admin,
       :cfe_user,
-      :lender_admin,
-      :lender_user,
+      :expert_lender_admin,
+      :expert_lender_user,
       :premium_collector_user
     ].each do |type|
-      context "as a #{type} (expert)" do
-        let(:current_user) { FactoryGirl.create(type, expert: true) }
+      context "as a #{type}" do
+        let(:current_user) { FactoryGirl.create(type) }
 
         it do
           expect {
@@ -39,12 +39,12 @@ describe Help::AskAnExpertController do
       :auditor_user,
       :cfe_admin,
       :cfe_user,
-      :lender_admin,
-      :lender_user,
+      :expert_lender_admin,
+      :expert_lender_user,
       :premium_collector_user
     ].each do |type|
-      context "as a #{type} (expert)" do
-        let(:current_user) { FactoryGirl.create(type, expert: true) }
+      context "as a #{type}" do
+        let(:current_user) { FactoryGirl.create(type) }
 
         it do
           expect {

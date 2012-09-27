@@ -3,7 +3,7 @@ require 'active_model/model'
 class AskAnExpert
   include ActiveModel::Model
 
-  attr_accessor :experts, :message, :user
+  attr_accessor :expert_users, :message, :user
 
   validates_presence_of :user, strict: true
   validates_presence_of :message
@@ -21,6 +21,6 @@ class AskAnExpert
   end
 
   def to
-    experts.map(&:email)
+    expert_users.map(&:email)
   end
 end

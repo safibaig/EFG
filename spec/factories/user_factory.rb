@@ -19,5 +19,14 @@ FactoryGirl.define do
     end
 
     factory :premium_collector_user, class: PremiumCollectorUser
+
+    expertable = Proc.new {
+      after :create do |user|
+        FactoryGirl.create(:expert, user: user)
+      end
+    }
+
+    factory :expert_lender_admin, parent: :lender_admin, &expertable
+    factory :expert_lender_user, parent: :lender_user, &expertable
   end
 end

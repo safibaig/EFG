@@ -2,7 +2,7 @@
   <h1>Ask an Expert</h1>
 </div>
 
-<% if @experts.any? %>
+<% if @expert_users.any? %>
   <p>Please fill in your support request below.</p>
 
   <hr>
@@ -11,8 +11,8 @@
     <div class="control-group to">
       <div class="control-label">To</div>
       <div class="controls">
-        <% @experts.each do |expert| %>
-          <span class="badge badge-info"><%= expert.name %></span>
+        <% @expert_users.each do |expert_user| %>
+          <span class="badge badge-info"><%= expert_user.name %></span>
         <% end %>
       </div>
     </div>

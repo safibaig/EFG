@@ -197,7 +197,7 @@ describe LenderUserPermissions do
   context 'AskCfe' do
     context 'as an expert' do
       before do
-        user.expert = true
+        FactoryGirl.create(:expert, user: user)
       end
 
       it { assert user.can_create?(AskCfe) }
@@ -215,7 +215,7 @@ describe LenderUserPermissions do
   context 'AskAnExpert' do
     context 'as an expert' do
       before do
-        user.expert = true
+        FactoryGirl.create(:expert, user: user)
       end
 
       it { refute user.can_create?(AskAnExpert) }

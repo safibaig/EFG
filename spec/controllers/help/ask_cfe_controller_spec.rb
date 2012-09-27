@@ -13,7 +13,7 @@ describe Help::AskCfeController do
       :lender_user
     ].each do |type|
       context "as a non-expert #{type}" do
-        let(:current_user) { FactoryGirl.create(type, expert: false) }
+        let(:current_user) { FactoryGirl.create(type) }
 
         it do
           expect {
@@ -36,7 +36,7 @@ describe Help::AskCfeController do
       :lender_user
     ].each do |type|
       context "as a non-expert #{type}" do
-        let(:current_user) { FactoryGirl.create(type, expert: false) }
+        let(:current_user) { FactoryGirl.create(type) }
 
         it do
           expect {
