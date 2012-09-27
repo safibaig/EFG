@@ -7,8 +7,8 @@ describe 'loan states' do
 
     before do
       login_as(current_user, scope: :user)
-      FactoryGirl.create(:loan, lender: current_lender)
-      FactoryGirl.create(:loan, :offered, lender: current_lender)
+      FactoryGirl.create(:loan, :legacy_sflg, lender: current_lender)
+      FactoryGirl.create(:loan, :sflg, :offered, lender: current_lender)
       FactoryGirl.create(:loan, :guaranteed, lender: current_lender)
     end
 
@@ -16,22 +16,19 @@ describe 'loan states' do
       visit loan_states_path
     end
 
-    let(:states) { page.all('tbody th').map(&:text) }
-    let(:counts) { page.all('tbody td').map(&:text) }
+    def counts(state)
+      page.all("tbody tr##{state}_loans td").map { |cell| cell.text.strip }
+    end
 
-    it 'lists loan states and the number of loans' do
+    it 'lists loan states and the number of loans by scheme' do
       dispatch
 
       {
-        'Rejected' => 0,
-        'Eligible' => 1,
-        'Cancelled' => 0,
-        'Incomplete' => 0,
-        'Completed' => 0,
-        'Offered' => 1,
-        'Guaranteed' => 1
-      }.each do |name, count|
-        counts[states.index(name)].should == count.to_s
+        'eligible'    => { legacy_sflg: "1", sflg: "0", efg: "0", total: "1" },
+        'offered'     => { legacy_sflg: "0", sflg: "1", efg: "0", total: "1" },
+        'guaranteed'  => { legacy_sflg: "0", sflg: "0", efg: "1", total: "1" }
+      }.each do |state, expected_counts|
+        counts(state).should == expected_counts.values
       end
     end
 
@@ -42,15 +39,11 @@ describe 'loan states' do
       dispatch
 
       {
-        'Rejected' => 0,
-        'Eligible' => 1,
-        'Cancelled' => 0,
-        'Incomplete' => 0,
-        'Completed' => 0,
-        'Offered' => 1,
-        'Guaranteed' => 1
-      }.each do |name, count|
-        counts[states.index(name)].should == count.to_s
+        'eligible'    => { legacy_sflg: "1", sflg: "0", efg: "0", total: "1" },
+        'offered'     => { legacy_sflg: "0", sflg: "1", efg: "0", total: "1" },
+        'guaranteed'  => { legacy_sflg: "0", sflg: "0", efg: "1", total: "1" }
+      }.each do |state, expected_counts|
+        counts(state).should == expected_counts.values
       end
     end
   end
@@ -76,12 +69,12 @@ describe 'loan states' do
       names.should == %w(ACME Foo)
     end
 
-    it 'includes loans in the specified state' do
+    it 'does not include loans from other states' do
       FactoryGirl.create(:loan, :offered, lender: current_lender, business_name: 'Bar')
 
       dispatch(id: 'completed')
 
-      names = page.all('tbody tr td:first-child').map(&:text)
+      names = page.all('tbody tr td:nth-child(2)').map(&:text)
       names.should_not include('Bar')
     end
 
@@ -90,8 +83,21 @@ describe 'loan states' do
 
       dispatch(id: 'completed')
 
-      names = page.all('tbody tr td:first-child').map(&:text)
+      names = page.all('tbody tr td:nth-child(2)').map(&:text)
       names.should_not include('Baz')
+    end
+
+    it "filters loans by scheme" do
+      FactoryGirl.create(:loan, :completed, :legacy_sflg, lender: current_lender, business_name: 'Bar')
+      FactoryGirl.create(:loan, :completed, :sflg, lender: current_lender, business_name: 'Woot')
+
+      dispatch(id: 'completed', scheme: 'efg')
+
+      names = page.all('tbody tr td:nth-child(2)').map(&:text)
+      names.should include('ACME')
+      names.should include('Foo')
+      names.should_not include('Bar')
+      names.should_not include('Woot')
     end
 
     it 'can export loan data as CSV' do

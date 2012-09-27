@@ -110,8 +110,8 @@ describe AuditorUserPermissions do
     it { assert user.can_view?(Loan) }
   end
 
-  context 'Loan::States' do
-    it { assert user.can_view?(Loan::States) }
+  context 'LoanStates' do
+    it { assert user.can_view?(LoanStates) }
   end
 
   context 'Search' do

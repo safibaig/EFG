@@ -5,6 +5,12 @@ module LoanHelper
     title
   end
 
+  def loan_listing_title(state, scheme = nil)
+    title = "Loans: #{state.titleize}"
+    title += " (#{scheme.titleize})" if scheme
+    title
+  end
+
   def loan_business_name(loan)
     loan.business_name.present? ? loan.business_name : '<not assigned>'
   end

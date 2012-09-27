@@ -82,6 +82,33 @@ describe Loan do
     end
   end
 
+  describe ".efg scope" do
+    let!(:loan1) { FactoryGirl.create(:loan) }
+    let!(:loan2) { FactoryGirl.create(:loan, :sflg) }
+
+    it "returns loans in the EFG scheme" do
+      Loan.efg.should == [loan1]
+    end
+  end
+
+  describe ".sflg scope" do
+    let!(:loan1) { FactoryGirl.create(:loan, :sflg) }
+    let!(:loan2) { FactoryGirl.create(:loan) }
+
+    it "returns loans in the SFLG scheme" do
+      Loan.sflg.should == [loan1]
+    end
+  end
+
+  describe ".legacy_sflg scope" do
+    let!(:loan1) { FactoryGirl.create(:loan, :legacy_sflg) }
+    let!(:loan2) { FactoryGirl.create(:loan) }
+
+    it "returns loans in the legacy SFLG scheme" do
+      Loan.legacy_sflg.should == [loan1]
+    end
+  end
+
   describe "#state_aid_calculation" do
 
     let!(:loan) { FactoryGirl.create(:loan) }

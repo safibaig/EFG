@@ -3,7 +3,7 @@
 
   <ul id="actions">
     <% if current_user.can_create?(LoanEligibilityCheck) %><li><%= link_to "Start New Loan Application", new_eligibility_check_path, class: "btn btn-primary" %></li><% end %>
-    <% if current_user.can_view?(Loan::States) %><li><%= link_to "View Loan Portfolio", loan_states_path, class: "btn btn-info" %></li><% end %>
+    <% if current_user.can_view?(LoanStates) %><li><%= link_to "View Loan Portfolio", loan_states_path, class: "btn btn-info" %></li><% end %>
 
     <% if current_user.can_create?(Lender) %>
       <li><%= link_to 'Manage Lenders', lenders_path, class: 'btn btn-info' %></li>

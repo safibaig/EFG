@@ -34,7 +34,7 @@ module LenderUserPermissions
       DataProtectionDeclaration,
       InformationDeclaration,
       Loan,
-      Loan::States,
+      LoanStates,
       LoanAlerts,
       LoanChange,
       LoanModification,
