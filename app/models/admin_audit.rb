@@ -3,6 +3,8 @@ class AdminAudit < ActiveRecord::Base
   LenderDisabled = 'Lender disabled'
   LenderEdited = 'Lender edited'
   LenderEnabled = 'Lender enabled'
+  LenderExpertAdded = 'Lender expert added'
+  LenderExpertRemoved = 'Lender expert removed'
   LendingLimitCreated = 'Add Lender Lending limit'
   LendingLimitEdited = 'Edit Lending limit'
   LendingLimitRemoved = 'Remove Lender Lending limit'

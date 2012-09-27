@@ -34,6 +34,12 @@ describe 'expert users' do
       expert.user.should == lender_user2
 
       lender_user2.should be_expert
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::LenderExpertAdded
+      admin_audit.auditable.should == lender_user2
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
     end
   end
 
@@ -47,6 +53,12 @@ describe 'expert users' do
 
       lender.experts.count.should == 0
       expert_user.should_not be_expert
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::LenderExpertRemoved
+      admin_audit.auditable.should == expert_user
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
     end
   end
 end

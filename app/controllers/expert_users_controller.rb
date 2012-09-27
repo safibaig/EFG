@@ -14,7 +14,7 @@ class ExpertUsersController < ApplicationController
     if user_id.present?
       @expert = current_lender.experts.new
       @expert.user = current_lender.users.find(user_id)
-      @expert.save
+      @expert.save && AdminAudit.log(AdminAudit::LenderExpertAdded, @expert.user, current_user)
     end
 
     redirect_to expert_users_url
@@ -22,7 +22,7 @@ class ExpertUsersController < ApplicationController
 
   def destroy
     @expert = current_lender.experts.find(params[:id])
-    @expert.destroy
+    @expert.destroy && AdminAudit.log(AdminAudit::LenderExpertRemoved, @expert.user, current_user)
     redirect_to expert_users_url
   end
 
