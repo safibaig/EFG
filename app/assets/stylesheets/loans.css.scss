@@ -37,6 +37,18 @@
   }
 }
 
+.table-loan-states {
+  td.loan-state {
+    width: 40%;
+  }
+
+  th.loan-count,
+  td.loan-count {
+    width: 15%;
+    text-align: center;
+  }
+}
+
 .ineligibility-reasons {
   color: $red;
 }
