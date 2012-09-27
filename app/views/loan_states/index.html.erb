@@ -16,9 +16,27 @@
     <% @loan_states.each do |loan_state| %>
       <tr id="<%= loan_state.state %>_loans">
         <th class="loan-state"><%= loan_state.state.titleize %></th>
-        <td class="loan-count"><%= link_to loan_state.legacy_sflg_loans_count, loan_state_path(loan_state.state, scheme: :legacy_sflg) %></td>
-        <td class="loan-count"><%= link_to loan_state.sflg_loans_count, loan_state_path(loan_state.state, scheme: :sflg) %></td>
-        <td class="loan-count"><%= link_to loan_state.efg_loans_count, loan_state_path(loan_state.state, scheme: :efg) %></td>
+        <td class="loan-count">
+          <%= link_to_if(
+            loan_state.legacy_sflg_loans_count > 0,
+            loan_state.legacy_sflg_loans_count,
+            loan_state_path(loan_state.state, scheme: :legacy_sflg)
+          ) %>
+        </td>
+        <td class="loan-count">
+          <%= link_to_if(
+            loan_state.sflg_loans_count > 0,
+            loan_state.sflg_loans_count,
+            loan_state_path(loan_state.state, scheme: :sflg)
+          ) %>
+        </td>
+        <td class="loan-count">
+          <%= link_to_if(
+            loan_state.efg_loans_count > 0,
+            loan_state.efg_loans_count,
+            loan_state_path(loan_state.state, scheme: :efg)
+          ) %>
+        </td>
         <td class="loan-count"><%= loan_state.total_loans %></td>
       </tr>
     <% end %>

@@ -16,6 +16,10 @@ describe 'loan states' do
       visit loan_states_path
     end
 
+    def counts(state)
+      page.all("tbody tr##{state}_loans td").map { |cell| cell.text.strip }
+    end
+
     it 'lists loan states and the number of loans by scheme' do
       dispatch
 
@@ -23,8 +27,8 @@ describe 'loan states' do
         'eligible'    => { legacy_sflg: "1", sflg: "0", efg: "0", total: "1" },
         'offered'     => { legacy_sflg: "0", sflg: "1", efg: "0", total: "1" },
         'guaranteed'  => { legacy_sflg: "0", sflg: "0", efg: "1", total: "1" }
-      }.each do |state, counts|
-        page.all("tbody tr##{state}_loans td").map(&:text).should == counts.values
+      }.each do |state, expected_counts|
+        counts(state).should == expected_counts.values
       end
     end
 
@@ -38,8 +42,8 @@ describe 'loan states' do
         'eligible'    => { legacy_sflg: "1", sflg: "0", efg: "0", total: "1" },
         'offered'     => { legacy_sflg: "0", sflg: "1", efg: "0", total: "1" },
         'guaranteed'  => { legacy_sflg: "0", sflg: "0", efg: "1", total: "1" }
-      }.each do |state, counts|
-        page.all("tbody tr##{state}_loans td").map(&:text).should == counts.values
+      }.each do |state, expected_counts|
+        counts(state).should == expected_counts.values
       end
     end
   end
