@@ -234,6 +234,6 @@ describe LenderAdminPermissions do
     it { assert user.can_create?(Expert) }
     it { assert user.can_destroy?(Expert) }
     it { assert user.can_update?(Expert) }
-    it { assert user.can_view?(Expert) }
+    it { refute user.can_view?(Expert) }
   end
 end

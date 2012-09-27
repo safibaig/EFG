@@ -19,6 +19,8 @@ EFG::Application.routes.draw do
       post :deactivate
     end
 
+    resources :lender_experts, only: :index
+
     resources :lending_limits do
       member do
         post :deactivate

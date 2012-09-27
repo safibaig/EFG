@@ -16,6 +16,7 @@
       <th>Annual</th>
       <th>Specific</th>
       <th>Active</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -26,6 +27,7 @@
         <td><%= link_to lender.current_annual_lending_limit_allocation.format, lender_lending_limits_path(lender) %></td>
         <td><%= link_to lender.current_specific_lending_limit_allocation.format, lender_lending_limits_path(lender) %></td>
         <td><%= friendly_boolean lender.active %></td>
+        <td><%= link_to 'Expert Users', lender_lender_experts_path(lender) %></td>
       </tr>
     <% end %>
   </tbody>
