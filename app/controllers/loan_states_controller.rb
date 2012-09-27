@@ -24,6 +24,6 @@ class LoanStatesController < ApplicationController
 
   private
     def verify_view_permission
-      enforce_view_permission(Loan::States)
+      enforce_view_permission(LoanStates)
     end
 end
