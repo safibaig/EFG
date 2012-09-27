@@ -7,6 +7,7 @@ class LoanStatesController < ApplicationController
 
   def show
     scope = current_lender.loans.with_state(params[:id])
+    scope = scope.send(params[:scheme]) if params[:scheme]
 
     respond_to do |format|
       format.html {

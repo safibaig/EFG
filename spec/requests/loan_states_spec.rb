@@ -65,12 +65,12 @@ describe 'loan states' do
       names.should == %w(ACME Foo)
     end
 
-    it 'includes loans in the specified state' do
+    it 'does not include loans from other states' do
       FactoryGirl.create(:loan, :offered, lender: current_lender, business_name: 'Bar')
 
       dispatch(id: 'completed')
 
-      names = page.all('tbody tr td:first-child').map(&:text)
+      names = page.all('tbody tr td:nth-child(2)').map(&:text)
       names.should_not include('Bar')
     end
 
@@ -79,8 +79,21 @@ describe 'loan states' do
 
       dispatch(id: 'completed')
 
-      names = page.all('tbody tr td:first-child').map(&:text)
+      names = page.all('tbody tr td:nth-child(2)').map(&:text)
       names.should_not include('Baz')
+    end
+
+    it "filters loans by scheme" do
+      FactoryGirl.create(:loan, :completed, :legacy_sflg, lender: current_lender, business_name: 'Bar')
+      FactoryGirl.create(:loan, :completed, :sflg, lender: current_lender, business_name: 'Woot')
+
+      dispatch(id: 'completed', scheme: 'efg')
+
+      names = page.all('tbody tr td:nth-child(2)').map(&:text)
+      names.should include('ACME')
+      names.should include('Foo')
+      names.should_not include('Bar')
+      names.should_not include('Woot')
     end
 
     it 'can export loan data as CSV' do
