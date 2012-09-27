@@ -6,6 +6,7 @@ class Expert < ActiveRecord::Base
 
   validates_presence_of :lender_id, strict: true
   validates_presence_of :user, strict: true
+  validates_uniqueness_of :user_id
 
   private
     def set_lender_id

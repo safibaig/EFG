@@ -13,8 +13,8 @@ describe ExpertUsersController do
   end
 
   describe '#create' do
-    def dispatch
-      post :create
+    def dispatch(params = {})
+      post :create, params
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
@@ -22,6 +22,26 @@ describe ExpertUsersController do
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
+
+    context 'as a LenderAdmin' do
+      let(:current_user) { FactoryGirl.create(:lender_admin) }
+      before { sign_in(current_user) }
+
+      it 'does nothing when a blank user_id is submitted' do
+        expect {
+          dispatch expert: { user_id: '' }
+        }.to change(Expert, :count).by(0)
+      end
+
+      it 'does not create duplicate experts' do
+        user = FactoryGirl.create(:lender_user, lender: current_user.lender)
+        expert = FactoryGirl.create(:expert, user: user)
+
+        expect {
+          dispatch expert: { user_id: user.id }
+        }.to change(Expert, :count).by(0)
+      end
+    end
   end
 
   describe '#destroy' do

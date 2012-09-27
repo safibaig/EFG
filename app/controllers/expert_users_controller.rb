@@ -10,9 +10,14 @@ class ExpertUsersController < ApplicationController
   end
 
   def create
-    @expert = current_lender.experts.new
-    @expert.user = current_lender.users.find(params[:expert][:user_id])
-    @expert.save!
+    user_id = params[:expert][:user_id]
+
+    if user_id.present?
+      @expert = current_lender.experts.new
+      @expert.user = current_lender.users.find(user_id)
+      @expert.save
+    end
+
     redirect_to expert_users_url
   end
 
