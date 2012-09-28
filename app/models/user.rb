@@ -58,7 +58,10 @@ class User < ActiveRecord::Base
   # Override Devise's default behaviour so that an email with a blank "To" is
   # not sent.
   def send_reset_password_instructions
-    super if email.present?
+    if email.present?
+      unlock!
+      super
+    end
   end
 
   def unlock!
