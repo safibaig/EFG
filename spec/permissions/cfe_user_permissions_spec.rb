@@ -194,9 +194,22 @@ describe CfeUserPermissions do
     it { refute user.can_view?(LoanModification) }
   end
 
-  context 'SupportRequest' do
-    it { assert user.can_create?(SupportRequest) }
-    it { refute user.can_update?(SupportRequest) }
-    it { refute user.can_view?(SupportRequest) }
+  context 'AskCfe' do
+    it { refute user.can_create?(AskCfe) }
+    it { refute user.can_update?(AskCfe) }
+    it { refute user.can_view?(AskCfe) }
+  end
+
+  context 'AskAnExpert' do
+    it { refute user.can_create?(AskAnExpert) }
+    it { refute user.can_update?(AskAnExpert) }
+    it { refute user.can_view?(AskAnExpert) }
+  end
+
+  context 'Expert' do
+    it { refute user.can_create?(Expert) }
+    it { refute user.can_destroy?(Expert) }
+    it { refute user.can_update?(Expert) }
+    it { refute user.can_view?(Expert) }
   end
 end

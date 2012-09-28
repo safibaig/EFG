@@ -6,9 +6,12 @@ module CfeAdminPermissions
       Lender,
       LenderAdmin,
       LendingLimit,
-      PremiumCollectorUser,
-      SupportRequest
+      PremiumCollectorUser
     ].include?(resource)
+  end
+
+  def can_destroy?(resource)
+    false
   end
 
   def can_update?(resource)
@@ -26,6 +29,7 @@ module CfeAdminPermissions
     [
       AuditorUser,
       CfeUser,
+      Expert,
       Lender,
       LenderAdmin,
       LendingLimit,

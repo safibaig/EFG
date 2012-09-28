@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :user do
-    first_name 'Joe'
+    sequence(:first_name) { |n| "Joe#{n}" }
     last_name 'Bloggs'
     sequence(:email) { |n| "joe#{n}@example.com" }
     password 'password'
@@ -24,5 +24,14 @@ FactoryGirl.define do
       id -1
       username 'system'
     end
+
+    expertable = Proc.new {
+      after :create do |user|
+        FactoryGirl.create(:expert, user: user)
+      end
+    }
+
+    factory :expert_lender_admin, parent: :lender_admin, &expertable
+    factory :expert_lender_user, parent: :lender_user, &expertable
   end
 end

@@ -1,25 +1,34 @@
 module LenderUserPermissions
   def can_create?(resource)
-    [
-      DataCorrection,
-      LoanCancel,
-      LoanChange,
-      LoanDemandAgainstGovernment,
-      LoanDemandToBorrower,
-      LoanEligibilityCheck,
-      LoanEntry,
-      LoanGuarantee,
-      LoanNoClaim,
-      LoanOffer,
-      LoanRepay,
-      LoanReport,
-      LoanTransfer::LegacySflg,
-      LoanTransfer::Sflg,
-      Recovery,
-      StateAidCalculation,
-      SupportRequest,
-      TransferredLoanEntry
-    ].include?(resource)
+    if resource == AskAnExpert
+      !expert?
+    elsif resource == AskCfe
+      expert?
+    else
+      [
+        DataCorrection,
+        LoanCancel,
+        LoanChange,
+        LoanDemandAgainstGovernment,
+        LoanDemandToBorrower,
+        LoanEligibilityCheck,
+        LoanEntry,
+        LoanGuarantee,
+        LoanNoClaim,
+        LoanOffer,
+        LoanRepay,
+        LoanReport,
+        LoanTransfer::LegacySflg,
+        LoanTransfer::Sflg,
+        Recovery,
+        StateAidCalculation,
+        TransferredLoanEntry
+      ].include?(resource)
+    end
+  end
+
+  def can_destroy?(resource)
+    false
   end
 
   def can_update?(resource)

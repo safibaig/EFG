@@ -194,9 +194,46 @@ describe LenderAdminPermissions do
     it { refute user.can_view?(LoanModification) }
   end
 
-  context 'SupportRequest' do
-    it { assert user.can_create?(SupportRequest) }
-    it { refute user.can_update?(SupportRequest) }
-    it { refute user.can_view?(SupportRequest) }
+  context 'AskCfe' do
+    context 'as an expert' do
+      before do
+        FactoryGirl.create(:expert, user: user)
+      end
+
+      it { assert user.can_create?(AskCfe) }
+      it { refute user.can_update?(AskCfe) }
+      it { refute user.can_view?(AskCfe) }
+    end
+
+    context 'as a non-expert' do
+      it { refute user.can_create?(AskCfe) }
+      it { refute user.can_update?(AskCfe) }
+      it { refute user.can_view?(AskCfe) }
+    end
+  end
+
+  context 'AskAnExpert' do
+    context 'as an expert' do
+      before do
+        FactoryGirl.create(:expert, user: user)
+      end
+
+      it { refute user.can_create?(AskAnExpert) }
+      it { refute user.can_update?(AskAnExpert) }
+      it { refute user.can_view?(AskAnExpert) }
+    end
+
+    context 'as a non-expert' do
+      it { assert user.can_create?(AskAnExpert) }
+      it { refute user.can_update?(AskAnExpert) }
+      it { refute user.can_view?(AskAnExpert) }
+    end
+  end
+
+  context 'Expert' do
+    it { assert user.can_create?(Expert) }
+    it { assert user.can_destroy?(Expert) }
+    it { assert user.can_update?(Expert) }
+    it { refute user.can_view?(Expert) }
   end
 end

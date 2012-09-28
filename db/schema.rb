@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120925163436) do
+ActiveRecord::Schema.define(:version => 20120927092910) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -60,6 +60,16 @@ ActiveRecord::Schema.define(:version => 20120925163436) do
   end
 
   add_index "demand_to_borrowers", ["loan_id", "seq"], :name => "index_demand_to_borrowers_on_loan_id_and_seq", :unique => true
+
+  create_table "experts", :force => true do |t|
+    t.integer  "lender_id",  :null => false
+    t.integer  "user_id",    :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "experts", ["lender_id"], :name => "index_experts_on_lender_id"
+  add_index "experts", ["user_id"], :name => "index_experts_on_user_id", :unique => true
 
   create_table "invoices", :force => true do |t|
     t.integer  "lender_id"

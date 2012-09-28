@@ -1,4 +1,5 @@
 class LenderAdmin < User
+  include Expertable
   include LenderAdminPermissions
 
   belongs_to :lender

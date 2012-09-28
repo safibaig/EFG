@@ -1,0 +1,28 @@
+<div class="page-header">
+  <h1>Ask an Expert</h1>
+</div>
+
+<% if @expert_users.any? %>
+  <p>Please fill in your support request below.</p>
+
+  <hr>
+
+  <%= simple_form_for @ask_an_expert, url: help_ask_an_expert_path, html: { class: 'form-horizontal form-ask-an-expert' } do |f| %>
+    <div class="control-group to">
+      <div class="control-label">To</div>
+      <div class="controls">
+        <% @expert_users.each do |expert_user| %>
+          <span class="badge badge-info"><%= expert_user.name %></span>
+        <% end %>
+      </div>
+    </div>
+
+    <%= f.input :message, as: :text, input_html: { cols: 80, rows: 8 } %>
+
+    <div class="form-actions">
+      <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>
+    </div>
+  <% end %>
+<% else %>
+  <p class="alert alert-error">Sorry there are no experts assigned.</p>
+<% end %>

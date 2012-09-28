@@ -1,6 +1,14 @@
 module AuditorUserPermissions
   def can_create?(resource)
-    [ LoanReport, LoanAuditReport, SupportRequest ].include?(resource)
+    [
+      AskCfe,
+      LoanReport,
+      LoanAuditReport
+    ].include?(resource)
+  end
+
+  def can_destroy?(resource)
+    false
   end
 
   def can_update?(resource)

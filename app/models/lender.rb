@@ -4,11 +4,14 @@ class Lender < ActiveRecord::Base
 
   belongs_to :created_by, class_name: 'User'
   belongs_to :modified_by, class_name: 'User'
+  has_many :experts
+  has_many :expert_users, through: :experts, source: :user
   has_many :lender_admins
   has_many :lending_limits
   has_many :active_lending_limits, class_name: 'LendingLimit', conditions: { active: true }
   has_many :lender_users
   has_many :loans
+  has_many :users, class_name: 'User', conditions: { type: %w(LenderAdmin LenderUser) }
 
   attr_accessible :can_use_add_cap, :name,
     :organisation_reference_code, :primary_contact_email,

@@ -5,6 +5,10 @@ module SuperUserPermissions
     ].include?(resource)
   end
 
+  def can_destroy?(resource)
+    false
+  end
+
   def can_update?(resource)
     [
       CfeAdmin

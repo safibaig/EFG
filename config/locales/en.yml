@@ -26,6 +26,10 @@ en:
   activemodel:
     errors:
       models:
+        ask_an_expert:
+          attributes:
+            expert_users:
+              must_have_at_least_one_email: 'must have at least one email address'
         loan_demand_to_borrower:
           attributes:
             amount_demanded:

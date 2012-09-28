@@ -9,6 +9,9 @@ class User < ActiveRecord::Base
   belongs_to :modified_by, class_name: "User", foreign_key: "modified_by_id"
   has_many :user_audits
 
+  scope :non_experts, joins('LEFT JOIN experts ON experts.user_id = users.id').where('experts.id IS NULL')
+  scope :order_by_username, order("username")
+  scope :order_by_name, order('first_name, last_name')
   scope :with_email, where("email IS NOT NULL")
 
   before_validation :set_unique_username, on: :create
@@ -24,8 +27,6 @@ class User < ActiveRecord::Base
   validates_presence_of :password, :if => :password_required?
   validates_confirmation_of :password, :if => :password_required?
   validates_length_of :password, :within => Devise.password_length, :allow_blank => true
-
-  scope :order_by_username, order("username")
 
   def disable!
     update_attribute :disabled, true

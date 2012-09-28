@@ -15,8 +15,12 @@
         <%= link_to 'Enterprise Finance Guarantee', root_path, class: 'brand' %>
 
         <% if user_signed_in? %>
-          <ul class="nav">
-            <% unless current_user_access_restricted? %>
+          <% if current_user_access_restricted? %>
+            <ul class="nav">
+              <li><%= link_to 'Logout', destroy_user_session_path %></li>
+            </ul>
+          <% else %>
+            <ul class="nav">
               <% if current_user.can_view?(LoanStates) %>
                 <li><%= link_to 'Loan Portfolio', loan_states_path %></li>
               <% end %>
@@ -47,31 +51,27 @@
               <% if current_user.can_view?(Search) %>
                 <li><%= link_to 'Search', new_search_path %></li>
               <% end %>
-              <% if current_user.can_create?(SupportRequest) %>
-                <li><%= link_to 'Contact Support', new_contact_support_path %></li>
-              <% end %>
+
               <li><%= link_to 'Change Password', edit_change_password_path %></li>
-            <% end %>
-            <li><%= link_to 'Logout', destroy_user_session_path %></li>
+              <li><%= link_to 'Logout', destroy_user_session_path %></li>
 
-            <% unless current_user_access_restricted? %>
-              <li class="dropdown">
-                <%= link_to '#', "class" => "dropdown-toggle", "data-toggle" => "dropdown" do %>
-                  Help <b class="caret"></b>
-                <% end %>
-                <ul class="dropdown-menu">
-                  <li><%= link_to 'Frequently asked questions', '#' %></li>
-                  <li><%= link_to "Guidance on the '5-year eligibility rule'", '#' %></li>
-                  <li><%= link_to 'SFLG Scheme Manual', '#' %></li>
-                  <li><%= link_to 'SFLG Web Portal Training Material', '#' %></li>
-                  <li><%= link_to 'SFLG Web portal manual', '#' %></li>
-                  <li><%= link_to 'User administration guide', '#' %></li>
-                </ul>
-              </li>
-            <% end %>
-          </ul>
+              <% if current_user.can_create?(AskAnExpert) || current_user.can_create?(AskCfe) %>
+                <li class="dropdown">
+                  <%= link_to '#', "class" => "dropdown-toggle", "data-toggle" => "dropdown" do %>
+                    Help <b class="caret"></b>
+                  <% end %>
+                  <ul class="dropdown-menu">
+                    <% if current_user.can_create?(AskCfe) %>
+                      <li><%= link_to 'Ask CfE', new_help_ask_cfe_path %></li>
+                    <% end %>
+                    <% if current_user.can_create?(AskAnExpert) %>
+                      <li><%= link_to 'Ask an Expert', new_help_ask_an_expert_path %></li>
+                    <% end %>
+                  </ul>
+                </li>
+              <% end %>
+            </ul>
 
-          <% unless current_user_access_restricted? %>
             <ul class="nav secondary">
               <% if current_user.can_view?(Search) %>
                 <li><%= render "search/loan_lookup_form" %></li>

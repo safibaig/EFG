@@ -6,11 +6,20 @@ EFG::Application.routes.draw do
 
   root to: 'dashboard#show'
 
+  namespace :help do
+    resource :ask_an_expert, controller: :ask_an_expert, only: [:create, :new]
+    resource :ask_cfe, controller: :ask_cfe, only: [:create, :new]
+  end
+
+  resources :expert_users
+
   resources :lenders do
     member do
       post :activate
       post :deactivate
     end
+
+    resources :lender_experts, only: :index
 
     resources :lending_limits do
       member do
@@ -126,6 +135,4 @@ EFG::Application.routes.draw do
   resource :account_locked, controller: 'account_locked'
 
   resource :change_password, controller: 'change_password'
-
-  resource :contact_support, controller: 'support_request'
 end

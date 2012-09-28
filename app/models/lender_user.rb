@@ -1,4 +1,5 @@
 class LenderUser < User
+  include Expertable
   include LenderUserPermissions
 
   belongs_to :lender
