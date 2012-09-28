@@ -43,24 +43,16 @@ class LoanStateChangeImporter < BaseImporter
     end
   end
 
-  # FIXME: cater properly for loan#modified_by being nil (probably due to legacy value being 'system' or 'migration')
   def self.after_import
-    columns            = [ :loan_id, :state, :event_id, :modified_on, :modified_by_id, :version ]
-    values             = []
-    first_cfe_user_id  = CfeUser.first.try(:id)
+    columns = [ :loan_id, :state, :event_id, :modified_on, :modified_by_id, :version ]
+    values  = []
 
     unless Rails.env.test?
       progress_bar ||= ProgressBar.new('After import', Loan.count())
     end
 
-    Loan.includes(:lender).find_each do |loan|
-      modified_by_id = if (loan.modified_by_id == 0)
-        (loan.lender.lender_users.first.try(:id) || first_cfe_user_id)
-      else
-        loan.modified_by_id
-      end
-
-      values << [ loan.id, loan.state, loan.event_legacy_id, loan.updated_at, modified_by_id, loan.version ]
+    Loan.find_each do |loan|
+      values << [ loan.id, loan.state, loan.event_legacy_id, loan.updated_at, loan.modified_by_id, loan.version ]
 
       if values.length % 1000 == 0
         LoanStateChange.import(columns, values, validate: false)

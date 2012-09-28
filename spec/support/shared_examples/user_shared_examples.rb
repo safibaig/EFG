@@ -108,6 +108,12 @@ shared_examples_for 'User' do
       user.username[0,4].should_not match(/[A-Z]/)
       user.username[-1,1].should_not match(/[A-Z]/)
     end
+
+    it "should only include alphabetical characters" do
+      user.last_name = "O'Brien"
+      user.save!
+      user.username[0,4].should == 'obri'
+    end
   end
 
   describe "#reset_failed_attempts callback" do

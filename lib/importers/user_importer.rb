@@ -64,5 +64,10 @@ class UserImporter < BaseImporter
 
       user.save!(validate: false)
     end
+
+    SystemUser.new do |u|
+      u.id = -1
+      u.username = 'system'
+    end.save(validate: false)
   end
 end

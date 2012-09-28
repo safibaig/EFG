@@ -1,4 +1,7 @@
 class Lender < ActiveRecord::Base
+
+  EFG_SCHEME = 'E'
+
   belongs_to :created_by, class_name: 'User'
   belongs_to :modified_by, class_name: 'User'
   has_many :experts
@@ -10,12 +13,12 @@ class Lender < ActiveRecord::Base
   has_many :loans
   has_many :users, class_name: 'User', conditions: { type: %w(LenderAdmin LenderUser) }
 
-  attr_accessible :can_use_add_cap, :high_volume, :name,
+  attr_accessible :can_use_add_cap, :name,
     :organisation_reference_code, :primary_contact_email,
-    :primary_contact_name, :primary_contact_phone
+    :primary_contact_name, :primary_contact_phone, :loan_scheme
 
   validates_inclusion_of :can_use_add_cap, in: [true, false]
-  validates_inclusion_of :high_volume, in: [true, false]
+  validates_inclusion_of :loan_scheme, in: [ EFG_SCHEME ], allow_blank: true
   validates_presence_of :name
   validates_presence_of :organisation_reference_code
   validates_uniqueness_of :organisation_reference_code
@@ -53,6 +56,10 @@ class Lender < ActiveRecord::Base
 
   def current_specific_lending_limit_allocation
     current_lending_limit_allocation_for_type(2)
+  end
+
+  def can_access_all_loan_schemes?
+    loan_scheme.blank?
   end
 
   private

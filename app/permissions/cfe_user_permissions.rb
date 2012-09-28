@@ -24,7 +24,7 @@ module CfeUserPermissions
       LoanAlerts,
       LoanChange,
       LoanRemoveGuarantee,
-      Loan::States,
+      LoanStates,
       RealisationStatement,
       Search
     ].include?(resource)

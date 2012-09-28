@@ -4,7 +4,7 @@ class LendersController < ApplicationController
   before_filter :verify_view_permission, only: [:index]
 
   def index
-    @lenders = Lender.includes(:active_lending_limits)
+    @lenders = Lender.includes(:active_lending_limits).order_by_name
   end
 
   def new
@@ -14,7 +14,6 @@ class LendersController < ApplicationController
   def create
     @lender = Lender.new(params[:lender])
     @lender.created_by = current_user
-    @lender.loan_scheme = Loan::EFG_SCHEME
     @lender.modified_by = current_user
 
     if @lender.save

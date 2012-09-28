@@ -28,7 +28,7 @@ describe UserImporter do
     it "should create new user records" do
       expect {
         dispatch
-      }.to change(User, :count).by(6)
+      }.to change(User, :count).by(7) # includes 1 system user created in after_import
     end
 
     it "should import data correctly" do
@@ -134,6 +134,13 @@ describe UserImporter do
       user = User.find_by_username('mull5432n')
       user.type.should == "CfeUser"
       user.lender_id.should be_nil
+    end
+
+    it "should create a system user with ID -1" do
+      dispatch
+
+      SystemUser.count.should == 1
+      SystemUser.first.id.should == -1
     end
   end
 

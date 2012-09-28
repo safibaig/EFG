@@ -67,6 +67,10 @@ class Loan < ActiveRecord::Base
   scope :correctable, where(state: [Loan::Guaranteed, Loan::LenderDemand, Loan::Demanded])
   scope :recoverable, where(state: [Loan::Settled, Loan::Recovered, Loan::Realised])
 
+  scope :efg, where(loan_scheme: Loan::EFG_SCHEME)
+  scope :sflg, where(loan_scheme: Loan::SFLG_SCHEME, loan_source: Loan::SFLG_SOURCE)
+  scope :legacy_sflg, where(loan_scheme: Loan::SFLG_SCHEME, loan_source: Loan::LEGACY_SFLG_SOURCE)
+
   scope :last_updated_between, lambda { |start_date, end_date|
     where("updated_at >= ? AND updated_at <= ?", start_date, end_date)
   }
@@ -167,8 +171,9 @@ class Loan < ActiveRecord::Base
   end
 
   def loan_security_types=(security_type_ids)
+    loan_securities.clear
     security_type_ids.reject(&:blank?).each do |id|
-      self.loan_securities.build(loan_security_type_id: id)
+      loan_securities.build(loan_security_type_id: id)
     end
   end
 

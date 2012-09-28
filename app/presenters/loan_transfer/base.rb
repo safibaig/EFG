@@ -85,8 +85,12 @@ class LoanTransfer::Base
     end
 
     if loan_to_transfer.efg_loan?
-       errors.add(:base, :cannot_be_transferred)
-     end
+      errors.add(:base, :cannot_be_transferred)
+    end
+
+    unless lender.can_access_all_loan_schemes?
+      errors.add(:base, :cannot_be_transferred)
+    end
 
     if new_amount > loan_to_transfer.amount
       errors.add(:new_amount, :cannot_be_greater)

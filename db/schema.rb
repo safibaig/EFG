@@ -333,7 +333,7 @@ ActiveRecord::Schema.define(:version => 20120927092910) do
     t.integer  "dti_break_costs",                     :limit => 8
     t.decimal  "guarantee_rate",                                    :precision => 16, :scale => 2
     t.decimal  "premium_rate",                                      :precision => 16, :scale => 2
-    t.boolean  "legacy_small_loan"
+    t.boolean  "legacy_small_loan",                                                                :default => false, :null => false
     t.integer  "next_in_realise_seq"
     t.integer  "next_in_recover_seq"
     t.date     "recovery_on"

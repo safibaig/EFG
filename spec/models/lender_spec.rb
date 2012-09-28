@@ -24,11 +24,6 @@ describe Lender do
       new_lender.should_not be_valid
     end
 
-    it 'requires high_volume' do
-      lender.high_volume = ''
-      lender.should_not be_valid
-    end
-
     it 'requires a primary_contact_name' do
       lender.primary_contact_name = ''
       lender.should_not be_valid
@@ -47,6 +42,15 @@ describe Lender do
     it 'requires can_use_add_cap' do
       lender.can_use_add_cap = ''
       lender.should_not be_valid
+    end
+
+    it 'requires the EFG loan_scheme value if not blank' do
+      lender.loan_scheme = nil
+      lender.should be_valid
+      lender.loan_scheme = '!'
+      lender.should_not be_valid
+      lender.loan_scheme = Lender::EFG_SCHEME
+      lender.should be_valid
     end
   end
 
@@ -67,6 +71,18 @@ describe Lender do
 
     it do
       lender.current_specific_lending_limit_allocation.should == Money.new(4_000_00)
+    end
+  end
+
+  describe '#can_access_all_loan_schemes?' do
+    it 'should return true when lender has no loan_scheme' do
+      lender = FactoryGirl.build(:lender, loan_scheme: nil)
+      lender.can_access_all_loan_schemes?.should == true
+    end
+
+    it 'should return false when lender has specific loan_scheme' do
+      lender = FactoryGirl.build(:lender, loan_scheme: 'E')
+      lender.can_access_all_loan_schemes?.should == false
     end
   end
 end

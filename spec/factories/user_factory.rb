@@ -20,6 +20,11 @@ FactoryGirl.define do
 
     factory :premium_collector_user, class: PremiumCollectorUser
 
+    factory :system_user, class: SystemUser do
+      id -1
+      username 'system'
+    end
+
     expertable = Proc.new {
       after :create do |user|
         FactoryGirl.create(:expert, user: user)

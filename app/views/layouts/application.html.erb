@@ -21,7 +21,7 @@
             </ul>
           <% else %>
             <ul class="nav">
-              <% if current_user.can_view?(Loan::States) %>
+              <% if current_user.can_view?(LoanStates) %>
                 <li><%= link_to 'Loan Portfolio', loan_states_path %></li>
               <% end %>
               <% if current_user.can_create?(PremiumScheduleReport) %>

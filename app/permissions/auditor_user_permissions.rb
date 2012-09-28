@@ -16,6 +16,6 @@ module AuditorUserPermissions
   end
 
   def can_view?(resource)
-    [Loan, LoanChange, Loan::States, Search].include?(resource)
+    [Loan, LoanChange, LoanStates, Search].include?(resource)
   end
 end

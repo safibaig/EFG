@@ -88,7 +88,7 @@ class User < ActiveRecord::Base
 
   # Replicate how the existing system generates usernames.
   def generate_username
-    last = last_name[0..3]
+    last = last_name.gsub(/\W/, '')[0..3]
     number = '%04d' % Random.rand(10000)
     first = first_name[0]
     [last, number, first].join('').downcase

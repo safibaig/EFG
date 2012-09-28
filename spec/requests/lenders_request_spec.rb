@@ -27,6 +27,7 @@ describe 'lenders' do
       dispatch
 
       fill_in 'name', 'Bankers'
+      select 'loan_scheme', 'EFG only'
       fill_in 'organisation_reference_code', 'BK'
       fill_in 'primary_contact_name', 'Bob Flemming'
       fill_in 'primary_contact_phone', '0123456789'
@@ -40,7 +41,6 @@ describe 'lenders' do
       lender.name.should == 'Bankers'
       lender.organisation_reference_code.should == 'BK'
       lender.loan_scheme.should == 'E'
-      lender.high_volume.should == false
       lender.primary_contact_name.should == 'Bob Flemming'
       lender.primary_contact_phone.should == '0123456789'
       lender.primary_contact_email.should == 'bob@example.com'
@@ -77,7 +77,6 @@ describe 'lenders' do
 
       fill_in 'name', 'Blankers'
       fill_in 'organisation_reference_code', 'BLK'
-      check 'high_volume'
       fill_in 'primary_contact_name', 'Flob Bemming'
       fill_in 'primary_contact_phone', '987654321'
       fill_in 'primary_contact_email', 'flob@example.com'
@@ -89,7 +88,6 @@ describe 'lenders' do
       lender.modified_by.should == current_user
       lender.name.should == 'Blankers'
       lender.organisation_reference_code.should == 'BLK'
-      lender.high_volume.should == true
       lender.primary_contact_name.should == 'Flob Bemming'
       lender.primary_contact_phone.should == '987654321'
       lender.primary_contact_email.should == 'flob@example.com'

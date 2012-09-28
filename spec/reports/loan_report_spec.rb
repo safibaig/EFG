@@ -86,6 +86,18 @@ describe LoanReport do
       loan_report.created_by_id = 'a'
       loan_report.should_not be_valid
     end
+
+    it "should raise exception when a specified lender is not allowed" do
+      loan1 = FactoryGirl.create(:loan, :eligible)
+      loan2 = FactoryGirl.create(:loan, :guaranteed)
+
+      loan_report.allowed_lender_ids = [ loan2.lender_id ]
+      loan_report.lender_ids         = [ loan1.lender_id, loan2.lender_id ]
+
+      expect {
+        loan_report.valid?
+      }.to raise_error(LoanReport::LenderNotAllowed)
+    end
   end
 
   describe "#count" do
@@ -230,17 +242,6 @@ describe LoanReport do
 
         loan_report.loans.should be_empty
       end
-    end
-
-    it "should raise exception when a specified lender is not allowed" do
-      expect {
-        LoanReport.new(
-          report_attributes(
-            allowed_lender_ids: [ loan2.lender_id ],
-            lender_ids: [ loan1.lender_id, loan2.lender_id ]
-          )
-        )
-      }.to raise_error(LoanReport::LenderNotAllowed)
     end
 
     it "should ignore blank values" do

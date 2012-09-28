@@ -9,16 +9,6 @@
   padding: 0;
   width: 100%;
 
-  dl {
-    margin: 9px;
-
-    dd {
-      margin: 0;
-      margin-bottom: 9px;
-      padding: 0;
-    }
-  }
-
   .form-actions {
     padding: 0;
     margin: 0.5em 0.5em 0.5em 0;
@@ -44,6 +34,18 @@
 
   th {
     text-align: right;
+  }
+}
+
+.table-loan-states {
+  td.loan-state {
+    width: 40%;
+  }
+
+  th.loan-count,
+  td.loan-count {
+    width: 15%;
+    text-align: center;
   }
 }
 

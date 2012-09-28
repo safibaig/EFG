@@ -110,8 +110,8 @@ describe CfeAdminPermissions do
     it { refute user.can_view?(Loan) }
   end
 
-  context 'Loan::States' do
-    it { refute user.can_view?(Loan::States) }
+  context 'LoanStates' do
+    it { refute user.can_view?(LoanStates) }
   end
 
   context 'Search' do
