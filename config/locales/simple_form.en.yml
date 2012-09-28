@@ -20,7 +20,7 @@ en:
         lending_limit_id: 'What is the Lending Limit against which this facility is to be allocated? (Note that the date of the Scheme Facility Letter must fall within the validity of the Lending Limit)'
         repayment_duration: 'Over what term does the Applicant intend to repay the guaranteed facility?'
         turnover: 'What is the current annual turnover of the Applicant business?'
-        trading_date: 'What is the Commencement of Trading Date of the Applicant business? (dd/mm/yyyy)'
+        trading_date: 'What is the Commencement of Trading Date of the Applicant business?'
         sic_code: 'Which Standard Industrial Classification (SIC) code best describes the business sector in which the guaranteed facility will be used?'
         sic_desc: 'SIC code activity description'
         loan_category_id: 'Which EFG Lending Type which most accurately describes the facility to be guaranteed?'
@@ -39,7 +39,7 @@ en:
         starts_on: 'Lending start date'
 
       loan_change:
-        date_of_change: 'What is the date when the change to be recorded occurred? (dd/mm/yyyy)'
+        date_of_change: 'What is the date when the change to be recorded occurred?'
         change_type_id: 'What is the change you wish to make?'
         amount_drawn: 'What is the amount now being drawn that is to be recorded? (This should include any further draws it is known will take place before the next Premium Payment is due)'
         lump_sum_repayment: 'What is the amount of the lump sum repayment?'
@@ -60,7 +60,7 @@ en:
       loan_cancel:
         cancelled_reason_id: 'What is the reason for cancellation of the application?'
         cancelled_comment: 'Please enter any additional explanatory comments regarding the reason for cancellation of the application'
-        cancelled_on: 'On what date was the application cancelled (dd/mm/yyyy)?'
+        cancelled_on: 'On what date was the application cancelled?'
 
       loan_entry: &loan_entry
         <<: *loan
@@ -69,7 +69,7 @@ en:
         trading_name: 'What is the trading name of the Applicant if the Applicant trades under another business name?'
         legal_form_id: 'What is the legal form of the Applicant?'
         company_registration: "What is the Applicant's Company Registration Number (if applicable)?"
-        trading_date: 'What is the Commencement of Trading Date of the Applicant business? (dd/mm/yyyy)'
+        trading_date: 'What is the Commencement of Trading Date of the Applicant business?'
         postcode: "What is the postcode of the Applicant's main business address? (In instances where the Applicant's postcode cannot be validated please enter the lender's branch postcode and complete the two fields at the bottom of the page)."
         sortcode: '(For banks only) What is the Sort Code of the bank branch or business centre which originated this application? (nnnnnn)'
         repayment_frequency_id: At what frequency will the Applicant make repayments of the principal of the facility?
@@ -103,7 +103,7 @@ en:
 
       loan_offer:
         facility_letter_sent: "Have the Scheme Facility Offer Documents been sent to the Applicant?"
-        facility_letter_date: "What is the date of the Scheme Facility Letter? (dd/mm/yyyy) - Please note that this must fall within the chosen Lending Limit period. Any change to the Lending Limit must be made in Loan Entry before entering the Scheme Facility date here."
+        facility_letter_date: "What is the date of the Scheme Facility Letter? - Please note that this must fall within the chosen Lending Limit period. Any change to the Lending Limit must be made in Loan Entry before entering the Scheme Facility date here."
 
       loan_guarantee:
         received_declaration: Has a signed Information Declaration (without any amendments) been received from the Application?
@@ -114,7 +114,7 @@ en:
         maturity_date: 'On what date is the loan to be repaid (maturity date)?'
 
       state_aid_calculation:
-        initial_draw_year: 'What is the expected year of the initial draw? (yyyy)'
+        initial_draw_year: 'What is the expected year of the initial draw?'
         initial_draw_amount: 'What is the amount of the initial draw?'
         initial_draw_months: 'What is the loan term? (Months)'
         initial_capital_repayment_holiday: 'What is the length of the initial capital repayment holiday? (Months)'
@@ -126,7 +126,7 @@ en:
         fourth_draw_months: 'What is the number of months (from the initial draw) to fourth tranche drawdown?'
 
       regenerate_schedule:
-        premium_cheque_month: 'When is the next quarterly Premium due? (mm/yyyy)'
+        premium_cheque_month: 'When is the next quarterly Premium due?'
         initial_draw_amount: 'What is the outstanding balance at the next (or subsequent) quarterly Premium collection point, taking account of any draws or repayments which may be made between now and the relevant quarter date?'
         initial_draw_months: 'What will the outstanding loan term be at the next (or subsequent) quarterly Premium collection point? (Months - must be a multiple of 3, i.e. rounded up to the next whole quarter)'
         initial_capital_repayment_holiday: What is the length of the initial capital repayment holiday? (Months) (Note that if the facility is being provided on interest-only terms then the value entered here should be equal to the full term of the facility)
@@ -142,7 +142,7 @@ en:
         borrower_demanded_on: 'What was the date that demand was made on the borrower (date of demand letter)?'
 
       loan_repay:
-        repaid_on: 'What was the date the facility was repaid by the borrower? (dd/mm/yyyy)'
+        repaid_on: 'What was the date the facility was repaid by the borrower?'
 
       loan_remove:
         remove_guarantee_on: 'What was the date on which the Guarantee was removed in respect of this facility?'
@@ -150,10 +150,10 @@ en:
         remove_guarantee_reason: 'What was the reason for the removal of the Guarantee in respect of this facility?'
 
       loan_no_claim:
-        no_claim_on: 'On what date was a decision made not to make Demand against the Guarantee? (dd/mm/yyyy)'
+        no_claim_on: 'On what date was a decision made not to make Demand against the Guarantee?'
 
       loan_demand_against_government:
-        dti_demanded_on: "What is the date the Demand is being made against the Scheme Guarantee? (dd/mm/yyyy) (This should be today's date)"
+        dti_demanded_on: "What is the date the Demand is being made against the Scheme Guarantee? (This should be today's date)"
         dti_demand_outstanding: 'What is the outstanding Scheme Facility Principal owed by the Borrower to the Lender upon which the Guaranteed Percentage will be calculated?'
         dti_ded_code: 'Please select the primary cause of business failure'
         dti_reason: 'Please provide any further information you consider appropriate to the reason for Demand against the Government Guarantee'
@@ -168,20 +168,20 @@ en:
         realised_money_date: 'What was the most recent date on which Realisations were received by the Government in respect of this facility?'
 
       loan_remove_guarantee:
-        remove_guarantee_on: What is the date that the Guarantee was removed from this facility? (dd/mm/yyyy)
+        remove_guarantee_on: What is the date that the Guarantee was removed from this facility?
         remove_guarantee_outstanding_amount: 'What is the outstanding balance of the facility, as recorded by the Lender, at the date of removal of the Guarantee?'
         remove_guarantee_reason: What is the reason that the Guarantee has been removed from this facility?
 
       loan_transfer_sflg:
         reference: What is the previous lender's loan reference (as recorded on the borrower's Scheme Facility Letter or Information Declaration)?
         amount: What was the original loan amount (as recorded on the Web Portal)?
-        facility_letter_date: What was the date of the previous Lender's Scheme Facility Letter (as recorded on the Web Portal)? (dd/mm/yyyy)
+        facility_letter_date: What was the date of the previous Lender's Scheme Facility Letter (as recorded on the Web Portal)?
         new_amount: What is the value of the facility being applied for?
         declaration_signed: 'Before proceeding, have you received the Data Protection and Disclosure Declaration signed by the Applicant?'
       loan_transfer_legacy_sflg:
         reference: What is the transferor loan reference (as recorded on the Web Portal)?
         amount: What was the original loan amount (as recorded on the Web Portal)?
-        initial_draw_date: What was the Initial Draw Down Date of the transferring loan (as recorded on the Web Portal)? (dd/mm/yyyy)
+        initial_draw_date: What was the Initial Draw Down Date of the transferring loan (as recorded on the Web Portal)?
         new_amount: What is the value of the facility being applied for?
         declaration_signed: 'Before proceeding, have you received the Data Protection and Disclosure Declaration signed by the Applicant?'
 
@@ -223,7 +223,7 @@ en:
         received_on: On what date was the invoice received?
 
       recovery:
-        recovered_on: 'On what date was the recovery made (dd/mm/yyyy)?'
+        recovered_on: 'On what date was the recovery made?'
         outstanding_non_efg_debt: 'Enter the value of any non-EFG Debt'
         non_linked_security_proceeds: 'Enter the value of the proceeds of any post-Settlement Security Realisations, excluding any Linked Security'
         linked_security_proceeds: 'Enter the value of the proceeds of any Linked Security'
@@ -232,16 +232,16 @@ en:
         lender_id: Select lender
         reference: Lender's recoveries statement reference?
         period_covered_quarter: Select the recoveries statement period quarter end date?
-        period_covered_year: Recoveries statement period quarter end year? (yyyy)
-        received_on: On what date was the Recoveries Statement received? (dd/mm/yyyy)
+        period_covered_year: Recoveries statement period quarter end year?
+        received_on: On what date was the Recoveries Statement received?
 
       loan_report:
-        facility_letter_start_date: What is the Scheme Facility Letter start date for your report? (dd/mm/yyyy)
-        facility_letter_end_date: What is the Scheme Facility Letter end date for your report? (dd/mm/yyyy)
-        created_at_start_date: What is the 'created' start date for your report? (dd/mm/yyyy)
-        created_at_end_date: What is the 'created' end date for your report? (dd/mm/yyyy)
-        last_modified_start_date: What is the 'last modified' start date for your report? (dd/mm/yyyy)
-        last_modified_end_date: What is the 'last modified' end date for your report? (dd/mm/yyyy)
+        facility_letter_start_date: What is the Scheme Facility Letter start date for your report?
+        facility_letter_end_date: What is the Scheme Facility Letter end date for your report?
+        created_at_start_date: What is the 'created' start date for your report?
+        created_at_end_date: What is the 'created' end date for your report?
+        last_modified_start_date: What is the 'last modified' start date for your report?
+        last_modified_end_date: What is the 'last modified' end date for your report?
         states: Select loan state
         lender_ids: What is the name of the lender organisation?
         created_by_id: To refine your data extraction select the user who created the data
@@ -249,15 +249,15 @@ en:
         loan_scheme: Loan scheme
 
       loan_audit_report:
-        facility_letter_start_date: What is the date of Scheme Facility Letter start date for your report? (dd/mm/yyyy)
-        facility_letter_end_date: What is the date of Scheme Facility Letter end date for your report? (dd/mm/yyyy)
-        created_at_start_date: What is the 'created' start date for your report? (dd/mm/yyyy)
-        created_at_end_date: What is the 'created' end date for your report? (dd/mm/yyyy)
-        last_modified_start_date: What is the 'last modified' start date for your report? (dd/mm/yyyy)
-        last_modified_end_date: What is the 'last modified' end date for your report? (dd/mm/yyyy)
+        facility_letter_start_date: What is the date of Scheme Facility Letter start date for your report?
+        facility_letter_end_date: What is the date of Scheme Facility Letter end date for your report?
+        created_at_start_date: What is the 'created' start date for your report?
+        created_at_end_date: What is the 'created' end date for your report?
+        last_modified_start_date: What is the 'last modified' start date for your report?
+        last_modified_end_date: What is the 'last modified' end date for your report?
         event_id: Select the audit function to refine your data extraction
-        audit_records_start_date: What is the audit records start date for your report? (dd/mm/yyyy)
-        audit_records_end_date: What is the audit records end date for your report? (dd/mm/yyyy)
+        audit_records_start_date: What is the audit records start date for your report?
+        audit_records_end_date: What is the audit records end date for your report?
         state: To refine your data extraction select the 'loan state' for your report
         lender_id: What is the name of the lender organisation?
 

@@ -61,11 +61,11 @@
 <table class="table table-striped">
   <tbody>
     <tr>
-      <th>What is the expected year of the initial draw? (yyyy)</th>
+      <th>What is the expected year of the initial draw?</th>
       <td><%= @premium_schedule.initial_draw_year %></td>
     </tr>
     <tr>
-      <th>What is the date of the Premium Collection point from which this schedule applies? (dd/mm/yyyy)</th>
+      <th>What is the date of the Premium Collection point from which this schedule applies?</th>
       <td><%= @premium_schedule.reschedule? ? @premium_schedule.premium_cheque_month : @premium_schedule.initial_draw_date.try(:to_s, :screen) %></td>
     </tr>
     <% if @premium_schedule.reschedule? %>
