@@ -21,7 +21,7 @@ class Help::AskAnExpertController < ApplicationController
 
   private
     def load_expert_users
-      @expert_users = current_lender.expert_users
+      @expert_users = current_lender.expert_users.order_by_name
     end
 
     def verify_create_permission

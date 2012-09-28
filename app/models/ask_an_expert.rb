@@ -7,6 +7,7 @@ class AskAnExpert
 
   validates_presence_of :user, strict: true
   validates_presence_of :message
+  validate :validate_at_least_one_to_email
 
   def deliver
     AskForHelpMailer.ask_an_expert_email(self).deliver
@@ -21,6 +22,11 @@ class AskAnExpert
   end
 
   def to
-    expert_users.map(&:email)
+    expert_users.map(&:email).reject(&:blank?).uniq
   end
+
+  private
+    def validate_at_least_one_to_email
+      errors.add(:expert_users, :must_have_at_least_one_email) if to.empty?
+    end
 end
