@@ -28,7 +28,7 @@ describe 'Resetting password' do
     emails = ActionMailer::Base.deliveries
     emails.size.should == 1
     emails.first.to.should == [ user2.email ]
-    emails.first.body.match(/#{user2.reset_password_token}/)
+    emails.first.body.should include(user2.reset_password_token)
   end
 
   it 'does not work if the user has no email' do

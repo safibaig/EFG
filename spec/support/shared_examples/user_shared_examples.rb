@@ -105,8 +105,7 @@ shared_examples_for 'User' do
 
     it "should be lowercase" do
       user.save!
-      user.username[0,4].should_not match(/[A-Z]/)
-      user.username[-1,1].should_not match(/[A-Z]/)
+      user.username.should_not match(/[A-Z]/)
     end
 
     it "should only include alphabetical characters" do

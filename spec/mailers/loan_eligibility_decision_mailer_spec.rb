@@ -12,7 +12,7 @@ describe LoanEligibilityDecisionMailer do
     end
 
     it "should contain the loan reference" do
-      email.body.should match(/#{loan.reference}/)
+      email.body.should include(loan.reference)
     end
   end
 

@@ -13,19 +13,19 @@ describe UserMailer do
     end
 
     it "should contain user's first name" do
-      @email.body.should match(/#{@user.first_name}/)
+      @email.body.should include(@user.first_name)
     end
 
     it "should contain user's username" do
-      @email.body.should match(/#{@user.username}/)
+      @email.body.should include(@user.username)
     end
 
     it "should contain link to reset password page" do
-      @email.body.should match(/\?reset_password_token=#{@user.reset_password_token}/)
+      @email.body.should include("?reset_password_token=#{@user.reset_password_token}")
     end
     
     it "should contain a link back to the home page to resend the request" do
-      @email.body.should match(/"#{root_url}"/)
+      @email.body.should include(%Q("#{root_url}"))
     end
     
     it "should have a from header" do

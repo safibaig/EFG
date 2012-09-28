@@ -25,8 +25,8 @@ describe 'ask CfE' do
 
         email = ActionMailer::Base.deliveries.last
         email.reply_to.should == [current_user.email]
-        email.body.should match(/blah blah/)
-        email.body.should match(/#{current_user.name}/)
+        email.body.should include('blah blah')
+        email.body.should include(current_user.name)
 
         page.should have_content('Thanks')
       end

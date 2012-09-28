@@ -62,7 +62,7 @@ describe InvoicesController do
 
       it "sets filename for CSV" do
         expected_filename = "loans_to_settle_#{lender.name.parameterize}_#{Date.today.strftime('%Y-%m-%d')}.csv"
-        response.headers['Content-Disposition'].should match(/filename="#{expected_filename}"/)
+        response.headers['Content-Disposition'].should include(%Q(filename="#{expected_filename}"))
       end
     end
   end

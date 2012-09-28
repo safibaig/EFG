@@ -30,10 +30,7 @@ describe LoanReference do
     let(:loan) { FactoryGirl.build(:loan) }
 
     it "should return reference in format {letters/numbers}{separator}{version number}" do
-      reference = LoanReference.generate
-
-      reference[0,6].should match(/\d*[A-Z]*/)
-      reference[-3,3].should match(/\+\d{2}/)
+      LoanReference.generate.should match(/\A[\dA-Z]{7}\+\d{2}\z/)
     end
 
     it "should not end in E+{numbers}" do
