@@ -41,6 +41,14 @@ describe ExpertUsersController do
           dispatch expert: { user_id: user.id }
         }.to change(Expert, :count).by(0)
       end
+
+      it 'does not allow users of other lenders to be assigned' do
+        user = FactoryGirl.create(:lender_user)
+
+        expect {
+          dispatch expert: { user_id: user.id }
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
     end
   end
 
