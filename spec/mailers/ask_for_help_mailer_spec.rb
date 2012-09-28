@@ -19,6 +19,7 @@ describe AskForHelpMailer do
       email.body.should include('Hello')
       email.from.should == [Devise.mailer_sender]
       email.reply_to.should == [user.email]
+      email.subject.should include('EFG')
       email.to.should include(expert_user1.email)
       email.to.should include(expert_user2.email)
     end
@@ -52,6 +53,7 @@ describe AskForHelpMailer do
       email.body.should include('Foo, ABC')
       email.from.should == [Devise.mailer_sender]
       email.reply_to.should == [user.email]
+      email.subject.should include('EFG')
       email.to.should == ['foo@example.com']
     end
   end

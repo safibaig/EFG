@@ -1,13 +1,15 @@
 class AskForHelpMailer < ActionMailer::Base
-  default from: Devise.mailer_sender
+  default(
+    from: Devise.mailer_sender,
+    subject: '[EFG] New support request from EFG'
+  )
 
   def ask_an_expert_email(ask_an_expert)
     @ask_an_expert = ask_an_expert
 
     mail(
       to: ask_an_expert.to,
-      reply_to: ask_an_expert.from,
-      subject: '[EFG] New support request from EFG'
+      reply_to: ask_an_expert.from
     )
   end
 
@@ -16,8 +18,7 @@ class AskForHelpMailer < ActionMailer::Base
 
     mail(
       to: ask_cfe.to,
-      reply_to: ask_cfe.from,
-      subject: '[EFG] New support request from EFG'
+      reply_to: ask_cfe.from
     )
   end
 end
