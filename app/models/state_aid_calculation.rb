@@ -47,8 +47,7 @@ class StateAidCalculation < ActiveRecord::Base
   end
 
   after_save do |calculation|
-    calculation.loan.state_aid = state_aid_eur
-    calculation.loan.save
+    calculation.loan.update_attribute :state_aid, state_aid_eur
   end
 
   def reschedule?
