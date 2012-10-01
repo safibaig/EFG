@@ -109,6 +109,16 @@ describe 'loans/details' do
         render
       end
     end
+
+    context 'without a LendingLimit' do
+      before do
+        loan.lending_limit = nil
+      end
+
+      it_behaves_like 'rendered loan_details' do
+        let(:visible_details) { %w(loan_guarantee.received_declaration) }
+      end
+    end
   end
 
   context "with a lender demanded loan" do
@@ -209,17 +219,5 @@ describe 'loans/details' do
 
     pending "needs factory definition"
     # it_behaves_like 'rendered loan_details'
-  end
-
-  context 'without a LendingLimit' do
-    let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
-
-    before do
-      loan.lending_limit = nil
-    end
-
-    it_behaves_like 'rendered loan_details' do
-      let(:visible_details) { %w(loan_guarantee.received_declaration) }
-    end
   end
 end
