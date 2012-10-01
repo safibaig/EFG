@@ -56,11 +56,11 @@ describe LoanAlertsController do
   end
 
   describe "#not_closed" do
-    let!(:high_priority_incomplete_loan) { FactoryGirl.create(:loan, :incomplete, lender: current_lender, maturity_date: 180.days.ago) }
+    let!(:high_priority_incomplete_loan) { FactoryGirl.create(:loan, :incomplete, :legacy_sflg, lender: current_lender, maturity_date: 180.days.ago) }
     let!(:high_priority_guaranteed_loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_lender, maturity_date: 90.days.ago) }
     let!(:medium_priority_completed_loan) { FactoryGirl.create(:loan, :completed, lender: current_lender, maturity_date: 170.days.ago) }
     let!(:medium_priority_guaranteed_loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_lender, maturity_date: 70.days.ago) }
-    let!(:low_priority_offered_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, maturity_date: 125.days.ago) }
+    let!(:low_priority_offered_loan) { FactoryGirl.create(:loan, :offered, :sflg, lender: current_lender, maturity_date: 125.days.ago) }
     let!(:low_priority_guaranteed_loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_lender, maturity_date: 40.days.ago) }
 
     def dispatch(params = {})
