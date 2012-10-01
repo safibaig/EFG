@@ -3,19 +3,19 @@ module LoanAutoUpdater
   extend LoanAlerts
 
   def cancel_not_progressed_loans!
-    Loan.not_progressed.where("updated_at < ?", not_progressed_start_date).each do |loan|
+    loans.not_progressed.where("updated_at < ?", not_progressed_start_date).each do |loan|
       loan.auto_update!(Loan::AutoCancelled, 6)
     end
   end
 
   def cancel_not_drawn_loans!
-    Loan.offered.where("facility_letter_date < ?", not_drawn_start_date).each do |loan|
+    loans.offered.where("facility_letter_date < ?", not_drawn_start_date).each do |loan|
       loan.auto_update!(Loan::AutoCancelled, 8)
     end
   end
 
   def remove_guarantee_from_not_demanded_loans!
-    Loan.with_scheme('non_efg').lender_demanded.where("borrower_demanded_on < ?", demanded_start_date).each do |loan|
+    loans.with_scheme('non_efg').lender_demanded.where("borrower_demanded_on < ?", demanded_start_date).each do |loan|
       loan.auto_update!(Loan::AutoRemoved, 11)
     end
   end
@@ -28,16 +28,20 @@ module LoanAutoUpdater
 
   private
 
+  def loans
+    Loan.where(lender_id: Lender.where(allow_alert_process: true))
+  end
+
   def not_yet_guaranteed_efg_loans
-    Loan.with_scheme('efg').where(state: [Loan::Incomplete, Loan::Completed, Loan::Offered]).where("maturity_date < ?", not_closed_offered_start_date)
+    loans.with_scheme('efg').where(state: [Loan::Incomplete, Loan::Completed, Loan::Offered]).where("maturity_date < ?", not_closed_offered_start_date)
   end
 
   def guaranteed_efg_loans
-    Loan.with_scheme('efg').guaranteed.where("maturity_date < ?", not_closed_guaranteed_start_date)
+    loans.with_scheme('efg').guaranteed.where("maturity_date < ?", not_closed_guaranteed_start_date)
   end
 
   def sflg_and_legacy_sflg_loans_in_any_state
-    Loan.with_scheme('non_efg').where("maturity_date < ?", sflg_not_closed_start_date)
+    loans.with_scheme('non_efg').where("maturity_date < ?", sflg_not_closed_start_date)
   end
 
 end
