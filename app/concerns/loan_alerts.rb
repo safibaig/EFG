@@ -1,20 +1,20 @@
 module LoanAlerts
 
   def not_progressed_start_date
-    183.days.ago.to_date
+    6.months.ago.to_date
   end
 
   def not_progressed_end_date
-    124.days.ago.to_date
+    (6.months.ago + 59.days).to_date
   end
 
   # TODO: change to 6 months + 10 days
   def not_drawn_start_date
-    183.days.ago.to_date
+    6.months.ago.to_date
   end
 
   def not_drawn_end_date
-    124.days.ago.to_date
+    (6.months.ago + 59.days).to_date
   end
 
   def demanded_start_date
@@ -26,11 +26,11 @@ module LoanAlerts
   end
 
   def assumed_repaid_offered_start_date
-    183.days.ago.to_date
+    6.months.ago.to_date
   end
 
   def assumed_repaid_offered_end_date
-    124.days.ago.to_date
+    (6.months.ago + 59.days).to_date
   end
 
   def assumed_repaid_guaranteed_start_date
