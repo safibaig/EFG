@@ -131,6 +131,8 @@ class Loan < ActiveRecord::Base
       where(loan_scheme: SFLG_SCHEME, loan_source: SFLG_SOURCE)
     when 'legacy_sflg'
       where(loan_scheme: SFLG_SCHEME, loan_source: LEGACY_SFLG_SOURCE)
+    when 'non_efg'
+      where(loan_scheme: SFLG_SCHEME, loan_source: [SFLG_SOURCE, LEGACY_SFLG_SOURCE])
     else
       none
     end

@@ -28,14 +28,31 @@ describe LoanAutoUpdater do
   end
 
   describe ".remove_guarantee_from_not_demanded_loans!" do
-    let!(:expired_loan) { FactoryGirl.create(:loan, :lender_demand, borrower_demanded_on: 366.days.ago) }
-    let!(:unexpired_loan) { FactoryGirl.create(:loan, :lender_demand, borrower_demanded_on: 365.days.ago) }
 
-    it "should update state of loans with a borrower demanded date older than a year to auto-removed" do
-      LoanAutoUpdater.remove_guarantee_from_not_demanded_loans!
+    context "EFG loans" do
+      let!(:efg_loan1) { FactoryGirl.create(:loan, :lender_demand, borrower_demanded_on: 366.days.ago) }
+      let!(:efg_loan2) { FactoryGirl.create(:loan, :lender_demand, borrower_demanded_on: 365.days.ago) }
 
-      expired_loan.reload.state.should == Loan::AutoRemoved
-      unexpired_loan.reload.state.should == Loan::LenderDemand
+      it "should not update loans as EFG loans have no time limit for demanding loans" do
+        LoanAutoUpdater.remove_guarantee_from_not_demanded_loans!
+
+        efg_loan1.reload.state.should == Loan::LenderDemand
+        efg_loan2.reload.state.should == Loan::LenderDemand
+      end
+    end
+
+    %w(sflg legacy_sflg).each do |scheme|
+      context "#{scheme} loans" do
+        let!(:expired_loan) { FactoryGirl.create(:loan, :lender_demand, scheme.to_sym, borrower_demanded_on: 366.days.ago) }
+        let!(:unexpired_loan) { FactoryGirl.create(:loan, :lender_demand, scheme.to_sym, borrower_demanded_on: 365.days.ago) }
+
+        it "should update state of loans with a borrower demanded date older than a year to auto-removed" do
+          LoanAutoUpdater.remove_guarantee_from_not_demanded_loans!
+
+          expired_loan.reload.state.should == Loan::AutoRemoved
+          unexpired_loan.reload.state.should == Loan::LenderDemand
+        end
+      end
     end
   end
 
