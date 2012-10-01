@@ -134,6 +134,10 @@ class Loan < ActiveRecord::Base
     Money.new(loan_changes.sum(:lump_sum_repayment))
   end
 
+  def cumulative_recoveries_amount
+    Money.new(recoveries.sum(:amount_due_to_dti))
+  end
+
   def state_aid_calculation
     state_aid_calculations.last
   end

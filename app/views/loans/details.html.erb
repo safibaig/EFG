@@ -174,7 +174,7 @@
   <%= loan_details_table(@loan, 'simple_form.labels.loan_recovery') do |table| %>
     <tr>
       <th>Total of all previous recoveries</th>
-      <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+      <td><%= @loan.cumulative_recoveries_amount.format %></td>
     </tr>
     <%= table.row 'recovery_on' %>
   <% end %>
