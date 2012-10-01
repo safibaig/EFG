@@ -22,9 +22,11 @@ describe LoanAlertsController do
   end
 
   describe "#not_demanded" do
-    let!(:high_priority_loan) { FactoryGirl.create(:loan, :lender_demand, lender: current_lender, borrower_demanded_on: 360.days.ago) }
-    let!(:medium_priority_loan) { FactoryGirl.create(:loan, :lender_demand, lender: current_lender, borrower_demanded_on: 350.days.ago) }
-    let!(:low_priority_loan) { FactoryGirl.create(:loan, :lender_demand, lender: current_lender, borrower_demanded_on: 310.days.ago) }
+    let!(:high_priority_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, lender: current_lender, borrower_demanded_on: 360.days.ago) }
+    let!(:medium_priority_loan) { FactoryGirl.create(:loan, :lender_demand, :legacy_sflg, lender: current_lender, borrower_demanded_on: 350.days.ago) }
+    let!(:low_priority_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, lender: current_lender, borrower_demanded_on: 310.days.ago) }
+    # EFG loans are excluded from this loan alert
+    let!(:efg_loan) { FactoryGirl.create(:loan, :lender_demand, lender: current_lender, borrower_demanded_on: 310.days.ago) }
 
     def dispatch(params = {})
       get :demanded, params

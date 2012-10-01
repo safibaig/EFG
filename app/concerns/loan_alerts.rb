@@ -81,14 +81,13 @@ module LoanAlerts
   # "All new scheme and legacy loans that are in a state of “Lender Demand”
   # have a 12 month time frame to be progressed to “Demanded”
   # – if they do not, they will become “Auto Removed”."
-  #
   # TODO: "EFG loans however, should not be subjected to this alert
-  # – they should remain at lender demand indefinitely until such time that the lender themselves progress them"
   def demanded_loans(start_date = nil, end_date = nil)
     start_date ||= demanded_start_date
     end_date ||= demanded_end_date
 
     current_lender.loans.
+      non_efg.
       lender_demanded.
       borrower_demanded_date_between(start_date, end_date).
       order(:updated_at)

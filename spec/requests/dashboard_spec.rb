@@ -19,9 +19,11 @@ describe 'lender dashboard' do
     end
 
     context "not demanded loan alerts" do
-      let!(:high_priority_loan) { FactoryGirl.create(:loan, :lender_demand, lender: lender, borrower_demanded_on: 360.days.ago) }
-      let!(:medium_priority_loan) { FactoryGirl.create(:loan, :lender_demand, lender: lender, borrower_demanded_on: 350.days.ago) }
-      let!(:low_priority_loan) { FactoryGirl.create(:loan, :lender_demand, lender: lender, borrower_demanded_on: 310.days.ago) }
+      let!(:high_priority_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, lender: lender, borrower_demanded_on: 360.days.ago) }
+      let!(:medium_priority_loan) { FactoryGirl.create(:loan, :lender_demand, :legacy_sflg, lender: lender, borrower_demanded_on: 350.days.ago) }
+      let!(:low_priority_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, lender: lender, borrower_demanded_on: 310.days.ago) }
+      # EFG loans are excluded from this loan alert
+      let!(:efg_loan) { FactoryGirl.create(:loan, :lender_demand, lender: lender, borrower_demanded_on: 310.days.ago) }
 
       it "should display high, medium and low priority loan alerts" do
         visit root_path
