@@ -14,8 +14,8 @@ describe LoanStates do
       FactoryGirl.create(:loan, :guaranteed, lender: lender)
 
       # demanded loans
-      FactoryGirl.create(:loan, :demanded, :legacy_sflg, lender: lender, reference: '123457')
-      FactoryGirl.create(:loan, :demanded, :legacy_sflg, lender: lender, reference: '123458')
+      FactoryGirl.create(:loan, :demanded, :legacy_sflg, lender: lender)
+      FactoryGirl.create(:loan, :demanded, :legacy_sflg, lender: lender)
       FactoryGirl.create(:loan, :demanded, lender: lender)
       FactoryGirl.create(:loan, :demanded, lender: lender)
     end
