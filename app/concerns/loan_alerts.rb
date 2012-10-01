@@ -8,13 +8,12 @@ module LoanAlerts
     (6.months.ago + 59.days).to_date
   end
 
-  # TODO: change to 6 months + 10 days
   def not_drawn_start_date
-    6.months.ago.to_date
+    (6.months.ago - 10.days).to_date
   end
 
   def not_drawn_end_date
-    (6.months.ago + 59.days).to_date
+    (6.months.ago + 69.days).to_date
   end
 
   def demanded_start_date

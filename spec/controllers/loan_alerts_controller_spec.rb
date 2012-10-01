@@ -6,9 +6,9 @@ describe LoanAlertsController do
   before { sign_in(current_user) }
 
   describe "#not_drawn" do
-    let!(:high_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, facility_letter_date: 180.days.ago) }
-    let!(:medium_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, facility_letter_date: 170.days.ago) }
-    let!(:low_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, facility_letter_date: 130.days.ago) }
+    let!(:high_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, facility_letter_date: 190.days.ago) }
+    let!(:medium_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, facility_letter_date: 180.days.ago) }
+    let!(:low_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, facility_letter_date: 140.days.ago) }
 
     def dispatch(params = {})
       get :not_drawn, params
