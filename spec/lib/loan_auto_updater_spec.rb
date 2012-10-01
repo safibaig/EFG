@@ -60,10 +60,10 @@ describe LoanAutoUpdater do
     it_behaves_like "loan auto-update"
   end
 
-  describe ".remove_guarantee_from_not_demanded_loans!" do
+  describe ".remove_not_demanded_loans!" do
 
     def dispatch
-      LoanAutoUpdater.remove_guarantee_from_not_demanded_loans!
+      LoanAutoUpdater.remove_not_demanded_loans!
     end
 
     context "EFG loans" do
