@@ -8,6 +8,7 @@ module LoanAlerts
     124.days.ago.to_date
   end
 
+  # TODO: change to 6 months + 10 days
   def not_drawn_start_date
     183.days.ago.to_date
   end
@@ -63,7 +64,7 @@ module LoanAlerts
 
     current_lender.loans.
       offered.
-      last_updated_between(start_date, end_date).
+      facility_letter_date_between(start_date, end_date).
       order(:updated_at)
   end
 
@@ -80,7 +81,7 @@ module LoanAlerts
 
     current_lender.loans.
       demanded.
-      last_updated_between(start_date, end_date).
+      borrower_demanded_date_between(start_date, end_date).
       order(:updated_at)
   end
 

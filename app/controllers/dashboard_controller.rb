@@ -21,11 +21,11 @@ class DashboardController < ApplicationController
   end
 
   def not_drawn_loans_groups
-    LoanAlerts::PriorityGrouping.new(not_drawn_loans, not_drawn_start_date, not_drawn_end_date).groups_hash
+    LoanAlerts::PriorityGrouping.new(not_drawn_loans, not_drawn_start_date, not_drawn_end_date, :facility_letter_date).groups_hash
   end
 
   def demanded_loans_groups
-    LoanAlerts::PriorityGrouping.new(demanded_loans, demanded_start_date, demanded_end_date).groups_hash
+    LoanAlerts::PriorityGrouping.new(demanded_loans, demanded_start_date, demanded_end_date, :borrower_demanded_on).groups_hash
   end
 
   def not_progressed_loans_groups

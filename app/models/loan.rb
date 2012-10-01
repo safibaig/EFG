@@ -75,6 +75,14 @@ class Loan < ActiveRecord::Base
     where("maturity_date >= ? AND maturity_date <= ?", start_date, end_date)
   }
 
+  scope :facility_letter_date_between, lambda { |start_date, end_date|
+    where("facility_letter_date >= ? AND facility_letter_date <= ?", start_date, end_date)
+  }
+
+  scope :borrower_demanded_date_between, lambda { |start_date, end_date|
+    where("borrower_demanded_on >= ? AND borrower_demanded_on <= ?", start_date, end_date)
+  }
+
   scope :by_reference, lambda { |reference|
     where("reference LIKE ?", "%#{reference}%")
   }

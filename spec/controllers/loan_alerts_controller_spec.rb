@@ -6,9 +6,9 @@ describe LoanAlertsController do
   before { sign_in(current_user) }
 
   describe "#not_drawn" do
-    let!(:high_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, updated_at: 180.days.ago) }
-    let!(:medium_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, updated_at: 170.days.ago) }
-    let!(:low_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, updated_at: 130.days.ago) }
+    let!(:high_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, facility_letter_date: 180.days.ago) }
+    let!(:medium_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, facility_letter_date: 170.days.ago) }
+    let!(:low_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, facility_letter_date: 130.days.ago) }
 
     def dispatch(params = {})
       get :not_drawn, params
@@ -22,9 +22,9 @@ describe LoanAlertsController do
   end
 
   describe "#not_demanded" do
-    let!(:high_priority_loan) { FactoryGirl.create(:loan, :demanded, lender: current_lender, updated_at: 360.days.ago) }
-    let!(:medium_priority_loan) { FactoryGirl.create(:loan, :demanded, lender: current_lender, updated_at: 350.days.ago) }
-    let!(:low_priority_loan) { FactoryGirl.create(:loan, :demanded, lender: current_lender, updated_at: 310.days.ago) }
+    let!(:high_priority_loan) { FactoryGirl.create(:loan, :demanded, lender: current_lender, borrower_demanded_on: 360.days.ago) }
+    let!(:medium_priority_loan) { FactoryGirl.create(:loan, :demanded, lender: current_lender, borrower_demanded_on: 350.days.ago) }
+    let!(:low_priority_loan) { FactoryGirl.create(:loan, :demanded, lender: current_lender, borrower_demanded_on: 310.days.ago) }
 
     def dispatch(params = {})
       get :demanded, params
