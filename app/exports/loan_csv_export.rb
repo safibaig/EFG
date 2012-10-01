@@ -42,7 +42,6 @@ class LoanCsvExport < BaseCsvExport
       borrower_demanded_on
       sortcode
       business_name
-      business_type
       cancelled_comment
       cancelled_on
       cancelled_reason

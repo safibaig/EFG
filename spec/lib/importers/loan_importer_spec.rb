@@ -132,7 +132,7 @@ describe LoanImporter do
       loan.interest_rate.should == 5.4
       loan.fees.should == Money.new(50000)
       loan.reason_id.should == 26
-      loan.business_type.should == 4
+      loan.legal_form_id.should == 4
       loan.payment_period.should == 4
       loan.cancelled_reason_id.should == 1
       loan.loan_category_id.should == 20

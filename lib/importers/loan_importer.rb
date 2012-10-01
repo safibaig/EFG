@@ -99,7 +99,7 @@ class LoanImporter < BaseImporter
       "EFG_INTEREST_RATE"             => :interest_rate,
       "EFG_FEES"                      => :fees,
       "REASON"                        => :reason_id,
-      "BUSINESS_TYPE"                 => :business_type,
+      "BUSINESS_TYPE"                 => :legal_form_id,
       "PAYMENT_PERIOD"                => :payment_period,
       "CANCEL_REASON"                 => :cancelled_reason_id,
       "LOAN_CATEGORY"                 => :loan_category_id,
