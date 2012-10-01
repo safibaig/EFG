@@ -41,11 +41,6 @@ describe AskForHelpMailer do
     }
     let(:email) { AskForHelpMailer.ask_cfe_email(ask_cfe) }
 
-    before do
-      AskCfe.send(:remove_const, :TO_EMAIL)
-      AskCfe.const_set(:TO_EMAIL, 'foo@example.com')
-    end
-
     it do
       email.body.should include(user.name)
       email.body.should include('Excellent!')
@@ -54,7 +49,7 @@ describe AskForHelpMailer do
       email.from.should == [Devise.mailer_sender]
       email.reply_to.should == [user.email]
       email.subject.should include('EFG')
-      email.to.should == ['foo@example.com']
+      email.to.should == [ EFG::Application.config.cfe_support_email ]
     end
   end
 end
