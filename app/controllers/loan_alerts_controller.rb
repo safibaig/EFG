@@ -27,15 +27,15 @@ class LoanAlertsController < ApplicationController
     render "show"
   end
 
-  def assumed_repaid
-    offered_start_date, offered_end_date = start_and_end_dates(assumed_repaid_offered_start_date, assumed_repaid_offered_end_date)
-    guaranteed_start_date, guaranteed_end_date = start_and_end_dates(assumed_repaid_guaranteed_start_date, assumed_repaid_guaranteed_end_date)
+  def not_closed
+    offered_start_date, offered_end_date = start_and_end_dates(not_closed_offered_start_date, not_closed_offered_end_date)
+    guaranteed_start_date, guaranteed_end_date = start_and_end_dates(not_closed_guaranteed_start_date, not_closed_guaranteed_end_date)
 
     @loans = (
-      assumed_repaid_offered_loans(offered_start_date, offered_end_date) +
-        assumed_repaid_guaranteed_loans(guaranteed_start_date, guaranteed_end_date)
+      not_closed_offered_loans(offered_start_date, offered_end_date) +
+        not_closed_guaranteed_loans(guaranteed_start_date, guaranteed_end_date)
     ).sort_by(&:updated_at)
-    @title = I18n.t('dashboard.loan_alerts.assumed_repaid')
+    @title = I18n.t('dashboard.loan_alerts.not_closed')
     render "show"
   end
 

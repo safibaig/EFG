@@ -20,7 +20,7 @@ module LoanAutoUpdater
     end
   end
 
-  def remove_assumed_repaid_loans!
+  def remove_not_closed_loans!
     (not_yet_guaranteed_efg_loans + guaranteed_efg_loans + sflg_and_legacy_sflg_loans_in_any_state).uniq.each do |loan|
       loan.auto_update!(Loan::AutoRemoved, 17)
     end
@@ -29,15 +29,15 @@ module LoanAutoUpdater
   private
 
   def not_yet_guaranteed_efg_loans
-    Loan.with_scheme('efg').where(state: [Loan::Incomplete, Loan::Completed, Loan::Offered]).where("maturity_date < ?", assumed_repaid_offered_start_date)
+    Loan.with_scheme('efg').where(state: [Loan::Incomplete, Loan::Completed, Loan::Offered]).where("maturity_date < ?", not_closed_offered_start_date)
   end
 
   def guaranteed_efg_loans
-    Loan.with_scheme('efg').guaranteed.where("maturity_date < ?", assumed_repaid_guaranteed_start_date)
+    Loan.with_scheme('efg').guaranteed.where("maturity_date < ?", not_closed_guaranteed_start_date)
   end
 
   def sflg_and_legacy_sflg_loans_in_any_state
-    Loan.with_scheme('non_efg').where("maturity_date < ?", sflg_assumed_repaid_start_date)
+    Loan.with_scheme('non_efg').where("maturity_date < ?", sflg_not_closed_start_date)
   end
 
 end

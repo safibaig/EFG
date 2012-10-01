@@ -86,10 +86,10 @@ describe LoanAutoUpdater do
     end
   end
 
-  describe ".remove_assumed_repaid_loans!" do
+  describe ".remove_not_closed_loans!" do
 
     def dispatch
-      LoanAutoUpdater.remove_assumed_repaid_loans!
+      LoanAutoUpdater.remove_not_closed_loans!
     end
 
     [

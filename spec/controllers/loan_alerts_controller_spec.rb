@@ -55,7 +55,7 @@ describe LoanAlertsController do
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
-  describe "#assumed_repaid" do
+  describe "#not_closed" do
     let!(:high_priority_incomplete_loan) { FactoryGirl.create(:loan, :incomplete, lender: current_lender, maturity_date: 180.days.ago) }
     let!(:high_priority_guaranteed_loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_lender, maturity_date: 90.days.ago) }
     let!(:medium_priority_completed_loan) { FactoryGirl.create(:loan, :completed, lender: current_lender, maturity_date: 170.days.ago) }
@@ -64,7 +64,7 @@ describe LoanAlertsController do
     let!(:low_priority_guaranteed_loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_lender, maturity_date: 40.days.ago) }
 
     def dispatch(params = {})
-      get :assumed_repaid, params
+      get :not_closed, params
     end
 
     it_behaves_like 'AuditorUser-restricted controller'

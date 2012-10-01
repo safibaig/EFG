@@ -57,11 +57,11 @@
                 url_helper: :demanded_loan_alerts_path %>
   </div>
 
-  <div id="assumed_repaid_loan_alerts">
+  <div id="not_closed_loan_alerts">
     <%= render 'loan_alert',
-                presenter: @assumed_repaid_presenter,
-                title: raw(t('dashboard.loan_alerts.assumed_repaid')),
-                url_helper: :assumed_repaid_loan_alerts_path %>
+                presenter: @not_closed_presenter,
+                title: raw(t('dashboard.loan_alerts.not_closed')),
+                url_helper: :not_closed_loan_alerts_path %>
   </div>
 </div>
 

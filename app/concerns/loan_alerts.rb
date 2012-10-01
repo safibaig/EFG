@@ -24,27 +24,27 @@ module LoanAlerts
     306.days.ago.to_date
   end
 
-  def assumed_repaid_offered_start_date
+  def not_closed_offered_start_date
     6.months.ago.to_date
   end
 
-  def assumed_repaid_offered_end_date
+  def not_closed_offered_end_date
     (6.months.ago + 59.days).to_date
   end
 
-  def assumed_repaid_guaranteed_start_date
+  def not_closed_guaranteed_start_date
     92.days.ago.to_date
   end
 
-  def assumed_repaid_guaranteed_end_date
+  def not_closed_guaranteed_end_date
     33.days.ago.to_date
   end
 
-  def sflg_assumed_repaid_start_date
+  def sflg_not_closed_start_date
     6.months.ago.to_date
   end
 
-  def sflg_assumed_repaid_end_date
+  def sflg_not_closed_end_date
     (6.months.ago + 59.days).to_date
   end
 
@@ -104,10 +104,10 @@ module LoanAlerts
   # - state ‘incomplete’ to ‘offered’ and maturity date elapsed by 183 days
   # - state ‘guaranteed’ and maturity date elapsed by 92 days
   #
-  # TODO: revisit the criteria for assumed repaid alert group and confirm if it needs further updates
-  def assumed_repaid_offered_loans(start_date = nil, end_date = nil)
-    start_date ||= assumed_repaid_offered_start_date
-    end_date ||= assumed_repaid_offered_end_date
+  # TODO: revisit the criteria for not closed alert group and confirm if it needs further updates
+  def not_closed_offered_loans(start_date = nil, end_date = nil)
+    start_date ||= not_closed_offered_start_date
+    end_date ||= not_closed_offered_end_date
 
     current_lender.loans.
       where(state: [Loan::Incomplete, Loan::Completed, Loan::Offered]).
@@ -115,9 +115,9 @@ module LoanAlerts
       order(:updated_at)
   end
 
-  def assumed_repaid_guaranteed_loans(start_date = nil, end_date = nil)
-    start_date ||= assumed_repaid_guaranteed_start_date
-    end_date ||= assumed_repaid_guaranteed_end_date
+  def not_closed_guaranteed_loans(start_date = nil, end_date = nil)
+    start_date ||= not_closed_guaranteed_start_date
+    end_date ||= not_closed_guaranteed_end_date
 
     current_lender.loans.
       guaranteed.
