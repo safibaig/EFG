@@ -40,6 +40,14 @@ module LoanAlerts
     33.days.ago.to_date
   end
 
+  def sflg_assumed_repaid_start_date
+    6.months.ago.to_date
+  end
+
+  def sflg_assumed_repaid_end_date
+    (6.months.ago + 59.days).to_date
+  end
+
   # From 'CfEL Response to Initial Questions.docx':
   # "All schemes, any loan that has remained at the state of
   # “eligible” / “incomplete” or “complete”
