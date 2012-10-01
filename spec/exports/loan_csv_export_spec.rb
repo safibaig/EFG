@@ -116,7 +116,7 @@ describe LoanCsvExport do
       row[54].should == ''
       row[55].should == ''
       row[56].should == 'AB1 2CD'
-      row[57].should == ''
+      row[57].should == '0'
       row[58].should == ''
       row[59].should == ''
       row[60].should == ''

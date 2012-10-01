@@ -47,8 +47,8 @@ describe LoanTransfer::LegacySflg do
       new_loan.state_aid_is_valid.should be_true
     end
 
-    it "should set notified aid to false" do
-      new_loan.notified_aid.should be_false
+    it "should set notified aid to zero" do
+      new_loan.notified_aid.should == 0
     end
 
     it "should set declaration signed to true" do

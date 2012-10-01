@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121001104355) do
+ActiveRecord::Schema.define(:version => 20121001130354) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -314,7 +314,7 @@ ActiveRecord::Schema.define(:version => 20121001104355) do
     t.integer  "state_aid",                           :limit => 8
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
-    t.boolean  "notified_aid"
+    t.integer  "notified_aid",                                                                     :default => 0,     :null => false
     t.integer  "remove_guarantee_outstanding_amount", :limit => 8
     t.date     "remove_guarantee_on"
     t.string   "remove_guarantee_reason"

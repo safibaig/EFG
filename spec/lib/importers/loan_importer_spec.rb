@@ -90,7 +90,7 @@ describe LoanImporter do
       loan.signed_direct_debit_received.should == true
       loan.received_declaration.should == true
       loan.state_aid_is_valid.should == true
-      loan.notified_aid.should == false
+      loan.notified_aid.should == 0
       loan.sic_code.should == "K74.87/9.013"
       loan.legacy_sic_code.should == "K74.87/9.013"
       loan.remove_guarantee_outstanding_amount.should == Money.new(40000)
