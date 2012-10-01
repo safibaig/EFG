@@ -7,7 +7,7 @@
 module LoanAlerts
   class PriorityGrouping
 
-    def initialize(loans, start_date, end_date, date_method = :updated_at)
+    def initialize(loans, start_date, end_date, date_method)
       @loans       = loans
       @start_date  = start_date.to_date
       @end_date    = end_date.to_date
@@ -51,8 +51,7 @@ module LoanAlerts
 
     def loans_by_day
       @loans_by_day ||= days_range.inject({}) do |memo, date|
-        loans_for_day = loans_grouped_by_day[date] || []
-        memo[date] = loans_for_day
+        memo[date] = loans_grouped_by_day[date] || []
         memo
       end
     end

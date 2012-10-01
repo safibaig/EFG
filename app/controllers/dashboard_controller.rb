@@ -29,7 +29,7 @@ class DashboardController < ApplicationController
   end
 
   def not_progressed_loans_groups
-    LoanAlerts::PriorityGrouping.new(not_progressed_loans, not_progressed_start_date, not_progressed_end_date).groups_hash
+    LoanAlerts::PriorityGrouping.new(not_progressed_loans, not_progressed_start_date, not_progressed_end_date, :updated_at).groups_hash
   end
 
   def not_closed_loans_groups
