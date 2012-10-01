@@ -9,7 +9,13 @@ describe LoanAutoUpdater do
         dispatch
       }.to change(LoanStateChange, :count).by(1)
 
-      LoanStateChange.last.loan.should == expired_loan
+      expired_loan.reload
+      loan_state_change = LoanStateChange.last
+      loan_state_change.loan.should == expired_loan
+      loan_state_change.state.should == expired_loan.state
+      loan_state_change.modified_on.should == Date.today
+      loan_state_change.modified_by.should == system_user
+      loan_state_change.event_id.should == expected_state_change_event_id
     end
 
     it "should not update loans belonging to lender excluded from loan auto-updating" do
@@ -23,6 +29,8 @@ describe LoanAutoUpdater do
   let(:excluded_lender) { FactoryGirl.create(:lender, allow_alert_process: false) }
 
   describe ".cancel_not_progressed_loans!" do
+    let(:expected_state_change_event_id) { 6 }
+
     let!(:expired_loan) { FactoryGirl.create(:loan, :eligible, updated_at: 6.months.ago.advance(days: -1)) }
     let!(:unexpired_loan) { FactoryGirl.create(:loan, :eligible, updated_at: 6.months.ago) }
     let!(:excluded_loan) { FactoryGirl.create(:loan, :eligible, lender: excluded_lender, updated_at: 6.months.ago.advance(days: -1)) }
@@ -42,6 +50,8 @@ describe LoanAutoUpdater do
   end
 
   describe ".cancel_not_drawn_loans!" do
+    let(:expected_state_change_event_id) { 8 }
+
     let!(:expired_loan) { FactoryGirl.create(:loan, :offered, facility_letter_date: 6.months.ago.advance(days: -11)) }
     let!(:unexpired_loan) { FactoryGirl.create(:loan, :offered, facility_letter_date: 6.months.ago.advance(days: -10)) }
     let!(:excluded_loan) { FactoryGirl.create(:loan, :offered, lender: excluded_lender, facility_letter_date: 6.months.ago.advance(days: -11)) }
@@ -61,6 +71,7 @@ describe LoanAutoUpdater do
   end
 
   describe ".remove_not_demanded_loans!" do
+    let(:expected_state_change_event_id) { 11 }
 
     def dispatch
       LoanAutoUpdater.remove_not_demanded_loans!
@@ -97,6 +108,7 @@ describe LoanAutoUpdater do
   end
 
   describe ".remove_not_closed_loans!" do
+    let(:expected_state_change_event_id) { 17 }
 
     def dispatch
       LoanAutoUpdater.remove_not_closed_loans!
