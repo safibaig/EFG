@@ -16,5 +16,10 @@ describe AskCfe do
         ask_cfe.valid?
       }.to raise_error(ActiveModel::StrictValidationFailed)
     end
+
+    it "should have the correct TO address" do
+      ask_cfe.to.should == EFG::Application.config.cfe_support_email
+    end
   end
+
 end
