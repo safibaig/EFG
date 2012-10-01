@@ -100,7 +100,7 @@ class LoanImporter < BaseImporter
       "EFG_FEES"                      => :fees,
       "REASON"                        => :reason_id,
       "BUSINESS_TYPE"                 => :legal_form_id,
-      "PAYMENT_PERIOD"                => :payment_period,
+      "PAYMENT_PERIOD"                => :repayment_frequency_id,
       "CANCEL_REASON"                 => :cancelled_reason_id,
       "LOAN_CATEGORY"                 => :loan_category_id,
       "PRIVATE_RES_CHG_REQD"          => :private_residence_charge_required,

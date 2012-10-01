@@ -98,7 +98,6 @@ class LoanCsvExport < BaseCsvExport
       outstanding_amount
       overdraft_limit
       overdraft_maintained
-      payment_period
       personal_guarantee_required
       postcode
       premium_rate

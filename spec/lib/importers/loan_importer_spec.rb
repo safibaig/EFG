@@ -133,7 +133,7 @@ describe LoanImporter do
       loan.fees.should == Money.new(50000)
       loan.reason_id.should == 26
       loan.legal_form_id.should == 4
-      loan.payment_period.should == 4
+      loan.repayment_frequency_id.should == 4
       loan.cancelled_reason_id.should == 1
       loan.loan_category_id.should == 20
       loan.private_residence_charge_required.should == false

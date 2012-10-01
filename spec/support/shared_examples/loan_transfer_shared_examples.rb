@@ -77,7 +77,7 @@ shared_examples_for 'a loan transfer' do
       end
 
       it 'should create new loan with no value for payment period' do
-        new_loan.payment_period.should be_blank
+        new_loan.repayment_frequency.should be_blank
       end
 
       it 'should create new loan with no value for maturity date' do
