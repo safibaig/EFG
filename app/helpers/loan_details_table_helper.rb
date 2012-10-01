@@ -13,7 +13,7 @@ module LoanDetailsTableHelper
       Lender => :name.to_proc,
       LenderAdmin => :name.to_proc,
       LenderUser => :name.to_proc,
-      LendingLimit => :title.to_proc,
+      LendingLimit => :name.to_proc,
       LoanCategory => :name.to_proc,
       Money => :format.to_proc,
       MonthDuration => :format.to_proc,

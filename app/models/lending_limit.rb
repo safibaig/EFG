@@ -50,12 +50,6 @@ class LendingLimit < ActiveRecord::Base
     save(validate: false)
   end
 
-  def title
-    start_date = starts_on.strftime('%B %Y')
-    end_date = ends_on.strftime('%B %Y')
-    [start_date, end_date].join(' - ')
-  end
-
   private
     def ends_on_is_after_starts_on
       return if ends_on.nil? || starts_on.nil?

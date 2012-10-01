@@ -21,7 +21,7 @@ class LoanCsvExport < BaseCsvExport
       InterestRateType => :name.to_proc,
       LegalForm => :name.to_proc,
       Lender => :name.to_proc,
-      LendingLimit => :title.to_proc,
+      LendingLimit => :name.to_proc,
       LenderUser => :name.to_proc,
       LoanCategory => :name.to_proc,
       LoanReason => :name.to_proc,
