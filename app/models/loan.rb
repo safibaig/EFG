@@ -57,11 +57,12 @@ class Loan < ActiveRecord::Base
   has_many :ineligibility_reasons, class_name: 'LoanIneligibilityReason'
   has_many :state_changes, class_name: 'LoanStateChange', order: [:modified_on, :id]
 
-  scope :offered,        where(state: Loan::Offered)
-  scope :demanded,       where(state: Loan::Demanded)
-  scope :not_progressed, where(state: [Loan::Eligible, Loan::Completed, Loan::Incomplete])
-  scope :guaranteed,     where(state: Loan::Guaranteed)
-  scope :recovered,      where(state: Loan::Recovered)
+  scope :offered,         where(state: Loan::Offered)
+  scope :demanded,        where(state: Loan::Demanded)
+  scope :lender_demanded, where(state: Loan::LenderDemand)
+  scope :not_progressed,  where(state: [Loan::Eligible, Loan::Completed, Loan::Incomplete])
+  scope :guaranteed,      where(state: Loan::Guaranteed)
+  scope :recovered,       where(state: Loan::Recovered)
 
   scope :changeable,  where(state: [Loan::Guaranteed, Loan::LenderDemand])
   scope :correctable, where(state: [Loan::Guaranteed, Loan::LenderDemand, Loan::Demanded])

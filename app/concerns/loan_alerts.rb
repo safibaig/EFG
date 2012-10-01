@@ -44,6 +44,8 @@ module LoanAlerts
   # "All schemes, any loan that has remained at the state of
   # “eligible” / “incomplete” or “complete”
   # – for a period of 183 days from entering those states – should be ‘auto cancelled’"
+  #
+  # TODO: should this be checking the modified date of the last LoanStateChange record?
   def not_progressed_loans(start_date = nil, end_date = nil)
     start_date ||= not_progressed_start_date
     end_date ||= not_progressed_end_date
@@ -79,7 +81,7 @@ module LoanAlerts
     end_date ||= demanded_end_date
 
     current_lender.loans.
-      demanded.
+      lender_demanded.
       borrower_demanded_date_between(start_date, end_date).
       order(:updated_at)
   end
