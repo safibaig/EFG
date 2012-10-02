@@ -14,7 +14,7 @@
   <%= simple_form_row 'Original Loan Amount', @loan.amount.format %>
   <%= f.input :amount, as: :currency %>
 
-  <%= simple_form_row 'Original Lending Limit', @loan.lending_limit.try :name %>
+  <%= simple_form_row 'Original Lending Limit', @loan.lending_limit.try(:name) %>
   <%= f.input :lending_limit_id, as: :select, collection: @loan.lender.current_lending_limits, prompt: 'Please select' %>
 
   <%= simple_form_row 'Original Facility Letter Date', @loan.facility_letter_date.to_s(:screen) %>
