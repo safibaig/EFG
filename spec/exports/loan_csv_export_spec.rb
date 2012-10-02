@@ -17,7 +17,7 @@ describe LoanCsvExport do
       )
     }
     let(:csv_data) {
-      Timecop.freeze(Time.local(2012, 10, 1, 16, 23, 45))
+      Timecop.freeze(Time.zone.local(2012, 10, 1, 16, 23, 45))
       csv = LoanCsvExport.new([loan]).generate
       Timecop.return
       CSV.parse(csv)
