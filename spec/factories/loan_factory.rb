@@ -140,6 +140,14 @@ FactoryGirl.define do
       state Loan::RepaidFromTransfer
     end
 
+    trait :auto_removed do
+      state Loan::AutoRemoved
+    end
+
+    trait :auto_cancelled do
+      state Loan::AutoCancelled
+    end
+
     trait :transferred do
       reference 'ABCDEFG+02'
       state Loan::Incomplete
@@ -163,13 +171,13 @@ FactoryGirl.define do
     end
 
     trait :sflg do
-      reference 'ABC1234-01'
+      sequence(:reference) { |num| "ABC" + ("%04d" % num) + "-01"  } # e.g. ABC0004-01
       loan_source Loan::SFLG_SOURCE
       loan_scheme Loan::SFLG_SCHEME
     end
 
     trait :legacy_sflg do
-      reference '123456'
+      sequence(:reference) { |num| "%06d" % num } # e.g. 000005
       loan_source Loan::LEGACY_SFLG_SOURCE
       loan_scheme Loan::SFLG_SCHEME
     end

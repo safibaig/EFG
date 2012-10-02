@@ -6,12 +6,24 @@ describe LoanAlertsController do
   before { sign_in(current_user) }
 
   describe "#not_drawn" do
-    let!(:high_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, updated_at: 180.days.ago) }
-    let!(:medium_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, updated_at: 170.days.ago) }
-    let!(:low_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, updated_at: 130.days.ago) }
+    let!(:high_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, facility_letter_date: 190.days.ago) }
+    let!(:medium_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, facility_letter_date: 180.days.ago) }
+    let!(:low_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, facility_letter_date: 140.days.ago) }
+    let!(:ignored_loan1) { FactoryGirl.create(:loan, :sflg, :auto_cancelled, lender: current_lender, facility_letter_date: 190.days.ago) }
+    let!(:ignored_loan2) { FactoryGirl.create(:loan, :sflg, :auto_removed, lender: current_lender, facility_letter_date: 190.days.ago) }
 
     def dispatch(params = {})
       get :not_drawn, params
+    end
+
+    it "should not include already auto-cancelled SFLG loans" do
+      dispatch
+      assigns(:loans).should_not include(ignored_loan1)
+    end
+
+    it "should not include already auto-removed SFLG loans" do
+      dispatch
+      assigns(:loans).should_not include(ignored_loan2)
     end
 
     it_behaves_like "loan alerts controller"
@@ -22,9 +34,11 @@ describe LoanAlertsController do
   end
 
   describe "#not_demanded" do
-    let!(:high_priority_loan) { FactoryGirl.create(:loan, :demanded, lender: current_lender, updated_at: 360.days.ago) }
-    let!(:medium_priority_loan) { FactoryGirl.create(:loan, :demanded, lender: current_lender, updated_at: 350.days.ago) }
-    let!(:low_priority_loan) { FactoryGirl.create(:loan, :demanded, lender: current_lender, updated_at: 310.days.ago) }
+    let!(:high_priority_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, lender: current_lender, borrower_demanded_on: 360.days.ago) }
+    let!(:medium_priority_loan) { FactoryGirl.create(:loan, :lender_demand, :legacy_sflg, lender: current_lender, borrower_demanded_on: 350.days.ago) }
+    let!(:low_priority_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, lender: current_lender, borrower_demanded_on: 310.days.ago) }
+    # EFG loans are excluded from this loan alert
+    let!(:efg_loan) { FactoryGirl.create(:loan, :lender_demand, lender: current_lender, borrower_demanded_on: 310.days.ago) }
 
     def dispatch(params = {})
       get :demanded, params
@@ -53,16 +67,16 @@ describe LoanAlertsController do
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
 
-  describe "#assumed_repaid" do
-    let!(:high_priority_incomplete_loan) { FactoryGirl.create(:loan, :incomplete, lender: current_lender, maturity_date: 180.days.ago) }
+  describe "#not_closed" do
+    let!(:high_priority_incomplete_loan) { FactoryGirl.create(:loan, :incomplete, :legacy_sflg, lender: current_lender, maturity_date: 180.days.ago) }
     let!(:high_priority_guaranteed_loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_lender, maturity_date: 90.days.ago) }
     let!(:medium_priority_completed_loan) { FactoryGirl.create(:loan, :completed, lender: current_lender, maturity_date: 170.days.ago) }
     let!(:medium_priority_guaranteed_loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_lender, maturity_date: 70.days.ago) }
-    let!(:low_priority_offered_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, maturity_date: 125.days.ago) }
+    let!(:low_priority_offered_loan) { FactoryGirl.create(:loan, :offered, :sflg, lender: current_lender, maturity_date: 125.days.ago) }
     let!(:low_priority_guaranteed_loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_lender, maturity_date: 40.days.ago) }
 
     def dispatch(params = {})
-      get :assumed_repaid, params
+      get :not_closed, params
     end
 
     it_behaves_like 'AuditorUser-restricted controller'

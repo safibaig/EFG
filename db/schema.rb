@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121001130354) do
+ActiveRecord::Schema.define(:version => 20121001150857) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -108,7 +108,7 @@ ActiveRecord::Schema.define(:version => 20121001130354) do
     t.boolean  "disabled",                    :default => false, :null => false
     t.string   "created_by_legacy_id"
     t.string   "modified_by_legacy_id"
-    t.boolean  "allow_alert_process",         :default => false, :null => false
+    t.boolean  "allow_alert_process",         :default => true,  :null => false
     t.string   "main_point_of_contact_user"
     t.string   "loan_scheme"
     t.datetime "ar_timestamp"

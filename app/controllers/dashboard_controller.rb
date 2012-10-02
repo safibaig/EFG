@@ -8,7 +8,7 @@ class DashboardController < ApplicationController
       @not_drawn_alerts_presenter      = LoanAlerts::Presenter.new(not_drawn_loans_groups)
       @demanded_alerts_presenter       = LoanAlerts::Presenter.new(demanded_loans_groups)
       @not_progressed_alerts_presenter = LoanAlerts::Presenter.new(not_progressed_loans_groups)
-      @assumed_repaid_presenter        = LoanAlerts::Presenter.new(assumed_repaid_loans_groups)
+      @not_closed_presenter            = LoanAlerts::Presenter.new(not_closed_loans_groups)
     end
   end
 
@@ -21,29 +21,29 @@ class DashboardController < ApplicationController
   end
 
   def not_drawn_loans_groups
-    LoanAlerts::PriorityGrouping.new(not_drawn_loans, not_drawn_start_date, not_drawn_end_date).groups_hash
+    LoanAlerts::PriorityGrouping.new(not_drawn_loans, not_drawn_start_date, not_drawn_end_date, :facility_letter_date).groups_hash
   end
 
   def demanded_loans_groups
-    LoanAlerts::PriorityGrouping.new(demanded_loans, demanded_start_date, demanded_end_date).groups_hash
+    LoanAlerts::PriorityGrouping.new(demanded_loans, demanded_start_date, demanded_end_date, :borrower_demanded_on).groups_hash
   end
 
   def not_progressed_loans_groups
-    LoanAlerts::PriorityGrouping.new(not_progressed_loans, not_progressed_start_date, not_progressed_end_date).groups_hash
+    LoanAlerts::PriorityGrouping.new(not_progressed_loans, not_progressed_start_date, not_progressed_end_date, :updated_at).groups_hash
   end
 
-  def assumed_repaid_loans_groups
+  def not_closed_loans_groups
     offered_group = LoanAlerts::PriorityGrouping.new(
-      assumed_repaid_offered_loans,
-      assumed_repaid_offered_start_date,
-      assumed_repaid_offered_end_date,
+      not_closed_offered_loans,
+      not_closed_offered_start_date,
+      not_closed_offered_end_date,
       :maturity_date
     ).groups_hash
 
     guaranteed_group = LoanAlerts::PriorityGrouping.new(
-      assumed_repaid_guaranteed_loans,
-      assumed_repaid_guaranteed_start_date,
-      assumed_repaid_guaranteed_end_date,
+      not_closed_guaranteed_loans,
+      not_closed_guaranteed_start_date,
+      not_closed_guaranteed_end_date,
       :maturity_date
     ).groups_hash
 

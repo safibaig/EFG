@@ -22,6 +22,7 @@ gem 'statsd-ruby', '1.0.0'
 gem 'twitter-bootstrap-rails', '2.0.7'
 gem 'unicorn', '4.3.1'
 gem 'useragent', '0.4.10'
+gem 'whenever', '0.7.3', :require => false
 gem 'will_paginate', '3.0.3'
 
 group :assets do

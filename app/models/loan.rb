@@ -57,11 +57,12 @@ class Loan < ActiveRecord::Base
   has_many :ineligibility_reasons, class_name: 'LoanIneligibilityReason'
   has_many :state_changes, class_name: 'LoanStateChange', order: [:modified_on, :id]
 
-  scope :offered,        where(state: Loan::Offered)
-  scope :demanded,       where(state: Loan::Demanded)
-  scope :not_progressed, where(state: [Loan::Eligible, Loan::Completed, Loan::Incomplete])
-  scope :guaranteed,     where(state: Loan::Guaranteed)
-  scope :recovered,      where(state: Loan::Recovered)
+  scope :offered,         where(state: Loan::Offered)
+  scope :demanded,        where(state: Loan::Demanded)
+  scope :lender_demanded, where(state: Loan::LenderDemand)
+  scope :not_progressed,  where(state: [Loan::Eligible, Loan::Completed, Loan::Incomplete])
+  scope :guaranteed,      where(state: Loan::Guaranteed)
+  scope :recovered,       where(state: Loan::Recovered)
 
   scope :changeable,  where(state: [Loan::Guaranteed, Loan::LenderDemand])
   scope :correctable, where(state: [Loan::Guaranteed, Loan::LenderDemand, Loan::Demanded])
@@ -73,6 +74,14 @@ class Loan < ActiveRecord::Base
 
   scope :maturity_date_between, lambda { |start_date, end_date|
     where("maturity_date >= ? AND maturity_date <= ?", start_date, end_date)
+  }
+
+  scope :facility_letter_date_between, lambda { |start_date, end_date|
+    where("facility_letter_date >= ? AND facility_letter_date <= ?", start_date, end_date)
+  }
+
+  scope :borrower_demanded_date_between, lambda { |start_date, end_date|
+    where("borrower_demanded_on >= ? AND borrower_demanded_on <= ?", start_date, end_date)
   }
 
   scope :by_reference, lambda { |reference|
@@ -122,6 +131,8 @@ class Loan < ActiveRecord::Base
       where(loan_scheme: SFLG_SCHEME, loan_source: SFLG_SOURCE)
     when 'legacy_sflg'
       where(loan_scheme: SFLG_SCHEME, loan_source: LEGACY_SFLG_SOURCE)
+    when 'non_efg'
+      where(loan_scheme: SFLG_SCHEME, loan_source: [SFLG_SOURCE, LEGACY_SFLG_SOURCE])
     else
       none
     end
@@ -235,6 +246,18 @@ class Loan < ActiveRecord::Base
 
   def state_history
     @state_history ||= (state_changes.select(:state).collect(&:state) + [state]).uniq
+  end
+
+  def update_state!(to_state, event_id, modified_by_user)
+    self.class.transaction do
+      self.update_attribute(:state, to_state)
+      self.state_changes.create!(
+        state: self.state,
+        modified_on: Date.today,
+        modified_by: modified_by_user,
+        event_id: event_id
+      )
+    end
   end
 
   private

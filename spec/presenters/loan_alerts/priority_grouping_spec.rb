@@ -53,7 +53,7 @@ describe LoanAlerts::PriorityGrouping do
         low_priority_loan1,
         low_priority_loan2
       ]
-      LoanAlerts::PriorityGrouping.new(loans_array, 60.days.ago, 1.day.ago)
+      LoanAlerts::PriorityGrouping.new(loans_array, 60.days.ago, 1.day.ago, :updated_at)
     }
 
     it "should return hash of loan arrays grouped by high priority, medium priority and low priority" do

@@ -86,7 +86,7 @@ EFG::Application.routes.draw do
       get :not_drawn
       get :demanded
       get :not_progressed
-      get :assumed_repaid
+      get :not_closed
     end
   end
 

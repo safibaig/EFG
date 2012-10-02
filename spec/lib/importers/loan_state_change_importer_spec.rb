@@ -5,7 +5,7 @@ describe LoanStateChangeImporter do
 
   let(:csv_fixture_path) { Rails.root.join('spec/fixtures/import_data/SFLG_LOAN_AUDIT_DATA_TABLE.csv') }
 
-  let!(:loan) { FactoryGirl.create(:loan, legacy_id: 144765, event_legacy_id: 11, state: Loan::AutoRemoved) }
+  let!(:loan) { FactoryGirl.create(:loan, :auto_removed, legacy_id: 144765, event_legacy_id: 11) }
 
   let!(:user1) { FactoryGirl.create(:user, username: 'cric2666s') }
 
