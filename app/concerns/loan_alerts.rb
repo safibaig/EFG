@@ -24,7 +24,7 @@ module LoanAlerts
   # "EFG loans however, should not be subjected to this alert
   def demanded_loans(priority = nil)
     loans_for_alert(:demanded, priority) do |loans_scope, start_date, end_date|
-      loans_scope.non_efg.lender_demanded.borrower_demanded_date_between(start_date, end_date).order(:borrower_demanded_on)
+      loans_scope.with_scheme('non_efg').lender_demanded.borrower_demanded_date_between(start_date, end_date).order(:borrower_demanded_on)
     end
   end
 
@@ -32,11 +32,11 @@ module LoanAlerts
   # EFG – if state ‘incomplete’ to ‘offered’ and maturity date elapsed by 183 days – auto remove
   def not_closed_offered_loans(priority = nil)
     sflg_loans = loans_for_alert(:not_closed_offered, priority) do |loans_scope, start_date, end_date|
-      loans_scope.non_efg.maturity_date_between(start_date, end_date).order(:maturity_date)
+      loans_scope.with_scheme('non_efg').maturity_date_between(start_date, end_date).order(:maturity_date)
     end
 
     efg_loans = loans_for_alert(:not_closed_offered, priority) do |loans_scope, start_date, end_date|
-      loans_scope.efg.where(state: [Loan::Incomplete, Loan::Completed, Loan::Offered]).maturity_date_between(start_date, end_date).order(:maturity_date)
+      loans_scope.with_scheme('efg').where(state: [Loan::Incomplete, Loan::Completed, Loan::Offered]).maturity_date_between(start_date, end_date).order(:maturity_date)
     end
 
     (efg_loans + sflg_loans).uniq
@@ -45,7 +45,7 @@ module LoanAlerts
   # EFG – if state ‘guaranteed’ and maturity date elapsed by 92 days – auto remove
   def not_closed_guaranteed_loans(priority = nil)
     loans_for_alert(:not_closed_guaranteed, priority) do |loans_scope, start_date, end_date|
-      loans_scope.efg.guaranteed.maturity_date_between(start_date, end_date).order(:maturity_date)
+      loans_scope.with_scheme('efg').guaranteed.maturity_date_between(start_date, end_date).order(:maturity_date)
     end
   end
 
