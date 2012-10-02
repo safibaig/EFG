@@ -29,7 +29,8 @@ module LoanAutoUpdater
   private
 
   def loans
-    Loan.where(lender_id: Lender.where(allow_alert_process: true))
+    @lender_ids ||= Lender.where(allow_alert_process: true).collect(&:id)
+    Loan.where(lender_id: @lender_ids)
   end
 
   def not_yet_guaranteed_efg_loans

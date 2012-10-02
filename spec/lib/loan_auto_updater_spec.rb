@@ -28,6 +28,10 @@ describe LoanAutoUpdater do
   let!(:system_user) { FactoryGirl.create(:system_user) }
   let(:excluded_lender) { FactoryGirl.create(:lender, allow_alert_process: false) }
 
+  before(:each) do
+    LoanAutoUpdater.instance_variable_set("@lender_ids", nil)
+  end
+
   describe ".cancel_not_progressed_loans!" do
     let(:expected_state_change_event_id) { 6 }
 
