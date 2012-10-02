@@ -12,7 +12,7 @@ begin
   # so use a different directory
   ENV["CI_REPORTS"] = 'spec/ci_reports'
 rescue LoadError
-  warn 'CI::Reporter not available. Rake Tasks not loaded.'
+  # warn 'CI::Reporter not available. Rake Tasks not loaded.'
 end
 
 EFG::Application.load_tasks
