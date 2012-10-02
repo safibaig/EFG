@@ -44,10 +44,6 @@
 
   <%= table.row 'sic_code' %>
   <%= table.row 'sic_desc' %>
-  <tr>
-    <th>Other Business Activities Not Elsewhere Classified</th>
-    <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
-  </tr>
   <%= table.row 'loan_category', header: t('simple_form.labels.loan_entry.loan_category_id') %>
   <%= table.row 'interest_rate_type', header: t('simple_form.labels.loan_entry.interest_rate_type_id') %>
   <%= table.row 'interest_rate' %>
@@ -56,12 +52,29 @@
   <%= table.row 'viable_proposition', header: t('simple_form.labels.loan_eligibility_check.viable_proposition') %>
   <%= table.row 'would_you_lend', header: t('simple_form.labels.loan_eligibility_check.would_you_lend') %>
   <%= table.row 'collateral_exhausted', header: t('simple_form.labels.loan_eligibility_check.collateral_exhausted') %>
-  <tr>
-    <th>Is the intensity of Notified Aid calculated for this project less than 40% for non-Objective 1 loans or less than 60% for Objective 1 loans?</th>
-    <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
-  </tr>
-  <%= table.row 'state_aid' %>
-  <%= table.row 'state_aid_is_valid' %>
+
+  <% if @loan.sic_notified_aid %>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_entry.notified_aid' %></th>
+      <td><%= loan_details_notified_aid @loan.notified_aid %></td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_entry.state_aid' %></th>
+      <td>Not applicable</td>
+    </tr>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_entry.state_aid_is_valid' %></th>
+      <td>Not applicable</td>
+    </tr>
+  <% else %>
+    <tr>
+      <th><%= t 'simple_form.labels.loan_entry.notified_aid' %></th>
+      <td>Not applicable</td>
+    </tr>
+    <%= table.row 'state_aid' %>
+    <%= table.row 'state_aid_is_valid' %>
+  <% end %>
+
   <%= table.row 'generic1', header: 'Generic Lender Field 1' %>
   <%= table.row 'generic2', header: 'Generic Lender Field 2' %>
   <%= table.row 'generic3', header: 'Generic Lender Field 3' %>
@@ -178,7 +191,7 @@
   <%= loan_details_table(@loan, 'simple_form.labels.loan_recovery') do |table| %>
     <tr>
       <th>Total of all previous recoveries</th>
-      <td><span style="font-weight: bold; color: red;">UNKNOWN</span></td>
+      <td><%= @loan.cumulative_recoveries_amount.format %></td>
     </tr>
     <%= table.row 'recovery_on' %>
   <% end %>

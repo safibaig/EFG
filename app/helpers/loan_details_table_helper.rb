@@ -13,7 +13,7 @@ module LoanDetailsTableHelper
       Lender => :name.to_proc,
       LenderAdmin => :name.to_proc,
       LenderUser => :name.to_proc,
-      LendingLimit => :title.to_proc,
+      LendingLimit => :name.to_proc,
       LoanCategory => :name.to_proc,
       Money => :format.to_proc,
       MonthDuration => :format.to_proc,
@@ -45,6 +45,17 @@ module LoanDetailsTableHelper
         formatted_value = formatted_value.call(value)
       end
       formatted_value
+    end
+  end
+
+  def loan_details_notified_aid(value)
+    case value
+    when -1
+      'Yes'
+    when 1
+      'No'
+    else
+      'Not Set'
     end
   end
 

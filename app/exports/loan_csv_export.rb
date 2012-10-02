@@ -21,7 +21,7 @@ class LoanCsvExport < BaseCsvExport
       InterestRateType => :name.to_proc,
       LegalForm => :name.to_proc,
       Lender => :name.to_proc,
-      LendingLimit => :title.to_proc,
+      LendingLimit => :name.to_proc,
       LenderUser => :name.to_proc,
       LoanCategory => :name.to_proc,
       LoanReason => :name.to_proc,
@@ -42,7 +42,6 @@ class LoanCsvExport < BaseCsvExport
       borrower_demanded_on
       sortcode
       business_name
-      business_type
       cancelled_comment
       cancelled_on
       cancelled_reason
@@ -99,7 +98,6 @@ class LoanCsvExport < BaseCsvExport
       outstanding_amount
       overdraft_limit
       overdraft_maintained
-      payment_period
       personal_guarantee_required
       postcode
       premium_rate

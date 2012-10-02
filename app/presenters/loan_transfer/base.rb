@@ -43,7 +43,7 @@ class LoanTransfer::Base
       new_loan.legacy_id             = nil
       new_loan.sortcode              = ''
       new_loan.repayment_duration    = 0
-      new_loan.payment_period        = ''
+      new_loan.repayment_frequency_id = nil
       new_loan.maturity_date         = ''
       new_loan.invoice_id            = ''
       new_loan.transferred_from_id   = loan_to_transfer.id

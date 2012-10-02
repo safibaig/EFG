@@ -47,8 +47,8 @@ describe LoanTransfer::LegacySflg do
       new_loan.state_aid_is_valid.should be_true
     end
 
-    it "should set notified aid to false" do
-      new_loan.notified_aid.should be_false
+    it "should set notified aid to zero" do
+      new_loan.notified_aid.should == 0
     end
 
     it "should set declaration signed to true" do
@@ -78,7 +78,7 @@ describe LoanTransfer::LegacySflg do
     it "should create new loan with a copy of some of the original loan's data" do
       fields_not_copied = %w(
         id lender_id reference state sortcode repayment_duration amount
-        payment_period maturity_date invoice_id generic1 generic2 generic3 generic4
+        repayment_frequency_id maturity_date invoice_id generic1 generic2 generic3 generic4
         generic5 transferred_from_id lending_limit_id created_at updated_at
         facility_letter_date declaration_signed state_aid state_aid_is_valid
         notified_aid viable_proposition collateral_exhausted previous_borrowing

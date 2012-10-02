@@ -90,7 +90,7 @@ describe LoanImporter do
       loan.signed_direct_debit_received.should == true
       loan.received_declaration.should == true
       loan.state_aid_is_valid.should == true
-      loan.notified_aid.should == false
+      loan.notified_aid.should == 0
       loan.sic_code.should == "K74.87/9.013"
       loan.legacy_sic_code.should == "K74.87/9.013"
       loan.remove_guarantee_outstanding_amount.should == Money.new(40000)
@@ -132,8 +132,8 @@ describe LoanImporter do
       loan.interest_rate.should == 5.4
       loan.fees.should == Money.new(50000)
       loan.reason_id.should == 26
-      loan.business_type.should == 4
-      loan.payment_period.should == 4
+      loan.legal_form_id.should == 4
+      loan.repayment_frequency_id.should == 4
       loan.cancelled_reason_id.should == 1
       loan.loan_category_id.should == 20
       loan.private_residence_charge_required.should == false
