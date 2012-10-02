@@ -157,6 +157,11 @@ FactoryGirl.define do
       end
     end
 
+    trait :efg do
+      loan_scheme Loan::EFG_SCHEME
+      loan_source Loan::SFLG_SOURCE
+    end
+
     trait :sflg do
       reference 'ABC1234-01'
       loan_source Loan::SFLG_SOURCE

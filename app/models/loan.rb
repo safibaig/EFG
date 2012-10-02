@@ -67,10 +67,6 @@ class Loan < ActiveRecord::Base
   scope :correctable, where(state: [Loan::Guaranteed, Loan::LenderDemand, Loan::Demanded])
   scope :recoverable, where(state: [Loan::Settled, Loan::Recovered, Loan::Realised])
 
-  scope :efg, where(loan_scheme: Loan::EFG_SCHEME)
-  scope :sflg, where(loan_scheme: Loan::SFLG_SCHEME, loan_source: Loan::SFLG_SOURCE)
-  scope :legacy_sflg, where(loan_scheme: Loan::SFLG_SCHEME, loan_source: Loan::LEGACY_SFLG_SOURCE)
-
   scope :last_updated_between, lambda { |start_date, end_date|
     where("updated_at >= ? AND updated_at <= ?", start_date, end_date)
   }
@@ -117,6 +113,19 @@ class Loan < ActiveRecord::Base
   format :recovery_on, with: QuickDateFormatter
 
   before_create :set_reference
+
+  def self.with_scheme(scheme)
+    case scheme
+    when 'efg'
+      where(loan_scheme: EFG_SCHEME)
+    when 'sflg'
+      where(loan_scheme: SFLG_SCHEME, loan_source: SFLG_SOURCE)
+    when 'legacy_sflg'
+      where(loan_scheme: SFLG_SCHEME, loan_source: LEGACY_SFLG_SOURCE)
+    else
+      none
+    end
+  end
 
   def self.with_state(state)
     where(state: state)
