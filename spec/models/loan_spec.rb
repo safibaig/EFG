@@ -387,4 +387,33 @@ describe Loan do
     end
   end
 
+  describe "#update_status!" do
+    let!(:system_user) { FactoryGirl.create(:system_user) }
+
+    before(:each) do
+      loan.save!
+    end
+
+    def dispatch
+      loan.update_state!(Loan::AutoRemoved, 8, system_user)
+    end
+
+    it "should change the state of the loan" do
+      expect {
+        dispatch
+      }.to change(loan, :state).to(Loan::AutoRemoved)
+    end
+
+    it "should create loan state change record" do
+      expect {
+        dispatch
+      }.to change(LoanStateChange, :count).by(1)
+
+      state_change = loan.state_changes.last
+      state_change.state.should == Loan::AutoRemoved
+      state_change.modified_by.should == system_user
+      state_change.event.should == LoanEvent.find(8)
+    end
+  end
+
 end
