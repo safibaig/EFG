@@ -158,12 +158,19 @@ describe LoanAutoUpdater do
       let!(:expired_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, maturity_date: 6.months.ago.advance(days: -1)) }
       let!(:unexpired_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, maturity_date: 6.months.ago) }
       let!(:excluded_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, lender: excluded_lender, maturity_date: 6.months.ago.advance(days: -1)) }
+      let!(:previously_removed_loan) { FactoryGirl.create(:loan, :sflg, state: Loan::AutoRemoved, maturity_date: 6.months.ago.advance(days: -1)) }
 
       it "should update state of loans with a maturity date older than 6 months to auto-removed" do
         dispatch
 
         expired_loan.reload.state.should == Loan::AutoRemoved
         unexpired_loan.reload.state.should == Loan::LenderDemand
+      end
+
+      it "should not update loan that is already auto-removed" do
+        expect {
+          dispatch
+        }.to_not change(previously_removed_loan.state_changes, :count)
       end
 
       it_behaves_like "loan auto-update"

@@ -42,7 +42,10 @@ module LoanAutoUpdater
   end
 
   def sflg_and_legacy_sflg_loans_in_any_state
-    loans.with_scheme('non_efg').where("maturity_date < ?", sflg_not_closed_start_date)
+    loans.
+      with_scheme('non_efg').
+      where("state NOT IN (?)", [Loan::AutoCancelled, Loan::AutoRemoved]).
+      where("maturity_date < ?", sflg_not_closed_start_date)
   end
 
   def system_user
