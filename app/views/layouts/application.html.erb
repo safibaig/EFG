@@ -55,21 +55,20 @@
               <li><%= link_to 'Change Password', edit_change_password_path %></li>
               <li><%= link_to 'Logout', destroy_user_session_path %></li>
 
-              <% if current_user.can_create?(AskAnExpert) || current_user.can_create?(AskCfe) %>
-                <li class="dropdown">
-                  <%= link_to '#', "class" => "dropdown-toggle", "data-toggle" => "dropdown" do %>
-                    Help <b class="caret"></b>
+              <li class="dropdown">
+                <%= link_to '#', "class" => "dropdown-toggle", "data-toggle" => "dropdown" do %>
+                  Help <b class="caret"></b>
+                <% end %>
+                <ul class="dropdown-menu">
+                  <li><%= link_to 'Scheme Manual', help_path %></li>
+                  <% if current_user.can_create?(AskCfe) %>
+                    <li><%= link_to 'Ask CfE', new_help_ask_cfe_path %></li>
                   <% end %>
-                  <ul class="dropdown-menu">
-                    <% if current_user.can_create?(AskCfe) %>
-                      <li><%= link_to 'Ask CfE', new_help_ask_cfe_path %></li>
-                    <% end %>
-                    <% if current_user.can_create?(AskAnExpert) %>
-                      <li><%= link_to 'Ask an Expert', new_help_ask_an_expert_path %></li>
-                    <% end %>
-                  </ul>
-                </li>
-              <% end %>
+                  <% if current_user.can_create?(AskAnExpert) %>
+                    <li><%= link_to 'Ask an Expert', new_help_ask_an_expert_path %></li>
+                  <% end %>
+                </ul>
+              </li>
             </ul>
 
             <ul class="nav secondary">
