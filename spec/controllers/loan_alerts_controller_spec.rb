@@ -9,9 +9,21 @@ describe LoanAlertsController do
     let!(:high_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, facility_letter_date: 190.days.ago) }
     let!(:medium_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, facility_letter_date: 180.days.ago) }
     let!(:low_priority_loan) { FactoryGirl.create(:loan, :offered, lender: current_lender, facility_letter_date: 140.days.ago) }
+    let!(:ignored_loan1) { FactoryGirl.create(:loan, :sflg, :auto_cancelled, lender: current_lender, facility_letter_date: 190.days.ago) }
+    let!(:ignored_loan2) { FactoryGirl.create(:loan, :sflg, :auto_removed, lender: current_lender, facility_letter_date: 190.days.ago) }
 
     def dispatch(params = {})
       get :not_drawn, params
+    end
+
+    it "should not include already auto-cancelled SFLG loans" do
+      dispatch
+      assigns(:loans).should_not include(ignored_loan1)
+    end
+
+    it "should not include already auto-removed SFLG loans" do
+      dispatch
+      assigns(:loans).should_not include(ignored_loan2)
     end
 
     it_behaves_like "loan alerts controller"

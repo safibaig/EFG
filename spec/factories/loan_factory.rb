@@ -140,6 +140,14 @@ FactoryGirl.define do
       state Loan::RepaidFromTransfer
     end
 
+    trait :auto_removed do
+      state Loan::AutoRemoved
+    end
+
+    trait :auto_cancelled do
+      state Loan::AutoCancelled
+    end
+
     trait :transferred do
       reference 'ABCDEFG+02'
       state Loan::Incomplete

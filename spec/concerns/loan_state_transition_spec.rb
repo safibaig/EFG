@@ -48,7 +48,7 @@ describe LoanStateTransition do
   end
 
   describe "#save" do
-    let(:loan) { FactoryGirl.build(:loan, state: Loan::AutoRemoved) }
+    let(:loan) { FactoryGirl.build(:loan, :auto_removed) }
     let(:user) { FactoryGirl.create(:user) }
 
     it "should change the state of the loan" do

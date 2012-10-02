@@ -32,7 +32,11 @@ module LoanAlerts
   # EFG – if state ‘incomplete’ to ‘offered’ and maturity date elapsed by 183 days – auto remove
   def not_closed_offered_loans(priority = nil)
     sflg_loans = loans_for_alert(:not_closed_offered, priority) do |loans_scope, start_date, end_date|
-      loans_scope.with_scheme('non_efg').maturity_date_between(start_date, end_date).order(:maturity_date)
+      loans_scope.
+        with_scheme('non_efg').
+        where("state NOT IN (?)", [Loan::AutoRemoved, Loan::AutoCancelled]).
+        maturity_date_between(start_date, end_date).
+        order(:maturity_date)
     end
 
     efg_loans = loans_for_alert(:not_closed_offered, priority) do |loans_scope, start_date, end_date|

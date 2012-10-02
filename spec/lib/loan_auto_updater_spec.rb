@@ -158,7 +158,7 @@ describe LoanAutoUpdater do
       let!(:expired_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, maturity_date: 6.months.ago.advance(days: -1)) }
       let!(:unexpired_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, maturity_date: 6.months.ago) }
       let!(:excluded_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, lender: excluded_lender, maturity_date: 6.months.ago.advance(days: -1)) }
-      let!(:previously_removed_loan) { FactoryGirl.create(:loan, :sflg, state: Loan::AutoRemoved, maturity_date: 6.months.ago.advance(days: -1)) }
+      let!(:previously_removed_loan) { FactoryGirl.create(:loan, :sflg, :auto_removed, maturity_date: 6.months.ago.advance(days: -1)) }
 
       it "should update state of loans with a maturity date older than 6 months to auto-removed" do
         dispatch
