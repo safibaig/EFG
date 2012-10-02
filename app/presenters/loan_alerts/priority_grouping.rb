@@ -58,19 +58,19 @@ module LoanAlerts
 
     def high_priority_loans
       loans_grouped_by_date_condition do |date|
-        date <= (@start_date + 9.days).to_date
+        date <= @start_date.advance(days: 9)
       end
     end
 
     def medium_priority_loans
       loans_grouped_by_date_condition do |date|
-        date >= (@start_date + 10.days).to_date && date <= (@start_date + 29.days).to_date
+        date >= @start_date.advance(days: 10) && date <= @start_date.advance(days: 29)
       end
     end
 
     def low_priority_loans
       loans_grouped_by_date_condition do |date|
-        date >= (@start_date + 30.days).to_date
+        date >= @start_date.advance(days: 30)
       end
     end
 
