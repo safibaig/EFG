@@ -248,13 +248,13 @@ class Loan < ActiveRecord::Base
     @state_history ||= (state_changes.select(:state).collect(&:state) + [state]).uniq
   end
 
-  def auto_update!(to_state, event_id)
+  def auto_update!(to_state, event_id, modified_by_user)
     self.class.transaction do
       self.update_attribute(:state, to_state)
       self.state_changes.create!(
         state: self.state,
         modified_on: Date.today,
-        modified_by: SystemUser.first,
+        modified_by: modified_by_user,
         event_id: event_id
       )
     end
