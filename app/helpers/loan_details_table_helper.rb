@@ -48,6 +48,17 @@ module LoanDetailsTableHelper
     end
   end
 
+  def loan_details_notified_aid(value)
+    case value
+    when -1
+      'Yes'
+    when 1
+      'No'
+    else
+      'Not Set'
+    end
+  end
+
   def loan_details_table(loan, translation_scope)
     table = LoanDetailsTable.new(loan, translation_scope)
     content_tag(:table, class: 'table table-striped table-loan-details') do
