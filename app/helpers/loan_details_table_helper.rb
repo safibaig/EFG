@@ -59,6 +59,11 @@ module LoanDetailsTableHelper
     end
   end
 
+  def loan_details_security_type_names(loan)
+    security_names = loan.loan_security_types.collect(&:name).join('<br/>').html_safe
+    security_names.blank? ? "Not Set" : security_names
+  end
+
   def loan_details_table(loan, translation_scope)
     table = LoanDetailsTable.new(loan, translation_scope)
     content_tag(:table, class: 'table table-striped table-loan-details') do

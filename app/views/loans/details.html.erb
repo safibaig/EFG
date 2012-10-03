@@ -90,7 +90,7 @@
   <% for_loan_in_categories(@loan, 2, 3, 4, 5, 6) do %>
     <tr>
       <th><%= t('simple_form.labels.loan_entry.loan_security_types') %></th>
-      <td><%= loan_security_type_names(@loan) %></td>
+      <td><%= loan_details_security_type_names(@loan) %></td>
     </tr>
 
     <%= table.row 'security_proportion', header: t('simple_form.labels.loan_entry.security_proportion') %>
