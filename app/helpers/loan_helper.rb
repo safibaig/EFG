@@ -51,4 +51,9 @@ module LoanHelper
     states.map { |state| [state.humanize, state] }
   end
 
+  def loan_security_type_names(loan)
+    security_names = loan.loan_security_types.collect(&:name).join('<br/>').html_safe
+    security_names.blank? ? "Not Set" : security_names
+  end
+
 end

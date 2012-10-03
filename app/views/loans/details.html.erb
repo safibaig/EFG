@@ -84,6 +84,42 @@
   <%= table.row 'non_validated_postcode' %>
   <%= table.row 'private_residence_charge_required', header: t('simple_form.labels.loan_eligibility_check.private_residence_charge_required') %>
   <%= table.row 'personal_guarantee_required', header: t('simple_form.labels.loan_eligibility_check.personal_guarantee_required') %>
+
+  <%= table.row 'non_validated_postcode' %>
+
+  <% for_loan_in_categories(@loan, 2, 3, 4, 5, 6) do %>
+    <tr>
+      <th><%= t('simple_form.labels.loan_entry.loan_security_types') %></th>
+      <td><%= loan_security_type_names(@loan) %></td>
+    </tr>
+
+    <%= table.row 'security_proportion', header: t('simple_form.labels.loan_entry.security_proportion') %>
+  <% end %>
+
+  <% for_loan_in_categories(@loan, 3) do %>
+    <%= table.row 'original_overdraft_proportion', header: t('simple_form.labels.loan_entry.original_overdraft_proportion') %>
+  <% end %>
+
+  <% for_loan_in_categories(@loan, 3, 4) do %>
+    <%= table.row 'refinance_security_proportion', header: t('simple_form.labels.loan_entry.refinance_security_proportion') %>
+  <% end %>
+
+  <% for_loan_in_categories(@loan, 4) do %>
+    <%= table.row 'current_refinanced_amount', header: t('simple_form.labels.loan_entry.current_refinanced_amount') %>
+    <%= table.row 'final_refinanced_amount', header: t('simple_form.labels.loan_entry.final_refinanced_amount') %>
+  <% end %>
+
+  <% for_loan_in_categories(@loan, 5) do %>
+    <%= table.row 'overdraft_limit', header: t('simple_form.labels.loan_entry.overdraft_limit') %>
+    <%= table.row 'overdraft_maintained', header: t('simple_form.labels.loan_entry.overdraft_maintained') %>
+  <% end %>
+
+  <% for_loan_in_categories(@loan, 6) do %>
+    <%= table.row 'invoice_discount_limit', header: t('simple_form.labels.loan_entry.invoice_discount_limit') %>
+    <%= table.row 'debtor_book_coverage', header: t('simple_form.labels.loan_entry.debtor_book_coverage') %>
+    <%= table.row 'debtor_book_topup', header: t('simple_form.labels.loan_entry.debtor_book_topup') %>
+  <% end %>
+
   <%= table.row 'created_by', header: 'Created By' %>
   <%= table.row 'created_at', header: 'Date and Time Created' %>
   <%= table.row 'modified_by', header: 'Last Modified By' %>
