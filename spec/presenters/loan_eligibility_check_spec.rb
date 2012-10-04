@@ -68,11 +68,6 @@ describe LoanEligibilityCheck do
         loan_eligibility_check.repayment_duration = { years: 0, months: 0}
         loan_eligibility_check.should be_invalid
       end
-
-      it 'is valid when greater than zero' do
-        loan_eligibility_check.repayment_duration = { months: 1 }
-        loan_eligibility_check.should be_valid
-      end
     end
 
     describe '#loan_scheme' do
@@ -112,6 +107,33 @@ describe LoanEligibilityCheck do
         loan_eligibility_check.should_not be_valid
       end
     end
+
+    describe "#repayment_duration" do
+      LoanCategory.all.each do |loan_category|
+        context "with loan category is '#{loan_category.name}'" do
+          before(:each) do
+            loan_eligibility_check.loan_category_id = loan_category.id
+          end
+
+          it "is invalid when repayment duration is less than category's min loan term" do
+            loan_eligibility_check.repayment_duration = loan_category.min_loan_term - 1
+            loan_eligibility_check.should_not be_valid
+
+            loan_eligibility_check.repayment_duration = loan_category.min_loan_term
+            loan_eligibility_check.should be_valid
+          end
+
+          it "is invalid when repayment duration is greater than category's max loan term" do
+            loan_eligibility_check.repayment_duration = loan_category.max_loan_term + 1
+            loan_eligibility_check.should_not be_valid
+
+            loan_eligibility_check.repayment_duration = loan_category.max_loan_term
+            loan_eligibility_check.should be_valid
+          end
+        end
+      end
+    end
+
   end
 
   describe '#lending_limit_id=' do

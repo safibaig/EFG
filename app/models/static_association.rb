@@ -1,4 +1,4 @@
-class StaticAssociation < Struct.new(:id, :name)
+class StaticAssociation < OpenStruct
   class << self
     attr_accessor :data
   end
@@ -6,8 +6,7 @@ class StaticAssociation < Struct.new(:id, :name)
   def self.all
     @all ||= data.map { |d|
       new.tap { |item|
-        item.id = d[:id]
-        item.name = d[:name]
+        d.each_pair { |k, v| item.send("#{k}=", v) }
       }
     }
   end

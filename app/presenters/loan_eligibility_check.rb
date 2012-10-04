@@ -33,9 +33,10 @@ class LoanEligibilityCheck
   validates_inclusion_of :loan_source, in: [ Loan::SFLG_SOURCE ]
   validates_numericality_of :turnover, less_than_or_equal_to: MAX_ALLOWED_TURNOVER.to_f
 
+  validate :repayment_duration_within_loan_category_limits
+
   validate do
     errors.add(:amount, :greater_than, count: 0) unless amount && amount.cents > 0
-    errors.add(:repayment_duration, :greater_than, count: 0) unless repayment_duration && repayment_duration.total_months > 0
     errors.add(:sic_code, :not_recognised) if sic_code.blank?
   end
 
@@ -82,6 +83,17 @@ class LoanEligibilityCheck
 
   def save_ineligibility_reasons
     loan.ineligibility_reasons.create!(reason: eligibility_check.reasons.join("\n"))
+  end
+
+  def repayment_duration_within_loan_category_limits
+    loan_term = repayment_duration.try(:total_months)
+    category = LoanCategory.find(loan_category_id)
+
+    if category && loan_term
+      unless loan_term >= category.min_loan_term && loan_term <= category.max_loan_term
+        errors.add(:repayment_duration, :not_within_allowed_repayment_duration)
+      end
+    end
   end
 
 end
