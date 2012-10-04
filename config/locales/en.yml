@@ -74,6 +74,10 @@ en:
           attributes:
             dti_demand_outstanding:
               greater_than_total_drawn_amount: Outstanding balance must be less than or equal to the current total amount drawn
+        loan_remove_guarantee:
+          attributes:
+            remove_guarantee_outstanding_amount:
+              greater_than_total_drawn_amount: Outstanding balance must be less than or equal to the current total amount drawn
         loan_no_claim:
           attributes:
             no_claim_on:
