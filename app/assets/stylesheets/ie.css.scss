@@ -24,6 +24,12 @@ select {
   height: auto;
 }
 
+.form-horizontal {
+  .input-xxlarge {
+    width: 490px;
+  }
+}
+
 .form-data-correction,
 .form-eligibility-check,
 .form-lending-limit,
@@ -36,6 +42,7 @@ select {
 .form-loan-demand-to-borrower,
 .form-loan-repay,
 .form-loan-no-claim,
+.form-loan-search,
 .form-loan-transfer,
 .form-loan-demand-against-government,
 .form-state-aid-calculation,
