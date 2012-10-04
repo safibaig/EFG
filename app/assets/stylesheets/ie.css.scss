@@ -1,3 +1,17 @@
+.navbar {
+  .brand {
+    float: none;
+  }
+
+  .nav {
+    li {
+      a {
+        color: #999;
+      }
+    }
+  }
+}
+
 .form-data-correction,
 .form-eligibility-check,
 .form-lending-limit,
