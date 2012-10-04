@@ -12,6 +12,11 @@
   }
 }
 
+label.radio input {
+  border: none;
+  width: auto;
+}
+
 .form-data-correction,
 .form-eligibility-check,
 .form-lending-limit,
