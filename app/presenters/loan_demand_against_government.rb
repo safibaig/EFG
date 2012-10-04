@@ -10,4 +10,15 @@ class LoanDemandAgainstGovernment
   attribute :dti_reason
 
   validates_presence_of :dti_demand_outstanding, :dti_demanded_on, :dti_ded_code
+
+  validate :dti_demand_outstanding_is_not_greater_than_total_drawn_amount
+
+  private
+
+  def dti_demand_outstanding_is_not_greater_than_total_drawn_amount
+    return if dti_demand_outstanding.blank?
+    if dti_demand_outstanding > loan.cumulative_drawn_amount
+      errors.add(:dti_demand_outstanding, :greater_than_total_drawn_amount)
+    end
+  end
 end
