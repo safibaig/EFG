@@ -168,8 +168,7 @@ class LoanEntry
   end
 
   def company_registration_required?
-    loan_legal_form = LegalForm.find(legal_form_id)
-    LegalForm.requiring_company_registration.include?(loan_legal_form)
+    legal_form_id && LegalForm.find(legal_form_id).requires_company_registration == true
   end
 
 end

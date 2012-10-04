@@ -69,7 +69,7 @@ describe LoanEntry do
       loan_entry.errors[:state_aid].should == ['must be calculated']
     end
 
-    LegalForm.requiring_company_registration.each do |legal_form|
+    LegalForm.all.select { |l| l.requires_company_registration == true }.each do |legal_form|
       context "when legal_form is #{legal_form.name}" do
         it "should be invalid without company registration number" do
           loan_entry.legal_form_id = legal_form.id
