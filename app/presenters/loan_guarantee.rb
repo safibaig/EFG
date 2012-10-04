@@ -16,6 +16,8 @@ class LoanGuarantee
 
   validates_presence_of :initial_draw_date, :initial_draw_amount, :maturity_date
 
+  validate :initial_draw_is_not_greater_than_loan_amount
+
   validate do
     errors.add(:received_declaration, :accepted) unless self.received_declaration
     errors.add(:signed_direct_debit_received, :accepted) unless self.signed_direct_debit_received
@@ -39,5 +41,10 @@ class LoanGuarantee
         initial_draw_change.loan = loan
         initial_draw_change.modified_date = Date.current
       end
+    end
+
+    def initial_draw_is_not_greater_than_loan_amount
+      return if initial_draw_amount.blank?
+      errors.add(:initial_draw_amount, :greater_than_loan_amount) if initial_draw_amount > loan.amount
     end
 end

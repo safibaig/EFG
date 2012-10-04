@@ -37,6 +37,13 @@ describe LoanGuarantee do
       loan_guarantee.maturity_date = ''
       loan_guarantee.should_not be_valid
     end
+
+    it "should be invalid when initial draw amount is greater than loan amount" do
+      loan_guarantee.initial_draw_amount = loan_guarantee.loan.amount + Money.new(1)
+      loan_guarantee.should_not be_valid
+      loan_guarantee.initial_draw_amount = loan_guarantee.loan.amount
+      loan_guarantee.should be_valid
+    end
   end
 
   describe '#save' do
