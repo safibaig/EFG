@@ -21,7 +21,7 @@ describe 'disabled user' do
 
     # ensure user can logout
     click_link 'Logout'
-    page.should have_content('You need to sign in or sign up before continuing')
+    page.should have_content(I18n.t('devise.failure.unauthenticated'))
   end
 
   it 'when logging in' do
