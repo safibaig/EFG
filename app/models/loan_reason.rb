@@ -42,6 +42,6 @@ class LoanReason < StaticAssociation
   ].sort_by {|data| data[:name] }
 
   def self.active
-    (28..38).collect { |id| find(id) }
+    find_all_by_active(true)
   end
 end
