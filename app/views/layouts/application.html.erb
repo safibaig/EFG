@@ -26,6 +26,8 @@
               <li><%= link_to 'Logout', destroy_user_session_path %></li>
             </ul>
           <% else %>
+            <%= render('search/loan_lookup_form') if current_user.can_view?(Search) %>
+
             <ul class="nav">
               <% if current_user.can_view?(LoanStates) %>
                 <li><%= link_to 'Loan Portfolio', loan_states_path %></li>
@@ -75,12 +77,6 @@
                   <% end %>
                 </ul>
               </li>
-            </ul>
-
-            <ul class="nav secondary">
-              <% if current_user.can_view?(Search) %>
-                <li><%= render "search/loan_lookup_form" %></li>
-              <% end %>
             </ul>
           <% end %>
         <% end %>

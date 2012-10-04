@@ -1,9 +1,12 @@
 .navbar {
   .brand {
-    float: none;
+    float: left;
   }
 
   .nav {
+    clear: both;
+    float: none;
+
     li {
       a {
         color: #999;
