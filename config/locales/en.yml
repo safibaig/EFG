@@ -53,6 +53,11 @@ en:
               not_allowed: 'The selected repayment frequency is not possible for the given loan term. For instance, the loan term must be a multiple of the number of months between payments.'
         loan_offer:
           attributes:
+            base:
+              lending_limit_inactive: The lending limit is no longer active
+              lending_limit_expired: The lending limit expired more than 6 months ago
+            facility_letter_date:
+              outside_lending_limit_dates: The facility letter date is not within the lending limit start and end dates
             facility_letter_sent:
               accepted: The Facility letter and supporting documentation must have been sent to the Applicant.
         loan_guarantee:
