@@ -11,7 +11,6 @@ FactoryGirl.define do
     reason_id LoanReason.active.first.id
     business_name 'Acme'
     trading_name 'Emca'
-    company_registration "B1234567890"
     postcode "EC1R 4RP"
     non_validated_postcode "AB1 2CD"
     town "London"

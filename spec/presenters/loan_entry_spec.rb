@@ -69,6 +69,17 @@ describe LoanEntry do
       loan_entry.errors[:state_aid].should == ['must be calculated']
     end
 
+    LegalForm.requiring_company_registration.each do |legal_form|
+      context "when legal_form is #{legal_form.name}" do
+        it "should be invalid without company registration number" do
+          loan_entry.legal_form_id = legal_form.id
+          loan_entry.should_not be_valid
+          loan_entry.company_registration = "B1234567890"
+          loan_entry.should be_valid
+        end
+      end
+    end
+
     context 'when a type B loan' do
       let(:loan_entry) { FactoryGirl.build(:loan_entry_type_b) }
 

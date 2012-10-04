@@ -7,4 +7,8 @@ class LegalForm < StaticAssociation
     {id: 5, name: 'Public Limited Company (PLC)'},
     {id: 6, name: 'Other'},
   ]
+
+  def self.requiring_company_registration
+    (3..5).collect { |id| find(id) }
+  end
 end

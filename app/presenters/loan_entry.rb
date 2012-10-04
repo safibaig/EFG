@@ -57,6 +57,8 @@ class LoanEntry
                         :repayment_frequency_id, :postcode, :maturity_date,
                         :interest_rate, :fees, :repayment_duration
 
+  validates_presence_of :company_registration, if: :company_registration_required?
+
   validate :state_aid_calculated
 
   validate :repayment_frequency_allowed
@@ -163,6 +165,11 @@ class LoanEntry
     unless repayment_duration.between?(MonthDuration.new(3), MonthDuration.new(36))
       errors.add(:repayment_duration, :invalid)
     end
+  end
+
+  def company_registration_required?
+    loan_legal_form = LegalForm.find(legal_form_id)
+    LegalForm.requiring_company_registration.include?(loan_legal_form)
   end
 
 end

@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe InformationDeclaration do
 
-  let(:loan) { FactoryGirl.create(:loan, :offered) }
+  let(:loan) { FactoryGirl.create(:loan, :offered, company_registration: 'B1234567890') }
 
   let(:pdf_document) {
     information_declaration = InformationDeclaration.new(loan)
