@@ -8,6 +8,8 @@ EFG::Application.routes.draw do
 
   get 'help' => 'help#show'
 
+  get 'healthcheck' => 'healthcheck#index'
+
   namespace :help do
     resource :ask_an_expert, controller: :ask_an_expert, only: [:create, :new]
     resource :ask_cfe, controller: :ask_cfe, only: [:create, :new]
