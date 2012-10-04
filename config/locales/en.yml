@@ -135,6 +135,14 @@ en:
               invalid_format: 'must have the format mm/yyyy'
             initial_draw_amount:
               invalid: 'must be between £0 and £9,999,999.99'
+            initial_capital_repayment_holiday:
+              invalid: 'must be between 0 and 120'
+            second_draw_months:
+              invalid: 'must be between 0 and 120'
+            third_draw_months:
+              invalid: 'must be between 0 and 120'
+            fourth_draw_months:
+              invalid: 'must be between 0 and 120'
 
   dashboard:
     loan_alerts:
