@@ -150,6 +150,13 @@ FactoryGirl.define do
     trait :transferred do
       reference 'ABCDEFG+02'
       state Loan::Incomplete
+
+      after :create do |loan|
+        FactoryGirl.create(:initial_draw_change,
+          amount_drawn: loan.amount,
+          loan: loan
+        )
+      end
     end
 
     trait :with_state_aid_calculation do

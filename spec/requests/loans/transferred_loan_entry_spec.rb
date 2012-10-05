@@ -17,7 +17,7 @@ describe 'Transferred loan entry' do
     choose 'transferred_loan_entry_repayment_frequency_id_1'
     fill_in "transferred_loan_entry_repayment_duration_years", with: 1
     fill_in "transferred_loan_entry_repayment_duration_months", with: 6
-    fill_in 'transferred_loan_entry_maturity_date', with: '01/01/2013'
+    fill_in 'transferred_loan_entry_maturity_date', with: 6.months.from_now.to_date.to_s(:screen)
 
     click_button 'State Aid Calculation'
     page.fill_in 'state_aid_calculation_initial_draw_year', with: '2012'
@@ -39,7 +39,7 @@ describe 'Transferred loan entry' do
     loan.state.should == Loan::Completed
     loan.declaration_signed.should be_true
     loan.sortcode.should == '03-12-45'
-    loan.maturity_date.should == Date.new(2013, 1, 1)
+    loan.maturity_date.should == 6.months.from_now.to_date
     loan.repayment_frequency_id.should == 1
     loan.repayment_duration.should == MonthDuration.new(18)
     loan.generic1.should == 'Generic 1'
