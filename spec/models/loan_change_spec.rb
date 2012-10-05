@@ -70,11 +70,23 @@ describe LoanChange do
       end
 
       context '7 - Record agreed draw' do
-        it 'requires a amount_drawn' do
+        before(:each) do
           loan_change.change_type_id = '7'
+        end
+
+        it 'requires a amount_drawn' do
           loan_change.amount_drawn = ''
           loan_change.should_not be_valid
           loan_change.amount_drawn = '1,000'
+          loan_change.should be_valid
+        end
+
+        it 'requires amount_drawn to not be greater than remaining amount not yet drawn on the loan' do
+          loan_change.loan.stub!(:amount_not_yet_drawn).and_return(Money.new(9000_00))
+
+          loan_change.amount_drawn = '10,000'
+          loan_change.should_not be_valid
+          loan_change.amount_drawn = '9,000'
           loan_change.should be_valid
         end
       end

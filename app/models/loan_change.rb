@@ -68,6 +68,7 @@ class LoanChange < LoanModification
         errors.add(:base, :required_lender_demand_satisfied) unless amount_drawn || lump_sum_repayment || maturity_date.present?
       when '7'
         errors.add(:amount_drawn, :required) unless amount_drawn
+        errors.add(:amount_drawn, :exceeded_undrawn_amount) if amount_drawn && amount_drawn > loan.amount_not_yet_drawn
       when 'a'
         errors.add(:maturity_date, :required) unless maturity_date
       end
