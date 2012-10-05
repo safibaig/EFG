@@ -79,6 +79,8 @@ en:
               too_long_after_facility_date: Initial draw cannot occur more than six months after the date of the Facility letter
         loan_demand_against_government:
           attributes:
+            dti_demanded_on:
+              before_borrower_demand_date: Date that demand is made to the government cannot be before the date of borrower demand
             dti_demand_outstanding:
               greater_than_total_drawn_amount: Outstanding balance must be less than or equal to the current total amount drawn
         loan_remove_guarantee:
