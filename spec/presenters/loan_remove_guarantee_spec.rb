@@ -38,6 +38,14 @@ describe LoanRemoveGuarantee do
       loan_remove_guarantee.remove_guarantee_outstanding_amount = loan.amount
       loan_remove_guarantee.should be_valid
     end
+
+    it "should be invalid when remove guarantee date is before initial draw date" do
+      loan_remove_guarantee.remove_guarantee_on = loan.initial_draw_change.date_of_change - 1.day
+      loan_remove_guarantee.should_not be_valid
+
+      loan_remove_guarantee.remove_guarantee_on = loan.initial_draw_change.date_of_change
+      loan_remove_guarantee.should be_valid
+    end
   end
 
 end
