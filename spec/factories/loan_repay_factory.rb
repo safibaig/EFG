@@ -1,9 +1,9 @@
 FactoryGirl.define do
   factory :loan_repay do
-    repaid_on '01/06/2012'
+    repaid_on 1.day.from_now.to_date
 
     initialize_with {
-      loan = FactoryGirl.build(:loan, :guaranteed)
+      loan = FactoryGirl.create(:loan, :guaranteed)
       new(loan)
     }
   end
