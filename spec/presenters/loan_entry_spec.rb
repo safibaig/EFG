@@ -175,14 +175,6 @@ describe LoanEntry do
         loan_entry.overdraft_maintained = false
         loan_entry.should_not be_valid
       end
-
-      it "should have a maximum repayment duration of 2 years" do
-        loan_entry.repayment_duration = 25
-        loan_entry.should_not be_valid
-
-        loan_entry.repayment_duration = 24
-        loan_entry.should be_valid
-      end
     end
 
     context 'when a type F loan' do
@@ -216,14 +208,6 @@ describe LoanEntry do
         loan_entry.debtor_book_topup = 30.1
         loan_entry.should_not be_valid
       end
-
-      it "should have a maximum repayment duration of 3 years" do
-        loan_entry.repayment_duration = 37
-        loan_entry.should_not be_valid
-
-        loan_entry.repayment_duration = 36
-        loan_entry.should be_valid
-      end
     end
 
     context "when repayment duration is changed" do
@@ -238,36 +222,28 @@ describe LoanEntry do
       end
     end
 
-    context "when repaying loan quarterly" do
-      it "should require repayment duration to be divisible by 3" do
-        loan_entry.repayment_frequency_id = 3
-        loan_entry.repayment_duration = 19
-        loan_entry.should_not be_valid
-
-        loan_entry.repayment_duration = 18
-        loan_entry.should be_valid
-      end
+    it_behaves_like 'loan presenter that validates loan repayment frequency' do
+      let(:loan_presenter) { loan_entry }
     end
 
-    context "when repaying loan six monthly" do
-      it "should require repayment duration to be divisible by 6" do
-        loan_entry.repayment_frequency_id = 2
-        loan_entry.repayment_duration = 11
-        loan_entry.should_not be_valid
-
-        loan_entry.repayment_duration = 12
-        loan_entry.should be_valid
+    context 'loan duration' do
+      before(:each) do
+        # ensure loan entry is valid for all categories
+        loan_entry.security_proportion = 1
+        loan_entry.original_overdraft_proportion = 1
+        loan_entry.refinance_security_proportion = 1
+        loan_entry.loan_security_types = [1]
+        loan_entry.current_refinanced_amount = 1
+        loan_entry.final_refinanced_amount = 1
+        loan_entry.overdraft_limit = 1
+        loan_entry.overdraft_maintained = true
+        loan_entry.invoice_discount_limit = 1
+        loan_entry.debtor_book_coverage = 1
+        loan_entry.debtor_book_topup = 1
       end
-    end
 
-    context "when repaying loan annually" do
-      it "should require repayment duration to be divisible by 12" do
-        loan_entry.repayment_frequency_id = 1
-        loan_entry.repayment_duration = 25
-        loan_entry.should_not be_valid
-
-        loan_entry.repayment_duration = 24
-        loan_entry.should be_valid
+      it_behaves_like 'loan presenter that validates loan repayment duration based on loan category' do
+        let(:loan_presenter) { loan_entry }
       end
     end
 

@@ -6,7 +6,7 @@ FactoryGirl.define do
     interest_rate_type_id 1
     interest_rate 5.00
     fees 1000
-    repayment_frequency_id 1
+    repayment_frequency_id 3
     postcode 'EC1R 4RP'
     maturity_date '01/01/2012'
 

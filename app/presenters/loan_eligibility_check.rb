@@ -1,6 +1,7 @@
 class LoanEligibilityCheck
   include LoanPresenter
   include LoanStateTransition
+  include SharedLoanValidations
 
   MAX_ALLOWED_TURNOVER = Money.new(41_000_000_00)
 
@@ -83,17 +84,6 @@ class LoanEligibilityCheck
 
   def save_ineligibility_reasons
     loan.ineligibility_reasons.create!(reason: eligibility_check.reasons.join("\n"))
-  end
-
-  def repayment_duration_within_loan_category_limits
-    loan_term = repayment_duration.try(:total_months)
-    category = LoanCategory.find(loan_category_id)
-
-    if category && loan_term
-      unless loan_term >= category.min_loan_term && loan_term <= category.max_loan_term
-        errors.add(:repayment_duration, :not_within_allowed_repayment_duration)
-      end
-    end
   end
 
 end

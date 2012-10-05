@@ -41,7 +41,7 @@ en:
             sic_code:
               not_recognised: The specified SIC code is not recognised
             repayment_duration:
-              not_within_allowed_repayment_duration: 'Loan term should be between 3 months and 2, 3 or 10 years (inclusive). EFG facilities are only available for terms of between three months and ten years in most cases. Type E facilities have a maximum term of two years and Type F facilities have a maximum of three years.'
+              not_allowed: 'Loan term should be between 3 months and 2, 3 or 10 years (inclusive). EFG facilities are only available for terms of between three months and ten years in most cases. Type E facilities have a maximum term of two years and Type F facilities have a maximum of three years.'
         loan_entry:
           attributes:
             declaration_signed:
@@ -53,6 +53,8 @@ en:
               present: choose at least one security
             repayment_frequency_id:
               not_allowed: 'The selected repayment frequency is not possible for the given loan term. For instance, the loan term must be a multiple of the number of months between payments.'
+            repayment_duration:
+              not_allowed: 'Loan term should be between 3 months and 2, 3 or 10 years (inclusive). EFG facilities are only available for terms of between three months and ten years in most cases. Type E facilities have a maximum term of two years and Type F facilities have a maximum of three years.'
         loan_offer:
           attributes:
             base:
