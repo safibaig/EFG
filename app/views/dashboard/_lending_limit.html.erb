@@ -2,13 +2,14 @@
   <div class="content">
     <h3><%= lending_limit.name %></h3>
 
-    <%= content_tag :span, "#{lending_limit.usage_percentage}/100", :class => 'pie', 'data-colour' => lending_limit.chart_colour, 'data-diameter' => '80' %>
-
     <ul>
       <li><strong>Allocation:</strong> <%= lending_limit.allocation.format %></li>
       <li><strong>Usage:</strong> <%= lending_limit.usage_amount.format %></li>
-      <li><strong>Utilisation:</strong> <%= lending_limit.usage_percentage %>%</li>
+      <li><strong>Utilisation:</strong> <%= lending_limit.usage_percentage %></li>
+      <li><strong>Claims to date:</strong> <%= lending_limit.cumulative_claims.format %></li>
+      <li><strong>Util. of claim limit (gross):</strong> <%= lending_limit.gross_utilisation_of_claim_limit %></li>
+      <li><strong>Claims to date (net):</strong> <%= lending_limit.cumulative_net_claims.format %></li>
+      <li><strong>Util. of claim limit (net):</strong> <%= lending_limit.net_utilisation_of_claim_limit %></li>
     </ul>
-
   </div>
 </div>
