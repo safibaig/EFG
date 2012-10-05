@@ -64,6 +64,8 @@ class LoanEntry
 
   validate :repayment_plan_is_allowed
 
+  validate :maturity_date_within_loan_term
+
   validate do
     errors.add(:declaration_signed, :accepted) unless self.declaration_signed
   end
@@ -140,6 +142,20 @@ class LoanEntry
 
   def company_registration_required?
     legal_form_id && LegalForm.find(legal_form_id).requires_company_registration == true
+  end
+
+  def maturity_date_within_loan_term
+    return if maturity_date.blank? || loan_category_id.blank?
+
+    loan_category = LoanCategory.find(loan_category_id)
+
+    if maturity_date < loan_category.min_loan_term.months.from_now.to_date
+      errors.add(:maturity_date, :less_than_min_loan_term)
+    end
+
+    if maturity_date > loan_category.max_loan_term.months.from_now.to_date
+      errors.add(:maturity_date, :greater_than_max_loan_term)
+    end
   end
 
 end

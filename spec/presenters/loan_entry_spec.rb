@@ -210,6 +210,24 @@ describe LoanEntry do
       end
     end
 
+    context 'maturity_date' do
+      it "must be on or after the minimum number of loan repayment months, counted from today's date" do
+        loan_entry.maturity_date = 3.months.from_now - 1.day
+        loan_entry.should_not be_valid
+
+        loan_entry.maturity_date = 3.months.from_now
+        loan_entry.should be_valid
+      end
+
+      it "must be on or before the maximum number of loan repayment months, counted from today's date" do
+        loan_entry.maturity_date = 120.months.from_now + 1.day
+        loan_entry.should_not be_valid
+
+        loan_entry.maturity_date = 120.months.from_now
+        loan_entry.should be_valid
+      end
+    end
+
     context "when repayment duration is changed" do
       before(:each) do
         # ensure recalculate state aid validation fails

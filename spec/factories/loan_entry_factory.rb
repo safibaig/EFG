@@ -8,7 +8,7 @@ FactoryGirl.define do
     fees 1000
     repayment_frequency_id 3
     postcode 'EC1R 4RP'
-    maturity_date '01/01/2012'
+    maturity_date 6.months.from_now.to_date
 
     initialize_with {
       loan = FactoryGirl.build(:loan, :with_state_aid_calculation)
