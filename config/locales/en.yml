@@ -74,6 +74,8 @@ en:
               accepted: A signed Direct Debit mandate must have been received before the initial draw down can occur.
             initial_draw_amount:
               greater_than_loan_amount: Unable to draw down amount greater than loan
+            initial_draw_date:
+              before_facility_date: Initial draw cannot occur before the date of the Facility letter
         loan_demand_against_government:
           attributes:
             dti_demand_outstanding:
