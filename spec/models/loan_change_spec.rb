@@ -69,6 +69,31 @@ describe LoanChange do
         end
       end
 
+      context '6 - Lump sum repayment' do
+        let(:loan_change) { FactoryGirl.build(:loan_change, :reschedule) }
+
+        before(:each) do
+          loan_change.change_type_id = '6'
+          loan_change.loan.stub!(:cumulative_drawn_amount).and_return(Money.new(30000_00))
+        end
+
+        it 'requires a lump_sum_repayment value' do
+          loan_change.lump_sum_repayment = ''
+          loan_change.should_not be_valid
+          loan_change.lump_sum_repayment = '1,000'
+          loan_change.should be_valid
+        end
+
+        it 'requires lump_sum_repayment + previous lump sum repayments to not be greater than amount drawn on the loan' do
+          loan_change.loan.stub!(:cumulative_lump_sum_amount).and_return(Money.new(10000_00))
+
+          loan_change.lump_sum_repayment = '20,001'
+          loan_change.should_not be_valid
+          loan_change.lump_sum_repayment = '20,000'
+          loan_change.should be_valid
+        end
+      end
+
       context '7 - Record agreed draw' do
         before(:each) do
           loan_change.change_type_id = '7'

@@ -66,6 +66,11 @@ class LoanChange < LoanModification
         errors.add(:business_name, :required) unless business_name.present?
       when '5'
         errors.add(:base, :required_lender_demand_satisfied) unless amount_drawn || lump_sum_repayment || maturity_date.present?
+      when '6'
+        errors.add(:lump_sum_repayment, :required) unless lump_sum_repayment
+        if lump_sum_repayment && (loan.cumulative_lump_sum_amount + lump_sum_repayment) > loan.cumulative_drawn_amount
+          errors.add(:lump_sum_repayment, :exceeds_amount_drawn)
+        end
       when '7'
         errors.add(:amount_drawn, :required) unless amount_drawn
         errors.add(:amount_drawn, :exceeded_undrawn_amount) if amount_drawn && amount_drawn > loan.amount_not_yet_drawn
