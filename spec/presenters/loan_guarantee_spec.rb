@@ -52,6 +52,14 @@ describe LoanGuarantee do
       loan_guarantee.initial_draw_date = loan_guarantee.loan.facility_letter_date
       loan_guarantee.should be_valid
     end
+
+    it "should be invalid when initial draw date is more than 6 months after facility letter date" do
+      loan_guarantee.initial_draw_date = loan_guarantee.loan.facility_letter_date.advance(months: 6, days: 1)
+      loan_guarantee.should_not be_valid
+
+      loan_guarantee.initial_draw_date = loan_guarantee.loan.facility_letter_date.advance(months: 6)
+      loan_guarantee.should be_valid
+    end
   end
 
   describe '#save' do

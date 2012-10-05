@@ -76,6 +76,7 @@ en:
               greater_than_loan_amount: Unable to draw down amount greater than loan
             initial_draw_date:
               before_facility_date: Initial draw cannot occur before the date of the Facility letter
+              too_long_after_facility_date: Initial draw cannot occur more than six months after the date of the Facility letter
         loan_demand_against_government:
           attributes:
             dti_demand_outstanding:
