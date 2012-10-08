@@ -55,11 +55,13 @@ describe "loan settled" do
     loan1.state.should == Loan::Settled
     loan1.invoice.should == invoice
     loan1.modified_by.should == current_user
+    loan1.settled_on.should == Date.today
 
     loan3.reload
     loan3.state.should == Loan::Settled
     loan3.invoice.should == invoice
     loan3.modified_by.should == current_user
+    loan3.settled_on.should == Date.today
 
     page.should have_content('BSPFDNH-01')
     page.should_not have_content('3PEZRGB-01')
