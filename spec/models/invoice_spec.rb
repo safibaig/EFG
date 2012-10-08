@@ -58,4 +58,29 @@ describe Invoice do
       invoice.should_not be_valid
     end
   end
+
+  describe "#xref" do
+    let(:invoice) { FactoryGirl.build(:invoice) }
+
+    it "should be set on creation" do
+      invoice.xref.should be_blank
+      invoice.save!
+      invoice.xref.should_not be_blank
+    end
+
+    it "should be unique" do
+      invoice.save!
+
+      another_invoice = FactoryGirl.build(:invoice)
+      another_invoice.stub!(:random_xref).and_return(invoice.xref, '789012-INV')
+
+      another_invoice.save!
+      another_invoice.xref.should == '789012-INV'
+    end
+
+    it "should have 6 random numbers followed by '-INV'" do
+      invoice.save!
+      invoice.xref.should match(/\d{6}-INV/)
+    end
+  end
 end
