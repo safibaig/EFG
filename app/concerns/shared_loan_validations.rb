@@ -12,11 +12,11 @@ module SharedLoanValidations
   end
 
   def repayment_duration_within_loan_category_limits
-    loan_term = repayment_duration.try(:total_months)
-    category = LoanCategory.find(loan_category_id)
+    repayment_months = repayment_duration.try(:total_months)
+    loan_term = LoanTerm.new(loan)
 
-    if category && loan_term
-      unless loan_term >= category.min_loan_term && loan_term <= category.max_loan_term
+    if repayment_months
+      unless repayment_months >= loan_term.min_months && repayment_months <= loan_term.max_months
         errors.add(:repayment_duration, :not_allowed)
       end
     end

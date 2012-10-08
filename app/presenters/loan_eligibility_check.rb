@@ -34,7 +34,7 @@ class LoanEligibilityCheck
   validates_inclusion_of :loan_source, in: [ Loan::SFLG_SOURCE ]
   validates_numericality_of :turnover, less_than_or_equal_to: MAX_ALLOWED_TURNOVER.to_f
 
-  validate :repayment_duration_within_loan_category_limits
+  validate :repayment_duration_within_loan_category_limits, if: :repayment_duration
 
   validate do
     errors.add(:amount, :greater_than, count: 0) unless amount && amount.cents > 0

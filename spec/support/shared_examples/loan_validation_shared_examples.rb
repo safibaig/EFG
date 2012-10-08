@@ -2,9 +2,9 @@ shared_examples_for 'loan presenter that validates loan repayment duration based
 
   describe "#repayment_duration" do
     LoanCategory.all.each do |loan_category|
-      context "with loan category is '#{loan_category.name}'" do
+      context "when loan category is '#{loan_category.name}'" do
         before(:each) do
-          loan_presenter.stub!(:loan_category_id).and_return(loan_category.id)
+          loan_presenter.loan.update_attribute(:loan_category_id, loan_category.id)
         end
 
         it "is invalid when repayment duration is less than category's min loan term" do
