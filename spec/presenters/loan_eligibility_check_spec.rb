@@ -106,6 +106,14 @@ describe LoanEligibilityCheck do
       end
     end
 
+    it "is invalid when trading date is more than 6 months in the future" do
+      loan_eligibility_check.trading_date = 6.months.from_now.advance(days: 1)
+      loan_eligibility_check.should_not be_valid
+
+      loan_eligibility_check.trading_date = 6.months.from_now
+      loan_eligibility_check.should be_valid
+    end
+
     it_behaves_like 'loan presenter that validates loan repayment duration based on loan category' do
       let(:loan_presenter) { loan_eligibility_check }
     end

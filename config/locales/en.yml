@@ -42,6 +42,8 @@ en:
               not_recognised: The specified SIC code is not recognised
             repayment_duration:
               not_allowed: 'Loan term should be between 3 months and 2, 3 or 10 years (inclusive). EFG facilities are only available for terms of between three months and ten years in most cases. Type E facilities have a maximum term of two years and Type F facilities have a maximum of three years.'
+            trading_date:
+              too_far_in_the_future: must be within the next 6 months
         loan_entry:
           attributes:
             declaration_signed:
@@ -158,8 +160,10 @@ en:
             business_name:
               required: "can't be blank"
             lump_sum_repayment:
+              required: "can't be blank"
               not_be_negative: "can't be negative"
             maturity_date:
+              required: "can't be blank"
               less_than_min_loan_term: Maturity date must be at least three months after the date of initial draw of funds
               greater_than_max_loan_term: Maturity date must not be more than than ten years (or 2 years for Type E and 3 years for Type F loans) after the date of initial draw of funds
         lender_limit:
