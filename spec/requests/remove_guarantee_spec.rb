@@ -25,7 +25,7 @@ describe 'Remove guarantee' do
     loan.state.should == Loan::Removed
     loan.modified_by.should == current_user
 
-    should_log_loan_state_change(loan, Loan::Removed, 15)
+    should_log_loan_state_change(loan, Loan::Removed, 15, current_user)
   end
 
 end

@@ -30,7 +30,7 @@ describe 'loan cancel' do
       loan.cancelled_comment.should == 'No comment'
       loan.modified_by.should == current_user
 
-      should_log_loan_state_change(loan, Loan::Cancelled, 3)
+      should_log_loan_state_change(loan, Loan::Cancelled, 3, current_user)
     end
   end
 

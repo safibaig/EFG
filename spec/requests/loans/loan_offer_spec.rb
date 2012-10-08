@@ -23,7 +23,7 @@ describe 'loan offer' do
     loan.facility_letter_sent.should == true
     loan.modified_by.should == current_user
 
-    should_log_loan_state_change(loan, Loan::Offered, 5)
+    should_log_loan_state_change(loan, Loan::Offered, 5, current_user)
   end
 
   it 'does not continue with invalid values' do

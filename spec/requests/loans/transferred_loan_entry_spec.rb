@@ -50,7 +50,7 @@ describe 'Transferred loan entry' do
     loan.state_aid_calculation.should be_present
     loan.modified_by.should == current_user
 
-    should_log_loan_state_change(loan, Loan::Completed, 4)
+    should_log_loan_state_change(loan, Loan::Completed, 4, current_user)
   end
 
 end

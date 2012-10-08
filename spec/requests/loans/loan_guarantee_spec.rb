@@ -31,7 +31,7 @@ describe 'loan guarantee' do
     loan.maturity_date.should == Date.new(2012, 3, 1)
     loan.modified_by.should == current_user
 
-    should_log_loan_state_change(loan, Loan::Guaranteed, 7)
+    should_log_loan_state_change(loan, Loan::Guaranteed, 7, current_user)
 
     loan_change = loan.initial_draw_change
     loan_change.amount_drawn.should == Money.new(10_000_42)
