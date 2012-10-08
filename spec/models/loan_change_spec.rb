@@ -149,13 +149,8 @@ describe LoanChange do
             loan_change.should be_valid
           end
 
-          context 'when SFLG loan' do
-            before(:each) do
-              loan.loan_category_id = nil
-              loan.loan_scheme = Loan::SFLG_SCHEME
-              loan.loan_source = Loan::SFLG_SOURCE
-              loan.save!
-            end
+          context 'when SFLG loan with no loan category' do
+            let(:loan) { FactoryGirl.create(:loan, :guaranteed, :sflg, loan_category_id: nil) }
 
             it 'requires maturity date to be at least 24 months after initial draw date' do
               loan_change.maturity_date = loan_term.min_months.months.from_now.to_date - 1.day
@@ -188,6 +183,15 @@ describe LoanChange do
               loan_change.should_not be_valid
 
               loan_change.maturity_date = loan_term.max_months.months.from_now.to_date
+              loan_change.should be_valid
+            end
+          end
+
+          context 'when transferred loan' do
+            let(:loan) { FactoryGirl.create(:loan, :transferred) }
+
+            it 'has no maturity date minimum months restriction' do
+              loan_change.maturity_date = Date.today
               loan_change.should be_valid
             end
           end
