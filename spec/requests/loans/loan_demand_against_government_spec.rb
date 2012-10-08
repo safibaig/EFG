@@ -34,6 +34,28 @@ describe 'loan demand against government' do
     should_log_loan_state_change(loan, Loan::Demanded, 13)
   end
 
+  it 'requires extra data when non-EFG loan' do
+    loan = FactoryGirl.create(:loan, :sflg, :guaranteed, :lender_demand, lender: current_lender)
+
+    visit loan_path(loan)
+    click_link 'Demand Against Guarantee'
+
+    fill_in 'dti_demand_outstanding', loan.amount
+    fill_in 'dti_reason', 'Something'
+    fill_in 'dti_interest', 5000
+    fill_in 'dti_break_costs', 2000
+    select ded_code.code, from: 'loan_demand_against_government_dti_ded_code'
+
+    click_button 'Submit'
+
+    loan = Loan.last
+
+    current_path.should == loan_path(loan)
+
+    loan.dti_interest.should == Money.new(5000_00)
+    loan.dti_break_costs.should == Money.new(2000_00)
+  end
+
   it 'does not continue with invalid values' do
     visit loan_path(loan)
     click_link 'Demand Against Guarantee'

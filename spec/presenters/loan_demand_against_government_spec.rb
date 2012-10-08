@@ -45,5 +45,21 @@ describe LoanDemandAgainstGovernment do
       loan_demand_against_government.dti_demanded_on = loan.borrower_demanded_on
       loan_demand_against_government.should be_valid
     end
+
+    %w(sflg legacy_sflg).each do |loan_type|
+      context "when #{loan_type} loan" do
+        let(:loan_demand_against_government) { FactoryGirl.build("#{loan_type}_loan_demand_against_government") }
+
+        it "should be invalid without dti_interest" do
+          loan_demand_against_government.dti_interest = nil
+          loan_demand_against_government.should_not be_valid
+        end
+
+        it "should be invalid without dti_break_costs" do
+          loan_demand_against_government.dti_break_costs = nil
+          loan_demand_against_government.should_not be_valid
+        end
+      end
+    end
   end
 end
