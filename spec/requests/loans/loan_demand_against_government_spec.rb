@@ -26,6 +26,7 @@ describe 'loan demand against government' do
 
     loan.state.should == Loan::Demanded
     loan.dti_demand_outstanding.should == loan.amount
+    loan.dti_amount_claimed.should_not be_nil
     loan.dti_demanded_on.should == Date.today
     loan.ded_code.should == DedCode.find_by_code('A.10.10')
     loan.dti_reason.should == 'Something'
@@ -54,6 +55,7 @@ describe 'loan demand against government' do
 
     loan.dti_interest.should == Money.new(5000_00)
     loan.dti_break_costs.should == Money.new(2000_00)
+    loan.dti_amount_claimed.should_not be_nil
   end
 
   it 'does not continue with invalid values' do

@@ -5,7 +5,7 @@ FactoryGirl.define do
     dti_ded_code 'A.10.10'
 
     initialize_with {
-      loan = FactoryGirl.build(:loan, :guaranteed, :lender_demand)
+      loan = FactoryGirl.create(:loan, :guaranteed, :lender_demand)
       new(loan)
     }
 
@@ -14,7 +14,7 @@ FactoryGirl.define do
       dti_break_costs 500_00
 
       initialize_with {
-        loan = FactoryGirl.build(:loan, :sflg, :guaranteed, :lender_demand)
+        loan = FactoryGirl.create(:loan, :sflg, :guaranteed, :lender_demand)
         new(loan)
       }
     end
@@ -24,7 +24,7 @@ FactoryGirl.define do
       dti_break_costs 500_00
 
       initialize_with {
-        loan = FactoryGirl.build(:loan, :legacy_sflg, :guaranteed, :lender_demand)
+        loan = FactoryGirl.create(:loan, :legacy_sflg, :guaranteed, :lender_demand)
         new(loan)
       }
     end

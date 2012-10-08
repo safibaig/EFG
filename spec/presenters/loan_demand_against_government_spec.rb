@@ -1,15 +1,12 @@
 require 'spec_helper'
 
 describe LoanDemandAgainstGovernment do
+
+  let(:loan_demand_against_government) { FactoryGirl.build(:loan_demand_against_government) }
+
+  let(:loan) { loan_demand_against_government.loan }
+
   describe 'validations' do
-    let(:loan_demand_against_government) { FactoryGirl.build(:loan_demand_against_government) }
-
-    let(:loan) { loan_demand_against_government.loan }
-
-    before(:each) do
-      loan.save!
-      FactoryGirl.create(:initial_draw_change, amount_drawn: loan.amount, loan: loan)
-    end
 
     it 'should have a valid factory' do
       loan_demand_against_government.should be_valid
@@ -60,6 +57,14 @@ describe LoanDemandAgainstGovernment do
           loan_demand_against_government.should_not be_valid
         end
       end
+    end
+  end
+
+  describe "#dti_amount_claimed" do
+    it "should be set when record is saved" do
+      loan_demand_against_government.dti_amount_claimed.should be_blank
+      loan_demand_against_government.save
+      loan_demand_against_government.dti_amount_claimed.should == Money.new(7500_00) # 75% of £10,000
     end
   end
 end

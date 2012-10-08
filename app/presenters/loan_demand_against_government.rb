@@ -11,6 +11,8 @@ class LoanDemandAgainstGovernment
   attribute :dti_interest
   attribute :dti_break_costs
 
+  attribute :dti_amount_claimed, read_only: true
+
   validates_presence_of :dti_demand_outstanding, :dti_demanded_on, :dti_ded_code
 
   validates_presence_of :dti_interest, :dti_break_costs, unless: :efg_loan?
@@ -20,6 +22,8 @@ class LoanDemandAgainstGovernment
   validate :dti_demanded_on_is_not_before_borrower_demanded_on, if: :dti_demanded_on
 
   delegate :efg_loan?, to: :loan
+
+  before_save :set_dti_amount_claimed
 
   private
 
@@ -34,4 +38,9 @@ class LoanDemandAgainstGovernment
       errors.add(:dti_demanded_on, :before_borrower_demand_date)
     end
   end
+
+  def set_dti_amount_claimed
+    loan.dti_amount_claimed = dti_demand_outstanding * loan.guarantee_rate / 100
+  end
+
 end
