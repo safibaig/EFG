@@ -53,6 +53,7 @@
 .form-loan-demand-to-borrower,
 .form-loan-repay,
 .form-loan-no-claim,
+.form-loan-search,
 .form-loan-transfer,
 .form-loan-demand-against-government,
 .form-state-aid-calculation,
@@ -117,4 +118,10 @@
 
 .table-expert-users form {
   margin-bottom: 0;
+}
+
+.form-horizontal {
+  .input-xxlarge {
+    width: 500px;
+  }
 }

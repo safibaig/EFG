@@ -28,13 +28,13 @@
     <%= f.input :amount, as: :currency, disabled: true %>
     <%= f.input :lending_limit_id, as: :select, collection: @loan_entry.lender.lending_limits.where(id: @loan_entry.lending_limit_id), disabled: true %>
     <%= f.input :repayment_duration, as: :duration %>
-    <%= f.input :repayment_frequency_id, as: :select, collection: RepaymentFrequency.all, prompt: 'Please select' %>
+    <%= f.input :repayment_frequency_id, as: :select, collection: RepaymentFrequency.all, prompt: 'Please select', input_html: { class: 'input-xxlarge' } %>
     <%= f.input :maturity_date, as: :quick_date %>
     <%= f.input :turnover, as: :currency, disabled: true %>
     <%= f.input :trading_date, as: :quick_date, disabled: true %>
     <%= simple_form_row t('simple_form.labels.loan_entry.sic_code'), @loan.sic_code %>
     <%= simple_form_row t('simple_form.labels.loan_entry.sic_desc'), @loan.sic_desc %>
-    <%= f.input :reason_id, as: :select, collection: LoanReason.active, disabled: true, prompt: 'Please select' %>
+    <%= f.input :reason_id, as: :select, collection: LoanReason.active, disabled: true, prompt: 'Please select', input_html: { class: 'input-xxlarge' } %>
     <%= f.input :interest_rate_type_id, as: :radio_buttons, collection: InterestRateType.all, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :interest_rate, as: :string %>
     <%= f.input :fees, as: :currency %>
@@ -47,13 +47,13 @@
 
   <%= field_set_tag 'EFG Lending Type' do %>
 
-    <%= f.input :loan_category_id, as: :select, collection: LoanCategory.all, disabled: true, prompt: 'Please select' %>
+    <%= f.input :loan_category_id, as: :select, collection: LoanCategory.all, disabled: true, prompt: 'Please select', input_html: { class: 'input-xxlarge' } %>
 
     <% for_loan_in_categories(@loan_entry, 2, 3, 4, 5, 6) do %>
       <%= f.input :loan_security_types,
                   as: :select,
                   collection: LoanSecurityType.all,
-                  input_html: { multiple: true },
+                  input_html: { class: 'input-xxlarge', multiple: true },
                   selected: @loan.loan_security_types.collect(&:id) %>
 
       <%= f.input :security_proportion, as: :percentage %>

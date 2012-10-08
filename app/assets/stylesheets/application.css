@@ -9,32 +9,19 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require bootstrap_and_overrides
- *= require_self
  *= require chosen
- *= require_tree .
+ *= require common
+ *= require dashboard
+ *= require eligibility_check_form
+ *= require forms
+ *= require header
+ *= require loan_alerts
+ *= require loans
+ *= require manage_users
+ *= require page_header
+ *= require reports
+ *= require search
+ *= require sic_codes
+ *= require utilisation
+ *= require welcome_message
 */
-
-.navbar-inner {
-  border-radius: 0;
-}
-
-.actions {
-  margin: 18px 0;
-}
-
-.alert.error {
-  background-color: #c20;
-  color: #fff;
-  border: 0;
-  text-shadow: 0 1px 0 #333;
-}
-
-.center,
-td.center,
-th.center {
-  text-align: center;
-}
-
-.hidden {
-  display: none
-}
