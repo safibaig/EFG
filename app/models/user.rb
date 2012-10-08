@@ -1,3 +1,5 @@
+require 'password_migration'
+
 class User < ActiveRecord::Base
   include Canable::Cans
 
@@ -120,5 +122,7 @@ class User < ActiveRecord::Base
   def login_attempts_exceeded?
     self.failed_attempts > MAXIMUM_LOGIN_ATTEMPTS
   end
+
+  include PasswordMigration
 
 end
