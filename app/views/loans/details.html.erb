@@ -217,8 +217,17 @@
 <% if loan_state_history_includes?(@loan, Loan::Settled) %>
   <h3>Make demand against Government Guarantee</h3>
   <%= loan_details_table(@loan, 'simple_form.labels.loan_settle_claim') do |table| %>
+
+    <tr>
+      <th>What is the lender's invoice reference?</th>
+      <td><%= @loan.invoice.reference %></td>
+    </tr>
+    <tr>
+      <th>System generated reference</th>
+      <td><%= @loan.invoice.xref %></td>
+    </tr>
+
     <%= table.row 'settled_on' %>
-    <% # TODO: Not sure where 2 more fields come from. %>
   <% end %>
 <% end %>
 

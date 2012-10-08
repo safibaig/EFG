@@ -184,7 +184,7 @@ describe 'loans/details' do
   end
 
   context "with a settled loan" do
-    let(:loan) { FactoryGirl.build(:loan, :settled) }
+    let(:loan) { FactoryGirl.create(:loan, :settled) }
 
     it_behaves_like 'rendered loan_details' do
       let(:visible_details) { %w(loan_settle_claim.settled_on) }

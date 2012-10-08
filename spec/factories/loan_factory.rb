@@ -123,6 +123,10 @@ FactoryGirl.define do
     trait :settled do
       state Loan::Settled
       settled_on { Date.today }
+
+      after(:create) do |loan|
+        loan.invoice = FactoryGirl.create(:invoice)
+      end
     end
 
     trait :recovered do
