@@ -76,4 +76,20 @@ describe LoanTerm do
     end
   end
 
+  describe '#earliest_start_date' do
+    let(:loan) { FactoryGirl.build(:loan) }
+
+    it 'should return date 3 months from today' do
+      loan_term.earliest_start_date.should == Date.today.advance(months: 3)
+    end
+  end
+
+  describe '#latest_end_date' do
+    let(:loan) { FactoryGirl.build(:loan) }
+
+    it "should return date 120 months from today" do
+      loan_term.latest_end_date.should == Date.today.advance(months: 120)
+    end
+  end
+
 end
