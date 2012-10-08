@@ -3,13 +3,15 @@
 require 'spec_helper'
 
 describe 'loan recovery' do
-  let(:loan) { FactoryGirl.create(:loan, :settled, amount_demanded: '123', dti_amount_claimed: '456', settled_on: '1/5/12') }
+  let(:loan) { FactoryGirl.create(:loan, :settled, settled_on: '1/5/12') }
   let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
   before { login_as(current_user, scope: :user) }
 
   [Loan::Settled, Loan::Recovered, Loan::Realised].each do |state|
     context "with state #{state}" do
-      let(:loan) { FactoryGirl.create(:loan, state.to_sym, amount_demanded: '123', dti_amount_claimed: '456', settled_on: '1/5/12') }
+      before do
+        loan.update_attribute :state, state
+      end
 
       it 'creates a loan recovery' do
         visit loan_path(loan)
