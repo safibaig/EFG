@@ -10,7 +10,7 @@
 
 <hr />
 
-<%= simple_form_for(@search, url: search_path, method: :get, html: {id: 'search', class: 'form-horizontal'}) do |f| %>
+<%= simple_form_for(@search, url: search_path, method: :get, html: {id: 'search', class: 'form-horizontal form-loan-search'}) do |f| %>
   <%= f.input :business_name %>
   <%= f.input :trading_name %>
   <%= f.input :company_registration  %>
@@ -32,33 +32,19 @@
                 input_html: {multiple: true} %>
 
     <%= f.input :amount_from, as: :currency %>
-
     <%= f.input :amount_to, as: :currency %>
-
     <%= f.input :maturity_date_from, as: :quick_date %>
-
     <%= f.input :maturity_date_to, as: :quick_date %>
-
-    <%= f.input :reason_id, collection: LoanReason.all, input_html: {multiple: true} %>
-
+    <%= f.input :reason_id, collection: LoanReason.all, input_html: { class: 'input-xxlarge', multiple: true } %>
     <%= f.input :postcode %>
-
     <%= f.input :updated_at_from, as: :quick_date %>
-
     <%= f.input :updated_at_to, as: :quick_date %>
-
     <%= f.input :modified_by_id, collection: @search.modified_by_users.map { |user| [ user.username, user.id ] }, prompt: "All" %>
-
     <%= f.input :generic1 %>
-
     <%= f.input :generic2 %>
-
     <%= f.input :generic3 %>
-
     <%= f.input :generic4 %>
-
     <%= f.input :generic5 %>
-
   <% end %>
 
   <p class="icon-search">

@@ -3,6 +3,12 @@
 <head>
   <title>EFG</title>
   <%= stylesheet_link_tag 'application', media: 'all' %>
+  <!--[if IE 6]>
+    <%= stylesheet_link_tag 'ie6-bootstrap', media: 'all' %>
+  <![endif]-->
+  <!--[if lt IE 8]>
+    <%= stylesheet_link_tag 'ie', media: 'all' %>
+  <![endif]-->
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
   <%= google_analytics %>
@@ -20,6 +26,8 @@
               <li><%= link_to 'Logout', destroy_user_session_path %></li>
             </ul>
           <% else %>
+            <%= render('search/loan_lookup_form') if current_user.can_view?(Search) %>
+
             <ul class="nav">
               <% if current_user.can_view?(LoanStates) %>
                 <li><%= link_to 'Loan Portfolio', loan_states_path %></li>
@@ -70,12 +78,6 @@
                 </ul>
               </li>
             </ul>
-
-            <ul class="nav secondary">
-              <% if current_user.can_view?(Search) %>
-                <li><%= render "search/loan_lookup_form" %></li>
-              <% end %>
-            </ul>
           <% end %>
         <% end %>
       </div>
@@ -90,9 +92,7 @@
     <% if alert %>
       <p class="alert alert-error"><%= alert %></p>
     <% end %>
-  </div>
 
-  <div class="container">
     <%= yield %>
   </div>
 
