@@ -159,6 +159,9 @@ en:
               required: "can't be blank"
             lump_sum_repayment:
               not_be_negative: "can't be negative"
+            maturity_date:
+              less_than_min_loan_term: Maturity date must be at least three months after the date of initial draw of funds
+              greater_than_max_loan_term: Maturity date must not be more than than ten years (or 2 years for Type E and 3 years for Type F loans) after the date of initial draw of funds
         lender_limit:
           attributes:
             ends_on:
