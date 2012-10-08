@@ -11,7 +11,6 @@ FactoryGirl.define do
     reason_id LoanReason.active.first.id
     business_name 'Acme'
     trading_name 'Emca'
-    company_registration "B1234567890"
     postcode "EC1R 4RP"
     non_validated_postcode "AB1 2CD"
     town "London"
@@ -104,7 +103,7 @@ FactoryGirl.define do
 
     trait :demanded do
       state Loan::Demanded
-      amount_demanded Money.new(10_000_00)
+      dti_demand_outstanding Money.new(10_000_00)
       dti_demanded_on { Date.today }
       dti_ded_code 'ABC'
       dti_reason 'reason'
@@ -151,6 +150,13 @@ FactoryGirl.define do
     trait :transferred do
       reference 'ABCDEFG+02'
       state Loan::Incomplete
+
+      after :create do |loan|
+        FactoryGirl.create(:initial_draw_change,
+          amount_drawn: loan.amount,
+          loan: loan
+        )
+      end
     end
 
     trait :with_state_aid_calculation do

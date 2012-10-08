@@ -37,17 +37,36 @@ describe LoanGuarantee do
       loan_guarantee.maturity_date = ''
       loan_guarantee.should_not be_valid
     end
+
+    it "should be invalid when initial draw amount is greater than loan amount" do
+      loan_guarantee.initial_draw_amount = loan_guarantee.loan.amount + Money.new(1)
+      loan_guarantee.should_not be_valid
+      loan_guarantee.initial_draw_amount = loan_guarantee.loan.amount
+      loan_guarantee.should be_valid
+    end
+
+    it "should be invalid when initial draw date is before facility letter date" do
+      loan_guarantee.initial_draw_date = loan_guarantee.loan.facility_letter_date - 1.day
+      loan_guarantee.should_not be_valid
+
+      loan_guarantee.initial_draw_date = loan_guarantee.loan.facility_letter_date
+      loan_guarantee.should be_valid
+    end
+
+    it "should be invalid when initial draw date is more than 6 months after facility letter date" do
+      loan_guarantee.initial_draw_date = loan_guarantee.loan.facility_letter_date.advance(months: 6, days: 1)
+      loan_guarantee.should_not be_valid
+
+      loan_guarantee.initial_draw_date = loan_guarantee.loan.facility_letter_date.advance(months: 6)
+      loan_guarantee.should be_valid
+    end
   end
 
   describe '#save' do
     let(:lender_user) { FactoryGirl.create(:lender_user) }
     let(:loan) { loan_guarantee.loan }
     let(:loan_guarantee) {
-      FactoryGirl.build(:loan_guarantee,
-        initial_draw_amount: Money.new(5_000_00),
-        initial_draw_date: '1/1/11',
-        modified_by: lender_user
-      )
+      FactoryGirl.build(:loan_guarantee, initial_draw_amount: Money.new(5_000_00), modified_by: lender_user)
     }
 
     it 'creates an InitialDrawChange' do
@@ -57,7 +76,7 @@ describe LoanGuarantee do
       initial_draw_change.amount_drawn.should == Money.new(5_000_00)
       initial_draw_change.change_type_id.should == nil
       initial_draw_change.created_by.should == lender_user
-      initial_draw_change.date_of_change.should == Date.new(2011)
+      initial_draw_change.date_of_change.should == Date.current
       initial_draw_change.modified_date.should == Date.current
       initial_draw_change.seq.should == 0
     end

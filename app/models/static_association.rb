@@ -1,4 +1,4 @@
-class StaticAssociation < Struct.new(:id, :name)
+class StaticAssociation < OpenStruct
   class << self
     attr_accessor :data
   end
@@ -6,8 +6,7 @@ class StaticAssociation < Struct.new(:id, :name)
   def self.all
     @all ||= data.map { |d|
       new.tap { |item|
-        item.id = d[:id]
-        item.name = d[:name]
+        d.each_pair { |k, v| item.send("#{k}=", v) }
       }
     }
   end
@@ -18,9 +17,17 @@ class StaticAssociation < Struct.new(:id, :name)
     }
   end
 
-  def self.find_by_name(name)
-    all.detect { |item|
-      item.name == name
-    }
+  # find_all_by_*
+  # find_by_*
+  def self.method_missing(method, *args, &block)
+    if match = method.to_s.match(/^find_all_by_(.*)/)
+      return all.select { |item| item.send(match[1]) == args.first }.sort_by(&:id)
+    end
+
+    if match = method.to_s.match(/^find_by_(.*)/)
+      return all.detect { |item| item.send(match[1]) == args.first }
+    end
+
+    super
   end
 end

@@ -69,7 +69,7 @@ describe LoanCsvExport do
       row[ 7].should == ''
       row[ 8].should == ''
       row[ 9].should == 'Yes'
-      row[10].should == 'B1234567890'
+      row[10].should == ''
       row[11].should == '01/10/2012 16:23:45'
       row[12].should == 'Joe Bloggs'
       row[13].should == ''

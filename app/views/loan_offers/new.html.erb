@@ -8,6 +8,9 @@
 <hr>
 
 <%= simple_form_for(@loan_offer, url: loan_offer_path(@loan), html: { class: 'form-horizontal form-loan-offer' }) do |f| %>
+
+  <%= render_errors_on_base(f.object.errors) %>
+
   <%= f.input :facility_letter_sent, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
 
   <div class="control-group">

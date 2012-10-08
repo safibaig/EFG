@@ -258,6 +258,19 @@ describe Loan do
     end
   end
 
+  describe '#amount_not_yet_drawn' do
+    before do
+      loan.save!
+    end
+
+    it 'returns loan amount minus cumulative amount drawn' do
+      FactoryGirl.create(:initial_draw_change, loan: loan, amount_drawn: Money.new(123_45))
+      FactoryGirl.create(:loan_change, loan: loan, amount_drawn: Money.new(678_90), change_type_id: '7')
+
+      loan.amount_not_yet_drawn.should == loan.amount - Money.new(802_35)
+    end
+  end
+
   describe '#efg_loan?' do
     it "returns true when loan source is SFLG and loan type is EFG" do
       loan.loan_source = Loan::SFLG_SOURCE

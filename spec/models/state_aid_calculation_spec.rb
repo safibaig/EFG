@@ -56,6 +56,32 @@ describe StateAidCalculation do
       state_aid_calculation.should be_valid
     end
 
+    %w(
+      initial_capital_repayment_holiday
+      second_draw_months
+      third_draw_months
+      fourth_draw_months
+    ).each do |attr|
+      it "does not require #{attr} if not set" do
+        state_aid_calculation.initial_capital_repayment_holiday = nil
+        state_aid_calculation.should be_valid
+      end
+
+      it "requires #{attr} to be 0 or greater if set" do
+        state_aid_calculation.initial_capital_repayment_holiday = -1
+        state_aid_calculation.should_not be_valid
+        state_aid_calculation.initial_capital_repayment_holiday = 0
+        state_aid_calculation.should be_valid
+      end
+
+      it "requires #{attr} to be 120 or less if set" do
+        state_aid_calculation.initial_capital_repayment_holiday = 121
+        state_aid_calculation.should_not be_valid
+        state_aid_calculation.initial_capital_repayment_holiday = 120
+        state_aid_calculation.should be_valid
+      end
+    end
+
     context 'when rescheduling' do
       let(:rescheduled_state_aid_calculation) { FactoryGirl.build(:rescheduled_state_aid_calculation) }
 

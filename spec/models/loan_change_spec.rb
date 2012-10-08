@@ -69,12 +69,49 @@ describe LoanChange do
         end
       end
 
+      context '6 - Lump sum repayment' do
+        let(:loan_change) { FactoryGirl.build(:loan_change, :reschedule) }
+
+        before(:each) do
+          loan_change.change_type_id = '6'
+          loan_change.loan.stub!(:cumulative_drawn_amount).and_return(Money.new(30000_00))
+        end
+
+        it 'requires a lump_sum_repayment value' do
+          loan_change.lump_sum_repayment = ''
+          loan_change.should_not be_valid
+          loan_change.lump_sum_repayment = '1,000'
+          loan_change.should be_valid
+        end
+
+        it 'requires lump_sum_repayment + previous lump sum repayments to not be greater than amount drawn on the loan' do
+          loan_change.loan.stub!(:cumulative_lump_sum_amount).and_return(Money.new(10000_00))
+
+          loan_change.lump_sum_repayment = '20,001'
+          loan_change.should_not be_valid
+          loan_change.lump_sum_repayment = '20,000'
+          loan_change.should be_valid
+        end
+      end
+
       context '7 - Record agreed draw' do
-        it 'requires a amount_drawn' do
+        before(:each) do
           loan_change.change_type_id = '7'
+        end
+
+        it 'requires a amount_drawn' do
           loan_change.amount_drawn = ''
           loan_change.should_not be_valid
           loan_change.amount_drawn = '1,000'
+          loan_change.should be_valid
+        end
+
+        it 'requires amount_drawn to not be greater than remaining amount not yet drawn on the loan' do
+          loan_change.loan.stub!(:amount_not_yet_drawn).and_return(Money.new(9000_00))
+
+          loan_change.amount_drawn = '10,000'
+          loan_change.should_not be_valid
+          loan_change.amount_drawn = '9,000'
           loan_change.should be_valid
         end
       end
@@ -88,6 +125,76 @@ describe LoanChange do
           loan_change.should_not be_valid
           loan_change.maturity_date = Date.new(2020)
           loan_change.should be_valid
+        end
+      end
+
+      # 4 - extend term
+      # a - decrease term
+      %w(4 a).each do |change_type_id|
+        context change_type_id do
+          let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
+
+          let(:loan_change) { FactoryGirl.build(:loan_change, :reschedule, loan: loan) }
+
+          let(:loan_term) { LoanTerm.new(loan) }
+
+          before(:each) do
+            loan_change.change_type_id = change_type_id
+          end
+
+          it 'requires a maturity_date' do
+            loan_change.maturity_date = ''
+            loan_change.should_not be_valid
+            loan_change.maturity_date = 10.years.from_now.to_date
+            loan_change.should be_valid
+          end
+
+          context 'when SFLG loan with no loan category' do
+            let(:loan) { FactoryGirl.create(:loan, :guaranteed, :sflg, loan_category_id: nil) }
+
+            it 'requires maturity date to be at least 24 months after initial draw date' do
+              loan_change.maturity_date = loan_term.min_months.months.from_now.to_date - 1.day
+              loan_change.should_not be_valid
+
+              loan_change.maturity_date = loan_term.min_months.months.from_now.to_date
+              loan_change.should be_valid
+            end
+
+            it 'requires maturity date to not be more than 120 months after initial draw date' do
+              loan_change.maturity_date = loan_term.max_months.months.from_now.to_date.advance(days: 1)
+              loan_change.should_not be_valid
+
+              loan_change.maturity_date = loan_term.max_months.months.from_now.to_date
+              loan_change.should be_valid
+            end
+          end
+
+          context 'when EFG loan' do
+            it 'requires maturity date to be minimum loan term months (default 3) after initial draw date' do
+              loan_change.maturity_date = loan_term.min_months.months.from_now.to_date - 1.day
+              loan_change.should_not be_valid
+
+              loan_change.maturity_date = loan_term.min_months.months.from_now.to_date
+              loan_change.should be_valid
+            end
+
+            it 'requires maturity date not exceed maximum loan term months (default 120) after initial draw date' do
+              loan_change.maturity_date = loan_term.max_months.months.from_now.to_date.advance(days: 1)
+              loan_change.should_not be_valid
+
+              loan_change.maturity_date = loan_term.max_months.months.from_now.to_date
+              loan_change.should be_valid
+            end
+          end
+
+          context 'when transferred loan' do
+            let(:loan) { FactoryGirl.create(:loan, :transferred) }
+
+            it 'has no maturity date minimum months restriction' do
+              loan_change.maturity_date = Date.today
+              loan_change.should be_valid
+            end
+          end
         end
       end
     end

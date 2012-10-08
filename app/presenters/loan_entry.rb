@@ -1,6 +1,7 @@
 class LoanEntry
   include LoanPresenter
   include LoanStateTransition
+  include SharedLoanValidations
 
   transition from: [Loan::Eligible, Loan::Incomplete], to: Loan::Completed, event: :complete
 
@@ -57,9 +58,13 @@ class LoanEntry
                         :repayment_frequency_id, :postcode, :maturity_date,
                         :interest_rate, :fees, :repayment_duration
 
+  validates_presence_of :company_registration, if: :company_registration_required?
+
   validate :state_aid_calculated
 
-  validate :repayment_frequency_allowed
+  validate :repayment_plan_is_allowed, if: :repayment_duration
+
+  validate :maturity_date_within_loan_term, if: :maturity_date
 
   validate do
     errors.add(:declaration_signed, :accepted) unless self.declaration_signed
@@ -102,8 +107,6 @@ class LoanEntry
                          in: [true],
                          if: lambda { loan_category_id == 5 }
 
-  validate :type_e_repayment_duration, if: lambda { loan_category_id == 5 }
-
   # TYPE F LOANS
 
   validates_presence_of :invoice_discount_limit,
@@ -119,8 +122,6 @@ class LoanEntry
                             less_than_or_equal_to: 30,
                             if: lambda { loan_category_id == 6 }
 
-  validate :type_f_repayment_duration, if: lambda { loan_category_id == 6 }
-
   def save_as_incomplete
     loan.state = Loan::Incomplete
     loan.save(validate: false)
@@ -134,34 +135,24 @@ class LoanEntry
     errors.add(:state_aid, :recalculate) if self.loan.repayment_duration_changed?
   end
 
-  def repayment_frequency_allowed
-    return unless repayment_frequency_id.present? && repayment_duration.present?
-    case repayment_frequency_id
-    when 1
-      errors.add(:repayment_frequency_id, :not_allowed) unless repayment_duration.total_months % 12 == 0
-    when 2
-      errors.add(:repayment_frequency_id, :not_allowed) unless repayment_duration.total_months % 6 == 0
-    when 3
-      errors.add(:repayment_frequency_id, :not_allowed) unless repayment_duration.total_months % 3 == 0
-    end
-  end
-
   # Type B loans require at least one security
   def loan_security
     errors.add(:loan_security_types, :present) if self.loan_security_types.empty?
   end
 
-  # Type E repayment duration cannot exceed 2 years
-  def type_e_repayment_duration
-    unless repayment_duration.between?(MonthDuration.new(3), MonthDuration.new(24))
-      errors.add(:repayment_duration, :invalid)
-    end
+  def company_registration_required?
+    legal_form_id && LegalForm.find(legal_form_id).requires_company_registration == true
   end
 
-  # Type F repayment duration cannot exceed 3 years
-  def type_f_repayment_duration
-    unless repayment_duration.between?(MonthDuration.new(3), MonthDuration.new(36))
-      errors.add(:repayment_duration, :invalid)
+  def maturity_date_within_loan_term
+    loan_term = LoanTerm.new(loan)
+
+    if maturity_date < loan_term.min_months.months.from_now.to_date
+      errors.add(:maturity_date, :less_than_min_loan_term)
+    end
+
+    if maturity_date > loan_term.max_months.months.from_now.to_date
+      errors.add(:maturity_date, :greater_than_max_loan_term)
     end
   end
 

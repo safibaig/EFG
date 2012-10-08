@@ -37,7 +37,7 @@ describe 'loan entry' do
     loan.interest_rate_type.should == InterestRateType.find(1)
     loan.interest_rate.should == 2.25
     loan.fees.should == Money.new(12345)
-    loan.maturity_date.should == Date.new(2013, 1, 1)
+    loan.maturity_date.should == 6.months.from_now.to_date
     loan.modified_by.should == current_user
 
     should_log_loan_state_change(loan, Loan::Completed, 4)
@@ -158,7 +158,7 @@ describe 'loan entry' do
       fill_in 'non_validated_postcode', 'JF3 8HF'
       fill_in 'sortcode', '03-12-45'
       select RepaymentFrequency.find(1).name, from: 'loan_entry_repayment_frequency_id'
-      fill_in 'maturity_date', '01/01/2013'
+      fill_in 'maturity_date', 6.months.from_now.to_date.to_s(:screen)
 
       calculate_state_aid
 

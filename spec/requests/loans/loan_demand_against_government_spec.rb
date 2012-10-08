@@ -5,7 +5,7 @@ require 'spec_helper'
 describe 'loan demand against government' do
   let(:current_lender) { FactoryGirl.create(:lender) }
   let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
-  let(:loan) { FactoryGirl.create(:loan, :lender_demand, lender: current_lender) }
+  let(:loan) { FactoryGirl.create(:loan, :guaranteed, :lender_demand, lender: current_lender) }
   let!(:ded_code) { FactoryGirl.create(:ded_code) }
 
   before { login_as(current_user, scope: :user) }
@@ -14,7 +14,7 @@ describe 'loan demand against government' do
     visit loan_path(loan)
     click_link 'Demand Against Guarantee'
 
-    fill_in 'amount_demanded', '£10,000.42'
+    fill_in 'dti_demand_outstanding', loan.amount
     fill_in 'dti_reason', 'Something'
     select ded_code.code, from: 'loan_demand_against_government_dti_ded_code'
 
@@ -25,7 +25,7 @@ describe 'loan demand against government' do
     current_path.should == loan_path(loan)
 
     loan.state.should == Loan::Demanded
-    loan.amount_demanded.should == Money.new(10_000_42) # £10,000.42
+    loan.dti_demand_outstanding.should == loan.amount
     loan.dti_demanded_on.should == Date.today
     loan.ded_code.should == DedCode.find_by_code('A.10.10')
     loan.dti_reason.should == 'Something'
