@@ -85,8 +85,6 @@
   <%= table.row 'private_residence_charge_required', header: t('simple_form.labels.loan_eligibility_check.private_residence_charge_required') %>
   <%= table.row 'personal_guarantee_required', header: t('simple_form.labels.loan_eligibility_check.personal_guarantee_required') %>
 
-  <%= table.row 'non_validated_postcode' %>
-
   <% for_loan_in_categories(@loan, 2, 3, 4, 5, 6) do %>
     <tr>
       <th><%= t('simple_form.labels.loan_entry.loan_security_types') %></th>
