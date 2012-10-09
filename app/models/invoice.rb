@@ -24,6 +24,8 @@ class Invoice < ActiveRecord::Base
   attr_accessible :lender_id, :reference, :period_covered_quarter,
                   :period_covered_year, :received_on, :loans_to_be_settled_ids
 
+  before_create :generate_xref, unless: :xref
+
   def demanded_loans
     lender.loans.demanded
   end
@@ -72,4 +74,18 @@ class Invoice < ActiveRecord::Base
         )
       end
     end
+
+    def generate_xref
+      string = random_xref
+      if self.class.exists?(xref: string)
+        generate_xref
+      else
+        self.xref = string
+      end
+    end
+
+    def random_xref
+      6.times.map { |n| (0..9).to_a.sample }.join + '-INV'
+    end
+
 end

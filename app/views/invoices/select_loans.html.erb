@@ -42,9 +42,9 @@
             <td><%= loan.reference %></td>
             <td><%= loan.business_name %></td>
             <td><%= loan.dti_demanded_on %></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td><%= loan.dti_demand_outstanding %></td>
+            <td><%= loan.dti_interest %></td>
+            <td><%= loan.dti_amount_claimed %></td>
           </tr>
         <% end %>
       </tbody>

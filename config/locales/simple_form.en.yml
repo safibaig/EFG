@@ -158,6 +158,8 @@ en:
         dti_demand_outstanding: 'What is the outstanding Scheme Facility Principal owed by the Borrower to the Lender upon which the Guaranteed Percentage will be calculated?'
         dti_ded_code: 'Please select the primary cause of business failure'
         dti_reason: 'Please provide any further information you consider appropriate to the reason for Demand against the Government Guarantee'
+        dti_interest: What is the outstanding Scheme Facility interest owed by the Borrower to the Lender that is eligible to be included within the calculation of the Demand?
+        dti_break_costs: Break Costs (only applies to some fixed term legacy SFLG loans (pre-December 2005)). What are the outstanding Break Costs owed by the Borrower to the Lender that are eligible to be included within the calculation of the Demand?
 
       loan_settle_claim:
         settled_on: 'What was the date that the Demand against the Government Guarantee was settled?'

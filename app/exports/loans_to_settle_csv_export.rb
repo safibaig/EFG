@@ -1,14 +1,15 @@
-class InvoiceCsvExport < BaseCsvExport
+class LoansToSettleCsvExport < BaseCsvExport
 
   private
 
-  # TODO add Outstanding Balance, Eligible Outstanding Interest
-  # and Amount of Claim (Guaranteed Percentage) when available
   def fields
     %w(
       reference
       business_name
       dti_demanded_on
+      dti_demand_outstanding
+      dti_interest
+      dti_amount_claimed
     )
   end
 
