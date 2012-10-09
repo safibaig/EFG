@@ -25,6 +25,7 @@ class TransferredLoanEntry
   attribute :postcode, read_only: true
   attribute :town, read_only: true
   attribute :legacy_loan?, read_only: true
+  attribute :state_aid_is_valid, read_only: true
 
   attribute :declaration_signed
   attribute :sortcode
@@ -32,7 +33,6 @@ class TransferredLoanEntry
   attribute :repayment_duration
   attribute :repayment_frequency_id
   attribute :maturity_date
-  attribute :state_aid_is_valid
   attribute :state_aid
   attribute :generic1
   attribute :generic2
