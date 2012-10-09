@@ -150,11 +150,11 @@ class LoanEntry
   def maturity_date_within_loan_term
     loan_term = LoanTerm.new(loan)
 
-    if maturity_date < loan_term.min_months.months.from_now.to_date
+    if maturity_date < loan_term.earliest_start_date
       errors.add(:maturity_date, :less_than_min_loan_term)
     end
 
-    if maturity_date > loan_term.max_months.months.from_now.to_date
+    if maturity_date > loan_term.latest_end_date
       errors.add(:maturity_date, :greater_than_max_loan_term)
     end
   end
