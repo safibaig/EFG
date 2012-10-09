@@ -1,25 +1,26 @@
 class LoanEntry
   include LoanPresenter
   include LoanStateTransition
+  include LoanEligibility
   include SharedLoanValidations
 
   transition from: [Loan::Eligible, Loan::Incomplete], to: Loan::Completed, event: :complete
 
-  attribute :viable_proposition, read_only: true
-  attribute :would_you_lend, read_only: true
-  attribute :collateral_exhausted, read_only: true
-  attribute :sic_code, read_only: true
-  attribute :loan_category_id, read_only: true
-  attribute :reason_id, read_only: true
-  attribute :previous_borrowing, read_only: true
-  attribute :private_residence_charge_required, read_only: true
-  attribute :personal_guarantee_required, read_only: true
-  attribute :amount, read_only: true
-  attribute :turnover, read_only: true
-  attribute :trading_date, read_only: true
-  attribute :lending_limit_id, read_only: true
   attribute :lender, read_only: true
 
+  attribute :viable_proposition
+  attribute :would_you_lend
+  attribute :collateral_exhausted
+  attribute :sic_code
+  attribute :loan_category_id
+  attribute :reason_id
+  attribute :previous_borrowing
+  attribute :private_residence_charge_required
+  attribute :personal_guarantee_required
+  attribute :amount
+  attribute :turnover
+  attribute :trading_date
+  attribute :lending_limit_id
   attribute :repayment_duration
   attribute :declaration_signed
   attribute :business_name
@@ -53,6 +54,8 @@ class LoanEntry
   attribute :invoice_discount_limit
   attribute :debtor_book_coverage
   attribute :debtor_book_topup
+
+  after_save :save_as_ineligible, unless: :is_eligible?
 
   validates_presence_of :business_name, :legal_form_id, :interest_rate_type_id,
                         :repayment_frequency_id, :postcode, :maturity_date,
@@ -153,6 +156,13 @@ class LoanEntry
 
     if maturity_date > loan_term.max_months.months.from_now.to_date
       errors.add(:maturity_date, :greater_than_max_loan_term)
+    end
+  end
+
+  def save_as_ineligible
+    loan.transaction do
+      save_as_incomplete
+      save_ineligibility_reasons
     end
   end
 

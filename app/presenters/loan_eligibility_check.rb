@@ -1,6 +1,7 @@
 class LoanEligibilityCheck
   include LoanPresenter
   include LoanStateTransition
+  include LoanEligibility
   include SharedLoanValidations
 
   MAX_ALLOWED_TURNOVER = Money.new(41_000_000_00)
@@ -75,18 +76,6 @@ class LoanEligibilityCheck
   end
 
   private
-
-  def eligibility_check
-    @eligibility_check ||= EligibilityCheck.new(loan)
-  end
-
-  def is_eligible?
-    eligibility_check.eligible?
-  end
-
-  def save_ineligibility_reasons
-    loan.ineligibility_reasons.create!(reason: eligibility_check.reasons.join("\n"))
-  end
 
   def trading_date_within_next_six_months
     errors.add(:trading_date, :too_far_in_the_future) if trading_date > Date.today.advance(months: 6)
