@@ -30,8 +30,10 @@ class PremiumScheduleReport
   def loans
     scope = Loan
       .select([
-        'first_loan_change.date_of_change AS draw_down_date',
-        'loans.*', # TODO: restrict to required columns.
+        'loans.id',
+        'loans.reference',
+        'loans.premium_rate',
+        'loans.lending_limit_id',
         'first_loan_change.date_of_change AS draw_down_date',
         'lenders.organisation_reference_code AS lender_organisation',
         'state_aid_calculations.id AS state_aid_calculation_id'
