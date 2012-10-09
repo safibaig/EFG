@@ -42,6 +42,8 @@ class TransferredLoanEntry
 
   validates_presence_of :amount, :repayment_duration, :repayment_frequency_id, :maturity_date
 
+  validate :maturity_date_within_loan_term
+
   validate do
     errors.add(:declaration_signed, :accepted) unless self.declaration_signed
     errors.add(:state_aid, :calculated) unless self.loan.state_aid_calculation
@@ -56,4 +58,22 @@ class TransferredLoanEntry
     loan.state = Loan::Incomplete
     loan.save(validate: false)
   end
+
+  private
+
+  def maturity_date_within_loan_term
+    return if maturity_date.blank? || loan_category_id.blank?
+
+    loan_category = LoanCategory.find(loan_category_id)
+    initial_draw_date = loan.initial_draw_change.date_of_change
+
+    if maturity_date < initial_draw_date + loan_category.min_loan_term.months
+      errors.add(:maturity_date, :less_than_min_loan_term)
+    end
+
+    if maturity_date > initial_draw_date + loan_category.max_loan_term.months
+      errors.add(:maturity_date, :greater_than_max_loan_term)
+    end
+  end
+
 end

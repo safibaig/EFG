@@ -35,11 +35,15 @@ en:
             amount_demanded:
               must_be_lte_loan_cumulative_drawn_amount: 'Balance being demanded must be less than or equal to the current total amount drawn'
             borrower_demanded_on:
-              must_be_before_loan_initial_draw_date: 'Demand date cannot be before initial draw date'
+              must_be_after_loan_initial_draw_date: 'Demand date cannot be before initial draw date'
         loan_eligibility_check:
           attributes:
             sic_code:
               not_recognised: The specified SIC code is not recognised
+            repayment_duration:
+              not_allowed: 'Loan term should be between 3 months and 2, 3 or 10 years (inclusive). EFG facilities are only available for terms of between three months and ten years in most cases. Type E facilities have a maximum term of two years and Type F facilities have a maximum of three years.'
+            trading_date:
+              too_far_in_the_future: must be within the next 6 months
         loan_entry:
           attributes:
             declaration_signed:
@@ -51,8 +55,15 @@ en:
               present: choose at least one security
             repayment_frequency_id:
               not_allowed: 'The selected repayment frequency is not possible for the given loan term. For instance, the loan term must be a multiple of the number of months between payments.'
+            repayment_duration:
+              not_allowed: 'Loan term should be between 3 months and 2, 3 or 10 years (inclusive). EFG facilities are only available for terms of between three months and ten years in most cases. Type E facilities have a maximum term of two years and Type F facilities have a maximum of three years.'
         loan_offer:
           attributes:
+            base:
+              lending_limit_inactive: The lending limit is no longer active
+              lending_limit_expired: The lending limit expired more than 6 months ago
+            facility_letter_date:
+              outside_lending_limit_dates: The facility letter date is not within the lending limit start and end dates
             facility_letter_sent:
               accepted: The Facility letter and supporting documentation must have been sent to the Applicant.
         loan_guarantee:
@@ -63,6 +74,31 @@ en:
               accepted: An initial payment for the correct amount of the first Scheme Guarantee Premium payment has not been received from the Applicant.
             signed_direct_debit_received:
               accepted: A signed Direct Debit mandate must have been received before the initial draw down can occur.
+            initial_draw_amount:
+              greater_than_loan_amount: Unable to draw down amount greater than loan
+            initial_draw_date:
+              before_facility_date: Initial draw cannot occur before the date of the Facility letter
+              too_long_after_facility_date: Initial draw cannot occur more than six months after the date of the Facility letter
+        loan_demand_against_government:
+          attributes:
+            dti_demanded_on:
+              before_borrower_demand_date: Date that demand is made to the government cannot be before the date of borrower demand
+            dti_demand_outstanding:
+              greater_than_total_drawn_amount: Outstanding balance must be less than or equal to the current total amount drawn
+        loan_remove_guarantee:
+          attributes:
+            remove_guarantee_outstanding_amount:
+              greater_than_total_drawn_amount: Outstanding balance must be less than or equal to the current total amount drawn
+            before_initial_draw_date:
+              before_initial_draw_date: Date of removal of guarantee must not be before the date of initial draw of funds
+        loan_repay:
+          attributes:
+            repaid_on:
+              before_initial_draw_date: Repayment date cannot be before the date of initial draw of funds
+        loan_cancel:
+          attributes:
+            cancelled_on:
+              before_loan_creation_date: Cancel date cannot be before the loan was created
         loan_no_claim:
           attributes:
             no_claim_on:
@@ -120,10 +156,16 @@ en:
             amount_drawn:
               required: "can't be blank"
               not_be_negative: "can't be negative"
+              exceeded_undrawn_amount: The amount drawn must be less than or equal to the loan amount minus the current total amount drawn
             business_name:
               required: "can't be blank"
             lump_sum_repayment:
+              required: "can't be blank"
               not_be_negative: "can't be negative"
+            maturity_date:
+              required: "can't be blank"
+              less_than_min_loan_term: Maturity date must be at least three months after the date of initial draw of funds
+              greater_than_max_loan_term: Maturity date must not be more than than ten years (or 2 years for Type E and 3 years for Type F loans) after the date of initial draw of funds
         lender_limit:
           attributes:
             ends_on:
@@ -135,6 +177,14 @@ en:
               invalid_format: 'must have the format mm/yyyy'
             initial_draw_amount:
               invalid: 'must be between £0 and £9,999,999.99'
+            initial_capital_repayment_holiday:
+              invalid: 'must be between 0 and 120'
+            second_draw_months:
+              invalid: 'must be between 0 and 120'
+            third_draw_months:
+              invalid: 'must be between 0 and 120'
+            fourth_draw_months:
+              invalid: 'must be between 0 and 120'
 
   dashboard:
     loan_alerts:

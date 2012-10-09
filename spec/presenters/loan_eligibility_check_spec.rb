@@ -51,6 +51,11 @@ describe LoanEligibilityCheck do
       end
     end
 
+    it 'is invalid when repayment_duration is zero' do
+      loan_eligibility_check.repayment_duration = { years: 0, months: 0}
+      loan_eligibility_check.should be_invalid
+    end
+
     describe '#amount' do
       it 'is invalid when less than zero' do
         loan_eligibility_check.amount = -1
@@ -60,18 +65,6 @@ describe LoanEligibilityCheck do
       it 'is invalid when zero' do
         loan_eligibility_check.amount = 0
         loan_eligibility_check.should be_invalid
-      end
-    end
-
-    describe '#repayment_duration' do
-      it 'is invalid when zero' do
-        loan_eligibility_check.repayment_duration = { years: 0, months: 0}
-        loan_eligibility_check.should be_invalid
-      end
-
-      it 'is valid when greater than zero' do
-        loan_eligibility_check.repayment_duration = { months: 1 }
-        loan_eligibility_check.should be_valid
       end
     end
 
@@ -112,6 +105,19 @@ describe LoanEligibilityCheck do
         loan_eligibility_check.should_not be_valid
       end
     end
+
+    it "is invalid when trading date is more than 6 months in the future" do
+      loan_eligibility_check.trading_date = 6.months.from_now.advance(days: 1)
+      loan_eligibility_check.should_not be_valid
+
+      loan_eligibility_check.trading_date = 6.months.from_now
+      loan_eligibility_check.should be_valid
+    end
+
+    it_behaves_like 'loan presenter that validates loan repayment duration based on loan category' do
+      let(:loan_presenter) { loan_eligibility_check }
+    end
+
   end
 
   describe '#lending_limit_id=' do

@@ -64,12 +64,19 @@ class LoanChange < LoanModification
       case change_type_id
       when '1'
         errors.add(:business_name, :required) unless business_name.present?
+      when '4', 'a'
+        errors.add(:maturity_date, :required) unless maturity_date
+        validate_maturity_date_within_allowed_loan_term if maturity_date
       when '5'
         errors.add(:base, :required_lender_demand_satisfied) unless amount_drawn || lump_sum_repayment || maturity_date.present?
+      when '6'
+        errors.add(:lump_sum_repayment, :required) unless lump_sum_repayment
+        if lump_sum_repayment && (loan.cumulative_lump_sum_amount + lump_sum_repayment) > loan.cumulative_drawn_amount
+          errors.add(:lump_sum_repayment, :exceeds_amount_drawn)
+        end
       when '7'
         errors.add(:amount_drawn, :required) unless amount_drawn
-      when 'a'
-        errors.add(:maturity_date, :required) unless maturity_date
+        errors.add(:amount_drawn, :exceeded_undrawn_amount) if amount_drawn && amount_drawn > loan.amount_not_yet_drawn
       end
     end
 
@@ -80,5 +87,17 @@ class LoanChange < LoanModification
 
     def state_aid_recalculated
       errors.add(:base, :state_aid_not_recalculated) unless state_aid_calculation_attributes.present?
+    end
+
+    def validate_maturity_date_within_allowed_loan_term
+      loan_term = LoanTerm.new(loan)
+
+      if maturity_date < loan_term.earliest_start_date
+        errors.add(:maturity_date, :less_than_min_loan_term)
+      end
+
+      if maturity_date > loan_term.latest_end_date
+        errors.add(:maturity_date, :greater_than_max_loan_term)
+      end
     end
 end

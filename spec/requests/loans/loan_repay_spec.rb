@@ -9,7 +9,7 @@ describe 'loan repay' do
     visit loan_path(loan)
     click_link 'Repay Loan'
 
-    fill_in 'repaid_on', '1/6/12'
+    fill_in 'repaid_on', 1.day.from_now.to_date.to_s(:screen)
     click_button 'Submit'
 
     loan = Loan.last
@@ -17,7 +17,7 @@ describe 'loan repay' do
     current_path.should == loan_path(loan)
 
     loan.state.should == Loan::Repaid
-    loan.repaid_on.should == Date.new(2012, 6, 1)
+    loan.repaid_on.should == 1.day.from_now.to_date
     loan.modified_by.should == current_user
 
     should_log_loan_state_change(loan, Loan::Repaid, 14, current_user)
@@ -28,7 +28,7 @@ describe 'loan repay' do
     visit loan_path(loan)
     click_link 'Repay Loan'
 
-    fill_in 'repaid_on', '1/6/12'
+    fill_in 'repaid_on', 1.day.from_now.to_date.to_s(:screen)
     click_button 'Submit'
 
     loan = Loan.last
@@ -36,7 +36,7 @@ describe 'loan repay' do
     current_path.should == loan_path(loan)
 
     loan.state.should == Loan::Repaid
-    loan.repaid_on.should == Date.new(2012, 6, 1)
+    loan.repaid_on.should == 1.day.from_now.to_date
     loan.modified_by.should == current_user
   end
 

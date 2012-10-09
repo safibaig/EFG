@@ -22,6 +22,10 @@ class StateAidCalculation < ActiveRecord::Base
   validates_presence_of :initial_draw_year, unless: :reschedule?
   validates_format_of :premium_cheque_month, with: /\A\d{2}\/\d{4}\z/, if: :reschedule?, message: :invalid_format
 
+  %w(initial_capital_repayment_holiday second_draw_months third_draw_months fourth_draw_months).each do |attr|
+    validates_inclusion_of attr, in: 0..120, allow_blank: true, message: :invalid
+  end
+
   validate :premium_cheque_month_in_the_future, if: :reschedule?
   validate :initial_draw_amount_is_within_limit
 

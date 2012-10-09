@@ -1,6 +1,7 @@
 class LoanEligibilityCheck
   include LoanPresenter
   include LoanStateTransition
+  include SharedLoanValidations
 
   MAX_ALLOWED_TURNOVER = Money.new(41_000_000_00)
 
@@ -33,9 +34,12 @@ class LoanEligibilityCheck
   validates_inclusion_of :loan_source, in: [ Loan::SFLG_SOURCE ]
   validates_numericality_of :turnover, less_than_or_equal_to: MAX_ALLOWED_TURNOVER.to_f
 
+  validate :repayment_duration_within_loan_category_limits, if: :repayment_duration
+
+  validate :trading_date_within_next_six_months, if: :trading_date
+
   validate do
     errors.add(:amount, :greater_than, count: 0) unless amount && amount.cents > 0
-    errors.add(:repayment_duration, :greater_than, count: 0) unless repayment_duration && repayment_duration.total_months > 0
     errors.add(:sic_code, :not_recognised) if sic_code.blank?
   end
 
@@ -82,6 +86,10 @@ class LoanEligibilityCheck
 
   def save_ineligibility_reasons
     loan.ineligibility_reasons.create!(reason: eligibility_check.reasons.join("\n"))
+  end
+
+  def trading_date_within_next_six_months
+    errors.add(:trading_date, :too_far_in_the_future) if trading_date > Date.today.advance(months: 6)
   end
 
 end

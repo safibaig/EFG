@@ -3,12 +3,12 @@ FactoryGirl.define do
     declaration_signed true
     amount 50000
     repayment_duration({ months: 24 })
-    repayment_frequency_id 1
-    maturity_date '01/01/2012'
+    repayment_frequency_id 3
+    maturity_date 6.months.from_now.to_date
 
     initialize_with {
-      state_aid_calculation = FactoryGirl.build(:state_aid_calculation)
-      loan = FactoryGirl.build(:loan, :incomplete, :transferred, state_aid_calculations: [ state_aid_calculation ])
+      state_aid_calculation = FactoryGirl.create(:state_aid_calculation)
+      loan = FactoryGirl.create(:loan, :incomplete, :transferred, state_aid_calculations: [ state_aid_calculation ])
       new(loan)
     }
   end

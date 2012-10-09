@@ -10,7 +10,7 @@ describe 'loan offer' do
     click_link 'Offer Scheme Facility'
 
     choose_radio_button 'facility_letter_sent', true
-    fill_in 'facility_letter_date', '24/5/12'
+    fill_in 'facility_letter_date', loan.lending_limit.starts_on.to_s(:screen)
 
     click_button 'Submit'
 
@@ -19,7 +19,7 @@ describe 'loan offer' do
     current_path.should == loan_path(loan)
 
     loan.state.should == Loan::Offered
-    loan.facility_letter_date.should == Date.new(2012, 5, 24)
+    loan.facility_letter_date.should == loan.lending_limit.starts_on
     loan.facility_letter_sent.should == true
     loan.modified_by.should == current_user
 

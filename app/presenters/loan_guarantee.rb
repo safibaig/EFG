@@ -16,6 +16,12 @@ class LoanGuarantee
 
   validates_presence_of :initial_draw_date, :initial_draw_amount, :maturity_date
 
+  validate :initial_draw_is_not_greater_than_loan_amount, if: :initial_draw_amount
+
+  validate :initial_draw_date_is_not_before_facility_letter_date, if: :initial_draw_date
+
+  validate :initial_draw_date_is_not_6_months_after_facility_letter_date, if: :initial_draw_date
+
   validate do
     errors.add(:received_declaration, :accepted) unless self.received_declaration
     errors.add(:signed_direct_debit_received, :accepted) unless self.signed_direct_debit_received
@@ -40,4 +46,19 @@ class LoanGuarantee
         initial_draw_change.modified_date = Date.current
       end
     end
+
+    def initial_draw_is_not_greater_than_loan_amount
+      errors.add(:initial_draw_amount, :greater_than_loan_amount) if initial_draw_amount > loan.amount
+    end
+
+    def initial_draw_date_is_not_before_facility_letter_date
+      errors.add(:initial_draw_date, :before_facility_date) if initial_draw_date < loan.facility_letter_date
+    end
+
+    def initial_draw_date_is_not_6_months_after_facility_letter_date
+      if initial_draw_date > loan.facility_letter_date.advance(months: 6)
+        errors.add(:initial_draw_date, :too_long_after_facility_date)
+      end
+    end
+
 end

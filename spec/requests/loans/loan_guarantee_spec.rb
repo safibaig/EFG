@@ -14,7 +14,7 @@ describe 'loan guarantee' do
     choose_radio_button 'received_declaration', true
     choose_radio_button 'signed_direct_debit_received', true
     choose_radio_button 'first_pp_received', true
-    fill_in 'initial_draw_date', '28/02/12'
+    fill_in 'initial_draw_date', Date.today.to_s(:screen)
     fill_in 'initial_draw_amount', '£10,000.42'
     fill_in 'maturity_date', '01/03/12'
 
@@ -37,7 +37,7 @@ describe 'loan guarantee' do
     loan_change.amount_drawn.should == Money.new(10_000_42)
     loan_change.change_type_id.should == nil
     loan_change.created_by.should == current_user
-    loan_change.date_of_change.should == Date.new(2012, 2, 28)
+    loan_change.date_of_change.should == Date.current
     loan_change.modified_date.should == Date.current
     loan_change.seq.should == 0
   end

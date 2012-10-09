@@ -17,7 +17,7 @@ describe 'loan cancel' do
       visit loan_path(loan)
       click_link 'Cancel Loan'
 
-      fill_in 'cancelled_on', '1/6/12'
+      fill_in 'cancelled_on', Date.today.to_s(:screen)
       select CancelReason.find(4).name, from: 'loan_cancel_cancelled_reason_id'
       fill_in 'cancelled_comment', 'No comment'
 
@@ -25,7 +25,7 @@ describe 'loan cancel' do
 
       loan = Loan.last
       loan.state.should == Loan::Cancelled
-      loan.cancelled_on.should == Date.new(2012, 6, 1)
+      loan.cancelled_on.should == Date.today
       loan.cancelled_reason_id.should == 4
       loan.cancelled_comment.should == 'No comment'
       loan.modified_by.should == current_user
