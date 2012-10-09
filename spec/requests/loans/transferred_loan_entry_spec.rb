@@ -14,7 +14,7 @@ describe 'Transferred loan entry' do
   it 'should transition transferred loan to completed' do
     choose 'transferred_loan_entry_declaration_signed_true'
     fill_in 'transferred_loan_entry_sortcode', with: '03-12-45'
-    choose 'transferred_loan_entry_repayment_frequency_id_1'
+    select 'Annually', from: 'transferred_loan_entry_repayment_frequency_id'
     fill_in "transferred_loan_entry_repayment_duration_years", with: 1
     fill_in "transferred_loan_entry_repayment_duration_months", with: 6
     fill_in 'transferred_loan_entry_maturity_date', with: 6.months.from_now.to_date.to_s(:screen)
