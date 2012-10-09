@@ -38,15 +38,60 @@ describe Recovery do
   end
 
   describe '#calculate' do
-    it 'behaves like the Visio document example' do
-      recovery = FactoryGirl.build(:recovery,
-        outstanding_non_efg_debt: Money.new(2_000_00),
-        non_linked_security_proceeds: Money.new(3_000_00),
-        linked_security_proceeds: Money.new(1_000_00)
-      )
-      recovery.calculate
-      recovery.realisations_attributable.should == Money.new(2_000_00)
-      recovery.amount_due_to_dti.should == Money.new(1_500_00)
+    let(:recovery) {
+      Recovery.new.tap { |recovery|
+        recovery.loan = loan
+      }
+    }
+
+    context 'EFG' do
+      let(:loan) {
+        FactoryGirl.build(:loan, :settled,
+          amount: Money.new(50_000_00),
+          dti_demand_outstanding: Money.new(25_000_00),
+          dti_amount_claimed: Money.new(18_750_00),
+        )
+      }
+
+      it 'behaves like the Visio document P34 example' do
+        recovery.outstanding_non_efg_debt = Money.new(2_000_00)
+        recovery.non_linked_security_proceeds = Money.new(3_000_00)
+        recovery.linked_security_proceeds = Money.new(1_000_00)
+        recovery.calculate
+
+        recovery.realisations_attributable.should == Money.new(2_000_00)
+        recovery.amount_due_to_dti.should == Money.new(1_500_00)
+      end
+
+      it 'works' do
+        recovery.outstanding_non_efg_debt = Money.new(1_234_00)
+        recovery.non_linked_security_proceeds = Money.new(4_321_00)
+        recovery.linked_security_proceeds = Money.new(5_678_00)
+        recovery.calculate
+
+        recovery.realisations_attributable.should == Money.new(8_765_00)
+        recovery.amount_due_to_dti.should == Money.new(6_573_75)
+      end
+
+      it 'ensures positive values' do
+        recovery.outstanding_non_efg_debt = Money.new(2_000_00)
+        recovery.non_linked_security_proceeds = Money.new(1_000_00)
+        recovery.linked_security_proceeds = Money.new(0)
+        recovery.calculate
+
+        recovery.realisations_attributable.should == Money.new(0)
+        recovery.amount_due_to_dti.should == Money.new(0)
+      end
+
+      it 'ensures excess money is not paid back to the government' do
+        recovery.outstanding_non_efg_debt = Money.new(12_340_00)
+        recovery.non_linked_security_proceeds = Money.new(43_210_00)
+        recovery.linked_security_proceeds = Money.new(56_780_00)
+        recovery.calculate
+
+        recovery.realisations_attributable.should == Money.new(87_650_00)
+        recovery.amount_due_to_dti.should == Money.new(18_750_00)
+      end
     end
   end
 

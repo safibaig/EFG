@@ -35,17 +35,20 @@ class Recovery < ActiveRecord::Base
   attr_accessible :recovered_on, :outstanding_non_efg_debt,
     :non_linked_security_proceeds, :linked_security_proceeds
 
-  # See Visio document page 34.
   def calculate
-    a = -outstanding_non_efg_debt + non_linked_security_proceeds
-    b = a + linked_security_proceeds
+    loan_guarantee_rate = loan.guarantee_rate / 100
 
-    if b > 0
-      self.realisations_attributable = b
-      self.amount_due_to_dti = b * (loan.guarantee_rate / 100)
-    else
-      self.realisations_attributable = 0
-      self.amount_due_to_dti = 0
+    if loan.efg_loan?
+      # See Visio document page 34.
+      self.realisations_attributable = [
+        non_linked_security_proceeds + linked_security_proceeds - outstanding_non_efg_debt,
+        Money.new(0)
+      ].max
+
+      self.amount_due_to_dti = [
+        loan.dti_amount_claimed,
+        realisations_attributable * loan_guarantee_rate
+      ].min
     end
   end
 
@@ -74,7 +77,7 @@ class Recovery < ActiveRecord::Base
         loan_id: loan.id,
         state: Loan::Recovered,
         modified_on: Date.today,
-        modified_by: loan.modified_by,
+        modified_by: created_by,
         event_id: 20 # Recovery made
       )
     end

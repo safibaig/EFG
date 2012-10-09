@@ -19,24 +19,9 @@
   <%= f.input :non_linked_security_proceeds, as: :currency %>
   <%= f.input :linked_security_proceeds, as: :currency %>
 
-  <div class="control-group">
-    <div class="control-label">
-      Value of Realisations attributable to EFG facility
-    </div>
-    <div class="controls"><%= @recovery.realisations_attributable.format if @recovery.realisations_attributable %></div>
-  </div>
-  <div class="control-group">
-    <div class="control-label">
-      Cumulative total of previous recorded Recoveries
-    </div>
-    <div class="controls"><%= @loan.cumulative_total_previous_recoveries.format %></div>
-  </div>
-  <div class="control-group">
-    <div class="control-label">
-      Value of payment due to the Secretary of State
-    </div>
-    <div class="controls"><%= @recovery.amount_due_to_dti.format if @recovery.amount_due_to_dti %></div>
-  </div>
+  <%= simple_form_row 'Value of Realisations attributable to EFG facility', @recovery.realisations_attributable && @recovery.realisations_attributable.format %>
+  <%= simple_form_row 'Cumulative total of previous recorded Recoveries', @loan.cumulative_total_previous_recoveries.format %>
+  <%= simple_form_row 'Value of payment due to the Secretary of State', @recovery.amount_due_to_dti && @recovery.amount_due_to_dti.format %>
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Calculate', class: 'btn-primary' %>
