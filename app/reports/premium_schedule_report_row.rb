@@ -32,7 +32,7 @@ class PremiumScheduleReportRow
       loan.reference,
       state_aid_calculation.calc_type,
       premium_schedule.initial_premium_cheque.to_f,
-      state_aid_calculation.premium_cheque_month,
+      first_collection_month,
       premium_schedule.number_of_subsequent_payments,
     ] + premiums
   end
@@ -44,4 +44,13 @@ class PremiumScheduleReportRow
     array.unshift(0.0) unless premium_schedule.reschedule?
     array
   end
+
+  def first_collection_month
+    if state_aid_calculation.premium_cheque_month.present?
+      state_aid_calculation.premium_cheque_month
+    else
+      loan.draw_down_date.advance(months: 3).strftime('%m/%Y')
+    end
+  end
+
 end
