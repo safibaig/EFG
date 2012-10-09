@@ -118,6 +118,13 @@
     <%= table.row 'debtor_book_topup', header: t('simple_form.labels.loan_entry.debtor_book_topup') %>
   <% end %>
 
+  <% if loan_ineligible?(@loan) %>
+    <tr>
+      <th>The granting of a guarantee for this facility was rejected for the following reason(s)</th>
+      <td><%= render "loan_eligibility_decisions/ineligibility_reasons", loan: @loan %></td>
+    </tr>
+  <% end %>
+
   <%= table.row 'created_by', header: 'Created By' %>
   <%= table.row 'created_at', header: 'Date and Time Created' %>
   <%= table.row 'modified_by', header: 'Last Modified By' %>

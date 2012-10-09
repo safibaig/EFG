@@ -21,7 +21,6 @@
   </div>
 <% end %>
 
-<% # TODO: Can a CfeUser view loan rejection details? %>
 <% if loan_ineligible?(@loan) %>
   <h3>Ineligibility Reasons</h3>
   <%= render "loan_eligibility_decisions/ineligibility_reasons", loan: @loan %>
