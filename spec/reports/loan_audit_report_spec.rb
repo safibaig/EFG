@@ -46,22 +46,23 @@ describe LoanAuditReport do
       loan_audit_report.loans.should == [ loan1 ]
     end
 
-    it "should return loans with a facility letter date after a specified date" do
-      loan1.update_attribute(:facility_letter_date, 1.day.ago)
-      loan2.update_attribute(:facility_letter_date, 1.day.from_now)
+    context 'with initial draw' do
+      let!(:loan1) { FactoryGirl.create(:loan, :guaranteed) }
 
-      loan_audit_report = LoanAuditReport.new(facility_letter_start_date: Date.today.strftime('%d/%m/%Y'))
+      before(:each) do
+        loan1.initial_draw_change.update_attribute(:date_of_change, 1.day.ago)
+        loan2.initial_draw_change.update_attribute(:date_of_change, 1.day.from_now)
+      end
 
-      loan_audit_report.loans.should == [ loan2 ]
-    end
+      it "should return loans with an initial draw date after a specified date" do
+        loan_audit_report = LoanAuditReport.new(facility_letter_start_date: Date.today.strftime('%d/%m/%Y'))
+        loan_audit_report.loans.should == [ loan2 ]
+      end
 
-    it "should return loans with a facility letter date before a specified date" do
-      loan1.update_attribute(:facility_letter_date, 1.day.ago)
-      loan2.update_attribute(:facility_letter_date, 1.day.from_now)
-
-      loan_audit_report = LoanAuditReport.new(facility_letter_end_date: Date.today.strftime('%d/%m/%Y'))
-
-      loan_audit_report.loans.should == [ loan1 ]
+      it "should return loans with an initial draw date before a specified date" do
+        loan_audit_report = LoanAuditReport.new(facility_letter_end_date: Date.today.strftime('%d/%m/%Y'))
+        loan_audit_report.loans.should == [ loan1 ]
+      end
     end
 
     it "should return loans with a created at date after a specified date" do

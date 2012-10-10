@@ -31,13 +31,15 @@ class LoanAuditReport < BaseLoanReport
 
   private
 
+  # Note: facility_letter_start_date/facility_letter_end_date actually queries initial draw date
+  #       and includes records that do not have an initial draw date
   def query_conditions_mapping
     {
       state: "loans.state = ?",
       lender_id: "loans.lender_id = ?",
       event_id: "loan_state_changes.event_id = ?",
-      facility_letter_start_date: "loans.facility_letter_date >= ?",
-      facility_letter_end_date: "loans.facility_letter_date <= ?",
+      facility_letter_start_date: "(first_loan_change.date_of_change >= ? or first_loan_change.date_of_change IS NULL)",
+      facility_letter_end_date: "(first_loan_change.date_of_change <= ? or first_loan_change.date_of_change IS NULL)",
       created_at_start_date: "loans.created_at >= ?",
       created_at_end_date: "loans.created_at <= ?",
       last_modified_start_date: "loans.updated_at >= ?",
