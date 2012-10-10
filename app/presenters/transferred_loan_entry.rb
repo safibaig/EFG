@@ -1,6 +1,7 @@
 class TransferredLoanEntry
   include LoanPresenter
   include LoanStateTransition
+  include SharedLoanValidations
 
   transition from: [Loan::Incomplete], to: Loan::Completed, event: :complete
 
@@ -41,6 +42,8 @@ class TransferredLoanEntry
   attribute :generic5
 
   validates_presence_of :amount, :repayment_duration, :repayment_frequency_id, :maturity_date
+
+  validate :repayment_frequency_allowed
 
   validate :maturity_date_within_loan_term, if: :maturity_date
 

@@ -244,27 +244,6 @@ describe LoanEntry do
     it_behaves_like 'loan presenter that validates loan repayment frequency' do
       let(:loan_presenter) { loan_entry }
     end
-
-    context 'loan duration' do
-      before(:each) do
-        # ensure loan entry is valid for all categories
-        loan_entry.security_proportion = 1
-        loan_entry.original_overdraft_proportion = 1
-        loan_entry.refinance_security_proportion = 1
-        loan_entry.loan_security_types = [1]
-        loan_entry.current_refinanced_amount = 1
-        loan_entry.final_refinanced_amount = 1
-        loan_entry.overdraft_limit = 1
-        loan_entry.overdraft_maintained = true
-        loan_entry.invoice_discount_limit = 1
-        loan_entry.debtor_book_coverage = 1
-        loan_entry.debtor_book_topup = 1
-      end
-
-      it_behaves_like 'loan presenter that validates loan repayment duration based on loan category' do
-        let(:loan_presenter) { loan_entry }
-      end
-    end
   end
 
   describe "#save" do

@@ -66,5 +66,9 @@ describe TransferredLoanEntry do
         transferred_loan_entry.should be_valid
       end
     end
+
+    it_behaves_like 'loan presenter that validates loan repayment frequency' do
+      let(:loan_presenter) { transferred_loan_entry }
+    end
   end
 end

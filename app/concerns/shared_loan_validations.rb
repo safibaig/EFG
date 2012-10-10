@@ -3,25 +3,6 @@ module SharedLoanValidations
 
   private
 
-  def repayment_plan_is_allowed
-    repayment_duration_within_loan_category_limits
-
-    if errors[:repayment_duration].blank?
-      repayment_frequency_allowed
-    end
-  end
-
-  def repayment_duration_within_loan_category_limits
-    repayment_months = repayment_duration.try(:total_months)
-    loan_term = LoanTerm.new(loan)
-
-    if repayment_months
-      unless repayment_months >= loan_term.min_months && repayment_months <= loan_term.max_months
-        errors.add(:repayment_duration, :not_allowed)
-      end
-    end
-  end
-
   def repayment_frequency_allowed
     return unless repayment_frequency_id.present? && repayment_duration.present?
     case repayment_frequency_id

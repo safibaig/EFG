@@ -65,7 +65,7 @@ class LoanEntry
 
   validate :state_aid_calculated
 
-  validate :repayment_plan_is_allowed, if: :repayment_duration
+  validate :repayment_frequency_allowed
 
   validate :maturity_date_within_loan_term, if: :maturity_date
 
