@@ -26,7 +26,7 @@
 
   <%= f.input :audit_records_end_date, as: :quick_date %>
 
-  <%= f.input :state, as: :select, collection: loan_state_options(LoanAuditReport::ALLOWED_LOAN_STATES), prompt: "All" %>
+  <%= f.input :state, as: :select, collection: loan_state_options(LoanAuditReport::ALLOWED_LOAN_STATES), prompt: false %>
 
   <%= f.input :lender_id, as: :select, collection: Lender.order_by_name, prompt: "All" %>
 

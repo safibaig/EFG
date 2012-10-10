@@ -12,7 +12,7 @@ class LoanReport < BaseLoanReport
                  :created_at_start_date, :created_at_end_date,
                  :last_modified_start_date, :last_modified_end_date
 
-  validates_presence_of :allowed_lender_ids, :lender_ids, :loan_sources, :states
+  validates_presence_of :allowed_lender_ids, :lender_ids, :loan_sources
 
   validates_numericality_of :created_by_id, allow_blank: true
 
