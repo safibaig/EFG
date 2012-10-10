@@ -92,7 +92,7 @@ en:
           attributes:
             remove_guarantee_outstanding_amount:
               greater_than_total_drawn_amount: Outstanding balance must be less than or equal to the current total amount drawn
-            before_initial_draw_date:
+            remove_guarantee_on:
               before_initial_draw_date: Date of removal of guarantee must not be before the date of initial draw of funds
         loan_repay:
           attributes:
@@ -121,6 +121,9 @@ en:
           attributes:
             state_aid:
               calculated: must be calculated
+            maturity_date:
+              required: "can't be blank"
+              greater_than_max_loan_term: Maturity date must not be more than than ten years (or 2 years for Type E and 3 years for Type F loans) after the date of initial draw of funds
         premium_schedule_report:
           attributes:
             base:
@@ -133,6 +136,10 @@ en:
   activerecord:
     errors:
       models:
+        lending_limit:
+          attributes:
+            ends_on:
+              must_be_after_starts_on: must be after start date
         data_correction:
           attributes:
             base:
@@ -165,6 +172,7 @@ en:
             lump_sum_repayment:
               required: "can't be blank"
               not_be_negative: "can't be negative"
+              exceeds_amount_drawn: The lump sum repayment must be less than the current total amount drawn
             maturity_date:
               required: "can't be blank"
               less_than_min_loan_term: Maturity date must be at least three months after the date of initial draw of funds
