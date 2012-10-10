@@ -74,17 +74,14 @@
 
   <%= simple_form_for(@loan_report, url: loan_report_path(format: :csv)) do |f| %>
 
-    <%= f.input :facility_letter_start_date, as: :hidden %>
-
-    <%= f.input :facility_letter_end_date, as: :hidden %>
-
-    <%= f.input :created_at_start_date, as: :hidden %>
-
-    <%= f.input :created_at_end_date, as: :hidden %>
-
-    <%= f.input :last_modified_start_date, as: :hidden %>
-
-    <%= f.input :last_modified_end_date, as: :hidden %>
+    <%= f.hidden_field :facility_letter_start_date, value: @loan_report.facility_letter_start_date.try(:to_s, :screen) %>
+    <%= f.hidden_field :facility_letter_end_date, value: @loan_report.facility_letter_end_date.try(:to_s, :screen) %>
+    <%= f.hidden_field :created_at_start_date, value: @loan_report.created_at_start_date.try(:to_s, :screen) %>
+    <%= f.hidden_field :created_at_end_date, value: @loan_report.created_at_end_date.try(:to_s, :screen) %>
+    <%= f.hidden_field :last_modified_start_date, value: @loan_report.last_modified_start_date.try(:to_s, :screen) %>
+    <%= f.hidden_field :last_modified_end_date, value: @loan_report.last_modified_end_date.try(:to_s, :screen) %>
+    <%= f.hidden_field(:loan_scheme) if current_lender.can_access_all_loan_schemes? %>
+    <%= f.hidden_field :created_by_id %>
 
     <% @loan_report.states.each do |state| %>
       <%= hidden_field_tag 'loan_report[states][]', state %>
@@ -94,14 +91,8 @@
       <%= hidden_field_tag 'loan_report[lender_ids][]', lender_id %>
     <% end %>
 
-    <%= f.input :created_by_id, as: :hidden %>
-
     <% @loan_report.loan_sources.each do |source| %>
       <%= hidden_field_tag 'loan_report[loan_sources][]', source %>
-    <% end %>
-
-    <% if current_lender.can_access_all_loan_schemes? %>
-      <%= f.input :loan_scheme, as: :hidden %>
     <% end %>
 
     <div class="form-actions">
