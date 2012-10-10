@@ -6,7 +6,7 @@ describe 'state aid calculations' do
   describe 'creating' do
     let(:current_lender) { FactoryGirl.create(:lender) }
     let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
-    let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: '123456') }
+    let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: '123456', repayment_duration: { months: 3 }) }
 
     before do
       login_as(current_user, scope: :user)
@@ -17,6 +17,7 @@ describe 'state aid calculations' do
       click_link 'State Aid Calculation'
 
       page.find('#state_aid_calculation_initial_draw_amount').value.should == '123456.00'
+      page.find('#state_aid_calculation_initial_draw_months').value.should == '3'
     end
 
     it 'creates a new record with valid data' do
