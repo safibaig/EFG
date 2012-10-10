@@ -2,7 +2,43 @@ import_namespace = namespace :import do
   desc 'Import all CSVs'
   task :all do
     import_namespace.tasks.each do |task|
-      task.invoke unless task.name.split(':').last == 'all'
+      task_name = task.name.split(":").last
+      task.invoke unless ["all", "dry_run"].include?(task_name)
+    end
+  end
+
+  desc "List files required for import"
+  task dry_run: :environment do
+    missing = [
+      AdminAudit,
+      DedCode,
+      DemandToBorrower,
+      Invoice,
+      Lender,
+      LendingLimit,
+      Loan,
+      LoanIneligibilityReason,
+      LoanModification,
+      LoanRealisation,
+      LoanSecurity,
+      LoanStateChange,
+      RealisationStatement,
+      Recovery,
+      SicCode,
+      StateAidCalculation,
+      User,
+      UserAudit,
+    ].inject([]) { |acc, klass|
+      csv_file = _importer_class(klass).csv_path
+      acc << csv_file unless File.exists?(csv_file)
+      acc
+    }
+
+    if missing.empty?
+      puts "All files present!"
+    else
+      puts "The following files appear to be missing:"
+      puts missing
     end
   end
 
@@ -102,12 +138,15 @@ import_namespace = namespace :import do
 
   def _import(klass)
     if klass.count.zero?
-      require 'importers'
-      importer = "#{klass.name}Importer".constantize
-      importer.import
+      _importer_class(klass).import
       yield if block_given?
     else
       puts "Did not import #{klass.table_name} - table is not empty."
     end
+  end
+
+  def _importer_class(klass)
+    require 'importers'
+    "#{klass.name}Importer".constantize
   end
 end
