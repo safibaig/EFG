@@ -64,6 +64,10 @@ FactoryGirl.define do
       state Loan::Completed
     end
 
+    trait :complete_legacy do
+      state Loan::CompleteLegacy
+    end
+
     trait :incomplete do
       state Loan::Incomplete
     end
