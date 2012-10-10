@@ -17,8 +17,6 @@ class LoanDemandAgainstGovernment
 
   validates_presence_of :dti_interest, :dti_break_costs, unless: :efg_loan?
 
-  validate :dti_demand_outstanding_is_not_greater_than_total_drawn_amount, if: :dti_demand_outstanding
-
   validate :dti_demanded_on_is_not_before_borrower_demanded_on, if: :dti_demanded_on
 
   delegate :efg_loan?, to: :loan

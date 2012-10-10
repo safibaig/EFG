@@ -27,14 +27,6 @@ describe LoanDemandAgainstGovernment do
       loan_demand_against_government.should_not be_valid
     end
 
-    it "should be invalid when demanded amount is greater than total amount drawn" do
-      loan_demand_against_government.dti_demand_outstanding = loan.cumulative_drawn_amount + Money.new(1_00)
-      loan_demand_against_government.should_not be_valid
-
-      loan_demand_against_government.dti_demand_outstanding = loan.cumulative_drawn_amount
-      loan_demand_against_government.should be_valid
-    end
-
     it "should be invalid when demanded date is before demand to borrower date" do
       loan_demand_against_government.dti_demanded_on = loan.borrower_demanded_on - 1.day
       loan_demand_against_government.should_not be_valid
