@@ -93,6 +93,51 @@ describe Recovery do
         recovery.amount_due_to_dti.should == Money.new(18_750_00)
       end
     end
+
+    context 'SFLG' do
+      let(:loan) {
+        # Training loan reference YJXAD9K-01.
+        FactoryGirl.create(:loan, :sflg, :settled,
+          amount: Money.new(200_000_00),
+          dti_demand_outstanding: Money.new(90_000_57),
+          dti_amount_claimed: Money.new(75_000_68),
+          dti_interest: Money.new(10_000_34)
+        )
+      }
+
+      it do
+        recovery.total_liabilities_behind = Money.new(123_00)
+        recovery.total_liabilities_after_demand = Money.new(234_00)
+        recovery.additional_interest_accrued = Money.new(345_00)
+        recovery.additional_break_costs = Money.new(456_00)
+        recovery.calculate
+
+        recovery.realisations_attributable.should == Money.new(175_28)
+        recovery.amount_due_to_dti.should == Money.new(976_28)
+      end
+    end
+
+    context 'legacy SFLG' do
+      let(:loan) {
+        # Training loan reference 100023-02.
+        FactoryGirl.create(:loan, :legacy_sflg, :settled,
+          amount: Money.new(5_000_00),
+          dti_amount_claimed: Money.new(3_375_00),
+          dti_interest: Money.new(100_00)
+        )
+      }
+
+      it do
+        recovery.total_liabilities_behind = Money.new(123_00)
+        recovery.total_liabilities_after_demand = Money.new(234_00)
+        recovery.additional_interest_accrued = Money.new(345_00)
+        recovery.additional_break_costs = Money.new(456_00)
+        recovery.calculate
+
+        recovery.realisations_attributable.should == Money.new(170_83)
+        recovery.amount_due_to_dti.should == Money.new(971_83)
+      end
+    end
   end
 
   describe '#save_and_update_loan' do

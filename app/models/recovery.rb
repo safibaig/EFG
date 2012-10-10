@@ -2,7 +2,7 @@ class Recovery < ActiveRecord::Base
   include FormatterConcern
 
   belongs_to :loan
-  belongs_to :created_by, class_name: 'LenderUser'
+  belongs_to :created_by, class_name: 'User'
   belongs_to :realisation_statement
 
   scope :realised, where(realise_flag: true)
@@ -49,6 +49,18 @@ class Recovery < ActiveRecord::Base
         loan.dti_amount_claimed,
         realisations_attributable * loan_guarantee_rate
       ].min
+    else
+      magic_number = if loan.legacy_loan?
+        another_magic_number = loan.dti_amount_claimed / loan_guarantee_rate
+        another_magic_number / (another_magic_number + total_liabilities_behind)
+      else
+        interest_plus_outstanding = loan.dti_interest + loan.dti_demand_outstanding
+        interest_plus_outstanding / (interest_plus_outstanding + total_liabilities_behind)
+      end
+
+      self.realisations_attributable = total_liabilities_after_demand * loan_guarantee_rate * magic_number
+
+      self.amount_due_to_dti = realisations_attributable + additional_break_costs + additional_interest_accrued
     end
   end
 
