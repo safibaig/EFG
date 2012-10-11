@@ -213,8 +213,24 @@
   <%= loan_details_table(@loan, 'simple_form.labels.loan_demand_against_government') do |table| %>
     <%= table.row 'dti_demanded_on' %>
     <%= table.row 'dti_demand_outstanding' %>
+    <%= table.row 'dti_amount_claimed' %>
+
+    <tr>
+      <th>Business Failure Group</th>
+      <td><%= @loan.dti_ded_code %></td>
+    </tr>
+
+    <tr>
+      <th>Business Failure Category</th>
+      <td><%= @loan.ded_code.category_description %></td>
+    </tr>
+
+    <tr>
+      <th>Business Failure Code</th>
+      <td><%= @loan.ded_code.code_description %></td>
+    </tr>
+
     <%= table.row 'dti_ded_code' %>
-    <% # TODO: Include further DED association details. %>
     <%= table.row 'dti_reason' %>
   <% end %>
 <% end %>

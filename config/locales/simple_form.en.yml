@@ -160,6 +160,7 @@ en:
         dti_reason: 'Please provide any further information you consider appropriate to the reason for Demand against the Government Guarantee'
         dti_interest: What is the outstanding Scheme Facility interest owed by the Borrower to the Lender that is eligible to be included within the calculation of the Demand?
         dti_break_costs: Break Costs (only applies to some fixed term legacy SFLG loans (pre-December 2005)). What are the outstanding Break Costs owed by the Borrower to the Lender that are eligible to be included within the calculation of the Demand?
+        dti_amount_claimed: Total amount claimed under the Government Guarantee
 
       loan_settle_claim:
         settled_on: 'What was the date that the Demand against the Government Guarantee was settled?'
