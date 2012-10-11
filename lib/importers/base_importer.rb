@@ -91,7 +91,11 @@ class BaseImporter
       [lender.legacy_id.to_s, lender.id]
     }]
 
-    @lender_id_from_legacy_id.fetch(legacy_id.to_s)
+    id = @lender_id_from_legacy_id[(legacy_id.to_s)]
+
+    warn "Unable to find Lender from legacy ID <#{legacy_id}>" if !id
+
+    id
   end
 
   def self.lending_limit_id_from_legacy_id(legacy_id)
@@ -99,7 +103,11 @@ class BaseImporter
       [lending_limit.legacy_id.to_s, lending_limit.id]
     }]
 
-    @lending_limit_id_from_legacy_id.fetch(legacy_id.to_s)
+    id = @lending_limit_id_from_legacy_id[(legacy_id.to_s)]
+
+    warn "Unable to find LendingLimit from legacy ID <#{legacy_id}>" if !id
+
+    id
   end
 
   def self.loan_id_from_legacy_id(legacy_id)
@@ -138,5 +146,9 @@ class BaseImporter
   # `self.class.columns` list.
   def values
     attributes.values
+  end
+
+  def self.warn(message)
+    $stderr.puts message
   end
 end
