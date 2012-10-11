@@ -82,16 +82,6 @@ describe Recovery do
         recovery.realisations_attributable.should == Money.new(0)
         recovery.amount_due_to_dti.should == Money.new(0)
       end
-
-      it 'ensures excess money is not paid back to the government' do
-        recovery.outstanding_non_efg_debt = Money.new(12_340_00)
-        recovery.non_linked_security_proceeds = Money.new(43_210_00)
-        recovery.linked_security_proceeds = Money.new(56_780_00)
-        recovery.calculate
-
-        recovery.realisations_attributable.should == Money.new(87_650_00)
-        recovery.amount_due_to_dti.should == Money.new(18_750_00)
-      end
     end
 
     context 'SFLG' do

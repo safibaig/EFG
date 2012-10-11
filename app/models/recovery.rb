@@ -45,10 +45,7 @@ class Recovery < ActiveRecord::Base
         Money.new(0)
       ].max
 
-      self.amount_due_to_dti = [
-        loan.dti_amount_claimed,
-        realisations_attributable * loan_guarantee_rate
-      ].min
+      self.amount_due_to_dti = realisations_attributable * loan_guarantee_rate
     else
       magic_number = if loan.legacy_loan?
         another_magic_number = loan.dti_amount_claimed / loan_guarantee_rate
