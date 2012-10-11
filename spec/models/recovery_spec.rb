@@ -1,20 +1,29 @@
 require 'spec_helper'
 
 describe Recovery do
-  let(:recovery) { FactoryGirl.build(:recovery) }
-
   describe 'validations' do
+    let(:recovery) { FactoryGirl.build(:recovery) }
+
     it 'has a valid Factory' do
       recovery.should be_valid
     end
 
-    it 'requires a loan' do
-      recovery.loan = nil
-      recovery.should_not be_valid
+    it 'strictly requires a loan' do
+      expect {
+        recovery.loan = nil
+        recovery.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed)
     end
 
-    it 'requires a creator' do
-      recovery.created_by = nil
+    it 'strictly requires a creator' do
+      expect {
+        recovery.created_by = nil
+        recovery.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed)
+    end
+
+    it 'requires recovered_on' do
+      recovery.recovered_on = ''
       recovery.should_not be_valid
     end
 
@@ -24,15 +33,42 @@ describe Recovery do
       recovery.should_not be_valid
     end
 
-    %w(
-      recovered_on
-      outstanding_non_efg_debt
-      non_linked_security_proceeds
-      linked_security_proceeds
-    ).each do |attr|
-      it "requires #{attr}" do
-        recovery.send("#{attr}=", '')
-        recovery.should_not be_valid
+    context 'EFG' do
+      let(:loan) { FactoryGirl.build(:loan, :efg, :settled) }
+
+      before do
+        recovery.loan = loan
+      end
+
+      %w(
+        outstanding_non_efg_debt
+        non_linked_security_proceeds
+        linked_security_proceeds
+      ).each do |attr|
+        it "requires #{attr}" do
+          recovery.send("#{attr}=", '')
+          recovery.should_not be_valid
+        end
+      end
+    end
+
+    [:sflg, :legacy_sflg].each do |scheme|
+      context scheme.to_s do
+        let(:loan) { FactoryGirl.build(:loan, scheme, :settled) }
+
+        before do
+          recovery.loan = loan
+        end
+
+        %w(
+          total_liabilities_after_demand
+          total_liabilities_behind
+        ).each do |attr|
+          it "requires #{attr}" do
+            recovery.send("#{attr}=", '')
+            recovery.should_not be_valid
+          end
+        end
       end
     end
   end
@@ -102,8 +138,17 @@ describe Recovery do
         recovery.additional_break_costs = Money.new(456_00)
         recovery.calculate
 
-        recovery.realisations_attributable.should == Money.new(175_28)
+        recovery.amount_due_to_sec_state.should == Money.new(175_28)
         recovery.amount_due_to_dti.should == Money.new(976_28)
+      end
+
+      it 'works without "additional" monies' do
+        recovery.total_liabilities_behind = Money.new(123_00)
+        recovery.total_liabilities_after_demand = Money.new(234_00)
+        recovery.calculate
+
+        recovery.amount_due_to_sec_state.should == Money.new(175_28)
+        recovery.amount_due_to_dti.should == Money.new(175_28)
       end
     end
 
@@ -124,8 +169,17 @@ describe Recovery do
         recovery.additional_break_costs = Money.new(456_00)
         recovery.calculate
 
-        recovery.realisations_attributable.should == Money.new(170_83)
+        recovery.amount_due_to_sec_state.should == Money.new(170_83)
         recovery.amount_due_to_dti.should == Money.new(971_83)
+      end
+
+      it 'works without "additional" monies' do
+        recovery.total_liabilities_behind = Money.new(123_00)
+        recovery.total_liabilities_after_demand = Money.new(234_00)
+        recovery.calculate
+
+        recovery.amount_due_to_sec_state.should == Money.new(170_83)
+        recovery.amount_due_to_dti.should == Money.new(170_83)
       end
     end
   end
@@ -169,8 +223,13 @@ describe Recovery do
     end
 
     context 'when the recovery is not valid' do
-      let(:loan) { FactoryGirl.create(:loan) }
-      let(:recovery) { loan.recoveries.new }
+      let(:loan) { FactoryGirl.build(:loan) }
+      let(:recovery) {
+        Recovery.new do |recovery|
+          recovery.created_by = FactoryGirl.build(:lender_user)
+          recovery.loan = loan
+        end
+      }
 
       it 'returns false' do
         recovery.save_and_update_loan.should == false

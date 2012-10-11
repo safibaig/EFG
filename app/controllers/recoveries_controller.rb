@@ -4,6 +4,7 @@ class RecoveriesController < ApplicationController
 
   def new
     @recovery = @loan.recoveries.new
+    @recovery.created_by = current_user
   end
 
   def create

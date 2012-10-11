@@ -7,10 +7,11 @@ class Recovery < ActiveRecord::Base
 
   scope :realised, where(realise_flag: true)
 
-  validates_presence_of :loan, :created_by, :recovered_on,
-    :outstanding_non_efg_debt, :non_linked_security_proceeds,
-    :linked_security_proceeds
+  validates_presence_of :loan, strict: true
+  validates_presence_of :created_by, strict: true
+  validates_presence_of :recovered_on
 
+  validate :validate_scheme_fields
   validate do
     return unless recovered_on && loan
 
@@ -33,7 +34,11 @@ class Recovery < ActiveRecord::Base
   format :realisations_due_to_gov, with: MoneyFormatter.new
 
   attr_accessible :recovered_on, :outstanding_non_efg_debt,
-    :non_linked_security_proceeds, :linked_security_proceeds
+    :non_linked_security_proceeds, :linked_security_proceeds,
+    :total_liabilities_behind, :total_liabilities_after_demand,
+    :additional_interest_accrued, :additional_break_costs
+
+  attr_accessor :amount_due_to_sec_state
 
   def calculate
     loan_guarantee_rate = loan.guarantee_rate / 100
@@ -47,6 +52,9 @@ class Recovery < ActiveRecord::Base
 
       self.amount_due_to_dti = realisations_attributable * loan_guarantee_rate
     else
+      self.additional_break_costs ||= Money.new(0)
+      self.additional_interest_accrued ||= Money.new(0)
+
       magic_number = if loan.legacy_loan?
         another_magic_number = loan.dti_amount_claimed / loan_guarantee_rate
         another_magic_number / (another_magic_number + total_liabilities_behind)
@@ -55,9 +63,8 @@ class Recovery < ActiveRecord::Base
         interest_plus_outstanding / (interest_plus_outstanding + total_liabilities_behind)
       end
 
-      self.realisations_attributable = total_liabilities_after_demand * loan_guarantee_rate * magic_number
-
-      self.amount_due_to_dti = realisations_attributable + additional_break_costs + additional_interest_accrued
+      self.amount_due_to_sec_state = total_liabilities_after_demand * loan_guarantee_rate * magic_number
+      self.amount_due_to_dti = amount_due_to_sec_state + additional_break_costs + additional_interest_accrued
     end
   end
 
@@ -89,5 +96,18 @@ class Recovery < ActiveRecord::Base
         modified_by: created_by,
         event_id: 20 # Recovery made
       )
+    end
+
+    def validate_scheme_fields
+      required = if loan.efg_loan?
+        [:linked_security_proceeds, :outstanding_non_efg_debt,
+          :non_linked_security_proceeds]
+      else
+        [:total_liabilities_behind, :total_liabilities_after_demand]
+      end
+
+      required.each do |attribute|
+        errors.add(attribute, :blank) if self[attribute].blank?
+      end
     end
 end
