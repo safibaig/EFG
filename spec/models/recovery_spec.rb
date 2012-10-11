@@ -236,4 +236,16 @@ describe Recovery do
       end
     end
   end
+
+  describe '#seq' do
+    let(:recovery) { FactoryGirl.create(:recovery) }
+
+    it 'is incremented for each change' do
+      recovery1 = FactoryGirl.create(:recovery)
+      recovery2 = FactoryGirl.create(:recovery, loan: recovery1.loan)
+
+      recovery1.seq.should == 1
+      recovery2.seq.should == 2
+    end
+  end
 end

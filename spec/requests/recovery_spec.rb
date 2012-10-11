@@ -92,6 +92,8 @@ describe 'loan recovery' do
       }.to change(Recovery, :count).by(1)
 
       recovery = Recovery.last
+      recovery.loan.should == loan
+      recovery.seq.should == 1
       recovery.recovered_on.should == Date.new(2012, 5, 1)
       recovery.total_liabilities_behind.should == Money.new(123_00)
       recovery.total_liabilities_after_demand.should == Money.new(234_00)
@@ -140,6 +142,8 @@ describe 'loan recovery' do
       }.to change(Recovery, :count).by(1)
 
       recovery = Recovery.last
+      recovery.loan.should == loan
+      recovery.seq.should == 1
       recovery.recovered_on.should == Date.new(2012, 5, 1)
       recovery.total_liabilities_behind.should == Money.new(123_00)
       recovery.total_liabilities_after_demand.should == Money.new(234_00)
@@ -177,6 +181,8 @@ describe 'loan recovery' do
 
     def verify_recovery_and_loan
       recovery = Recovery.last
+      recovery.loan.should == loan
+      recovery.seq.should == 1
       recovery.recovered_on.should == Date.new(2012, 6, 1)
       recovery.outstanding_non_efg_debt.should == Money.new(2_500_00)
       recovery.non_linked_security_proceeds.should == Money.new(3_000_00)

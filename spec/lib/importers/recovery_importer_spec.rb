@@ -19,7 +19,7 @@ describe RecoveryImporter do
       recovery = Recovery.first
       recovery.legacy_loan_id.should == '143971'
       recovery.loan.should == loan1
-      recovery.seq.should == '1'
+      recovery.seq.should == 1
       recovery.recovered_on.should == Date.new(2007, 5, 23)
       recovery.total_proceeds_recovered.should == Money.new(17_000_00)
       recovery.total_liabilities_after_demand.should == Money.new(120_000_56)
@@ -44,7 +44,7 @@ describe RecoveryImporter do
       recovery = Recovery.last
       recovery.legacy_loan_id.should == '160923'
       recovery.loan.should == loan2
-      recovery.seq.should == '1'
+      recovery.seq.should == 1
       recovery.recovered_on.should == Date.new(2009, 9, 22)
       recovery.total_proceeds_recovered.should == Money.new(80_000_00)
       recovery.total_liabilities_after_demand.should == Money.new(-1_00)

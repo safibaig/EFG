@@ -7,6 +7,8 @@ class Recovery < ActiveRecord::Base
 
   scope :realised, where(realise_flag: true)
 
+  before_save :set_seq, on: :create
+
   validates_presence_of :loan, strict: true
   validates_presence_of :created_by, strict: true
   validates_presence_of :recovered_on
@@ -96,6 +98,10 @@ class Recovery < ActiveRecord::Base
         modified_by: created_by,
         event_id: 20 # Recovery made
       )
+    end
+
+    def set_seq
+      self.seq ||= (self.class.where(loan_id: loan_id).maximum(:seq) || 0) + 1
     end
 
     def validate_scheme_fields

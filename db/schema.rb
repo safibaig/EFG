@@ -409,7 +409,7 @@ ActiveRecord::Schema.define(:version => 20121011150536) do
     t.string   "ar_timestamp"
     t.string   "legacy_created_by"
     t.string   "legacy_loan_id"
-    t.string   "seq"
+    t.integer  "seq",                                                            :null => false
   end
 
   create_table "sic_codes", :force => true do |t|
