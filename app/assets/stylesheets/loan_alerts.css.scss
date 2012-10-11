@@ -28,7 +28,7 @@
 
       li {
         display: inline-block;
-        width: 32.9%;
+        width: 32.8%;
       }
 
       li:nth-child(1) {
@@ -73,21 +73,21 @@
     }
 
     p.total-loans {
-      display: none;
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       text-align: center;
-      background-color: rgba(255,250,227,0.6); /* beige */
       font-size: 1.5em;
-      color: #000;
+      color: $medium_grey;
       line-height: 5em;
     }
 
     &:hover p.total-loans {
       display: block;
+      color: #000;
+      background-color: rgba(255,250,227,0.6); /* beige */
     }
 
     div {
