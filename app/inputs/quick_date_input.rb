@@ -5,13 +5,8 @@ class QuickDateInput < SimpleForm::Inputs::Base
     input_html_options[:placeholder] = 'dd/mm/yyyy'
     input_html_options[:value] = date && date.to_s(:screen)
 
-    template.content_tag(:div, class: 'input-append') do
-      @builder.text_field(attribute_name, input_html_options) + icon
+    template.content_tag(:div) do
+      @builder.text_field(attribute_name, input_html_options)
     end
-  end
-
-  private
-  def icon
-    %Q{<span class="add-on"><i class="icon-calendar"></i></span>}.html_safe
   end
 end
