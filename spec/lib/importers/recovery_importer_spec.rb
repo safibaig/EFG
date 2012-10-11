@@ -33,10 +33,10 @@ describe RecoveryImporter do
       recovery.created_by.should == user1
       recovery.ar_timestamp.should be_nil
       recovery.ar_insert_timestamp.should be_nil
-      recovery.outstanding_non_efg_debt.should == Money.new(0)
-      recovery.non_linked_security_proceeds.should == Money.new(0)
-      recovery.linked_security_proceeds.should == Money.new(0)
-      recovery.realisations_attributable.should == Money.new(0)
+      recovery.outstanding_non_efg_debt.should be_nil
+      recovery.non_linked_security_proceeds.should be_nil
+      recovery.linked_security_proceeds.should be_nil
+      recovery.realisations_attributable.should be_nil
       recovery.realisations_due_to_gov.should be_nil
     end
 

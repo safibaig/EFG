@@ -228,6 +228,10 @@ en:
         outstanding_non_efg_debt: 'Enter the value of any non-EFG Debt'
         non_linked_security_proceeds: 'Enter the value of the proceeds of any post-Settlement Security Realisations, excluding any Linked Security'
         linked_security_proceeds: 'Enter the value of the proceeds of any Linked Security'
+        total_liabilities_behind: 'Enter the aggregate amount owed to the Lender other than in connection with the Scheme Facility or with any obligations being repaid from proceeds which are not Eligible Proceeds. (Variable B).'
+        total_liabilities_after_demand: 'Enter the aggregate amount of the Eligible Proceeds less the aggregate amount of deductions in respect of interest accrued after the date Demand was made to the Secreatary of State. (Variable C).'
+        additional_interest_accrued: 'If applicable, enter any additional amount payable to the Secretary of State in respect of interest accrued under a Scheme Facility after the Demand Date (as described in Schedule 2).'
+        additional_break_costs: 'If applicable, enter any additional amount payable to the Secretary of State in respect of Break Costs under a Scheme Facility (as described in Schedule 2).'
 
       realisation_statement:
         lender_id: Select lender
