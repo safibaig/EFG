@@ -246,7 +246,7 @@ class Loan < ActiveRecord::Base
   end
 
   def state_history
-    @state_history ||= (state_changes.select(:state).collect(&:state) + [state]).uniq
+    @state_history ||= (state_changes.pluck(:state) << state).uniq
   end
 
   def update_state!(to_state, event_id, modified_by_user)
