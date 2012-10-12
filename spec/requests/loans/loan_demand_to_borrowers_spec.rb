@@ -34,7 +34,7 @@ describe 'loan demand to borrower' do
     loan.amount_demanded.should == Money.new(5_000_00) # 5000.00
     loan.modified_by.should == current_user
 
-    should_log_loan_state_change(loan, Loan::LenderDemand, 10)
+    should_log_loan_state_change(loan, Loan::LenderDemand, 10, current_user)
 
     demand_to_borrower = loan.demand_to_borrowers.last!
     demand_to_borrower.created_by.should == current_user

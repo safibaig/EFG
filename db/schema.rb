@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121001150857) do
+ActiveRecord::Schema.define(:version => 20121011150536) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -389,7 +389,7 @@ ActiveRecord::Schema.define(:version => 20121001150857) do
   create_table "recoveries", :force => true do |t|
     t.integer  "loan_id",                                                        :null => false
     t.date     "recovered_on",                                                   :null => false
-    t.integer  "total_proceeds_recovered",       :limit => 8
+    t.integer  "total_proceeds_recovered",       :limit => 8,                    :null => false
     t.integer  "total_liabilities_after_demand", :limit => 8
     t.integer  "total_liabilities_behind",       :limit => 8
     t.integer  "additional_break_costs",         :limit => 8
@@ -397,10 +397,10 @@ ActiveRecord::Schema.define(:version => 20121001150857) do
     t.integer  "amount_due_to_dti",              :limit => 8,                    :null => false
     t.boolean  "realise_flag",                                :default => false, :null => false
     t.integer  "created_by_id",                                                  :null => false
-    t.integer  "outstanding_non_efg_debt",       :limit => 8,                    :null => false
-    t.integer  "non_linked_security_proceeds",   :limit => 8,                    :null => false
-    t.integer  "linked_security_proceeds",       :limit => 8,                    :null => false
-    t.integer  "realisations_attributable",      :limit => 8,                    :null => false
+    t.integer  "outstanding_non_efg_debt",       :limit => 8
+    t.integer  "non_linked_security_proceeds",   :limit => 8
+    t.integer  "linked_security_proceeds",       :limit => 8
+    t.integer  "realisations_attributable",      :limit => 8
     t.integer  "realisations_due_to_gov",        :limit => 8
     t.datetime "created_at",                                                     :null => false
     t.datetime "updated_at",                                                     :null => false
@@ -409,7 +409,7 @@ ActiveRecord::Schema.define(:version => 20121001150857) do
     t.string   "ar_timestamp"
     t.string   "legacy_created_by"
     t.string   "legacy_loan_id"
-    t.string   "seq"
+    t.integer  "seq",                                                            :null => false
   end
 
   create_table "sic_codes", :force => true do |t|

@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe 'eligibility checks' do
   let(:lender) { FactoryGirl.create(:lender, :with_lending_limit) }
-  let(:user) { FactoryGirl.create(:lender_user, lender: lender) }
+  let(:current_user) { FactoryGirl.create(:lender_user, lender: lender) }
   let!(:sic_code) { FactoryGirl.create(:sic_code) }
 
   before(:each) do
     ActionMailer::Base.deliveries.clear
-    login_as(user, scope: :user)
+    login_as(current_user, scope: :user)
   end
 
   it 'creates a loan from valid eligibility values' do
@@ -24,6 +24,7 @@ describe 'eligibility checks' do
 
     current_url.should == loan_eligibility_decision_url(loan.id)
 
+    loan.lender.should == lender
     loan.state.should == Loan::Eligible
     loan.viable_proposition.should be_true
     loan.would_you_lend.should be_true
@@ -41,10 +42,10 @@ describe 'eligibility checks' do
     loan.personal_guarantee_required.should be_false
     loan.loan_scheme.should == Loan::EFG_SCHEME
     loan.loan_source.should == Loan::SFLG_SOURCE
-    loan.created_by.should == user
-    loan.modified_by.should == user
+    loan.created_by.should == current_user
+    loan.modified_by.should == current_user
 
-    should_log_loan_state_change(loan, Loan::Eligible, 1)
+    should_log_loan_state_change(loan, Loan::Eligible, 1, current_user)
 
     # email eligibility decision
 

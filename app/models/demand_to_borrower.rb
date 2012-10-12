@@ -4,7 +4,7 @@ class DemandToBorrower < ActiveRecord::Base
   belongs_to :created_by, class_name: 'User'
   belongs_to :loan
 
-  before_save :set_seq
+  before_save :set_seq, on: :create
 
   validates_presence_of :created_by, strict: true
   validates_presence_of :loan, strict: true

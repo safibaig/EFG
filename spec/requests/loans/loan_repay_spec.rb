@@ -20,7 +20,7 @@ describe 'loan repay' do
     loan.repaid_on.should == 1.day.from_now.to_date
     loan.modified_by.should == current_user
 
-    should_log_loan_state_change(loan, Loan::Repaid, 14)
+    should_log_loan_state_change(loan, Loan::Repaid, 14, current_user)
   end
 
   it 'repays a LenderDemand loan' do

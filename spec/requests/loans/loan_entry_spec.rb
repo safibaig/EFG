@@ -40,7 +40,7 @@ describe 'loan entry' do
     loan.maturity_date.should == 6.months.from_now.to_date
     loan.modified_by.should == current_user
 
-    should_log_loan_state_change(loan, Loan::Completed, 4)
+    should_log_loan_state_change(loan, Loan::Completed, 4, current_user)
   end
 
   it 'does not continue with invalid values' do

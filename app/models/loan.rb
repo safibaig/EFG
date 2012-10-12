@@ -206,10 +206,7 @@ class Loan < ActiveRecord::Base
   end
 
   def cumulative_total_previous_recoveries
-    @cumulative_total_previous_recoveries ||= begin
-      total = recoveries.realised.sum(:realisations_attributable)
-      Money.new(total)
-    end
+    @cumulative_total_previous_recoveries ||= Money.new(recoveries.sum(:amount_due_to_dti))
   end
 
   def premium_schedule
@@ -249,7 +246,7 @@ class Loan < ActiveRecord::Base
   end
 
   def state_history
-    @state_history ||= (state_changes.select(:state).collect(&:state) + [state]).uniq
+    @state_history ||= (state_changes.pluck(:state) << state).uniq
   end
 
   def update_state!(to_state, event_id, modified_by_user)

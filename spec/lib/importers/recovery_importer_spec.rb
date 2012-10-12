@@ -19,7 +19,7 @@ describe RecoveryImporter do
       recovery = Recovery.first
       recovery.legacy_loan_id.should == '143971'
       recovery.loan.should == loan1
-      recovery.seq.should == '1'
+      recovery.seq.should == 1
       recovery.recovered_on.should == Date.new(2007, 5, 23)
       recovery.total_proceeds_recovered.should == Money.new(17_000_00)
       recovery.total_liabilities_after_demand.should == Money.new(120_000_56)
@@ -33,10 +33,10 @@ describe RecoveryImporter do
       recovery.created_by.should == user1
       recovery.ar_timestamp.should be_nil
       recovery.ar_insert_timestamp.should be_nil
-      recovery.outstanding_non_efg_debt.should == Money.new(0)
-      recovery.non_linked_security_proceeds.should == Money.new(0)
-      recovery.linked_security_proceeds.should == Money.new(0)
-      recovery.realisations_attributable.should == Money.new(0)
+      recovery.outstanding_non_efg_debt.should be_nil
+      recovery.non_linked_security_proceeds.should be_nil
+      recovery.linked_security_proceeds.should be_nil
+      recovery.realisations_attributable.should be_nil
       recovery.realisations_due_to_gov.should be_nil
     end
 
@@ -44,7 +44,7 @@ describe RecoveryImporter do
       recovery = Recovery.last
       recovery.legacy_loan_id.should == '160923'
       recovery.loan.should == loan2
-      recovery.seq.should == '1'
+      recovery.seq.should == 1
       recovery.recovered_on.should == Date.new(2009, 9, 22)
       recovery.total_proceeds_recovered.should == Money.new(80_000_00)
       recovery.total_liabilities_after_demand.should == Money.new(-1_00)

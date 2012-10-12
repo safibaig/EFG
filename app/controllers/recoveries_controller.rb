@@ -4,12 +4,15 @@ class RecoveriesController < ApplicationController
 
   def new
     @recovery = @loan.recoveries.new
+    @recovery.created_by = current_user
+    @recovery.set_total_proceeds_recovered
   end
 
   def create
     @recovery = @loan.recoveries.new
     @recovery.attributes = params[:recovery]
     @recovery.created_by = current_user
+    @recovery.set_total_proceeds_recovered
     @recovery.calculate if @recovery.valid?
 
     if params[:commit] == 'Submit' && @recovery.save_and_update_loan
