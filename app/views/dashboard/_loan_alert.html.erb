@@ -13,7 +13,7 @@
         <% end %>
 
         <% if alert_group.total_loans > 0 %>
-          <p class="total-loans"><%= alert_group.total_loans %> Loans</p>
+          <p class="total-loans"><%= pluralize(alert_group.total_loans, 'Loan') %></p>
         <% end %>
 
       <% end %>

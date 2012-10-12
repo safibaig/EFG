@@ -18,16 +18,6 @@ describe LoanReport do
       loan_report.should be_valid
     end
 
-    it 'should not be valid when loan states is nil' do
-      loan_report.states = nil
-      loan_report.should_not be_valid
-    end
-
-    it 'should not be valid with empty loan states' do
-      loan_report.states = ""
-      loan_report.should_not be_valid
-    end
-
     it 'should be invalid without an allowed loan state' do
       loan_report.states = [ "wrong" ]
       loan_report.should_not be_valid

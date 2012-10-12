@@ -125,8 +125,7 @@ describe 'Loan report' do
   private
 
   def fill_in_valid_details
-    select 'Eligible', from: 'loan_report[states][]'
-    select 'Guaranteed', from: 'loan_report[states][]'
+    select 'All states', from: 'loan_report[states][]'
     check :loan_report_loan_source_s
   end
 

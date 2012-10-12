@@ -8,7 +8,7 @@
 
 <% if @loan_audit_report.count.zero? %>
   <p>
-  <%= link_to "New criteria", new_loan_report_path, class: 'btn' %></p>
+  <%= link_to "New criteria", new_loan_audit_report_path, class: 'btn' %></p>
 <% end %>
 
 <table class="table table-striped report-summary">
@@ -68,29 +68,19 @@
 
 <% unless @loan_audit_report.count.zero? %>
 
-  <%= simple_form_for(@loan_audit_report, url: loan_audit_report_path(format: :csv)) do |f| %>
+  <%= simple_form_for(@loan_audit_report, url: loan_audit_report_path(format: 'csv')) do |f| %>
 
-    <%= f.input :facility_letter_start_date, as: :hidden %>
-
-    <%= f.input :facility_letter_end_date, as: :hidden %>
-
-    <%= f.input :created_at_start_date, as: :hidden %>
-
-    <%= f.input :created_at_end_date, as: :hidden %>
-
-    <%= f.input :last_modified_start_date, as: :hidden %>
-
-    <%= f.input :last_modified_end_date, as: :hidden %>
-
-    <%= f.input :event_id, as: :hidden %>
-
-    <%= f.input :audit_records_start_date, as: :hidden %>
-
-    <%= f.input :audit_records_end_date, as: :hidden %>
-
-    <%= f.input :state, as: :hidden %>
-
-    <%= f.input :lender_id, as: :hidden %>
+    <%= f.hidden_field :facility_letter_start_date, value: @loan_audit_report.facility_letter_start_date.try(:to_s, :screen) %>
+    <%= f.hidden_field :facility_letter_end_date, value: @loan_audit_report.facility_letter_end_date.try(:to_s, :screen) %>
+    <%= f.hidden_field :created_at_start_date, value: @loan_audit_report.created_at_start_date.try(:to_s, :screen) %>
+    <%= f.hidden_field :created_at_end_date, value: @loan_audit_report.created_at_end_date.try(:to_s, :screen) %>
+    <%= f.hidden_field :last_modified_start_date, value: @loan_audit_report.last_modified_start_date.try(:to_s, :screen) %>
+    <%= f.hidden_field :last_modified_end_date, value: @loan_audit_report.last_modified_end_date.try(:to_s, :screen) %>
+    <%= f.hidden_field :event_id %>
+    <%= f.hidden_field :audit_records_start_date %>
+    <%= f.hidden_field :audit_records_end_date %>
+    <%= f.hidden_field :state %>
+    <%= f.hidden_field :lender_id %>
 
     <div class="form-actions">
       <%= f.button :submit, value: 'Download Report', class: 'btn-primary' %>

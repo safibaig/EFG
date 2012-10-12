@@ -21,7 +21,7 @@ Please note that all the information within Facility Entry can be revised, howev
     <%= f.input :trading_name, as: :string, disabled: true %>
 
     <% unless @transferred_loan_entry.legacy_loan? %>
-      <%= f.input :legal_form_id, as: :radio_buttons, collection: LegalForm.all, disabled: true %>
+      <%= f.input :legal_form_id, collection: LegalForm.all, disabled: true %>
       <%= f.input :company_registration, as: :string, disabled: true %>
       <%= f.input :turnover, as: :currency, disabled: true %>
       <%= f.input :trading_date, as: :quick_date, disabled: true %>
@@ -48,7 +48,7 @@ Please note that all the information within Facility Entry can be revised, howev
     </div>
 
     <%= f.input :repayment_duration, as: :duration %>
-    <%= f.input :repayment_frequency_id, as: :radio_buttons, collection: RepaymentFrequency.all %>
+    <%= f.input :repayment_frequency_id, collection: RepaymentFrequency.all %>
     <%= f.input :maturity_date, as: :quick_date %>
 
     <% unless @transferred_loan_entry.legacy_loan? %>
@@ -63,7 +63,7 @@ Please note that all the information within Facility Entry can be revised, howev
     <%= f.input :state_aid, as: :state_aid %>
 
     <% unless @transferred_loan_entry.legacy_loan? %>
-      <%= f.input :state_aid_is_valid, as: :boolean %>
+      <%= f.input :state_aid_is_valid, as: :boolean, disabled: true %>
       <%= f.input :private_residence_charge_required, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
       <%= f.input :personal_guarantee_required, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
 

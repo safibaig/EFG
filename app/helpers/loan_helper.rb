@@ -48,7 +48,11 @@ module LoanHelper
   end
 
   def loan_state_options(states)
-    states.map { |state| [state.humanize, state] }
+    states.map { |state| [state.humanize, state] }.unshift(['All states', nil])
+  end
+
+  def loan_ineligible?(loan)
+    [Loan::Rejected, Loan::Incomplete].include?(loan.state) && loan.ineligibility_reasons.present?
   end
 
 end

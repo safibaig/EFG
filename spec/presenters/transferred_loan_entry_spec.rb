@@ -53,21 +53,22 @@ describe TransferredLoanEntry do
     context 'maturity_date' do
       let(:initial_draw_date) { transferred_loan_entry.loan.initial_draw_change.date_of_change }
 
-      it "must be on or after the minimum number of loan repayment months, counted from the original draw date" do
-        transferred_loan_entry.maturity_date = initial_draw_date + (3.months - 1.day)
-        transferred_loan_entry.should_not be_valid
-
-        transferred_loan_entry.maturity_date = initial_draw_date + 3.months
+      it "has no minimum loan term restriction" do
+        transferred_loan_entry.maturity_date = Date.today
         transferred_loan_entry.should be_valid
       end
 
       it "must be on or before the maximum number of loan repayment months, counted from the original draw date" do
-        transferred_loan_entry.maturity_date = initial_draw_date + (120.months + 1.day)
+        transferred_loan_entry.maturity_date = initial_draw_date.advance(months: 120, days: 1)
         transferred_loan_entry.should_not be_valid
 
-        transferred_loan_entry.maturity_date = initial_draw_date + 120.months
+        transferred_loan_entry.maturity_date = initial_draw_date.advance(months: 120)
         transferred_loan_entry.should be_valid
       end
+    end
+
+    it_behaves_like 'loan presenter that validates loan repayment frequency' do
+      let(:loan_presenter) { transferred_loan_entry }
     end
   end
 end

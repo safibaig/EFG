@@ -32,27 +32,11 @@ describe EligibilityCheck do
       eligibility_check.errors[:collateral_exhausted].should_not be_empty
     end
 
-    it "should be ineligible if the Loan Facility lending limit is exhausted" do
-      pending
-    end
-
-    it "should be ineligible if the SIC code is not allowed to receive suport" do
-      pending
-    end
-
     it "should be ineligible if a private residence charge is required" do
       loan.private_residence_charge_required = true
 
       eligibility_check.should_not be_eligible
       eligibility_check.errors[:private_residence_charge_required].should_not be_empty
-    end
-
-    it "should ineligible if a personal guarantee is required" do
-      pending "Not quite sure on this requirement yet."
-      loan.personal_guarantee_required = true
-
-      eligibility_check.should_not be_eligible
-      eligibility_check.errors[:personal_guarantee_required].should_not be_empty
     end
 
     it "should be ineligible if the amount is less than £1000" do
@@ -84,8 +68,6 @@ describe EligibilityCheck do
     end
 
     it "should be ineligible if the loan is a Type E facility and repayment duration is longer than 2 years" do
-      pending
-
       loan.loan_category_id = 5 # Type E facility
       loan.repayment_duration = {years: 2, months: 1}
 
@@ -94,8 +76,6 @@ describe EligibilityCheck do
     end
 
     it "should be ineligible if the loan is a Type F facility and repayment duration is longer than 3 years" do
-      pending
-
       loan.loan_category_id = 6 # Type F facility
       loan.repayment_duration = {years: 3, months: 1}
 
@@ -103,8 +83,11 @@ describe EligibilityCheck do
       eligibility_check.errors[:repayment_duration].should_not be_empty
     end
 
-    it "should be ineligible with a trading date that...." do
-      pending
+    it "should be ineligible if the loan trading date is more than 6 months in the future" do
+      loan.trading_date = 6.months.from_now.advance(days: 1)
+
+      eligibility_check.should_not be_eligible
+      eligibility_check.errors[:trading_date].should_not be_empty
     end
 
     it "should be ineligible if previous borrowing + this amount is not greater than £1,000,000" do

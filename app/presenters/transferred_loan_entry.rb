@@ -1,6 +1,7 @@
 class TransferredLoanEntry
   include LoanPresenter
   include LoanStateTransition
+  include SharedLoanValidations
 
   transition from: [Loan::Incomplete], to: Loan::Completed, event: :complete
 
@@ -25,6 +26,7 @@ class TransferredLoanEntry
   attribute :postcode, read_only: true
   attribute :town, read_only: true
   attribute :legacy_loan?, read_only: true
+  attribute :state_aid_is_valid, read_only: true
 
   attribute :declaration_signed
   attribute :sortcode
@@ -32,7 +34,6 @@ class TransferredLoanEntry
   attribute :repayment_duration
   attribute :repayment_frequency_id
   attribute :maturity_date
-  attribute :state_aid_is_valid
   attribute :state_aid
   attribute :generic1
   attribute :generic2
@@ -42,7 +43,9 @@ class TransferredLoanEntry
 
   validates_presence_of :amount, :repayment_duration, :repayment_frequency_id, :maturity_date
 
-  validate :maturity_date_within_loan_term
+  validate :repayment_frequency_allowed
+
+  validate :maturity_date_within_loan_term, if: :maturity_date
 
   validate do
     errors.add(:declaration_signed, :accepted) unless self.declaration_signed
@@ -62,16 +65,10 @@ class TransferredLoanEntry
   private
 
   def maturity_date_within_loan_term
-    return if maturity_date.blank? || loan_category_id.blank?
-
-    loan_category = LoanCategory.find(loan_category_id)
+    loan_term = LoanTerm.new(loan)
     initial_draw_date = loan.initial_draw_change.date_of_change
 
-    if maturity_date < initial_draw_date + loan_category.min_loan_term.months
-      errors.add(:maturity_date, :less_than_min_loan_term)
-    end
-
-    if maturity_date > initial_draw_date + loan_category.max_loan_term.months
+    if maturity_date > initial_draw_date + loan_term.max_months.months
       errors.add(:maturity_date, :greater_than_max_loan_term)
     end
   end

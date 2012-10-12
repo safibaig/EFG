@@ -1,33 +1,3 @@
-shared_examples_for 'loan presenter that validates loan repayment duration based on loan category' do
-
-  describe "#repayment_duration" do
-    LoanCategory.all.each do |loan_category|
-      context "when loan category is '#{loan_category.name}'" do
-        before(:each) do
-          loan_presenter.loan.update_attribute(:loan_category_id, loan_category.id)
-        end
-
-        it "is invalid when repayment duration is less than category's min loan term" do
-          loan_presenter.repayment_duration = loan_category.min_loan_term - 1
-          loan_presenter.should_not be_valid
-
-          loan_presenter.repayment_duration = loan_category.min_loan_term
-          loan_presenter.should be_valid
-        end
-
-        it "is invalid when repayment duration is greater than category's max loan term" do
-          loan_presenter.repayment_duration = loan_category.max_loan_term + 1
-          loan_presenter.should_not be_valid
-
-          loan_presenter.repayment_duration = loan_category.max_loan_term
-          loan_presenter.should be_valid
-        end
-      end
-    end
-  end
-
-end
-
 shared_examples_for 'loan presenter that validates loan repayment frequency' do
 
   context "when repaying loan quarterly" do

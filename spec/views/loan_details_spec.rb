@@ -153,13 +153,6 @@ describe 'loans/details' do
     end
   end
 
-  context "with an auto cancelled loan" do
-    let(:loan) { FactoryGirl.build(:loan, :auto_cancelled) }
-
-    pending "needs factory definition"
-    # it_behaves_like 'rendered loan_details'
-  end
-
   context "with a removed loan" do
     let(:loan) { FactoryGirl.build(:loan, :removed) }
 
@@ -176,15 +169,8 @@ describe 'loans/details' do
     end
   end
 
-  context "with an auto removed loan" do
-    let(:loan) { FactoryGirl.build(:loan, :auto_removed) }
-
-    pending "needs factory definition"
-    # it_behaves_like 'rendered loan_details'
-  end
-
   context "with a settled loan" do
-    let(:loan) { FactoryGirl.build(:loan, :settled) }
+    let(:loan) { FactoryGirl.create(:loan, :settled) }
 
     it_behaves_like 'rendered loan_details' do
       let(:visible_details) { %w(loan_settle_claim.settled_on) }
@@ -207,17 +193,11 @@ describe 'loans/details' do
     end
   end
 
-  context "with an incomplete legacy loan" do
-    let(:loan) { FactoryGirl.build(:loan, :incomplete_legacy) }
-
-    pending "needs factory definition"
-    # it_behaves_like 'rendered loan_details'
-  end
-
   context "with a complete legacy loan" do
     let(:loan) { FactoryGirl.build(:loan, :complete_legacy) }
 
-    pending "needs factory definition"
-    # it_behaves_like 'rendered loan_details'
+    it_behaves_like 'rendered loan_details' do
+      let(:visible_details) { %w(loan_entry.business_name) }
+    end
   end
 end

@@ -8,7 +8,7 @@ describe LoanEligibilityDecisionMailer do
     end
 
     it "should have a from header" do
-      email.from.should == [ Devise.mailer_sender ]
+      Devise.mailer_sender.should match email.from[0]
     end
 
     it "should contain the loan reference" do

@@ -25,6 +25,7 @@ class StateAidCalculationsController < ApplicationController
   def load_state_aid_calculation
     @state_aid_calculation = @loan.state_aid_calculation || @loan.state_aid_calculations.build
     @state_aid_calculation.initial_draw_amount ||= @loan.amount.dup
+    @state_aid_calculation.initial_draw_months ||= @loan.repayment_duration.total_months
   end
 
   helper_method :leave_state_aid_calculation_path

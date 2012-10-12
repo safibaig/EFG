@@ -83,6 +83,24 @@ describe 'loan entry' do
     loan.modified_by.should == current_user
   end
 
+  it 'saves the loan as incomplete when it is no longer eligible' do
+    loan.ineligibility_reasons.should be_empty
+
+    visit loan_path(loan)
+    click_link 'Loan Entry'
+
+    fill_in_valid_details
+    fill_in :amount, 2000000 # max amount is 1M
+    click_button 'Submit'
+
+    loan.reload
+    loan.state.should == Loan::Incomplete
+    loan.ineligibility_reasons.count.should == 1
+
+    current_path.should == loan_path(loan)
+    page.should have_content(loan.ineligibility_reasons.first.reason)
+  end
+
   it 'should show specific questions for loan category B' do
     loan.update_attribute(:loan_category_id, 2)
 

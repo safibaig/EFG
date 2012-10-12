@@ -464,5 +464,16 @@ describe PremiumScheduleReport do
       end
     end
 
+    context "with state aid calculation without premium cheque month" do
+      before do
+        state_aid_calc = FactoryGirl.create(:state_aid_calculation, loan: loan)
+        state_aid_calc.update_attribute(:premium_cheque_month, "")
+      end
+
+      it 'sets first collection date to 3 months after guarantee date' do
+        row[5].should == "02/2012"
+      end
+    end
+
   end
 end

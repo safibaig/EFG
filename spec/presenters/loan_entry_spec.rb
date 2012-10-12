@@ -1,14 +1,15 @@
 require 'spec_helper'
 
 describe LoanEntry do
+
+  let(:loan_entry) { FactoryGirl.build(:loan_entry) }
+
   before(:each) do
     # ensure recalculate state aid validation does not fail
     Loan.any_instance.stub(:repayment_duration_changed?).and_return(false)
   end
 
   describe "validations" do
-    let(:loan_entry) { FactoryGirl.build(:loan_entry) }
-
     it "should have a valid factory" do
       loan_entry.should be_valid
     end
@@ -243,29 +244,25 @@ describe LoanEntry do
     it_behaves_like 'loan presenter that validates loan repayment frequency' do
       let(:loan_presenter) { loan_entry }
     end
+  end
 
-    context 'loan duration' do
+  describe "#save" do
+    context "when loan is no longer eligible" do
       before(:each) do
-        # ensure loan entry is valid for all categories
-        loan_entry.security_proportion = 1
-        loan_entry.original_overdraft_proportion = 1
-        loan_entry.refinance_security_proportion = 1
-        loan_entry.loan_security_types = [1]
-        loan_entry.current_refinanced_amount = 1
-        loan_entry.final_refinanced_amount = 1
-        loan_entry.overdraft_limit = 1
-        loan_entry.overdraft_maintained = true
-        loan_entry.invoice_discount_limit = 1
-        loan_entry.debtor_book_coverage = 1
-        loan_entry.debtor_book_topup = 1
+        loan_entry.amount = 2000000 # max amount is 1M
       end
 
-      it_behaves_like 'loan presenter that validates loan repayment duration based on loan category' do
-        let(:loan_presenter) { loan_entry }
+      it "should set state to 'incomplete'" do
+        expect {
+          loan_entry.save
+        }.to change(loan_entry.loan, :state).to(Loan::Incomplete)
+      end
+
+      it "should save ineligibility reasons" do
+        expect {
+          loan_entry.save
+        }.to change(loan_entry.loan.ineligibility_reasons, :count).by(1)
       end
     end
-
-    # Although a business may benefit from EFG on more than one occasion, and may have more than one EFG-backed facility at any one time, the total outstanding balances and/or active available limits of the Applicant's current EFG facilities may not exceed £1 million at any one time.
-    # To be eligible for EFG the Applicant's De Minimis State Aid status must be checked to ensure that it does not exceed the €200,000 rolling three year limit (or the corresponding lower limit applicable in certain business sectors). On this occasion that check has not been performed.
   end
 end

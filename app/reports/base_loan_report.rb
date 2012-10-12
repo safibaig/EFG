@@ -8,10 +8,7 @@ class BaseLoanReport
   def self.date_attribute(*attributes)
     attributes.each do |attribute|
 
-      define_method(attribute) do
-        value = instance_variable_get "@#{attribute}"
-        QuickDateFormatter.format(value)
-      end
+      attr_reader attribute
 
       define_method("#{attribute}=") do |value|
         instance_variable_set "@#{attribute}", QuickDateFormatter.parse(value)

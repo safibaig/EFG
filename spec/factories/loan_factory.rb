@@ -64,6 +64,10 @@ FactoryGirl.define do
       state Loan::Completed
     end
 
+    trait :complete_legacy do
+      state Loan::CompleteLegacy
+    end
+
     trait :incomplete do
       state Loan::Incomplete
     end
@@ -105,8 +109,8 @@ FactoryGirl.define do
       state Loan::Demanded
       dti_demand_outstanding Money.new(10_000_00)
       dti_demanded_on { Date.today }
-      dti_ded_code 'ABC'
       dti_reason 'reason'
+      ded_code
     end
 
     trait :not_demanded do
@@ -125,6 +129,10 @@ FactoryGirl.define do
       dti_demand_outstanding { |loan| loan.amount * 0.5 }
       dti_amount_claimed { |loan| loan.dti_demand_outstanding * 0.75 }
       settled_on { Date.today }
+
+      after(:create) do |loan|
+        loan.invoice = FactoryGirl.create(:invoice)
+      end
     end
 
     trait :recovered do
