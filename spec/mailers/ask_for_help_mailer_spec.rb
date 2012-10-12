@@ -17,7 +17,7 @@ describe AskForHelpMailer do
     it do
       email.body.should include(user.name)
       email.body.should include('Hello')
-      email.from.should == [Devise.mailer_sender]
+      Devise.mailer_sender.should match email.from[0]
       email.reply_to.should == [user.email]
       email.subject.should include('EFG')
       email.to.should include(expert_user1.email)
@@ -46,7 +46,7 @@ describe AskForHelpMailer do
       email.body.should include('Excellent!')
       email.body.should include('Lynx, 1.2.3')
       email.body.should include('Foo, ABC')
-      email.from.should == [Devise.mailer_sender]
+      Devise.mailer_sender.should match email.from[0]
       email.reply_to.should == [user.email]
       email.subject.should include('EFG')
       email.to.should == [ EFG::Application.config.cfe_support_email ]
