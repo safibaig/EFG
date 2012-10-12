@@ -389,7 +389,7 @@ ActiveRecord::Schema.define(:version => 20121011150536) do
   create_table "recoveries", :force => true do |t|
     t.integer  "loan_id",                                                        :null => false
     t.date     "recovered_on",                                                   :null => false
-    t.integer  "total_proceeds_recovered",       :limit => 8
+    t.integer  "total_proceeds_recovered",       :limit => 8,                    :null => false
     t.integer  "total_liabilities_after_demand", :limit => 8
     t.integer  "total_liabilities_behind",       :limit => 8
     t.integer  "additional_break_costs",         :limit => 8

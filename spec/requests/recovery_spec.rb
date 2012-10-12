@@ -7,7 +7,13 @@ describe 'loan recovery' do
   before { login_as(current_user, scope: :user) }
 
   context 'EFG' do
-    let(:loan) { FactoryGirl.create(:loan, :settled, settled_on: '1/5/12') }
+    let(:loan) {
+      FactoryGirl.create(:loan, :settled,
+        dti_demand_outstanding: Money.new(6_789_00),
+        dti_interest: nil,
+        settled_on: '1/5/12'
+      )
+    }
 
     [Loan::Settled, Loan::Recovered, Loan::Realised].each do |state|
       context "with state #{state}" do
@@ -18,6 +24,8 @@ describe 'loan recovery' do
         it 'creates a loan recovery' do
           visit loan_path(loan)
           click_link 'Recovery Made'
+
+          page.should have_content('£6,789.00')
           page.should_not have_button('Submit')
 
           expect {
@@ -72,6 +80,8 @@ describe 'loan recovery' do
     it 'creates a loan recovery' do
       visit loan_path(loan)
       click_link 'Recovery Made'
+
+      page.should have_content('£100,000.91')
       page.should_not have_button('Submit')
 
       fill_in 'recovered_on', '1/5/12'
@@ -95,6 +105,7 @@ describe 'loan recovery' do
       recovery.loan.should == loan
       recovery.seq.should == 1
       recovery.recovered_on.should == Date.new(2012, 5, 1)
+      recovery.total_proceeds_recovered.should == Money.new(100_000_91)
       recovery.total_liabilities_behind.should == Money.new(123_00)
       recovery.total_liabilities_after_demand.should == Money.new(234_00)
       recovery.additional_interest_accrued.should == Money.new(345_00)
@@ -114,6 +125,7 @@ describe 'loan recovery' do
     let(:loan) {
       FactoryGirl.create(:loan, :legacy_sflg, :settled,
         dti_amount_claimed: Money.new(3_375_00),
+        dti_demand_outstanding: Money.new(4_400_00),
         dti_interest: Money.new(100_00),
         settled_on: '1/5/12'
       )
@@ -122,6 +134,8 @@ describe 'loan recovery' do
     it 'creates a loan recovery' do
       visit loan_path(loan)
       click_link 'Recovery Made'
+
+      page.should have_content('£2,531.25')
       page.should_not have_button('Submit')
 
       fill_in 'recovered_on', '1/5/12'
@@ -145,6 +159,7 @@ describe 'loan recovery' do
       recovery.loan.should == loan
       recovery.seq.should == 1
       recovery.recovered_on.should == Date.new(2012, 5, 1)
+      recovery.total_proceeds_recovered.should == Money.new(2_531_25)
       recovery.total_liabilities_behind.should == Money.new(123_00)
       recovery.total_liabilities_after_demand.should == Money.new(234_00)
       recovery.additional_interest_accrued.should == Money.new(345_00)
@@ -184,6 +199,7 @@ describe 'loan recovery' do
       recovery.loan.should == loan
       recovery.seq.should == 1
       recovery.recovered_on.should == Date.new(2012, 6, 1)
+      recovery.total_proceeds_recovered.should == Money.new(6_789_00)
       recovery.outstanding_non_efg_debt.should == Money.new(2_500_00)
       recovery.non_linked_security_proceeds.should == Money.new(3_000_00)
       recovery.linked_security_proceeds.should == Money.new(1_000_00)

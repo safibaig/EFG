@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :recovery do
     created_by factory: :lender_user
     recovered_on { Date.today }
+    total_proceeds_recovered Money.new(10_000_00)
     outstanding_non_efg_debt Money.new(10_000_00)
     non_linked_security_proceeds Money.new(10_000_00)
     linked_security_proceeds Money.new(10_000_00)

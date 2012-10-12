@@ -82,6 +82,17 @@ class Recovery < ActiveRecord::Base
     false
   end
 
+  def set_total_proceeds_recovered
+    if loan.legacy_loan?
+      self.total_proceeds_recovered = loan.dti_amount_claimed * (loan.guarantee_rate / 100)
+    else
+      interest = loan.dti_interest || Money.new(0)
+      outstanding = loan.dti_demand_outstanding || Money.new(0)
+
+      self.total_proceeds_recovered = interest + outstanding
+    end
+  end
+
   private
     def update_loan!
       loan.modified_by = created_by
