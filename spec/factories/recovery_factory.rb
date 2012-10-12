@@ -8,6 +8,8 @@ FactoryGirl.define do
     linked_security_proceeds Money.new(10_000_00)
     realisations_attributable Money.new(10_000_00)
     amount_due_to_dti Money.new(10_000_00)
+    total_liabilities_after_demand 0
+    total_liabilities_behind 0
 
     after(:build) { |recovery|
       recovery.loan ||= FactoryGirl.create(:loan, :settled, settled_on: recovery.recovered_on)

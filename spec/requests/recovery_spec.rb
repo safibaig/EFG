@@ -77,11 +77,17 @@ describe 'loan recovery' do
       )
     }
 
+    before do
+      FactoryGirl.create(:recovery, loan: loan, amount_due_to_dti: Money.new(66_61))
+      FactoryGirl.create(:recovery, loan: loan, amount_due_to_dti: Money.new(19_55))
+    end
+
     it 'creates a loan recovery' do
       visit loan_path(loan)
       click_link 'Recovery Made'
 
       page.should have_content('£100,000.91')
+      page.should have_content('£86.16')
       page.should_not have_button('Submit')
 
       fill_in 'recovered_on', '1/5/12'
@@ -103,7 +109,7 @@ describe 'loan recovery' do
 
       recovery = Recovery.last
       recovery.loan.should == loan
-      recovery.seq.should == 1
+      recovery.seq.should == 3
       recovery.recovered_on.should == Date.new(2012, 5, 1)
       recovery.total_proceeds_recovered.should == Money.new(100_000_91)
       recovery.total_liabilities_behind.should == Money.new(123_00)
