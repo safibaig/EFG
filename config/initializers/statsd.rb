@@ -4,7 +4,7 @@
 # messages. Given that it's UDP, it's fire-and-forget and will not
 # block your application. You do not need to have a statsd process
 # running locally on your development environment.
-STATSD_HOST = "localhost"
-
-# The common prefix for EFG metrics to be stored using statsd.
-STATSD_PREFIX = "govuk.app.efg"
+EFG.stats_collector =
+  Statsd.new(ENV["STATSD_HOST"] || "localhost", 8125).tap do |c|
+    c.namespace = (ENV['GOVUK_STATSD_PREFIX'] || 'govuk.app.efg').to_s
+  end
