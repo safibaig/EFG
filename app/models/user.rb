@@ -30,6 +30,8 @@ class User < ActiveRecord::Base
   validates_confirmation_of :password, :if => :password_required?
   validates_length_of :password, :within => Devise.password_length, :allow_blank => true
 
+  after_create :update_stats
+
   def disable!
     update_attribute :disabled, true
   end
@@ -121,6 +123,10 @@ class User < ActiveRecord::Base
 
   def login_attempts_exceeded?
     self.failed_attempts > MAXIMUM_LOGIN_ATTEMPTS
+  end
+
+  def update_stats
+    EFG.stats_collector.increment("users.created")
   end
 
   include PasswordMigration
