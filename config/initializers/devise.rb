@@ -217,10 +217,10 @@ Devise.setup do |config|
   # end
 
   Warden::Manager.after_authentication do |user,auth,opts|
-    Statsd.new(::STATSD_HOST).increment("#{::STATSD_PREFIX}.logins.success")
+    EFG.stats_collector.increment("logins.success")
   end
 
   Warden::Manager.before_failure do |env, opts|
-    Statsd.new(::STATSD_HOST).increment("#{::STATSD_PREFIX}.logins.failure")
+    EFG.stats_collector.increment("logins.failure")
   end
 end
