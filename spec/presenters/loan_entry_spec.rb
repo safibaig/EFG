@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'spec_helper'
 
 describe LoanEntry do
@@ -68,6 +69,11 @@ describe LoanEntry do
       loan_entry.loan.state_aid_calculations.delete_all
       loan_entry.should_not be_valid
       loan_entry.errors[:state_aid].should == ['must be calculated']
+    end
+
+    it "should be invalid when turnover is greater than £41,000,000" do
+      loan_entry.turnover = Money.new(41_000_000_01)
+      loan_entry.should_not be_valid
     end
 
     LegalForm.all.select { |l| l.requires_company_registration == true }.each do |legal_form|

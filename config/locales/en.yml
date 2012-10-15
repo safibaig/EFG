@@ -18,7 +18,7 @@ en:
         invalid: "Although a business may benefit from EFG on more than one occasion, and may have more than one EFG-backed facility at any one time, the total outstanding balances and/or active available limits of the Applicant's current EFG facilities may not exceed £1 million at any one time."
       private_residence_charge_required:
         invalid: A new charge may not not be taken over a principal private residence in connection with providing an EFG-backed facility.
-      turnover:
+      turnover: &turnover
         invalid: "Turnover is greater than £41 million. The size of business eligible to benefit from EFG is determined by turnover. The maximum turnover limit of £41 million is intended to accommodate the majority of Small and Medium-Sized Enterprises (SMEs). The turnover figure used in the eligibility assessment is taken from the most recent information available to the Lender about the Applicant and should be the same as that used by the Lender in making the commercial decision to lend."
       sic_code:
         invalid: "SIC code is ineligible. The SIC code is used to classify business activities. While businesses in the majority of sectors are eligible there are a small number of exclusions, usually due to either UK or EU regulations."
@@ -63,6 +63,8 @@ en:
             maturity_date:
               less_than_min_loan_term: Maturity date must be at least three months after the date of initial draw of funds
               greater_than_max_loan_term: Maturity date must not be more than than ten years (or 2 years for Type E and 3 years for Type F loans) after the date of initial draw of funds
+            turnover:
+              <<: *turnover
         loan_offer:
           attributes:
             base:

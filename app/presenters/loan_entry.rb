@@ -69,6 +69,8 @@ class LoanEntry
 
   validate :maturity_date_within_loan_term, if: :maturity_date
 
+  validate :company_turnover_is_allowed, if: :turnover
+
   validate do
     errors.add(:declaration_signed, :accepted) unless self.declaration_signed
   end
