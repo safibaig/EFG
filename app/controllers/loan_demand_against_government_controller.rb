@@ -15,6 +15,10 @@ class LoanDemandAgainstGovernmentController < ApplicationController
     @loan_demand_against_government.modified_by = current_user
 
     if @loan_demand_against_government.save
+      flash[:notice] = I18n.t(
+        'activemodel.loan_demand_against_government.amount_claimed',
+        amount: @loan.dti_amount_claimed.format
+      )
       redirect_to loan_url(@loan)
     else
       render :new

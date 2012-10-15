@@ -24,6 +24,8 @@ describe 'loan demand against government' do
 
     current_path.should == loan_path(loan)
 
+    page.should have_content(I18n.t('activemodel.loan_demand_against_government.amount_claimed', amount: loan.dti_amount_claimed.format))
+
     loan.state.should == Loan::Demanded
     loan.dti_demand_outstanding.should == loan.amount
     loan.dti_amount_claimed.should_not be_nil

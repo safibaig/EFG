@@ -24,6 +24,8 @@ en:
         invalid: "SIC code is ineligible. The SIC code is used to classify business activities. While businesses in the majority of sectors are eligible there are a small number of exclusions, usually due to either UK or EU regulations."
 
   activemodel:
+    loan_demand_against_government:
+      amount_claimed: "Demand has been made against the Government Guarantee. The value of the demand is: %{amount}"
     errors:
       models:
         ask_an_expert:
