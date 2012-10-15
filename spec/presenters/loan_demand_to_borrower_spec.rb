@@ -31,11 +31,6 @@ describe LoanDemandToBorrower do
       loan_demand_to_borrower.should_not be_valid
     end
 
-    it 'must have an amount_demanded lte loan total amount drawn' do
-      loan_demand_to_borrower.amount_demanded = Money.new(5_000_01)
-      loan_demand_to_borrower.should_not be_valid
-    end
-
     it 'cannot have a borrower_demanded_on before the loan initial draw date' do
       loan_demand_to_borrower.borrower_demanded_on = Date.new(2012, 1, 1)
       loan_demand_to_borrower.should_not be_valid

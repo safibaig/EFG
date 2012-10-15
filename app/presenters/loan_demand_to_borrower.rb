@@ -11,7 +11,6 @@ class LoanDemandToBorrower
 
   validates_presence_of :amount_demanded
   validates_presence_of :borrower_demanded_on
-  validate :validate_lte_loan_cumulative_drawn_amount, if: :amount_demanded
   validate :validate_gte_loan_initial_draw_date, if: :borrower_demanded_on
 
   def amount_demanded=(value)
@@ -35,12 +34,6 @@ class LoanDemandToBorrower
     def store_loan_columns
       loan.amount_demanded = amount_demanded
       loan.borrower_demanded_on = borrower_demanded_on
-    end
-
-    def validate_lte_loan_cumulative_drawn_amount
-      if amount_demanded > loan.cumulative_drawn_amount
-        errors.add(:amount_demanded, :must_be_lte_loan_cumulative_drawn_amount)
-      end
     end
 
     def validate_gte_loan_initial_draw_date
