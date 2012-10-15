@@ -2,7 +2,7 @@ class PasswordsController < Devise::PasswordsController
 
   after_filter :track_first_login, only: [:update]
 
-  after_filter :track_password_reset, only [:create]
+  after_filter :track_password_reset, only: [:create]
 
   private
 
