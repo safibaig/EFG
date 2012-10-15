@@ -1,2 +1,7 @@
-<%= link_to('Recovery Made', new_loan_recovery_path(@loan), class: 'btn') if current_user.can_create?(Recovery) %>
-<%= link_to_state_aid_letter(@loan) %>
+<div class="form-actions">
+  <%= link_to('Recovery Made', new_loan_recovery_path(@loan), class: 'btn') if current_user.can_create?(Recovery) %>
+</div>
+
+<div class="form-actions">
+  <%= link_to_state_aid_letter(@loan) %>
+</div>

@@ -1,4 +1,9 @@
-<%= link_to_loan_entry(@loan) %>
-<%= link_to('Cancel Loan', new_loan_cancel_path(@loan), class: 'btn btn-danger') if current_user.can_create?(LoanCancel) %>
-<%= link_to('State Aid Calculation', edit_loan_state_aid_calculation_path(@loan), class: 'btn btn-info') if current_user.can_update?(StateAidCalculation) %>
-<%= link_to('Data Protection and Disclosure Declaration', data_protection_declaration_documents_path(format: :pdf), class: 'btn btn-info') if current_user.can_view?(DataProtectionDeclaration) %>
+<div class="form-actions">
+  <%= link_to_loan_entry(@loan) %>
+  <%= link_to('Cancel Loan', new_loan_cancel_path(@loan), class: 'btn btn-danger') if current_user.can_create?(LoanCancel) %>
+</div>
+
+<div class="form-actions">
+  <%= link_to('State Aid Calculation', edit_loan_state_aid_calculation_path(@loan), class: 'btn btn-info') if current_user.can_update?(StateAidCalculation) %>
+  <%= link_to('Data Protection and Disclosure Declaration', data_protection_declaration_documents_path(format: :pdf), class: 'btn btn-info') if current_user.can_view?(DataProtectionDeclaration) %>
+</div>
