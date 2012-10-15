@@ -21,6 +21,8 @@ describe EligibilityDecisionEmail do
       eligibility_decision_email.should_not be_valid
       eligibility_decision_email.email = "@wrong.com"
       eligibility_decision_email.should_not be_valid
+      eligibility_decision_email.email = "wr ong@wrong.com"
+      eligibility_decision_email.should_not be_valid
       eligibility_decision_email.email = "right@right.com"
       eligibility_decision_email.should be_valid
     end

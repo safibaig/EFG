@@ -36,6 +36,20 @@ shared_examples_for 'User' do
 
       another_user.should be_valid
     end
+
+    it 'should not allow whitespace in email address' do
+      user.email = "my email@example.com"
+      user.should_not be_valid
+
+      user.email = "myemail@exam ple.com"
+      user.should_not be_valid
+
+      user.email = "myemail@example.c om"
+      user.should_not be_valid
+
+      user.email = "myemail@example.com"
+      user.should be_valid
+    end
   end
 
   describe "#has_password?" do
