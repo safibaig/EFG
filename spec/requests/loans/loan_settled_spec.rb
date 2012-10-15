@@ -20,6 +20,9 @@ describe "loan settled" do
     end
 
     it 'can settle loans' do
+      # loans with data correction(s) are highlighted
+      FactoryGirl.create(:data_correction, loan: loan2)
+
       fill_in_valid_details
       click_button 'Select Loans'
 
@@ -28,6 +31,8 @@ describe "loan settled" do
       page.should have_content('LOGIHLJ-02')
       page.should_not have_content('MF6XT4Z-01')
       page.should_not have_content('HJD4JF8-01')
+
+      page.should have_css("tr td:nth-child(2)", text: "*", count: 1)
 
       within('#loan_1') do
         check('invoice[loans_to_be_settled_ids][]')

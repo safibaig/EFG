@@ -429,4 +429,19 @@ describe Loan do
     end
   end
 
+  describe "#corrected?" do
+    before(:each) do
+      loan.save!
+    end
+
+    it "should be true when loan has had a data correction" do
+      FactoryGirl.create(:data_correction, loan: loan)
+      loan.should be_corrected
+    end
+
+    it "should be false when loan not had a data correction" do
+      loan.should_not be_corrected
+    end
+  end
+
 end

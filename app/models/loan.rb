@@ -261,6 +261,10 @@ class Loan < ActiveRecord::Base
     end
   end
 
+  def corrected?
+    self.data_corrections.count > 0
+  end
+
   private
 
   def set_reference

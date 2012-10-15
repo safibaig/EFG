@@ -27,6 +27,7 @@
       <thead>
         <tr>
           <th>Settle Claim?</th>
+          <th>&nbsp;</th>
           <th>Loan Reference</th>
           <th>Name</th>
           <th>Date Demanded</th>
@@ -39,6 +40,7 @@
         <% @invoice.demanded_loans.each do |loan| %>
           <tr id="<%= dom_id(loan) %>">
             <td><%= check_box_tag "#{f.object_name}[loans_to_be_settled_ids][]", loan.id %></td>
+            <td><%= "*" if loan.corrected? %></td>
             <td><%= loan.reference %></td>
             <td><%= loan.business_name %></td>
             <td><%= loan.dti_demanded_on %></td>
@@ -48,6 +50,9 @@
           </tr>
         <% end %>
       </tbody>
+      </tfoot>
+        <td colspan="8">( <strong>*</strong> indicates corrected loans )</td>
+      </tfoot>
     </table>
 
     <div class="form-actions">
