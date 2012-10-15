@@ -10,14 +10,10 @@
 
 <p>This page confirms your application is not eligible for SFLG and cannot be progressed any further.</p>
 
+<%= link_to 'View Loan Summary', loan_path(@loan), class: 'btn' %>
+
+<hr />
+
 <p>This eligibility decision can be e-mailed for your convenience (for internal use only).</p>
 
-<%= simple_form_for(@eligibility_decision_email, url: email_loan_eligibility_decision_path, html: { class: 'form-horizontal' }) do |f| %>
-
-  <%= f.input :email %>
-
-  <div class="form-actions">
-    <%= f.button :submit, value: 'Send', class: 'btn-primary' %>
-  </div>
-
-<% end %>
+<%= render "form" %>
