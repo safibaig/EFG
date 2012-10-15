@@ -213,7 +213,9 @@
   <%= loan_details_table(@loan, 'simple_form.labels.loan_demand_against_government') do |table| %>
     <%= table.row 'dti_demanded_on' %>
     <%= table.row 'dti_demand_outstanding' %>
+    <%= table.row('dti_interest') unless @loan.efg_loan? %>
     <%= table.row 'dti_amount_claimed' %>
+    <%= table.row('dti_break_costs') unless @loan.efg_loan? %>
 
     <tr>
       <th>Business Failure Group</th>
