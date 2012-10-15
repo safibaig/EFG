@@ -22,6 +22,8 @@ class User < ActiveRecord::Base
 
   attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
 
+  attr_protected :username
+
   validates_presence_of :first_name, :last_name, :username, :email
 
   validates_format_of :email, :with  => Devise.email_regexp, :allow_blank => true, :if => :email_changed?
