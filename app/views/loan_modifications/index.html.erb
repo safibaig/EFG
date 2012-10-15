@@ -10,19 +10,27 @@
 
 <p>From this page you can view a summary of Facility History Changes.</p>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Date of Change</th>
-      <th>Summary Type</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @loan_modifications.each do |loan_modification| %>
+<% if @loan_modifications.empty? %>
+
+  <h4>No changes.</h4>
+
+<% else %>
+
+  <table class="table table-striped">
+    <thead>
       <tr>
-        <td><%= link_to loan_modification.date_of_change.to_s(:screen), loan_loan_modification_path(@loan, loan_modification) %></td>
-        <td><%= link_to loan_modification.change_type_name, loan_loan_modification_path(@loan, loan_modification) %></td>
+        <th>Date of Change</th>
+        <th>Summary Type</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @loan_modifications.each do |loan_modification| %>
+        <tr>
+          <td><%= link_to loan_modification.date_of_change.to_s(:screen), loan_loan_modification_path(@loan, loan_modification) %></td>
+          <td><%= link_to loan_modification.change_type_name, loan_loan_modification_path(@loan, loan_modification) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<% end %>
