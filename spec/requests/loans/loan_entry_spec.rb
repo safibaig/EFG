@@ -87,10 +87,9 @@ describe 'loan entry' do
     loan.ineligibility_reasons.should be_empty
 
     visit loan_path(loan)
-    click_link 'Loan Entry'
 
-    fill_in_valid_details
-    fill_in :amount, 2000000 # max amount is 1M
+    click_link 'Loan Entry'
+    fill_in_ineligible_details
     click_button 'Submit'
 
     loan.reload
@@ -98,6 +97,17 @@ describe 'loan entry' do
     loan.ineligibility_reasons.count.should == 1
 
     current_path.should == loan_path(loan)
+
+    loan.ineligibility_reasons.count.should == 1
+    page.should have_content(loan.ineligibility_reasons.first.reason)
+
+    # verify existing ineligibility reasons are cleared when resubmitting ineligible loan entry
+
+    click_link 'Loan Entry'
+    fill_in_ineligible_details
+    click_button 'Submit'
+
+    loan.ineligibility_reasons.count.should == 1
     page.should have_content(loan.ineligibility_reasons.first.reason)
   end
 
@@ -189,6 +199,11 @@ describe 'loan entry' do
       choose_radio_button 'interest_rate_type_id', 1
       fill_in 'interest_rate', '2.25'
       fill_in 'fees', '123.45'
+    end
+
+    def fill_in_ineligible_details
+      fill_in_valid_details
+      fill_in :amount, 2000000 # max amount is 1M
     end
 
     def calculate_state_aid

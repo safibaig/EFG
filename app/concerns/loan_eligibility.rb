@@ -10,6 +10,7 @@ module LoanEligibility
   end
 
   def save_ineligibility_reasons
+    loan.ineligibility_reasons.delete_all
     loan.ineligibility_reasons.create!(reason: eligibility_check.reasons.join("\n"))
   end
 
