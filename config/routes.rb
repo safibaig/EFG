@@ -49,7 +49,11 @@ EFG::Application.routes.draw do
     end
 
     resource :cancel, only: [:new, :create], controller: 'loan_cancels'
-    resource :entry, only: [:new, :create], controller: 'loan_entries'
+    resource :entry, only: [:new, :create], controller: 'loan_entries' do
+      member do
+        get :complete
+      end
+    end
     resource :offer, only: [:new, :create], controller: 'loan_offers'
     resource :guarantee, only: [:new, :create], controller: 'loan_guarantees'
     resource :entry, only: [:new, :create], controller: 'loan_entries'

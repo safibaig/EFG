@@ -18,7 +18,7 @@ describe 'loan entry' do
 
     loan = Loan.last
 
-    current_path.should == loan_path(loan)
+    current_path.should == complete_loan_entry_path(loan)
 
     loan.state.should == Loan::Completed
     loan.declaration_signed.should be_true
@@ -77,7 +77,7 @@ describe 'loan entry' do
 
     loan = Loan.last
 
-    current_path.should == loan_path(loan)
+    current_path.should == complete_loan_entry_path(loan)
 
     loan.state.should == Loan::Completed
     loan.modified_by.should == current_user
@@ -164,7 +164,7 @@ describe 'loan entry' do
 
     click_button 'Submit'
 
-    current_path.should == loan_path(loan)
+    current_path.should == complete_loan_entry_path(loan)
   end
 
   private

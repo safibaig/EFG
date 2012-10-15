@@ -1,5 +1,11 @@
-<%= link_to('Offer Scheme Facility', new_loan_offer_path(@loan), class: 'btn btn-primary') if current_user.can_create?(LoanOffer) %>
-<%= link_to_premium_schedule(@loan) %>
-<%= link_to('Cancel Loan', new_loan_cancel_path(@loan), class: 'btn btn-danger') if current_user.can_create?(LoanCancel) %>
-<%= link_to_information_declaration(@loan) %>
-<%= link_to_state_aid_letter(@loan) %>
+<div class="form-actions">
+  <%= link_to('Offer Scheme Facility', new_loan_offer_path(@loan), class: 'btn btn-primary') if current_user.can_create?(LoanOffer) %>
+  <%= link_to('Cancel Loan', new_loan_cancel_path(@loan), class: 'btn btn-danger') if current_user.can_create?(LoanCancel) %>
+</div>
+
+<div class="form-actions">
+  <%= link_to_premium_schedule(@loan) %>
+  <%= link_to_information_declaration(@loan) %>
+  <%= link_to_state_aid_letter(@loan) %>
+  <%= link_to "View Direct Debit Mandate", "/pdfs/direct_debit_mandate.pdf", class: 'btn btn-info' %>
+</div>

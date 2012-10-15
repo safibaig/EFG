@@ -132,6 +132,10 @@ class LoanEntry
     loan.save(validate: false)
   end
 
+  def complete?
+    loan.state == Loan::Completed
+  end
+
   private
 
   # Note: state aid must be recalculated if the loan term has changed

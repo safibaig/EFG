@@ -1,0 +1,21 @@
+<div class="page-header">
+  <h1>Loan <%= @loan.reference %> has been entered</h1>
+</div>
+
+<p>Entry of information about the facility has now been completed and it meets the necessary criteria to obtain the guarantee.</p>
+
+<p>In order to progress the facility, a Scheme Facility Letter should be sent to the Applicant. This Scheme Facility Letter should follow the format adopted by your organisation for this type of facility. In addition, the following information should be provided to the Applicant:</p>
+
+<ul>
+  <li>The Applicant's Premium Payment Schedule for the facility. This can be generated from the Summary page.</li>
+  <li>A letter confirming the level of De Minimis State Aid attributable to the facility. (See <em>'Generate State Aid Letter'</em> below).</li>
+  <li>The Information Declaration that contains all the information used to determine eligibility. (See <em>'View Information Declaration'</em> below).</li>
+  <li>The <a href="/pdfs/direct_debit_mandate.pdf">Direct Debit mandate</a> which should be printed.</li>
+</ul>
+
+<div class="form-actions">
+  <%= link_to 'View Loan Summary', loan_path(@loan), class: 'btn' %>
+  <%= link_to_information_declaration(@loan) %>
+  <%= link_to_state_aid_letter(@loan) %>
+  <%= link_to "View Direct Debit Mandate", "/pdfs/direct_debit_mandate.pdf", class: 'btn btn-info' %>
+</div>

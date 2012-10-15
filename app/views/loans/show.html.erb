@@ -7,18 +7,16 @@
 
 <%= loan_summary(@loan) do %>
   <div class="form-actions">
-    <%= link_to 'Loan Details', details_loan_path(@loan), class: 'btn' %>
+      <%= link_to 'Loan Details', details_loan_path(@loan), class: 'btn' %>
 
-    <% if current_user.can_view?(LoanModification) %>
-      <%= link_to 'Loan Changes', loan_loan_modifications_path(@loan), class: 'btn' %>
-    <% end %>
+      <% if current_user.can_view?(LoanModification) %>
+        <%= link_to 'Loan Changes', loan_loan_modifications_path(@loan), class: 'btn' %>
+      <% end %>
 
-    <%= link_to('View Audit Log', audit_log_loan_path(@loan), class: 'btn') %>
-
-    <div class="form-actions">
-      <%= render "loans/buttons/#{@loan.state}" %>
-    </div>
+      <%= link_to('View Audit Log', audit_log_loan_path(@loan), class: 'btn') %>
   </div>
+
+  <%= render "loans/buttons/#{@loan.state}" %>
 <% end %>
 
 <% if loan_ineligible?(@loan) %>
