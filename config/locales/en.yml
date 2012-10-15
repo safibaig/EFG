@@ -18,8 +18,6 @@ en:
         invalid: "Although a business may benefit from EFG on more than one occasion, and may have more than one EFG-backed facility at any one time, the total outstanding balances and/or active available limits of the Applicant's current EFG facilities may not exceed £1 million at any one time."
       private_residence_charge_required:
         invalid: A new charge may not not be taken over a principal private residence in connection with providing an EFG-backed facility.
-      turnover: &turnover
-        invalid: "Turnover is greater than £41 million. The size of business eligible to benefit from EFG is determined by turnover. The maximum turnover limit of £41 million is intended to accommodate the majority of Small and Medium-Sized Enterprises (SMEs). The turnover figure used in the eligibility assessment is taken from the most recent information available to the Lender about the Applicant and should be the same as that used by the Lender in making the commercial decision to lend."
       sic_code:
         invalid: "SIC code is ineligible. The SIC code is used to classify business activities. While businesses in the majority of sectors are eligible there are a small number of exclusions, usually due to either UK or EU regulations."
 
@@ -47,6 +45,8 @@ en:
               not_allowed: 'Loan term should be between 3 months and 2, 3 or 10 years (inclusive). EFG facilities are only available for terms of between three months and ten years in most cases. Type E facilities have a maximum term of two years and Type F facilities have a maximum of three years.'
             trading_date:
               too_far_in_the_future: must be within the next 6 months
+            turnover: &turnover
+              invalid: "Turnover is greater than £41 million. The size of business eligible to benefit from EFG is determined by turnover. The maximum turnover limit of £41 million is intended to accommodate the majority of Small and Medium-Sized Enterprises (SMEs). The turnover figure used in the eligibility assessment is taken from the most recent information available to the Lender about the Applicant and should be the same as that used by the Lender in making the commercial decision to lend."
         loan_entry:
           attributes:
             declaration_signed:
