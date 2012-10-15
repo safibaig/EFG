@@ -12,6 +12,7 @@ class LoanDemandToBorrower
   validates_presence_of :amount_demanded
   validates_presence_of :borrower_demanded_on
   validate :validate_gte_loan_initial_draw_date, if: :borrower_demanded_on
+  validate :borrower_demanded_on_is_not_in_the_future, if: :borrower_demanded_on
 
   def amount_demanded=(value)
     @amount_demanded = value.present? ? Money.parse(value) : nil
@@ -39,6 +40,12 @@ class LoanDemandToBorrower
     def validate_gte_loan_initial_draw_date
       if borrower_demanded_on < loan.initial_draw_change.date_of_change
         errors.add(:borrower_demanded_on, :must_be_after_loan_initial_draw_date)
+      end
+    end
+
+    def borrower_demanded_on_is_not_in_the_future
+      if borrower_demanded_on > Date.today
+        errors.add(:borrower_demanded_on, :cannot_be_in_the_future)
       end
     end
 end

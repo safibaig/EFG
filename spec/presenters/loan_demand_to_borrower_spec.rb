@@ -35,6 +35,14 @@ describe LoanDemandToBorrower do
       loan_demand_to_borrower.borrower_demanded_on = Date.new(2012, 1, 1)
       loan_demand_to_borrower.should_not be_valid
     end
+
+    it 'requires borrower_demanded_on to not be in the future' do
+      loan_demand_to_borrower.borrower_demanded_on = 1.day.from_now
+      loan_demand_to_borrower.should_not be_valid
+
+      loan_demand_to_borrower.borrower_demanded_on = Date.today
+      loan_demand_to_borrower.should be_valid
+    end
   end
 
   describe '#save' do
