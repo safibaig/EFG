@@ -62,7 +62,7 @@ import_namespace = namespace :import do
     _import Lender
   end
 
-  desc 'SFLG_LENDER_CAP_ALLOC_DATA_TABLE)'
+  desc 'SFLG_LENDER_CAP_ALLOC_DATA_TABLE'
   task lending_limits: :lenders do
     _import LendingLimit
   end
