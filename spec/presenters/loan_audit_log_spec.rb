@@ -52,7 +52,7 @@ describe LoanAuditLog do
 
   describe '#modified_at' do
     it 'should return formatted date time' do
-      loan_audit_log.modified_at.should == "10/05/2012 11:00"
+      loan_audit_log.modified_at.should == Time.zone.parse("10/05/2012 11:00").strftime("%d/%m/%Y %I:%M")
     end
   end
 
