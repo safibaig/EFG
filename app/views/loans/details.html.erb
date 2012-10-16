@@ -219,7 +219,7 @@
 
     <tr>
       <th>Business Failure Group</th>
-      <td><%= @loan.dti_ded_code %></td>
+      <td><%= @loan.ded_code.group_description %></td>
     </tr>
 
     <tr>
@@ -228,12 +228,20 @@
     </tr>
 
     <tr>
-      <th>Business Failure Code</th>
+      <th>Business Failure Reason</th>
       <td><%= @loan.ded_code.code_description %></td>
     </tr>
 
-    <%= table.row 'dti_ded_code' %>
-    <%= table.row 'dti_reason' %>
+    <tr>
+      <th>Business Failure Code</th>
+      <td><%= @loan.dti_ded_code %></td>
+    </tr>
+
+    <tr>
+      <th>Additional explanatory comments regarding the reason for Demand against the Guarantee</th>
+      <td><%= @loan.dti_reason %></td>
+    </tr>
+
   <% end %>
 <% end %>
 
