@@ -6,6 +6,8 @@ gem 'activerecord-import', '0.2.11'
 gem 'aws-ses', :require => 'aws/ses' # Needed by exception_notification
 gem 'bootstrap-will_paginate', '0.0.7'
 gem 'canable', '0.3.0'
+# gem "data-anonymization", :path => "../data-anonymization"
+gem "data-anonymization", :git => 'git@github.com:jabley/data-anonymization.git', :branch => 'mass-assignment'
 gem 'devise', '2.1.0'
 gem "devise-encryptable", "0.1.1"
 gem 'exception_notification', '2.5.2'
@@ -19,6 +21,7 @@ gem 'progressbar', '0.11.0'
 gem 'rack-ssl-enforcer'
 gem 'rails', '3.2.8'
 gem 'simple_form', '2.0.2'
+gem "sqlite3", "1.3.6"
 gem 'statsd-ruby', '1.0.0'
 gem 'twitter-bootstrap-rails', '2.0.7'
 gem 'unicorn', '4.3.1'
