@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe LoanAuditLog do
 
-  let(:loan_state_change) { FactoryGirl.build(:guaranteed_loan_state_change, modified_at: Time.parse('10/05/2012 11:00')) }
+  let(:loan_state_change) { FactoryGirl.build(:guaranteed_loan_state_change, modified_at: Time.zone.local(2012, 10, 5, 11, 00)) }
 
   let(:loan_audit_log) { LoanAuditLog.new(loan_state_change) }
 
@@ -52,10 +52,9 @@ describe LoanAuditLog do
 
   describe '#modified_at' do
     it 'should return formatted date time' do
-      loan_audit_log.modified_at.should == Time.zone.parse("10/05/2012 11:00").strftime("%d/%m/%Y %I:%M")
+      loan_audit_log.modified_at.should == Time.zone.local(2012, 10, 5, 11, 00).strftime("%d/%m/%Y %I:%M")
     end
   end
-
 
   describe '#modified_by' do
     it 'should return full name of user' do
