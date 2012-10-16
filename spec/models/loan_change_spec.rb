@@ -267,34 +267,40 @@ describe LoanChange do
         end
       end
 
-      context 'a - Decrease term' do
-        before do
-          loan_change.change_type_id = 'a'
-          loan_change.maturity_date = Date.new(2021, 4, 3)
-          loan_change.state_aid_calculation_attributes = state_aid_calculation_attributes
-        end
+      # 4 - extend term
+      # a - decrease term
+      %w(4 a).each do |change_type|
+        context change_type do
+          before do
+            loan_change.change_type_id = change_type
+            loan_change.maturity_date = Date.new(2019, 4, 3)
+            loan_change.state_aid_calculation_attributes = state_aid_calculation_attributes
 
-        it 'works' do
-          loan_change.save_and_update_loan.should == true
-          loan_change.old_maturity_date.should == Date.new(2020, 3, 2)
+            loan_change.save_and_update_loan
+          end
 
-          loan.reload
-          loan.maturity_date.should == Date.new(2021, 4, 3)
-          loan.modified_by.should == user
-          loan.state.should == Loan::Guaranteed
+          it 'stores old maturity date' do
+            loan_change.old_maturity_date.should == Date.new(2020, 3, 2)
+          end
 
-          state_change = loan.state_changes.last!
-          state_change.event_id.should == 9
-          state_change.state.should == Loan::Guaranteed
-        end
+          it 'updates loan maturity date' do
+            loan.reload
+            loan.maturity_date.should == Date.new(2019, 4, 3)
+            loan.modified_by.should == user
+            loan.state.should == Loan::Guaranteed
+          end
 
-        it 'does not update Loan#business_name' do
-          loan_change.business_name = 'Foo'
-          loan_change.save_and_update_loan.should == true
-          loan_change.old_business_name.should == nil
+          it 'creates state change record' do
+            state_change = loan.state_changes.last!
+            state_change.event_id.should == 9
+            state_change.state.should == Loan::Guaranteed
+          end
 
-          loan.reload
-          loan.business_name.should == 'ACME'
+          it 'does not update Loan#business_name' do
+            loan_change.old_business_name.should == nil
+            loan.reload
+            loan.business_name.should == 'ACME'
+          end
         end
       end
     end

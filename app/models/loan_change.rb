@@ -36,7 +36,7 @@ class LoanChange < LoanModification
       when '1'
         self.old_business_name = loan.business_name
         loan.business_name = business_name
-      when 'a'
+      when '4', 'a'
         self.old_maturity_date = loan.maturity_date
         loan.maturity_date = maturity_date
       end
