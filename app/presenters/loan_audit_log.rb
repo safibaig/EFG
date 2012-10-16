@@ -31,8 +31,8 @@ class LoanAuditLog
     loan_state_change.state.humanize
   end
 
-  def modified_on
-    loan_state_change.modified_on.to_s(:screen)
+  def modified_at
+    loan_state_change.modified_at.strftime("%d/%m/%Y %I:%M")
   end
 
   def modified_by

@@ -3,7 +3,7 @@ FactoryGirl.define do
     loan
     state Loan::Eligible
     event_id 1
-    modified_on Date.today
+    modified_at Time.now
     association :modified_by, factory: :lender_user
 
     factory :accepted_loan_state_change do

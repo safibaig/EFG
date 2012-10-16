@@ -36,9 +36,9 @@ describe LoanStateChange do
       }.to raise_error(ActiveModel::StrictValidationFailed)
     end
 
-    it 'strictly requires a modified_on' do
+    it 'strictly requires modified_at' do
       expect {
-        loan_state_change.modified_on = nil
+        loan_state_change.modified_at = nil
         loan_state_change.valid?
       }.to raise_error(ActiveModel::StrictValidationFailed)
     end
@@ -48,6 +48,21 @@ describe LoanStateChange do
         loan_state_change.modified_by_id = nil
         loan_state_change.valid?
       }.to raise_error(ActiveModel::StrictValidationFailed)
+    end
+  end
+
+  describe ".log" do
+    let!(:loan) { FactoryGirl.create(:loan, :guaranteed) }
+
+    it "should create loan state change for the specified loan and event" do
+      LoanStateChange.log(loan, 7, loan.modified_by)
+
+      loan_state_change = LoanStateChange.last
+      loan_state_change.loan.should == loan
+      loan_state_change.state.should == loan.state
+      loan_state_change.event_id.should == 7
+      loan_state_change.modified_by.should == loan.modified_by
+      loan_state_change.modified_at.to_i.should == Time.now.to_i
     end
   end
 end

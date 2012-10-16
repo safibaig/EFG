@@ -121,12 +121,7 @@ class LoanTransfer::Base
 
   def log_loan_state_changes!
     [loan_to_transfer, new_loan].each do |loan|
-      loan.state_changes.create!(
-        state: loan.state,
-        modified_on: Date.today,
-        modified_by: loan.modified_by,
-        event_id: loan_event_id
-      )
+      LoanStateChange.log(loan, loan_event_id, loan.modified_by)
     end
   end
 

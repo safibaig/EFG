@@ -102,13 +102,7 @@ class Recovery < ActiveRecord::Base
     end
 
     def log_loan_state_change!
-      LoanStateChange.create!(
-        loan_id: loan.id,
-        state: Loan::Recovered,
-        modified_on: Date.today,
-        modified_by: created_by,
-        event_id: 20 # Recovery made
-      )
+      LoanStateChange.log(loan, 20, created_by)
     end
 
     def set_seq

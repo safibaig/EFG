@@ -11,7 +11,7 @@ class LoanStateChangeImporter < BaseImporter
       "OID"                 => :legacy_id,
       "VERSION"             => :version,
       "STATUS"              => :state,
-      "LAST_MODIFIED"       => :modified_on,
+      "LAST_MODIFIED"       => :modified_at,
       "MODIFIED_BY"         => :modified_by_legacy_id,
       "EVENT_ID"            => :event_id,
       "AR_TIMESTAMP"        => :ar_timestamp,
@@ -19,8 +19,7 @@ class LoanStateChangeImporter < BaseImporter
     }
   end
 
-  DATES = %w(LAST_MODIFIED)
-  TIMES = %w(AR_TIMESTAMP AR_INSERT_TIMESTAMP)
+  TIMES = %w(LAST_MODIFIED AR_TIMESTAMP AR_INSERT_TIMESTAMP)
 
   def build_attributes
     row.each do |name, value|
@@ -33,8 +32,6 @@ class LoanStateChangeImporter < BaseImporter
       when "MODIFIED_BY"
         attributes[:modified_by_id] = self.class.user_id_from_username(value)
         value
-      when *DATES
-        value = Date.parse(value) unless value.blank?
       when *TIMES
         value = Time.parse(value) unless value.blank?
       end
@@ -43,8 +40,9 @@ class LoanStateChangeImporter < BaseImporter
     end
   end
 
+  # Create LoanStateChange record for the current state of each loan
   def self.after_import
-    columns = [ :loan_id, :state, :event_id, :modified_on, :modified_by_id, :version ]
+    columns = [ :loan_id, :state, :event_id, :modified_at, :modified_by_id, :version ]
     values  = []
 
     unless Rails.env.test?

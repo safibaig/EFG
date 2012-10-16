@@ -35,7 +35,7 @@ describe LoanStateChangeImporter do
       loan_state_change1.legacy_id.should == "144765"
       loan_state_change1.version.should == 0
       loan_state_change1.state.should == Loan::Eligible
-      loan_state_change1.modified_on.should == Date.parse("24-MAY-07")
+      loan_state_change1.modified_at.should == Time.parse("24-MAY-07 11:16")
       loan_state_change1.modified_by.should == User.find_by_username!('cric2666s')
       loan_state_change1.event_id.should == 1
 
@@ -43,7 +43,7 @@ describe LoanStateChangeImporter do
       loan_state_change2.legacy_id.should == "144765"
       loan_state_change2.version.should == 2
       loan_state_change2.state.should == Loan::Incomplete
-      loan_state_change2.modified_on.should == Date.parse("26-MAY-07")
+      loan_state_change2.modified_at.should == Time.parse("26-MAY-07 13:10")
       loan_state_change2.modified_by.should == User.find_by_username!('jake1234p')
       loan_state_change2.event_id.should == 2
     end

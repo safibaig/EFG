@@ -102,8 +102,8 @@ describe LoanAuditReport do
     end
 
     it "should return loans with an audit record modified at date after a specified date" do
-      loan_state_change1.update_attribute(:modified_on, 1.day.ago)
-      loan_state_change2.update_attribute(:modified_on, 1.day.from_now)
+      loan_state_change1.update_attribute(:modified_at, 1.day.ago)
+      loan_state_change2.update_attribute(:modified_at, 1.day.from_now)
 
       loan_audit_report = LoanAuditReport.new(audit_records_start_date: Date.today.strftime('%d/%m/%Y'))
 
@@ -111,8 +111,8 @@ describe LoanAuditReport do
     end
 
     it "should return loans with an audit record modified at date before a specified date" do
-      loan_state_change1.update_attribute(:modified_on, 1.day.ago)
-      loan_state_change2.update_attribute(:modified_on, 1.day.from_now)
+      loan_state_change1.update_attribute(:modified_at, 1.day.ago)
+      loan_state_change2.update_attribute(:modified_at, 1.day.from_now)
 
       loan_audit_report = LoanAuditReport.new(audit_records_end_date: Date.today.strftime('%d/%m/%Y'))
 

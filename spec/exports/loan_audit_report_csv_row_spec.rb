@@ -39,7 +39,7 @@ describe LoanAuditReportCsvRow do
         loan_modified_by: user.username,
         loan_state_change_to_state: Loan::Guaranteed,
         loan_state_change_event_id: 3,
-        loan_state_change_modified_on: Date.parse('11/06/2012'),
+        loan_state_change_modified_at: Time.parse('11/06/2012 11:00'),
         loan_state_change_modified_by: user.username,
         loan_initial_draw_date: Date.parse('03/06/2012')
       )
@@ -79,7 +79,7 @@ describe LoanAuditReportCsvRow do
       row[26].should == Loan::Offered.humanize        # from_state
       row[27].should == Loan::Guaranteed.humanize     # to_state
       row[28].should == LoanEvent.find(3).name        # loan_function
-      row[29].should == "11-06-2012 12:00 AM"         # audit_record_modified_date
+      row[29].should == "11-06-2012 11:00 AM"         # audit_record_modified_at
       row[30].should == user.username                 # audit_record_modified_by
     end
 

@@ -55,7 +55,7 @@ class Loan < ActiveRecord::Base
   has_many :recoveries
   has_many :loan_securities
   has_many :ineligibility_reasons, class_name: 'LoanIneligibilityReason'
-  has_many :state_changes, class_name: 'LoanStateChange', order: [:modified_on, :id]
+  has_many :state_changes, class_name: 'LoanStateChange', order: :modified_at
 
   scope :offered,         where(state: Loan::Offered)
   scope :demanded,        where(state: Loan::Demanded)
@@ -252,12 +252,7 @@ class Loan < ActiveRecord::Base
   def update_state!(to_state, event_id, modified_by_user)
     self.class.transaction do
       self.update_attribute(:state, to_state)
-      self.state_changes.create!(
-        state: self.state,
-        modified_on: Date.today,
-        modified_by: modified_by_user,
-        event_id: event_id
-      )
+      LoanStateChange.log(self, event_id, modified_by_user)
     end
   end
 

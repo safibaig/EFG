@@ -5,7 +5,7 @@ class DataCorrection < LoanModification
   before_validation :set_change_type_id
   before_save :set_all_attributes
   after_save_and_update_loan :update_loan_and_initial_draw_change!
-  after_save_and_update_loan :create_loan_state_change!
+  after_save_and_update_loan :log_state_change!
 
   validate :presence_of_a_field
   validate :validate_amount, if: :amount?
@@ -57,14 +57,8 @@ class DataCorrection < LoanModification
       amount == loan.amount
     end
 
-    def create_loan_state_change!
-      LoanStateChange.create!(
-        loan_id: loan.id,
-        state: loan.state,
-        modified_on: Date.today,
-        modified_by: created_by,
-        event_id: 22
-      )
+    def log_state_change!
+      LoanStateChange.log(loan, 22, created_by)
     end
 
     def cumulative_drawn_amount

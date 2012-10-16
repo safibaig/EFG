@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe LoanAuditLog do
 
-  let(:loan_state_change) { FactoryGirl.build(:guaranteed_loan_state_change, modified_on: Date.parse('10/05/2012')) }
+  let(:loan_state_change) { FactoryGirl.build(:guaranteed_loan_state_change, modified_at: Time.parse('10/05/2012 11:00')) }
 
   let(:loan_audit_log) { LoanAuditLog.new(loan_state_change) }
 
@@ -50,9 +50,9 @@ describe LoanAuditLog do
   end
 
 
-  describe '#modified_on' do
+  describe '#modified_at' do
     it 'should return formatted date time' do
-      loan_audit_log.modified_on.should == "10/05/2012"
+      loan_audit_log.modified_at.should == "10/05/2012 11:00"
     end
   end
 

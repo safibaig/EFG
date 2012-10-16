@@ -37,7 +37,7 @@ class LoanAuditReportCsvRow
       from_state,
       @loan.loan_state_change_to_state.humanize,
       event_name,
-      @loan.loan_state_change_modified_on.try(:strftime, "%d-%m-%Y %I:%M %p"),
+      @loan.loan_state_change_modified_at.try(:strftime, "%d-%m-%Y %I:%M %p"),
       @loan.loan_state_change_modified_by
     ]
   end

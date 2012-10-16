@@ -3,7 +3,7 @@ class LoanChange < LoanModification
 
   before_save :set_old_and_loan_attributes
   after_save_and_update_loan :update_loan!
-  after_save_and_update_loan :create_loan_state_change!
+  after_save_and_update_loan :log_loan_state_change!
 
   validates_inclusion_of :change_type_id, in: %w(1 2 3 4 5 6 7 8 a)
 
@@ -27,14 +27,8 @@ class LoanChange < LoanModification
   end
 
   private
-    def create_loan_state_change!
-      LoanStateChange.create!(
-        loan_id: loan.id,
-        state: loan.state,
-        modified_on: Date.today,
-        modified_by: created_by,
-        event_id: 9
-      )
+    def log_loan_state_change!
+      LoanStateChange.log(loan, 9, created_by)
     end
 
     def set_old_and_loan_attributes

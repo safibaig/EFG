@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121011150536) do
+ActiveRecord::Schema.define(:version => 20121016103524) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -234,14 +234,14 @@ ActiveRecord::Schema.define(:version => 20121011150536) do
     t.integer  "modified_by_id",        :null => false
     t.string   "modified_by_legacy_id"
     t.integer  "event_id",              :null => false
-    t.date     "modified_on"
+    t.datetime "modified_at"
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
     t.datetime "created_at",            :null => false
     t.datetime "updated_at",            :null => false
   end
 
-  add_index "loan_state_changes", ["loan_id", "modified_on", "id"], :name => "loan_association"
+  add_index "loan_state_changes", ["loan_id", "modified_at"], :name => "loan_association"
 
   create_table "loans", :force => true do |t|
     t.boolean  "viable_proposition",                                                                                  :null => false

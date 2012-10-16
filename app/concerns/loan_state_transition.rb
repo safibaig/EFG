@@ -7,7 +7,7 @@ module LoanStateTransition
     raise RuntimeError.new('LoanPresenter must be included.') unless ancestors.include?(LoanPresenter)
 
     before_save :transition_state
-    after_save :log_state_change
+    after_save :log_state_change!
   end
 
   module ClassMethods
@@ -40,14 +40,8 @@ module LoanStateTransition
     loan.state = transition_to
   end
 
-  def log_state_change
-    LoanStateChange.create!(
-      loan_id: loan.id,
-      state: loan.state,
-      modified_on: Date.today,
-      modified_by: loan.modified_by,
-      event_id: event.id
-    )
+  def log_state_change!
+    LoanStateChange.log(loan, event.id, loan.modified_by)
   end
 
 end
