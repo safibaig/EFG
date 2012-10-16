@@ -29,7 +29,7 @@ describe InformationDeclaration do
       pdf_content.should match(/^Information Declaration/)
       pdf_content.should include("Lender organisation:#{loan.lender.name}")
       pdf_content.should include("Business name:#{loan.business_name}")
-      pdf_content.should include("SFLG reference number:#{loan.reference}")
+      pdf_content.should include("EFG/SFLG reference:#{loan.reference}")
       pdf_content.should include("Loan amount:#{loan.amount.format}")
     end
 

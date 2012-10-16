@@ -40,7 +40,7 @@ class InformationDeclaration < Prawn::Document
 
         data = [
           ["Lender organisation:", @loan.lender.name, "Business name:", @loan.business_name || '<undefined>'],
-          ["EFG/SFLG reference number:", @loan.reference, "Loan amount:", @loan.amount.format]
+          ["EFG/SFLG reference:", @loan.reference, "Loan amount:", @loan.amount.format]
         ]
 
         table(data, column_widths: [150, 140, 100, 150]) do
