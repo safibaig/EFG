@@ -109,7 +109,7 @@ en:
       loan_guarantee:
         received_declaration: Has a signed Information Declaration (without any amendments) been received from the Application?
         first_pp_received: 'Has the Applicant the means to settle the first Scheme Guarantee Premium from the date of Guarantee and Initial Draw?  Please note that the first and all subsequent Quarterly Premiums will be collected by the Premium Collection Agent by Direct Debit.'
-        signed_direct_debit_received: 'Has a completed Direct Debit Mandate signed by the Applicant been received and forwarded to the Premium Collection Agent?'
+        signed_direct_debit_received: 'Has a completed Direct Debit Mandate signed by the Applicant been received?'
         initial_draw_date: 'On what date was the initial draw of funds made?'
         initial_draw_amount: 'What was the value of the initial draw?'
         maturity_date: 'On what date is the loan to be repaid (maturity date)?'
