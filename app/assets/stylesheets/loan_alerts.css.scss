@@ -6,6 +6,7 @@
   width: 620px;
 
   .loan-alert {
+    position: relative;
     background-color: $light_grey;
     padding: 1em 10px;
     margin-bottom: 1em;
@@ -22,24 +23,26 @@
     }
 
     ol.dates {
+      width: 100%;
       list-style: none;
       margin: 0;
       padding: 0;
 
       li {
-        display: inline-block;
+        float: left;
+        display: block;
         width: 32.8%;
       }
 
-      li:nth-child(1) {
+      li.first {
         text-align: left;
       }
 
-      li:nth-child(2) {
+      li.second {
         text-align: center;
       }
 
-      li:nth-child(3) {
+      li.third {
         text-align: right;
       }
     }
@@ -60,16 +63,28 @@
     height: 100%;
     text-decoration: none;
 
-    &.high-priority span {
-      background-color: $red;
+    &.high-priority {
+      width: 100px;
+
+      span {
+        background-color: $red;
+      }
     }
 
-    &.medium-priority span {
-      background-color: $amber;
+    &.medium-priority {
+      width: 200px;
+
+      span {
+        background-color: $amber;
+      }
     }
 
-    &.low-priority span {
-      background-color: $light_green;
+    &.low-priority {
+      width: 300px;
+
+      span {
+        background-color: $light_green;
+      }
     }
 
     p.total-loans {
@@ -85,6 +100,7 @@
     }
 
     &:hover p.total-loans {
+      cursor: pointer;
       display: block;
       color: #000;
       background-color: rgba(255,250,227,0.6); /* beige */
