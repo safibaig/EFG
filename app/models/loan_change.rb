@@ -37,8 +37,10 @@ class LoanChange < LoanModification
         self.old_business_name = loan.business_name
         loan.business_name = business_name
       when '4', 'a'
-        self.old_maturity_date = loan.maturity_date
-        loan.maturity_date = maturity_date
+        self.old_maturity_date  = loan.maturity_date
+        loan.maturity_date      = maturity_date
+        self.old_loan_term      = loan.repayment_duration.total_months
+        loan.repayment_duration = LoanTerm.new(loan).months_between_draw_date_and_maturity_date
       end
     end
 

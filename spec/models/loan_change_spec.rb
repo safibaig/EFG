@@ -272,6 +272,8 @@ describe LoanChange do
       %w(4 a).each do |change_type|
         context change_type do
           before do
+            loan_change.loan.initial_draw_change.update_attribute(:date_of_change, Date.new(2015, 1, 31))
+
             loan_change.change_type_id = change_type
             loan_change.maturity_date = Date.new(2019, 4, 3)
             loan_change.state_aid_calculation_attributes = state_aid_calculation_attributes
@@ -283,11 +285,21 @@ describe LoanChange do
             loan_change.old_maturity_date.should == Date.new(2020, 3, 2)
           end
 
+          it 'stores old loan term' do
+            loan_change.old_loan_term.should == 24 # default loan factory repayment duration is 2 years
+          end
+
           it 'updates loan maturity date' do
             loan.reload
             loan.maturity_date.should == Date.new(2019, 4, 3)
             loan.modified_by.should == user
             loan.state.should == Loan::Guaranteed
+          end
+
+          it 'updates loan term' do
+            loan.reload
+            loan.initial_draw_change.date_of_change.should == Date.new(2015, 1, 31)
+            loan.repayment_duration.total_months.should == 51
           end
 
           it 'creates state change record' do
