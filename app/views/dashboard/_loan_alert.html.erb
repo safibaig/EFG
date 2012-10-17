@@ -27,4 +27,8 @@
     <li class="third">60 days</li>
   </ol>
 
+  <% if presenter.total_loan_count > 0 %>
+    <%= link_to "View all", send(url_helper), class: 'view-all' %>
+  <% end %>
+
 </div>

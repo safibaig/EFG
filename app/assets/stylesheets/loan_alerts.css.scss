@@ -46,6 +46,15 @@
         text-align: right;
       }
     }
+
+    .view-all {
+      position: absolute;
+      top: 0.75em;
+      right: 0.5em;
+      padding: 0.2em 0.5em;
+      background-color: #ddd;
+      border-radius: 5px;
+    }
   }
 
 }
