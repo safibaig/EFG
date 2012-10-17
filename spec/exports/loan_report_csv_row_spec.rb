@@ -120,7 +120,7 @@ describe LoanReportCsvRow do
       row[13].should == '2.0'                                           # premium_rate
       row[14].should == 'allocation description'                        # lending_limit
       row[15].should == 'ABC123'                                        # lender_reference
-      row[16].should == 'eligible'                                      # loan_state
+      row[16].should == 'Eligible'                                      # loan_state
       row[17].should == 24                                              # loan_term
       row[18].should == RepaymentFrequency.find(1).name                 # repayment_frequency
       row[19].should == '05-11-2025'                                    # maturity_date

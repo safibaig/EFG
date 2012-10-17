@@ -37,7 +37,7 @@ describe LoanAuditReportCsvRow do
         lender_reference_code: 'DEF',
         loan_created_by: user.username,
         loan_modified_by: user.username,
-        loan_state_change_to_state: Loan::Guaranteed,
+        loan_state_change_to_state: Loan::AutoCancelled,
         loan_state_change_event_id: 3,
         loan_state_change_modified_at: Time.parse('11/06/2012 11:00'),
         loan_state_change_modified_by: user.username,
@@ -76,8 +76,8 @@ describe LoanAuditReportCsvRow do
       row[23].should == '13-04-2012 02:34 PM'         # modified_date
       row[24].should == user.username                 # modified_by
       row[25].should == "2"                           # audit_record_sequence
-      row[26].should == Loan::Offered.humanize        # from_state
-      row[27].should == Loan::Guaranteed.humanize     # to_state
+      row[26].should == "Offered"                     # from_state
+      row[27].should == "Auto-cancelled"              # to_state
       row[28].should == LoanEvent.find(3).name        # loan_function
       row[29].should == "11-06-2012 11:00 AM"         # audit_record_modified_at
       row[30].should == user.username                 # audit_record_modified_by

@@ -28,14 +28,14 @@ class LoanAuditReportCsvRow
       @loan.generic5,
       @loan.reason.try(:name),
       @loan.loan_category.try(:name),
-      @loan.state.humanize,
+      humanized_state(@loan.state),
       @loan.created_at.try(:strftime, "%d-%m-%Y %I:%M %p"),
       @loan.loan_created_by,
       @loan.updated_at.try(:strftime, "%d-%m-%Y %I:%M %p"),
       @loan.loan_modified_by,
       @sequence.to_s,
       from_state,
-      @loan.loan_state_change_to_state.humanize,
+      humanized_state(@loan.loan_state_change_to_state),
       event_name,
       @loan.loan_state_change_modified_at.try(:strftime, "%d-%m-%Y %I:%M %p"),
       @loan.loan_state_change_modified_by
@@ -45,7 +45,7 @@ class LoanAuditReportCsvRow
   private
 
   def from_state
-    @previous_state.nil? ? 'Created' : @previous_state.humanize
+    @previous_state.nil? ? 'Created' : humanized_state(@previous_state)
   end
 
   def event_name
@@ -54,6 +54,10 @@ class LoanAuditReportCsvRow
     else
       LoanEvent.find(@loan.loan_state_change_event_id).name
     end
+  end
+
+  def humanized_state(state)
+    LoanStateFormatter.humanize(state)
   end
 
 end

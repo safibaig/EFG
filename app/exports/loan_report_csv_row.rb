@@ -25,7 +25,7 @@ class LoanReportCsvRow
       @loan.premium_rate.to_s,
       @loan.lending_limit_name,
       @loan.lender_organisation_reference_code,
-      @loan.state,
+      humanized_state(@loan.state),
       @loan.repayment_duration.try(:total_months),
       @loan.repayment_frequency.try(:name),
       @loan.maturity_date.try(:strftime, '%d-%m-%Y'),
@@ -94,6 +94,10 @@ class LoanReportCsvRow
 
   def boolean_as_text(bool)
     bool == true ? 'Yes' : 'No'
+  end
+
+  def humanized_state(state)
+    LoanStateFormatter.humanize(state)
   end
 
 end
