@@ -13,7 +13,7 @@ describe LoanAutoUpdater do
       loan_state_change = LoanStateChange.last
       loan_state_change.loan.should == expired_loan
       loan_state_change.state.should == expired_loan.state
-      loan_state_change.modified_at.to_i.should == Time.zone.now.to_i
+      (Time.zone.now.to_i - loan_state_change.modified_at.to_i).should be < 2
       loan_state_change.modified_by.should == system_user
       loan_state_change.event_id.should == expected_state_change_event_id
     end
