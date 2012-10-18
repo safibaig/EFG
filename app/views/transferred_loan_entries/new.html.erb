@@ -30,7 +30,7 @@ Please note that all the information within Facility Entry can be revised, howev
     <% end %>
   <% end %>
 
-  <%= field_set_tag 'Loan' do %>
+  <%= field_set_tag 'Facility' do %>
     <%= f.input :amount, as: :currency %>
 
     <div class='control-group string'>
@@ -48,24 +48,19 @@ Please note that all the information within Facility Entry can be revised, howev
     </div>
 
     <%= f.input :repayment_duration, as: :duration %>
-    <%= f.input :repayment_frequency_id, collection: RepaymentFrequency.all %>
+    <%= f.input :repayment_frequency_id, collection: RepaymentFrequency.all, prompt: "Please select" %>
     <%= f.input :maturity_date, as: :quick_date %>
 
     <% unless @transferred_loan_entry.legacy_loan? %>
-      <%= f.input :turnover, as: :currency, disabled: true %>
-      <%= f.input :trading_date, as: :quick_date, disabled: true %>
-      <%= f.input :sic_code, as: :sic_code, collection: SicCode.all, disabled: true %>
-      <%= f.input :loan_category_id, as: :select, collection: LoanCategory.all, disabled: true, prompt: 'Please select', input_html: { class: 'input-xxlarge' } %>
+      <%= simple_form_row t('simple_form.labels.loan_entry.sic_code'), @loan.sic_code %>
+      <%= simple_form_row t('simple_form.labels.loan_entry.sic_desc'), @loan.sic_desc %>
       <%= f.input :reason_id, as: :select, collection: LoanReason.active, disabled: true, prompt: 'Please select', input_html: { class: 'input-xxlarge' } %>
-      <%= f.input :previous_borrowing, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
     <% end %>
 
     <%= f.input :state_aid, as: :state_aid %>
 
     <% unless @transferred_loan_entry.legacy_loan? %>
       <%= f.input :state_aid_is_valid, as: :boolean, disabled: true %>
-      <%= f.input :private_residence_charge_required, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
-      <%= f.input :personal_guarantee_required, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
 
       <div class='control-group string'>
         <label class='control-label'>Is the result for Notified Aid less than 60% for Objective 1 loans, or 40% for non-Objective 1 loans?</label>
@@ -77,7 +72,7 @@ Please note that all the information within Facility Entry can be revised, howev
   <% end %>
 
   <% unless @transferred_loan_entry.legacy_loan? %>
-    <%= field_set_tag 'Lender' do %>
+    <%= field_set_tag 'Loan' do %>
       <%= f.input :viable_proposition, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
       <%= f.input :would_you_lend, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>
       <%= f.input :collateral_exhausted, as: :radio_buttons, disabled: true, wrapper_html: {class: 'radio-buttons-inline'} %>

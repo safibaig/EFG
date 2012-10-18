@@ -9,9 +9,7 @@ class TransferredLoanEntry
   attribute :would_you_lend, read_only: true
   attribute :collateral_exhausted, read_only: true
   attribute :sic_code, read_only: true
-  attribute :loan_category_id, read_only: true
   attribute :reason_id, read_only: true
-  attribute :previous_borrowing, read_only: true
   attribute :private_residence_charge_required, read_only: true
   attribute :personal_guarantee_required, read_only: true
   attribute :turnover, read_only: true
