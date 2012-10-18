@@ -20,29 +20,33 @@ describe "loan settled" do
     end
 
     it 'can settle loans' do
+      time = Time.zone.local(2012, 1, 7, 11, 00)
+
       # loans with data correction(s) are highlighted
       FactoryGirl.create(:data_correction, loan: loan2)
 
-      fill_in_valid_details
-      click_button 'Select Loans'
+      Timecop.freeze(time) do
+        fill_in_valid_details
+        click_button 'Select Loans'
 
-      page.should have_content('BSPFDNH-01')
-      page.should have_content('3PEZRGB-01')
-      page.should have_content('LOGIHLJ-02')
-      page.should_not have_content('MF6XT4Z-01')
-      page.should_not have_content('HJD4JF8-01')
+        page.should have_content('BSPFDNH-01')
+        page.should have_content('3PEZRGB-01')
+        page.should have_content('LOGIHLJ-02')
+        page.should_not have_content('MF6XT4Z-01')
+        page.should_not have_content('HJD4JF8-01')
 
-      page.should have_css("tr td:nth-child(2)", text: "*", count: 1)
+        page.should have_css("tr td:nth-child(2)", text: "*", count: 1)
 
-      within('#loan_1') do
-        check('invoice[loans_to_be_settled_ids][]')
+        within('#loan_1') do
+          check('invoice[loans_to_be_settled_ids][]')
+        end
+
+        within('#loan_3') do
+          check('invoice[loans_to_be_settled_ids][]')
+        end
+
+        click_button 'Settle Loans'
       end
-
-      within('#loan_3') do
-        check('invoice[loans_to_be_settled_ids][]')
-      end
-
-      click_button 'Settle Loans'
 
       invoice = Invoice.last
       invoice.lender.should == lender1
@@ -58,13 +62,15 @@ describe "loan settled" do
       loan1.state.should == Loan::Settled
       loan1.invoice.should == invoice
       loan1.modified_by.should == current_user
-      loan1.settled_on.should == Date.today
+      loan1.settled_on.should == Date.new(2012, 01, 07)
+      loan1.updated_at.to_i.should == time.to_i
 
       loan3.reload
       loan3.state.should == Loan::Settled
       loan3.invoice.should == invoice
       loan3.modified_by.should == current_user
-      loan3.settled_on.should == Date.today
+      loan3.settled_on.should == Date.new(2012, 01, 07)
+      loan3.updated_at.to_i.should == time.to_i
 
       page.should have_content('BSPFDNH-01')
       page.should_not have_content('3PEZRGB-01')

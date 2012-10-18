@@ -58,7 +58,8 @@ class Invoice < ActiveRecord::Base
         modified_by_id: created_by.id,
         state: Loan::Settled,
         invoice_id: self.id,
-        settled_on: Date.today
+        settled_on: Date.today,
+        updated_at: Time.now
       )
       self.settled_loans = loans_to_be_settled
     end
