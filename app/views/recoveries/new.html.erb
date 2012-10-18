@@ -9,6 +9,9 @@
 <hr>
 
 <%= simple_form_for([@loan, @recovery], html: { class: 'form-horizontal form-recovery' }) do |f| %>
+
+  <%= render_errors_on_base(f.object.errors) %>
+
   <%= f.input :recovered_on, as: :quick_date %>
 
   <%= simple_form_row "The Secretary of State previously paid the Lender this amount by way of a Settlement of the Lender's Demand against the Government Guarantee", @loan.dti_amount_claimed.format %>

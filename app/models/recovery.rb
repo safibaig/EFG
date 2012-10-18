@@ -68,6 +68,13 @@ class Recovery < ActiveRecord::Base
       self.amount_due_to_sec_state = total_liabilities_after_demand * loan_guarantee_rate * magic_number
       self.amount_due_to_dti = amount_due_to_sec_state + additional_break_costs + additional_interest_accrued
     end
+
+    amount_yet_to_be_recovered = loan.dti_amount_claimed - loan.cumulative_recoveries_amount
+    if (self.amount_due_to_dti > amount_yet_to_be_recovered)
+      errors.add(:base, :recovery_too_high)
+    end
+
+    self.amount_due_to_dti
   end
 
   def save_and_update_loan

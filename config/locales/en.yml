@@ -201,6 +201,8 @@ en:
               invalid: 'must be between 0 and 120'
             fourth_draw_months:
               invalid: 'must be between 0 and 120'
+        recovery:
+          recovery_too_high: Amount to be recovered added to Value of proceeds of any previous recoveries paid to the government is greater than Value of settlement previously made by SBS
 
   dashboard:
     loan_alerts:

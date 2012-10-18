@@ -77,6 +77,8 @@ describe Recovery do
     let(:recovery) {
       Recovery.new.tap { |recovery|
         recovery.loan = loan
+        recovery.created_by = FactoryGirl.build(:user)
+        recovery.recovered_on = Date.today
       }
     }
 
@@ -118,6 +120,17 @@ describe Recovery do
         recovery.realisations_attributable.should == Money.new(0)
         recovery.amount_due_to_dti.should == Money.new(0)
       end
+
+      it 'does not allow recovered amount to be greater than remaining unrecovered amount (i.e. dti_amount_claimed - previous recoveries)' do
+        # setup amount_due_to_dti to be greater than dti_amount_claimed
+        # i.e. 75% of non_linked_security_proceeds + linked_security_proceeds
+        recovery.outstanding_non_efg_debt = Money.new(0)
+        recovery.non_linked_security_proceeds = Money.new(20_000_00)
+        recovery.linked_security_proceeds = Money.new(5_001_00)
+        recovery.calculate
+
+        recovery.errors[:base].should_not be_empty
+      end
     end
 
     context 'SFLG' do
@@ -150,6 +163,15 @@ describe Recovery do
         recovery.amount_due_to_sec_state.should == Money.new(175_28)
         recovery.amount_due_to_dti.should == Money.new(175_28)
       end
+
+      it 'does not allow recovered amount to be greater than remaining unrecovered amount (i.e. dti_amount_claimed - previous recoveries)' do
+        recovery.total_liabilities_behind = Money.new(0)
+        recovery.total_liabilities_after_demand = Money.new(100_002_00)
+        recovery.linked_security_proceeds = Money.new(0)
+        recovery.calculate
+
+        recovery.errors[:base].should_not be_empty
+      end
     end
 
     context 'legacy SFLG' do
@@ -180,6 +202,15 @@ describe Recovery do
 
         recovery.amount_due_to_sec_state.should == Money.new(170_83)
         recovery.amount_due_to_dti.should == Money.new(170_83)
+      end
+
+      it 'does not allow recovered amount to be greater than remaining unrecovered amount (i.e. dti_amount_claimed - previous recoveries)' do
+        recovery.total_liabilities_behind = Money.new(0)
+        recovery.total_liabilities_after_demand = Money.new(4_501_00)
+        recovery.linked_security_proceeds = Money.new(0)
+        recovery.calculate
+
+        recovery.errors[:base].should_not be_empty
       end
     end
   end
