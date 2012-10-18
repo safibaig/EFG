@@ -7,12 +7,10 @@ describe 'user login' do
     it 'should lock a user account after a number of failed login attempts' do
       visit root_path
 
-      (Devise.maximum_attempts + 1).times do
-        submit_sign_in_form user.username, 'wrong!'
-      end
+      unsuccessfully_login_until_locked(user)
 
       # incorrect authentication details for locked account shows generic flash message
-      submit_sign_in_form user.username, 'wrong!'
+      unsuccessfully_login(user)
       page.should have_content(I18n.t('devise.failure.locked'))
 
       # correct authentication details allows login
@@ -25,6 +23,40 @@ describe 'user login' do
       visit loan_states_path
       page.should have_content('Your account has been locked')
       page.current_path.should == account_locked_path
+    end
+
+    it 'should reset failed attempts after successfully logging into unlocked account' do
+      failed_login_attempts = Devise.maximum_attempts - 1
+
+      visit root_path
+
+      # failed login
+      failed_login_attempts.times do
+        submit_sign_in_form user.username, 'wrong!'
+      end
+
+      user.reload
+      user.failed_attempts.should == failed_login_attempts
+
+      successfully_login(user)
+
+      user.reload
+      user.failed_attempts.should == 0
+    end
+
+    it 'should not reset failed attempts after successfully logging into locked account' do
+      visit root_path
+
+      unsuccessfully_login_until_locked(user)
+
+      user.reload
+      user.failed_attempts.should_not == 0
+
+      successfully_login(user)
+      page.should have_content('Your account has been locked')
+
+      user.reload
+      user.failed_attempts.should_not == 0
     end
   end
 
@@ -52,9 +84,24 @@ describe 'user login' do
     end
   end
 
+  def successfully_login(user)
+    submit_sign_in_form(user.username, user.password)
+  end
+
+  def unsuccessfully_login(user)
+    submit_sign_in_form(user.username, 'wrong!')
+  end
+
+  def unsuccessfully_login_until_locked(user)
+    (Devise.maximum_attempts + 1).times do
+      unsuccessfully_login(user)
+    end
+  end
+
   def submit_sign_in_form(username, password)
     fill_in 'user_username', with: username
     fill_in 'user_password', with: password
     click_button 'Sign In'
   end
+
 end

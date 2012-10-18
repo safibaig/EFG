@@ -129,28 +129,21 @@ shared_examples_for 'User' do
     end
   end
 
-  describe "#reset_failed_attempts callback" do
-    it 'should set failed_attempts to 0 when user is unlocked' do
+  describe "#unlock!" do
+    before(:each) do
       user.locked = true
       user.failed_attempts = 3
       user.save
-
-      user.failed_attempts.should == 3
-      user.locked = false
-      user.save
-
-      user.failed_attempts.should == 0
     end
 
-    it 'should not change failed_attempts when user is not unlocked' do
-      user.locked = true
-      user.failed_attempts = 3
-      user.save
+    it 'should unlock user' do
+      user.unlock!
+      user.should_not be_locked
+    end
 
-      user.locked = true
-      user.save
-
-      user.failed_attempts.should == 3
+    it 'should set failed_attempts to 0' do
+      user.unlock!
+      user.failed_attempts.should == 0
     end
   end
 end

@@ -18,8 +18,6 @@ class User < ActiveRecord::Base
 
   before_validation :set_unique_username, on: :create
 
-  before_save :reset_failed_attempts
-
   attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
 
   attr_protected :username
@@ -71,7 +69,7 @@ class User < ActiveRecord::Base
   end
 
   def unlock!
-    update_attribute :locked, false
+    update_attributes(locked: false, failed_attempts:  0)
   end
 
   # custom account locking adapted from Devise lockable
@@ -115,12 +113,6 @@ class User < ActiveRecord::Base
     while User.where(username: username).exists? do
       self.username = generate_username
     end
-  end
-
-  # if unlocking account, reset failed_attempts to 0
-  def reset_failed_attempts
-    return unless locked_changed?
-    self.failed_attempts = 0 unless locked?
   end
 
   def login_attempts_exceeded?
