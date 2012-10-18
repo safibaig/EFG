@@ -117,7 +117,9 @@ describe LoanChange do
       end
 
       context 'a - Decrease term' do
-        let(:loan_change) { FactoryGirl.build(:loan_change, :reschedule) }
+        let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
+
+        let(:loan_change) { FactoryGirl.build(:loan_change, :reschedule, loan: loan) }
 
         it 'requires a maturity_date' do
           loan_change.change_type_id = 'a'
@@ -138,6 +140,8 @@ describe LoanChange do
 
           let(:loan_term) { LoanTerm.new(loan) }
 
+          let(:initial_draw_date) { loan.initial_draw_change.date_of_change }
+
           before(:each) do
             loan_change.change_type_id = change_type_id
           end
@@ -153,36 +157,36 @@ describe LoanChange do
             let(:loan) { FactoryGirl.create(:loan, :guaranteed, :sflg, loan_category_id: nil) }
 
             it 'requires maturity date to be at least 24 months after initial draw date' do
-              loan_change.maturity_date = loan_term.min_months.months.from_now.to_date - 1.day
+              loan_change.maturity_date = initial_draw_date.advance(months: 24) - 1.day
               loan_change.should_not be_valid
 
-              loan_change.maturity_date = loan_term.min_months.months.from_now.to_date
+              loan_change.maturity_date = initial_draw_date.advance(months: 24)
               loan_change.should be_valid
             end
 
             it 'requires maturity date to not be more than 120 months after initial draw date' do
-              loan_change.maturity_date = loan_term.max_months.months.from_now.to_date.advance(days: 1)
+              loan_change.maturity_date = initial_draw_date.advance(months: 120, days: 1)
               loan_change.should_not be_valid
 
-              loan_change.maturity_date = loan_term.max_months.months.from_now.to_date
+              loan_change.maturity_date = initial_draw_date.advance(months: 120)
               loan_change.should be_valid
             end
           end
 
           context 'when EFG loan' do
             it 'requires maturity date to be minimum loan term months (default 3) after initial draw date' do
-              loan_change.maturity_date = loan_term.min_months.months.from_now.to_date - 1.day
+              loan_change.maturity_date = initial_draw_date.advance(months: 3) - 1.day
               loan_change.should_not be_valid
 
-              loan_change.maturity_date = loan_term.min_months.months.from_now.to_date
+              loan_change.maturity_date = initial_draw_date.advance(months: 3)
               loan_change.should be_valid
             end
 
-            it 'requires maturity date not exceed maximum loan term months (default 120) after initial draw date' do
-              loan_change.maturity_date = loan_term.max_months.months.from_now.to_date.advance(days: 1)
+            it 'requires maturity date to not exceed maximum loan term months (default 120) after initial draw date' do
+              loan_change.maturity_date = initial_draw_date.advance(months: 120, days: 1)
               loan_change.should_not be_valid
 
-              loan_change.maturity_date = loan_term.max_months.months.from_now.to_date
+              loan_change.maturity_date = initial_draw_date.advance(months: 120)
               loan_change.should be_valid
             end
           end

@@ -89,12 +89,13 @@ class LoanChange < LoanModification
 
     def validate_maturity_date_within_allowed_loan_term
       loan_term = LoanTerm.new(loan)
+      initial_draw_date = loan.initial_draw_change.date_of_change
 
-      if maturity_date < loan_term.earliest_start_date
+      if maturity_date < initial_draw_date.advance(months: loan_term.min_months)
         errors.add(:maturity_date, :less_than_min_loan_term)
       end
 
-      if maturity_date > loan_term.latest_end_date
+      if maturity_date > initial_draw_date.advance(months: loan_term.max_months)
         errors.add(:maturity_date, :greater_than_max_loan_term)
       end
     end
