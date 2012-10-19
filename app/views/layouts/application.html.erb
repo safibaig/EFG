@@ -24,7 +24,7 @@
         <% if user_signed_in? %>
           <% if current_user_access_restricted? %>
             <ul class="nav">
-              <li><%= link_to 'Logout', destroy_user_session_path %></li>
+              <li><%= link_to 'Logout', destroy_user_session_path, id: "logout" %></li>
             </ul>
           <% else %>
             <%= render('search/loan_lookup_form') if current_user.can_view?(Search) %>
@@ -62,7 +62,7 @@
               <% end %>
 
               <li><%= link_to 'Change Password', edit_change_password_path %></li>
-              <li><%= link_to 'Logout', destroy_user_session_path %></li>
+              <li><%= link_to 'Logout', destroy_user_session_path, id: "logout" %></li>
 
               <li class="dropdown">
                 <%= link_to '#', "class" => "dropdown-toggle", "data-toggle" => "dropdown" do %>
