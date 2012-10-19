@@ -25,7 +25,7 @@ class LoanReport < BaseLoanReport
   validate :loan_states_are_allowed
 
   def loans
-    Loan.select(
+    scope = Loan.select(
       [
         'loans.*',
         '(SELECT name FROM lending_limits WHERE id = loans.lending_limit_id) AS lending_limit_name',
@@ -38,6 +38,12 @@ class LoanReport < BaseLoanReport
         '(SELECT SUM(lump_sum_repayment) FROM loan_modifications WHERE loan_id = loans.id) AS total_lump_sum_repayment'
       ].join(',')
     ).where(query_conditions)
+
+    if loan_sources.include?(Loan::LEGACY_SFLG_SOURCE)
+      scope = scope.where("loans.modified_by_legacy_id != 'migration'")
+    end
+
+    scope
   end
 
   def loan_sources=(sources)

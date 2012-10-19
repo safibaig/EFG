@@ -239,6 +239,14 @@ describe LoanReport do
       loan_report.loans.should == [ loan1, loan2 ]
     end
 
+    it "should not include legacy SFLG loans with a legacy modified by id of 'migration'" do
+      FactoryGirl.create(:loan, :legacy_sflg, modified_by_legacy_id: 'migration')
+
+      loan_report = LoanReport.new(report_attributes(loan_sources: [ Loan::LEGACY_SFLG_SOURCE, Loan::SFLG_SOURCE ]))
+
+      loan_report.loans.should == [ loan1, loan2 ]
+    end
+
   end
 
   private
