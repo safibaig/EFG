@@ -62,7 +62,7 @@ class UserRoleMapper
       csv_data = File.read(user_roles_csv_path)
       CSV.parse(csv_data, return_headers: false).inject({}) do |memo, (username, role_name)|
         memo[username] ||= []
-        memo[username] << role_name
+        memo[username] << role_name unless role_name == 'user'
         memo
       end
     end
