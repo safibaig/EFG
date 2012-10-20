@@ -1,7 +1,7 @@
 <div class="page-header">
   <h1><%= loan_listing_title(params[:id], params[:scheme]) %></h1>
   <ul id="actions">
-    <li><%= link_to "Export CSV", loan_state_path(params[:id], format: 'csv'), class: 'btn' %></li>
+    <li><%= link_to "Export CSV", loan_state_path(params[:id], format: 'csv', scheme: params[:scheme]), class: 'btn' %></li>
   </ul>
 </div>
 

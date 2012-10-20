@@ -107,5 +107,13 @@ describe 'loan states' do
 
       page.current_url.should == loan_state_url(id: 'completed', format: 'csv')
     end
+
+    it 'exports loan data as a CSV with a scheme filter' do
+      dispatch(id: 'completed', scheme: 'efg')
+
+      click_link "Export CSV"
+
+      page.current_url.should == loan_state_url(id: 'completed', format: 'csv', scheme: 'efg')
+    end
   end
 end
