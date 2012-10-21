@@ -2,6 +2,8 @@ require 'csv'
 
 class LoanAuditReportCsvExport
 
+  include Enumerable
+
   def initialize(loans_scope)
     @loans_scope = loans_scope
     unless loans_scope.is_a?(ActiveRecord::Relation)
@@ -46,19 +48,24 @@ class LoanAuditReportCsvExport
   end
 
   def generate
-    previous_state = nil
-    previous_loan_id = nil
-    sequence = 0
+    enumerator.to_a.join
+  end
 
-    CSV.generate do |csv|
-      csv << header
+  def enumerator
+    Enumerator.new do |y|
+      previous_state = nil
+      previous_loan_id = nil
+      sequence = 0
+
+      y << CSV.generate_line(header)
+
       @loans_scope.find_each do |loan|
         if previous_loan_id != loan.id
           previous_state = nil
           sequence = 0
         end
 
-        csv << LoanAuditReportCsvRow.new(loan, sequence, previous_state).row
+        y << CSV.generate_line(LoanAuditReportCsvRow.new(loan, sequence, previous_state).row)
 
         sequence += 1
         previous_state = loan.loan_state_change_to_state
