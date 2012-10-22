@@ -9,6 +9,12 @@ class LoanAuditReportCsvExport
     unless loans_scope.is_a?(ActiveRecord::Relation)
       raise ArgumentError, "Expected loans_scope to be instance of ActiveRecord::Relation"
     end
+    @enum = enumerator
+  end
+
+  def each
+    # FIXME: Is there a better way of hooking this up?
+    @enum.each { |i| yield i }
   end
 
   def header
@@ -48,8 +54,10 @@ class LoanAuditReportCsvExport
   end
 
   def generate
-    enumerator.to_a.join
+    @enum.to_a.join
   end
+
+  private
 
   def enumerator
     Enumerator.new do |y|
@@ -73,8 +81,6 @@ class LoanAuditReportCsvExport
       end
     end
   end
-
-  private
 
   def t(key)
     I18n.t(key, scope: 'csv_headers.loan_audit_report')
