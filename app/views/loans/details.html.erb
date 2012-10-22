@@ -281,8 +281,8 @@
 <% if loan_state_history_includes?(@loan, Loan::Realised) %>
   <h3>Realise Money</h3>
   <%= loan_details_table(@loan, 'simple_form.labels.loan_realise') do |table| %>
+    <% # TODO: Recoveries statement reference %>
     <%= table.row 'cumulative_realised_amount' %>
     <%= table.row 'realised_money_date' %>
-    <% # TODO: More Realised fields. %>
   <% end %>
 <% end %>

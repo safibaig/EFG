@@ -151,6 +151,11 @@ describe RealisationStatement do
         recovery3.reload.realise_flag.should be_true
       end
 
+      it 'updates realised_money_date on all loans' do
+        loan1.reload.realised_money_date.should == Date.today
+        loan2.reload.realised_money_date.should == Date.today
+      end
+
       it 'creates loan realisation for each loan to be realised' do
         LoanRealisation.count.should == 2
       end
