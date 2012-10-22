@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Remove guarantee' do
+describe 'Remove Guarantee' do
 
   let(:current_user) { FactoryGirl.create(:cfe_user) }
 
@@ -12,7 +12,7 @@ describe 'Remove guarantee' do
 
   it 'should remove guarantee from loan' do
     visit loan_path(loan)
-    click_link 'Remove guarantee'
+    click_link 'Remove Guarantee'
 
     fill_in 'loan_remove_guarantee_remove_guarantee_on', with: Date.today.to_s(:screen)
     fill_in 'loan_remove_guarantee_remove_guarantee_outstanding_amount', with: '10000'
