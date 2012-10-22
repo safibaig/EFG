@@ -175,6 +175,13 @@ describe 'loans/details' do
     it_behaves_like 'rendered loan_details' do
       let(:visible_details) { %w(loan_settle_claim.settled_on) }
     end
+
+    it 'does not include invoice details if it has no invoice' do
+      loan.invoice = nil
+      assign(:loan, loan)
+      render
+      rendered.should_not have_content('invoice reference')
+    end
   end
 
   context "with a realised loan" do
