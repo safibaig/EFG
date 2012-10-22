@@ -90,7 +90,8 @@ class RealisationStatement < ActiveRecord::Base
 
     Loan.where(id: loan_ids).update_all(
       modified_by_id: created_by.id,
-      state: Loan::Realised
+      state: Loan::Realised,
+      realised_money_date: Date.today
     )
   end
 
