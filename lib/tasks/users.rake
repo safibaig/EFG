@@ -38,10 +38,16 @@ namespace :users do
 
   task email_active_users: :environment do
     User.where(disabled: false).find_each do |user|
-      if user.email
-        puts "Sending new account email to #{user.email}"
-        user.send(:generate_reset_password_token!)
-        UserMailer.new_account_notification(user).deliver
+      begin
+        if user.email
+          puts "Sending new account email to #{user.email}"
+          user.send(:generate_reset_password_token!)
+          UserMailer.new_account_notification(user).deliver
+        else
+          puts "User ##{user.id} has no email address"
+        end
+      rescue Exception => e
+        puts "Failed to send email to #{user.email}: #{e.message}"
       end
     end
   end
