@@ -38,8 +38,11 @@ namespace :users do
 
   task email_active_users: :environment do
     User.where(disabled: false).find_each do |user|
-      puts "Sending new account email to #{user.email}"
-      UserMailer.new_account_notification(user).deliver if user.email
+      if user.email
+        puts "Sending new account email to #{user.email}"
+        user.send(:generate_reset_password_token!)
+        UserMailer.new_account_notification(user).deliver
+      end
     end
   end
 
