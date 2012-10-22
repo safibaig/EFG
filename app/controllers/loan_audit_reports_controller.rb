@@ -14,10 +14,7 @@ class LoanAuditReportsController < ApplicationController
         format.csv do
           filename = "#{Date.today.to_s(:db)}_loan_audit_report.csv"
           csv_export = LoanAuditReportCsvExport.new(@loan_audit_report.loans)
-          self.response.headers["Content-Type"] = "text/csv"
-          self.response.headers["Content-Disposition"] = "attachment; filename=#{filename}"
-          self.response.headers["Last-Modified"] = Time.now.ctime.to_s
-          self.response_body = csv_export
+          stream_response(csv_export, filename)
         end
       end
     else

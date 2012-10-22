@@ -44,4 +44,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def stream_response(enumerator, filename, content_type = "text/csv", disposition="attachment", last_modified = Time.now)
+    self.response.headers["Content-Type"] = content_type
+    self.response.headers["Content-Disposition"] = "#{disposition}; filename=\"#{filename}\""
+    self.response.headers["Last-Modified"] = last_modified.ctime.to_s
+    self.response_body = enumerator
+  end
+
 end
