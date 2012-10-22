@@ -170,6 +170,7 @@ en:
 
       loan_realise:
         realised_money_date: 'What was the most recent date on which Realisations were received by the Government in respect of this facility?'
+        cumulative_realised_amount: What is the value of this Realisation?
 
       loan_remove_guarantee:
         remove_guarantee_on: What is the date that the Guarantee was removed from this facility?

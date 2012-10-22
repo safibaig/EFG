@@ -158,6 +158,10 @@ class Loan < ActiveRecord::Base
     Money.new(recoveries.sum(:amount_due_to_dti))
   end
 
+  def cumulative_realised_amount
+    Money.new(loan_realisations.sum(:realised_amount))
+  end
+
   def amount_not_yet_drawn
     amount - cumulative_drawn_amount
   end
