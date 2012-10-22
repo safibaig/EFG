@@ -1,10 +1,13 @@
 class LoanReportCsvExport
 
+  include Enumerable
+
   def initialize(loans_scope)
     @loans_scope = loans_scope
     unless loans_scope.is_a?(ActiveRecord::Relation)
       raise ArgumentError, "Expected loans_scope to be instance of ActiveRecord::Relation"
     end
+    @enum = enumerator
   end
 
   def header
@@ -90,16 +93,25 @@ class LoanReportCsvExport
     ).collect { |field| t(field) }
   end
 
+  def each
+    @enum.each { |i| yield i }
+  end
+
   def generate
-    CSV.generate do |csv|
-      csv << header
+    @enum.to_a.join
+  end
+
+  private
+
+  def enumerator
+    Enumerator.new do |y|
+      y << CSV.generate_line(header)
       @loans_scope.find_each do |loan|
-        csv << LoanReportCsvRow.new(loan).row
+        y << CSV.generate_line(LoanReportCsvRow.new(loan).row)
       end
     end
   end
 
-  private
 
   def t(key)
     I18n.t(key, scope: 'csv_headers.loan_report')

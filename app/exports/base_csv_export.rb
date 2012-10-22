@@ -2,17 +2,19 @@ require 'csv'
 
 class BaseCsvExport
 
+  include Enumerable
+
   def initialize(records)
     @records = records
+    @enum = enumerator
+  end
+
+  def each
+    @enum.each {|i| yield i }
   end
 
   def generate
-    CSV.generate do |csv|
-      csv << fields
-      @records.each do |record|
-        csv << csv_row(record)
-      end
-    end
+    @enum.to_a.join
   end
 
   private
@@ -37,6 +39,17 @@ class BaseCsvExport
       formatted_value = formatted_value.call(value)
     end
     formatted_value
+  end
+
+  private
+
+  def enumerator
+    Enumerator.new do |y|
+      y << CSV.generate_line(fields)
+      @records.each do |record|
+        y << CSV.generate_line(csv_row(record))
+      end
+    end
   end
 
 end

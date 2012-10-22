@@ -13,7 +13,7 @@ class LoanReportsController < ApplicationController
         format.csv do
           filename = "#{Date.today.to_s(:db)}_loan_report.csv"
           csv_export = LoanReportCsvExport.new(@loan_report.loans)
-          send_data(csv_export.generate, type: 'text/csv', filename: filename, disposition: 'attachment')
+          stream_response(csv_export, filename)
         end
       end
     else
