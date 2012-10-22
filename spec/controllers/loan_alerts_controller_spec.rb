@@ -41,7 +41,7 @@ describe LoanAlertsController do
     let!(:efg_loan) { FactoryGirl.create(:loan, :lender_demand, lender: current_lender, borrower_demanded_on: 310.days.ago) }
 
     def dispatch(params = {})
-      get :demanded, params
+      get :not_demanded, params
     end
 
     it_behaves_like "loan alerts controller"

@@ -28,9 +28,9 @@ describe 'lender dashboard' do
       it "should display high, medium and low priority loan alerts" do
         visit root_path
 
-        page.should have_css "#demanded_loan_alerts a.high-priority .total-loans", text: "1"
-        page.should have_css "#demanded_loan_alerts a.medium-priority .total-loans", text: "1"
-        page.should have_css "#demanded_loan_alerts a.low-priority .total-loans", text: "1"
+        page.should have_css "#not_demanded_loan_alerts a.high-priority .total-loans", text: "1"
+        page.should have_css "#not_demanded_loan_alerts a.medium-priority .total-loans", text: "1"
+        page.should have_css "#not_demanded_loan_alerts a.low-priority .total-loans", text: "1"
       end
     end
 
