@@ -258,6 +258,19 @@ describe Loan do
     end
   end
 
+  describe '#cumulative_realised_amount' do
+    before do
+      loan.save!
+    end
+
+    it 'sums all loan realisations' do
+      FactoryGirl.create(:loan_realisation, realised_loan: loan, realised_amount: Money.new(123_45))
+      FactoryGirl.create(:loan_realisation, realised_loan: loan, realised_amount: Money.new(678_90))
+
+      loan.cumulative_realised_amount.should == Money.new(123_45) + Money.new(678_90)
+    end
+  end
+
   describe '#amount_not_yet_drawn' do
     before do
       loan.save!
