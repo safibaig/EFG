@@ -15,6 +15,7 @@ module LoanDetailsTableHelper
       LenderUser => :name.to_proc,
       LendingLimit => :name.to_proc,
       LoanCategory => :name.to_proc,
+      LoanReason => :name.to_proc,
       Money => :format.to_proc,
       MonthDuration => :format.to_proc,
       NilClass => 'Not Set',
