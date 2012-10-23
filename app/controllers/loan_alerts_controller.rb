@@ -6,25 +6,22 @@ class LoanAlertsController < ApplicationController
 
   def not_progressed
     @loans = not_progressed_loans(params[:priority])
-    @title = I18n.t('dashboard.loan_alerts.not_progressed')
     render "show"
   end
 
   def not_drawn
     @loans = not_drawn_loans(params[:priority])
-    @title = I18n.t('dashboard.loan_alerts.not_drawn')
     render "show"
   end
 
   def not_demanded
     @loans = demanded_loans(params[:priority])
-    @title = I18n.t('dashboard.loan_alerts.demanded')
     render "show"
   end
 
   def not_closed
-    @loans = (not_closed_offered_loans(params[:priority]) + not_closed_guaranteed_loans(params[:priority])).sort_by(&:maturity_date)
-    @title = I18n.t('dashboard.loan_alerts.not_closed')
+    @loans = (not_closed_offered_loans(params[:priority]) +
+              not_closed_guaranteed_loans(params[:priority])).sort_by(&:maturity_date)
     render "show"
   end
 

@@ -1,11 +1,9 @@
 <%= breadcrumbs %>
 
 <div class="page-header">
-  <h1>Loan Alerts</h1>
-
   <%= loan_alerts_priority(params[:priority]) %>
-
-  <h3><%== @title %></h3>
+  <h1>Loan Alerts (<%= pluralize(@loans.count, 'loan') %>)</h1>
+  <h3><%= t("dashboard.loan_alerts.#{params[:action]}").html_safe %></h3>
 </div>
 
 <%= render partial: "loan_states/loans_listing", locals: { loans: @loans } %>
