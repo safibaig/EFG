@@ -1,6 +1,8 @@
 @import "variables";
 
 .navbar {
+  margin-bottom: 9px;
+
   .container {
     margin: 0 auto;
     width: 940px;
@@ -14,5 +16,43 @@
   input.search-query {
     background-color: #fff;
     color: #000;
+  }
+}
+
+.breadcrumb {
+  background: none;
+  border: none;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 9px;
+  padding: 2px 0 9px;
+
+  .divider {
+    margin: 0 2px;
+  }
+}
+
+.page-header {
+  margin-top: 9px;
+  padding-bottom: 12px;
+  position: relative;
+  width: 100%;
+
+  #actions {
+    list-style: none;
+    margin-bottom: 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+
+    li {
+      margin-bottom: 0.5em;
+    }
+  }
+
+  .label {
+    display: inline-block;
+    font-size: 1em;
+    margin: 0.5em 0;
   }
 }
