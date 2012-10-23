@@ -5,9 +5,19 @@ module LoanHelper
     title
   end
 
-  def loan_listing_title(state, scheme = nil)
-    title = "Loans: #{state.titleize}"
-    title += " (#{scheme.titleize})" if scheme
+  def loan_listing_title(state, scheme)
+    title = state.titleize
+
+    scheme_text = case scheme
+    when 'efg'
+      'EFG'
+    when 'legacy_sflg'
+      'Legacy SFLG'
+    when 'sflg'
+      'SFLG'
+    end
+
+    title << " (#{scheme_text})" if scheme_text
     title
   end
 
@@ -28,7 +38,7 @@ module LoanHelper
     end
   end
 
-  def link_to_loan_entry(loan)
+  def link_to_loan_entry(loan, options = {})
     if loan.created_from_transfer?
       path = new_loan_transferred_entry_path(loan)
       permission_class = TransferredLoanEntry
@@ -36,7 +46,8 @@ module LoanHelper
       path = new_loan_entry_path(loan)
       permission_class = LoanEntry
     end
-    link_to('Loan Entry', path, class: 'btn btn-primary') if current_user.can_create?(permission_class)
+
+    link_to('Loan Entry', path, options) if current_user.can_create?(permission_class)
   end
 
   def for_loan_in_categories(loan, *loan_category_ids)

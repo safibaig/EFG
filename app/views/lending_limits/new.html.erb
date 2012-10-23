@@ -1,3 +1,10 @@
+<%= breadcrumbs(
+  link_to('Lenders', lenders_path),
+  h(@lender.name),
+  link_to('Lending Limits', lender_lending_limits_path(@lender)),
+  'New Lending Limit'
+) %>
+
 <div class="page-header">
   <h1>Add Lending Limit</h1>
 </div>
