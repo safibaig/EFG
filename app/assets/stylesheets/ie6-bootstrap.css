@@ -27,3 +27,8 @@
 
 /* Navbar */
 .dropdown .caret {font-size:1px;height:2px;background:none;background-color:#292929;color:#292929}
+
+/* Fix black background in last/active breadcrumbs item */
+.breadcrumb .active {
+  background: none;
+}
