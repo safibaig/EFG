@@ -44,6 +44,13 @@ class LoanReport < BaseLoanReport
     end
 
     scope
+      .select('
+        ded_codes.group_description    AS ded_code_group_description,
+        ded_codes.category_description AS ded_code_category_description,
+        ded_codes.code_description     AS ded_code_code_description,
+        ded_codes.code                 AS ded_code_code
+      ')
+      .joins('LEFT JOIN ded_codes ON loans.dti_ded_code = ded_codes.code')
   end
 
   def loan_sources=(sources)
