@@ -73,17 +73,17 @@ class LoanReport < BaseLoanReport
 
   def query_conditions_mapping
     {
-      states: "state IN (?)",
-      loan_sources: "loan_source IN (?)",
-      loan_scheme: "loan_scheme = ?",
+      states: "loans.state IN (?)",
+      loan_sources: "loans.loan_source IN (?)",
+      loan_scheme: "loans.loan_scheme = ?",
       lender_ids: "loans.lender_id IN (?)",
-      created_by_id: "created_by_id = ?",
-      facility_letter_start_date: "facility_letter_date >= ?",
-      facility_letter_end_date: "facility_letter_date <= ?",
-      created_at_start_date: "created_at >= ?",
-      created_at_end_date: "created_at <= ?",
-      last_modified_start_date: "updated_at >= ?",
-      last_modified_end_date: "updated_at <= ?"
+      created_by_id: "loans.created_by_id = ?",
+      facility_letter_start_date: "loans.facility_letter_date >= ?",
+      facility_letter_end_date: "loans.facility_letter_date <= ?",
+      created_at_start_date: "loans.created_at >= ?",
+      created_at_end_date: "loans.created_at <= ?",
+      last_modified_start_date: "loans.updated_at >= ?",
+      last_modified_end_date: "loans.updated_at <= ?"
     }
   end
 
