@@ -55,7 +55,7 @@ class LoanReport < BaseLoanReport
       .joins('LEFT JOIN loan_modifications AS initial_draw_change ON initial_draw_change.loan_id = loans.id AND initial_draw_change.type = "InitialDrawChange"')
       .select('initial_draw_change.amount_drawn AS initial_draw_amount, initial_draw_change.date_of_change AS initial_draw_date')
 
-    scope
+    scope = scope
       .joins('LEFT JOIN lending_limits ON loans.lending_limit_id = lending_limits.id')
       .select('loans.guarantee_rate AS loan_guarantee_rate, loans.premium_rate AS loan_premium_rate')
       .select('
@@ -63,6 +63,10 @@ class LoanReport < BaseLoanReport
         lending_limits.guarantee_rate AS lending_limit_guarantee_rate,
         lending_limits.premium_rate AS lending_limit_premium_rate
       ')
+
+    scope
+      .joins('LEFT JOIN invoices ON loans.invoice_id = invoices.id')
+      .select('invoices.reference AS invoice_reference')
   end
 
   def loan_sources=(sources)
