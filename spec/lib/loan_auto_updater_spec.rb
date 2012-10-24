@@ -35,9 +35,9 @@ describe LoanAutoUpdater do
   describe ".cancel_not_progressed_loans!" do
     let(:expected_state_change_event_id) { 6 }
 
-    let!(:expired_loan) { FactoryGirl.create(:loan, :eligible, updated_at: 6.months.ago.advance(days: -1)) }
-    let!(:unexpired_loan) { FactoryGirl.create(:loan, :eligible, updated_at: 6.months.ago) }
-    let!(:excluded_loan) { FactoryGirl.create(:loan, :eligible, lender: excluded_lender, updated_at: 6.months.ago.advance(days: -1)) }
+    let!(:expired_loan) { FactoryGirl.create(:loan, :eligible, updated_at: 6.months.ago - 1.day) }
+    let!(:not_yet_expired_loan) { FactoryGirl.create(:loan, :eligible, updated_at: 6.months.ago) }
+    let!(:excluded_loan) { FactoryGirl.create(:loan, :eligible, lender: excluded_lender, updated_at: 6.months.ago - 1.day) }
 
     def dispatch
       LoanAutoUpdater.cancel_not_progressed_loans!
@@ -47,7 +47,7 @@ describe LoanAutoUpdater do
       dispatch
 
       expired_loan.reload.state.should == Loan::AutoCancelled
-      unexpired_loan.reload.state.should == Loan::Eligible
+      not_yet_expired_loan.reload.state.should == Loan::Eligible
     end
 
     it_behaves_like "loan auto-update"
@@ -56,9 +56,9 @@ describe LoanAutoUpdater do
   describe ".cancel_not_drawn_loans!" do
     let(:expected_state_change_event_id) { 8 }
 
-    let!(:expired_loan) { FactoryGirl.create(:loan, :offered, facility_letter_date: 6.months.ago.advance(days: -11)) }
-    let!(:unexpired_loan) { FactoryGirl.create(:loan, :offered, facility_letter_date: 6.months.ago.advance(days: -10)) }
-    let!(:excluded_loan) { FactoryGirl.create(:loan, :offered, lender: excluded_lender, facility_letter_date: 6.months.ago.advance(days: -11)) }
+    let!(:expired_loan) { FactoryGirl.create(:loan, :offered, facility_letter_date: 6.months.ago - 11.days) }
+    let!(:not_yet_expired_loan) { FactoryGirl.create(:loan, :offered, facility_letter_date: 6.months.ago - 10.days) }
+    let!(:excluded_loan) { FactoryGirl.create(:loan, :offered, lender: excluded_lender, facility_letter_date: 6.months.ago - 11.days) }
 
     def dispatch
       LoanAutoUpdater.cancel_not_drawn_loans!
@@ -68,7 +68,7 @@ describe LoanAutoUpdater do
       dispatch
 
       expired_loan.reload.state.should == Loan::AutoCancelled
-      unexpired_loan.reload.state.should == Loan::Offered
+      not_yet_expired_loan.reload.state.should == Loan::Offered
     end
 
     it_behaves_like "loan auto-update"
@@ -96,14 +96,14 @@ describe LoanAutoUpdater do
     %w(sflg legacy_sflg).each do |scheme|
       context "#{scheme} loans" do
         let!(:expired_loan) { FactoryGirl.create(:loan, :lender_demand, scheme.to_sym, borrower_demanded_on: 366.days.ago) }
-        let!(:unexpired_loan) { FactoryGirl.create(:loan, :lender_demand, scheme.to_sym, borrower_demanded_on: 365.days.ago) }
+        let!(:not_yet_expired_loan) { FactoryGirl.create(:loan, :lender_demand, scheme.to_sym, borrower_demanded_on: 365.days.ago) }
         let!(:excluded_loan) { FactoryGirl.create(:loan, :lender_demand, scheme.to_sym, lender: excluded_lender, borrower_demanded_on: 366.days.ago) }
 
         it "should update state of loans with a borrower demanded date older than a year to auto-removed" do
           dispatch
 
           expired_loan.reload.state.should == Loan::AutoRemoved
-          unexpired_loan.reload.state.should == Loan::LenderDemand
+          not_yet_expired_loan.reload.state.should == Loan::LenderDemand
         end
 
         it_behaves_like "loan auto-update"
@@ -124,15 +124,15 @@ describe LoanAutoUpdater do
       Loan::Offered
     ].each do |state|
       context "#{state} EFG loans" do
-        let!(:expired_loan) { FactoryGirl.create(:loan, state.to_sym, maturity_date: 6.months.ago.advance(days: -1)) }
-        let!(:unexpired_loan) { FactoryGirl.create(:loan, state.to_sym, maturity_date: 6.months.ago) }
-        let!(:excluded_loan) { FactoryGirl.create(:loan, state.to_sym, lender: excluded_lender, maturity_date: 6.months.ago.advance(days: -1)) }
+        let!(:expired_loan) { FactoryGirl.create(:loan, state.to_sym, maturity_date: 6.months.ago - 1.day) }
+        let!(:not_yet_expired_loan) { FactoryGirl.create(:loan, state.to_sym, maturity_date: 6.months.ago) }
+        let!(:excluded_loan) { FactoryGirl.create(:loan, state.to_sym, lender: excluded_lender, maturity_date: 6.months.ago - 1.day) }
 
         it "should update state of loans with a maturity date older than 6 months to auto-removed" do
           dispatch
 
           expired_loan.reload.state.should == Loan::AutoRemoved
-          unexpired_loan.reload.state.should == state
+          not_yet_expired_loan.reload.state.should == state
         end
 
         it_behaves_like "loan auto-update"
@@ -141,30 +141,30 @@ describe LoanAutoUpdater do
 
     context 'guaranteed EFG loans' do
       let!(:expired_loan) { FactoryGirl.create(:loan, :guaranteed, maturity_date: 93.days.ago) }
-      let!(:unexpired_loan) { FactoryGirl.create(:loan, :guaranteed, maturity_date: 92.days.ago) }
+      let!(:not_yet_expired_loan) { FactoryGirl.create(:loan, :guaranteed, maturity_date: 92.days.ago) }
       let!(:excluded_loan) { FactoryGirl.create(:loan, :guaranteed, lender: excluded_lender, maturity_date: 93.days.ago) }
 
       it "should update state of loans with a maturity date older than 92 days to auto-removed" do
         dispatch
 
         expired_loan.reload.state.should == Loan::AutoRemoved
-        unexpired_loan.reload.state.should == Loan::Guaranteed
+        not_yet_expired_loan.reload.state.should == Loan::Guaranteed
       end
 
       it_behaves_like "loan auto-update"
     end
 
     context 'lender_demand SFLG loans' do
-      let!(:expired_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, maturity_date: 6.months.ago.advance(days: -1)) }
-      let!(:unexpired_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, maturity_date: 6.months.ago) }
-      let!(:excluded_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, lender: excluded_lender, maturity_date: 6.months.ago.advance(days: -1)) }
-      let!(:previously_removed_loan) { FactoryGirl.create(:loan, :sflg, :auto_removed, maturity_date: 6.months.ago.advance(days: -1)) }
+      let!(:expired_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, maturity_date: 6.months.ago - 1.day) }
+      let!(:not_yet_expired_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, maturity_date: 6.months.ago) }
+      let!(:excluded_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, lender: excluded_lender, maturity_date: 6.months.ago - 1.day) }
+      let!(:previously_removed_loan) { FactoryGirl.create(:loan, :sflg, :auto_removed, maturity_date: 6.months.ago - 1.day) }
 
       it "should update state of loans with a maturity date older than 6 months to auto-removed" do
         dispatch
 
         expired_loan.reload.state.should == Loan::AutoRemoved
-        unexpired_loan.reload.state.should == Loan::LenderDemand
+        not_yet_expired_loan.reload.state.should == Loan::LenderDemand
       end
 
       it "should not update loan that is already auto-removed" do
@@ -177,16 +177,16 @@ describe LoanAutoUpdater do
     end
 
     context 'demanded legacy SFLG loans' do
-      let!(:expired_loan) { FactoryGirl.create(:loan, :guaranteed, :legacy_sflg, maturity_date: 6.months.ago.advance(days: -1)) }
-      let!(:unexpired_loan) { FactoryGirl.create(:loan, :lender_demand, :legacy_sflg, maturity_date: 6.months.ago) }
-      let!(:excluded_loan) { FactoryGirl.create(:loan, :demanded, :legacy_sflg, lender: excluded_lender, maturity_date: 6.months.ago.advance(days: -1)) }
-      let!(:settled_loan) { FactoryGirl.create(:loan, :settled, :legacy_sflg, maturity_date: 6.months.ago.advance(days: -1)) }
+      let!(:expired_loan) { FactoryGirl.create(:loan, :guaranteed, :legacy_sflg, maturity_date: 6.months.ago - 1.day) }
+      let!(:not_yet_expired_loan) { FactoryGirl.create(:loan, :lender_demand, :legacy_sflg, maturity_date: 6.months.ago) }
+      let!(:excluded_loan) { FactoryGirl.create(:loan, :demanded, :legacy_sflg, lender: excluded_lender, maturity_date: 6.months.ago - 1.day) }
+      let!(:settled_loan) { FactoryGirl.create(:loan, :settled, :legacy_sflg, maturity_date: 6.months.ago - 1.day) }
 
-      it "should update state of guaranteed or lender demand loans with a maturity date older than 6 months to auto-removed" do
+      it "should update state of loans with a maturity date older than 6 months to auto-removed" do
         dispatch
 
         expired_loan.reload.state.should == Loan::AutoRemoved
-        unexpired_loan.reload.state.should == Loan::LenderDemand
+        not_yet_expired_loan.reload.state.should == Loan::LenderDemand
       end
 
       it "should not update loans not in guaranteed or lender demand state" do
