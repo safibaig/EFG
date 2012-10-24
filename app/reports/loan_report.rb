@@ -43,7 +43,7 @@ class LoanReport < BaseLoanReport
       scope = scope.where("loans.modified_by_legacy_id != 'migration'")
     end
 
-    scope
+    scope = scope
       .select('
         ded_codes.group_description    AS ded_code_group_description,
         ded_codes.category_description AS ded_code_category_description,
@@ -51,6 +51,10 @@ class LoanReport < BaseLoanReport
         ded_codes.code                 AS ded_code_code
       ')
       .joins('LEFT JOIN ded_codes ON loans.dti_ded_code = ded_codes.code')
+
+    scope
+      .joins('LEFT JOIN loan_modifications AS initial_draw_change ON initial_draw_change.loan_id = loans.id AND initial_draw_change.type = "InitialDrawChange"')
+      .select('initial_draw_change.amount_drawn AS initial_draw_amount, initial_draw_change.date_of_change AS initial_draw_date')
   end
 
   def loan_sources=(sources)
