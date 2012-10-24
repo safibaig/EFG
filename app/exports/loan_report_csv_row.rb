@@ -1,10 +1,7 @@
-require 'initial_draw_attributes'
-
 class LoanReportCsvRow
 
   def initialize(loan)
     @loan = loan
-    @loan.extend(InitialDrawAttributes)
   end
 
   def row
@@ -38,7 +35,7 @@ class LoanReportCsvRow
       @loan.cancelled_comment,
       @loan.cancelled_on.try(:strftime, '%d-%m-%Y'),
       @loan.facility_letter_date.try(:strftime, '%d-%m-%Y'),
-      @loan.initial_draw_amount.to_s,
+      @loan.initial_draw_amount ? Money.new(@loan.initial_draw_amount) : '',
       @loan.initial_draw_date.try(:strftime, '%d-%m-%Y'),
       @loan.borrower_demanded_on.try(:strftime, '%d-%m-%Y'),
       @loan.amount_demanded,
