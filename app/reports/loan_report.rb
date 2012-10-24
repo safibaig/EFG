@@ -28,7 +28,6 @@ class LoanReport < BaseLoanReport
     scope = Loan.select(
       [
         'loans.*',
-        '(SELECT name FROM lending_limits WHERE id = loans.lending_limit_id) AS lending_limit_name',
         '(SELECT organisation_reference_code FROM lenders WHERE id = loans.lender_id) AS lender_organisation_reference_code',
         '(SELECT recovered_on FROM recoveries WHERE loan_id = loans.id ORDER BY recoveries.id DESC LIMIT 1) AS last_recovery_on',
         '(SELECT SUM(amount_due_to_dti) FROM recoveries WHERE loan_id = loans.id) AS total_recoveries',
@@ -52,9 +51,18 @@ class LoanReport < BaseLoanReport
       ')
       .joins('LEFT JOIN ded_codes ON loans.dti_ded_code = ded_codes.code')
 
-    scope
+    scope = scope
       .joins('LEFT JOIN loan_modifications AS initial_draw_change ON initial_draw_change.loan_id = loans.id AND initial_draw_change.type = "InitialDrawChange"')
       .select('initial_draw_change.amount_drawn AS initial_draw_amount, initial_draw_change.date_of_change AS initial_draw_date')
+
+    scope
+      .joins('LEFT JOIN lending_limits ON loans.lending_limit_id = lending_limits.id')
+      .select('loans.guarantee_rate AS loan_guarantee_rate, loans.premium_rate AS loan_premium_rate')
+      .select('
+        lending_limits.name AS lending_limit_name,
+        lending_limits.guarantee_rate AS lending_limit_guarantee_rate,
+        lending_limits.premium_rate AS lending_limit_premium_rate
+      ')
   end
 
   def loan_sources=(sources)
