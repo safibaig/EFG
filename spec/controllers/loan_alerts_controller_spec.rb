@@ -68,11 +68,11 @@ describe LoanAlertsController do
   end
 
   describe "#not_closed" do
-    let!(:high_priority_incomplete_loan) { FactoryGirl.create(:loan, :incomplete, :legacy_sflg, lender: current_lender, maturity_date: 180.days.ago) }
+    let!(:high_priority_lender_demand_loan) { FactoryGirl.create(:loan, :lender_demand, :legacy_sflg, lender: current_lender, maturity_date: 180.days.ago) }
     let!(:high_priority_guaranteed_loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_lender, maturity_date: 90.days.ago) }
     let!(:medium_priority_completed_loan) { FactoryGirl.create(:loan, :completed, lender: current_lender, maturity_date: 170.days.ago) }
     let!(:medium_priority_guaranteed_loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_lender, maturity_date: 70.days.ago) }
-    let!(:low_priority_offered_loan) { FactoryGirl.create(:loan, :offered, :sflg, lender: current_lender, maturity_date: 125.days.ago) }
+    let!(:low_priority_sflg_guaranteed_loan) { FactoryGirl.create(:loan, :guaranteed, :sflg, lender: current_lender, maturity_date: 125.days.ago) }
     let!(:low_priority_guaranteed_loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_lender, maturity_date: 40.days.ago) }
 
     def dispatch(params = {})
@@ -91,7 +91,7 @@ describe LoanAlertsController do
 
       it "loads only high priority loans" do
         assigns(:loans).size.should == 2
-        assigns(:loans).should include(high_priority_incomplete_loan)
+        assigns(:loans).should include(high_priority_lender_demand_loan)
         assigns(:loans).should include(high_priority_guaranteed_loan)
       end
     end
@@ -115,7 +115,7 @@ describe LoanAlertsController do
 
       it "loads only low priority loans" do
         assigns(:loans).size.should == 2
-        assigns(:loans).should include(low_priority_offered_loan)
+        assigns(:loans).should include(low_priority_sflg_guaranteed_loan)
         assigns(:loans).should include(low_priority_guaranteed_loan)
       end
     end
@@ -129,11 +129,11 @@ describe LoanAlertsController do
         loans = assigns(:loans)
 
         assigns(:loans).size.should == 6
-        loans.should include(high_priority_incomplete_loan)
+        loans.should include(high_priority_lender_demand_loan)
         loans.should include(high_priority_guaranteed_loan)
         loans.should include(medium_priority_completed_loan)
         loans.should include(medium_priority_guaranteed_loan)
-        loans.should include(low_priority_offered_loan)
+        loans.should include(low_priority_sflg_guaranteed_loan)
         loans.should include(low_priority_guaranteed_loan)
       end
     end

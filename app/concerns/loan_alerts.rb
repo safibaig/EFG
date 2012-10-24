@@ -28,13 +28,13 @@ module LoanAlerts
     end
   end
 
-  # "Legacy or new scheme loans – if maturity date has elapsed by 183 days – auto remove
+  # "Legacy or new scheme guaranteed/lender demand loans – if maturity date has elapsed by 183 days – auto remove
   # EFG – if state ‘incomplete’ to ‘offered’ and maturity date elapsed by 183 days – auto remove
   def not_closed_offered_loans(priority = nil)
     sflg_loans = loans_for_alert(:not_closed_offered, priority) do |loans_scope, start_date, end_date|
       loans_scope.
         with_scheme('non_efg').
-        where("state NOT IN (?)", [Loan::AutoRemoved, Loan::AutoCancelled]).
+        where(state: [ Loan::Guaranteed, Loan::LenderDemand ]).
         maturity_date_between(start_date, end_date).
         order(:maturity_date)
     end

@@ -52,13 +52,14 @@ describe 'lender dashboard' do
       let!(:high_priority_incomplete_loan) { FactoryGirl.create(:loan, :incomplete, lender: lender, maturity_date: 180.days.ago) }
       let!(:medium_priority_guaranteed_loan) { FactoryGirl.create(:loan, :guaranteed, lender: lender, maturity_date: 70.days.ago) }
       let!(:low_priority_offered_loan) { FactoryGirl.create(:loan, :offered, lender: lender, maturity_date: 125.days.ago) }
+      let!(:low_priority_legacy_loan) { FactoryGirl.create(:loan, :guaranteed, :legacy_sflg, lender: lender, maturity_date: 124.days.ago) }
 
       it "should display high, medium and low priority loan alerts" do
         visit root_path
 
         page.should have_css "#not_closed_loan_alerts a.high-priority .total-loans", text: "1"
         page.should have_css "#not_closed_loan_alerts a.medium-priority .total-loans", text: "1"
-        page.should have_css "#not_closed_loan_alerts a.low-priority .total-loans", text: "1"
+        page.should have_css "#not_closed_loan_alerts a.low-priority .total-loans", text: "2"
       end
     end
   end

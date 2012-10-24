@@ -177,15 +177,22 @@ describe LoanAutoUpdater do
     end
 
     context 'demanded legacy SFLG loans' do
-      let!(:expired_loan) { FactoryGirl.create(:loan, :demanded, :legacy_sflg, maturity_date: 6.months.ago.advance(days: -1)) }
-      let!(:unexpired_loan) { FactoryGirl.create(:loan, :demanded, :legacy_sflg, maturity_date: 6.months.ago) }
+      let!(:expired_loan) { FactoryGirl.create(:loan, :guaranteed, :legacy_sflg, maturity_date: 6.months.ago.advance(days: -1)) }
+      let!(:unexpired_loan) { FactoryGirl.create(:loan, :lender_demand, :legacy_sflg, maturity_date: 6.months.ago) }
       let!(:excluded_loan) { FactoryGirl.create(:loan, :demanded, :legacy_sflg, lender: excluded_lender, maturity_date: 6.months.ago.advance(days: -1)) }
+      let!(:settled_loan) { FactoryGirl.create(:loan, :settled, :legacy_sflg, maturity_date: 6.months.ago.advance(days: -1)) }
 
-      it "should update state of loans with a maturity date older than 6 months to auto-removed" do
+      it "should update state of guaranteed or lender demand loans with a maturity date older than 6 months to auto-removed" do
         dispatch
 
         expired_loan.reload.state.should == Loan::AutoRemoved
-        unexpired_loan.reload.state.should == Loan::Demanded
+        unexpired_loan.reload.state.should == Loan::LenderDemand
+      end
+
+      it "should not update loans not in guaranteed or lender demand state" do
+        expect {
+          dispatch
+        }.to_not change(settled_loan, :state)
       end
 
       it_behaves_like "loan auto-update"
