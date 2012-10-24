@@ -136,6 +136,28 @@ describe PremiumSchedule do
         end
       end
     end
+
+    context 'with loan term not divisible by 3' do
+      let(:loan) {
+        FactoryGirl.build(:loan, amount: Money.new(20_000_00), repayment_duration: { months: 11 })
+      }
+
+      let(:state_aid_calculation) {
+        FactoryGirl.build(
+          :state_aid_calculation,
+          loan: loan,
+          initial_draw_amount: Money.new(20_000_00),
+          initial_draw_months: 11,
+          initial_capital_repayment_holiday: 0
+        )
+      }
+
+      it "should not include last quarter's premium" do
+        [ 100_00, 72_73, 45_45, 0 ].each.with_index do |premium, quarter|
+          premium_schedule.premiums[quarter].should == Money.new(premium)
+        end
+      end
+    end
   end
 
   describe "#subsequent_premiums" do

@@ -58,8 +58,16 @@ class PremiumSchedule
     initial_draw_date.advance(months: 3).strftime('%m/%Y')
   end
 
+  # TODO: round total quarter up.
+  # The legacy system rounded down which excludes the last quarter from the premium schedule.
+  # This is a bug as the last quarter should be in the schedule, but we are replicating it
+  # for now for data consistency.
   def total_quarters
-    @total_quarters ||= initial_draw_months.to_f / 3
+    @total_quarters ||= begin
+      months = initial_draw_months / 3
+      months = 1 if months.zero?
+      months
+    end
   end
 
   def initial_premium_cheque
