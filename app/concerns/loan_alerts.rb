@@ -83,11 +83,11 @@ module LoanAlerts
   end
 
   def not_drawn_start_date
-    6.months.ago.to_date.advance(days: -10)
+    6.months.ago.to_date - 10.days
   end
 
   def not_drawn_end_date
-    6.months.ago.to_date.advance(days: 69)
+    not_drawn_start_date.advance(days: 59)
   end
 
   def demanded_start_date
