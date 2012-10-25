@@ -22,6 +22,7 @@ module LoanDetailsTableHelper
       PremiumCollectorUser => :name.to_proc,
       RepaymentFrequency => :name.to_proc,
       SuperUser => :name.to_proc,
+      SystemUser => :username.to_proc,
       TrueClass => 'Yes'
     }
 

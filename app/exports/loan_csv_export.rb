@@ -14,13 +14,16 @@ class LoanCsvExport < BaseCsvExport
   def formats
     {
       ActiveSupport::TimeWithZone => ->(time) { time.strftime('%d/%m/%Y %H:%M:%S') },
+      AuditorUser => :name.to_proc,
       CancelReason => :name.to_proc,
+      CfeAdmin => :name.to_proc,
       CfeUser => :name.to_proc,
       Date => ->(date) { date.to_s(:screen) },
       FalseClass => 'No',
       InterestRateType => :name.to_proc,
       LegalForm => :name.to_proc,
       Lender => :name.to_proc,
+      LenderAdmin => :name.to_proc,
       LendingLimit => :name.to_proc,
       LenderUser => :name.to_proc,
       LoanCategory => :name.to_proc,
@@ -28,7 +31,10 @@ class LoanCsvExport < BaseCsvExport
       Money => :to_s.to_proc,
       MonthDuration => :total_months.to_proc,
       NilClass => '',
+      PremiumCollectorUser => :name.to_proc,
       RepaymentFrequency => :name.to_proc,
+      SuperUser => :name.to_proc,
+      SystemUser => :name.to_proc,
       TrueClass => 'Yes',
       Loan => :reference.to_proc
     }
