@@ -1,12 +1,8 @@
 class LoanReportCsvExport
-
   include Enumerable
 
-  def initialize(loans_scope)
-    @loans_scope = loans_scope
-    unless loans_scope.is_a?(ActiveRecord::Relation)
-      raise ArgumentError, "Expected loans_scope to be instance of ActiveRecord::Relation"
-    end
+  def initialize(loans)
+    @loans = loans
     @enum = enumerator
   end
 
@@ -107,7 +103,7 @@ class LoanReportCsvExport
     Enumerator.new do |y|
       y << CSV.generate_line(header)
 
-      @loans_scope.find_in_batches do |group|
+      @loans.find_in_batches do |group|
         loan_ids = group.map(&:id)
         loan_securities_lookup = loan_security_types_lookup_for_loan_ids(loan_ids)
 
