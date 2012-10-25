@@ -27,7 +27,19 @@ class LoanReport < BaseLoanReport
   def loans
     scope = Loan.select(
       [
+        'ded_codes.group_description AS ded_code_group_description',
+        'ded_codes.category_description AS ded_code_category_description',
+        'ded_codes.code_description AS ded_code_code_description',
+        'ded_codes.code AS ded_code_code',
+        'initial_draw_change.date_of_change AS initial_draw_date',
+        'initial_draw_change.amount_drawn AS initial_draw_amount',
+        'invoices.reference AS invoice_reference',
+        'lending_limits.name AS lending_limit_name',
+        'lending_limits.guarantee_rate AS lending_limit_guarantee_rate',
+        'lending_limits.premium_rate AS lending_limit_premium_rate',
         'loans.*',
+        'loans.guarantee_rate AS loan_guarantee_rate',
+        'loans.premium_rate AS loan_premium_rate',
         '(SELECT organisation_reference_code FROM lenders WHERE id = loans.lender_id) AS lender_organisation_reference_code',
         '(SELECT recovered_on FROM recoveries WHERE loan_id = loans.id ORDER BY recoveries.id DESC LIMIT 1) AS last_recovery_on',
         '(SELECT SUM(amount_due_to_dti) FROM recoveries WHERE loan_id = loans.id) AS total_recoveries',
@@ -42,31 +54,12 @@ class LoanReport < BaseLoanReport
       scope = scope.where("loans.modified_by_legacy_id != 'migration'")
     end
 
-    scope = scope
-      .select('
-        ded_codes.group_description    AS ded_code_group_description,
-        ded_codes.category_description AS ded_code_category_description,
-        ded_codes.code_description     AS ded_code_code_description,
-        ded_codes.code                 AS ded_code_code
-      ')
-      .joins('LEFT JOIN ded_codes ON loans.dti_ded_code = ded_codes.code')
-
-    scope = scope
-      .joins('LEFT JOIN loan_modifications AS initial_draw_change ON initial_draw_change.loan_id = loans.id AND initial_draw_change.type = "InitialDrawChange"')
-      .select('initial_draw_change.amount_drawn AS initial_draw_amount, initial_draw_change.date_of_change AS initial_draw_date')
-
-    scope = scope
-      .joins('LEFT JOIN lending_limits ON loans.lending_limit_id = lending_limits.id')
-      .select('loans.guarantee_rate AS loan_guarantee_rate, loans.premium_rate AS loan_premium_rate')
-      .select('
-        lending_limits.name AS lending_limit_name,
-        lending_limits.guarantee_rate AS lending_limit_guarantee_rate,
-        lending_limits.premium_rate AS lending_limit_premium_rate
-      ')
-
-    scope
-      .joins('LEFT JOIN invoices ON loans.invoice_id = invoices.id')
-      .select('invoices.reference AS invoice_reference')
+    scope.joins(
+      'LEFT JOIN ded_codes ON loans.dti_ded_code = ded_codes.code',
+      'LEFT JOIN invoices ON loans.invoice_id = invoices.id',
+      'LEFT JOIN lending_limits ON loans.lending_limit_id = lending_limits.id',
+      'LEFT JOIN loan_modifications AS initial_draw_change ON initial_draw_change.loan_id = loans.id AND initial_draw_change.type = "InitialDrawChange"'
+    )
   end
 
   def loan_sources=(sources)
