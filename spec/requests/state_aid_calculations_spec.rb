@@ -13,16 +13,14 @@ describe 'state aid calculations' do
     end
 
     it 'pre-fills some fields' do
-      visit loan_path(loan)
-      click_link 'State Aid Calculation'
+      navigate_to_state_aid_calculation_page
 
       page.find('#state_aid_calculation_initial_draw_amount').value.should == '123456.00'
       page.find('#state_aid_calculation_initial_draw_months').value.should == '3'
     end
 
     it 'creates a new record with valid data' do
-      visit loan_path(loan)
-      click_link 'State Aid Calculation'
+      navigate_to_state_aid_calculation_page
 
       fill_in :initial_draw_year, '2012'
       fill_in :initial_draw_amount, '£123,456'
@@ -35,7 +33,7 @@ describe 'state aid calculations' do
         click_button 'Submit'
       }.to change(StateAidCalculation, :count).by(1)
 
-      current_path.should == loan_path(loan)
+      current_path.should == new_loan_entry_path(loan)
 
       state_aid_calculation = StateAidCalculation.last
       state_aid_calculation.loan.should == loan
@@ -73,19 +71,19 @@ describe 'state aid calculations' do
     end
 
     it 'updates the record' do
-      visit loan_path(loan)
-      click_link 'State Aid Calculation'
+      navigate_to_state_aid_calculation_page
+
       fill_in :initial_draw_amount, '£100,000'
       click_button 'Submit'
 
-      current_path.should == loan_path(loan)
+      current_path.should == new_loan_entry_path(loan)
 
       state_aid_calculation.reload.initial_draw_amount.should == Money.new(100_000_00)
     end
 
     it 'does not update the record with invalid data' do
-      visit loan_path(loan)
-      click_link 'State Aid Calculation'
+      navigate_to_state_aid_calculation_page
+
       fill_in :initial_draw_amount, ''
       click_button 'Submit'
 
@@ -96,6 +94,12 @@ describe 'state aid calculations' do
   end
 
   private
+    def navigate_to_state_aid_calculation_page
+      visit loan_path(loan)
+      click_link 'Loan Entry'
+      click_button 'State Aid Calculation'
+    end
+
     def fill_in(attribute, value)
       page.fill_in "state_aid_calculation_#{attribute}", with: value
     end

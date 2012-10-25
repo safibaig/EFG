@@ -4,6 +4,5 @@
 </div>
 
 <div class="form-actions">
-  <%= link_to('State Aid Calculation', edit_loan_state_aid_calculation_path(@loan), class: 'btn btn-info') if current_user.can_update?(StateAidCalculation) %>
   <%= link_to('Data Protection and Disclosure Declaration', data_protection_declaration_documents_path(format: :pdf), class: 'btn btn-info') if current_user.can_view?(DataProtectionDeclaration) %>
 </div>
