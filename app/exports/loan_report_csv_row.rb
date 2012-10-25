@@ -1,7 +1,9 @@
 class LoanReportCsvRow
+  attr_reader :loan_security_types
 
-  def initialize(loan)
+  def initialize(loan, loan_security_types)
     @loan = loan
+    @loan_security_types = loan_security_types
   end
 
   def row
@@ -77,7 +79,7 @@ class LoanReportCsvRow
       @loan.current_refinanced_amount.to_s,
       @loan.final_refinanced_amount.to_s,
       @loan.original_overdraft_proportion,
-      @loan.loan_security_types.collect(&:name).join(' / '),
+      loan_security_types.collect(&:name).join(' / '),
       @loan.refinance_security_proportion,
       @loan.overdraft_limit.to_s,
       boolean_as_text(@loan.overdraft_maintained),
