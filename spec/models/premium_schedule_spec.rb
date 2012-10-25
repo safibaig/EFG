@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'spec_helper'
 
 describe PremiumSchedule do
@@ -133,6 +134,82 @@ describe PremiumSchedule do
       it 'should correctly calculate premiums' do
         [ 500_00, 500_00, 333_33, 166_67, 0 ].each.with_index do |premium, quarter|
           premium_schedule.premiums[quarter].should == Money.new(premium)
+        end
+      end
+    end
+
+    context 'with potential rounding errors 1' do
+      let(:loan) {
+        FactoryGirl.build(:loan, amount: Money.new(60_900_00), repayment_duration: { months: 120 })
+      }
+
+      let(:state_aid_calculation) {
+        FactoryGirl.build(
+          :state_aid_calculation,
+          loan: loan,
+          initial_draw_amount: Money.new(60_900_00),
+          initial_draw_months: 120,
+          initial_capital_repayment_holiday: 0
+        )
+      }
+
+      it 'should correctly calculate premiums, rounding down halves (e.g. 289.2750 becomes £289.27, not £289.28)' do
+        [ 304_50, 296_89, 289_27, 281_66, 274_05, 266_44, 258_82, 251_21, 243_60, 235_99,
+          228_37, 220_76, 213_15, 205_54, 197_92, 190_31, 182_70, 175_09, 167_47, 159_86,
+          152_25, 144_64, 137_02, 129_41, 121_80, 114_19, 106_57, 98_96, 91_35, 83_74,
+          76_12, 68_51, 60_90, 53_29, 45_67, 38_06, 30_45, 22_84, 15_22, 7_61
+        ].each.with_index do |premium, quarter|
+          premium_schedule.premiums[quarter].should == Money.new(premium)
+        end
+      end
+
+      context 'with potential rounding errors 2' do
+        let(:loan) {
+          FactoryGirl.build(:loan, amount: Money.new(50_000_00), repayment_duration: { months: 60 })
+        }
+
+        let(:state_aid_calculation) {
+          FactoryGirl.build(
+            :state_aid_calculation,
+            loan: loan,
+            initial_draw_amount: Money.new(50_000_00),
+            initial_draw_months: 60,
+            initial_capital_repayment_holiday: 12
+          )
+        }
+
+        it 'should correctly calculate premiums, rounding down halves (e.g. 289.2750 becomes £289.27, not £289.28)' do
+          [ 250_00, 250_00, 250_00, 250_00, 250_00, 234_37, 218_75,
+            203_12, 187_50, 171_87, 156_25, 140_62, 125_00, 109_37,
+            93_75, 78_12, 62_50, 46_87, 31_25, 15_62
+          ].each.with_index do |premium, quarter|
+            premium_schedule.premiums[quarter].should == Money.new(premium)
+          end
+        end
+      end
+
+      context 'with potential rounding errors 3' do
+        let(:loan) {
+          FactoryGirl.build(:loan, amount: Money.new(38_500_00), repayment_duration: { months: 60 })
+        }
+
+        let(:state_aid_calculation) {
+          FactoryGirl.build(
+            :state_aid_calculation,
+            loan: loan,
+            initial_draw_amount: Money.new(38_500_00),
+            initial_draw_months: 60,
+            initial_capital_repayment_holiday: 0
+          )
+        }
+
+        it 'should correctly calculate premiums, rounding down halves (e.g. 289.2750 becomes £289.27, not £289.28)' do
+          [ 192_50, 182_87, 173_25, 163_62, 154_00, 144_37,
+            134_75, 125_12, 115_50, 105_87, 96_25, 86_62, 77_00,
+            67_37, 57_75, 48_12, 38_50, 28_87, 19_25, 9_62
+          ].each.with_index do |premium, quarter|
+            premium_schedule.premiums[quarter].should == Money.new(premium)
+          end
         end
       end
     end

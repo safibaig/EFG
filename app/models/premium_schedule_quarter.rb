@@ -22,7 +22,7 @@ class PremiumScheduleQuarter
 
   def premium_amount
     if quarter < total_quarters
-      aggregate_outstanding_amount * (premium_rate / 100 / 4)
+      PremiumMoney.new(aggregate_outstanding_amount.to_f * (premium_rate / 100 / 4))
     else
       Money.new(0)
     end
