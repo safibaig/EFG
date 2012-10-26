@@ -29,5 +29,9 @@ describe QuickDateFormatter do
     it 'does not blow up for an incorrectly formatted date' do
       QuickDateFormatter.parse('2008/01/01').should be_nil
     end
+
+    it 'does not blow up when the wrong number of days/month is entered' do
+      QuickDateFormatter.parse('31/9/2012').should be_nil
+    end
   end
 end

@@ -14,7 +14,11 @@ module QuickDateFormatter
       return unless match
       day, month, year = match[1..3]
       year = "20#{year}" if year.length == 2
-      Date.new(year.to_i, month.to_i, day.to_i)
+
+      begin
+        Date.new(year.to_i, month.to_i, day.to_i)
+      rescue ArgumentError
+      end
     end
   end
 end
