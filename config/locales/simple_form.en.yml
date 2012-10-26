@@ -167,10 +167,12 @@ en:
 
       loan_recovery:
         recovery_on: 'Last amount recovered on'
+        cumulative_unrealised_recoveries_amount: 'Total value of recoveries'
 
       loan_realise:
         realised_money_date: 'What was the most recent date on which Realisations were received by the Government in respect of this facility?'
-        cumulative_realised_amount: What is the value of this Realisation?
+        cumulative_realised_amount: What is the value of all realisations?
+        last_realisation_amount: Value of last realisation?
 
       loan_remove_guarantee:
         remove_guarantee_on: What is the date that the Guarantee was removed from this facility?

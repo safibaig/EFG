@@ -271,6 +271,34 @@ describe Loan do
     end
   end
 
+  describe "#cumulative_unrealised_recoveries_amount" do
+    let(:loan) { FactoryGirl.create(:loan, :settled, :recovered) }
+
+    it 'sums all loan realisations' do
+      FactoryGirl.create(:recovery, loan: loan, amount_due_to_dti: Money.new(500_00))
+      FactoryGirl.create(:loan_realisation, realised_loan: loan, realised_amount: Money.new(200_00))
+
+      loan.cumulative_unrealised_recoveries_amount.should == Money.new(300_00)
+    end
+  end
+
+  describe "#last_realisation_amount" do
+    before do
+      loan.save!
+    end
+
+    it 'sums all loan realisations' do
+      FactoryGirl.create(:loan_realisation, realised_loan: loan, realised_amount: Money.new(123_45))
+      FactoryGirl.create(:loan_realisation, realised_loan: loan, realised_amount: Money.new(678_90))
+
+      loan.last_realisation_amount.should == Money.new(678_90)
+    end
+
+    it "returns 0 money when loan has no realisations" do
+      loan.last_realisation_amount.should == Money.new(0)
+    end
+  end
+
   describe '#amount_not_yet_drawn' do
     before do
       loan.save!
