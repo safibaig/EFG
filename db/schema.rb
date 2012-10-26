@@ -412,6 +412,8 @@ ActiveRecord::Schema.define(:version => 20121016103524) do
     t.integer  "seq",                                                            :null => false
   end
 
+  add_index "recoveries", ["loan_id"], :name => "index_recoveries_on_loan_id"
+
   create_table "sic_codes", :force => true do |t|
     t.string  "code"
     t.string  "description"

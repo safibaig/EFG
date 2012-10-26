@@ -27,8 +27,21 @@ class LoanReport < BaseLoanReport
   def loans
     scope = Loan.select(
       [
+        'ded_codes.group_description AS ded_code_group_description',
+        'ded_codes.category_description AS ded_code_category_description',
+        'ded_codes.code_description AS ded_code_code_description',
+        'ded_codes.code AS ded_code_code',
+        'initial_draw_change.date_of_change AS initial_draw_date',
+        'initial_draw_change.amount_drawn AS initial_draw_amount',
+        'invoices.reference AS invoice_reference',
+        'lending_limits.name AS lending_limit_name',
+        'lending_limits.guarantee_rate AS lending_limit_guarantee_rate',
+        'lending_limits.premium_rate AS lending_limit_premium_rate',
         'loans.*',
-        '(SELECT name FROM lending_limits WHERE id = loans.lending_limit_id) AS lending_limit_name',
+        'loans.guarantee_rate AS loan_guarantee_rate',
+        'loans.premium_rate AS loan_premium_rate',
+        'created_by_user.username AS created_by_username',
+        'modified_by_user.username AS modified_by_username',
         '(SELECT organisation_reference_code FROM lenders WHERE id = loans.lender_id) AS lender_organisation_reference_code',
         '(SELECT recovered_on FROM recoveries WHERE loan_id = loans.id ORDER BY recoveries.id DESC LIMIT 1) AS last_recovery_on',
         '(SELECT SUM(amount_due_to_dti) FROM recoveries WHERE loan_id = loans.id) AS total_recoveries',
@@ -43,7 +56,14 @@ class LoanReport < BaseLoanReport
       scope = scope.where("loans.modified_by_legacy_id != 'migration'")
     end
 
-    scope
+    scope.joins(
+      'LEFT JOIN ded_codes ON loans.dti_ded_code = ded_codes.code',
+      'LEFT JOIN invoices ON loans.invoice_id = invoices.id',
+      'LEFT JOIN lending_limits ON loans.lending_limit_id = lending_limits.id',
+      'LEFT JOIN loan_modifications AS initial_draw_change ON initial_draw_change.loan_id = loans.id AND initial_draw_change.type = "InitialDrawChange"',
+      'LEFT JOIN users AS created_by_user ON loans.created_by_id = created_by_user.id',
+      'LEFT JOIN users AS modified_by_user ON loans.modified_by_id = modified_by_user.id',
+    )
   end
 
   def loan_sources=(sources)
@@ -62,17 +82,17 @@ class LoanReport < BaseLoanReport
 
   def query_conditions_mapping
     {
-      states: "state IN (?)",
-      loan_sources: "loan_source IN (?)",
-      loan_scheme: "loan_scheme = ?",
+      states: "loans.state IN (?)",
+      loan_sources: "loans.loan_source IN (?)",
+      loan_scheme: "loans.loan_scheme = ?",
       lender_ids: "loans.lender_id IN (?)",
-      created_by_id: "created_by_id = ?",
-      facility_letter_start_date: "facility_letter_date >= ?",
-      facility_letter_end_date: "facility_letter_date <= ?",
-      created_at_start_date: "created_at >= ?",
-      created_at_end_date: "created_at <= ?",
-      last_modified_start_date: "updated_at >= ?",
-      last_modified_end_date: "updated_at <= ?"
+      created_by_id: "loans.created_by_id = ?",
+      facility_letter_start_date: "loans.facility_letter_date >= ?",
+      facility_letter_end_date: "loans.facility_letter_date <= ?",
+      created_at_start_date: "loans.created_at >= ?",
+      created_at_end_date: "loans.created_at <= ?",
+      last_modified_start_date: "loans.updated_at >= ?",
+      last_modified_end_date: "loans.updated_at <= ?"
     }
   end
 
