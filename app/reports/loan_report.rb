@@ -40,6 +40,8 @@ class LoanReport < BaseLoanReport
         'loans.*',
         'loans.guarantee_rate AS loan_guarantee_rate',
         'loans.premium_rate AS loan_premium_rate',
+        'created_by_user.username AS created_by_username',
+        'modified_by_user.username AS modified_by_username',
         '(SELECT organisation_reference_code FROM lenders WHERE id = loans.lender_id) AS lender_organisation_reference_code',
         '(SELECT recovered_on FROM recoveries WHERE loan_id = loans.id ORDER BY recoveries.id DESC LIMIT 1) AS last_recovery_on',
         '(SELECT SUM(amount_due_to_dti) FROM recoveries WHERE loan_id = loans.id) AS total_recoveries',
@@ -58,7 +60,9 @@ class LoanReport < BaseLoanReport
       'LEFT JOIN ded_codes ON loans.dti_ded_code = ded_codes.code',
       'LEFT JOIN invoices ON loans.invoice_id = invoices.id',
       'LEFT JOIN lending_limits ON loans.lending_limit_id = lending_limits.id',
-      'LEFT JOIN loan_modifications AS initial_draw_change ON initial_draw_change.loan_id = loans.id AND initial_draw_change.type = "InitialDrawChange"'
+      'LEFT JOIN loan_modifications AS initial_draw_change ON initial_draw_change.loan_id = loans.id AND initial_draw_change.type = "InitialDrawChange"',
+      'LEFT JOIN users AS created_by_user ON loans.created_by_id = created_by_user.id',
+      'LEFT JOIN users AS modified_by_user ON loans.modified_by_id = modified_by_user.id',
     )
   end
 
