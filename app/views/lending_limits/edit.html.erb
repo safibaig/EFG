@@ -1,8 +1,7 @@
 <%= breadcrumbs(
   link_to('Lenders', lenders_path),
   h(@lender.name),
-  link_to('Lending Limits', lender_lending_limits_path(@lender)),
-  'Edit Lending Limit'
+  link_to('Lending Limits', lender_lending_limits_path(@lender))
 ) %>
 
 <div class="page-header">

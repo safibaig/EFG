@@ -5,24 +5,17 @@ module ApplicationHelper
     lis = []
 
     items.each_with_index do |item, index|
-      lis << if index == items.length - 1
-        content_tag(:li, item, class: 'active')
-      else
-        content_tag(:li, item + divider)
-      end
+      lis << content_tag(:li, item + divider)
     end
 
     content_tag :ul, lis.join('').html_safe, class: 'breadcrumb'
   end
 
   def breadcrumbs_for_loan(loan, *extras)
-    loan_text = "Loan #{loan.reference}"
-    loan_item = extras.any? ? link_to(loan_text, loan_path(loan)) : loan_text
-
     breadcrumbs(*[
       link_to('Loan Portfolio', loan_states_path),
-      loan_item
-    ] + extras)
+      link_to("Loan #{loan.reference}", loan_path(loan))
+    ])
   end
 
   def friendly_boolean(boolean)
