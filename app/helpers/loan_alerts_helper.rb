@@ -1,4 +1,9 @@
 module LoanAlertsHelper
+  def loan_alerts_breadcrumbs_text(state, priority)
+    "Loan Alerts: #{state.humanize.titleize}".tap { |text|
+      text << " (#{priority.titleize})" if priority.present?
+    }
+  end
 
   def loan_alerts_priority(priority)
     return if priority.blank?

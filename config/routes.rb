@@ -90,7 +90,7 @@ EFG::Application.routes.draw do
   resources :loan_alerts, only: [] do
     collection do
       get :not_drawn
-      get :demanded
+      get :not_demanded
       get :not_progressed
       get :not_closed
     end

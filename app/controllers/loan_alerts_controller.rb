@@ -16,7 +16,7 @@ class LoanAlertsController < ApplicationController
     render "show"
   end
 
-  def demanded
+  def not_demanded
     @loans = demanded_loans(params[:priority])
     @title = I18n.t('dashboard.loan_alerts.demanded')
     render "show"

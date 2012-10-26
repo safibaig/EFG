@@ -1,3 +1,7 @@
+<%= breadcrumbs_for_loan(@loan,
+  link_to('Change Facility', new_loan_loan_change_path(@loan))
+) %>
+
 <div class="page-header">
   <h1>Premium Reschedule for <%= @loan.reference %></h1>
 </div>

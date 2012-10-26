@@ -1,4 +1,23 @@
 module ApplicationHelper
+  def breadcrumbs(*items)
+    items.unshift(link_to('Home', root_path))
+    divider = content_tag(:span, '/', class: 'divider')
+    lis = []
+
+    items.each_with_index do |item, index|
+      lis << content_tag(:li, item + divider)
+    end
+
+    content_tag :ul, lis.join('').html_safe, class: 'breadcrumb'
+  end
+
+  def breadcrumbs_for_loan(loan, *extras)
+    breadcrumbs(*[
+      link_to('Loan Portfolio', loan_states_path),
+      link_to("Loan #{loan.reference}", loan_path(loan))
+    ])
+  end
+
   def friendly_boolean(boolean)
     boolean ? 'Yes' : 'No'
   end

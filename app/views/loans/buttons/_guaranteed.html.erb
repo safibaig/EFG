@@ -1,7 +1,7 @@
 <div class="form-actions">
   <%= link_to('Change Amount or Terms', new_loan_loan_change_path(@loan), class: 'btn') if current_user.can_create?(LoanChange) %>
   <%= link_to('Demand to Borrower', new_loan_demand_to_borrower_path(@loan), class: 'btn') if current_user.can_create?(LoanDemandToBorrower) %>
-  <%= link_to('Remove guarantee', new_loan_remove_guarantee_path(@loan), class: 'btn') if current_user.can_create?(LoanRemoveGuarantee) %>
+  <%= link_to('Remove Guarantee', new_loan_remove_guarantee_path(@loan), class: 'btn') if current_user.can_create?(LoanRemoveGuarantee) %>
   <%= link_to('Repay Loan', new_loan_repay_path(@loan), class: 'btn') if current_user.can_create?(LoanRepay) %>
   <%= link_to('Data Correction', new_loan_data_correction_path(@loan), class: 'btn') if current_user.can_create?(DataCorrection) %>
 </div>

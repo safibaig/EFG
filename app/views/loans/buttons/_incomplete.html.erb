@@ -1,5 +1,5 @@
 <div class="form-actions">
-  <%= link_to_loan_entry(@loan) %>
+  <%= link_to_loan_entry(@loan, class: 'btn btn-primary') %>
   <%= link_to('Cancel Loan', new_loan_cancel_path(@loan), class: 'btn btn-danger') if current_user.can_create?(LoanCancel) %>
 </div>
 
