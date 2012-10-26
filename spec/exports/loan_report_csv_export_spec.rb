@@ -94,7 +94,8 @@ describe LoanReportCsvExport do
     end
 
     context 'row' do
-      let(:user) { FactoryGirl.create(:user) }
+      let(:user1) { FactoryGirl.create(:user, username: 'bobby.t') }
+      let(:user2) { FactoryGirl.create(:user, username: 'billy.bob') }
       let(:ded_code) {
         FactoryGirl.create(:ded_code,
           category_description: 'Loss of Market',
@@ -181,23 +182,22 @@ describe LoanReportCsvExport do
           generic5: 'generic5',
           cancelled_reason_id: 1,
           cancelled_comment: 'cancel comment',
-          cancelled_on: Date.parse('22/01/2012'),
-          facility_letter_date: Date.parse('16/05/2012'),
-          borrower_demanded_on: Date.parse('18/06/2012'),
+          cancelled_on: Date.new(2012, 1, 22),
+          facility_letter_date: Date.new(2012, 5, 16),
+          borrower_demanded_on: Date.new(2012, 6, 18),
           amount_demanded: 10000,
-          repaid_on: Date.parse('15/09/2012'),
-          no_claim_on: Date.parse('16/09/2012'),
-          dti_demanded_on: Date.parse('17/09/2012'),
+          repaid_on: Date.new(2012, 9, 15),
+          no_claim_on: Date.new(2012, 9, 16),
+          dti_demanded_on: Date.new(2012, 9, 17),
           dti_demand_outstanding: 50000,
           dti_amount_claimed: 40000,
           dti_interest: 5000,
-          dti_ded_code: ded_code.code,
           dti_reason: 'failure!',
           dti_break_costs: 5000,
-          created_by_id: user.id,
-          created_at: Time.zone.parse('12/04/2012 14:34'),
-          modified_by_id: user.id,
-          updated_at: Time.zone.parse('13/04/2012 14:34'),
+          created_by: user1,
+          created_at: Time.zone.local(2012, 4, 12, 14, 34),
+          modified_by: user2,
+          updated_at: Time.zone.local(2012, 4, 13, 14, 34),
           remove_guarantee_on: Date.new(2012, 9, 16),
           remove_guarantee_outstanding_amount: 20000,
           remove_guarantee_reason: 'removal reason',
@@ -276,9 +276,9 @@ describe LoanReportCsvExport do
         row[48].should == "3000.00"
         row[49].should == "10000.00"
         row[50].should == "5000.00"
-        row[51].should == user.id.to_s
+        row[51].should == 'bobby.t'
         row[52].should == '12-04-2012 02:34 PM'
-        row[53].should == user.id.to_s
+        row[53].should == 'billy.bob'
         row[54].should == '13-04-2012'
         row[55].should == '16-09-2012'
         row[56].should == '20000.00'
