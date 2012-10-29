@@ -2,9 +2,10 @@
 
 <div class="page-header">
   <%= loan_alerts_priority(params[:priority]) %>
-  <h1>Loan Alerts (<%= pluralize(@loans.count, 'loan') %>)</h1>
-  <h3><%= t("dashboard.loan_alerts.#{params[:action]}").html_safe %></h3>
+  <h1><%= params[:action].titleize %> Loan Alerts (<%= pluralize(@loans.count, 'loan') %>)</h1>
 </div>
+
+<p><%= t("loan_alerts.#{params[:action]}_description") %></p>
 
 <%= render partial: "loan_states/loans_listing", locals: { loans: @loans } %>
 

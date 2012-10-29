@@ -204,13 +204,16 @@ en:
         recovery:
           recovery_too_high: Amount to be recovered added to Value of proceeds of any previous recoveries paid to the government is greater than Value of settlement previously made
 
-  dashboard:
-    loan_alerts:
-      title: Loan Alerts For The Next 60 Days
-      not_drawn: "Loans which will have the <em>Guarantee</em> removed if not <em>Drawn</em>:"
-      demanded: "<em>Lender Demand</em> loans that will be removed if not moved to <em>Demanded</em>:"
-      not_progressed: "<em>Eligible</em> Loans which will be removed if not <em>Progressed</em>:"
-      not_closed: "Loans assumed to have been <em>Repaid</em> due to <em>lack of updates</em>:"
+  loan_alerts:
+    title: Loan Alerts For The Next 60 Days
+    not_drawn_title: "Loans which will have the <em>Guarantee</em> removed if not <em>Drawn</em>:"
+    not_drawn_description: "This page lists those facilities approaching the six month limit from the date of the Scheme Facility Letter at which the Guarantee will be withdrawn if the facility is not Drawn. These should be reviewed and, for any that are still to proceed, the facility must be Drawn within the six months and correctly recorded as such. If the facility is not drawn in time the Offer will lapse and a new application will be required. Offers that are no longer required should be Cancelled."
+    not_demanded_title: "<em>Lender Demand</em> loans that will be removed if not moved to <em>Demanded</em>:"
+    not_demanded_description: "This page lists those loans for which Demand has been made on the Borrower but Demand has not been made against the Guarantee. The interval between these two processes must not exceed six months for SFLG loans. You should review these loans. Those where Demand on the Borrower has been satisfied should be recorded as 'Repaid' or the loan should be Rescheduled using 'Change Amount or Terms'. For those where Demand has not been satisfied a decision must be made whether to make Demand against the Guarantee or to record a 'No Claim'. If Demand has not been made against the Guarantee within six months of Demand on the Borrower the entitlement to claim will lapse."
+    not_progressed_title: "<em>Eligible</em> Loans which will be removed if not <em>Progressed</em>:"
+    not_progressed_description: 'This page lists those facilities in a state of either Eligible, Incomplete or Complete which are approaching the six month limit at which they will be removed. It is assumed that these applications will not now progress any further and so will be auto-cancelled if no further action is taken. The applications should be reviewed and, if still "live", progressed before expiry.'
+    not_closed_title: "Loans assumed to have been <em>Repaid</em> due to <em>lack of updates</em>:"
+    not_closed_description: "This page lists all facilities that have not been updated to 'Repaid' in the six months following the expected date of repayment (or 3 months for EFG facilities). They should be reviewed and the records updated as appropriate."
 
   manage_users:
     new_account_email_sent: "An email has been sent to %{email} with instructions for activating their account."
