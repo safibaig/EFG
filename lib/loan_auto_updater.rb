@@ -21,7 +21,7 @@ module LoanAutoUpdater
   end
 
   def remove_not_closed_loans!
-    (not_yet_guaranteed_efg_loans + guaranteed_efg_loans + not_closed_sflg_and_legacy_sflg_loans).uniq.each do |loan|
+    (guaranteed_efg_loans + not_closed_sflg_and_legacy_sflg_loans).uniq.each do |loan|
       loan.update_state!(Loan::AutoRemoved, 17, system_user)
     end
   end
@@ -31,10 +31,6 @@ module LoanAutoUpdater
   def loans
     @lender_ids ||= Lender.where(allow_alert_process: true).collect(&:id)
     Loan.where(lender_id: @lender_ids)
-  end
-
-  def not_yet_guaranteed_efg_loans
-    loans.with_scheme('efg').where(state: [Loan::Incomplete, Loan::Completed, Loan::Offered]).where("maturity_date < ?", not_closed_offered_start_date)
   end
 
   def guaranteed_efg_loans

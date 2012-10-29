@@ -118,27 +118,6 @@ describe LoanAutoUpdater do
       LoanAutoUpdater.remove_not_closed_loans!
     end
 
-    [
-      Loan::Incomplete,
-      Loan::Completed,
-      Loan::Offered
-    ].each do |state|
-      context "#{state} EFG loans" do
-        let!(:expired_loan) { FactoryGirl.create(:loan, state.to_sym, maturity_date: 6.months.ago - 1.day) }
-        let!(:not_yet_expired_loan) { FactoryGirl.create(:loan, state.to_sym, maturity_date: 6.months.ago) }
-        let!(:excluded_loan) { FactoryGirl.create(:loan, state.to_sym, lender: excluded_lender, maturity_date: 6.months.ago - 1.day) }
-
-        it "should update state of loans with a maturity date older than 6 months to auto-removed" do
-          dispatch
-
-          expired_loan.reload.state.should == Loan::AutoRemoved
-          not_yet_expired_loan.reload.state.should == state
-        end
-
-        it_behaves_like "loan auto-update"
-      end
-    end
-
     context 'guaranteed EFG loans' do
       let!(:expired_loan) { FactoryGirl.create(:loan, :guaranteed, maturity_date: 93.days.ago) }
       let!(:not_yet_expired_loan) { FactoryGirl.create(:loan, :guaranteed, maturity_date: 92.days.ago) }

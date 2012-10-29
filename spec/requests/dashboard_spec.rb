@@ -232,16 +232,7 @@ describe 'lender dashboard' do
     end
 
     context "not closed loan alerts" do
-      let!(:high_priority_incomplete_loan) {
-        FactoryGirl.create(
-          :loan,
-          :incomplete,
-          lender: lender,
-          maturity_date: 6.months.ago
-        )
-      }
-
-      let!(:high_priority_guaranteed_loan) {
+      let!(:high_priority_efg_loan) {
         FactoryGirl.create(
           :loan,
           :guaranteed,
@@ -250,21 +241,41 @@ describe 'lender dashboard' do
         )
       }
 
-      let!(:medium_priority_complete_loan) {
+      let!(:high_priority_legacy_loan) {
         FactoryGirl.create(
           :loan,
-          :completed,
+          :guaranteed,
+          :sflg,
+          lender: lender,
+          maturity_date: 6.months.ago
+        )
+      }
+
+      let!(:medium_priority_efg_loan) {
+        FactoryGirl.create(
+          :loan,
+          :guaranteed,
+          lender: lender,
+          maturity_date: 11.weekdays_from(92.days.ago)
+        )
+      }
+
+      let!(:medium_priority_legacy_loan) {
+        FactoryGirl.create(
+          :loan,
+          :guaranteed,
+          :sflg,
           lender: lender,
           maturity_date: 11.weekdays_from(6.months.ago)
         )
       }
 
-      let!(:low_priority_offered_loan) {
+      let!(:low_priority_efg_loan) {
         FactoryGirl.create(
           :loan,
-          :offered,
+          :guaranteed,
           lender: lender,
-          maturity_date: 30.weekdays_from(6.months.ago)
+          maturity_date: 30.weekdays_from(92.days.ago)
         )
       }
 
@@ -281,7 +292,7 @@ describe 'lender dashboard' do
       let!(:loan_not_in_alerts) {
         FactoryGirl.create(
           :loan,
-          :offered,
+          :guaranteed,
           lender: lender,
           maturity_date: 60.weekdays_from(6.months.ago)
         )
@@ -291,35 +302,38 @@ describe 'lender dashboard' do
         visit root_path
 
         page.should have_css "#not_closed_loan_alerts a.high-priority .total-loans", text: "2"
-        page.should have_css "#not_closed_loan_alerts a.medium-priority .total-loans", text: "1"
+        page.should have_css "#not_closed_loan_alerts a.medium-priority .total-loans", text: "2"
         page.should have_css "#not_closed_loan_alerts a.low-priority .total-loans", text: "2"
 
         find("#not_closed_loan_alerts a.high-priority").click
-        page.should have_content(high_priority_incomplete_loan.reference)
-        page.should have_content(high_priority_guaranteed_loan.reference)
-        page.should_not have_content(medium_priority_complete_loan.reference)
-        page.should_not have_content(low_priority_offered_loan.reference)
+        page.should have_content(high_priority_efg_loan.reference)
+        page.should have_content(high_priority_legacy_loan.reference)
+        page.should_not have_content(medium_priority_efg_loan.reference)
+        page.should_not have_content(medium_priority_legacy_loan.reference)
+        page.should_not have_content(low_priority_efg_loan.reference)
         page.should_not have_content(low_priority_legacy_loan.reference)
         page.should_not have_content(loan_not_in_alerts.reference)
 
         visit root_path
 
         find("#not_closed_loan_alerts a.medium-priority").click
-        page.should have_content(medium_priority_complete_loan.reference)
-        page.should_not have_content(high_priority_incomplete_loan.reference)
-        page.should_not have_content(high_priority_guaranteed_loan.reference)
-        page.should_not have_content(low_priority_offered_loan.reference)
+        page.should_not have_content(high_priority_efg_loan.reference)
+        page.should_not have_content(high_priority_legacy_loan.reference)
+        page.should have_content(medium_priority_efg_loan.reference)
+        page.should have_content(medium_priority_legacy_loan.reference)
+        page.should_not have_content(low_priority_efg_loan.reference)
         page.should_not have_content(low_priority_legacy_loan.reference)
         page.should_not have_content(loan_not_in_alerts.reference)
 
         visit root_path
 
         find("#not_closed_loan_alerts a.low-priority").click
-        page.should have_content(low_priority_offered_loan.reference)
+        page.should_not have_content(high_priority_efg_loan.reference)
+        page.should_not have_content(high_priority_legacy_loan.reference)
+        page.should_not have_content(medium_priority_efg_loan.reference)
+        page.should_not have_content(medium_priority_legacy_loan.reference)
+        page.should have_content(low_priority_efg_loan.reference)
         page.should have_content(low_priority_legacy_loan.reference)
-        page.should_not have_content(high_priority_incomplete_loan.reference)
-        page.should_not have_content(high_priority_guaranteed_loan.reference)
-        page.should_not have_content(medium_priority_complete_loan.reference)
         page.should_not have_content(loan_not_in_alerts.reference)
       end
     end
