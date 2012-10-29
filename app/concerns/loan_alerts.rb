@@ -5,14 +5,14 @@ module LoanAlerts
 
   # "All schemes, any loan that has remained at the state of
   # “eligible” / “incomplete” or “complete”
-  # – for a period of 183 days from entering those states – should be ‘auto cancelled’"
+  # – for a period of 6 months from entering those states – should be ‘auto cancelled’"
   def not_progressed_loans(priority = nil)
     loans_for_alert(:not_progressed, priority) do |loans_scope, start_date, end_date|
       loans_scope.not_progressed.last_updated_between(start_date, end_date).order(:updated_at)
     end
   end
 
-  # "Offered loans have 183 days to progress from offered to guaranteed state
+  # "Offered loans have 6 months to progress from offered to guaranteed state
   # – if not they progress to auto cancelled""
   def not_drawn_loans(priority = nil)
     loans_for_alert(:not_drawn, priority) do |loans_scope, start_date, end_date|
@@ -30,7 +30,7 @@ module LoanAlerts
     end
   end
 
-  # "Legacy or new scheme guaranteed loans – if maturity date has elapsed by 183 days – auto remove
+  # "Legacy or new scheme guaranteed loans – if maturity date has elapsed by 6 months – auto remove
   def not_closed_offered_loans(priority = nil)
     loans_for_alert(:not_closed_offered, priority) do |loans_scope, start_date, end_date|
       loans_scope.
