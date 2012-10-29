@@ -1,5 +1,6 @@
 class LoanDemandAgainstGovernmentController < ApplicationController
   before_filter :verify_create_permission, only: [:new, :create]
+  rescue_from_incorrect_loan_state_error
 
   def new
     @loan = current_lender.loans.find(params[:loan_id])

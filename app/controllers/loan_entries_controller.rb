@@ -1,6 +1,7 @@
 class LoanEntriesController < ApplicationController
   before_filter :verify_create_permission, only: [:new, :create]
   before_filter :load_loan
+  rescue_from_incorrect_loan_state_error
 
   def new
     @loan_entry = LoanEntry.new(@loan)
