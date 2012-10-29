@@ -119,11 +119,11 @@ describe LoanAutoUpdater do
     end
 
     context 'guaranteed EFG loans' do
-      let!(:expired_loan) { FactoryGirl.create(:loan, :guaranteed, maturity_date: 93.days.ago) }
-      let!(:not_yet_expired_loan) { FactoryGirl.create(:loan, :guaranteed, maturity_date: 92.days.ago) }
-      let!(:excluded_loan) { FactoryGirl.create(:loan, :guaranteed, lender: excluded_lender, maturity_date: 93.days.ago) }
+      let!(:expired_loan) { FactoryGirl.create(:loan, :guaranteed, maturity_date: 3.months.ago - 1.day) }
+      let!(:not_yet_expired_loan) { FactoryGirl.create(:loan, :guaranteed, maturity_date: 3.months.ago) }
+      let!(:excluded_loan) { FactoryGirl.create(:loan, :guaranteed, lender: excluded_lender, maturity_date: 3.months.ago - 1.day) }
 
-      it "should update state of loans with a maturity date older than 92 days to auto-removed" do
+      it "should update state of loans with a maturity date older than 3 months to auto-removed" do
         dispatch
 
         expired_loan.reload.state.should == Loan::AutoRemoved

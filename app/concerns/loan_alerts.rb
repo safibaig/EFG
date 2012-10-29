@@ -41,7 +41,7 @@ module LoanAlerts
     end
   end
 
-  # EFG – if state ‘guaranteed’ and maturity date elapsed by 92 days – auto remove
+  # EFG – if state ‘guaranteed’ and maturity date elapsed by 3 months – auto remove
   def not_closed_guaranteed_loans(priority = nil)
     loans_for_alert(:not_closed_guaranteed, priority) do |loans_scope, start_date, end_date|
       loans_scope.with_scheme('efg').guaranteed.maturity_date_between(start_date, end_date).order(:maturity_date)
@@ -104,7 +104,7 @@ module LoanAlerts
   end
 
   def not_closed_guaranteed_start_date
-    @not_closed_guaranteed_start_date ||= 92.days.ago.to_date
+    @not_closed_guaranteed_start_date ||= 3.months.ago.to_date
   end
 
   def not_closed_guaranteed_end_date
