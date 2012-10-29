@@ -44,7 +44,7 @@ module LoanAutoUpdater
   def not_closed_sflg_and_legacy_sflg_loans
     loans.
       with_scheme('non_efg').
-      where(state: [ Loan::Guaranteed, Loan::LenderDemand ]).
+      guaranteed.
       where("maturity_date < ?", sflg_not_closed_start_date)
   end
 
