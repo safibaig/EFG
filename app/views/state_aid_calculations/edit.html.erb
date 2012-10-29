@@ -25,7 +25,7 @@
   <% end %>
 
   <div class="form-actions">
-    <%= f.button :submit, value: 'Submit', class: 'btn-primary' %>
+    <%= f.button :submit, value: 'Submit', class: 'btn-primary', data: { 'disable-with' => 'Submitting...' } %>
     <%= link_to 'Cancel', leave_state_aid_calculation_path(@loan), class: 'btn' %>
   </div>
 <% end %>

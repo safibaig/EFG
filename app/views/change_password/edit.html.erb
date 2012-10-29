@@ -10,6 +10,6 @@
   <%= f.input :password_confirmation, label: "Confirm Your New Password", required: true %>
 
   <div class="form-actions">
-    <%= f.button :submit, "Update Password", class: 'btn btn-primary' %>
+    <%= f.button :submit, "Update Password", class: 'btn btn-primary', data: { 'disable-with' => 'Submitting...' } %>
   </div>
 <% end %>

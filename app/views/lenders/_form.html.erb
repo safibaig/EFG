@@ -8,6 +8,6 @@
   <%= f.input :can_use_add_cap, wrapper: :checkbox %>
 
   <div class="form-actions">
-    <%= f.button :submit, class: 'btn btn-primary' %>
+    <%= f.button :submit, class: 'btn btn-primary', data: { 'disable-with' => 'Submitting...' } %>
   </div>
 <% end %>

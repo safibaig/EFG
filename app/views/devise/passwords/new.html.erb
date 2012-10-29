@@ -8,6 +8,6 @@
   <%= f.input :username, required: true %>
 
   <div class="form-actions">
-    <%= f.button :submit, "Send Reset Instructions", class: 'btn btn-primary' %>
+    <%= f.button :submit, "Send Reset Instructions", class: 'btn btn-primary', data: { 'disable-with' => 'Submitting...' } %>
   </div>
 <% end %>
