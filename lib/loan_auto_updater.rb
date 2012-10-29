@@ -15,7 +15,7 @@ module LoanAutoUpdater
   end
 
   def remove_not_demanded_loans!
-    loans.with_scheme('non_efg').lender_demanded.where("borrower_demanded_on < ?", demanded_start_date).find_each do |loan|
+    loans.with_scheme('non_efg').lender_demanded.where("borrower_demanded_on < ?", not_demanded_start_date).find_each do |loan|
       loan.update_state!(Loan::AutoRemoved, 11, system_user)
     end
   end

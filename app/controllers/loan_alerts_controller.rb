@@ -15,7 +15,7 @@ class LoanAlertsController < ApplicationController
   end
 
   def not_demanded
-    @loans = demanded_loans(params[:priority])
+    @loans = not_demanded_loans(params[:priority])
     render "show"
   end
 

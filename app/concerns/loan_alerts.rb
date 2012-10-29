@@ -1,4 +1,6 @@
-# Comments taken from 'CfEL Response to Initial Questions.docx'
+# Alert descriptions from 'CfEL Response to Initial Questions.docx'
+#
+# Note: alert range is 60 week days (no support for public holidays)
 module LoanAlerts
 
   # "All schemes, any loan that has remained at the state of
@@ -22,8 +24,8 @@ module LoanAlerts
   # have a 12 month time frame to be progressed to “Demanded”
   # – if they do not, they will become “Auto Removed”."
   # "EFG loans however, should not be subjected to this alert
-  def demanded_loans(priority = nil)
-    loans_for_alert(:demanded, priority) do |loans_scope, start_date, end_date|
+  def not_demanded_loans(priority = nil)
+    loans_for_alert(:not_demanded, priority) do |loans_scope, start_date, end_date|
       loans_scope.with_scheme('non_efg').lender_demanded.borrower_demanded_date_between(start_date, end_date).order(:borrower_demanded_on)
     end
   end
@@ -56,70 +58,72 @@ module LoanAlerts
   private
 
   def loans_for_alert(alert_name, priority = nil)
-    default_start_date = send("#{alert_name}_start_date")
-    default_end_date = send("#{alert_name}_end_date")
+    high_priority_start_date   = send("#{alert_name}_start_date")
+    medium_priority_start_date = 9.weekdays_from(high_priority_start_date).advance(days: 1)
+    low_priority_start_date    = 19.weekdays_from(medium_priority_start_date).advance(days: 1)
+    default_end_date           = send("#{alert_name}_end_date")
 
     start_date = {
-      "high"   => default_start_date,
-      "medium" => default_start_date.advance(days: 10),
-      "low"    => default_start_date.advance(days: 30)
-    }.fetch(priority, default_start_date)
+      "high"   => high_priority_start_date,
+      "medium" => medium_priority_start_date,
+      "low"    => low_priority_start_date
+    }.fetch(priority, high_priority_start_date)
 
     end_date = {
-      "high"   => default_start_date.advance(days: 9),
-      "medium" => default_start_date.advance(days: 29),
-      "low"    => default_start_date.advance(days: 59)
+      "high"   => 9.weekdays_from(high_priority_start_date),
+      "medium" => 19.weekdays_from(medium_priority_start_date),
+      "low"    => 29.weekdays_from(low_priority_start_date)
     }.fetch(priority, default_end_date)
 
     yield current_lender.loans, start_date, end_date
   end
 
   def not_progressed_start_date
-    6.months.ago.to_date
+    @not_progressed_start_date ||= 6.months.ago.to_date
   end
 
   def not_progressed_end_date
-    6.months.ago.to_date.advance(days: 59)
+    @not_progressed_end_date ||= 59.weekdays_from(not_progressed_start_date).to_date
   end
 
   def not_drawn_start_date
-    6.months.ago.to_date - 10.days
+    @not_drawn_start_date ||= (6.months.ago - 10.days).to_date
   end
 
   def not_drawn_end_date
-    not_drawn_start_date.advance(days: 59)
+    @not_drawn_end_date ||= 59.weekdays_from(not_drawn_start_date).to_date
   end
 
-  def demanded_start_date
-    365.days.ago.to_date
+  def not_demanded_start_date
+    @not_demanded_start_date ||= 365.days.ago.to_date
   end
 
-  def demanded_end_date
-    306.days.ago.to_date
+  def not_demanded_end_date
+    @not_demanded_end_date ||= 59.weekdays_from(not_demanded_start_date).to_date
   end
 
   def not_closed_offered_start_date
-    6.months.ago.to_date
+    @not_closed_offered_start_date ||= 6.months.ago.to_date
   end
 
   def not_closed_offered_end_date
-    6.months.ago.to_date.advance(days: 59)
+    @not_closed_offered_end_date ||= 59.weekdays_from(not_closed_offered_start_date).to_date
   end
 
   def not_closed_guaranteed_start_date
-    92.days.ago.to_date
+    @not_closed_guaranteed_start_date ||= 92.days.ago.to_date
   end
 
   def not_closed_guaranteed_end_date
-    33.days.ago.to_date
+    @not_closed_guaranteed_end_date ||= 59.weekdays_from(not_closed_guaranteed_start_date).to_date
   end
 
   def sflg_not_closed_start_date
-    6.months.ago.to_date
+    @sflg_not_closed_start_date ||= 6.months.ago.to_date
   end
 
   def sflg_not_closed_end_date
-    6.months.ago.to_date.advance(days: 59)
+    @sflg_not_closed_end_date ||= 59.weekdays_from(sflg_not_closed_start_date).to_date
   end
 
 end
