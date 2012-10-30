@@ -234,11 +234,11 @@ class Loan < ActiveRecord::Base
   end
 
   def guarantee_rate
-    read_attribute(:guarantee_rate) || lending_limit.guarantee_rate
+    read_attribute(:guarantee_rate) || lending_limit && lending_limit.guarantee_rate
   end
 
   def premium_rate
-    read_attribute(:premium_rate) || lending_limit.premium_rate
+    read_attribute(:premium_rate) || lending_limit && lending_limit.premium_rate
   end
 
   def sflg?
