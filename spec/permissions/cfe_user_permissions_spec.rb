@@ -191,7 +191,7 @@ describe CfeUserPermissions do
   context 'LoanModification' do
     it { refute user.can_create?(LoanModification) }
     it { refute user.can_update?(LoanModification) }
-    it { refute user.can_view?(LoanModification) }
+    it { assert user.can_view?(LoanModification) }
   end
 
   context 'AskCfe' do
