@@ -79,6 +79,7 @@ module LoanAlerts
     @not_progressed_end_date ||= 59.weekdays_from(not_progressed_start_date).to_date
   end
 
+  # lenders have an extra 10 days of grace to record the initial draw
   def not_drawn_start_date
     @not_drawn_start_date ||= (6.months.ago - 10.days).to_date
   end
