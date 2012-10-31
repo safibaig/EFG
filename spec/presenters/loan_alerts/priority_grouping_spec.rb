@@ -8,7 +8,7 @@ describe LoanAlerts::PriorityGrouping do
       {
         high_priority: [ [1],[2],[3] ],
         medium_priority: [ [4],[5],[6] ],
-        low_priority: [ [7],[8],[9] ]
+        low_priority: [ [7],[8],[9],[10] ]
       }
     }
 
@@ -24,7 +24,7 @@ describe LoanAlerts::PriorityGrouping do
       expected_hash = {
         high_priority: [ [1,11], [2,12], [3,13] ],
         medium_priority: [ [4,14],[5,15],[6,16] ],
-        low_priority: [ [7,17],[8,18],[9,19] ]
+        low_priority: [ [7,17],[8,18],[9,19],[10] ]
       }
 
       LoanAlerts::PriorityGrouping.merge_groups(group1, group2).should == expected_hash

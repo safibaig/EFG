@@ -20,8 +20,8 @@ module LoanAlerts
       group1.keys.each do |key|
 
         group1[key].each_with_index do |sub_array, index|
-          group2[key].fetch(index)
-          group1[key][index] = sub_array + group2[key].fetch(index)
+          group2[key].fetch(index, [])
+          group1[key][index] = sub_array + group2[key].fetch(index, [])
         end
 
       end
@@ -91,7 +91,7 @@ module LoanAlerts
     def medium_priority_end_date
       @medium_priority_end_date ||= 19.weekdays_from(medium_priority_start_date).to_date
     end
-    
+
     def high_priority_end_date
       @high_priority_end_date ||= 9.weekdays_from(@start_date).to_date
     end
