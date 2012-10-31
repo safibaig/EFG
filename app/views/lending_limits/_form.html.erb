@@ -41,6 +41,6 @@
   <% end %>
 
   <div class="form-actions">
-    <%= f.button :submit, class: 'btn btn-primary', value: @lending_limit.new_record? ? 'Create Lending Limit' : 'Update Lending Limit' %>
+    <%= f.button :submit, class: 'btn btn-primary', value: @lending_limit.new_record? ? 'Create Lending Limit' : 'Update Lending Limit', data: { 'disable-with' => 'Submitting...' } %>
   </div>
 <% end %>

@@ -66,6 +66,6 @@
   <%= f.hidden_field :loan_scheme %>
 
   <div class="form-actions">
-    <%= f.button :submit, value: 'Download', class: 'btn-primary' %>
+    <%= f.button :submit, value: 'Download', class: 'btn-primary', data: { 'disable-with' => 'Submitting...' } %>
   </div>
 <% end %>

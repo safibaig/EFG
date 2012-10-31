@@ -22,7 +22,7 @@
         <tr>
           <td><%= expert.user.name %></td>
           <td>
-            <%= button_to 'Remove', expert_user_path(expert), method: :delete, confirm: 'Are you sure?', class: 'btn btn-danger btn-mini', form_class: 'form-inline' %>
+            <%= button_to 'Remove', expert_user_path(expert), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-mini', form_class: 'form-inline' %>
           </td>
         </tr>
       <% end %>

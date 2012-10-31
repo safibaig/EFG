@@ -10,10 +10,10 @@
 
 <% if @lender.active %>
   <%= simple_form_for @lender, url: deactivate_lender_path(@lender), method: :post do |f| %>
-    <%= f.button :submit, value: 'Deactivate Lender' %>
+    <%= f.button :submit, value: 'Deactivate Lender', data: { 'disable-with' => 'Submitting...' } %>
   <% end %>
 <% else %>
   <%= simple_form_for @lender, url: activate_lender_path(@lender), method: :post do |f| %>
-    <%= f.button :submit, value: 'Activate Lender' %>
+    <%= f.button :submit, value: 'Activate Lender', data: { 'disable-with' => 'Submitting...' } %>
   <% end %>
 <% end %>
