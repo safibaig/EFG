@@ -98,10 +98,4 @@ describe 'user login' do
     end
   end
 
-  def submit_sign_in_form(username, password)
-    fill_in 'user_username', with: username
-    fill_in 'user_password', with: password
-    click_button 'Sign In'
-  end
-
 end

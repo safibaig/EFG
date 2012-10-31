@@ -11,13 +11,7 @@ describe 'loan guarantee' do
     visit loan_path(loan)
     click_link 'Guarantee & Initial Draw'
 
-    choose_radio_button 'received_declaration', true
-    choose_radio_button 'signed_direct_debit_received', true
-    choose_radio_button 'first_pp_received', true
-    fill_in 'initial_draw_date', Date.today.to_s(:screen)
-    fill_in 'initial_draw_amount', '£10,000.42'
-    fill_in 'maturity_date', '01/03/12'
-
+    fill_in_valid_loan_guarantee_details(loan)
     click_button 'Submit'
 
     loan = Loan.last!
@@ -28,13 +22,13 @@ describe 'loan guarantee' do
     loan.received_declaration.should == true
     loan.signed_direct_debit_received.should == true
     loan.first_pp_received.should == true
-    loan.maturity_date.should == Date.new(2012, 3, 1)
+    loan.maturity_date.should == Date.today.advance(years: 10)
     loan.modified_by.should == current_user
 
     should_log_loan_state_change(loan, Loan::Guaranteed, 7, current_user)
 
     loan_change = loan.initial_draw_change
-    loan_change.amount_drawn.should == Money.new(10_000_42)
+    loan_change.amount_drawn.should == loan.amount
     loan_change.change_type_id.should == nil
     loan_change.created_by.should == current_user
     loan_change.date_of_change.should == Date.current
@@ -54,12 +48,4 @@ describe 'loan guarantee' do
     current_path.should == "/loans/#{loan.id}/guarantee"
   end
 
-  private
-  def choose_radio_button(attribute, value)
-    choose "loan_guarantee_#{attribute}_#{value}"
-  end
-
-  def fill_in(attribute, value)
-    page.fill_in "loan_guarantee_#{attribute}", with: value
-  end
 end

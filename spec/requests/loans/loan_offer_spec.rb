@@ -9,9 +9,7 @@ describe 'loan offer' do
     visit loan_path(loan)
     click_link 'Offer Scheme Facility'
 
-    choose_radio_button 'facility_letter_sent', true
-    fill_in 'facility_letter_date', loan.lending_limit.starts_on.to_s(:screen)
-
+    fill_in_valid_loan_offer_details(loan)
     click_button 'Submit'
 
     loan = Loan.last
@@ -19,7 +17,7 @@ describe 'loan offer' do
     current_path.should == loan_path(loan)
 
     loan.state.should == Loan::Offered
-    loan.facility_letter_date.should == loan.lending_limit.starts_on
+    loan.facility_letter_date.should == Date.today
     loan.facility_letter_sent.should == true
     loan.modified_by.should == current_user
 
@@ -38,12 +36,4 @@ describe 'loan offer' do
     current_path.should == loan_offer_path(loan)
   end
 
-  private
-  def choose_radio_button(attribute, value)
-    choose "loan_offer_#{attribute}_#{value}"
-  end
-
-  def fill_in(attribute, value)
-    page.fill_in "loan_offer_#{attribute}", with: value
-  end
 end

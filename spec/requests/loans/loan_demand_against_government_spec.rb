@@ -14,10 +14,7 @@ describe 'loan demand against government' do
     visit loan_path(loan)
     click_link 'Demand Against Guarantee'
 
-    fill_in 'dti_demand_outstanding', loan.amount
-    fill_in 'dti_reason', 'Something'
-    select ded_code.code, from: 'loan_demand_against_government_dti_ded_code'
-
+    fill_in_valid_loan_demand_against_government_guarantee_details(loan, ded_code)
     click_button 'Submit'
 
     loan = Loan.last
@@ -43,10 +40,10 @@ describe 'loan demand against government' do
     visit loan_path(loan)
     click_link 'Demand Against Guarantee'
 
-    fill_in 'dti_demand_outstanding', loan.amount
-    fill_in 'dti_reason', 'Something'
-    fill_in 'dti_interest', 5000
-    fill_in 'dti_break_costs', 2000
+    fill_in 'loan_demand_against_government_dti_demand_outstanding', with: loan.amount
+    fill_in 'loan_demand_against_government_dti_reason', with: 'Something'
+    fill_in 'loan_demand_against_government_dti_interest', with: 5000
+    fill_in 'loan_demand_against_government_dti_break_costs', with: 2000
     select ded_code.code, from: 'loan_demand_against_government_dti_ded_code'
 
     click_button 'Submit'
@@ -73,8 +70,4 @@ describe 'loan demand against government' do
     current_path.should == loan_demand_against_government_path(loan)
   end
 
-  private
-  def fill_in(attribute, value)
-    page.fill_in "loan_demand_against_government_#{attribute}", with: value
-  end
 end

@@ -5,15 +5,14 @@ require 'spec_helper'
 describe 'loan entry' do
   let(:lender) { FactoryGirl.create(:lender) }
   let(:current_user) { FactoryGirl.create(:lender_user, lender: lender) }
-  let(:loan) { FactoryGirl.create(:loan, lender: lender) }
+  let(:loan) { FactoryGirl.create(:loan, lender: lender, loan_category_id: 2) }
   before { login_as(current_user, scope: :user) }
 
   it 'entering further loan information' do
     visit loan_path(loan)
     click_link 'Loan Entry'
 
-    fill_in_valid_details
-
+    fill_in_valid_loan_entry_details
     click_button 'Submit'
 
     loan = Loan.last
@@ -71,7 +70,7 @@ describe 'loan entry' do
     visit loan_path(loan)
     click_link 'Loan Entry'
 
-    fill_in_valid_details
+    fill_in_valid_loan_entry_details
 
     click_button 'Submit'
 
@@ -154,8 +153,8 @@ describe 'loan entry' do
   it "should require recalculation of state aid when the loan repayment duration is changed" do
     visit new_loan_entry_path(loan)
 
-    fill_in_valid_details
-    fill_in "repayment_duration_months", loan.repayment_duration.total_months + 12
+    fill_in_valid_loan_entry_details
+    fill_in "loan_entry_repayment_duration_months", with: loan.repayment_duration.total_months + 12
     click_button 'Submit'
 
     page.should have_content("must be re-calculated when you change the loan term")
@@ -168,50 +167,10 @@ describe 'loan entry' do
   end
 
   private
-    def choose_radio_button(attribute, value)
-      choose "loan_entry_#{attribute}_#{value}"
-    end
-
-    def fill_in(attribute, value)
-      page.fill_in "loan_entry_#{attribute}", with: value
-    end
-
-    def fill_in_valid_details
-      choose_radio_button 'declaration_signed', true
-      fill_in 'business_name', 'Widgets Ltd.'
-      fill_in 'trading_name', 'Brilliant Widgets'
-      fill_in 'company_registration', '0123456789'
-      select LegalForm.find(1).name, from: 'loan_entry_legal_form_id'
-      fill_in 'postcode', 'N8 4HF'
-      fill_in 'non_validated_postcode', 'JF3 8HF'
-      fill_in 'sortcode', '03-12-45'
-      select RepaymentFrequency.find(1).name, from: 'loan_entry_repayment_frequency_id'
-      fill_in 'maturity_date', 6.months.from_now.to_date.to_s(:screen)
-
-      calculate_state_aid
-
-      fill_in 'generic1', 'Generic 1'
-      fill_in 'generic2', 'Generic 2'
-      fill_in 'generic3', 'Generic 3'
-      fill_in 'generic4', 'Generic 4'
-      fill_in 'generic5', 'Generic 5'
-      fill_in 'town', 'Londinium'
-      choose_radio_button 'interest_rate_type_id', 1
-      fill_in 'interest_rate', '2.25'
-      fill_in 'fees', '123.45'
-    end
 
     def fill_in_ineligible_details
-      fill_in_valid_details
-      fill_in :amount, 2000000 # max amount is 1M
-    end
-
-    def calculate_state_aid
-      click_button 'State Aid Calculation'
-      page.fill_in 'state_aid_calculation_initial_draw_year', with: '2012'
-      page.fill_in 'state_aid_calculation_initial_draw_amount', with: '7000'
-      page.fill_in 'state_aid_calculation_initial_draw_months', with: '12'
-      click_button 'Submit'
+      fill_in_valid_loan_entry_details
+      fill_in 'loan_entry_amount', with: 2000000 # max amount is 1M
     end
 
     def should_show_only_loan_category_fields(*field_names)
