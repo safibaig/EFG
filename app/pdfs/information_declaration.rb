@@ -16,41 +16,38 @@ class InformationDeclaration < Prawn::Document
 
   def build
     header
-
-    bounding_box([bounds.left, bounds.top - 100], width: bounds.width, height: bounds.height - 100) do
-      loan_details
-      declaration
-      declaration_important
-      signatures
-      signatories
-    end
-
+    loan_details
+    start_new_page
+    declaration
+    declaration_important
+    signatures
+    signatories
     footer
   end
 
   def header
-    repeat :all do
-      bounding_box [bounds.left, bounds.top], width: bounds.width do
-        font_size 12
+    font_size 12
 
-        stroke_horizontal_rule
-        move_down 10
+    text "Information Declaration", size: 15, style: :bold, align: :center
+    move_down 10
+    stroke_horizontal_rule
+    move_down 5
 
-        text "Information Declaration", size: 15, style: :bold, align: :center
+    data = [
+      ["Lender organisation:", @loan.lender.name],
+      ["Business name:", @loan.business_name || '<undefined>'],
+      ["EFG/SFLG reference:", @loan.reference],
+      ["Loan amount:", @loan.amount.format]
+    ]
 
-        data = [
-          ["Lender organisation:", @loan.lender.name, "Business name:", @loan.business_name || '<undefined>'],
-          ["EFG/SFLG reference:", @loan.reference, "Loan amount:", @loan.amount.format]
-        ]
-
-        table(data, column_widths: [150, 140, 100, 150]) do
-          cells.borders = []
-        end
-
-        move_down 10
-        stroke_horizontal_rule
-      end
+    table(data, column_widths: [150, 390]) do
+      cells.borders = []
+      cells.padding = [3, 5]
     end
+
+    move_down 7
+    stroke_horizontal_rule
+    move_down 10
   end
 
   def footer
@@ -59,7 +56,6 @@ class InformationDeclaration < Prawn::Document
 
   def loan_details
     data = [
-      [ "Item", "Value"],
       [ row_description(:reference), @loan.reference ],
       [ row_description(:business_name), @loan.business_name ],
       [ row_description(:trading_name), @loan.trading_name ],
@@ -83,16 +79,9 @@ class InformationDeclaration < Prawn::Document
       [ row_description(:state_aid_is_valid), @loan.state_aid_is_valid? ? "Yes" : "No" ]
     ]
 
-    table(data, column_widths: [400, 140]) do
+    table(data, column_widths: [350, 190]) do
       cells.borders = []
-      row(0).font_style = :bold
     end
-
-    move_down 20
-
-    stroke_horizontal_rule
-
-    move_down 20
   end
 
   def row_description(key)
@@ -101,16 +90,16 @@ class InformationDeclaration < Prawn::Document
 
   def declaration
     text "Information Declaration", style: :bold, size: 15
-    move_down 20
+    move_down 15
 
     text I18n.t('pdfs.information_declaration.declaration')
-    move_down 20
+    move_down 15
 
     indent 20 do
       text I18n.t('pdfs.information_declaration.declaration_list')
     end
 
-    move_down 20
+    move_down 15
   end
 
   def declaration_important
@@ -118,8 +107,6 @@ class InformationDeclaration < Prawn::Document
   end
 
   def signatures
-    move_down 20
-
     line = "_________________________"
 
     4.times do |num|
@@ -130,15 +117,16 @@ class InformationDeclaration < Prawn::Document
         ["Date", line]
       ]
 
+      move_down 15
+
       table(data) do
         cells.borders = []
       end
-
-      move_down (num == 3 ? 20 : 50)
     end
   end
 
   def signatories
+    move_down 15
     text I18n.t('pdfs.information_declaration.signatories')
   end
 
