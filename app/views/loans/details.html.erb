@@ -268,10 +268,7 @@
 <% if loan_state_history_includes?(@loan, Loan::Recovered) %>
   <h3>Recover</h3>
   <%= loan_details_table(@loan, 'simple_form.labels.loan_recovery') do |table| %>
-    <tr>
-      <th>Total of all previous recoveries</th>
-      <td><%= @loan.cumulative_recoveries_amount.format %></td>
-    </tr>
+    <%= table.row 'cumulative_unrealised_recoveries_amount' %>
     <%= table.row 'recovery_on' %>
   <% end %>
 <% end %>
@@ -279,7 +276,9 @@
 <% if loan_state_history_includes?(@loan, Loan::Realised) %>
   <h3>Realise Money</h3>
   <%= loan_details_table(@loan, 'simple_form.labels.loan_realise') do |table| %>
+    <% # TODO: Recoveries statement reference %>
+    <%= table.row 'cumulative_realised_amount' %>
+    <%= table.row 'last_realisation_amount' %>
     <%= table.row 'realised_money_date' %>
-    <% # TODO: More Realised fields. %>
   <% end %>
 <% end %>
