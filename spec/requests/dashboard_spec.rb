@@ -3,11 +3,12 @@
 require 'spec_helper'
 
 describe 'lender dashboard' do
+
   shared_examples 'dashboard' do
     context "with not drawn loan alerts" do
-      let!(:high_priority_loan) { FactoryGirl.create(:loan, :offered, lender: lender, facility_letter_date: 190.days.ago) }
-      let!(:medium_priority_loan) { FactoryGirl.create(:loan, :offered, lender: lender, facility_letter_date: 180.days.ago) }
-      let!(:low_priority_loan) { FactoryGirl.create(:loan, :offered, lender: lender, facility_letter_date: 140.days.ago) }
+      let!(:high_priority_loan) { FactoryGirl.create(:loan, :offered, lender: lender, facility_letter_date: 6.months.ago - 8.days) }
+      let!(:medium_priority_loan) { FactoryGirl.create(:loan, :offered, lender: lender, facility_letter_date: 6.months.ago.advance(days: 4)) }
+      let!(:low_priority_loan) { FactoryGirl.create(:loan, :offered, lender: lender, facility_letter_date: 6.months.ago.advance(days: 30)) }
 
       it "should display high, medium and low priority loan alerts" do
         visit root_path
@@ -21,7 +22,7 @@ describe 'lender dashboard' do
     context "not demanded loan alerts" do
       let!(:high_priority_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, lender: lender, borrower_demanded_on: 360.days.ago) }
       let!(:medium_priority_loan) { FactoryGirl.create(:loan, :lender_demand, :legacy_sflg, lender: lender, borrower_demanded_on: 350.days.ago) }
-      let!(:low_priority_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, lender: lender, borrower_demanded_on: 310.days.ago) }
+      let!(:low_priority_loan) { FactoryGirl.create(:loan, :lender_demand, :sflg, lender: lender, borrower_demanded_on: 306.days.ago) }
       # EFG loans are excluded from this loan alert
       let!(:efg_loan) { FactoryGirl.create(:loan, :lender_demand, lender: lender, borrower_demanded_on: 310.days.ago) }
 
@@ -35,9 +36,9 @@ describe 'lender dashboard' do
     end
 
     context "not progressed loan alerts" do
-      let!(:high_priority_loan) { FactoryGirl.create(:loan, :eligible, lender: lender, updated_at: 180.days.ago) }
-      let!(:medium_priority_loan) { FactoryGirl.create(:loan, :completed, lender: lender, updated_at: 170.days.ago) }
-      let!(:low_priority_loan) { FactoryGirl.create(:loan, :incomplete, lender: lender, updated_at: 130.days.ago) }
+      let!(:high_priority_loan) { FactoryGirl.create(:loan, :eligible, lender: lender, updated_at: 6.months.ago.advance(days: 5)) }
+      let!(:medium_priority_loan) { FactoryGirl.create(:loan, :completed, lender: lender, updated_at: 6.months.ago.advance(days: 10)) }
+      let!(:low_priority_loan) { FactoryGirl.create(:loan, :incomplete, lender: lender, updated_at: 6.months.ago.advance(days: 40)) }
 
       it "should display high, medium and low priority loan alerts" do
         visit root_path
@@ -49,10 +50,10 @@ describe 'lender dashboard' do
     end
 
     context "not closed loan alerts" do
-      let!(:high_priority_incomplete_loan) { FactoryGirl.create(:loan, :incomplete, lender: lender, maturity_date: 180.days.ago) }
+      let!(:high_priority_incomplete_loan) { FactoryGirl.create(:loan, :incomplete, lender: lender, maturity_date: 6.months.ago) }
       let!(:medium_priority_guaranteed_loan) { FactoryGirl.create(:loan, :guaranteed, lender: lender, maturity_date: 70.days.ago) }
-      let!(:low_priority_offered_loan) { FactoryGirl.create(:loan, :offered, lender: lender, maturity_date: 125.days.ago) }
-      let!(:low_priority_legacy_loan) { FactoryGirl.create(:loan, :guaranteed, :legacy_sflg, lender: lender, maturity_date: 124.days.ago) }
+      let!(:low_priority_offered_loan) { FactoryGirl.create(:loan, :offered, lender: lender, maturity_date: 6.months.ago.advance(days: 35)) }
+      let!(:low_priority_legacy_loan) { FactoryGirl.create(:loan, :guaranteed, :legacy_sflg, lender: lender, maturity_date: 6.months.ago.advance(days: 40)) }
 
       it "should display high, medium and low priority loan alerts" do
         visit root_path
