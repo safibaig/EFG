@@ -81,6 +81,7 @@ class InformationDeclaration < Prawn::Document
 
     table(data, column_widths: [350, 190]) do
       cells.borders = []
+      cells.rows(->(index) { index.even? }).background_color = 'f4f4f4'
     end
   end
 
