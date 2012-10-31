@@ -357,9 +357,15 @@ describe Loan do
       loan.guarantee_rate.should == 75
     end
 
-    it "otherwise returns the loan's LendingLimit guarantee rate" do
+    it "falls back to the loan's LendingLimit guarantee rate" do
       loan.guarantee_rate = nil
       loan.guarantee_rate.should == 85
+    end
+
+    it "returns nil if the loan has no guarantee rate or lending limit" do
+      loan.lending_limit = nil
+      loan.guarantee_rate = nil
+      loan.guarantee_rate.should be_nil
     end
   end
 
@@ -373,9 +379,15 @@ describe Loan do
       loan.premium_rate.should == 1.5
     end
 
-    it "otherwise returns the loan's LendingLimit premium rate" do
+    it "falls back to the loan's LendingLimit premium rate" do
       loan.premium_rate = nil
       loan.premium_rate.should == 2
+    end
+
+    it "returns nil if the loan has no premium rate or lending limit" do
+      loan.lending_limit = nil
+      loan.premium_rate = nil
+      loan.premium_rate.should be_nil
     end
   end
 

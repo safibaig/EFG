@@ -33,16 +33,14 @@
   <%= table.row 'maturity_date' %>
   <%= table.row 'lending_limit', header: t('simple_form.labels.loan_entry.lending_limit_id') %>
 
-  <% if @loan.lending_limit %>
-    <tr>
-      <th>Guarantee Rate</th>
-      <td><%= @loan.lending_limit.guarantee_rate %>%</td>
-    </tr>
-    <tr>
-      <th>Premium Rate</th>
-      <td><%= @loan.lending_limit.premium_rate %>%</td>
-    </tr>
-  <% end %>
+  <tr>
+    <th>Guarantee Rate</th>
+    <td><%= @loan.guarantee_rate %>%</td>
+  </tr>
+  <tr>
+    <th>Premium Rate</th>
+    <td><%= @loan.premium_rate %>%</td>
+  </tr>
 
   <%= table.row 'sic_code' %>
   <%= table.row 'sic_desc' %>

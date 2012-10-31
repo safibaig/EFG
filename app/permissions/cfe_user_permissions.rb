@@ -25,6 +25,7 @@ module CfeUserPermissions
       LoanChange,
       LoanRemoveGuarantee,
       LoanStates,
+      LoanModification,
       RealisationStatement,
       Search
     ].include?(resource)
