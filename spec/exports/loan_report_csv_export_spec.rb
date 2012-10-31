@@ -197,7 +197,7 @@ describe LoanReportCsvExport do
           created_by: user1,
           created_at: Time.zone.local(2012, 4, 12, 14, 34),
           modified_by: user2,
-          updated_at: Time.zone.local(2012, 4, 13, 14, 34),
+          updated_at: Time.zone.local(2012, 4, 13, 0, 34),
           remove_guarantee_on: Date.new(2012, 9, 16),
           remove_guarantee_outstanding_amount: 20000,
           remove_guarantee_reason: 'removal reason',

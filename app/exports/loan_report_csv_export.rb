@@ -103,15 +103,15 @@ class LoanReportCsvExport
     Enumerator.new do |y|
       y << CSV.generate_line(header)
 
-      @loans.find_in_batches do |group|
-        loan_ids = group.map(&:id)
-        loan_securities_lookup = loan_security_types_lookup_for_loan_ids(loan_ids)
+      connection = ActiveRecord::Base.connection
+      records = connection.execute(@loans.to_sql).to_a(as: :hash)
+      loan_ids = records.map { |row| row['id'] }
+      loan_securities_lookup = loan_security_types_lookup_for_loan_ids(loan_ids)
 
-        group.each do |loan|
-          loan_securities = loan_securities_lookup[loan.id]
+      records.each do |row|
+        loan_securities = loan_securities_lookup[row['id']]
 
-          y << CSV.generate_line(LoanReportCsvRow.row(loan, loan_securities))
-        end
+        y << CSV.generate_line(LoanReportCsvRow.row(row, loan_securities))
       end
     end
   end
