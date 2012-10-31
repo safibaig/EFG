@@ -69,7 +69,7 @@ class Loan < ActiveRecord::Base
   scope :recoverable, where(state: [Loan::Settled, Loan::Recovered, Loan::Realised])
 
   scope :last_updated_between, lambda { |start_date, end_date|
-    where("updated_at >= ? AND updated_at <= ?", start_date, end_date)
+    where("updated_at >= ? AND updated_at <= ?", start_date.to_time, end_date.to_time)
   }
 
   scope :maturity_date_between, lambda { |start_date, end_date|
