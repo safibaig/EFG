@@ -3,8 +3,31 @@
 require 'spec_helper'
 
 describe InformationDeclaration do
-
-  let(:loan) { FactoryGirl.create(:loan, :offered, company_registration: 'B1234567890') }
+  let(:lender) { FactoryGirl.create(:lender, name: 'Lender') }
+  let(:loan) {
+    FactoryGirl.create(:loan, lender: lender,
+      amount: Money.new(12_345_67),
+      business_name: 'ACME',
+      company_registration: 'B1234567890',
+      legal_form_id: 2,
+      loan_category_id: 5,
+      maturity_date: Date.new(2020, 3, 2),
+      non_validated_postcode: 'XYZ 789',
+      postcode: 'ABC 123',
+      previous_borrowing: false,
+      reason_id: 17,
+      reference: 'QWERTY+01',
+      repayment_duration: { months: 54 },
+      repayment_frequency_id: 3,
+      sic_code: 'A10.1.2',
+      sic_desc: 'Foo',
+      state_aid: Money.new(1_234_56, 'EUR'),
+      town: 'Surbiton',
+      trading_date: Date.new(1999, 1, 1),
+      trading_name: 'ACME Trading',
+      turnover: Money.new(5_000_000_00)
+    )
+  }
 
   let(:pdf_document) {
     information_declaration = InformationDeclaration.new(loan)
@@ -26,35 +49,35 @@ describe InformationDeclaration do
   describe "#render" do
 
     it "should contain a header" do
-      pdf_content.should match(/^Information Declaration/)
-      pdf_content.should include("Lender organisation:#{loan.lender.name}")
-      pdf_content.should include("Business name:#{loan.business_name}")
-      pdf_content.should include("EFG/SFLG reference:#{loan.reference}")
-      pdf_content.should include("Loan amount:#{loan.amount.format}")
+      pdf_content.should include('Information Declaration')
+      pdf_content.should include("Lender organisation:Lender")
+      pdf_content.should include("Business name:ACME")
+      pdf_content.should include("EFG/SFLG reference:QWERTY+01")
+      pdf_content.should include("Loan amount:£12,345.67")
     end
 
     it "should contain loan details" do
-      pdf_content.should include(loan.reference)
-      pdf_content.should include(loan.business_name)
-      pdf_content.should include(loan.trading_name)
-      pdf_content.should include(loan.legal_form.name)
-      pdf_content.should include(loan.company_registration)
-      pdf_content.should include(loan.turnover.format)
-      pdf_content.should include(loan.trading_date.strftime('%d-%m-%Y'))
-      pdf_content.should include(loan.postcode)
-      pdf_content.should include(loan.non_validated_postcode)
-      pdf_content.should include(loan.town)
-      pdf_content.should include(loan.amount.format)
-      pdf_content.should include(loan.repayment_duration.format)
-      pdf_content.should include(loan.repayment_frequency.name)
-      pdf_content.should include(loan.maturity_date.strftime('%d-%m-%Y'))
-      pdf_content.should include(loan.sic_code)
-      pdf_content.should include(loan.sic_desc)
+      pdf_content.should include('QWERTY+01')
+      pdf_content.should include('ACME')
+      pdf_content.should include('ACME Trading')
+      pdf_content.should include('Partnership')
+      pdf_content.should include('B1234567890')
+      pdf_content.should include('£5,000,000.00')
+      pdf_content.should include('01-01-1999')
+      pdf_content.should include('ABC 123')
+      pdf_content.should include('XYZ 789')
+      pdf_content.should include('Surbiton')
+      pdf_content.should include('£12,345.67')
+      pdf_content.should include('4 years, 6 months')
+      pdf_content.should include('Quarterly')
+      pdf_content.should include('02-03-2020')
+      pdf_content.should include('A10.1.2')
+      pdf_content.should include('Foo')
       pdf_content.should include("Category Name")
-      pdf_content.should include(loan.reason.name)
-      pdf_content.should include(loan.previous_borrowing ? "Yes" : "No")
-      pdf_content.should include(loan.state_aid.format)
-      pdf_content.should include(loan.state_aid_is_valid ? "Yes" : "No")
+      pdf_content.should include('Equipment purchase')
+      pdf_content.should include('No')
+      pdf_content.should include('€1,234.56')
+      pdf_content.should include('Yes')
     end
 
     it "should contain declaration text" do
