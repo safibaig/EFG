@@ -7,7 +7,7 @@
 
   <ul id="actions">
     <li>
-      <%= simple_form_for(@realisation_statement, url: select_loans_realise_loans_path(format: 'csv')) do |f| %>
+      <%= simple_form_for(@realisation_statement, url: select_loans_realise_loans_path(format: 'csv'), html: { class: 'csv-download' }) do |f| %>
         <%= render "hidden_fields", form: f %>
         <%= f.button :submit, 'Export CSV', class: 'btn', data: { 'disable-with' => 'Submitting...' } %>
       <% end %>

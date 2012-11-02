@@ -4,5 +4,5 @@
 </div>
 
 <div class="form-actions">
-  <%= link_to('Data Protection and Disclosure Declaration', data_protection_declaration_documents_path(format: :pdf), class: 'btn btn-info') if current_user.can_view?(DataProtectionDeclaration) %>
+  <%= link_to('Data Protection and Disclosure Declaration', data_protection_declaration_documents_path(format: :pdf), class: 'btn btn-info pdf-download') if current_user.can_view?(DataProtectionDeclaration) %>
 </div>

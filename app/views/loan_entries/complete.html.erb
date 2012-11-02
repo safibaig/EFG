@@ -12,12 +12,12 @@
   <li>The Applicant's Premium Payment Schedule for the facility. This can be generated from the Summary page.</li>
   <li>A letter confirming the level of De Minimis State Aid attributable to the facility. (See <em>'Generate State Aid Letter'</em> below).</li>
   <li>The Information Declaration that contains all the information used to determine eligibility. (See <em>'View Information Declaration'</em> below).</li>
-  <li>The <a href="/pdfs/direct_debit_mandate.pdf">Direct Debit mandate</a> which should be printed.</li>
+  <li>The <a href="/pdfs/direct_debit_mandate.pdf" class="pdf-download">Direct Debit mandate</a> which should be printed.</li>
 </ul>
 
 <div class="form-actions">
   <%= link_to 'View Loan Summary', loan_path(@loan), class: 'btn' %>
   <%= link_to_information_declaration(@loan) %>
   <%= link_to_state_aid_letter(@loan) %>
-  <%= link_to "View Direct Debit Mandate", "/pdfs/direct_debit_mandate.pdf", class: 'btn btn-info' %>
+  <%= link_to "View Direct Debit Mandate", "/pdfs/direct_debit_mandate.pdf", class: 'btn btn-info pdf-download' %>
 </div>

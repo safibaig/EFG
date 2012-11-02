@@ -3,7 +3,7 @@
 <div class="page-header with-actions">
   <h1><%= loan_title('Loan Summary', @loan) %></h1>
   <ul id="actions">
-    <li><%= link_to "Export CSV", loan_path(@loan, format: 'csv'), class: 'btn' %></li>
+    <li><%= link_to "Export CSV", loan_path(@loan, format: 'csv'), class: 'btn csv-download' %></li>
   </ul>
 </div>
 
