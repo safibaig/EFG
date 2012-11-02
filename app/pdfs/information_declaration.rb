@@ -51,7 +51,11 @@ class InformationDeclaration < Prawn::Document
   end
 
   def footer
-    number_pages("Page: <page> of <total>", at: [bounds.right - 550, 0], align: :center, size: 10)
+    number_pages("Page: <page> of <total>", at: bounds.bottom_left, size: 10)
+
+    repeat(:all) do
+      draw_text "Loan: #{@loan.reference}", at: [bounds.right - 95, bounds.bottom], size: 10
+    end
   end
 
   def loan_details

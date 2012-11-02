@@ -39,6 +39,8 @@ describe InformationDeclaration do
     pdf_document.pages.collect { |page| page.to_s }.join(" ").gsub("\n", ' ')
   }
 
+  let(:page_count) { pdf_document.pages.size }
+
   before do
     # PDF table output gets a jumbled up with long lines of text
     # so stub LoanCategory#name to be short enough to test
@@ -96,11 +98,13 @@ describe InformationDeclaration do
     end
 
     it "should contain page numbers" do
-      page_count = pdf_document.pages.size
-
       page_count.times do |num|
         pdf_content.should include("Page: #{num + 1} of #{page_count}")
       end
+    end
+
+    it "should contain loan reference on every page" do
+      pdf_content.scan("Loan: QWERTY+01").size.should == page_count
     end
 
   end
