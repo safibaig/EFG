@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Enterprise Finance Guarantee</title>
+  <title><%= application_title %></title>
   <%= stylesheet_link_tag 'application', media: 'all' %>
   <!--[if IE 6]>
     <%= stylesheet_link_tag 'ie6-bootstrap', media: 'all' %>
@@ -14,12 +14,12 @@
   <%= csrf_meta_tags %>
   <%= google_analytics %>
 </head>
-<body>
+<body class="<%= 'training' if training_mode? %>">
 
   <div class="navbar">
     <div class="navbar-inner">
       <div class="container">
-        <%= link_to 'Enterprise Finance Guarantee', root_path, class: 'brand' %>
+        <%= link_to application_title, root_path, class: 'brand' %>
 
         <% if user_signed_in? %>
           <% if current_user_access_restricted? %>

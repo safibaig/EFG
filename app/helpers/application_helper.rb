@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module ApplicationHelper
   def breadcrumbs(*items)
     items.unshift(link_to('Home', root_path))
@@ -53,5 +55,14 @@ module ApplicationHelper
       content_tag(:div, label, class: 'control-label') +
         content_tag(:div, control, class: 'controls')
     end
+  end
+
+  def application_title
+    return 'Enterprise Finance Guarantee – Training' if training_mode?
+    'Enterprise Finance Guarantee'
+  end
+
+  def training_mode?
+    EFG::Application.config.training_mode
   end
 end
