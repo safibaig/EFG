@@ -69,7 +69,13 @@ class PremiumScheduleReport
       csv << PremiumScheduleReportRow::HEADERS
 
       PremiumScheduleReportRow.from_loans(loans).each do |row|
-        csv << row.to_csv
+        begin
+          csv << row.to_csv
+
+        # We've seen ZeroDivisionError in production and want to understand more details about the loan in question.
+        rescue StandardError => e
+          Rails.logger.error("#{self.class} Error: #{e.to_s} reporting on #{row.loan.inspect}")
+        end
       end
     end
   end
