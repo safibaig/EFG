@@ -71,8 +71,5 @@ EFG::Application.configure do
     :host => ENV["EFG_HOST"] || URI.parse(Plek.current.find('efg')).host
   }
 
-  # Flag used to indicate whether this is the training app or not. CSS can be different, etc.
-  config.training_application = ENV["EFG_HOST"].contains?("training")
-
   config.action_mailer.delivery_method = :ses
 end
