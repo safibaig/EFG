@@ -1,0 +1,17 @@
+body.training {
+  .navbar-inner {
+    background-color: #DA347E;
+    background-image: -moz-linear-gradient(top, #DF317B, #BF2460);
+    background-image: -ms-linear-gradient(top, #DF317B, #BF2460);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#DF317B), to(#BF2460));
+    background-image: -webkit-linear-gradient(top, #DF317B, #BF2460);
+    background-image: -o-linear-gradient(top, #DF317B, #BF2460);
+    background-image: linear-gradient(top, #DF317B, #BF2460);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#DF317B', endColorstr='#BF2460', GradientType=0);
+  }
+
+  .navbar .nav > li > a {
+    color: #EFEFEF;
+  }
+}

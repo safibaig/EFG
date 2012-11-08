@@ -21,6 +21,7 @@
  *= require reports
  *= require search
  *= require sic_codes
+ *= require training
  *= require utilisation
  *= require welcome_message
 */
