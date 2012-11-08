@@ -21,47 +21,20 @@ class DashboardController < ApplicationController
   end
 
   def not_drawn_loans_groups
-    LoanAlerts::PriorityGrouping.new(
-      not_drawn_loans,
-      not_drawn_start_date,
-      not_drawn_end_date,
-      :facility_letter_date
-    ).groups_hash
+    LoanAlerts::PriorityGrouping.for_alert(NotDrawnLoanAlert, current_lender, :facility_letter_date).groups_hash
   end
 
   def not_demanded_loans_groups
-    LoanAlerts::PriorityGrouping.new(
-      not_demanded_loans,
-      not_demanded_start_date,
-      not_demanded_end_date,
-      :borrower_demanded_on
-    ).groups_hash
+    LoanAlerts::PriorityGrouping.for_alert(NotDemandedLoanAlert, current_lender, :borrower_demanded_on).groups_hash
   end
 
   def not_progressed_loans_groups
-    LoanAlerts::PriorityGrouping.new(
-      not_progressed_loans,
-      not_progressed_start_date,
-      not_progressed_end_date,
-      :updated_at
-    ).groups_hash
+    LoanAlerts::PriorityGrouping.for_alert(NotProgressedLoanAlert, current_lender, :updated_at).groups_hash
   end
 
   def not_closed_loans_groups
-    offered_group = LoanAlerts::PriorityGrouping.new(
-      not_closed_offered_loans,
-      not_closed_offered_start_date,
-      not_closed_offered_end_date,
-      :maturity_date
-    ).groups_hash
-
-    guaranteed_group = LoanAlerts::PriorityGrouping.new(
-      not_closed_guaranteed_loans,
-      not_closed_guaranteed_start_date,
-      not_closed_guaranteed_end_date,
-      :maturity_date
-    ).groups_hash
-
+    offered_group = LoanAlerts::PriorityGrouping.for_alert(NotClosedOfferedLoanAlert, current_lender, :maturity_date).groups_hash
+    guaranteed_group = LoanAlerts::PriorityGrouping.for_alert(NotClosedGuaranteedLoanAlert, current_lender, :maturity_date).groups_hash
     LoanAlerts::PriorityGrouping.merge_groups(offered_group, guaranteed_group)
   end
 
