@@ -10,18 +10,10 @@ module LoanAlerts
     NotProgressedLoanAlert.new(current_lender, priority).loans
   end
 
-  def not_progressed_start_date
-    NotProgressedLoanAlert.start_date
-  end
-
   # "Offered loans have 6 months to progress from offered to guaranteed state
   # – if not they progress to auto cancelled""
   def not_drawn_loans(priority = nil)
     NotDrawnLoanAlert.new(current_lender, priority).loans
-  end
-
-  def not_drawn_start_date
-    NotDrawnLoanAlert.start_date
   end
 
   # "All new scheme and legacy loans that are in a state of “Lender Demand”
@@ -32,30 +24,14 @@ module LoanAlerts
     NotDemandedLoanAlert.new(current_lender, priority).loans
   end
 
-  def not_demanded_start_date
-    NotDemandedLoanAlert.start_date
-  end
-
   # "Legacy or new scheme guaranteed loans – if maturity date has elapsed by 6 months – auto remove
   def not_closed_offered_loans(priority = nil)
     NotClosedOfferedLoanAlert.new(current_lender, priority).loans
   end
 
-  def not_closed_offered_start_date
-    NotClosedOfferedLoanAlert.start_date
-  end
-
   # EFG – if state ‘guaranteed’ and maturity date elapsed by 3 months – auto remove
   def not_closed_guaranteed_loans(priority = nil)
     NotClosedGuaranteedLoanAlert.new(current_lender, priority).loans
-  end
-
-  def not_closed_guaranteed_start_date
-    NotClosedGuaranteedLoanAlert.start_date
-  end
-
-  def sflg_not_closed_start_date
-    SFLGNotClosedLoanAlert.start_date
   end
 
   private
