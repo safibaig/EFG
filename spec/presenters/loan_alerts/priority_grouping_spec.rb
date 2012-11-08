@@ -98,16 +98,10 @@ describe LoanAlerts::PriorityGrouping do
 
   private
 
-  def padded_array_of_arrays(length, arrays_to_inject_hash)
-    array = []
-    length.times do |num|
-      if arrays_to_inject_hash[num]
-        array << arrays_to_inject_hash[num]
-      else
-        array << []
-      end
-    end
-    array
+  # Returns an Array of +length+ padded with empty Array's. Uses the +contents+
+  # hash to populate the array at the specified indexes.
+  def padded_array_of_arrays(length, contents)
+    Array.new(length) { |index| contents[index] || [] }
   end
 
 end
