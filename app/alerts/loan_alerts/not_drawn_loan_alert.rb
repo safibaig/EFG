@@ -2,7 +2,7 @@
 # – if not they progress to auto cancelled""
 class LoanAlerts::NotDrawnLoanAlert < LoanAlerts::LoanAlert
   def loans
-    lender.loans.offered.facility_letter_date_between(alert_range.first, alert_range.last).order(:facility_letter_date)
+    super.offered.facility_letter_date_between(alert_range.first, alert_range.last)
   end
 
   # Lenders have an extra 10 days of grace to record the initial draw.

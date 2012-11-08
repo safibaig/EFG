@@ -3,7 +3,7 @@
 # – for a period of 6 months from entering those states – should be ‘auto cancelled’"
 class LoanAlerts::NotProgressedLoanAlert < LoanAlerts::LoanAlert
   def loans
-    lender.loans.not_progressed.last_updated_between(alert_range.first, alert_range.last).order(:updated_at)
+    super.not_progressed.last_updated_between(alert_range.first, alert_range.last)
   end
 
   def self.start_date

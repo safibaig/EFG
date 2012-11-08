@@ -10,7 +10,7 @@ class LoanAlerts::LoanAlert
   attr_reader :lender, :priority
 
   def loans
-    raise NotImplementedError, 'subclasses must implement #loans'
+    lender.loans.order(self.class.date_method)
   end
 
   def self.start_date
