@@ -84,29 +84,6 @@ module LoanAlerts
 
   private
 
-  def loans_for_alert(alert_name, priority = nil)
-    high_priority_start_date   = send("#{alert_name}_start_date")
-    medium_priority_start_date = 9.weekdays_from(high_priority_start_date).advance(days: 1)
-    low_priority_start_date    = 19.weekdays_from(medium_priority_start_date).advance(days: 1)
-    default_end_date           = send("#{alert_name}_end_date")
-
-    start_date = {
-      "high"   => high_priority_start_date,
-      "medium" => medium_priority_start_date,
-      "low"    => low_priority_start_date
-    }.fetch(priority, high_priority_start_date)
-
-    end_date = {
-      "high"   => 9.weekdays_from(high_priority_start_date),
-      "medium" => 19.weekdays_from(medium_priority_start_date),
-      "low"    => 29.weekdays_from(low_priority_start_date)
-    }.fetch(priority, default_end_date)
-
-    yield current_lender.loans, start_date, end_date
-  end
-
-  private
-
   class LoanAlert
     def initialize(lender, priority = nil)
       @lender = lender
