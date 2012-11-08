@@ -5,23 +5,28 @@ class LoanAlertsController < ApplicationController
   before_filter :verify_priority
 
   def not_progressed
-    @loans = not_progressed_loans(params[:priority])
+    alert = NotProgressedLoanAlert.new(current_lender, params[:priority])
+    @loans = alert.loans
     render "show"
   end
 
   def not_drawn
-    @loans = not_drawn_loans(params[:priority])
+    alert = NotDrawnLoanAlert.new(current_lender, params[:priority])
+    @loans = alert.loans
     render "show"
   end
 
   def not_demanded
-    @loans = not_demanded_loans(params[:priority])
+    alert = NotDemandedLoanAlert.new(current_lender, params[:priority])
+    @loans = alert.loans
     render "show"
   end
 
   def not_closed
-    @loans = (not_closed_offered_loans(params[:priority]) +
-              not_closed_guaranteed_loans(params[:priority])).sort_by(&:maturity_date)
+    not_closed_offered_alert = NotClosedOfferedLoanAlert.new(current_lender, params[:priority])
+    not_closed_guaranteed_alert = NotClosedGuaranteedLoanAlert.new(current_lender, params[:priority])
+
+    @loans = (not_closed_offered_alert.loans + not_closed_guaranteed_alert.loans).sort_by(&:maturity_date)
     render "show"
   end
 

@@ -2,40 +2,6 @@
 #
 # Note: alert range is 60 week days (no support for public holidays)
 module LoanAlerts
-
-  # "All schemes, any loan that has remained at the state of
-  # “eligible” / “incomplete” or “complete”
-  # – for a period of 6 months from entering those states – should be ‘auto cancelled’"
-  def not_progressed_loans(priority = nil)
-    NotProgressedLoanAlert.new(current_lender, priority).loans
-  end
-
-  # "Offered loans have 6 months to progress from offered to guaranteed state
-  # – if not they progress to auto cancelled""
-  def not_drawn_loans(priority = nil)
-    NotDrawnLoanAlert.new(current_lender, priority).loans
-  end
-
-  # "All new scheme and legacy loans that are in a state of “Lender Demand”
-  # have a 12 month time frame to be progressed to “Demanded”
-  # – if they do not, they will become “Auto Removed”."
-  # "EFG loans however, should not be subjected to this alert
-  def not_demanded_loans(priority = nil)
-    NotDemandedLoanAlert.new(current_lender, priority).loans
-  end
-
-  # "Legacy or new scheme guaranteed loans – if maturity date has elapsed by 6 months – auto remove
-  def not_closed_offered_loans(priority = nil)
-    NotClosedOfferedLoanAlert.new(current_lender, priority).loans
-  end
-
-  # EFG – if state ‘guaranteed’ and maturity date elapsed by 3 months – auto remove
-  def not_closed_guaranteed_loans(priority = nil)
-    NotClosedGuaranteedLoanAlert.new(current_lender, priority).loans
-  end
-
-  private
-
   class LoanAlert
     def initialize(lender, priority = nil)
       @lender = lender
@@ -80,6 +46,9 @@ module LoanAlerts
     end
   end
 
+  # "All schemes, any loan that has remained at the state of
+  # “eligible” / “incomplete” or “complete”
+  # – for a period of 6 months from entering those states – should be ‘auto cancelled’"
   class NotProgressedLoanAlert < LoanAlert
     def loans
       lender.loans.not_progressed.last_updated_between(alert_range.first, alert_range.last).order(:updated_at)
@@ -90,6 +59,8 @@ module LoanAlerts
     end
   end
 
+  # "Offered loans have 6 months to progress from offered to guaranteed state
+  # – if not they progress to auto cancelled""
   class NotDrawnLoanAlert < LoanAlert
     def loans
       lender.loans.offered.facility_letter_date_between(alert_range.first, alert_range.last).order(:facility_letter_date)
@@ -101,6 +72,10 @@ module LoanAlerts
     end
   end
 
+  # "All new scheme and legacy loans that are in a state of “Lender Demand”
+  # have a 12 month time frame to be progressed to “Demanded”
+  # – if they do not, they will become “Auto Removed”."
+  # "EFG loans however, should not be subjected to this alert
   class NotDemandedLoanAlert < LoanAlert
     def loans
       lender.loans.with_scheme('non_efg').lender_demanded.borrower_demanded_date_between(alert_range.first, alert_range.last).order(:borrower_demanded_on)
@@ -111,6 +86,7 @@ module LoanAlerts
     end
   end
 
+  # "Legacy or new scheme guaranteed loans – if maturity date has elapsed by 6 months – auto remove
   class NotClosedOfferedLoanAlert < LoanAlert
     def loans
       lender.loans.
@@ -125,6 +101,7 @@ module LoanAlerts
     end
   end
 
+  # EFG – if state ‘guaranteed’ and maturity date elapsed by 3 months – auto remove
   class NotClosedGuaranteedLoanAlert < LoanAlert
     def loans
       lender.loans.with_scheme('efg').guaranteed.maturity_date_between(alert_range.first, alert_range.end).order(:maturity_date)
