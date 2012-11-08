@@ -21,20 +21,20 @@ class DashboardController < ApplicationController
   end
 
   def not_drawn_loans_groups
-    LoanAlerts::PriorityGrouping.for_alert(NotDrawnLoanAlert, current_lender, :facility_letter_date).groups_hash
+    LoanAlerts::PriorityGrouping.for_alert(NotDrawnLoanAlert, current_lender).groups_hash
   end
 
   def not_demanded_loans_groups
-    LoanAlerts::PriorityGrouping.for_alert(NotDemandedLoanAlert, current_lender, :borrower_demanded_on).groups_hash
+    LoanAlerts::PriorityGrouping.for_alert(NotDemandedLoanAlert, current_lender).groups_hash
   end
 
   def not_progressed_loans_groups
-    LoanAlerts::PriorityGrouping.for_alert(NotProgressedLoanAlert, current_lender, :updated_at).groups_hash
+    LoanAlerts::PriorityGrouping.for_alert(NotProgressedLoanAlert, current_lender).groups_hash
   end
 
   def not_closed_loans_groups
-    offered_group = LoanAlerts::PriorityGrouping.for_alert(NotClosedOfferedLoanAlert, current_lender, :maturity_date).groups_hash
-    guaranteed_group = LoanAlerts::PriorityGrouping.for_alert(NotClosedGuaranteedLoanAlert, current_lender, :maturity_date).groups_hash
+    offered_group = LoanAlerts::PriorityGrouping.for_alert(NotClosedOfferedLoanAlert, current_lender).groups_hash
+    guaranteed_group = LoanAlerts::PriorityGrouping.for_alert(NotClosedGuaranteedLoanAlert, current_lender).groups_hash
     LoanAlerts::PriorityGrouping.merge_groups(offered_group, guaranteed_group)
   end
 

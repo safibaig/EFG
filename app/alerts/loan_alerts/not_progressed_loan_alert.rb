@@ -9,4 +9,8 @@ class LoanAlerts::NotProgressedLoanAlert < LoanAlerts::LoanAlert
   def self.start_date
     6.months.ago.to_date
   end
+
+  def self.date_method
+    :updated_at
+  end
 end

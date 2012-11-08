@@ -7,9 +7,9 @@
 module LoanAlerts
   class PriorityGrouping
 
-    def self.for_alert(alert, lender, date_method)
+    def self.for_alert(alert, lender)
       loans = alert.new(lender).loans
-      new(loans, alert.start_date, alert.end_date, date_method)
+      new(loans, alert.start_date, alert.end_date, alert.date_method)
     end
 
     def initialize(loans, start_date, end_date, date_method)

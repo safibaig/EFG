@@ -10,4 +10,8 @@ class LoanAlerts::NotDemandedLoanAlert < LoanAlerts::LoanAlert
   def self.start_date
     365.days.ago.to_date
   end
+
+  def self.date_method
+    :borrower_demanded_on
+  end
 end

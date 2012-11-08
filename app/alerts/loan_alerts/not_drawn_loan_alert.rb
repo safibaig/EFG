@@ -9,4 +9,8 @@ class LoanAlerts::NotDrawnLoanAlert < LoanAlerts::LoanAlert
   def self.start_date
     (6.months.ago - 10.days).to_date
   end
+
+  def self.date_method
+    :facility_letter_date
+  end
 end

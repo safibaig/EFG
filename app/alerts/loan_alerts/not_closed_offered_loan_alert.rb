@@ -11,4 +11,8 @@ class LoanAlerts::NotClosedOfferedLoanAlert < LoanAlerts::LoanAlert
   def self.start_date
     6.months.ago.to_date
   end
+
+  def self.date_method
+    :maturity_date
+  end
 end

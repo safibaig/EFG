@@ -14,11 +14,15 @@ class LoanAlerts::LoanAlert
   end
 
   def self.start_date
-    raise NotImplementedError, 'subclasses must implement #start_date'
+    raise NotImplementedError, 'subclasses must implement .start_date'
   end
 
   def self.end_date
     59.weekdays_from(start_date).to_date
+  end
+
+  def self.date_method
+    raise NotImplementedError, 'subclasses must implement .date_method'
   end
 
   def alert_range
