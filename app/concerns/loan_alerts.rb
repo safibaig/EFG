@@ -74,6 +74,14 @@ module LoanAlerts
     NotClosedGuaranteedLoanAlert.end_date
   end
 
+  def sflg_not_closed_start_date
+    SFLGNotClosedLoanAlert.start_date
+  end
+
+  def sflg_not_closed_end_date
+    SFLGNotClosedLoanAlert.end_date
+  end
+
   private
 
   def loans_for_alert(alert_name, priority = nil)
@@ -95,14 +103,6 @@ module LoanAlerts
     }.fetch(priority, default_end_date)
 
     yield current_lender.loans, start_date, end_date
-  end
-
-  def sflg_not_closed_start_date
-    @sflg_not_closed_start_date ||= 6.months.ago.to_date
-  end
-
-  def sflg_not_closed_end_date
-    @sflg_not_closed_end_date ||= 59.weekdays_from(sflg_not_closed_start_date).to_date
   end
 
   private
@@ -219,6 +219,16 @@ module LoanAlerts
 
     def self.start_date
       3.months.ago.to_date
+    end
+
+    def self.end_date
+      59.weekdays_from(start_date).to_date
+    end
+  end
+
+  class SFLGNotClosedLoanAlert < LoanAlert
+    def self.start_date
+      6.months.ago.to_date
     end
 
     def self.end_date
