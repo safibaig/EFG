@@ -101,7 +101,7 @@ module LoanAlerts
     end
 
     def self.end_date
-      raise NotImplementedError, 'subclasses must implement #end_date'
+      59.weekdays_from(start_date).to_date
     end
 
     def alert_range
@@ -136,10 +136,6 @@ module LoanAlerts
     def self.start_date
       6.months.ago.to_date
     end
-
-    def self.end_date
-      59.weekdays_from(start_date).to_date
-    end
   end
 
   class NotDrawnLoanAlert < LoanAlert
@@ -151,10 +147,6 @@ module LoanAlerts
     def self.start_date
       (6.months.ago - 10.days).to_date
     end
-
-    def self.end_date
-      59.weekdays_from(start_date).to_date
-    end
   end
 
   class NotDemandedLoanAlert < LoanAlert
@@ -164,10 +156,6 @@ module LoanAlerts
 
     def self.start_date
       365.days.ago.to_date
-    end
-
-    def self.end_date
-      59.weekdays_from(start_date).to_date
     end
   end
 
@@ -183,10 +171,6 @@ module LoanAlerts
     def self.start_date
       6.months.ago.to_date
     end
-
-    def self.end_date
-      59.weekdays_from(start_date).to_date
-    end
   end
 
   class NotClosedGuaranteedLoanAlert < LoanAlert
@@ -197,19 +181,11 @@ module LoanAlerts
     def self.start_date
       3.months.ago.to_date
     end
-
-    def self.end_date
-      59.weekdays_from(start_date).to_date
-    end
   end
 
   class SFLGNotClosedLoanAlert < LoanAlert
     def self.start_date
       6.months.ago.to_date
-    end
-
-    def self.end_date
-      59.weekdays_from(start_date).to_date
     end
   end
 end
