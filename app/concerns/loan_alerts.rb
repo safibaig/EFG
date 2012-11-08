@@ -7,9 +7,15 @@ module LoanAlerts
   # “eligible” / “incomplete” or “complete”
   # – for a period of 6 months from entering those states – should be ‘auto cancelled’"
   def not_progressed_loans(priority = nil)
-    loans_for_alert(:not_progressed, priority) do |loans_scope, start_date, end_date|
-      loans_scope.not_progressed.last_updated_between(start_date, end_date).order(:updated_at)
-    end
+    NotProgressedLoanAlert.new(current_lender, priority).loans
+  end
+
+  def not_progressed_start_date
+    NotProgressedLoanAlert.start_date
+  end
+
+  def not_progressed_end_date
+    NotProgressedLoanAlert.end_date
   end
 
   # "Offered loans have 6 months to progress from offered to guaranteed state
@@ -71,14 +77,6 @@ module LoanAlerts
     yield current_lender.loans, start_date, end_date
   end
 
-  def not_progressed_start_date
-    @not_progressed_start_date ||= 6.months.ago.to_date
-  end
-
-  def not_progressed_end_date
-    @not_progressed_end_date ||= 59.weekdays_from(not_progressed_start_date).to_date
-  end
-
   # lenders have an extra 10 days of grace to record the initial draw
   def not_drawn_start_date
     @not_drawn_start_date ||= (6.months.ago - 10.days).to_date
@@ -120,4 +118,63 @@ module LoanAlerts
     @sflg_not_closed_end_date ||= 59.weekdays_from(sflg_not_closed_start_date).to_date
   end
 
+  private
+
+  class LoanAlert
+    def initialize(lender, priority = nil)
+      @lender = lender
+      @priority = priority
+    end
+
+    attr_reader :lender, :priority
+
+    def loans
+      raise NotImplementedError, 'subclasses must implement #loans'
+    end
+
+    def self.start_date
+      raise NotImplementedError, 'subclasses must implement #start_date'
+    end
+
+    def self.end_date
+      raise NotImplementedError, 'subclasses must implement #end_date'
+    end
+
+    def alert_range
+      @alert_range ||= begin
+        high_priority_start_date   = self.class.start_date
+        medium_priority_start_date = 9.weekdays_from(high_priority_start_date).advance(days: 1)
+        low_priority_start_date    = 19.weekdays_from(medium_priority_start_date).advance(days: 1)
+        default_end_date           = self.class.end_date
+
+        start_date = {
+          "high"   => high_priority_start_date,
+          "medium" => medium_priority_start_date,
+          "low"    => low_priority_start_date
+        }.fetch(priority, high_priority_start_date)
+
+        end_date = {
+          "high"   => 9.weekdays_from(high_priority_start_date),
+          "medium" => 19.weekdays_from(medium_priority_start_date),
+          "low"    => 29.weekdays_from(low_priority_start_date)
+        }.fetch(priority, default_end_date)
+
+        (start_date..end_date)
+      end
+    end
+  end
+
+  class NotProgressedLoanAlert < LoanAlert
+    def loans
+      lender.loans.not_progressed.last_updated_between(alert_range.first, alert_range.last).order(:updated_at)
+    end
+
+    def self.start_date
+      6.months.ago.to_date
+    end
+
+    def self.end_date
+      59.weekdays_from(start_date).to_date
+    end
+  end
 end
