@@ -63,9 +63,15 @@ module LoanAlerts
 
   # EFG – if state ‘guaranteed’ and maturity date elapsed by 3 months – auto remove
   def not_closed_guaranteed_loans(priority = nil)
-    loans_for_alert(:not_closed_guaranteed, priority) do |loans_scope, start_date, end_date|
-      loans_scope.with_scheme('efg').guaranteed.maturity_date_between(start_date, end_date).order(:maturity_date)
-    end
+    NotClosedGuaranteedLoanAlert.new(current_lender, priority).loans
+  end
+
+  def not_closed_guaranteed_start_date
+    NotClosedGuaranteedLoanAlert.start_date
+  end
+
+  def not_closed_guaranteed_end_date
+    NotClosedGuaranteedLoanAlert.end_date
   end
 
   private
@@ -89,14 +95,6 @@ module LoanAlerts
     }.fetch(priority, default_end_date)
 
     yield current_lender.loans, start_date, end_date
-  end
-
-  def not_closed_guaranteed_start_date
-    @not_closed_guaranteed_start_date ||= 3.months.ago.to_date
-  end
-
-  def not_closed_guaranteed_end_date
-    @not_closed_guaranteed_end_date ||= 59.weekdays_from(not_closed_guaranteed_start_date).to_date
   end
 
   def sflg_not_closed_start_date
@@ -207,6 +205,20 @@ module LoanAlerts
 
     def self.start_date
       6.months.ago.to_date
+    end
+
+    def self.end_date
+      59.weekdays_from(start_date).to_date
+    end
+  end
+
+  class NotClosedGuaranteedLoanAlert < LoanAlert
+    def loans
+      lender.loans.with_scheme('efg').guaranteed.maturity_date_between(alert_range.first, alert_range.end).order(:maturity_date)
+    end
+
+    def self.start_date
+      3.months.ago.to_date
     end
 
     def self.end_date
