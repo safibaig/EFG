@@ -2,32 +2,29 @@ require 'spec_helper'
 
 describe LoanAlerts::PriorityGrouping do
 
-  describe '.merge_groups' do
+  describe '.merge' do
 
     let(:group1) {
-      {
-        high_priority: [ [1],[2],[3] ],
-        medium_priority: [ [4],[5],[6] ],
-        low_priority: [ [7],[8],[9],[10] ]
-      }
+      double(LoanAlerts::PriorityGrouping,
+        high_priority_loans: [[1], [2], [3]],
+        medium_priority_loans: [[4], [5], [6]],
+        low_priority_loans: [[7], [8], [9], [10]]
+      )
     }
 
     let(:group2) {
-      {
-        high_priority: [[11],[12],[13]],
-        medium_priority: [[14],[15],[16]],
-        low_priority: [[17],[18],[19]]
-      }
+      double(LoanAlerts::PriorityGrouping,
+        high_priority_loans: [[11], [12], [13]],
+        medium_priority_loans: [[14], [15], [16]],
+        low_priority_loans: [[17], [18], [19]]
+      )
     }
 
-    it "should return a hash of merged arrays" do
-      expected_hash = {
-        high_priority: [ [1,11], [2,12], [3,13] ],
-        medium_priority: [ [4,14],[5,15],[6,16] ],
-        low_priority: [ [7,17],[8,18],[9,19],[10] ]
-      }
-
-      LoanAlerts::PriorityGrouping.merge_groups(group1, group2).should == expected_hash
+    it "returns a PriorityGrouping with merge high, medium, low loans" do
+      merged_grouping = LoanAlerts::PriorityGrouping.merge(group1, group2)
+      merged_grouping.high_priority_loans.should == [[1, 11], [2, 12], [3, 13]]
+      merged_grouping.medium_priority_loans.should == [[4, 14], [5, 15], [6, 16]]
+      merged_grouping.low_priority_loans.should == [[7, 17], [8, 18], [9, 19], [10]]
     end
   end
 
@@ -51,7 +48,7 @@ describe LoanAlerts::PriorityGrouping do
     end
   end
 
-  describe "#groups_hash" do
+  describe "grouping loans" do
     let(:date) { Date.parse("31-10-2012") }
 
     let!(:high_priority_loan1) { FactoryGirl.create(:loan, :offered, maturity_date: 59.weekdays_ago(date)) }
@@ -78,21 +75,31 @@ describe LoanAlerts::PriorityGrouping do
       LoanAlerts::PriorityGrouping.new(loans_array, 59.weekdays_ago(date).to_date, date, :maturity_date)
     }
 
-    it "should return hash of loan arrays grouped by high priority, medium priority and low priority, skipping weekends" do
-      priority_grouping.groups_hash[:high_priority].should == padded_array_of_arrays(10, {
-        0 => [high_priority_loan1],
-        9 => [high_priority_loan2]
-      })
+    describe "#high_priority_loans" do
+      it "returns all high priority loans" do
+        priority_grouping.high_priority_loans.should == padded_array_of_arrays(10, {
+          0 => [high_priority_loan1],
+          9 => [high_priority_loan2]
+        })
+      end
+    end
 
-      priority_grouping.groups_hash[:medium_priority].should == padded_array_of_arrays(20, {
-        0 => [medium_priority_loan1],
-        19 => [medium_priority_loan2]
-      })
+    describe "#medium_priority_loans" do
+      it "returns all medium priority loans" do
+        priority_grouping.medium_priority_loans.should == padded_array_of_arrays(20, {
+          0 => [medium_priority_loan1],
+          19 => [medium_priority_loan2]
+        })
+      end
+    end
 
-      priority_grouping.groups_hash[:low_priority].should == padded_array_of_arrays(30, {
-        0 => [low_priority_loan1],
-        29 => [low_priority_loan2]
-      })
+    describe "#low_priority_loans" do
+      it "returns all low priority loans" do
+        priority_grouping.low_priority_loans.should == padded_array_of_arrays(30, {
+          0 => [low_priority_loan1],
+          29 => [low_priority_loan2]
+        })
+      end
     end
   end
 
