@@ -2,7 +2,7 @@
 
 <div class="page-header">
   <%= loan_alerts_priority(params[:priority]) %>
-  <h1><%= params[:action].titleize %> Loan Alerts (<%= pluralize(@loans.count, 'loan') %>)</h1>
+  <h1><%= params[:action].titleize %> Loan Alerts (<%= pluralize(@alert.loans.count, 'loan') %>)</h1>
 </div>
 
 <p><%= t("loan_alerts.#{params[:action]}_description") %></p>
@@ -17,7 +17,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @loans.each do |loan| %>
+    <% @alert.loans.each do |loan| %>
       <tr>
         <td><%= link_to(loan.reference, loan) %></td>
         <td><%= link_to(loan_business_name(loan), loan) %></td>
