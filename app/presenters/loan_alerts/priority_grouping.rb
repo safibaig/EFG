@@ -26,16 +26,12 @@ module LoanAlerts
       attr_reader :group1, :group2
     end
 
-    def self.for_alert(alert_class, lender)
-      alert = alert_class.new(lender)
-      new(alert.loans, alert.start_date, alert.end_date, alert.date_method)
-    end
-
-    def initialize(loans, start_date, end_date, date_method)
-      @loans       = loans
-      @start_date  = start_date.to_date
-      @end_date    = end_date.to_date
-      @date_method = date_method
+    def initialize(alert)
+      @alert       = alert
+      @loans       = alert.loans
+      @start_date  = alert.start_date.to_date
+      @end_date    = alert.end_date.to_date
+      @date_method = alert.date_method
     end
 
     # Merge two PriorityGroups together.

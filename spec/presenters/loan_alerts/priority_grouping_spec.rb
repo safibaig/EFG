@@ -28,25 +28,6 @@ describe LoanAlerts::PriorityGrouping do
     end
   end
 
-  describe ".for_alert" do
-    it "instantiates a PriorityGrouping from a LoanAlert" do
-      loans = double('alert loans')
-      start_date = Date.new(2012, 11, 8)
-      end_date = Date.new(2013, 5, 8)
-      date_method = :updated_at
-      alert = double(LoanAlerts::LoanAlert, loans: loans, start_date: start_date, end_date: end_date, date_method: date_method)
-      alert_class = double('LoanAlert class')
-      alert_class.stub(:new).and_return(alert)
-
-      lender = double(Lender)
-
-      priority_grouping = double(LoanAlerts::PriorityGrouping)
-      LoanAlerts::PriorityGrouping.should_receive(:new).with(loans, start_date, end_date, date_method).and_return(priority_grouping)
-
-      LoanAlerts::PriorityGrouping.for_alert(alert_class, lender).should == priority_grouping
-    end
-  end
-
   describe "grouping loans" do
     let(:date) { Date.parse("31-10-2012") }
 
@@ -62,8 +43,8 @@ describe LoanAlerts::PriorityGrouping do
 
     let!(:low_priority_loan2) { FactoryGirl.create(:loan, :offered, maturity_date: date) }
 
-    let(:priority_grouping) {
-      loans_array = [
+    let(:alert) {
+      loans = [
         high_priority_loan1,
         high_priority_loan2,
         medium_priority_loan1,
@@ -71,7 +52,17 @@ describe LoanAlerts::PriorityGrouping do
         low_priority_loan1,
         low_priority_loan2
       ]
-      LoanAlerts::PriorityGrouping.new(loans_array, 59.weekdays_ago(date).to_date, date, :maturity_date)
+
+      double('LoanAlert',
+        loans: loans,
+        start_date: 59.weekdays_ago(date).to_date,
+        end_date: date,
+        date_method: :maturity_date
+      )
+    }
+
+    let(:priority_grouping) {
+      LoanAlerts::PriorityGrouping.new(alert)
     }
 
     describe "#high_priority_loans" do
