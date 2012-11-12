@@ -26,7 +26,8 @@ class LoanAlertsController < ApplicationController
     not_closed_offered_alert = NotClosedOfferedLoanAlert.new(current_lender, params[:priority])
     not_closed_guaranteed_alert = NotClosedGuaranteedLoanAlert.new(current_lender, params[:priority])
 
-    @loans = (not_closed_offered_alert.loans + not_closed_guaranteed_alert.loans).sort_by(&:maturity_date)
+    alert = CombinedLoanAlert.new(not_closed_offered_alert, not_closed_guaranteed_alert)
+    @loans = alert.loans
     render "show"
   end
 

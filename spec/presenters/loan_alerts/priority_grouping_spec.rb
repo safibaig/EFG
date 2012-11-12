@@ -31,12 +31,11 @@ describe LoanAlerts::PriorityGrouping do
   describe ".for_alert" do
     it "instantiates a PriorityGrouping from a LoanAlert" do
       loans = double('alert loans')
-      alert = double(LoanAlerts::LoanAlert, loans: loans)
-
       start_date = Date.new(2012, 11, 8)
       end_date = Date.new(2013, 5, 8)
       date_method = :updated_at
-      alert_class = double('LoanAlert class', start_date: start_date, end_date: end_date, date_method: date_method)
+      alert = double(LoanAlerts::LoanAlert, loans: loans, start_date: start_date, end_date: end_date, date_method: date_method)
+      alert_class = double('LoanAlert class')
       alert_class.stub(:new).and_return(alert)
 
       lender = double(Lender)

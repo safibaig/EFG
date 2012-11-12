@@ -1,4 +1,5 @@
 module LoanAlerts
+  autoload :CombinedLoanAlert,            'loan_alerts/combined_loan_alert'
   autoload :LoanAlert,                    'loan_alerts/loan_alert'
   autoload :NotClosedGuaranteedLoanAlert, 'loan_alerts/not_closed_guaranteed_loan_alert'
   autoload :NotClosedOfferedLoanAlert,    'loan_alerts/not_closed_offered_loan_alert'
