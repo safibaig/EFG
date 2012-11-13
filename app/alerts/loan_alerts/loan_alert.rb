@@ -13,6 +13,15 @@ class LoanAlerts::LoanAlert
     lender.loans.order(self.date_method)
   end
 
+  def loans_with_days_remaining
+    Enumerator.new do |yielder|
+      loans.each do |loan|
+        loan_date = loan.send(date_method)
+        yielder.yield loan, calculate_days_remaining(loan_date)
+      end
+    end
+  end
+
   def self.start_date
     raise NotImplementedError, 'subclasses must implement .start_date'
   end
@@ -58,5 +67,10 @@ class LoanAlerts::LoanAlert
 
       (start_date..end_date)
     end
+  end
+
+  private
+  def calculate_days_remaining(loan_date)
+    start_date.weekdays_until(loan_date.to_date)
   end
 end

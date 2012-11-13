@@ -10,6 +10,7 @@
 <table class="table table-striped">
   <thead>
     <tr>
+      <th>Days Remaining</th>
       <th>Reference</th>
       <th>Business name</th>
       <th>Amount</th>
@@ -17,8 +18,9 @@
     </tr>
   </thead>
   <tbody>
-    <% @alert.loans.each do |loan| %>
+    <% @alert.loans_with_days_remaining.each do |loan, days_remaining| %>
       <tr>
+        <td><%= days_remaining %></td>
         <td><%= link_to(loan.reference, loan) %></td>
         <td><%= link_to(loan_business_name(loan), loan) %></td>
         <td><%= loan.amount.format %></td>

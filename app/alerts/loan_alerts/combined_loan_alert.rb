@@ -1,4 +1,4 @@
-class LoanAlerts::CombinedLoanAlert
+class LoanAlerts::CombinedLoanAlert < LoanAlerts::LoanAlert
   def initialize(alert1, alert2)
     raise ArgumentError, 'alerts must have matching date_method' unless alert1.date_method == alert2.date_method
 
