@@ -23,6 +23,6 @@ every 1.day, at: '2:00am' do
   rake "loans:update_expired"
 end
 
-every 1.day, at: '3:00pm' do
+every 1.day, at: '3:25pm' do
   rake "data:extract"
 end
