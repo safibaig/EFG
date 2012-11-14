@@ -27,12 +27,16 @@ class Extractor
     private
 
     def import_schema(database_config)
-      if !File.directory?("il0-data")
-        Dir.mkdir("il0-data")
-      end
+      if (database_config["extract"]["adapter"] == 'sqlite3')
+        sqlite_file = database_config["extract"]["database"]
 
-      if File.exists?(database_config["extract"]["database"])
-        File.delete(database_config["extract"]["database"])
+        if !File.directory?(File.dirname(sqlite_file))
+          Dir.mkdir(File.dirname(sqlite_file))
+        end
+
+        if File.exists?(sqlite_file)
+          File.delete(sqlite_file)
+        end
       end
 
       existing_connection_config = ActiveRecord::Base.connection_config
