@@ -53,3 +53,9 @@ group :test do
   gem 'pdf-reader', '1.1.1'
   gem 'timecop'
 end
+
+group :extract do
+  # gem "data-anonymization", :path => "../data-anonymization"
+  gem "data-anonymization", :git => 'git@github.com:jabley/data-anonymization.git', :branch => 'mass-assignment'
+  gem "sqlite3", "1.3.6"
+end

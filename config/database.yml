@@ -15,3 +15,8 @@ test:
   password: efg
   host: localhost
   database: efg_test
+
+# Used for data extract rake task
+extract:
+  adapter: sqlite3
+  database: il0-data/efg.sqlite
