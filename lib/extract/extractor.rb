@@ -4,7 +4,7 @@ DataAnon::Utils::Logging.logger.level = Logger::INFO
 
 # ENV['show_progress'] = 'false'
 
-class Extracter
+class Extractor
   # ActiveRecord::Batches#find_in_batches defaults to find records with an id > 0.
   # Our SystemUser has an id of -1, therfore we need a query starting from -1.
   #
@@ -19,7 +19,7 @@ class Extracter
   class << self
     def run
       Bundler.require(:extract)
-      database_config = File.open("config/database.yml") {|f| YAML::load(f) }
+      database_config = YAML.load_file("config/database.yml")
       import_schema(database_config)
       extract(database_config)
     end
@@ -599,4 +599,3 @@ class Extracter
     end
   end
 end
-

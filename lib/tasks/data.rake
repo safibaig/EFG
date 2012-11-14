@@ -3,7 +3,7 @@ namespace :data do
   desc "Extract data from the database"
   task extract: :environment do
     require "extract"
-    Extracter.run
+    Extractor.run
   end
 
 end
