@@ -7,6 +7,7 @@ DataAnon::Utils::Logging.logger.level = Logger::INFO
 class Extracter
   class << self
     def run
+      Bundler.require(:extract)
       database_config = File.open("config/database.yml") {|f| YAML::load(f) }
       import_schema(database_config)
       extract(database_config)
