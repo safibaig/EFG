@@ -19,4 +19,6 @@ test:
 # Used for data extract rake task
 extract:
   adapter: sqlite3
+  # If you try to run this against an NFS mounted directory, it will be slow!
+  # database: /var/il0-data/efg.sqlite
   database: il0-data/efg.sqlite

@@ -4,11 +4,22 @@ DataAnon::Utils::Logging.logger.level = Logger::INFO
 
 # ENV['show_progress'] = 'false'
 
-class Extracter
+class Extractor
+  # ActiveRecord::Batches#find_in_batches defaults to find records with an id > 0.
+  # Our SystemUser has an id of -1, therfore we need a query starting from -1.
+  #
+  # This module gets included on the users source_table, which is an anonymous
+  # subclass of ActiveRecord::Base.
+  module UserFindInBatchesModification
+    def find_in_batches(options = {})
+      super(options.merge(start: -1))
+    end
+  end
+
   class << self
     def run
       Bundler.require(:extract)
-      database_config = File.open("config/database.yml") {|f| YAML::load(f) }
+      database_config = YAML.load_file("config/database.yml")
       import_schema(database_config)
       extract(database_config)
     end
@@ -16,12 +27,16 @@ class Extracter
     private
 
     def import_schema(database_config)
-      if !File.directory?("il0-data")
-        Dir.mkdir("il0-data")
-      end
+      if (database_config["extract"]["adapter"] == 'sqlite3')
+        sqlite_file = database_config["extract"]["database"]
 
-      if File.exists?(database_config["extract"]["database"])
-        File.delete(database_config["extract"]["database"])
+        if !File.directory?(File.dirname(sqlite_file))
+          Dir.mkdir(File.dirname(sqlite_file))
+        end
+
+        if File.exists?(sqlite_file)
+          File.delete(sqlite_file)
+        end
       end
 
       existing_connection_config = ActiveRecord::Base.connection_config
@@ -116,6 +131,11 @@ class Extracter
         table 'users' do
           batch_size 200
           primary_key 'id'
+
+          # Ensure the SystemUser is correctly extracted.
+          #
+          # Note: Must extend this after we set the primary_key.
+          source_table.extend(UserFindInBatchesModification)
 
           anonymize("email") { |field| "user-#{field.row_number}@example.com" }
           anonymize("first_name")
@@ -583,4 +603,3 @@ class Extracter
     end
   end
 end
-

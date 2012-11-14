@@ -1,1 +1,1 @@
-require "extract/extracter"
+require "extract/extractor"
