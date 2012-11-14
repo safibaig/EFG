@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:jabley/data-anonymization.git
+  remote: git://github.com/jabley/data-anonymization.git
   revision: 646ffa6be9ac4c851c03f086f8c0d878aa1b0ad2
   branch: mass-assignment
   specs:
