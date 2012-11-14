@@ -16,8 +16,8 @@ class Extracter
     private
 
     def import_schema(database_config)
-      if !File.directory?("sample-data")
-        Dir.mkdir("sample-data")
+      if !File.directory?("il0-data")
+        Dir.mkdir("il0-data")
       end
 
       if File.exists?(database_config["extract"]["database"])

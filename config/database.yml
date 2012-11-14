@@ -19,4 +19,4 @@ test:
 # Used for data extract rake task
 extract:
   adapter: sqlite3
-  database: sample-data/efg.sqlite
+  database: il0-data/efg.sqlite
