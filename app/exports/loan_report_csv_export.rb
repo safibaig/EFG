@@ -111,7 +111,7 @@ class LoanReportCsvExport
       records.each do |row|
         loan_securities = loan_securities_lookup[row['id']]
 
-        y << CSV.generate_line(LoanReportCsvRow.row(row, loan_securities))
+        y << CSV.generate_line(LoanReportCsvRow.new(row, loan_securities).to_csv)
       end
     end
   end
