@@ -72,7 +72,7 @@ describe LoanAuditReportCsvExport do
     before(:each) do
       Loan.any_instance.stub(:loan_state_change_to_state).and_return(Loan::Guaranteed)
       LoanAuditReportCsvRow.should_receive(:new).once.and_return(loan_audit_report_mock)
-      loan_audit_report_mock.should_receive(:row).once.and_return(row_mock)
+      loan_audit_report_mock.should_receive(:to_csv).once.and_return(row_mock)
     end
 
     it "should return a row for the header and each loan" do

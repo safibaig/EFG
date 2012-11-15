@@ -73,7 +73,7 @@ class LoanAuditReportCsvExport
           sequence = 0
         end
 
-        y << CSV.generate_line(LoanAuditReportCsvRow.new(loan, sequence, previous_state).row)
+        y << CSV.generate_line(LoanAuditReportCsvRow.new(loan, sequence, previous_state).to_csv)
 
         sequence += 1
         previous_state = loan.loan_state_change_to_state
