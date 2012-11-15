@@ -117,15 +117,11 @@ class LoanReportCsvExport
   end
 
   def loan_security_types_lookup_for_loan_ids(loan_ids)
-    hash = Hash.new { |hash, key|
-      hash[key] = []
-    }
+    lookup = Hash.new {|hash, key| hash[key] = []}
 
-    LoanSecurity.where(loan_id: loan_ids).each do |loan_security|
-      hash[loan_security.loan_id] << loan_security.loan_security_type
+    LoanSecurity.where(loan_id: loan_ids).each_with_object(lookup) do |loan_security, memo|
+      memo[loan_security.loan_id] << loan_security.loan_security_type
     end
-
-    hash
   end
 
   def t(key)
