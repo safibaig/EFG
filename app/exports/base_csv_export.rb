@@ -24,7 +24,7 @@ class BaseCsvExport
   end
 
   def fields
-    raise NotImplementedError, 'Define in sub-class'
+    raise NotImplementedError, 'Subclasses must implement #fields'
   end
 
   def csv_row(record)

@@ -3,13 +3,13 @@ class LoanRecoveriesCsvExport < BaseCsvExport
   private
 
   def fields
-    %w(
-      reference
-      business_name
-      recovered_on
-      dti_demand_outstanding
-      amount_due_to_dti
-    )
+    [
+      :reference,
+      :business_name,
+      :recovered_on,
+      :dti_demand_outstanding,
+      :amount_due_to_dti,
+    ]
   end
 
   def csv_row(record)
