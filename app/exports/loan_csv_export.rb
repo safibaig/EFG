@@ -9,7 +9,7 @@ class LoanCsvExport < BaseCsvExport
   private
 
   def formats
-    {
+    @formats ||= {
       ActiveSupport::TimeWithZone => ->(time) { time.strftime('%d/%m/%Y %H:%M:%S') },
       AuditorUser => :name.to_proc,
       CancelReason => :name.to_proc,
