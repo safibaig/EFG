@@ -46,10 +46,17 @@ class BaseCsvExport
   def enumerator
     Enumerator.new do |y|
       y << CSV.generate_line(fields)
-      @records.each do |record|
+      each_record do |record|
         y << CSV.generate_line(csv_row(record))
       end
     end
   end
 
+  def each_record(&block)
+    if @records.respond_to?(:find_each)
+      @records.find_each(&block)
+    else
+      @records.each(&block)
+    end
+  end
 end

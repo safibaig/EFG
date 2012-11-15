@@ -1,14 +1,6 @@
 require 'initial_draw_attributes'
 
 class LoanCsvExport < BaseCsvExport
-  def initialize(loans)
-    loans.each do |loan|
-      loan.extend(InitialDrawAttributes)
-    end
-
-    super
-  end
-
   private
 
   def formats
@@ -141,6 +133,11 @@ class LoanCsvExport < BaseCsvExport
       :viable_proposition,
       :would_you_lend,
     ]
+  end
+
+  def csv_row(record)
+    record.extend(InitialDrawAttributes)
+    super(record)
   end
 
 end
