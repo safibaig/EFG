@@ -2,25 +2,10 @@ require 'spec_helper'
 require 'csv'
 
 describe LoanAuditReportCsvExport do
-
-  describe "#initialize" do
-    it "should raise exception when argument is not ActiveRecord::Relation object" do
-      expect {
-        LoanAuditReportCsvExport.new("123")
-      }.to raise_error(ArgumentError)
-    end
-
-    it "should not raise error when argument is ActiveRecord::Relation object" do
-      expect {
-        LoanAuditReportCsvExport.new(Loan.scoped)
-      }.to_not raise_error
-    end
-  end
-
   describe ".header" do
     let(:loan_audit_report_csv_export) { LoanAuditReportCsvExport.new(Loan.scoped) }
 
-    let(:header) { loan_audit_report_csv_export.header }
+    let(:header) { CSV.parse(loan_audit_report_csv_export.first).first }
 
     it "should return array of strings with correct text" do
       header[0].should == t(:loan_reference)
@@ -61,26 +46,21 @@ describe LoanAuditReportCsvExport do
 
     let!(:loan) { FactoryGirl.create(:loan) }
 
-    let(:loan_audit_report_mock) { double(LoanAuditReportCsvRow) }
+    let(:loan_audit_report_mock) { double(LoanAuditReportCsvRow, to_a: row_mock) }
 
     let(:loan_audit_report_csv_export) { LoanAuditReportCsvExport.new(Loan.scoped) }
 
-    let(:row_mock) { Array.new(loan_audit_report_csv_export.header.size) }
+    let(:row_mock) { Array.new(loan_audit_report_csv_export.fields.size) }
 
     let(:parsed_csv) { CSV.parse(loan_audit_report_csv_export.generate) }
 
     before(:each) do
+      loan_audit_report_csv_export.stub(:csv_row).and_return(loan_audit_report_mock)
       Loan.any_instance.stub(:loan_state_change_to_state).and_return(Loan::Guaranteed)
-      LoanAuditReportCsvRow.should_receive(:new).once.and_return(loan_audit_report_mock)
-      loan_audit_report_mock.should_receive(:to_csv).once.and_return(row_mock)
     end
 
     it "should return a row for the header and each loan" do
       parsed_csv.size.should == 2
-    end
-
-    it "should return the header in the first row" do
-      parsed_csv[0].should == loan_audit_report_csv_export.header
     end
   end
 

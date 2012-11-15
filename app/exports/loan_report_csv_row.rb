@@ -4,7 +4,7 @@ class LoanReportCsvRow
     @loan_security_types = loan_security_types
   end
 
-  def to_csv
+  def to_a
     [
       row['reference'],
       LegalForm.find(row['legal_form_id']).try(:name),

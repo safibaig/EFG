@@ -6,7 +6,7 @@ class LoanAuditReportCsvRow
     @previous_state = previous_state
   end
 
-  def to_csv
+  def to_a
     [
       loan.reference,
       loan.lender_reference_code,
