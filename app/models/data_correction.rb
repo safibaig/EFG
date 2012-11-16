@@ -202,6 +202,8 @@ class DataCorrection < LoanModification
         errors.add(:dti_demand_out_amount, :must_have_changed)
       elsif dti_demand_out_amount < Money.new(0)
         errors.add(:dti_demand_out_amount, :must_not_be_negative)
+      elsif dti_demand_out_amount > loan.cumulative_drawn_amount
+        errors.add(:dti_demand_out_amount, :must_not_be_greater_than_cumulative_drawn_amount)
       end
     end
 end

@@ -167,6 +167,7 @@ en:
               must_have_changed: 'has not changed'
               must_not_be_negative: 'must be greater than or equal to £0.00'
               must_be_demanded_state: 'Loan must be Demanded to change Original Outstanding Scheme Facility Principal'
+              must_not_be_greater_than_cumulative_drawn_amount: 'must be less than or equal to the total drawn amount'
         loan_change:
           attributes:
             base:

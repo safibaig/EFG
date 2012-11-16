@@ -8,7 +8,7 @@ describe DataCorrection do
   describe 'validations' do
     let(:lender) { FactoryGirl.create(:lender) }
     let(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, starts_on: Date.new(2011, 4), ends_on: Date.new(2012, 3, 31)) }
-    let(:loan) { FactoryGirl.create(:loan, lender: lender, lending_limit: lending_limit, amount: Money.new(10_000_00), facility_letter_date: Date.new(2011, 8), dti_demand_outstanding: Money.new(10_000_00)) }
+    let(:loan) { FactoryGirl.create(:loan, lender: lender, lending_limit: lending_limit, amount: Money.new(10_000_00), facility_letter_date: Date.new(2011, 8), dti_demand_outstanding: Money.new(1_000_00)) }
     let(:data_correction) { FactoryGirl.build(:data_correction, loan: loan) }
     let!(:initial_draw_change) { FactoryGirl.create(:initial_draw_change, loan: loan, amount_drawn: Money.new(5_000_00), date_of_change: Date.new(2011, 11)) }
 
@@ -168,7 +168,7 @@ describe DataCorrection do
     describe '#dti_demand_out_amount=' do
       it 'is not be valid when loan is not in demanded state' do
         loan.state.should_not == Loan::Demanded
-        data_correction.dti_demand_out_amount = Money.new(5_000_00)
+        data_correction.dti_demand_out_amount = Money.new(800_00)
         data_correction.should_not be_valid
       end
 
@@ -178,7 +178,7 @@ describe DataCorrection do
         end
 
         it 'must have amount' do
-          data_correction.dti_demand_out_amount = Money.new(5_000_00)
+          data_correction.dti_demand_out_amount = Money.new(800_00)
           data_correction.should be_valid
         end
 
@@ -189,6 +189,11 @@ describe DataCorrection do
 
         it 'must not be the same value' do
           data_correction.dti_demand_out_amount = loan.dti_demand_outstanding
+          data_correction.should_not be_valid
+        end
+
+        it 'must not be greater than the total amount drawn' do
+          data_correction.dti_demand_out_amount = loan.cumulative_drawn_amount + Money.new(1_00)
           data_correction.should_not be_valid
         end
       end
@@ -224,7 +229,7 @@ describe DataCorrection do
     let(:user) { FactoryGirl.create(:lender_user, lender: lender) }
     let(:lending_limit_1) { FactoryGirl.create(:lending_limit, lender: lender, starts_on: Date.new(2012)) }
     let(:lending_limit_2) { FactoryGirl.create(:lending_limit, lender: lender) }
-    let(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: lender, lending_limit: lending_limit_1, amount: Money.new(5_000_00), facility_letter_date: Date.new(2012, 1, 1), sortcode: '123456', dti_demand_outstanding: Money.new(10_000_00)) }
+    let(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: lender, lending_limit: lending_limit_1, amount: Money.new(5_000_00), facility_letter_date: Date.new(2012, 1, 1), sortcode: '123456', dti_demand_outstanding: Money.new(1_000_00)) }
     let!(:initial_draw_change) {
       loan.initial_draw_change.tap { |initial_draw_change|
         initial_draw_change.amount_drawn = Money.new(1_000_00)
@@ -298,12 +303,12 @@ describe DataCorrection do
     it 'works with #dti_demand_out_amount' do
       loan.update_attribute(:state, Loan::Demanded) # loan must be demanded
 
-      data_correction.dti_demand_out_amount = Money.new(8_000_00)
+      data_correction.dti_demand_out_amount = Money.new(800_00)
       data_correction.save_and_update_loan.should == true
-      data_correction.old_dti_demand_out_amount.should == Money.new(10_000_00)
+      data_correction.old_dti_demand_out_amount.should == Money.new(1_000_00)
 
       loan.reload
-      loan.dti_demand_outstanding.should == Money.new(8_000_00)
+      loan.dti_demand_outstanding.should == Money.new(800_00)
     end
 
     it 'creates a new loan state change record for the state change' do
