@@ -163,6 +163,10 @@ en:
               must_not_be_in_the_future: 'must not be later than today'
               must_not_be_before_facility_letter_date: 'must not be before the date of the Original Facility Letter Date'
               must_not_be_more_than_six_months_after_facility_letter_date: 'must not be more than six months after the Facility Letter Date'
+            dti_demand_out_amount:
+              must_have_changed: 'has not changed'
+              must_not_be_negative: 'must be greater than or equal to £0.00'
+              must_be_demanded_state: 'Loan must be Demanded to change Original Outstanding Scheme Facility Principal'
         loan_change:
           attributes:
             base:
