@@ -22,6 +22,8 @@ describe DataCorrection do
       data_correction.should_not be_valid
       data_correction.dti_demand_out_amount = ''
       data_correction.should_not be_valid
+      data_correction.dti_demand_interest = ''
+      data_correction.should_not be_valid
     end
 
     context '#amount' do
@@ -177,11 +179,6 @@ describe DataCorrection do
           loan.update_attribute(:state, Loan::Demanded)
         end
 
-        it 'must have amount' do
-          data_correction.dti_demand_out_amount = Money.new(800_00)
-          data_correction.should be_valid
-        end
-
         it 'must not be negative' do
           data_correction.dti_demand_out_amount = Money.new(-1)
           data_correction.should_not be_valid
@@ -194,6 +191,51 @@ describe DataCorrection do
 
         it 'must not be greater than the total amount drawn' do
           data_correction.dti_demand_out_amount = loan.cumulative_drawn_amount + Money.new(1_00)
+          data_correction.should_not be_valid
+        end
+      end
+    end
+
+    describe '#dti_demand_interest=' do
+      it 'is not be valid when loan is not in demanded state' do
+        loan.state.should_not == Loan::Demanded
+        data_correction.dti_demand_interest = Money.new(800_00)
+        data_correction.should_not be_valid
+      end
+
+      context 'when loan is in demanded state' do
+        before do
+          loan.state = Loan::Demanded
+          loan.loan_scheme = Loan::SFLG_SCHEME
+          loan.dti_interest = Money.new(1_000_00)
+          loan.save!
+        end
+
+        it 'is not valid when an EFG loan' do
+          loan.update_attribute(:loan_scheme, Loan::EFG_SCHEME)
+
+          data_correction.dti_demand_interest = Money.new(800_00)
+          data_correction.should_not be_valid
+        end
+
+        it 'must not be negative' do
+          data_correction.dti_demand_interest = Money.new(-1)
+          data_correction.should_not be_valid
+        end
+
+        it 'must not be the same value' do
+          data_correction.dti_demand_interest = loan.dti_interest
+          data_correction.should_not be_valid
+        end
+
+        it 'must be lte to original loan amount when amount is not being changed' do
+          data_correction.dti_demand_interest = loan.amount + Money.new(1_00)
+          data_correction.should_not be_valid
+        end
+
+        it 'must be lte to new loan amount when amount is being changed' do
+          data_correction.amount = Money.new(5_000_00)
+          data_correction.dti_demand_interest = Money.new(5_001_00)
           data_correction.should_not be_valid
         end
       end
@@ -309,6 +351,20 @@ describe DataCorrection do
 
       loan.reload
       loan.dti_demand_outstanding.should == Money.new(800_00)
+    end
+
+    it 'works with #dti_demand_interest' do
+      loan.state = Loan::Demanded # loan must be demanded
+      loan.loan_scheme = Loan::SFLG_SCHEME
+      loan.dti_interest = Money.new(1_000_00)
+      loan.save!
+
+      data_correction.dti_demand_interest = Money.new(800_00)
+      data_correction.save_and_update_loan.should == true
+      data_correction.old_dti_demand_interest.should == Money.new(1_000_00)
+
+      loan.reload
+      loan.dti_interest.should == Money.new(800_00)
     end
 
     it 'creates a new loan state change record for the state change' do

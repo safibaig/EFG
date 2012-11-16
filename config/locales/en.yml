@@ -168,6 +168,13 @@ en:
               must_not_be_negative: 'must be greater than or equal to £0.00'
               must_be_demanded_state: 'Loan must be Demanded to change Original Outstanding Scheme Facility Principal'
               must_not_be_greater_than_cumulative_drawn_amount: 'must be less than or equal to the total drawn amount'
+            dti_demand_interest:
+              must_have_changed: 'has not changed'
+              must_not_be_negative: 'must be greater than or equal to £0.00'
+              must_be_demanded_state: 'Loan must be Demanded to change Original Outstanding Scheme Facility Principal'
+              must_not_be_an_EFG_loan: 'Loan must not be in the EFG scheme'
+              must_be_lte_new_loan_amount: 'must not be greater than the new loan amount'
+              must_be_lte_original_loan_amount: 'must not be greater than the loan amount'
         loan_change:
           attributes:
             base:
