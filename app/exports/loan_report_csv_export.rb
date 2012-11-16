@@ -102,14 +102,14 @@ class LoanReportCsvExport < BaseCsvExport
 
   def each_record(&block)
     # Eager load the records so we can create the lookup for the loan_security_types.
-    connection = ActiveRecord::Base.connection
-    records = connection.execute(@records.to_sql).to_a(as: :hash)
-    loan_ids = records.map { |row| row['id'] }
-    loan_securities_lookup = loan_security_types_lookup_for_loan_ids(loan_ids)
+    @records.find_in_batches do |batch|
+      loan_ids = batch.map {|row| row['id']}
+      loan_securities_lookup = loan_security_types_lookup_for_loan_ids(loan_ids)
 
-    records.each do |record|
-      loan_securities = loan_securities_lookup[record['id']]
-      block.call(record, loan_securities)
+      batch.each do |record|
+        loan_securities = loan_securities_lookup[record['id']]
+        block.call(record, loan_securities)
+      end
     end
   end
 end
