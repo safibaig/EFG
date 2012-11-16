@@ -38,13 +38,14 @@ describe 'data correction' do
       loan.modified_by.should == current_user
     end
 
-    it 'does not show DTI demand outstanding fields when loan is not in Demanded state' do
+    it 'does not show DTI demand fields when loan is not in Demanded state' do
       navigate_to_data_correction_form
       page.should_not have_css("#data_correction_dti_demand_outstanding")
+      page.should_not have_css("#data_correction_dti_demand_interest")
     end
 
     context 'with loan in Demanded state' do
-      let(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :demanded) }
+      let(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :demanded, dti_interest: Money.new(1_000_00)) }
 
       it 'can update DTI demand outstanding amount' do
         navigate_to_data_correction_form
@@ -62,6 +63,27 @@ describe 'data correction' do
 
         loan.reload
         loan.dti_demand_outstanding.should == Money.new(8_000_00)
+        loan.modified_by.should == current_user
+      end
+
+      it 'can update DTI demand interest for non-EFG loans' do
+        loan.update_attribute(:loan_source, Loan::EFG_SCHEME)
+
+        navigate_to_data_correction_form
+
+        fill_in 'dti_demand_interest', '500'
+        click_button 'Submit'
+
+        data_correction = loan.data_corrections.last!
+        data_correction.old_dti_demand_interest.should == Money.new(1_000_00)
+        data_correction.dti_demand_interest.should == Money.new(500_00)
+        data_correction.change_type_id.should == '9'
+        data_correction.date_of_change.should == Date.current
+        data_correction.modified_date.should == Date.current
+        data_correction.created_by.should == current_user
+
+        loan.reload
+        loan.dti_interest.should == Money.new(500_00)
         loan.modified_by.should == current_user
       end
     end
