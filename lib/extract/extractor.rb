@@ -27,23 +27,48 @@ class Extractor
     private
 
     def import_schema(database_config)
-      if (database_config["extract"]["adapter"] == 'sqlite3')
-        sqlite_file = database_config["extract"]["database"]
+      extract_config = database_config["extract"]
+
+      case extract_config["adapter"]
+      when /sqlite/
+        sqlite_file = extract_config["database"]
 
         if !File.directory?(File.dirname(sqlite_file))
           Dir.mkdir(File.dirname(sqlite_file))
         end
-
-        if File.exists?(sqlite_file)
-          File.delete(sqlite_file)
-        end
       end
 
       existing_connection_config = ActiveRecord::Base.connection_config
-      ActiveRecord::Base.establish_connection(database_config["extract"])
+      drop_database_and_rescue(extract_config)
+      ActiveRecord::Base.establish_connection(extract_config)
       load("db/schema.rb")
       ActiveRecord::Base.remove_connection
       ActiveRecord::Base.establish_connection(existing_connection_config)
+    end
+
+    def drop_database(config)
+      case config['adapter']
+      when /mysql/
+        ActiveRecord::Base.establish_connection(config)
+        ActiveRecord::Base.connection.drop_database config['database']
+      when /sqlite/
+        require 'pathname'
+        path = Pathname.new(config['database'])
+        file = path.absolute? ? path.to_s : File.join(Rails.root, path)
+
+        FileUtils.rm(file)
+      when /postgresql/
+        ActiveRecord::Base.establish_connection(config.merge('database' => 'postgres', 'schema_search_path' => 'public'))
+        ActiveRecord::Base.connection.drop_database config['database']
+      end
+    end
+
+    def drop_database_and_rescue(config)
+      begin
+        drop_database(config)
+      rescue Exception => e
+        $stderr.puts "Couldn't drop #{config['database']} : #{e.inspect}"
+      end
     end
 
     def extract(database_config)
