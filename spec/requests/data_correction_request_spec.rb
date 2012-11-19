@@ -67,7 +67,7 @@ describe 'data correction' do
       end
 
       it 'can update DTI demand interest for non-EFG loans' do
-        loan.update_attribute(:loan_source, Loan::EFG_SCHEME)
+        loan.update_attribute(:loan_scheme, Loan::SFLG_SCHEME)
 
         navigate_to_data_correction_form
 
