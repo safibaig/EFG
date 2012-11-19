@@ -72,7 +72,7 @@
 
 <% unless @loan_audit_report.count.zero? %>
 
-  <%= simple_form_for(@loan_audit_report, url: loan_audit_report_path(format: 'csv')) do |f| %>
+  <%= simple_form_for(@loan_audit_report, url: loan_audit_report_path(format: 'csv'), html: { class: 'csv-download' }) do |f| %>
 
     <%= f.hidden_field :facility_letter_start_date, value: @loan_audit_report.facility_letter_start_date.try(:to_s, :screen) %>
     <%= f.hidden_field :facility_letter_end_date, value: @loan_audit_report.facility_letter_end_date.try(:to_s, :screen) %>

@@ -35,19 +35,10 @@ module ApplicationHelper
       ['UA-34504094-2', 'preview.alphagov.co.uk'] :
       ['UA-34504094-1', 'production.alphagov.co.uk']
 
-    %Q(<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', '#{account}']);
-  _gaq.push(['_setDomainName', '#{domain}']);
-  _gaq.push(['_setSiteSpeedSampleRate', 100]);
-  _gaq.push(['_trackPageview']);
+    user_type   = current_user ? current_user.type : nil
+    lender_name = %w(LenderAdmin LenderUser).include?(user_type) ? current_lender.name : nil
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-</script>).html_safe
+    render "shared/google_analytics", account: account, domain: domain, user_type: user_type, lender_name: lender_name
   end
 
   def simple_form_row(label, control)

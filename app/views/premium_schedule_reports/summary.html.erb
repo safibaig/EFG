@@ -55,7 +55,7 @@
   </tbody>
 </table>
 
-<%= simple_form_for @premium_schedule_report, format: 'csv' do |f| %>
+<%= simple_form_for @premium_schedule_report, format: 'csv', html: { class: 'csv-download' } do |f| %>
   <%= f.hidden_field :collection_month %>
   <%= f.hidden_field :start_on, value: @premium_schedule_report.start_on.try(:to_s, :screen) %>
   <%= f.hidden_field :finish_on, value: @premium_schedule_report.finish_on.try(:to_s, :screen) %>

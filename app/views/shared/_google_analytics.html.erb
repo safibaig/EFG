@@ -1,0 +1,19 @@
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '<%= account %>']);
+  _gaq.push(['_setDomainName', '<%= domain %>']);
+  _gaq.push(['_setSiteSpeedSampleRate', 100]);
+<% if user_type %>
+  _gaq.push(["_setCustomVar", 1, "User Type", "<%= user_type %>", 3]);
+<% end %>
+<% if lender_name %>
+  _gaq.push(["_setCustomVar", 2, "Lender name", "<%= lender_name %>", 3]);
+<% end %>
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
