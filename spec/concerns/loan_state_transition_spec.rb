@@ -3,6 +3,10 @@ require 'spec_helper'
 describe LoanStateTransition do
   let(:klass) do
     Class.new do
+      def self.name
+        'MockLoanPresenter'
+      end
+
       include LoanPresenter
       include LoanStateTransition
 
@@ -39,11 +43,11 @@ describe LoanStateTransition do
     end
 
     it "should raise an IncorrectLoanState error if the loan isn't in the from state" do
-      loan = double(Loan, state: :z)
+      loan = double(Loan, id: 40, state: :z)
 
       expect {
         klass.new(loan)
-      }.to raise_error(LoanStateTransition::IncorrectLoanState)
+      }.to raise_error(LoanStateTransition::IncorrectLoanState, "MockLoanPresenter tried to transition Loan:40 with state:z")
     end
   end
 
