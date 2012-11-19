@@ -40,7 +40,10 @@ class LoanDemandAgainstGovernment
   end
 
   def set_dti_amount_claimed
-    loan.dti_amount_claimed = dti_demand_outstanding * loan.guarantee_rate / 100
+    interest    = dti_interest || Money.new(0)
+    break_costs = dti_break_costs || Money.new(0)
+
+    loan.dti_amount_claimed = (dti_demand_outstanding + interest + break_costs) * loan.guarantee_rate / 100
   end
 
 end
