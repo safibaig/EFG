@@ -52,7 +52,8 @@ class ApplicationController < ActionController::Base
   end
 
   def self.rescue_from_incorrect_loan_state_error
-    rescue_from LoanStateTransition::IncorrectLoanState do
+    rescue_from LoanStateTransition::IncorrectLoanState do |exception|
+      ExceptionNotifier::Notifier.exception_notification(request.env, exception).deliver
       redirect_to loan_url(@loan)
     end
   end
