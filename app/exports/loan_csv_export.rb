@@ -2,7 +2,10 @@ require 'initial_draw_attributes'
 
 class LoanCsvExport < BaseCsvExport
   def initialize(records)
-    records = records.includes(:lender, :lending_limit, :created_by, :modified_by, :initial_draw_change, :transferred_from)
+    if records.respond_to?(:includes)
+      records = records.includes(:lender, :lending_limit, :created_by, :modified_by, :initial_draw_change, :transferred_from)
+    end
+
     super(records)
   end
 

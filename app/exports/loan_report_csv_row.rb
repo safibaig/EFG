@@ -92,6 +92,6 @@ class LoanReportCsvRow
   attr_reader :row, :loan_security_types
 
   def boolean_as_text(bool)
-    bool == 1 ? 'Yes' : 'No'
+    bool ? 'Yes' : 'No'
   end
 end

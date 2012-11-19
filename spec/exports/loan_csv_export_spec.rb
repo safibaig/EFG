@@ -3,23 +3,25 @@ require 'csv'
 
 describe LoanCsvExport do
   describe '#generate' do
-    let(:user) { FactoryGirl.build(:cfe_user, first_name: 'Joe', last_name: 'Bloggs') }
-    let(:lender) { FactoryGirl.build(:lender, name: 'Little Tinkers') }
-    let(:lending_limit) { FactoryGirl.build(:lending_limit, name: 'Lending Limit') }
+    let(:user) { FactoryGirl.create(:cfe_user, first_name: 'Joe', last_name: 'Bloggs') }
+    let(:lender) { FactoryGirl.create(:lender, name: 'Little Tinkers') }
+    let(:lending_limit) { FactoryGirl.create(:lending_limit, name: 'Lending Limit') }
     let(:loan) {
-      FactoryGirl.build(:loan, :guaranteed,
+      FactoryGirl.create(:loan, :guaranteed,
         created_by: user,
         lender: lender,
         lending_limit: lending_limit,
         maturity_date: Date.new(2022, 2, 22),
         reference: 'ABC2345-01',
-        trading_date: Date.new(1999, 9, 9)
+        trading_date: Date.new(1999, 9, 9),
       )
     }
     let(:csv_data) {
-      Timecop.freeze(Time.zone.local(2012, 10, 1, 16, 23, 45))
-      csv = LoanCsvExport.new([loan]).generate
-      Timecop.return
+      Timecop.freeze(2012, 10, 1, 16, 23, 45) do
+        loan
+      end
+
+      csv = LoanCsvExport.new(Loan.scoped).generate
       CSV.parse(csv)
     }
 
@@ -95,8 +97,8 @@ describe LoanCsvExport do
       row[33].should == ''
       row[34].should == '75.0'
       row[35].should == ''
-      row[36].should == ''
-      row[37].should == ''
+      row[36].should == '01/10/2012'
+      row[37].should == '12345.00'
       row[38].should == ''
       row[39].should == ''
       row[40].should == ''
