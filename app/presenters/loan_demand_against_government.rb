@@ -1,6 +1,7 @@
 class LoanDemandAgainstGovernment
   include LoanPresenter
   include LoanStateTransition
+  include GovernmentGuaranteeClaimCalculation
 
   transition from: Loan::LenderDemand, to: Loan::Demanded, event: :demand_against_government_guarantee
 
@@ -40,10 +41,7 @@ class LoanDemandAgainstGovernment
   end
 
   def set_dti_amount_claimed
-    interest    = dti_interest || Money.new(0)
-    break_costs = dti_break_costs || Money.new(0)
-
-    loan.dti_amount_claimed = (dti_demand_outstanding + interest + break_costs) * loan.guarantee_rate / 100
+    loan.dti_amount_claimed = calculate_dti_amount_claimed(loan)
   end
 
 end

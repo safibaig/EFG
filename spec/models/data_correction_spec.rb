@@ -342,29 +342,53 @@ describe DataCorrection do
       loan.sortcode.should == '654321'
     end
 
-    it 'works with #dti_demand_out_amount' do
-      loan.update_attribute(:state, Loan::Demanded) # loan must be demanded
+    context 'with demanded loan' do
+      before do
+        loan.update_attribute(:state, Loan::Demanded)
+      end
 
-      data_correction.dti_demand_out_amount = Money.new(800_00)
-      data_correction.save_and_update_loan.should == true
-      data_correction.old_dti_demand_out_amount.should == Money.new(1_000_00)
+      it 'works with #dti_demand_out_amount' do
+        data_correction.dti_demand_out_amount = Money.new(800_00)
+        data_correction.save_and_update_loan.should == true
+        data_correction.old_dti_demand_out_amount.should == Money.new(1_000_00)
 
-      loan.reload
-      loan.dti_demand_outstanding.should == Money.new(800_00)
-    end
+        loan.reload
+        loan.dti_demand_outstanding.should == Money.new(800_00)
+      end
 
-    it 'works with #dti_demand_interest' do
-      loan.state = Loan::Demanded # loan must be demanded
-      loan.loan_scheme = Loan::SFLG_SCHEME
-      loan.dti_interest = Money.new(1_000_00)
-      loan.save!
+      it 'recalculates #dti_amount_claimed when updating #dti_demand_out_amount' do
+        data_correction.dti_demand_out_amount = Money.new(800_00)
+        data_correction.save_and_update_loan.should == true
 
-      data_correction.dti_demand_interest = Money.new(800_00)
-      data_correction.save_and_update_loan.should == true
-      data_correction.old_dti_demand_interest.should == Money.new(1_000_00)
+        loan.reload
+        loan.dti_amount_claimed.should == Money.new(600_00) # 75% of £800 (#dti_demand_outstanding)
+      end
 
-      loan.reload
-      loan.dti_interest.should == Money.new(800_00)
+      context 'in SFLG scheme' do
+        before do
+          loan.loan_scheme = Loan::SFLG_SCHEME
+          loan.save!
+        end
+
+        it 'works with #dti_demand_interest' do
+          loan.update_attribute(:dti_interest, Money.new(1_000_00))
+
+          data_correction.dti_demand_interest = Money.new(800_00)
+          data_correction.save_and_update_loan.should == true
+          data_correction.old_dti_demand_interest.should == Money.new(1_000_00)
+
+          loan.reload
+          loan.dti_interest.should == Money.new(800_00)
+        end
+
+        it 'recalculates #dti_amount_claimed when updating #dti_demand_interest' do
+          data_correction.dti_demand_interest = Money.new(500_00)
+          data_correction.save_and_update_loan.should == true
+
+          loan.reload
+          loan.dti_amount_claimed.should == Money.new(1125_00) # 75% of £1500 (#dti_demand_outstanding + #dti_interest)
+        end
+      end
     end
 
     it 'creates a new loan state change record for the state change' do
