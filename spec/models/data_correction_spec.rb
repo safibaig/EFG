@@ -14,7 +14,6 @@ describe DataCorrection do
 
     it 'must have something set' do
       data_correction.amount = ''
-      data_correction.lending_limit_id = ''
       data_correction.facility_letter_date = ''
       data_correction.initial_draw_date = ''
       data_correction.initial_draw_amount = ''
@@ -103,16 +102,6 @@ describe DataCorrection do
         data_correction.facility_letter_date = Date.new(2011, 4)
         data_correction.should be_valid
       end
-
-      it 'must be between the lending limit start/end dates (including change to the lending limit)' do
-        data_correction.lending_limit_id = FactoryGirl.create(:lending_limit, lender: lender, starts_on: Date.new(2011, 5, 6), ends_on: Date.new(2011, 5, 31)).id
-        data_correction.facility_letter_date = Date.new(2011, 5, 5)
-        data_correction.should_not be_valid
-        data_correction.facility_letter_date = Date.new(2011, 6)
-        data_correction.should_not be_valid
-        data_correction.facility_letter_date = Date.new(2011, 5, 6)
-        data_correction.should be_valid
-      end
     end
 
     context '#initial_draw_amount' do
@@ -164,36 +153,11 @@ describe DataCorrection do
     end
   end
 
-  describe '#lending_limit_id=' do
-    let(:lending_limit) { FactoryGirl.build(:lending_limit) }
-    let(:data_correction) { FactoryGirl.build(:data_correction) }
-
-    it 'blows up if attempting to set a LendingLimit belonging to another Lender' do
-      another_lending_limit = FactoryGirl.create(:lending_limit)
-
-      expect {
-        data_correction.lending_limit_id = another_lending_limit.id
-      }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-
-    it 'blows up when attempting to set an inactive LendingLimit' do
-      another_lending_limit = FactoryGirl.create(:lending_limit,
-        active: false,
-        lender: data_correction.loan.lender
-      )
-
-      expect {
-        data_correction.lending_limit_id = another_lending_limit.id
-      }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-  end
-
   describe '#save_and_update_loan' do
     let(:lender) { FactoryGirl.create(:lender) }
     let(:user) { FactoryGirl.create(:lender_user, lender: lender) }
-    let(:lending_limit_1) { FactoryGirl.create(:lending_limit, lender: lender, starts_on: Date.new(2012)) }
-    let(:lending_limit_2) { FactoryGirl.create(:lending_limit, lender: lender) }
-    let(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: lender, lending_limit: lending_limit_1, amount: Money.new(5_000_00), facility_letter_date: Date.new(2012, 1, 1), sortcode: '123456') }
+    let(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, starts_on: Date.new(2012)) }
+    let(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: lender, lending_limit: lending_limit, amount: Money.new(5_000_00), facility_letter_date: Date.new(2012, 1, 1), sortcode: '123456') }
     let!(:initial_draw_change) {
       loan.initial_draw_change.tap { |initial_draw_change|
         initial_draw_change.amount_drawn = Money.new(1_000_00)
@@ -246,15 +210,6 @@ describe DataCorrection do
       initial_draw_change.date_of_change.should == Date.new(2012, 4, 3)
     end
 
-    it 'works with #lending_limit_id' do
-      data_correction.lending_limit_id = lending_limit_2.id
-      data_correction.save_and_update_loan.should == true
-      data_correction.old_lending_limit_id.should == lending_limit_1.id
-
-      loan.reload
-      loan.lending_limit_id.should == lending_limit_2.id
-    end
-
     it 'works with #sortcode' do
       data_correction.sortcode = '654321'
       data_correction.save_and_update_loan.should == true
@@ -285,6 +240,24 @@ describe DataCorrection do
 
       correction1.seq.should == 1
       correction2.seq.should == 2
+    end
+  end
+
+  describe "#changes" do
+    describe "data correction with lending limit change" do
+      it "should return the old and new lending limits" do
+        lender = FactoryGirl.create(:lender)
+        lending_limit_1 = FactoryGirl.create(:lending_limit, lender: lender)
+        lending_limit_2 = FactoryGirl.create(:lending_limit, lender: lender)
+
+        data_correction = FactoryGirl.create(:data_correction, old_lending_limit_id: lending_limit_1.id, lending_limit_id: lending_limit_2.id)
+        data_correction.changes.should == [{
+          old_attribute: 'old_lending_limit',
+          old_value: lending_limit_1,
+          attribute: 'lending_limit',
+          value: lending_limit_2
+        }]
+      end
     end
   end
 end
