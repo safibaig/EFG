@@ -1,7 +1,5 @@
 class DashboardController < ApplicationController
 
-  include LoanAlerts
-
   def show
     if current_user.can_view?(LoanAlerts)
       @lending_limit_utilisations      = setup_lending_limit_utilisations
@@ -21,48 +19,27 @@ class DashboardController < ApplicationController
   end
 
   def not_drawn_loans_groups
-    LoanAlerts::PriorityGrouping.new(
-      not_drawn_loans,
-      not_drawn_start_date,
-      not_drawn_end_date,
-      :facility_letter_date
-    ).groups_hash
+    alert = LoanAlerts::NotDrawnLoanAlert.new(current_lender)
+    LoanAlerts::PriorityGrouping.new(alert)
   end
 
   def not_demanded_loans_groups
-    LoanAlerts::PriorityGrouping.new(
-      not_demanded_loans,
-      not_demanded_start_date,
-      not_demanded_end_date,
-      :borrower_demanded_on
-    ).groups_hash
+    alert = LoanAlerts::NotDemandedLoanAlert.new(current_lender)
+    LoanAlerts::PriorityGrouping.new(alert)
   end
 
   def not_progressed_loans_groups
-    LoanAlerts::PriorityGrouping.new(
-      not_progressed_loans,
-      not_progressed_start_date,
-      not_progressed_end_date,
-      :updated_at
-    ).groups_hash
+    alert = LoanAlerts::NotProgressedLoanAlert.new(current_lender)
+    LoanAlerts::PriorityGrouping.new(alert)
   end
 
   def not_closed_loans_groups
-    offered_group = LoanAlerts::PriorityGrouping.new(
-      not_closed_offered_loans,
-      not_closed_offered_start_date,
-      not_closed_offered_end_date,
-      :maturity_date
-    ).groups_hash
+    offered_alert = LoanAlerts::NotClosedOfferedLoanAlert.new(current_lender)
+    offered_group = LoanAlerts::PriorityGrouping.new(offered_alert)
 
-    guaranteed_group = LoanAlerts::PriorityGrouping.new(
-      not_closed_guaranteed_loans,
-      not_closed_guaranteed_start_date,
-      not_closed_guaranteed_end_date,
-      :maturity_date
-    ).groups_hash
-
-    LoanAlerts::PriorityGrouping.merge_groups(offered_group, guaranteed_group)
+    guaranteed_alert = LoanAlerts::NotClosedGuaranteedLoanAlert.new(current_lender)
+    guaranteed_group = LoanAlerts::PriorityGrouping.new(guaranteed_alert)
+    LoanAlerts::PriorityGrouping.merge(offered_group, guaranteed_group)
   end
 
 end

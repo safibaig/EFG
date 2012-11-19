@@ -9,12 +9,12 @@ describe LoanAlerts::Presenter do
   let(:low_priority_loan) { FactoryGirl.create(:loan, updated_at: 5.days.ago) }
 
   let(:presenter) {
-    loan_groups = {
-      high_priority: [ [high_priority_loan] ],
-      medium_priority: [ [medium_priority_loan] ],
-      low_priority: [ [low_priority_loan] ]
-    }
-    LoanAlerts::Presenter.new(loan_groups)
+    priority_group = double('PriorityGroup',
+      high_priority_loans: [ [high_priority_loan] ],
+      medium_priority_loans: [ [medium_priority_loan] ],
+      low_priority_loans: [ [low_priority_loan] ]
+    )
+    LoanAlerts::Presenter.new(priority_group)
   }
 
   describe "#alerts_grouped_by_priority" do

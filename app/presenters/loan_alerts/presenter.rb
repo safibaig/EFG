@@ -1,10 +1,10 @@
 module LoanAlerts
   class Presenter
 
-    def initialize(priority_groups)
-      @high_priority_loans   = priority_groups[:high_priority]
-      @medium_priority_loans = priority_groups[:medium_priority]
-      @low_priority_loans    = priority_groups[:low_priority]
+    def initialize(priority_group)
+      @high_priority_loans   = priority_group.high_priority_loans
+      @medium_priority_loans = priority_group.medium_priority_loans
+      @low_priority_loans    = priority_group.low_priority_loans
     end
 
     def alerts_grouped_by_priority

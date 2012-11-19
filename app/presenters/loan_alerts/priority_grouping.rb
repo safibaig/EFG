@@ -7,30 +7,55 @@
 module LoanAlerts
   class PriorityGrouping
 
-    def initialize(loans, start_date, end_date, date_method)
-      @loans       = loans
-      @start_date  = start_date.to_date
-      @end_date    = end_date.to_date
-      @date_method = date_method
-    end
-
-    # Merge two PriorityGroup hashes together
-    # Used when a loan alert consists of more than one grouping of records
-    def self.merge_groups(group1, group2)
-      group1.keys.each do |key|
-
-        group1[key].each_with_index do |sub_array, index|
-          group2[key].fetch(index, [])
-          group1[key][index] = sub_array + group2[key].fetch(index, [])
-        end
-
+    class Combination
+      def initialize(group1, group2)
+        @group1, @group2 = group1, group2
       end
 
-      group1
+      [:high_priority_loans, :medium_priority_loans, :low_priority_loans].each do |name|
+        define_method(name) do
+          size = [group1.send(name).size, group2.send(name).size].max
+
+          Array.new(size) do |index|
+            (group1.send(name)[index] || []) + (group2.send(name)[index] || [])
+          end
+        end
+      end
+
+      private
+      attr_reader :group1, :group2
     end
 
-    def groups_hash
-      { high_priority: high_priority_loans, medium_priority: medium_priority_loans, low_priority: low_priority_loans }
+    def initialize(alert)
+      @alert       = alert
+      @loans       = alert.loans
+      @start_date  = alert.start_date.to_date
+      @end_date    = alert.end_date.to_date
+      @date_method = alert.date_method
+    end
+
+    # Merge two PriorityGroups together.
+    # Used when a loan alert consists of more than one grouping of records
+    def self.merge(group1, group2)
+      Combination.new(group1, group2)
+    end
+
+    def high_priority_loans
+      @high_priority_loans ||= loans_grouped_by_date_condition do |date|
+        date <= high_priority_end_date
+      end
+    end
+
+    def medium_priority_loans
+      @medium_priority_loans ||= loans_grouped_by_date_condition do |date|
+        date.between?(medium_priority_start_date, medium_priority_end_date)
+      end
+    end
+
+    def low_priority_loans
+      @low_priority_loans ||= loans_grouped_by_date_condition do |date|
+        date >= medium_priority_end_date.advance(days: 1)
+      end
     end
 
     private
@@ -63,24 +88,6 @@ module LoanAlerts
         return memo unless date.weekday? # ignore weekends
         memo[date] = loans_grouped_by_day[date] || []
         memo
-      end
-    end
-
-    def high_priority_loans
-      loans_grouped_by_date_condition do |date|
-        date <= high_priority_end_date
-      end
-    end
-
-    def medium_priority_loans
-      loans_grouped_by_date_condition do |date|
-        date.between?(medium_priority_start_date, medium_priority_end_date)
-      end
-    end
-
-    def low_priority_loans
-      loans_grouped_by_date_condition do |date|
-        date >= medium_priority_end_date.advance(days: 1)
       end
     end
 

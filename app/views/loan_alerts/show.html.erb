@@ -2,11 +2,33 @@
 
 <div class="page-header">
   <%= loan_alerts_priority(params[:priority]) %>
-  <h1><%= params[:action].titleize %> Loan Alerts (<%= pluralize(@loans.count, 'loan') %>)</h1>
+  <h1><%= params[:action].titleize %> Loan Alerts (<%= pluralize(@alert.loans.count, 'loan') %>)</h1>
 </div>
 
 <p><%= t("loan_alerts.#{params[:action]}_description") %></p>
 
-<%= render partial: "loan_states/loans_listing", locals: { loans: @loans } %>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Days Remaining</th>
+      <th>Reference</th>
+      <th>Business name</th>
+      <th>Amount</th>
+      <th>Last Updated</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @alert.loans_with_days_remaining.each do |loan, days_remaining| %>
+      <tr>
+        <td><%= days_remaining %></td>
+        <td><%= link_to(loan.reference, loan) %></td>
+        <td><%= link_to(loan_business_name(loan), loan) %></td>
+        <td><%= loan.amount.format %></td>
+        <td><%= loan.updated_at.strftime("%d %B %Y") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
 
 <%= other_alert_links(params[:priority]) %>
