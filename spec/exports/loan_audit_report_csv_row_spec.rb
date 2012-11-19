@@ -47,7 +47,7 @@ describe LoanAuditReportCsvRow do
       loan
     }
 
-    let(:row) { LoanAuditReportCsvRow.new(loan, 2, Loan::Offered).row }
+    let(:row) { LoanAuditReportCsvRow.new(loan, 2, Loan::Offered).to_a }
 
     it 'should CSV data for loan' do
       row[0].should == "ABC123"                       # loan_reference

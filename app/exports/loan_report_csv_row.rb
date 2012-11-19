@@ -1,5 +1,10 @@
-module LoanReportCsvRow
-  def self.row(row, loan_security_types)
+class LoanReportCsvRow
+  def initialize(row, loan_security_types)
+    @row = row
+    @loan_security_types = loan_security_types
+  end
+
+  def to_a
     [
       row['reference'],
       LegalForm.find(row['legal_form_id']).try(:name),
@@ -82,7 +87,11 @@ module LoanReportCsvRow
     ]
   end
 
-  def self.boolean_as_text(bool)
+  private
+
+  attr_reader :row, :loan_security_types
+
+  def boolean_as_text(bool)
     bool == 1 ? 'Yes' : 'No'
   end
 end

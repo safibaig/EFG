@@ -17,14 +17,18 @@ class BaseCsvExport
     @enum.to_a.join
   end
 
+  def fields
+    raise NotImplementedError, 'Subclasses must implement #fields'
+  end
+
   private
 
   def formats
     {}
   end
 
-  def fields
-    raise NotImplementedError, 'Define in sub-class'
+  def header
+    fields.map { |field| t(field) }
   end
 
   def csv_row(record)
@@ -41,15 +45,36 @@ class BaseCsvExport
     formatted_value
   end
 
-  private
-
   def enumerator
     Enumerator.new do |y|
-      y << CSV.generate_line(fields)
-      @records.each do |record|
-        y << CSV.generate_line(csv_row(record))
+      y << CSV.generate_line(header)
+      each_record do |*args|
+        row = csv_row(*args).to_a
+        y << CSV.generate_line(row)
       end
     end
   end
 
+  def each_record(&block)
+    if @records.respond_to?(:find_each)
+      @records.find_each(&block)
+    else
+      @records.each(&block)
+    end
+  end
+
+  def self.translation_scope
+  end
+
+  def translation_scope
+    self.class.translation_scope
+  end
+
+  def t(key)
+    if translation_scope
+      I18n.t(key, scope: translation_scope)
+    else
+      key
+    end
+  end
 end

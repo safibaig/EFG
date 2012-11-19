@@ -122,7 +122,7 @@ GEM
       thor (>= 0.14.6)
     guard-rspec (0.7.2)
       guard (>= 0.10.0)
-    haml (3.1.6)
+    haml (3.1.7)
     hashie (1.2.0)
     highline (1.6.13)
     hike (1.2.1)
