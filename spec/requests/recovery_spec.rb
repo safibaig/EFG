@@ -29,7 +29,7 @@ describe 'loan recovery' do
           page.should_not have_button('Submit')
 
           expect {
-            fill_in_valid_efg_details
+            fill_in_valid_efg_recovery_details
             click_button 'Calculate'
 
             page.should have_content('£1,500.00')
@@ -53,12 +53,16 @@ describe 'loan recovery' do
         click_link 'Recovery Made'
 
         expect {
-          fill_in_valid_efg_details
+          fill_in_valid_efg_recovery_details
           click_button 'Calculate'
         }.not_to change(Recovery, :count)
 
         expect {
-          fill_in_invalid_efg_details
+          # clear recovery values
+          fill_in 'recovery_recovered_on', with: ''
+          fill_in 'recovery_outstanding_non_efg_debt', with: ''
+          fill_in 'recovery_non_linked_security_proceeds', with: ''
+          fill_in 'recovery_linked_security_proceeds', with: ''
           click_button 'Submit'
         }.not_to change(Recovery, :count)
 
@@ -90,11 +94,7 @@ describe 'loan recovery' do
       page.should have_content('£86.16')
       page.should_not have_button('Submit')
 
-      fill_in 'recovered_on', '1/5/12'
-      fill_in 'total_liabilities_behind', '£123'
-      fill_in 'total_liabilities_after_demand', '£234'
-      fill_in 'additional_interest_accrued', '£345'
-      fill_in 'additional_break_costs', '£456'
+      fill_in_valid_sflg_recovery_details
 
       expect {
         click_button 'Calculate'
@@ -110,7 +110,7 @@ describe 'loan recovery' do
       recovery = Recovery.last
       recovery.loan.should == loan
       recovery.seq.should == 3
-      recovery.recovered_on.should == Date.new(2012, 5, 1)
+      recovery.recovered_on.should == Date.today
       recovery.total_proceeds_recovered.should == Money.new(100_000_91)
       recovery.total_liabilities_behind.should == Money.new(123_00)
       recovery.total_liabilities_after_demand.should == Money.new(234_00)
@@ -120,7 +120,7 @@ describe 'loan recovery' do
 
       loan.reload
       loan.state.should == Loan::Recovered
-      loan.recovery_on.should == Date.new(2012, 5, 1)
+      loan.recovery_on.should == Date.today
       loan.modified_by.should == current_user
 
       current_path.should == loan_path(loan)
@@ -144,11 +144,11 @@ describe 'loan recovery' do
       page.should have_content('£2,531.25')
       page.should_not have_button('Submit')
 
-      fill_in 'recovered_on', '1/5/12'
-      fill_in 'total_liabilities_behind', '£123'
-      fill_in 'total_liabilities_after_demand', '£234'
-      fill_in 'additional_interest_accrued', '£345'
-      fill_in 'additional_break_costs', '£456'
+      fill_in 'recovery_recovered_on', with: '1/5/12'
+      fill_in 'recovery_total_liabilities_behind', with: '£123'
+      fill_in 'recovery_total_liabilities_after_demand', with: '£234'
+      fill_in 'recovery_additional_interest_accrued', with: '£345'
+      fill_in 'recovery_additional_break_costs', with: '£456'
 
       expect {
         click_button 'Calculate'
@@ -182,29 +182,12 @@ describe 'loan recovery' do
   end
 
   private
-    def fill_in(attribute, value)
-      page.fill_in "recovery_#{attribute}", with: value
-    end
-
-    def fill_in_valid_efg_details
-      fill_in 'recovered_on', '1/6/12'
-      fill_in 'outstanding_non_efg_debt', '£2500.00'
-      fill_in 'non_linked_security_proceeds', '£3000.00'
-      fill_in 'linked_security_proceeds', '£1000.00'
-    end
-
-    def fill_in_invalid_efg_details
-      fill_in 'recovered_on', ''
-      fill_in 'outstanding_non_efg_debt', ''
-      fill_in 'non_linked_security_proceeds', ''
-      fill_in 'linked_security_proceeds', ''
-    end
 
     def verify_recovery_and_loan
       recovery = Recovery.last
       recovery.loan.should == loan
       recovery.seq.should == 1
-      recovery.recovered_on.should == Date.new(2012, 6, 1)
+      recovery.recovered_on.should == Date.today
       recovery.total_proceeds_recovered.should == Money.new(6_789_00)
       recovery.outstanding_non_efg_debt.should == Money.new(2_500_00)
       recovery.non_linked_security_proceeds.should == Money.new(3_000_00)
@@ -214,7 +197,7 @@ describe 'loan recovery' do
 
       loan.reload
       loan.state.should == Loan::Recovered
-      loan.recovery_on.should == Date.new(2012, 6, 1)
+      loan.recovery_on.should == Date.today
       loan.modified_by.should == current_user
     end
 end
