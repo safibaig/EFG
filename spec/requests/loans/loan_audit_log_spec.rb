@@ -27,17 +27,17 @@ describe 'loan audit log' do
     end
 
     within "#loan_state_change1" do
-      page.should have_content(LoanEvent.find(4).name)
+      page.should have_content(LoanEvent::Complete.name)
       page.should have_content(another_user.name)
     end
 
     within "#loan_state_change2" do
-      page.should have_content(LoanEvent.find(5).name)
+      page.should have_content(LoanEvent::OfferSchemeFacility.name)
       page.should have_content(current_user.name)
     end
 
     within "#loan_state_change3" do
-      page.should have_content(LoanEvent.find(7).name)
+      page.should have_content(LoanEvent::Guaranteed.name)
       page.should have_content(another_user.name)
     end
   end

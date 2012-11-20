@@ -147,7 +147,7 @@ describe LoanEligibilityCheck do
         loan_eligibility_check.save
       }.to change(LoanStateChange, :count).by(1)
 
-      LoanStateChange.last.event.should == LoanEvent.find(0)
+      LoanStateChange.last.event.should == LoanEvent::Reject
     end
 
     it "should create accepted loan state change if its eligible" do
@@ -157,7 +157,7 @@ describe LoanEligibilityCheck do
         loan_eligibility_check.save
       }.to change(LoanStateChange, :count).by(1)
 
-      LoanStateChange.last.event.should == LoanEvent.find(1)
+      LoanStateChange.last.event.should == LoanEvent::Accept
     end
 
     it "should create loan ineligibility record if its not eligible" do

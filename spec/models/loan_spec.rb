@@ -478,7 +478,7 @@ describe Loan do
       state_change = loan.state_changes.last
       state_change.state.should == Loan::AutoRemoved
       state_change.modified_by.should == system_user
-      state_change.event.should == LoanEvent.find(8)
+      state_change.event.should == LoanEvent::NotDrawn
     end
   end
 
