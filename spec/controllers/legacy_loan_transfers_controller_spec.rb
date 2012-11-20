@@ -13,16 +13,6 @@ describe LegacyLoanTransfersController do
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
-
-    context 'as a LenderUser from the same lender' do
-      let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
-      before { sign_in(current_user) }
-
-      it do
-        dispatch
-        response.should be_success
-      end
-    end
   end
 
   describe '#new' do
@@ -35,16 +25,6 @@ describe LegacyLoanTransfersController do
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
-
-    context 'as a LenderUser from the same lender' do
-      let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
-      before { sign_in(current_user) }
-
-      it do
-        dispatch
-        response.should be_success
-      end
-    end
   end
 
   describe '#create' do
