@@ -45,7 +45,7 @@ module LoanStateTransition
   end
 
   def log_state_change!
-    LoanStateChange.log(loan, event.id, loan.modified_by)
+    LoanStateChange.log(loan, event, loan.modified_by)
   end
 
 end

@@ -11,13 +11,13 @@ class LoanStateChange < ActiveRecord::Base
 
   attr_accessible :loan_id, :state, :modified_at, :modified_by, :modified_by_id, :event_id, :version
 
-  def self.log(loan, event_id, modifier)
+  def self.log(loan, event, modifier)
     create!(
       loan_id: loan.id,
       state: loan.state,
       modified_at: Time.now,
       modified_by: modifier,
-      event_id: event_id
+      event_id: event.id
     )
   end
 

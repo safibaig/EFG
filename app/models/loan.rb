@@ -264,7 +264,7 @@ class Loan < ActiveRecord::Base
   def update_state!(to_state, event, modified_by_user)
     self.class.transaction do
       self.update_attribute(:state, to_state)
-      LoanStateChange.log(self, event.id, modified_by_user)
+      LoanStateChange.log(self, event, modified_by_user)
     end
   end
 
