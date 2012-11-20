@@ -14,6 +14,7 @@ describe LoanNoClaimsController do
     it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'LenderUser Lender-scoped controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
+    it_behaves_like 'rescue_from LoanStateTransition::IncorrectLoanState controller'
   end
 
   describe '#create' do
@@ -27,5 +28,6 @@ describe LoanNoClaimsController do
     it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'LenderUser Lender-scoped controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
+    it_behaves_like 'rescue_from LoanStateTransition::IncorrectLoanState controller'
   end
 end
