@@ -51,10 +51,12 @@ class LoanAuditReportCsvRow
   end
 
   def event_name
-    if [0, 1].include?(loan.loan_state_change_event_id)
+    event = LoanEvent.find(loan.loan_state_change_event_id)
+    case event
+    when LoanEvent::Reject, LoanEvent::Accept
       'Check eligibility'
     else
-      LoanEvent.find(loan.loan_state_change_event_id).name
+      event.name
     end
   end
 

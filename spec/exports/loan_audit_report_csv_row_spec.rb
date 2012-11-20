@@ -38,7 +38,7 @@ describe LoanAuditReportCsvRow do
         loan_created_by: user.username,
         loan_modified_by: user.username,
         loan_state_change_to_state: Loan::AutoCancelled,
-        loan_state_change_event_id: 3,
+        loan_state_change_event_id: LoanEvent::Cancel.id,
         loan_state_change_modified_at: Time.parse('11/06/2012 11:00'),
         loan_state_change_modified_by: user.username,
         loan_initial_draw_date: Date.parse('03/06/2012')
@@ -78,11 +78,22 @@ describe LoanAuditReportCsvRow do
       row[25].should == "2"                           # audit_record_sequence
       row[26].should == "Offered"                     # from_state
       row[27].should == "Auto-cancelled"              # to_state
-      row[28].should == LoanEvent.find(3).name        # loan_function
+      row[28].should == "Cancel loan"                 # loan_function
       row[29].should == "11-06-2012 11:00 AM"         # audit_record_modified_at
       row[30].should == user.username                 # audit_record_modified_by
     end
 
+    it "should have 'Check eligibility' when loan_function is Accept" do
+      loan.stub(loan_state_change_event_id: LoanEvent::Accept.id)
+
+      row[28].should == 'Check eligibility'
+    end
+
+    it "should have 'Check eligibility' when loan_function is Reject" do
+      loan.stub(loan_state_change_event_id: LoanEvent::Reject.id)
+
+      row[28].should == 'Check eligibility'
+    end
   end
 
 end
