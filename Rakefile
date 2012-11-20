@@ -15,4 +15,6 @@ rescue LoadError
   # warn 'CI::Reporter not available. Rake Tasks not loaded.'
 end
 
+task :default => [:"parallel:prepare", :"parallel:spec"]
+
 EFG::Application.load_tasks
