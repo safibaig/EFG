@@ -2,7 +2,7 @@ class LoanDemandToBorrower
   include LoanPresenter
   include LoanStateTransition
 
-  transition from: Loan::Guaranteed, to: Loan::LenderDemand, event: :demand_to_borrower
+  transition from: Loan::Guaranteed, to: Loan::LenderDemand, event: LoanEvent::DemandToBorrower
 
   before_save :store_loan_columns
   after_save :create_demand_to_borrower

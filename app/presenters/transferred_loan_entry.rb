@@ -3,7 +3,7 @@ class TransferredLoanEntry
   include LoanStateTransition
   include SharedLoanValidations
 
-  transition from: [Loan::Incomplete], to: Loan::Completed, event: :complete
+  transition from: [Loan::Incomplete], to: Loan::Completed, event: LoanEvent::Complete
 
   attribute :viable_proposition, read_only: true
   attribute :would_you_lend, read_only: true

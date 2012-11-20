@@ -3,7 +3,7 @@ class LoanDemandAgainstGovernment
   include LoanStateTransition
   include GovernmentGuaranteeClaimCalculation
 
-  transition from: Loan::LenderDemand, to: Loan::Demanded, event: :demand_against_government_guarantee
+  transition from: Loan::LenderDemand, to: Loan::Demanded, event: LoanEvent::DemandAgainstGovernmentGuarantee
 
   attribute :dti_demand_outstanding
   attribute :dti_demanded_on
