@@ -52,4 +52,8 @@ class LoanEvent < StaticAssociation
   DataCorrection = find(22)
   TransferLegacy = find(23)
   DataCleanup = find(24)
+
+  def self.ids
+    all.map(&:id)
+  end
 end
