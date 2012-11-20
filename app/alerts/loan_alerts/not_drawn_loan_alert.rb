@@ -5,9 +5,9 @@ class LoanAlerts::NotDrawnLoanAlert < LoanAlerts::LoanAlert
     super.offered.facility_letter_date_between(alert_range.first, alert_range.last)
   end
 
-  # Lenders have an extra 10 days of grace to record the initial draw.
+  # Lenders have an extra 10 working days of grace to record the initial draw.
   def self.start_date
-    (6.months.ago - 10.days).to_date
+    10.weekdays_ago(6.months.ago).to_date
   end
 
   def self.date_method
