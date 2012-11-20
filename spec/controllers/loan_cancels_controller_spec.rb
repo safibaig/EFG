@@ -14,16 +14,7 @@ describe LoanCancelsController do
     it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'LenderUser Lender-scoped controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
-
-    context 'as a LenderUser from the same lender' do
-      let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
-      before { sign_in(current_user) }
-
-      it do
-        dispatch
-        response.should be_success
-      end
-    end
+    it_behaves_like 'rescue_from LoanStateTransition::IncorrectLoanState controller'
   end
 
   describe '#create' do
@@ -37,5 +28,6 @@ describe LoanCancelsController do
     it_behaves_like 'LenderAdmin-restricted controller'
     it_behaves_like 'LenderUser Lender-scoped controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
+    it_behaves_like 'rescue_from LoanStateTransition::IncorrectLoanState controller'
   end
 end

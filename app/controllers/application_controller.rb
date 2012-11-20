@@ -51,4 +51,10 @@ class ApplicationController < ActionController::Base
     self.response_body = enumerator
   end
 
+  def self.rescue_from_incorrect_loan_state_error
+    rescue_from LoanStateTransition::IncorrectLoanState do |exception|
+      ExceptionNotifier::Notifier.exception_notification(request.env, exception).deliver
+      redirect_to loan_url(@loan)
+    end
+  end
 end
