@@ -261,10 +261,10 @@ class Loan < ActiveRecord::Base
     @state_history ||= (state_changes.pluck(:state) << state).uniq
   end
 
-  def update_state!(to_state, event_id, modified_by_user)
+  def update_state!(to_state, event, modified_by_user)
     self.class.transaction do
       self.update_attribute(:state, to_state)
-      LoanStateChange.log(self, event_id, modified_by_user)
+      LoanStateChange.log(self, event.id, modified_by_user)
     end
   end
 

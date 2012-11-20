@@ -461,7 +461,7 @@ describe Loan do
     end
 
     def dispatch
-      loan.update_state!(Loan::AutoRemoved, 8, system_user)
+      loan.update_state!(Loan::AutoRemoved, LoanEvent::NotDrawn, system_user)
     end
 
     it "should change the state of the loan" do
