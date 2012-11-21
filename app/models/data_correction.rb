@@ -2,8 +2,7 @@ class DataCorrection < LoanModification
   include GovernmentGuaranteeClaimCalculation
 
   ATTRIBUTES_FOR_OLD = %w(amount facility_letter_date initial_draw_amount
-    initial_draw_date lending_limit_id sortcode dti_demand_out_amount
-    dti_demand_interest)
+    initial_draw_date sortcode dti_demand_out_amount dti_demand_interest)
 
   before_validation :set_change_type_id
   before_save :set_all_attributes
@@ -19,30 +18,15 @@ class DataCorrection < LoanModification
   validate :validate_dti_demand_interest, if: :dti_demand_interest?
 
   attr_accessible :amount, :facility_letter_date, :initial_draw_amount,
-    :initial_draw_date, :lending_limit_id, :sortcode, :dti_demand_out_amount,
-    :dti_demand_interest
+    :initial_draw_date, :sortcode, :dti_demand_out_amount, :dti_demand_interest
 
   delegate :initial_draw_change, to: :loan
 
+  belongs_to :old_lending_limit, class_name: 'LendingLimit'
+  belongs_to :lending_limit
+
   def change_type_name
     'Data correction'
-  end
-
-  def lending_limit
-    LendingLimit.where(id: lending_limit_id).first
-  end
-
-  def lending_limit_id=(id)
-    if id.present?
-      lending_limit = loan.lender.lending_limits.active.find(id)
-      super lending_limit.id
-    else
-      super nil
-    end
-  end
-
-  def old_lending_limit
-    LendingLimit.where(id: old_lending_limit_id).first
   end
 
   private
@@ -76,7 +60,7 @@ class DataCorrection < LoanModification
     end
 
     def facility_letter_date_does_not_fall_within_lending_limit?
-      lending_limit_for_check = lending_limit || loan.lending_limit
+      lending_limit_for_check = loan.lending_limit
       starts_on = lending_limit_for_check.starts_on
       ends_on = lending_limit_for_check.ends_on
 
@@ -121,7 +105,6 @@ class DataCorrection < LoanModification
         facility_letter_date,
         initial_draw_amount,
         initial_draw_date,
-        lending_limit_id,
         sortcode,
         dti_demand_out_amount,
         dti_demand_interest
@@ -145,9 +128,6 @@ class DataCorrection < LoanModification
         when 'initial_draw_date'
           self.old_initial_draw_date = initial_draw_change.date_of_change
           initial_draw_change.date_of_change = initial_draw_date
-        when 'lending_limit_id'
-          self.old_lending_limit_id = loan.lending_limit_id
-          loan.lending_limit = lending_limit
         when 'dti_demand_out_amount'
           self.old_dti_demand_out_amount = loan.dti_demand_outstanding
           loan.dti_demand_outstanding = dti_demand_out_amount
