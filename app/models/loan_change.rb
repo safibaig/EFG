@@ -28,7 +28,7 @@ class LoanChange < LoanModification
 
   private
     def log_loan_state_change!
-      LoanStateChange.log(loan, 9, created_by)
+      LoanStateChange.log(loan, LoanEvent::ChangeAmountOrTerms, created_by)
     end
 
     def set_old_and_loan_attributes

@@ -48,7 +48,7 @@ class DataCorrection < LoanModification
     end
 
     def log_state_change!
-      LoanStateChange.log(loan, 22, created_by)
+      LoanStateChange.log(loan, LoanEvent::DataCorrection, created_by)
     end
 
     def cumulative_drawn_amount

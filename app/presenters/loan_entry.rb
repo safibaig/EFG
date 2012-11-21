@@ -4,7 +4,7 @@ class LoanEntry
   include LoanEligibility
   include SharedLoanValidations
 
-  transition from: [Loan::Eligible, Loan::Incomplete], to: Loan::Completed, event: :complete
+  transition from: [Loan::Eligible, Loan::Incomplete], to: Loan::Completed, event: LoanEvent::Complete
 
   attribute :lender, read_only: true
 

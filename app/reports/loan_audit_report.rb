@@ -29,6 +29,10 @@ class LoanAuditReport < BaseLoanReport
       order("loans.reference, loan_state_changes.version")
   end
 
+  def event_name
+    event ? event.name : 'All'
+  end
+
   private
 
   # Note: facility_letter_start_date/facility_letter_end_date actually queries initial draw date
@@ -47,6 +51,10 @@ class LoanAuditReport < BaseLoanReport
       audit_records_start_date: "loan_state_changes.modified_at >= ?",
       audit_records_end_date: "loan_state_changes.modified_at <= ?"
     }
+  end
+
+  def event
+    event_id.present? ? LoanEvent.find(event_id.to_i) : nil
   end
 
 end

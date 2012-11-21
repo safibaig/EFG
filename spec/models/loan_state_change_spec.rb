@@ -57,13 +57,13 @@ describe LoanStateChange do
     it "should create loan state change for the specified loan and event" do
       time = Time.now
       Timecop.freeze(time) do
-        LoanStateChange.log(loan, 7, loan.modified_by)
+        LoanStateChange.log(loan, LoanEvent::Guaranteed, loan.modified_by)
       end
 
       loan_state_change = LoanStateChange.last
       loan_state_change.loan.should == loan
       loan_state_change.state.should == loan.state
-      loan_state_change.event_id.should == 7
+      loan_state_change.event_id.should == LoanEvent::Guaranteed.id
       loan_state_change.modified_by.should == loan.modified_by
       loan_state_change.modified_at.to_i.should == time.to_i
     end

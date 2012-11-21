@@ -2,7 +2,7 @@ class LoanNoClaim
   include LoanPresenter
   include LoanStateTransition
 
-  transition from: Loan::LenderDemand, to: Loan::NotDemanded, event: :not_demanded
+  transition from: Loan::LenderDemand, to: Loan::NotDemanded, event: LoanEvent::NotDemanded
 
   attribute :no_claim_on
 

@@ -10,7 +10,7 @@ describe LoanStateTransition do
       include LoanPresenter
       include LoanStateTransition
 
-      transition from: [Loan::AutoCancelled, Loan::AutoRemoved], to: Loan::Offered, event: :complete
+      transition from: [Loan::AutoCancelled, Loan::AutoRemoved], to: Loan::Offered, event: LoanEvent::Complete
     end
   end
 

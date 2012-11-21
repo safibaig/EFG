@@ -3,25 +3,25 @@ module LoanAutoUpdater
 
   def cancel_not_progressed_loans!
     loans.not_progressed.where("updated_at < ?", LoanAlerts::NotProgressedLoanAlert.start_date).find_each do |loan|
-      loan.update_state!(Loan::AutoCancelled, 6, system_user)
+      loan.update_state!(Loan::AutoCancelled, LoanEvent::NotProgressed, system_user)
     end
   end
 
   def cancel_not_drawn_loans!
     loans.offered.where("facility_letter_date < ?", LoanAlerts::NotDrawnLoanAlert.start_date).find_each do |loan|
-      loan.update_state!(Loan::AutoCancelled, 8, system_user)
+      loan.update_state!(Loan::AutoCancelled, LoanEvent::NotDrawn, system_user)
     end
   end
 
   def remove_not_demanded_loans!
     loans.with_scheme('non_efg').lender_demanded.where("borrower_demanded_on < ?", LoanAlerts::NotDemandedLoanAlert.start_date).find_each do |loan|
-      loan.update_state!(Loan::AutoRemoved, 11, system_user)
+      loan.update_state!(Loan::AutoRemoved, LoanEvent::NotDemanded, system_user)
     end
   end
 
   def remove_not_closed_loans!
     (guaranteed_efg_loans + not_closed_sflg_and_legacy_sflg_loans).uniq.each do |loan|
-      loan.update_state!(Loan::AutoRemoved, 17, system_user)
+      loan.update_state!(Loan::AutoRemoved, LoanEvent::NotClosed, system_user)
     end
   end
 

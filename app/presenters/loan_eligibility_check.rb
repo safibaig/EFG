@@ -46,7 +46,7 @@ class LoanEligibilityCheck
   end
 
   def event
-    is_eligible? ? LoanEvent.find_by_name("Accept") : LoanEvent.find_by_name("Reject")
+    is_eligible? ? LoanEvent::Accept : LoanEvent::Reject
   end
 
   def lending_limit_id=(id)

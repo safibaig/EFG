@@ -65,7 +65,7 @@ class Invoice < ActiveRecord::Base
     end
 
     def log_loan_state_change!
-      settled_loans.each { |loan| LoanStateChange.log(loan, 18, created_by) }
+      settled_loans.each { |loan| LoanStateChange.log(loan, LoanEvent::CreateClaim, created_by) }
     end
 
     def generate_xref
