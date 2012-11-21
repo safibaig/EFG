@@ -2,7 +2,7 @@ class LoanOffer
   include LoanPresenter
   include LoanStateTransition
 
-  transition from: Loan::Completed, to: Loan::Offered, event: :offer_scheme_facility
+  transition from: Loan::Completed, to: Loan::Offered, event: LoanEvent::OfferSchemeFacility
 
   attribute :facility_letter_date
   attribute :facility_letter_sent

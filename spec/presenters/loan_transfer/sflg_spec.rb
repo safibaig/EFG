@@ -58,7 +58,7 @@ describe LoanTransfer::Sflg do
       original_loan.state_changes.count.should == 1
 
       state_change = original_loan.state_changes.last
-      state_change.event_id.should == 15
+      state_change.event.should == LoanEvent::Transfer
       state_change.state.should == Loan::RepaidFromTransfer
     end
 
@@ -66,7 +66,7 @@ describe LoanTransfer::Sflg do
       new_loan.state_changes.count.should == 1
 
       state_change = new_loan.state_changes.last
-      state_change.event_id.should == 15
+      state_change.event.should == LoanEvent::Transfer
       state_change.state.should == Loan::Incomplete
     end
 

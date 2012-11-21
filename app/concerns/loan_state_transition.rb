@@ -37,8 +37,7 @@ module LoanStateTransition
   end
 
   def event
-    event_name = self.class.event.to_s.humanize
-    LoanEvent.find_by_name(event_name)
+    self.class.event
   end
 
   def transition_state
@@ -46,7 +45,7 @@ module LoanStateTransition
   end
 
   def log_state_change!
-    LoanStateChange.log(loan, event.id, loan.modified_by)
+    LoanStateChange.log(loan, event, loan.modified_by)
   end
 
 end

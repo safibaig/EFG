@@ -28,7 +28,7 @@ describe LoanAuditLog do
     end
 
     it 'should return event name' do
-      loan_audit_log.event_name.should == LoanEvent.find(7).name
+      loan_audit_log.event_name.should == LoanEvent::Guaranteed.name
     end
   end
 

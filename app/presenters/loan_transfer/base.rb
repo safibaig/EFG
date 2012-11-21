@@ -115,13 +115,13 @@ class LoanTransfer::Base
     raise NotImplementedError, "Define in sub-class"
   end
 
-  def loan_event_id
+  def loan_event
     raise NotImplementedError, "Define in sub-class"
   end
 
   def log_loan_state_changes!
     [loan_to_transfer, new_loan].each do |loan|
-      LoanStateChange.log(loan, loan_event_id, loan.modified_by)
+      LoanStateChange.log(loan, loan_event, loan.modified_by)
     end
   end
 

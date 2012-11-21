@@ -2,7 +2,7 @@ class LoanGuarantee
   include LoanPresenter
   include LoanStateTransition
 
-  transition from: Loan::Offered, to: Loan::Guaranteed, event: :guarantee_and_initial_draw
+  transition from: Loan::Offered, to: Loan::Guaranteed, event: LoanEvent::Guaranteed
 
   after_save :create_initial_draw_change!
 

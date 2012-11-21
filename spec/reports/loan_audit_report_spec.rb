@@ -121,4 +121,22 @@ describe LoanAuditReport do
 
   end
 
+  describe "#event_name" do
+    it "returns 'All' with a nil event_id" do
+      loan_audit_report.event_id = nil
+      loan_audit_report.event_name.should == 'All'
+    end
+
+    it "returns 'All' with a blank event_id" do
+      loan_audit_report.event_id = ''
+      loan_audit_report.event_name.should == 'All'
+    end
+
+    it "returns event name with an event_id" do
+      event = LoanEvent::NotProgressed
+      loan_audit_report.event_id = event.id.to_s
+      loan_audit_report.event_name.should == event.name
+    end
+  end
+
 end

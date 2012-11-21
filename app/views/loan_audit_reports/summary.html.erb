@@ -49,7 +49,7 @@
     </tr>
     <tr>
       <td>The audit function</td>
-      <td><%= @loan_audit_report.event_id.blank? ? 'All' : LoanEvent.find(@loan_audit_report.event_id.to_i).name %></td>
+      <td><%= @loan_audit_report.event_name %></td>
     </tr>
     <tr>
       <td>The 'last modified' start date for your report</td>
