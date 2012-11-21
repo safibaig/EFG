@@ -1,6 +1,8 @@
 class DataCorrection < LoanModification
+  include GovernmentGuaranteeClaimCalculation
+
   ATTRIBUTES_FOR_OLD = %w(amount facility_letter_date initial_draw_amount
-    initial_draw_date sortcode)
+    initial_draw_date sortcode dti_demand_out_amount dti_demand_interest)
 
   before_validation :set_change_type_id
   before_save :set_all_attributes
@@ -12,9 +14,11 @@ class DataCorrection < LoanModification
   validate :validate_facility_letter_date, if: :facility_letter_date?
   validate :validate_initial_draw_amount, if: :initial_draw_amount?
   validate :validate_initial_draw_date, if: :initial_draw_date?
+  validate :validate_dti_demand_out_amount, if: :dti_demand_out_amount?
+  validate :validate_dti_demand_interest, if: :dti_demand_interest?
 
   attr_accessible :amount, :facility_letter_date, :initial_draw_amount,
-    :initial_draw_date, :sortcode
+    :initial_draw_date, :sortcode, :dti_demand_out_amount, :dti_demand_interest
 
   delegate :initial_draw_change, to: :loan
 
@@ -101,7 +105,9 @@ class DataCorrection < LoanModification
         facility_letter_date,
         initial_draw_amount,
         initial_draw_date,
-        sortcode
+        sortcode,
+        dti_demand_out_amount,
+        dti_demand_interest
       ].all?(&:blank?)
 
       errors.add(:base, :must_have_a_change) if all_blank
@@ -122,10 +128,20 @@ class DataCorrection < LoanModification
         when 'initial_draw_date'
           self.old_initial_draw_date = initial_draw_change.date_of_change
           initial_draw_change.date_of_change = initial_draw_date
+        when 'dti_demand_out_amount'
+          self.old_dti_demand_out_amount = loan.dti_demand_outstanding
+          loan.dti_demand_outstanding = dti_demand_out_amount
+        when 'dti_demand_interest'
+          self.old_dti_demand_interest = loan.dti_interest
+          loan.dti_interest = dti_demand_interest
         else
           self["old_#{key}"] = loan[key] if value.present?
           loan[key] = value
         end
+      end
+
+      if dti_demand_out_amount? || dti_demand_interest?
+        loan.dti_amount_claimed = calculate_dti_amount_claimed(loan)
       end
     end
 
@@ -169,6 +185,34 @@ class DataCorrection < LoanModification
         errors.add(:initial_draw_date, :must_not_be_before_facility_letter_date)
       elsif initial_draw_date_more_than_six_months_after_facility_letter_date?
         errors.add(:initial_draw_date, :must_not_be_more_than_six_months_after_facility_letter_date)
+      end
+    end
+
+    def validate_dti_demand_out_amount
+      if loan.state != Loan::Demanded
+        errors.add(:dti_demand_out_amount, :must_be_demanded_state)
+      elsif loan.dti_demand_outstanding == dti_demand_out_amount
+        errors.add(:dti_demand_out_amount, :must_have_changed)
+      elsif dti_demand_out_amount < Money.new(0)
+        errors.add(:dti_demand_out_amount, :must_not_be_negative)
+      elsif dti_demand_out_amount > loan.cumulative_drawn_amount
+        errors.add(:dti_demand_out_amount, :must_not_be_greater_than_cumulative_drawn_amount)
+      end
+    end
+
+    def validate_dti_demand_interest
+      if loan.efg_loan?
+        errors.add(:dti_demand_interest, :must_not_be_an_EFG_loan)
+      elsif loan.state != Loan::Demanded
+        errors.add(:dti_demand_interest, :must_be_demanded_state)
+      elsif loan.dti_interest == dti_demand_interest
+        errors.add(:dti_demand_interest, :must_have_changed)
+      elsif dti_demand_interest < Money.new(0)
+        errors.add(:dti_demand_interest, :must_not_be_negative)
+      elsif amount && dti_demand_interest > amount
+        errors.add(:dti_demand_interest, :must_be_lte_new_loan_amount)
+      elsif dti_demand_interest > loan.amount
+        errors.add(:dti_demand_interest, :must_be_lte_original_loan_amount)
       end
     end
 end

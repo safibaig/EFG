@@ -53,6 +53,8 @@ en:
         initial_draw_date: 'Correct Date of Guarantee and Initial Draw of Funds'
         initial_draw_amount: 'Correct Value of Initial Draw'
         sortcode: 'Correct Branch Sort Code'
+        dti_demand_out_amount: 'Change to the Original Outstanding Scheme Facility Principal'
+        dti_demand_interest: 'Change to interest'
 
       loan_eligibility_check:
         <<: *loan

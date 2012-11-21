@@ -56,9 +56,9 @@ describe LoanAutoUpdater do
   describe ".cancel_not_drawn_loans!" do
     let(:expected_state_change_event_id) { 8 }
 
-    let!(:expired_loan) { FactoryGirl.create(:loan, :offered, facility_letter_date: 6.months.ago - 11.days) }
-    let!(:not_yet_expired_loan) { FactoryGirl.create(:loan, :offered, facility_letter_date: 6.months.ago - 10.days) }
-    let!(:excluded_loan) { FactoryGirl.create(:loan, :offered, lender: excluded_lender, facility_letter_date: 6.months.ago - 11.days) }
+    let!(:expired_loan) { FactoryGirl.create(:loan, :offered, facility_letter_date: 11.weekdays_ago(6.months.ago)) }
+    let!(:not_yet_expired_loan) { FactoryGirl.create(:loan, :offered, facility_letter_date: 10.weekdays_ago(6.months.ago)) }
+    let!(:excluded_loan) { FactoryGirl.create(:loan, :offered, lender: excluded_lender, facility_letter_date: 11.weekdays_ago(6.months.ago)) }
 
     def dispatch
       LoanAutoUpdater.cancel_not_drawn_loans!

@@ -64,7 +64,16 @@ describe LoanDemandAgainstGovernment do
     it "should be set when record is saved" do
       loan_demand_against_government.dti_amount_claimed.should be_blank
       loan_demand_against_government.save
-      loan_demand_against_government.dti_amount_claimed.should == Money.new(7500_00) # 75% of £10,000
+      loan_demand_against_government.dti_amount_claimed.should == Money.new(7500_00) # 75% of £10,000 (#dti_amount_outstanding)
+    end
+
+    it "should include interest and break costs in #dti_amount_claimed when non-EFG loan" do
+      loan.loan_scheme = Loan::SFLG_SCHEME
+      loan_demand_against_government.dti_interest = Money.new(1_000_00)
+      loan_demand_against_government.dti_break_costs = Money.new(500_00)
+
+      loan_demand_against_government.save
+      loan_demand_against_government.dti_amount_claimed.should == Money.new(8625_00) # 75% of £11,500 (#dti_amount_outstanding + #dti_interest + #dti_break_costs)
     end
   end
 end
