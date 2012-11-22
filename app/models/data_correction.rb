@@ -1,5 +1,4 @@
 class DataCorrection < LoanModification
-  include GovernmentGuaranteeClaimCalculation
 
   ATTRIBUTES_FOR_OLD = %w(amount facility_letter_date initial_draw_amount
     initial_draw_date sortcode dti_demand_out_amount dti_demand_interest)
@@ -141,7 +140,7 @@ class DataCorrection < LoanModification
       end
 
       if dti_demand_out_amount? || dti_demand_interest?
-        loan.dti_amount_claimed = calculate_dti_amount_claimed(loan)
+        loan.dti_amount_claimed = loan.calculate_dti_amount_claimed
       end
     end
 

@@ -272,6 +272,18 @@ class Loan < ActiveRecord::Base
     self.data_corrections.count > 0
   end
 
+  def calculate_dti_amount_claimed
+    interest           = self.dti_interest || Money.new(0)
+    break_costs        = self.dti_break_costs || Money.new(0)
+    demand_outstanding = self.dti_demand_outstanding || Money.new(0)
+
+    if self.efg_loan?
+      demand_outstanding * self.guarantee_rate / 100
+    else
+      (demand_outstanding + interest + break_costs) * self.guarantee_rate / 100
+    end
+  end
+
   private
 
   def set_reference
