@@ -498,6 +498,8 @@ describe Loan do
   end
 
   describe "#calculate_dti_amount_claimed" do
+    before { loan.calculate_dti_amount_claimed }
+
     context 'for EFG loan' do
       let(:loan) {
         FactoryGirl.build(
@@ -509,7 +511,7 @@ describe Loan do
       }
 
       it "calculates dti_amount_claimed based on demand outstanding" do
-        loan.calculate_dti_amount_claimed.should == Money.new(750_00)
+        loan.dti_amount_claimed.should == Money.new(750_00)
       end
     end
 
@@ -526,7 +528,7 @@ describe Loan do
       }
 
       it "calculates dti_amount_claimed based on demand outstanding, interest and break costs" do
-        loan.calculate_dti_amount_claimed.should == Money.new(1_275_00)
+        loan.dti_amount_claimed.should == Money.new(1_275_00)
       end
     end
 
@@ -543,7 +545,7 @@ describe Loan do
       }
 
       it "calculates dti_amount_claimed based on demand outstanding, interest and break costs" do
-        loan.calculate_dti_amount_claimed.should == Money.new(1_275_00)
+        loan.dti_amount_claimed.should == Money.new(1_275_00)
       end
     end
 
@@ -551,7 +553,7 @@ describe Loan do
       let(:loan) { FactoryGirl.build(:loan, guarantee_rate: 75) }
 
       it "returns 0 when relevant values are not set on loan" do
-        loan.calculate_dti_amount_claimed.should == Money.new(0)
+        loan.dti_amount_claimed.should == Money.new(0)
       end
     end
   end

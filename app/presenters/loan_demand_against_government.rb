@@ -40,7 +40,7 @@ class LoanDemandAgainstGovernment
   end
 
   def set_dti_amount_claimed
-    loan.dti_amount_claimed = loan.calculate_dti_amount_claimed
+    loan.calculate_dti_amount_claimed
   end
 
 end

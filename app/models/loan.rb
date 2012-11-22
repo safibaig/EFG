@@ -278,9 +278,9 @@ class Loan < ActiveRecord::Base
     demand_outstanding = self.dti_demand_outstanding || Money.new(0)
 
     if self.efg_loan?
-      demand_outstanding * self.guarantee_rate / 100
+      self.dti_amount_claimed = demand_outstanding * self.guarantee_rate / 100
     else
-      (demand_outstanding + interest + break_costs) * self.guarantee_rate / 100
+      self.dti_amount_claimed = (demand_outstanding + interest + break_costs) * self.guarantee_rate / 100
     end
   end
 

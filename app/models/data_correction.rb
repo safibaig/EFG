@@ -140,7 +140,7 @@ class DataCorrection < LoanModification
       end
 
       if dti_demand_out_amount? || dti_demand_interest?
-        loan.dti_amount_claimed = loan.calculate_dti_amount_claimed
+        loan.calculate_dti_amount_claimed
       end
     end
 

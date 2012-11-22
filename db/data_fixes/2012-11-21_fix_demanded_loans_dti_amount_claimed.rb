@@ -22,7 +22,7 @@ ActiveRecord::Base.transaction do
   progress_bar = ProgressBar.new("Fix #{loans.count} loans", loans.count)
 
   loans.each do |loan|
-    loan.dti_amount_claimed = loan.calculate_dti_amount_claimed
+    loan.calculate_dti_amount_claimed
     loan.save!
     progress_bar.inc
   end
