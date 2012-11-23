@@ -19,10 +19,16 @@
 
 # Learn more: http://github.com/javan/whenever
 
+job_type :runner_with_file, "cd :path && script/rails runner -e :environment :task :output"
+
 every 1.day, at: '2:00am' do
   rake "loans:update_expired"
 end
 
 every 1.day, at: '00:25am' do
   rake "data:extract"
+end
+
+every :saturday, at: '3:00am' do
+  runner_with_file "db/data_fixes/2012-11-21_revert_auto_removed_loans.rb"
 end
