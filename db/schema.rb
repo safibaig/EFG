@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121025141020) do
+ActiveRecord::Schema.define(:version => 20121126155012) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -29,6 +29,12 @@ ActiveRecord::Schema.define(:version => 20121025141020) do
     t.datetime "created_at",            :null => false
     t.datetime "updated_at",            :null => false
   end
+
+  create_table "data_migration_records", :force => true do |t|
+    t.string "version"
+  end
+
+  add_index "data_migration_records", ["version"], :name => "index_data_migration_records_on_version", :unique => true
 
   create_table "ded_codes", :force => true do |t|
     t.string   "legacy_id"
