@@ -56,6 +56,31 @@ describe PremiumScheduleQuarter do
         end
       end
     end
-  end
 
+    context "with zero tranche draw downs" do
+      let(:state_aid_calculation) {
+        FactoryGirl.build(:state_aid_calculation,
+          loan: loan,
+          initial_draw_year: nil,
+          initial_draw_amount: Money.new(150_000_00),
+          initial_draw_months: 0,
+          initial_capital_repayment_holiday: 0,
+          second_draw_amount: 0,
+          second_draw_months: 0,
+          third_draw_amount: 0,
+          third_draw_months: 0,
+          fourth_draw_amount: 0,
+          fourth_draw_months: 0,
+        )
+      }
+
+      it "should calculate the premium_amount" do
+        (0..40).each do |quarter|
+          expect {
+            PremiumScheduleQuarter.new(quarter, premium_schedule.total_quarters, premium_schedule).premium_amount
+          }.to_not raise_error(ZeroDivisionError)
+        end
+      end
+    end
+  end
 end
