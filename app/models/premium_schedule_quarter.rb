@@ -22,7 +22,7 @@ class PremiumScheduleQuarter
 
   def premium_amount
     if quarter < total_quarters
-      PremiumMoney.new(aggregate_outstanding_amount.to_f * (premium_rate / 100 / 4))
+      PremiumMoney.new(aggregate_outstanding_amount.to_d * (premium_rate / 100 / 4))
     else
       Money.new(0)
     end
@@ -42,7 +42,9 @@ class PremiumScheduleQuarter
     draw_month = send("#{tranche_number}_draw_months")
 
     # draw down doesn't exist
-    return Money.new(0) unless draw_amount && draw_month
+    if (draw_amount.nil? || draw_amount.zero?) && (draw_month.nil? || draw_month.zero?)
+      return Money.new(0)
+    end
 
     months_from_first_draw_until_repayment = get_months_from_first_draw_until_repayment(draw_month)
     remaining_months = initial_draw_months - months_from_first_draw_until_repayment
