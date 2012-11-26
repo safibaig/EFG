@@ -11,6 +11,7 @@ describe 'loan entry' do
   before { login_as(current_user, scope: :user) }
 
   it "viewing a premium schedule" do
+    loan.amount = Money.new(100_000_00)
     FactoryGirl.create(:state_aid_calculation, loan: loan, initial_draw_amount: Money.new(100_000_00), initial_draw_months: 120)
 
     visit loan_path(loan)

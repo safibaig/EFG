@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe StateAidCalculation do
 
+  let(:loan) { state_aid_calculation.loan }
   let(:state_aid_calculation) { FactoryGirl.build(:state_aid_calculation) }
 
   describe 'validations' do
@@ -27,6 +28,8 @@ describe StateAidCalculation do
     end
 
     it 'requires initial draw amount to be 0 or more' do
+      loan.amount = 0
+
       state_aid_calculation.initial_draw_amount = -1
       state_aid_calculation.should_not be_valid
 
@@ -35,6 +38,8 @@ describe StateAidCalculation do
     end
 
     it 'requires initial draw amount to be less than 9,999,999.99' do
+      loan.amount = StateAidCalculation::MAX_INITIAL_DRAW
+
       state_aid_calculation.initial_draw_amount = StateAidCalculation::MAX_INITIAL_DRAW + Money.new(1)
       state_aid_calculation.should_not be_valid
 
@@ -82,7 +87,29 @@ describe StateAidCalculation do
       end
     end
 
+    it "requires that the sum of initial_draw_amount, second_draw_amount, third_draw_amount, fourth_draw_amount equal the loan amount" do
+      loan.amount = Money.new(10_000_00)
+      state_aid_calculation.initial_draw_amount = Money.new(6_000_00)
+      state_aid_calculation.second_draw_amount = Money.new(2_000_00)
+      state_aid_calculation.third_draw_amount = Money.new(2_000_00)
+      state_aid_calculation.fourth_draw_amount = Money.new(2_000_00)
+
+      state_aid_calculation.should_not be_valid
+    end
+
+    it "validates the loan amount correctly with nil values for draw amounts" do
+      loan = state_aid_calculation.loan
+      loan.amount = Money.new(10_000_00)
+      state_aid_calculation.initial_draw_amount = Money.new(6_000_00)
+      state_aid_calculation.second_draw_amount = nil
+      state_aid_calculation.third_draw_amount = nil
+      state_aid_calculation.fourth_draw_amount = nil
+
+      state_aid_calculation.should_not be_valid
+    end
+
     context 'when rescheduling' do
+      let(:loan) { rescheduled_state_aid_calculation.loan }
       let(:rescheduled_state_aid_calculation) { FactoryGirl.build(:rescheduled_state_aid_calculation) }
 
       it "does not require initial draw year" do
@@ -132,6 +159,12 @@ describe StateAidCalculation do
           rescheduled_state_aid_calculation.premium_cheque_month = "07/2013"
           rescheduled_state_aid_calculation.should be_valid
         end
+      end
+
+      it "is valid with differing values for loan amount and total draw amounth" do
+        loan.amount = 10_000_00
+        rescheduled_state_aid_calculation.initial_draw_amount = 10_00
+        rescheduled_state_aid_calculation.should be_valid
       end
     end
   end
