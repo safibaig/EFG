@@ -4,13 +4,12 @@ module ApplicationHelper
   def breadcrumbs(*items)
     items.unshift(link_to('Home', root_path))
     divider = content_tag(:span, '/', class: 'divider')
-    lis = []
 
-    items.each_with_index do |item, index|
-      lis << content_tag(:li, item + divider)
+    list_items = items.inject(ActiveSupport::SafeBuffer.new) do |output, item|
+      output += content_tag(:li, h(item) + divider)
     end
 
-    content_tag :ul, lis.join('').html_safe, class: 'breadcrumb'
+    content_tag :ul, list_items, class: 'breadcrumb'
   end
 
   def breadcrumbs_for_loan(loan, *extras)

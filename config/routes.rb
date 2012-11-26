@@ -6,8 +6,6 @@ EFG::Application.routes.draw do
 
   root to: 'dashboard#show'
 
-  get 'help' => 'help#show'
-
   get 'healthcheck' => 'healthcheck#index'
 
   namespace :help do
