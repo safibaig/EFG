@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121025141020) do
+ActiveRecord::Schema.define(:version => 20121127111721) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -419,6 +419,7 @@ ActiveRecord::Schema.define(:version => 20121025141020) do
     t.string  "description"
     t.boolean "eligible",                 :default => false
     t.boolean "public_sector_restricted", :default => false
+    t.boolean "active",                   :default => true
   end
 
   add_index "sic_codes", ["code"], :name => "index_sic_codes_on_code", :unique => true
