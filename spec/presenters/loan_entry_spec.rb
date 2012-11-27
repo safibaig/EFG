@@ -254,8 +254,8 @@ describe LoanEntry do
 
   describe "#save" do
     context "when loan is no longer eligible" do
-      before(:each) do
-        loan_entry.amount = 2000000 # max amount is 1M
+      before do
+        loan_entry.viable_proposition = false
       end
 
       it "should set state to 'incomplete'" do

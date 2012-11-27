@@ -19,11 +19,7 @@ describe 'Transferred loan entry' do
     fill_in "transferred_loan_entry_repayment_duration_months", with: 6
     fill_in 'transferred_loan_entry_maturity_date', with: 6.months.from_now.to_date.to_s(:screen)
 
-    click_button 'State Aid Calculation'
-    page.fill_in 'state_aid_calculation_initial_draw_year', with: '2012'
-    page.fill_in 'state_aid_calculation_initial_draw_amount', with: '7000'
-    page.fill_in 'state_aid_calculation_initial_draw_months', with: '12'
-    click_button 'Submit'
+    calculate_state_aid(loan)
 
     fill_in 'transferred_loan_entry_generic1', with: 'Generic 1'
     fill_in 'transferred_loan_entry_generic2', with: 'Generic 2'

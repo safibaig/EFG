@@ -12,7 +12,7 @@ describe 'loan entry' do
     visit loan_path(loan)
     click_link 'Loan Entry'
 
-    fill_in_valid_loan_entry_details
+    fill_in_valid_loan_entry_details(loan)
     click_button 'Submit'
 
     loan = Loan.last
@@ -70,7 +70,7 @@ describe 'loan entry' do
     visit loan_path(loan)
     click_link 'Loan Entry'
 
-    fill_in_valid_loan_entry_details
+    fill_in_valid_loan_entry_details(loan)
 
     click_button 'Submit'
 
@@ -88,7 +88,7 @@ describe 'loan entry' do
     visit loan_path(loan)
 
     click_link 'Loan Entry'
-    fill_in_ineligible_details
+    fill_in_ineligible_details(loan)
     click_button 'Submit'
 
     loan.reload
@@ -103,7 +103,7 @@ describe 'loan entry' do
     # verify existing ineligibility reasons are cleared when resubmitting ineligible loan entry
 
     click_link 'Loan Entry'
-    fill_in_ineligible_details
+    fill_in_ineligible_details(loan)
     click_button 'Submit'
 
     loan.ineligibility_reasons.count.should == 1
@@ -153,13 +153,13 @@ describe 'loan entry' do
   it "should require recalculation of state aid when the loan repayment duration is changed" do
     visit new_loan_entry_path(loan)
 
-    fill_in_valid_loan_entry_details
+    fill_in_valid_loan_entry_details(loan)
     fill_in "loan_entry_repayment_duration_months", with: loan.repayment_duration.total_months + 12
     click_button 'Submit'
 
     page.should have_content("must be re-calculated when you change the loan term")
 
-    calculate_state_aid
+    calculate_state_aid(loan)
 
     click_button 'Submit'
 
@@ -168,9 +168,9 @@ describe 'loan entry' do
 
   private
 
-    def fill_in_ineligible_details
-      fill_in_valid_loan_entry_details
-      fill_in 'loan_entry_amount', with: 2000000 # max amount is 1M
+    def fill_in_ineligible_details(loan)
+      fill_in_valid_loan_entry_details(loan)
+      choose 'loan_entry_viable_proposition_false'
     end
 
     def should_show_only_loan_category_fields(*field_names)
