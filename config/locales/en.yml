@@ -200,10 +200,13 @@ en:
               must_be_after_starts_on: 'must be after start date'
         state_aid_calculation:
           attributes:
+            _draw_amount: &draw_amount
+              not_equal_to_loan_amount: 'the sum of all draw amounts (initial, second, third, fourth) must equal the loan amount: %{loan_amount}'
             premium_cheque_month:
               invalid: 'This does not allow enough time for the Premium Collection Agent. Please enter the next Premium date in the schedule'
               invalid_format: 'must have the format mm/yyyy'
             initial_draw_amount:
+              <<: *draw_amount
               invalid: 'must be between £0 and £9,999,999.99'
             initial_capital_repayment_holiday:
               invalid: 'must be between 0 and 120'
@@ -213,6 +216,12 @@ en:
               invalid: 'must be between 0 and 120'
             fourth_draw_months:
               invalid: 'must be between 0 and 120'
+            second_draw_amount:
+              <<: *draw_amount
+            third_draw_amount:
+              <<: *draw_amount
+            fourth_draw_amount:
+              <<: *draw_amount
         recovery:
           recovery_too_high: Amount to be recovered added to Value of proceeds of any previous recoveries paid to the government is greater than Value of settlement previously made
 
