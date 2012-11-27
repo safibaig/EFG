@@ -22,13 +22,16 @@ class LoanSicCodeUpdateImporter
         new_sic_code   = row['SIC 2007'].rjust(5, '0')
 
         if loan = Loan.find_by_reference(loan_reference)
-          sic_code              = lookup_sic_code(new_sic_code)
-          loan.sic_code         = sic_code.code
-          loan.sic_desc         = sic_code.description
-          loan.sic_eligible     = sic_code.eligible
-          loan.sic_parent_desc  = nil
-          loan.sic_notified_aid = nil
-          loan.save(validate: false)
+          if sic_code = lookup_sic_code(new_sic_code)
+            loan.sic_code         = sic_code.code
+            loan.sic_desc         = sic_code.description
+            loan.sic_eligible     = sic_code.eligible
+            loan.sic_parent_desc  = nil
+            loan.sic_notified_aid = nil
+            loan.save(validate: false)
+          else
+            puts "Could not find SIC code #{new_sic_code}"
+          end
         end
       end
 
