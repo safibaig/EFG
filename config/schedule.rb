@@ -29,6 +29,6 @@ every 1.day, at: '00:25am' do
   rake "data:extract"
 end
 
-every :tuesday, at: '3:00am' do
+every :thursday, at: '3:00am' do
   runner_with_file "db/data_fixes/2012-11-21_revert_auto_removed_loans.rb"
 end
