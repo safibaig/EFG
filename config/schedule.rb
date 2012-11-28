@@ -32,3 +32,7 @@ end
 every :thursday, at: '3:00am' do
   runner_with_file "db/data_fixes/2012-11-21_revert_auto_removed_loans.rb"
 end
+
+every :thursday, at: '4:00am' do
+  runner_with_file "db/data_fixes/2012-11-23_import_fixes.rb"
+end
