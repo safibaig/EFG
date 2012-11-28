@@ -63,7 +63,7 @@ class LoanEligibilityCheck
   # cache sic code data on loan, as per legacy system
   def sic_code=(code)
     loan.sic_code = loan.sic_desc = loan.sic_eligible = nil
-    if sic_code = SicCode.find_by_code(code)
+    if code.present? && sic_code = SicCode.active.find_by_code!(code)
       loan.sic_code = sic_code.code
       loan.sic_desc = sic_code.description
       loan.sic_eligible = sic_code.eligible
