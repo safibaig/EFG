@@ -25,7 +25,7 @@ module EFG
 
     def run
       if due.any?
-        @logger.info "Running #{due.size} data migrations..."
+        @logger.info "Running #{due.size} data #{"migration".pluralize(due.size)}..."
         due.sort_by(&:version).each do |migration|
           migration.run
         end
