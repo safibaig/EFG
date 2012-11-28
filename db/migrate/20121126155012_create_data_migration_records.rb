@@ -5,7 +5,6 @@ class CreateDataMigrationRecords < ActiveRecord::Migration
       t.timestamps
     end
     add_index :data_migration_records, :version, unique: true
-    DataMigrationRecord.create!(version: "20121126155341")
   end
 
   def down
