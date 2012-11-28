@@ -4,7 +4,7 @@ require 'efg/data_migration'
 module EFG
   class DataMigrator
     def initialize(options = {})
-      @path = options[:path] || Rails.root.join("db/data_migrations")
+      @path = options[:path] || Rails.root.join("db/data_migration")
       @logger = options[:logger] || Logger.new($stderr)
     end
 
