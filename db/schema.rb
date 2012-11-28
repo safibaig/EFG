@@ -31,7 +31,9 @@ ActiveRecord::Schema.define(:version => 20121126155012) do
   end
 
   create_table "data_migration_records", :force => true do |t|
-    t.string "version"
+    t.string   "version"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "data_migration_records", ["version"], :name => "index_data_migration_records_on_version", :unique => true
