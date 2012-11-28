@@ -175,14 +175,40 @@ describe LoanEligibilityCheck do
   describe "#sic_code=" do
     let(:sic_code) { FactoryGirl.create(:sic_code, code: '86900', description: 'My SIC description', eligible: false) }
 
-    it "should cache SIC code description and eligibility on the loan" do
+    it "should cache SIC code, description and eligibility on the loan" do
       loan_eligibility_check.loan.sic_desc = nil
       loan_eligibility_check.loan.sic_eligible = nil
 
       loan_eligibility_check.sic_code = sic_code.code
 
+      loan_eligibility_check.loan.sic_code.should == sic_code.code
       loan_eligibility_check.loan.sic_desc.should == sic_code.description
       loan_eligibility_check.loan.sic_eligible.should == sic_code.eligible
+    end
+
+    it "should not cache SIC data when specified code is blank" do
+      loan_eligibility_check.loan.sic_desc = nil
+      loan_eligibility_check.loan.sic_eligible = nil
+
+      loan_eligibility_check.sic_code = ""
+
+      loan_eligibility_check.loan.sic_code.should be_nil
+      loan_eligibility_check.loan.sic_desc.should be_nil
+      loan_eligibility_check.loan.sic_eligible.should be_nil
+    end
+
+    it "should blow up when trying to assign inactive SIC code" do
+      sic_code.update_attribute(:active, false)
+      loan_eligibility_check.loan.sic_desc = nil
+      loan_eligibility_check.loan.sic_eligible = nil
+
+      expect {
+        loan_eligibility_check.sic_code = sic_code.code
+      }.to raise_error(ActiveRecord::RecordNotFound)
+
+      loan_eligibility_check.loan.sic_code.should be_nil
+      loan_eligibility_check.loan.sic_desc.should be_nil
+      loan_eligibility_check.loan.sic_eligible.should be_nil
     end
   end
 end
