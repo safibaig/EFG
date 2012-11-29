@@ -21,18 +21,18 @@
 
 job_type :runner_with_file, "cd :path && script/rails runner -e :environment :task :output"
 
-every 1.day, at: '2:00am' do
+every 1.day, at: "09:15pm" do
+  rake "db:data:migrate"
+end
+
+every 1.day, at: '00:30am' do
   rake "loans:update_expired"
 end
 
-every :sunday, at: '00:25am' do
+every 1.day, at: '02:30am' do
   rake "data:extract"
 end
 
 every :saturday, at: '4:00am' do
   rake "sic_codes:update_loans"
-end
-
-every 1.day, at: "09:15pm" do
-  rake "db:data:migrate"
 end
