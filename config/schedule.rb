@@ -21,6 +21,8 @@
 
 job_type :runner_with_file, "cd :path && script/rails runner -e :environment :task :output"
 
+# Since this is a back-office system, we have quite a big window to do maintenance tasks.
+
 every 1.day, at: "09:15pm" do
   rake "db:data:migrate"
 end
