@@ -16,3 +16,6 @@ rescue LoadError
 end
 
 EFG::Application.load_tasks
+
+Rake::Task[:default].clear
+task :default => [:"parallel:prepare", :"parallel:spec"]

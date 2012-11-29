@@ -14,7 +14,12 @@ test:
   username: efg
   password: efg
   host: localhost
+  # run specs in parallel in GDS environments
+  <% if ENV["FACTER_govuk_platform"].present? %>
+  database: efg_test<%= ENV['TEST_ENV_NUMBER'] %>
+  <% else %>
   database: efg_test
+  <% end %>
 
 # Used for data extract rake task
 extract:

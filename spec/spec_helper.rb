@@ -46,4 +46,8 @@ RSpec.configure do |config|
   config.after(:each, type: :request) do
     Warden.test_reset!
   end
+
+  config.before(:each) do
+    SimpleCov.command_name "RSpec:#{Process.pid.to_s}:#{ENV['TEST_ENV_NUMBER']}"
+  end
 end
