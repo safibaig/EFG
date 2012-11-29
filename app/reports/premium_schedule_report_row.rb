@@ -31,7 +31,7 @@ class PremiumScheduleReportRow
       loan.draw_down_date.strftime('%d-%m-%Y'),
       loan.lender_organisation,
       loan.reference,
-      loan.state_aid_calculation_calc_type,
+      calc_type,
       premium_schedule.initial_premium_cheque.to_f,
       first_collection_month,
       premium_schedule.number_of_subsequent_payments,
@@ -44,6 +44,15 @@ class PremiumScheduleReportRow
     array = premium_schedule.subsequent_premiums.map(&:to_f)
     array.unshift(0.0) unless premium_schedule.reschedule?
     array
+  end
+
+  # always display calc_type 'N' as 'S' in this report
+  def calc_type
+    if loan.state_aid_calculation_calc_type == StateAidCalculation::NOTIFIED_AID_TYPE
+      StateAidCalculation::SCHEDULE_TYPE
+    else
+      loan.state_aid_calculation_calc_type
+    end
   end
 
   def first_collection_month
