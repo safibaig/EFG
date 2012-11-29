@@ -8,11 +8,12 @@ class PremiumScheduleReportRow
   def self.from_loans(loans)
     state_aid_calculation_ids = loans.map(&:state_aid_calculation_id)
     state_aid_calculations = StateAidCalculation.find(state_aid_calculation_ids)
-    state_aid_calculation_lookup = state_aid_calculations.index_by(&:loan_id)
+    state_aid_calculation_lookup = state_aid_calculations.index_by { |s| "#{s.loan_id}_#{s.calc_type}" }
 
     loans.map do |loan|
       new(loan).tap do |row|
-        row.state_aid_calculation = state_aid_calculation_lookup[loan.id]
+        key = "#{loan.id}_#{loan.state_aid_calculation_calc_type}"
+        row.state_aid_calculation = state_aid_calculation_lookup[key]
       end
     end
   end
@@ -30,7 +31,7 @@ class PremiumScheduleReportRow
       loan.draw_down_date.strftime('%d-%m-%Y'),
       loan.lender_organisation,
       loan.reference,
-      state_aid_calculation.calc_type,
+      loan.state_aid_calculation_calc_type,
       premium_schedule.initial_premium_cheque.to_f,
       first_collection_month,
       premium_schedule.number_of_subsequent_payments,

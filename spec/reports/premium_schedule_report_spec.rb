@@ -475,6 +475,42 @@ describe PremiumScheduleReport do
       end
     end
 
+    context "where loan has scheduled and re-scheduled state aid calculations" do
+      let!(:scheduled_state_aid_calculation) { FactoryGirl.create(:state_aid_calculation, loan: loan) }
+
+      let!(:rescheduled_state_aid_calculation) { FactoryGirl.create(:rescheduled_state_aid_calculation, loan: loan) }
+
+      let(:row1) { csv[1] }
+
+      let(:row2) { csv[2] }
+
+      it "should include a row for both state aid calculations" do
+        csv.length.should == 3
+      end
+
+      it "should set the correct calc type for scheduled state aid calculation" do
+        row1[3].should == 'S'
+      end
+
+      it "should set the correct premiums for scheduled state aid calculation" do
+        # the first premium is set to 0.0 for premium schedules with calc type 'S'
+        expected_premiums = scheduled_state_aid_calculation.premium_schedule.premiums.collect { |p| p.to_f.to_s }
+        expected_premiums[0] = "0.0"
+
+        row1[7, row1.size].should == expected_premiums
+      end
+
+      it "should set the correct calc type for re-scheduled state aid calculation" do
+        row2[3].should == 'R'
+      end
+
+      it "should set the correct premiums for re-scheduled state aid calculation" do
+        expected_premiums = rescheduled_state_aid_calculation.premium_schedule.premiums.collect { |p| p.to_f.to_s }
+
+        row2[7, row2.size].should == expected_premiums
+      end
+    end
+
     context "with ZeroDivisionError raised in " do
       it "should log the output and the exception and the loan" do
         loan = double(inspect: '#<Loan id:1>')
