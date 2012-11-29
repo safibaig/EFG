@@ -17,5 +17,8 @@ end
 
 EFG::Application.load_tasks
 
-Rake::Task[:default].clear
+if Rake::Task.task_defined?(:default)
+  Rake::Task[:default].clear
+end
+
 task :default => [:"parallel:prepare", :"parallel:spec"]
