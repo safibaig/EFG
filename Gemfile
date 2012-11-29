@@ -13,6 +13,8 @@ gem 'jquery-rails', "1.0.19"
 gem 'lograge', '0.0.6'
 gem 'money', '5.0.0'
 gem 'mysql2', '0.3.11'
+gem "parallel"
+gem "parallel_tests"
 gem 'plek'
 gem 'prawn', '0.12.0'
 gem 'progressbar', '0.11.0'
