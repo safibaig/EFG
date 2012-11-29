@@ -115,16 +115,6 @@ shared_examples_for 'a loan transfer' do
         new_loan.created_by.should == loan_transfer.modified_by
       end
 
-      it 'should create an initial LoanChange' do
-        loan_change = new_loan.initial_draw_change
-        loan_change.amount_drawn.should == original_loan.cumulative_drawn_amount
-        loan_change.change_type_id.should == nil
-        loan_change.created_by.should == original_loan.modified_by
-        loan_change.date_of_change.should == original_loan.initial_draw_change.date_of_change
-        loan_change.modified_date.should == Date.current
-        loan_change.seq.should == 0
-      end
-
       it 'should copy existing loan securities to new loan' do
         original_loan.loan_security_types.should_not be_empty
         new_loan.loan_security_types.should == original_loan.loan_security_types
