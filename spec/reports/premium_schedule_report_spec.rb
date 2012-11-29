@@ -511,6 +511,16 @@ describe PremiumScheduleReport do
       end
     end
 
+    context "with Notified Aid calc type" do
+      before do
+        FactoryGirl.create(:state_aid_calculation, loan: loan, calc_type: StateAidCalculation::NOTIFIED_AID_TYPE)
+      end
+
+      it "sets Schedule Type value to 'S' instead of 'N'" do
+        row[3].should == 'S'
+      end
+    end
+
     context "with ZeroDivisionError raised in " do
       it "should log the output and the exception and the loan" do
         loan = double(inspect: '#<Loan id:1>')
