@@ -38,4 +38,3 @@ end
 every :saturday, at: '4:00am' do
   rake "sic_codes:update_loans"
 end
-
