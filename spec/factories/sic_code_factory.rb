@@ -4,5 +4,6 @@ FactoryGirl.define do
     description 'Growing of rice'
     eligible true
     public_sector_restricted false
+    active true
   end
 end

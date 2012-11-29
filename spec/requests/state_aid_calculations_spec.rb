@@ -63,7 +63,7 @@ describe 'state aid calculations' do
   describe 'updating an existing state_aid_calculation' do
     let(:current_lender) { FactoryGirl.create(:lender) }
     let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
-    let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: '123456') }
+    let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: '123456', amount: Money.new(100_000_00)) }
     let!(:state_aid_calculation) { FactoryGirl.create(:state_aid_calculation, loan: loan) }
 
     before do
@@ -73,12 +73,16 @@ describe 'state aid calculations' do
     it 'updates the record' do
       navigate_to_state_aid_calculation_page
 
-      fill_in :initial_draw_amount, '£100,000'
+      fill_in :initial_draw_amount, '£80,000'
+      fill_in :second_draw_amount, '£20,000'
+      fill_in :second_draw_months, '10'
       click_button 'Submit'
 
       current_path.should == new_loan_entry_path(loan)
 
-      state_aid_calculation.reload.initial_draw_amount.should == Money.new(100_000_00)
+      state_aid_calculation.reload
+      state_aid_calculation.initial_draw_amount.should == Money.new(80_000_00)
+      state_aid_calculation.second_draw_amount.should == Money.new(20_000_00)
     end
 
     it 'does not update the record with invalid data' do

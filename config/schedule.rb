@@ -25,10 +25,10 @@ every 1.day, at: '2:00am' do
   rake "loans:update_expired"
 end
 
-every 1.day, at: '00:25am' do
+every :sunday, at: '00:25am' do
   rake "data:extract"
 end
 
-every :tuesday, at: '3:00am' do
-  runner_with_file "db/data_fixes/2012-11-21_revert_auto_removed_loans.rb"
+every :friday, at: '4:00am' do
+  rake "sic_codes:update_loans"
 end

@@ -42,7 +42,7 @@ module RequestSpecHelpers
 
   # Loan Entry
 
-  def fill_in_valid_loan_entry_details
+  def fill_in_valid_loan_entry_details(loan)
     choose 'loan_entry_declaration_signed_true'
     fill_in 'loan_entry_business_name', with: 'Widgets Ltd.'
     fill_in 'loan_entry_trading_name', with: 'Brilliant Widgets'
@@ -54,7 +54,7 @@ module RequestSpecHelpers
     select RepaymentFrequency.find(3).name, from: 'loan_entry_repayment_frequency_id' # quarterly
     fill_in 'loan_entry_maturity_date', with: Date.today.advance(months: 6).to_s(:screen)
 
-    calculate_state_aid
+    calculate_state_aid(loan)
 
     select LoanSecurityType.find(1).name, from: 'loan_entry_loan_security_types' # Residential property
     fill_in 'loan_entry_security_proportion', with: '20'
@@ -69,10 +69,10 @@ module RequestSpecHelpers
     fill_in 'loan_entry_fees', with: '123.45'
   end
 
-  def calculate_state_aid
+  def calculate_state_aid(loan)
     click_button 'State Aid Calculation'
     page.fill_in 'state_aid_calculation_initial_draw_year', with: Date.today.year
-    page.fill_in 'state_aid_calculation_initial_draw_amount', with: '7000'
+    page.fill_in 'state_aid_calculation_initial_draw_amount', with: loan.amount.to_s
     page.fill_in 'state_aid_calculation_initial_draw_months', with: '12'
     click_button 'Submit'
   end

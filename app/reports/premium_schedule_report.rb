@@ -36,7 +36,8 @@ class PremiumScheduleReport
         'loans.lending_limit_id',
         'first_loan_change.date_of_change AS draw_down_date',
         'lenders.organisation_reference_code AS lender_organisation',
-        'state_aid_calculations.id AS state_aid_calculation_id'
+        'state_aid_calculations.id AS state_aid_calculation_id',
+        'state_aid_calculations.calc_type AS state_aid_calculation_calc_type'
       ].join(', '))
       .joins(:lender, :state_aid_calculations, :loan_modifications)
       .joins('INNER JOIN loan_modifications AS first_loan_change
@@ -132,7 +133,7 @@ class PremiumScheduleReport
                               where("loans.id = state_aid_calculations.loan_id").
                               where("calc_type = 'R'")
 
-        if collection_month
+        if collection_month.present?
           max_state_aid_seq = max_state_aid_seq.where(premium_cheque_month: collection_month)
         end
 
