@@ -33,6 +33,6 @@ every :friday, at: '4:00am' do
   rake "sic_codes:update_loans"
 end
 
-every 1.day, at "09:15pm" do
+every 1.day, at: "09:15pm" do
   rake "db:data:migrate"
 end
