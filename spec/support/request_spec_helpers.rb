@@ -84,13 +84,14 @@ module RequestSpecHelpers
   end
 
   # Loan Guarantee
-  def fill_in_valid_loan_guarantee_details(loan)
+  def fill_in_valid_loan_guarantee_details(loan, fields = {})
+    fields.reverse_merge!(initial_draw_date: Date.today.to_s(:screen), initial_draw_amount: loan.amount)
+
     choose 'loan_guarantee_received_declaration_true'
     choose 'loan_guarantee_signed_direct_debit_received_true'
     choose 'loan_guarantee_first_pp_received_true'
-    fill_in 'loan_guarantee_initial_draw_date', with: Date.today.to_s(:screen)
-    fill_in 'loan_guarantee_initial_draw_amount', with: loan.amount
-    fill_in 'loan_guarantee_maturity_date', with: Date.today.advance(years: 10).to_s(:screen)
+    fill_in 'loan_guarantee_initial_draw_date', with: fields[:initial_draw_date]
+    fill_in 'loan_guarantee_initial_draw_amount', with: fields[:initial_draw_amount]
   end
 
   # Loan Demand to Borrower

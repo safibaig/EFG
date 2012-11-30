@@ -33,11 +33,6 @@ describe LoanGuarantee do
       loan_guarantee.should_not be_valid
     end
 
-    it "should should be invalid without a maturity date" do
-      loan_guarantee.maturity_date = ''
-      loan_guarantee.should_not be_valid
-    end
-
     it "should be invalid when initial draw amount is greater than loan amount" do
       loan_guarantee.initial_draw_amount = loan_guarantee.loan.amount + Money.new(1)
       loan_guarantee.should_not be_valid
@@ -89,6 +84,17 @@ describe LoanGuarantee do
       state_change = loan.state_changes.last
       state_change.event_id.should == 7
       state_change.state.should == Loan::Guaranteed
+    end
+
+    it "updates the maturity date to the initial draw date + loan term + 1 day" do
+      loan.repayment_duration = {years: 3}
+      loan.facility_letter_date = Date.new(2012, 10, 20)
+      loan_guarantee.initial_draw_date = Date.new(2012, 11, 30)
+
+      loan_guarantee.save
+
+      loan.reload
+      loan.maturity_date.should == Date.new(2015, 12, 1)
     end
   end
 end

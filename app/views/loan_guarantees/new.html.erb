@@ -20,7 +20,6 @@
   <%= f.input :signed_direct_debit_received, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
   <%= f.input :initial_draw_date, as: :quick_date %>
   <%= f.input :initial_draw_amount, as: :currency %>
-  <%= f.input :maturity_date, as: :quick_date %>
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Submit', class: 'btn-primary', data: { 'disable-with' => 'Submitting...' } %>

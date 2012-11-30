@@ -4,14 +4,20 @@ require 'spec_helper'
 
 describe 'loan guarantee' do
   let(:current_user) { FactoryGirl.create(:lender_user) }
-  let(:loan) { FactoryGirl.create(:loan, :offered, lender: current_user.lender) }
+  let(:loan) {
+    FactoryGirl.create(:loan, :offered,
+      lender: current_user.lender,
+      repayment_duration: {years: 3},
+      facility_letter_date: Date.new(2012, 10, 20)
+    )
+  }
   before { login_as(current_user, scope: :user) }
 
   it 'entering further loan information' do
     visit loan_path(loan)
     click_link 'Guarantee & Initial Draw'
 
-    fill_in_valid_loan_guarantee_details(loan)
+    fill_in_valid_loan_guarantee_details(loan, initial_draw_date: '30/11/2012')
     click_button 'Submit'
 
     loan = Loan.last!
@@ -22,7 +28,7 @@ describe 'loan guarantee' do
     loan.received_declaration.should == true
     loan.signed_direct_debit_received.should == true
     loan.first_pp_received.should == true
-    loan.maturity_date.should == Date.today.advance(years: 10)
+    loan.maturity_date.should == Date.new(2015, 12, 1)
     loan.modified_by.should == current_user
 
     should_log_loan_state_change(loan, Loan::Guaranteed, 7, current_user)
