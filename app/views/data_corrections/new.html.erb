@@ -32,7 +32,7 @@
     <%= simple_form_row 'Original outstanding balance that is being demanded to the government', @loan.dti_demand_outstanding.try(:format) %>
     <%= f.input :dti_demand_out_amount, as: :currency %>
 
-    <% if @loan.sflg? %>
+    <% unless @loan.efg_loan? %>
       <%= simple_form_row 'Original interest', @loan.dti_interest.try(:format) %>
       <%= f.input :dti_demand_interest, as: :currency %>
     <% end %>
