@@ -4,14 +4,17 @@ require 'spec_helper'
 
 describe 'loan guarantee' do
   let(:current_user) { FactoryGirl.create(:lender_user) }
-  let(:loan) { FactoryGirl.create(:loan, :offered, lender: current_user.lender) }
+  let(:loan) { FactoryGirl.create(:loan, :offered, :with_state_aid_calculation, lender: current_user.lender) }
   before { login_as(current_user, scope: :user) }
 
   it 'entering further loan information' do
     visit loan_path(loan)
     click_link 'Guarantee & Initial Draw'
 
-    fill_in_valid_loan_guarantee_details(loan)
+    click_link 'update the state aid calculation'
+    click_button 'Submit'
+
+    fill_in_valid_loan_guarantee_details
     click_button 'Submit'
 
     loan = Loan.last!

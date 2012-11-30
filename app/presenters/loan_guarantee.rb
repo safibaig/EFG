@@ -11,12 +11,10 @@ class LoanGuarantee
   attribute :first_pp_received
   attribute :maturity_date
 
-  attr_reader :initial_draw_amount, :initial_draw_date
-  attr_accessible :initial_draw_amount, :initial_draw_date
+  attr_reader :initial_draw_date
+  attr_accessible :initial_draw_date
 
-  validates_presence_of :initial_draw_date, :initial_draw_amount, :maturity_date
-
-  validate :initial_draw_is_not_greater_than_loan_amount, if: :initial_draw_amount
+  validates_presence_of :initial_draw_date, :maturity_date
 
   validate :initial_draw_date_is_not_before_facility_letter_date, if: :initial_draw_date
 
@@ -28,8 +26,8 @@ class LoanGuarantee
     errors.add(:first_pp_received, :accepted) unless self.first_pp_received
   end
 
-  def initial_draw_amount=(value)
-    @initial_draw_amount = value.present? ? Money.parse(value) : nil
+  def initial_draw_amount
+    @initial_draw_amount ||= loan.state_aid_calculation.initial_draw_amount
   end
 
   def initial_draw_date=(value)
@@ -45,10 +43,6 @@ class LoanGuarantee
         initial_draw_change.loan = loan
         initial_draw_change.modified_date = Date.current
       end
-    end
-
-    def initial_draw_is_not_greater_than_loan_amount
-      errors.add(:initial_draw_amount, :greater_than_loan_amount) if initial_draw_amount > loan.amount
     end
 
     def initial_draw_date_is_not_before_facility_letter_date
