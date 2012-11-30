@@ -39,32 +39,10 @@ describe TransferredLoanEntry do
       transferred_loan_entry.should_not be_valid
     end
 
-    it "should be invalid without a maturity date" do
-      transferred_loan_entry.maturity_date = nil
-      transferred_loan_entry.should_not be_valid
-    end
-
     it "should be invalid without a state aid calculation" do
       transferred_loan_entry.loan.state_aid_calculations.delete_all
       transferred_loan_entry.should_not be_valid
       transferred_loan_entry.errors[:state_aid].should == ['must be calculated']
-    end
-
-    context 'maturity_date' do
-      let(:initial_draw_date) { transferred_loan_entry.loan.initial_draw_change.date_of_change }
-
-      it "has no minimum loan term restriction" do
-        transferred_loan_entry.maturity_date = Date.today
-        transferred_loan_entry.should be_valid
-      end
-
-      it "must be on or before the maximum number of loan repayment months, counted from the original draw date" do
-        transferred_loan_entry.maturity_date = initial_draw_date.advance(months: 120, days: 1)
-        transferred_loan_entry.should_not be_valid
-
-        transferred_loan_entry.maturity_date = initial_draw_date.advance(months: 120)
-        transferred_loan_entry.should be_valid
-      end
     end
 
     it_behaves_like 'loan presenter that validates loan repayment frequency' do

@@ -17,7 +17,6 @@ describe 'Transferred loan entry' do
     select 'Quarterly', from: 'transferred_loan_entry_repayment_frequency_id'
     fill_in "transferred_loan_entry_repayment_duration_years", with: 1
     fill_in "transferred_loan_entry_repayment_duration_months", with: 6
-    fill_in 'transferred_loan_entry_maturity_date', with: 6.months.from_now.to_date.to_s(:screen)
 
     calculate_state_aid(loan)
 
@@ -35,7 +34,6 @@ describe 'Transferred loan entry' do
     loan.state.should == Loan::Completed
     loan.declaration_signed.should be_true
     loan.sortcode.should == '03-12-45'
-    loan.maturity_date.should == 6.months.from_now.to_date
     loan.repayment_frequency_id.should == 3
     loan.repayment_duration.should == MonthDuration.new(18)
     loan.generic1.should == 'Generic 1'

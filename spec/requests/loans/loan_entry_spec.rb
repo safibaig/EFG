@@ -36,7 +36,6 @@ describe 'loan entry' do
     loan.interest_rate_type.should == InterestRateType.find(1)
     loan.interest_rate.should == 2.25
     loan.fees.should == Money.new(12345)
-    loan.maturity_date.should == 6.months.from_now.to_date
     loan.modified_by.should == current_user
 
     should_log_loan_state_change(loan, Loan::Completed, 4, current_user)

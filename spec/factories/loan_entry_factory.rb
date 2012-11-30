@@ -8,7 +8,6 @@ FactoryGirl.define do
     fees 1000
     repayment_frequency_id 3
     postcode 'EC1R 4RP'
-    maturity_date 6.months.from_now.to_date
     turnover '12345'
 
     initialize_with {

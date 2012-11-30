@@ -26,7 +26,6 @@ class LoanEntry
   attribute :business_name
   attribute :trading_name
   attribute :legal_form_id
-  attribute :maturity_date
   attribute :company_registration
   attribute :postcode
   attribute :non_validated_postcode
@@ -58,7 +57,7 @@ class LoanEntry
   after_save :save_as_ineligible, unless: :is_eligible?
 
   validates_presence_of :business_name, :legal_form_id, :interest_rate_type_id,
-                        :repayment_frequency_id, :postcode, :maturity_date,
+                        :repayment_frequency_id, :postcode,
                         :interest_rate, :fees, :repayment_duration
 
   validates_presence_of :company_registration, if: :company_registration_required?
@@ -66,8 +65,6 @@ class LoanEntry
   validate :state_aid_calculated
 
   validate :repayment_frequency_allowed
-
-  validate :maturity_date_within_loan_term, if: :maturity_date
 
   validate :company_turnover_is_allowed, if: :turnover
 
@@ -151,18 +148,6 @@ class LoanEntry
 
   def company_registration_required?
     legal_form_id && LegalForm.find(legal_form_id).requires_company_registration == true
-  end
-
-  def maturity_date_within_loan_term
-    loan_term = LoanTerm.new(loan)
-
-    if maturity_date < loan_term.earliest_start_date
-      errors.add(:maturity_date, :less_than_min_loan_term)
-    end
-
-    if maturity_date > loan_term.latest_end_date
-      errors.add(:maturity_date, :greater_than_max_loan_term)
-    end
   end
 
   def save_as_ineligible

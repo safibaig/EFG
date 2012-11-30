@@ -52,7 +52,6 @@ module RequestSpecHelpers
     fill_in 'loan_entry_non_validated_postcode', with: 'JF3 8HF'
     fill_in 'loan_entry_sortcode', with: '03-12-45'
     select RepaymentFrequency.find(3).name, from: 'loan_entry_repayment_frequency_id' # quarterly
-    fill_in 'loan_entry_maturity_date', with: Date.today.advance(months: 6).to_s(:screen)
 
     calculate_state_aid(loan)
 

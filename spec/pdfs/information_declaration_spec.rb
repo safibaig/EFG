@@ -72,7 +72,6 @@ describe InformationDeclaration do
       pdf_content.should include('£12,345.67')
       pdf_content.should include('4 years, 6 months')
       pdf_content.should include('Quarterly')
-      pdf_content.should include('02-03-2020')
       pdf_content.should include('A10.1.2')
       pdf_content.should include('Foo')
       pdf_content.should include("Category Name")
