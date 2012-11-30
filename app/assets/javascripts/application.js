@@ -16,4 +16,5 @@
 //= require 'jquery-ui.autocomplete'
 //= require 'jquery.placeholder.min'
 //= require 'chosen.jquery'
+//= require 'date'
 //= require_tree .
