@@ -66,8 +66,31 @@ describe 'data correction' do
         loan.modified_by.should == current_user
       end
 
-      it 'can update DTI demand interest for non-EFG loans' do
+      it 'can update DTI demand interest for SFLG loans' do
         loan.update_attribute(:loan_scheme, Loan::SFLG_SCHEME)
+
+        navigate_to_data_correction_form
+
+        fill_in 'dti_demand_interest', '500'
+        click_button 'Submit'
+
+        data_correction = loan.data_corrections.last!
+        data_correction.old_dti_demand_interest.should == Money.new(1_000_00)
+        data_correction.dti_demand_interest.should == Money.new(500_00)
+        data_correction.change_type_id.should == '9'
+        data_correction.date_of_change.should == Date.current
+        data_correction.modified_date.should == Date.current
+        data_correction.created_by.should == current_user
+
+        loan.reload
+        loan.dti_interest.should == Money.new(500_00)
+        loan.modified_by.should == current_user
+      end
+
+      it 'can update DTI demand interest for Legacy SFLG loans' do
+        loan.loan_scheme = Loan::SFLG_SCHEME
+        loan.loan_source = Loan::LEGACY_SFLG_SOURCE
+        loan.save!
 
         navigate_to_data_correction_form
 

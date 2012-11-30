@@ -344,6 +344,33 @@ describe DataCorrection do
           loan.dti_amount_claimed.should == Money.new(1125_00) # 75% of £1500 (#dti_demand_outstanding + #dti_interest)
         end
       end
+
+      context 'in Legacy SFLG scheme' do
+        before do
+          loan.loan_scheme = Loan::SFLG_SCHEME
+          loan.loan_source = Loan::LEGACY_SFLG_SOURCE
+          loan.save!
+        end
+
+        it 'works with #dti_demand_interest' do
+          loan.update_attribute(:dti_interest, Money.new(1_000_00))
+
+          data_correction.dti_demand_interest = Money.new(800_00)
+          data_correction.save_and_update_loan.should == true
+          data_correction.old_dti_demand_interest.should == Money.new(1_000_00)
+
+          loan.reload
+          loan.dti_interest.should == Money.new(800_00)
+        end
+
+        it 'recalculates #dti_amount_claimed when updating #dti_demand_interest' do
+          data_correction.dti_demand_interest = Money.new(500_00)
+          data_correction.save_and_update_loan.should == true
+
+          loan.reload
+          loan.dti_amount_claimed.should == Money.new(1125_00) # 75% of £1500 (#dti_demand_outstanding + #dti_interest)
+        end
+      end
     end
 
     it 'creates a new loan state change record for the state change' do
