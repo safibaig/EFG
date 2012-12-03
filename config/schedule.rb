@@ -23,18 +23,14 @@ job_type :runner_with_file, "cd :path && script/rails runner -e :environment :ta
 
 # Since this is a back-office system, we have quite a big window to do maintenance tasks.
 
-every 1.day, at: "09:15pm" do
+every 1.day, at: "08:00pm" do
   rake "db:data:migrate"
 end
 
-every 1.day, at: '00:30am' do
+every 1.day, at: '10:00pm' do
   rake "loans:update_expired"
 end
 
-every 1.day, at: '02:30am' do
+every 1.day, at: '10:30pm' do
   rake "data:extract"
-end
-
-every :saturday, at: '4:00am' do
-  rake "sic_codes:update_loans"
 end
