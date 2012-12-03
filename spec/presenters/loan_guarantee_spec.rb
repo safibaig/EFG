@@ -28,21 +28,9 @@ describe LoanGuarantee do
       loan_guarantee.should_not be_valid
     end
 
-    it "should be invalid without an initial_draw_amount" do
-      loan_guarantee.initial_draw_amount = ''
-      loan_guarantee.should_not be_valid
-    end
-
     it "should should be invalid without a maturity date" do
       loan_guarantee.maturity_date = ''
       loan_guarantee.should_not be_valid
-    end
-
-    it "should be invalid when initial draw amount is greater than loan amount" do
-      loan_guarantee.initial_draw_amount = loan_guarantee.loan.amount + Money.new(1)
-      loan_guarantee.should_not be_valid
-      loan_guarantee.initial_draw_amount = loan_guarantee.loan.amount
-      loan_guarantee.should be_valid
     end
 
     it "should be invalid when initial draw date is before facility letter date" do
@@ -64,10 +52,14 @@ describe LoanGuarantee do
 
   describe '#save' do
     let(:lender_user) { FactoryGirl.create(:lender_user) }
-    let(:loan) { loan_guarantee.loan }
-    let(:loan_guarantee) {
-      FactoryGirl.build(:loan_guarantee, initial_draw_amount: Money.new(5_000_00), modified_by: lender_user)
-    }
+    let(:state_aid_calculation) { FactoryGirl.build(:state_aid_calculation, initial_draw_amount: Money.new(5_000_00)) }
+    let(:loan) { FactoryGirl.create(:loan, :offered, state_aid_calculations: [state_aid_calculation], amount: Money.new(5_000_00)) }
+    let(:loan_guarantee) do
+      LoanGuarantee.new(loan).tap do |loan_guarantee|
+        loan_guarantee.attributes = FactoryGirl.attributes_for(:loan_guarantee)
+        loan_guarantee.modified_by = lender_user
+      end
+    end
 
     it 'creates an InitialDrawChange' do
       loan_guarantee.save.should == true
