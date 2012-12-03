@@ -34,7 +34,3 @@ end
 every 1.day, at: '02:30am' do
   rake "data:extract"
 end
-
-every :saturday, at: '4:00am' do
-  rake "sic_codes:update_loans"
-end
