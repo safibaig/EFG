@@ -49,6 +49,7 @@ describe 'loan guarantee' do
     click_button 'Submit'
 
     current_path.should == loan_path(loan)
+    page.should have_content('The recalculated De Minimis figure is €3,141.18.')
 
     click_link 'Guarantee & Initial Draw'
     fill_in_valid_loan_guarantee_details

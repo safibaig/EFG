@@ -11,6 +11,9 @@ class StateAidCalculationsController < ApplicationController
     @state_aid_calculation.calc_type = StateAidCalculation::SCHEDULE_TYPE
 
     if @state_aid_calculation.save
+      if params[:redirect] == 'loan_guarantee'
+        flash[:info] = Flashes::StateAidCalculationFlashMessage.new(@state_aid_calculation)
+      end
       redirect_to leave_state_aid_calculation_path(@loan)
     else
       render :edit
