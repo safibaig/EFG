@@ -90,22 +90,9 @@
   </div>
 
   <div class="container">
-    <% if notice %>
-      <p class="alert alert-success"><%= notice %></p>
-    <% end %>
-
-    <% if flash[:info] %>
-      <% info = flash[:info] %>
-      <% if info.respond_to?(:render) %>
-        <%= info.render(self, :info) %>
-      <% else %>
-        <p class="alert alert-info"><%= info %></p>
-      <% end %>
-    <% end %>
-
-    <% if alert %>
-      <p class="alert alert-error"><%= alert %></p>
-    <% end %>
+    <%= render_flash(:notice, 'alert-success') %>
+    <%= render_flash(:alert, 'alert-error') %>
+    <%= render_flash(:info) %>
 
     <%= yield %>
   </div>
