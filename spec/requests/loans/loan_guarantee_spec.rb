@@ -11,9 +11,6 @@ describe 'loan guarantee' do
     visit loan_path(loan)
     click_link 'Guarantee & Initial Draw'
 
-    click_link 'update the state aid calculation'
-    click_button 'Submit'
-
     fill_in_valid_loan_guarantee_details
     click_button 'Submit'
 
@@ -37,6 +34,29 @@ describe 'loan guarantee' do
     loan_change.date_of_change.should == Date.current
     loan_change.modified_date.should == Date.current
     loan_change.seq.should == 0
+  end
+
+  it "amending draw down details" do
+    loan.reference = 'ABCDEF98+01'
+    loan.save!
+
+    visit loan_path(loan)
+    click_link 'Guarantee & Initial Draw'
+
+    click_link 'amend the draw down details'
+
+    page.should have_content('Amend Draw Down Details')
+    click_button 'Submit'
+
+    current_path.should == loan_path(loan)
+
+    click_link 'Guarantee & Initial Draw'
+    fill_in_valid_loan_guarantee_details
+    click_button 'Submit'
+
+    loan = Loan.last!
+    current_path.should == loan_path(loan)
+    loan.state.should == Loan::Guaranteed
   end
 
   it 'does not continue with invalid values' do

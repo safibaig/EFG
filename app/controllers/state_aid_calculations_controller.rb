@@ -34,10 +34,17 @@ class StateAidCalculationsController < ApplicationController
       new_loan_entry_path(loan)
     elsif params[:redirect] == 'transferred_loan_entry'
       new_loan_transferred_entry_path(loan)
-    elsif params[:redirect] == 'loan_guarantee'
-      new_loan_guarantee_path(loan)
     else
       loan_path(loan)
+    end
+  end
+
+  helper_method :page_header
+  def page_header
+    if params[:redirect] == 'loan_guarantee'
+      'Amend Draw Down Details'
+    else
+      'State Aid Calculator'
     end
   end
 
