@@ -1,7 +1,25 @@
+# See app/concerns/state_aid_calculation_variant/base.rb for documentation
+# for the following methods:
+#  * leave_state_aid_calculation_path
+#  * page_header
+#  * update_flash_message
 class StateAidCalculationsController < ApplicationController
   before_filter :verify_update_permission, only: [:edit, :update]
   before_filter :load_loan, only: [:edit, :update]
   before_filter :load_state_aid_calculation, only: [:edit, :update]
+  before_filter :extend_variant, only: [:edit, :update]
+
+  # There are a number of variants (modules) for the
+  # StateAidCalculationsController.
+  #
+  # They get extended onto the controller depending on the value of the
+  # :variant parameter to alter the behaviour.
+  DEFAULT_VARIANT = StateAidCalculationVariant::Base
+  VARIANTS = [
+    StateAidCalculationVariant::LoanEntry,
+    StateAidCalculationVariant::LoanGuarantee,
+    StateAidCalculationVariant::TransferredLoanEntry,
+  ].index_by(&:to_param)
 
   def edit
   end
@@ -11,9 +29,7 @@ class StateAidCalculationsController < ApplicationController
     @state_aid_calculation.calc_type = StateAidCalculation::SCHEDULE_TYPE
 
     if @state_aid_calculation.save
-      if params[:redirect] == 'loan_guarantee'
-        flash[:info] = Flashes::StateAidCalculationFlashMessage.new(@state_aid_calculation)
-      end
+      flash[:info] = update_flash_message(@state_aid_calculation)
       redirect_to leave_state_aid_calculation_path(@loan)
     else
       render :edit
@@ -31,25 +47,13 @@ class StateAidCalculationsController < ApplicationController
     @state_aid_calculation.initial_draw_months ||= @loan.repayment_duration.total_months
   end
 
-  helper_method :leave_state_aid_calculation_path
-  def leave_state_aid_calculation_path(loan)
-    if params[:redirect] == 'loan_entry'
-      new_loan_entry_path(loan)
-    elsif params[:redirect] == 'transferred_loan_entry'
-      new_loan_transferred_entry_path(loan)
-    else
-      loan_path(loan)
-    end
+  def extend_variant
+    variant = VARIANTS[params[:variant]] || DEFAULT_VARIANT
+    extend(variant)
   end
 
+  helper_method :leave_state_aid_calculation_path
   helper_method :page_header
-  def page_header
-    if params[:redirect] == 'loan_guarantee'
-      'Amend Draw Down Details'
-    else
-      'State Aid Calculator'
-    end
-  end
 
   def verify_update_permission
     enforce_update_permission(StateAidCalculation)
