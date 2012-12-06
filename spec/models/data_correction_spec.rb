@@ -13,69 +13,13 @@ describe DataCorrection do
     let!(:initial_draw_change) { FactoryGirl.create(:initial_draw_change, loan: loan, amount_drawn: Money.new(5_000_00), date_of_change: Date.new(2011, 11)) }
 
     it 'must have something set' do
-      data_correction.amount = ''
       data_correction.facility_letter_date = ''
-      data_correction.initial_draw_date = ''
-      data_correction.initial_draw_amount = ''
       data_correction.sortcode = ''
       data_correction.should_not be_valid
       data_correction.dti_demand_out_amount = ''
       data_correction.should_not be_valid
       data_correction.dti_demand_interest = ''
       data_correction.should_not be_valid
-    end
-
-    context '#amount' do
-      it 'must not be the same as currently is' do
-        data_correction.amount = data_correction.loan.amount
-        data_correction.should_not be_valid
-      end
-
-      it 'must not be negative' do
-        data_correction.amount = Money.new(-1)
-        data_correction.should_not be_valid
-      end
-
-      it 'must be between £1,000 and £1,000,000' do
-        data_correction.amount = '999.99'
-        data_correction.should_not be_valid
-        data_correction.amount = '1000000.01'
-        data_correction.should_not be_valid
-        data_correction.amount = '999999.99'
-        data_correction.should be_valid
-      end
-
-      it 'must be >= total cumulative amount drawn' do
-        FactoryGirl.create(:loan_change, loan: loan, amount_drawn: Money.new(1_000_00))
-
-        data_correction.amount = Money.new(5_999_99)
-        data_correction.should_not be_valid
-      end
-
-      it 'must be >= total cumulative amount drawn (including changes to initial_draw_amount)' do
-        FactoryGirl.create(:loan_change, loan: loan, amount_drawn: Money.new(1_000_00))
-
-        data_correction.amount = Money.new(6_999_99)
-        data_correction.initial_draw_amount = Money.new(6_000_00)
-        data_correction.should_not be_valid
-      end
-
-      context 'for SFLG loans' do
-        before do
-          loan.loan_source = Loan::SFLG_SOURCE
-          loan.loan_scheme = Loan::SFLG_SCHEME
-          loan.save!
-        end
-
-        it 'must be between £5,000 and £250,000' do
-          data_correction.amount = '4999.99'
-          data_correction.should_not be_valid
-          data_correction.amount = '250000.01'
-          data_correction.should_not be_valid
-          data_correction.amount = '249999.99'
-          data_correction.should be_valid
-        end
-      end
     end
 
     context '#facility_letter_date' do
@@ -91,67 +35,14 @@ describe DataCorrection do
         data_correction.should be_valid
       end
 
-      it 'must be no more than 6 months before the initial draw date (including change to the initial_draw_date)' do
-        data_correction.facility_letter_date = Date.new(2011, 5, 31)
-        data_correction.initial_draw_date = Date.new(2011, 12, 1)
+      it 'must be between the lending limit start/end dates' do
+        loan.lending_limit = FactoryGirl.create(:lending_limit, starts_on: Date.new(2011, 4), ends_on: Date.new(2011, 6))
+        loan.save!
+        loan.reload
+
+        data_correction.facility_letter_date = Date.new(2011, 3, 31)
         data_correction.should_not be_valid
         data_correction.facility_letter_date = Date.new(2011, 6)
-        data_correction.should be_valid
-      end
-
-      it 'must be between the lending limit start/end dates' do
-        data_correction.facility_letter_date = Date.new(2011, 3, 31)
-        data_correction.initial_draw_date = Date.new(2011, 7)
-        data_correction.should_not be_valid
-        data_correction.facility_letter_date = Date.new(2011, 4)
-        data_correction.should be_valid
-      end
-    end
-
-    context '#initial_draw_amount' do
-      it 'must not take the cumulative amount drawn over the loan amount' do
-        FactoryGirl.create(:loan_change, loan: loan, amount_drawn: Money.new(5_000_00))
-
-        data_correction.initial_draw_amount = Money.new(5_000_01)
-        data_correction.should_not be_valid
-        data_correction.initial_draw_amount = Money.new(5_000_00)
-        data_correction.should be_valid
-      end
-
-      it 'must not take the cumulative amount drawn over the loan amount (including change to amount)' do
-        FactoryGirl.create(:loan_change, loan: loan, amount_drawn: Money.new(5_000_00))
-
-        data_correction.amount = Money.new(11_000_00)
-        data_correction.initial_draw_amount = Money.new(6_000_01)
-        data_correction.should_not be_valid
-        data_correction.initial_draw_amount = Money.new(6_000_00)
-        data_correction.should be_valid
-      end
-    end
-
-    context '#initial_draw_date' do
-      it 'must not be in the future' do
-        data_correction.initial_draw_date = Date.current.advance(days: 1)
-        data_correction.should_not be_valid
-      end
-
-      it "must not be before the loan's facility letter date" do
-        data_correction.initial_draw_date = Date.new(2011, 7, 31)
-        data_correction.should_not be_valid
-      end
-
-      it "must not be more than six months after the loan's facility letter date" do
-        data_correction.initial_draw_date = Date.new(2012, 2, 2)
-        data_correction.should_not be_valid
-        data_correction.initial_draw_date = Date.new(2012, 2, 1)
-        data_correction.should be_valid
-      end
-
-      it "must not be more than six months after the loan's facility letter date (including change to facility letter date)" do
-        data_correction.facility_letter_date = Date.new(2011, 9)
-        data_correction.initial_draw_date = Date.new(2012, 3, 2)
-        data_correction.should_not be_valid
-        data_correction.initial_draw_date = Date.new(2012, 3, 1)
         data_correction.should be_valid
       end
     end
@@ -252,15 +143,6 @@ describe DataCorrection do
       end
     }
 
-    it 'works with #amount' do
-      data_correction.amount = Money.new(6_000_00)
-      data_correction.save_and_update_loan.should == true
-      data_correction.old_amount.should == Money.new(5_000_00)
-
-      loan.reload
-      loan.amount.should == Money.new(6_000_00)
-    end
-
     it 'works with #facility_letter_date' do
       data_correction.facility_letter_date = Date.new(2012, 2, 2)
       data_correction.save_and_update_loan.should == true
@@ -268,24 +150,6 @@ describe DataCorrection do
 
       loan.reload
       loan.facility_letter_date.should == Date.new(2012, 2, 2)
-    end
-
-    it 'works with #initial_draw_amount' do
-      data_correction.initial_draw_amount = Money.new(2_000_00)
-      data_correction.save_and_update_loan.should == true
-      data_correction.old_initial_draw_amount.should == Money.new(1_000_00)
-
-      initial_draw_change.reload
-      initial_draw_change.amount_drawn.should == Money.new(2_000_00)
-    end
-
-    it 'works with #initial_draw_date' do
-      data_correction.initial_draw_date = Date.new(2012, 4, 3)
-      data_correction.save_and_update_loan.should == true
-      data_correction.old_initial_draw_date = Date.new(2012, 3, 4)
-
-      initial_draw_change.reload
-      initial_draw_change.date_of_change.should == Date.new(2012, 4, 3)
     end
 
     it 'works with #sortcode' do
@@ -375,7 +239,7 @@ describe DataCorrection do
 
     it 'creates a new loan state change record for the state change' do
       expect {
-        data_correction.amount = Money.new(6_000_00)
+        data_correction.facility_letter_date = Date.new(2012, 2, 2)
         data_correction.save_and_update_loan
       }.to change(LoanStateChange, :count).by(1)
 
