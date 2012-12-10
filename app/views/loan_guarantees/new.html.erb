@@ -10,7 +10,7 @@
 
 <p><span class="label label-info">REMINDER</span> The Direct Debit details should now be uploaded to the Premium Collection Agent portal. Please retain the signed Direct Debit mandate for your own records.</p>
 
-<p>Please not that on completion of Guarantee and Initial Draw, the Premium Payment Schedule will be delivered to the Premium Collection Agent automatically through the Web Portal.</p>
+<p>Please note that on completion of Guarantee and Initial Draw, the Premium Payment Schedule will be delivered to the Premium Collection Agent automatically through the Web Portal.</p>
 
 <hr>
 
@@ -18,9 +18,11 @@
   <%= f.input :received_declaration, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
   <%= f.input :first_pp_received, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
   <%= f.input :signed_direct_debit_received, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
-  <%= f.input :initial_draw_date, as: :quick_date %>
+
+  <%= f.input :initial_draw_date, as: :quick_date, wrapper_html: {data: {behaviour: 'initial-draw-date'}} %>
+  <%= simple_form_row('Maturity Date', 'calculated based on initial draw date', class: 'projected-maturity-date', data: {'behaviour' => 'projected-maturity-date', 'repayment-duration' => f.object.repayment_duration.total_months}) %>
+
   <%= f.input :initial_draw_amount, as: :currency, disabled: true, hint: %Q{To change the initial draw amount, you must #{link_to 'amend the draw down details', edit_loan_state_aid_calculation_path(f.object.loan, variant: StateAidCalculationVariant::LoanGuarantee)}.<br><span class="label label-important">IMPORTANT</span> Amending the draw down details will result these details being reset on submission of the revised data.} %>
-  <%= f.input :maturity_date, as: :quick_date %>
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Submit', class: 'btn-primary', data: { 'disable-with' => 'Submitting...' } %>

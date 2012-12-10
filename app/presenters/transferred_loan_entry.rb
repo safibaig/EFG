@@ -31,7 +31,6 @@ class TransferredLoanEntry
   attribute :amount
   attribute :repayment_duration
   attribute :repayment_frequency_id
-  attribute :maturity_date
   attribute :state_aid
   attribute :generic1
   attribute :generic2
@@ -39,11 +38,10 @@ class TransferredLoanEntry
   attribute :generic4
   attribute :generic5
 
-  validates_presence_of :amount, :repayment_duration, :repayment_frequency_id, :maturity_date
+  validates_presence_of :amount, :repayment_duration, :repayment_frequency_id
 
   validate :repayment_frequency_allowed
 
-  validate :maturity_date_within_loan_term, if: :maturity_date
 
   validate do
     errors.add(:declaration_signed, :accepted) unless self.declaration_signed
@@ -59,16 +57,4 @@ class TransferredLoanEntry
     loan.state = Loan::Incomplete
     loan.save(validate: false)
   end
-
-  private
-
-  def maturity_date_within_loan_term
-    loan_term = LoanTerm.new(loan)
-    initial_draw_date = loan.initial_draw_change.date_of_change
-
-    if maturity_date > initial_draw_date + loan_term.max_months.months
-      errors.add(:maturity_date, :greater_than_max_loan_term)
-    end
-  end
-
 end

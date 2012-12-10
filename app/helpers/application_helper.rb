@@ -40,8 +40,8 @@ module ApplicationHelper
     render "shared/google_analytics", account: account, domain: domain, user_type: user_type, lender_name: lender_name
   end
 
-  def simple_form_row(label, control)
-    content_tag :div, class: 'control-group' do
+  def simple_form_row(label, control, options = {})
+    content_tag :div, class: "control-group #{options[:class]}", data: options[:data] do
       content_tag(:div, label, class: 'control-label') +
         content_tag(:div, control, class: 'controls')
     end

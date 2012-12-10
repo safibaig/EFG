@@ -19,7 +19,6 @@ FactoryGirl.define do
     collateral_exhausted true
     amount 12345
     repayment_duration({ months: 24 })
-    maturity_date 10.years.from_now
     turnover 12345
     trading_date 2.years.ago
     sic_code '12345'

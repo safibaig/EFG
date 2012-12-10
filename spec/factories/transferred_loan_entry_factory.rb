@@ -4,7 +4,6 @@ FactoryGirl.define do
     amount 50000
     repayment_duration({ months: 24 })
     repayment_frequency_id 3
-    maturity_date 6.months.from_now.to_date
 
     initialize_with {
       state_aid_calculation = FactoryGirl.create(:state_aid_calculation)

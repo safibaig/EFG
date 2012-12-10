@@ -108,7 +108,7 @@ describe Search do
 
   describe "#results" do
     let!(:lender) { FactoryGirl.create(:lender) }
-    let!(:loan1) { FactoryGirl.create(:loan, :offered, lender: lender) }
+    let!(:loan1) { FactoryGirl.create(:loan, :repaid, maturity_date: Date.new(2015, 11, 30), lender: lender) }
     let!(:user) { FactoryGirl.create(:lender_user, lender: lender) }
     let!(:loan2) {
       FactoryGirl.create(
