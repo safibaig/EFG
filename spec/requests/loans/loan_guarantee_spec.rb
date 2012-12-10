@@ -5,19 +5,20 @@ require 'spec_helper'
 describe 'loan guarantee' do
   let(:current_user) { FactoryGirl.create(:lender_user) }
   let(:loan) {
-    FactoryGirl.create(:loan, :offered,
+    FactoryGirl.create(:loan, :offered, :with_state_aid_calculation,
       lender: current_user.lender,
       repayment_duration: {years: 3},
       facility_letter_date: Date.new(2012, 10, 20)
     )
   }
+
   before { login_as(current_user, scope: :user) }
 
   it 'entering further loan information' do
     visit loan_path(loan)
     click_link 'Guarantee & Initial Draw'
 
-    fill_in_valid_loan_guarantee_details(loan, initial_draw_date: '30/11/2012')
+    fill_in_valid_loan_guarantee_details(initial_draw_date: '30/11/2012')
     click_button 'Submit'
 
     loan = Loan.last!
@@ -37,7 +38,7 @@ describe 'loan guarantee' do
     loan_change.amount_drawn.should == loan.amount
     loan_change.change_type_id.should == nil
     loan_change.created_by.should == current_user
-    loan_change.date_of_change.should == Date.current
+    loan_change.date_of_change.should == Date.new(2012, 11, 30)
     loan_change.modified_date.should == Date.current
     loan_change.seq.should == 0
   end

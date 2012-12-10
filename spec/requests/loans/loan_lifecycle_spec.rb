@@ -44,7 +44,7 @@ describe 'Loan lifecycle' do
 
       # Guarantee & Initial Draw
       click_link "Guarantee & Initial Draw"
-      fill_in_valid_loan_guarantee_details(loan)
+      fill_in_valid_loan_guarantee_details
       click_button "Submit"
       current_url.should == loan_url(loan)
 
