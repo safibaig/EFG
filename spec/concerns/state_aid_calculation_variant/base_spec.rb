@@ -8,10 +8,10 @@ describe StateAidCalculationVariant::Base do
   end
 
   describe ".to_param" do
-    it "raise a RuntimeError" do
+    it "raise a NotImplementedError" do
       expect {
         StateAidCalculationVariant::Base.to_param
-      }.to raise_error(RuntimeError, 'StateAidCalculationVariant::Base is the default')
+      }.to raise_error(NotImplementedError, 'StateAidCalculationVariant::Base is the default')
     end
   end
 end
