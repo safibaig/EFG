@@ -51,7 +51,6 @@ Please note that all the information within Facility Entry can be revised, howev
 
     <%= f.input :repayment_duration, as: :duration %>
     <%= f.input :repayment_frequency_id, collection: RepaymentFrequency.all, prompt: "Please select" %>
-    <%= f.input :maturity_date, as: :quick_date %>
 
     <% unless @transferred_loan_entry.legacy_loan? %>
       <%= simple_form_row t('simple_form.labels.loan_entry.sic_code'), @loan.sic_code %>

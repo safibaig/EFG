@@ -73,7 +73,6 @@ class InformationDeclaration < Prawn::Document
       [ row_description(:amount), @loan.amount.try(:format) ],
       [ row_description(:repayment_duration), @loan.repayment_duration.try(:format) ],
       [ row_description(:repayment_frequency_id), @loan.repayment_frequency.try(:name) ],
-      [ row_description(:maturity_date), @loan.maturity_date.try(:strftime, '%d-%m-%Y') ],
       [ row_description(:sic_code), @loan.sic_code ],
       [ row_description(:sic_desc), @loan.sic_desc ],
       [ row_description(:loan_category_id), @loan.loan_category.try(:name) ],

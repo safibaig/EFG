@@ -45,11 +45,6 @@ describe LoanEntry do
       loan_entry.should_not be_valid
     end
 
-    it "should be invalid without a maturity date" do
-      loan_entry.maturity_date = nil
-      loan_entry.should_not be_valid
-    end
-
     it "should be invalid without an interest rate" do
       loan_entry.interest_rate = ''
       loan_entry.should_not be_valid
@@ -214,24 +209,6 @@ describe LoanEntry do
       it "should require debtor book topup less than or equal to 30" do
         loan_entry.debtor_book_topup = 30.1
         loan_entry.should_not be_valid
-      end
-    end
-
-    context 'maturity_date' do
-      it "must be on or after the minimum number of loan repayment months, counted from today's date" do
-        loan_entry.maturity_date = 3.months.from_now - 1.day
-        loan_entry.should_not be_valid
-
-        loan_entry.maturity_date = 3.months.from_now
-        loan_entry.should be_valid
-      end
-
-      it "must be on or before the maximum number of loan repayment months, counted from today's date" do
-        loan_entry.maturity_date = 120.months.from_now + 1.day
-        loan_entry.should_not be_valid
-
-        loan_entry.maturity_date = 120.months.from_now
-        loan_entry.should be_valid
       end
     end
 

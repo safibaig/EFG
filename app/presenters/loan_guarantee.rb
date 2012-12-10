@@ -4,17 +4,18 @@ class LoanGuarantee
 
   transition from: Loan::Offered, to: Loan::Guaranteed, event: LoanEvent::Guaranteed
 
+  before_save :set_maturity_date
   after_save :create_initial_draw_change!
 
   attribute :received_declaration
   attribute :signed_direct_debit_received
   attribute :first_pp_received
-  attribute :maturity_date
+  attribute :repayment_duration, read_only: true
 
   attr_reader :initial_draw_date
   attr_accessible :initial_draw_date
 
-  validates_presence_of :initial_draw_date, :maturity_date
+  validates_presence_of :initial_draw_date
 
   validate :initial_draw_date_is_not_before_facility_letter_date, if: :initial_draw_date
 
@@ -35,6 +36,10 @@ class LoanGuarantee
   end
 
   private
+    def set_maturity_date
+      loan.maturity_date = initial_draw_date.advance(months: loan.repayment_duration.total_months, days: 1)
+    end
+
     def create_initial_draw_change!
       InitialDrawChange.create! do |initial_draw_change|
         initial_draw_change.amount_drawn = initial_draw_amount

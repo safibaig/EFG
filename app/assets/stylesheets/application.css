@@ -16,6 +16,7 @@
  *= require forms
  *= require header
  *= require loan_alerts
+ *= require loan_guarantee_form
  *= require loans
  *= require manage_users
  *= require reports

@@ -52,7 +52,6 @@ module RequestSpecHelpers
     fill_in 'loan_entry_non_validated_postcode', with: 'JF3 8HF'
     fill_in 'loan_entry_sortcode', with: '03-12-45'
     select RepaymentFrequency.find(3).name, from: 'loan_entry_repayment_frequency_id' # quarterly
-    fill_in 'loan_entry_maturity_date', with: Date.today.advance(months: 6).to_s(:screen)
 
     calculate_state_aid(loan)
 
@@ -85,12 +84,13 @@ module RequestSpecHelpers
   end
 
   # Loan Guarantee
-  def fill_in_valid_loan_guarantee_details
+  def fill_in_valid_loan_guarantee_details(fields = {})
+    fields.reverse_merge!(initial_draw_date: Date.today.to_s(:screen))
+
     choose 'loan_guarantee_received_declaration_true'
     choose 'loan_guarantee_signed_direct_debit_received_true'
     choose 'loan_guarantee_first_pp_received_true'
-    fill_in 'loan_guarantee_initial_draw_date', with: Date.today.to_s(:screen)
-    fill_in 'loan_guarantee_maturity_date', with: Date.today.advance(years: 10).to_s(:screen)
+    fill_in 'loan_guarantee_initial_draw_date', with: fields[:initial_draw_date]
   end
 
   # Loan Demand to Borrower

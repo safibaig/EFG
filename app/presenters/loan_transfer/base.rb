@@ -41,11 +41,11 @@ class LoanTransfer::Base
       new_loan.reference             = reference_class.new(loan_to_transfer.reference).increment
       new_loan.state                 = Loan::Incomplete
       new_loan.legacy_id             = nil
-      new_loan.sortcode              = ''
+      new_loan.sortcode              = nil
       new_loan.repayment_duration    = 0
       new_loan.repayment_frequency_id = nil
-      new_loan.maturity_date         = ''
-      new_loan.invoice_id            = ''
+      new_loan.maturity_date         = nil
+      new_loan.invoice_id            = nil
       new_loan.transferred_from_id   = loan_to_transfer.id
       new_loan.lending_limit         = lender.lending_limits.active.first
       new_loan.created_by            = modified_by
