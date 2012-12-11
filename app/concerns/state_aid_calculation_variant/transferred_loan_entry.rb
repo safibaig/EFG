@@ -1,7 +1,6 @@
-module StateAidCalculationVariant::TransferredLoanEntry
-  include StateAidCalculationVariant::Base
+class StateAidCalculationVariant::TransferredLoanEntry < StateAidCalculationVariant::Base
 
-  def self.to_param
+  def to_param
     'transferred_loan_entry'
   end
 
