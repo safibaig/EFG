@@ -1,19 +1,13 @@
-# See app/concerns/state_aid_calculation_variant/base.rb for documentation
-# for the following methods:
-#  * leave_state_aid_calculation_path
-#  * page_header
-#  * update_flash_message
 class StateAidCalculationsController < ApplicationController
   before_filter :verify_update_permission, only: [:edit, :update]
   before_filter :load_loan, only: [:edit, :update]
   before_filter :load_state_aid_calculation, only: [:edit, :update]
   before_filter :extend_variant, only: [:edit, :update]
 
-  # There are a number of variants (modules) for the
-  # StateAidCalculationsController.
+  # There are a number of variants for the StateAidCalculationsController.
   #
-  # They get extended onto the controller depending on the value of the
-  # :variant parameter to alter the behaviour.
+  # We initialize the appropriate one depending on the value of the :variant
+  # parameter to delegate to for certain behaviour.
   DEFAULT_VARIANT = StateAidCalculationVariant::Base
   VARIANTS = [
     StateAidCalculationVariant::LoanEntry,
