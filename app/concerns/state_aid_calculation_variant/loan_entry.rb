@@ -1,5 +1,5 @@
 class StateAidCalculationVariant::LoanEntry < StateAidCalculationVariant::Base
-  def to_param
+  def self.to_param
     'loan_entry'
   end
 

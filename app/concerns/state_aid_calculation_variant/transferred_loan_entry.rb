@@ -1,6 +1,5 @@
 class StateAidCalculationVariant::TransferredLoanEntry < StateAidCalculationVariant::Base
-
-  def to_param
+  def self.to_param
     'transferred_loan_entry'
   end
 

@@ -2,7 +2,7 @@ class StateAidCalculationVariant::Base
 
   include Rails.application.routes.url_helpers
 
-  def to_param
+  def self.to_param
     raise NotImplementedError, 'StateAidCalculationVariant::Base is the default'
   end
 
