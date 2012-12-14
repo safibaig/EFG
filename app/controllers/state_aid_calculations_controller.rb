@@ -7,12 +7,12 @@ class StateAidCalculationsController < ApplicationController
   #
   # We initialize the appropriate one depending on the value of the :variant
   # parameter to delegate to for certain behaviour.
-  DEFAULT_VARIANT = StateAidCalculationVariant::Base
   VARIANTS = [
     StateAidCalculationVariant::LoanEntry,
     StateAidCalculationVariant::LoanGuarantee,
     StateAidCalculationVariant::TransferredLoanEntry,
   ].index_by(&:to_param)
+  VARIANTS.default = StateAidCalculationVariant::Base
 
   def edit
   end
@@ -41,7 +41,7 @@ class StateAidCalculationsController < ApplicationController
   end
 
   def state_aid_calculator_variant
-    @state_aid_calculator_variant ||= (VARIANTS[params[:variant]] || DEFAULT_VARIANT).new
+    @state_aid_calculator_variant ||= VARIANTS[params[:variant]].new
   end
 
   helper_method :leave_state_aid_calculation_path
