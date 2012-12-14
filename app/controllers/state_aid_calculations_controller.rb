@@ -2,7 +2,6 @@ class StateAidCalculationsController < ApplicationController
   before_filter :verify_update_permission, only: [:edit, :update]
   before_filter :load_loan, only: [:edit, :update]
   before_filter :load_state_aid_calculation, only: [:edit, :update]
-  before_filter :extend_variant, only: [:edit, :update]
 
   # There are a number of variants for the StateAidCalculationsController.
   #
@@ -23,7 +22,7 @@ class StateAidCalculationsController < ApplicationController
     @state_aid_calculation.calc_type = StateAidCalculation::SCHEDULE_TYPE
 
     if @state_aid_calculation.save
-      flash[:info] = @state_aid_calculator_variant.update_flash_message(@state_aid_calculation)
+      flash[:info] = state_aid_calculator_variant.update_flash_message(@state_aid_calculation)
       redirect_to leave_state_aid_calculation_path(@loan)
     else
       render :edit
@@ -41,8 +40,8 @@ class StateAidCalculationsController < ApplicationController
     @state_aid_calculation.initial_draw_months ||= @loan.repayment_duration.total_months
   end
 
-  def extend_variant
-    @state_aid_calculator_variant = (VARIANTS[params[:variant]] || DEFAULT_VARIANT).new
+  def state_aid_calculator_variant
+    @state_aid_calculator_variant ||= (VARIANTS[params[:variant]] || DEFAULT_VARIANT).new
   end
 
   helper_method :leave_state_aid_calculation_path
@@ -53,10 +52,10 @@ class StateAidCalculationsController < ApplicationController
   end
 
   def page_header
-    @state_aid_calculator_variant.page_header
+    state_aid_calculator_variant.page_header
   end
 
   def leave_state_aid_calculation_path(loan)
-    @state_aid_calculator_variant.leave_state_aid_calculation_path(loan)
+    state_aid_calculator_variant.leave_state_aid_calculation_path(loan)
   end
 end
