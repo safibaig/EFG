@@ -15,7 +15,7 @@ describe 'user login' do
 
       # correct authentication details allows login
       # but all pages redirect to page informing user their account is locked
-      submit_sign_in_form user.username, 'password'
+      submit_sign_in_form user.username, user.password
       page.should have_content('Your account has been locked')
       page.current_path.should == account_locked_path
 

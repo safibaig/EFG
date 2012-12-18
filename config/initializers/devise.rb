@@ -216,6 +216,9 @@ Devise.setup do |config|
   #   manager.default_strategies(scope: :user).unshift :some_external_strategy
   # end
 
+  # Custom Validators for Devise
+  require 'devise/models/strengthened'
+
   Warden::Manager.after_authentication do |user,auth,opts|
     EFG.stats_collector.increment("logins.success")
   end

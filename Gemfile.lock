@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/alphagov/passphrase_entropy.git
+  revision: 70c37daeb0c85afe9832ad4231cc5c548efb3184
+  specs:
+    passphrase_entropy (0.1.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -307,6 +313,7 @@ DEPENDENCIES
   money (= 5.0.0)
   mysql2 (= 0.3.11)
   parallel_tests (= 0.9.3)
+  passphrase_entropy!
   pdf-reader (= 1.1.1)
   plek
   powder (= 0.1.8)

@@ -180,12 +180,12 @@ describe 'Loan lifecycle' do
 
   def login_as_lender_user
     click_link 'Logout' if page.has_content?('Logout')
-    submit_sign_in_form(lender_user.username, 'password')
+    submit_sign_in_form(lender_user.username, lender_user.password)
   end
 
   def login_as_cfe_user
     click_link 'Logout' if page.has_content?('Logout')
-    submit_sign_in_form(cfe_user.username, 'password')
+    submit_sign_in_form(cfe_user.username, cfe_user.password)
   end
 
   def change_loan_business_name(loan)

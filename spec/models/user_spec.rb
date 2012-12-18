@@ -37,4 +37,15 @@ describe User do
 
     old_encrypted_password.should == user.encrypted_password # encrypted_password has not been changed
   end
+
+  it "requires passwords to be suitably strong" do
+    user = FactoryGirl.build(:user, :password => "aaaaaa")
+    user.valid?.should == true
+    user.save!
+
+    # REVIEW: slightly hokey - we don't validate the password for new records. Not sure if we want to revisit that?
+    user.first_name = user.last_name
+    user.valid?.should == false
+    user.errors[:password].should == ["not strong enough. It scored 3. It must score at least 10."]
+  end
 end

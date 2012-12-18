@@ -59,9 +59,11 @@ describe "User audit" do
       reset_password_sent_at: 1.minute.ago
     )
 
+    strong_password = 'defADSFAEWRE23402398423%'
+
     visit edit_user_password_path(current_user, :reset_password_token => current_user.reset_password_token)
-    fill_in "user_password", with: 'password'
-    fill_in "user_password_confirmation", with: 'password'
+    fill_in "user_password", with: strong_password
+    fill_in "user_password_confirmation", with: strong_password
 
     expect {
       click_button 'Change Password'
