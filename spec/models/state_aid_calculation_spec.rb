@@ -87,12 +87,12 @@ describe StateAidCalculation do
       end
     end
 
-    it "requires that the sum of initial_draw_amount, second_draw_amount, third_draw_amount, fourth_draw_amount equal the loan amount" do
+    it "invalidates loans with an amount greater than the sum of the draw amounts" do
       loan.amount = Money.new(10_000_00)
-      state_aid_calculation.initial_draw_amount = Money.new(6_000_00)
-      state_aid_calculation.second_draw_amount = Money.new(2_000_00)
+      state_aid_calculation.initial_draw_amount = Money.new(5_000_00)
+      state_aid_calculation.second_draw_amount = Money.new(2_500_00)
       state_aid_calculation.third_draw_amount = Money.new(2_000_00)
-      state_aid_calculation.fourth_draw_amount = Money.new(2_000_00)
+      state_aid_calculation.fourth_draw_amount = Money.new(1_000_01)
 
       state_aid_calculation.should_not be_valid
     end
@@ -100,7 +100,7 @@ describe StateAidCalculation do
     it "validates the loan amount correctly with nil values for draw amounts" do
       loan = state_aid_calculation.loan
       loan.amount = Money.new(10_000_00)
-      state_aid_calculation.initial_draw_amount = Money.new(6_000_00)
+      state_aid_calculation.initial_draw_amount = Money.new(15_000_00)
       state_aid_calculation.second_draw_amount = nil
       state_aid_calculation.third_draw_amount = nil
       state_aid_calculation.fourth_draw_amount = nil
@@ -161,10 +161,10 @@ describe StateAidCalculation do
         end
       end
 
-      it "is valid with differing values for loan amount and total draw amounth" do
+      it "is invalid with draw amounts greater than the loan amount" do
         loan.amount = 10_000_00
-        rescheduled_state_aid_calculation.initial_draw_amount = 10_00
-        rescheduled_state_aid_calculation.should be_valid
+        rescheduled_state_aid_calculation.initial_draw_amount = 15_000_00
+        rescheduled_state_aid_calculation.should_not be_valid
       end
     end
   end
