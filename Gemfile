@@ -19,7 +19,7 @@ gem 'plek'
 gem 'prawn', '0.12.0'
 gem 'progressbar', '0.11.0'
 gem 'rack-ssl-enforcer'
-gem 'rails', '3.2.9'
+gem 'rails', '~> 3.2.11'
 gem 'simple_form', '2.0.2'
 gem 'statsd-ruby', '1.0.0'
 gem 'twitter-bootstrap-rails', '2.0.7'
@@ -43,7 +43,7 @@ end
 group :development, :test do
   gem 'brakeman', '1.7.0'
   gem 'ci_reporter', '1.7.0'
-  gem 'debugger', '1.1.4'
+  gem 'debugger', '~> 1.1.4'
   gem 'rspec-rails', '2.10.1'
   gem 'simplecov-rcov', '0.2.3'
 end
