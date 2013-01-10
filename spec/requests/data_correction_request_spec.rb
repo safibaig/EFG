@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'data correction' do
   let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
   before { login_as(current_user, scope: :user) }
-  let(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, sortcode: '12-34-56') }
+  let(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, amount: Money.new(5_000_00)) }
 
   describe 'creation' do
     [Loan::Guaranteed, Loan::LenderDemand, Loan::Demanded].each do |state|
@@ -22,19 +22,19 @@ describe 'data correction' do
     it do
       navigate_to_data_correction_form
 
-      fill_in 'sortcode', '65-43-21'
+      fill_in 'amount', '6000'
       click_button 'Submit'
 
       data_correction = loan.data_corrections.last!
-      data_correction.old_sortcode.should == '12-34-56'
-      data_correction.sortcode.should == '65-43-21'
+      data_correction.old_amount.should == Money.new(5_000_00)
+      data_correction.amount.should == Money.new(6_000_00)
       data_correction.change_type_id.should == '9'
       data_correction.date_of_change.should == Date.current
       data_correction.modified_date.should == Date.current
       data_correction.created_by.should == current_user
 
       loan.reload
-      loan.sortcode.should == '65-43-21'
+      loan.amount.should == Money.new(6_000_00)
       loan.modified_by.should == current_user
     end
 

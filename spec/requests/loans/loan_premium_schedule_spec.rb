@@ -28,7 +28,7 @@ describe 'loan entry' do
     FactoryGirl.create(
       :rescheduled_state_aid_calculation,
       loan: loan,
-      initial_draw_amount: loan.amount,
+      initial_draw_amount: Money.new(100_000_00),
       initial_draw_months: 120
     )
 

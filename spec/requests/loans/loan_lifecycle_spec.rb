@@ -191,13 +191,14 @@ describe 'Loan lifecycle' do
   end
 
   def make_loan_data_correction(loan)
-    new_sortcode = '09-87-43'
+    new_amount = loan.amount + Money.new(5_000_00)
 
     click_link "Data Correction"
-    fill_in "data_correction_sortcode", with: new_sortcode
+    fill_in "data_correction_amount", with: new_amount.to_s
     click_button "Submit"
 
     current_url.should == loan_url(loan)
+    page.should have_content(new_amount.format)
   end
 
   def make_demand_to_borrower(loan)
