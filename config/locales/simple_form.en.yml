@@ -112,6 +112,7 @@ en:
         signed_direct_debit_received: 'Has a completed Direct Debit Mandate signed by the Applicant been received?'
         initial_draw_date: 'On what date was the initial draw of funds made?'
         initial_draw_amount: 'What was the value of the initial draw?'
+        maturity_date: Maturity Date
 
       state_aid_calculation:
         initial_draw_year: 'What is the expected year of the initial draw?'
