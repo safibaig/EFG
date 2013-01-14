@@ -10,7 +10,7 @@ gem 'devise', '2.1.0'
 gem "devise-encryptable", "0.1.1"
 gem 'exception_notification', '2.5.2'
 gem 'jquery-rails', "1.0.19"
-gem 'lograge', '0.0.6'
+gem 'lograge', '0.1.2'
 gem 'money', '5.0.0'
 gem 'mysql2', '0.3.11'
 gem "parallel"
@@ -19,7 +19,7 @@ gem 'plek'
 gem 'prawn', '0.12.0'
 gem 'progressbar', '0.11.0'
 gem 'rack-ssl-enforcer'
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.11'
 gem 'simple_form', '2.0.2'
 gem 'statsd-ruby', '1.0.0'
 gem 'twitter-bootstrap-rails', '2.0.7'
