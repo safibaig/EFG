@@ -55,7 +55,7 @@ class StateAidLetter < Prawn::Document
       ["Loan Reference Number:", @loan.reference || @loan.id],
       ["Loan Amount (£):", @loan.amount.format],
       ["Loan Term (Months):", @loan.repayment_duration.total_months],
-      ["Anticipated drawdown date:", "tbc"]
+      ["Draw Date:", loan_draw_date]
     ]
 
     table(data) do
@@ -80,4 +80,11 @@ class StateAidLetter < Prawn::Document
     text I18n.t('pdfs.state_aid_letter.body_text2')
   end
 
+  def loan_draw_date
+    if @loan.initial_draw_change
+      @loan.initial_draw_change.date_of_change.to_s(:screen)
+    else
+      'TBC'
+    end
+  end
 end
