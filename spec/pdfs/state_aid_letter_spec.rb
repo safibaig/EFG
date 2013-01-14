@@ -31,7 +31,6 @@ describe StateAidLetter do
       pdf_content.should include(loan.reference)
       pdf_content.should include(loan.amount.format)
       pdf_content.should include(loan.repayment_duration.total_months.to_s)
-      pdf_content.should include("tbc")
     end
 
     it "should contain body text" do
@@ -43,6 +42,24 @@ describe StateAidLetter do
       pdf_content.should include(I18n.t('pdfs.state_aid_letter.state_aid', amount: loan.state_aid))
     end
 
+    context "with an initial draw date" do
+      let(:initial_draw_change) { FactoryGirl.build(:initial_draw_change, date_of_change: Date.new(2013, 1, 14))}
+      let(:loan) { FactoryGirl.build(:loan, :guaranteed, initial_draw_change: initial_draw_change) }
+
+      it "contains the draw date" do
+        pdf_content.should include('Draw Date:')
+        pdf_content.should include('14/01/2013')
+      end
+    end
+
+    context "without an initial draw date" do
+      let(:loan) { FactoryGirl.build(:loan, :offered) }
+
+      it "contains the draw date" do
+        pdf_content.should include('Draw Date:')
+        pdf_content.should include('TBC')
+      end
+    end
   end
 
 end
