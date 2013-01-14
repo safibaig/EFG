@@ -13,6 +13,8 @@ class StateAidLetter < Prawn::Document
 
   private
 
+  attr_reader :loan
+
   def build
     letterhead
     address
@@ -31,7 +33,7 @@ class StateAidLetter < Prawn::Document
   end
 
   def logo_image_path
-    Rails.root + "public/system/logos/#{@loan.lender.organisation_reference_code.upcase}.jpg"
+    Rails.root.join('public', 'system', 'logos', "#{loan.lender.organisation_reference_code.upcase}.jpg")
   end
 
   def address
@@ -50,11 +52,11 @@ class StateAidLetter < Prawn::Document
 
   def loan_details
     data = [
-      ["Borrower:", @loan.business_name || '<undefined>'],
-      ["Lender:", @loan.lender.name],
-      ["Loan Reference Number:", @loan.reference || @loan.id],
-      ["Loan Amount (£):", @loan.amount.format],
-      ["Loan Term (Months):", @loan.repayment_duration.total_months],
+      ["Borrower:", loan.business_name || '<undefined>'],
+      ["Lender:", loan.lender.name],
+      ["Loan Reference Number:", loan.reference || loan.id],
+      ["Loan Amount (£):", loan.amount.format],
+      ["Loan Term (Months):", loan.repayment_duration.total_months],
       ["Draw Date:", loan_draw_date]
     ]
 
@@ -67,7 +69,7 @@ class StateAidLetter < Prawn::Document
   end
 
   def state_aid_text
-    text I18n.t('pdfs.state_aid_letter.state_aid', amount: @loan.state_aid)
+    text I18n.t('pdfs.state_aid_letter.state_aid', amount: loan.state_aid)
     move_down 20
   end
 
@@ -81,8 +83,8 @@ class StateAidLetter < Prawn::Document
   end
 
   def loan_draw_date
-    if @loan.initial_draw_change
-      @loan.initial_draw_change.date_of_change.to_s(:screen)
+    if loan.initial_draw_change
+      loan.initial_draw_change.date_of_change.to_s(:screen)
     else
       'TBC'
     end
