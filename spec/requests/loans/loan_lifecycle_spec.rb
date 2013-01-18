@@ -191,7 +191,7 @@ describe 'Loan lifecycle' do
   def change_loan_business_name(loan)
     click_link "Change Amount or Terms"
     fill_in 'loan_change_date_of_change', with: Date.today.to_s(:screen)
-    select ChangeType.find('1').name, from: 'loan_change_change_type_id' # change business name
+    select ChangeType::BusinessName.name, from: 'loan_change_change_type_id' # change business name
     fill_in 'loan_change_business_name', with: 'New Business Name'
     click_button 'Submit'
 
@@ -220,7 +220,7 @@ describe 'Loan lifecycle' do
   def satisfy_lender_demand(loan)
     click_link "Change Amount or Terms"
     fill_in 'loan_change_date_of_change', with: Date.today.to_s(:screen)
-    select ChangeType.find('5').name, from: 'loan_change_change_type_id' # lender demand satisfied
+    select ChangeType::LenderDemandSatisfied.name, from: 'loan_change_change_type_id' # lender demand satisfied
     fill_in 'loan_change_lump_sum_repayment', with: '10000'
     click_button 'Submit'
 

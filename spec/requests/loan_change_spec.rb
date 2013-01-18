@@ -38,7 +38,7 @@ describe 'loan change' do
   it 'requires recalculation of state aid' do
     fill_in_valid_details
     # choose change type that requires state aid recalculation
-    select ChangeType.find('2').name, from: 'loan_change_change_type_id'
+    select ChangeType::CapitalRepaymentHoliday.name, from: 'loan_change_change_type_id'
     click_button 'Submit'
 
     # confirm reschedule validation error is shown
@@ -76,7 +76,7 @@ describe 'loan change' do
 
     # verify previous values are remembered when returning to loan change form
     page.find('#loan_change_date_of_change').value.should == '01/06/2012'
-    page.find('#loan_change_change_type_id').value.should == '1'
+    page.find('#loan_change_change_type_id').value.should == ChangeType::BusinessName.id
     page.find('#loan_change_amount_drawn').value.should == '15000.00'
     page.find('#loan_change_business_name').value.should == 'updated'
   end
@@ -85,7 +85,7 @@ describe 'loan change' do
 
     def fill_in_valid_details
       fill_in 'loan_change_date_of_change', with: '1/6/12'
-      select ChangeType.find('1').name, from: 'loan_change_change_type_id'
+      select ChangeType::BusinessName.name, from: 'loan_change_change_type_id'
       fill_in 'loan_change_amount_drawn', with: '£15,000'
       fill_in 'loan_change_business_name', with: 'updated'
     end
@@ -93,7 +93,7 @@ describe 'loan change' do
     def verify
       loan_change = loan.loan_changes.last
       loan_change.date_of_change.should == Date.new(2012, 6, 1)
-      loan_change.change_type.should == ChangeType.find('1')
+      loan_change.change_type.should == ChangeType::BusinessName
       loan_change.amount_drawn.should == Money.new(15_000_00)
       loan_change.old_business_name.should == 'ACME'
       loan_change.business_name.should == 'updated'

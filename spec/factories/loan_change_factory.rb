@@ -3,7 +3,7 @@ FactoryGirl.define do
     loan
     created_by factory: :user
     date_of_change '1/2/12'
-    change_type_id '1'
+    change_type_id ChangeType::BusinessName.id
     modified_date '3/4/12'
     business_name 'ACME'
 
