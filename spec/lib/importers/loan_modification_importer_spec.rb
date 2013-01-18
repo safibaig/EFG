@@ -81,7 +81,7 @@ describe LoanModificationImporter do
       loan_change.amount_drawn.should == nil
       loan_change.modified_date.should == Date.new(2006, 8, 31)
       loan_change.modified_user.should == 'abc'
-      loan_change.change_type_id.should == '1'
+      loan_change.change_type_id.should == ChangeType::BusinessName.id
       loan_change.ar_timestamp.should == Date.new(2006, 8, 31)
       loan_change.ar_insert_timestamp.should == Date.new(2006, 8, 31)
       loan_change.amount.should == nil
@@ -121,7 +121,7 @@ describe LoanModificationImporter do
       data_correction.amount_drawn.should == nil
       data_correction.modified_date.should == Date.new(2006, 8, 31)
       data_correction.modified_user.should == 'xyz'
-      data_correction.change_type_id.should == '9'
+      data_correction.change_type_id.should == ChangeType::DataCorrection.id
       data_correction.ar_timestamp.should == Date.new(2006, 8, 31)
       data_correction.ar_insert_timestamp.should == Date.new(2006, 8, 31)
       data_correction.amount.should == nil
