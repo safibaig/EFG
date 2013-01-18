@@ -7,7 +7,7 @@ describe 'LoanModifications' do
   before { login_as(current_user, scope: :user) }
 
   let(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_user.lender, business_name: 'Foo', sortcode: '123456') }
-  let!(:loan_change) { FactoryGirl.create(:loan_change, loan: loan, change_type_id: '1', business_name: 'Bar') }
+  let!(:loan_change) { FactoryGirl.create(:loan_change, loan: loan, change_type_id: ChangeType::BusinessName.id, business_name: 'Bar') }
   let!(:data_correction) { FactoryGirl.create(:data_correction, loan: loan, sortcode: '654321') }
 
   describe 'index' do
@@ -49,7 +49,7 @@ describe 'LoanModifications' do
     end
 
     it 'includes LoanChange#lump_sum_repayment' do
-      FactoryGirl.create(:loan_change, :reschedule, loan: loan, change_type_id: '6', lump_sum_repayment: Money.new(1_234_56))
+      FactoryGirl.create(:loan_change, :reschedule, loan: loan, change_type_id: ChangeType::LumpSumRepayment.id, lump_sum_repayment: Money.new(1_234_56))
 
       click_link 'Loan Changes'
       click_link 'Lump sum repayment'

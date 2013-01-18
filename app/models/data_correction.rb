@@ -113,7 +113,7 @@ class DataCorrection < LoanModification
     end
 
     def set_change_type_id
-      self.change_type_id = '9'
+      self.change_type_id = ChangeType::DataCorrection.id
     end
 
     def set_all_attributes

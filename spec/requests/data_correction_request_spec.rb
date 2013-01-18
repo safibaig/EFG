@@ -28,7 +28,7 @@ describe 'data correction' do
       data_correction = loan.data_corrections.last!
       data_correction.old_amount.should == Money.new(5_000_00)
       data_correction.amount.should == Money.new(6_000_00)
-      data_correction.change_type_id.should == '9'
+      data_correction.change_type_id.should == ChangeType::DataCorrection.id
       data_correction.date_of_change.should == Date.current
       data_correction.modified_date.should == Date.current
       data_correction.created_by.should == current_user
@@ -56,7 +56,7 @@ describe 'data correction' do
         data_correction = loan.data_corrections.last!
         data_correction.old_dti_demand_out_amount.should == Money.new(10_000_00)
         data_correction.dti_demand_out_amount.should == Money.new(8_000_00)
-        data_correction.change_type_id.should == '9'
+        data_correction.change_type_id.should == ChangeType::DataCorrection.id
         data_correction.date_of_change.should == Date.current
         data_correction.modified_date.should == Date.current
         data_correction.created_by.should == current_user
@@ -77,7 +77,7 @@ describe 'data correction' do
         data_correction = loan.data_corrections.last!
         data_correction.old_dti_demand_interest.should == Money.new(1_000_00)
         data_correction.dti_demand_interest.should == Money.new(500_00)
-        data_correction.change_type_id.should == '9'
+        data_correction.change_type_id.should == ChangeType::DataCorrection.id
         data_correction.date_of_change.should == Date.current
         data_correction.modified_date.should == Date.current
         data_correction.created_by.should == current_user
@@ -100,7 +100,7 @@ describe 'data correction' do
         data_correction = loan.data_corrections.last!
         data_correction.old_dti_demand_interest.should == Money.new(1_000_00)
         data_correction.dti_demand_interest.should == Money.new(500_00)
-        data_correction.change_type_id.should == '9'
+        data_correction.change_type_id.should == ChangeType::DataCorrection.id
         data_correction.date_of_change.should == Date.current
         data_correction.modified_date.should == Date.current
         data_correction.created_by.should == current_user

@@ -14,7 +14,7 @@ describe LoanChange do
     end
 
     it 'must have a valid change_type_id' do
-      loan_change.change_type_id = '9'
+      loan_change.change_type_id = ChangeType::DataCorrection.id
       loan_change.should_not be_valid
       loan_change.change_type_id = 'zzz'
       loan_change.should_not be_valid
@@ -33,7 +33,7 @@ describe LoanChange do
     context 'change types' do
       context '1 - business name' do
         it 'requires a business_name' do
-          loan_change.change_type_id = '1'
+          loan_change.change_type_id = ChangeType::BusinessName.id
           loan_change.business_name = ''
           loan_change.should_not be_valid
           loan_change.business_name = 'ACME'
@@ -43,7 +43,7 @@ describe LoanChange do
 
       context '5 - Lender demand satisfied' do
         before do
-          loan_change.change_type_id = '5'
+          loan_change.change_type_id = ChangeType::LenderDemandSatisfied.id
           loan_change.amount_drawn = ''
           loan_change.lump_sum_repayment = ''
           loan_change.maturity_date = ''
@@ -73,7 +73,7 @@ describe LoanChange do
         let(:loan_change) { FactoryGirl.build(:loan_change, :reschedule) }
 
         before(:each) do
-          loan_change.change_type_id = '6'
+          loan_change.change_type_id = ChangeType::LumpSumRepayment.id
           loan_change.loan.stub!(:cumulative_drawn_amount).and_return(Money.new(30000_00))
         end
 
@@ -96,7 +96,7 @@ describe LoanChange do
 
       context '7 - Record agreed draw' do
         before(:each) do
-          loan_change.change_type_id = '7'
+          loan_change.change_type_id = ChangeType::RecordAgreedDraw.id
         end
 
         it 'requires a amount_drawn' do
@@ -122,7 +122,7 @@ describe LoanChange do
         let(:loan_change) { FactoryGirl.build(:loan_change, :reschedule, loan: loan) }
 
         it 'requires a maturity_date' do
-          loan_change.change_type_id = 'a'
+          loan_change.change_type_id = ChangeType::DecreaseTerm.id
           loan_change.maturity_date = ''
           loan_change.should_not be_valid
           loan_change.maturity_date = Date.new(2020)
@@ -132,7 +132,7 @@ describe LoanChange do
 
       # 4 - extend term
       # a - decrease term
-      %w(4 a).each do |change_type_id|
+     [ChangeType::ExtendTerm.id, ChangeType::DecreaseTerm.id].each do |change_type_id|
         context change_type_id do
           let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
 
@@ -205,7 +205,7 @@ describe LoanChange do
 
     context 'when state aid recalculation is required' do
       it 'should require state aid calculation attributes' do
-        loan_change.change_type_id = '2'
+        loan_change.change_type_id = ChangeType::CapitalRepaymentHoliday.id
         loan_change.should_not be_valid
         loan_change.premium_schedule_attributes = FactoryGirl.attributes_for(
           :rescheduled_premium_schedule, loan: loan_change.loan
@@ -243,7 +243,7 @@ describe LoanChange do
     context 'change types' do
       context '1 - business name' do
         before do
-          loan_change.change_type_id = '1'
+          loan_change.change_type_id = ChangeType::BusinessName.id
           loan_change.business_name = 'Foo'
         end
 
@@ -338,7 +338,7 @@ describe LoanChange do
 
     context 'when state aid recalculation is required' do
       it 'creates new state aid calculation for the Loan' do
-        loan_change.change_type_id = '2'
+        loan_change.change_type_id = ChangeType::CapitalRepaymentHoliday.id
 
         loan_change.premium_schedule_attributes = FactoryGirl.attributes_for(
           :rescheduled_premium_schedule, loan: loan
@@ -350,7 +350,7 @@ describe LoanChange do
       end
 
       it 'does not update the Loan if the state aid calculation is not valid' do
-        loan_change.change_type_id = '2'
+        loan_change.change_type_id = ChangeType::CapitalRepaymentHoliday.id
         loan_change.premium_schedule_attributes = {}
         loan_change.save_and_update_loan.should == false
 
@@ -375,14 +375,21 @@ describe LoanChange do
 
   describe "state aid recalculation" do
 
-    %w(2 3 4 6 8 a).each do |change_type_id|
+    [
+      ChangeType::CapitalRepaymentHoliday.id,
+      ChangeType::ChangeRepayments.id,
+      ChangeType::ExtendTerm.id,
+      ChangeType::LumpSumRepayment.id,
+      ChangeType::ReprofileDraws.id,
+      ChangeType::DecreaseTerm.id,
+    ].each do |change_type_id|
       it "should be required when change type ID is #{change_type_id}" do
         loan_change = FactoryGirl.build(:loan_change, change_type_id: change_type_id)
         loan_change.requires_state_aid_recalculation?.should be_true, "Expected true for change type ID #{change_type_id}"
       end
     end
 
-    %w(1 7).each do |change_type_id|
+    [ChangeType::BusinessName.id, ChangeType::RecordAgreedDraw.id].each do |change_type_id|
       it "should not be required when change type ID is #{change_type_id}" do
         loan_change = FactoryGirl.build(:loan_change, change_type_id: change_type_id)
         loan_change.requires_state_aid_recalculation?.should be_false, "Expected false for change type ID #{change_type_id}"

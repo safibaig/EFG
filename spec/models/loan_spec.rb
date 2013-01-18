@@ -252,7 +252,7 @@ describe Loan do
 
     it 'sums amount_drawn' do
       FactoryGirl.create(:initial_draw_change, loan: loan, amount_drawn: Money.new(123_45))
-      FactoryGirl.create(:loan_change, loan: loan, amount_drawn: Money.new(678_90), change_type_id: '7')
+      FactoryGirl.create(:loan_change, loan: loan, amount_drawn: Money.new(678_90), change_type_id: ChangeType::RecordAgreedDraw.id)
 
       loan.cumulative_drawn_amount.should == Money.new(802_35)
     end
@@ -306,7 +306,7 @@ describe Loan do
 
     it 'returns loan amount minus cumulative amount drawn' do
       FactoryGirl.create(:initial_draw_change, loan: loan, amount_drawn: Money.new(123_45))
-      FactoryGirl.create(:loan_change, loan: loan, amount_drawn: Money.new(678_90), change_type_id: '7')
+      FactoryGirl.create(:loan_change, loan: loan, amount_drawn: Money.new(678_90), change_type_id: ChangeType::RecordAgreedDraw.id)
 
       loan.amount_not_yet_drawn.should == loan.amount - Money.new(802_35)
     end
