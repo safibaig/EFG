@@ -12,7 +12,9 @@ class LoanChange < LoanModification
   validate :state_aid_recalculated, if: :requires_state_aid_recalculation?
 
   attr_accessible :amount_drawn, :business_name, :change_type_id,
-    :date_of_change, :lump_sum_repayment, :maturity_date
+    :date_of_change, :lump_sum_repayment, :repayment_duration
+
+  attr_readonly :maturity_date
 
   def change_type
     ChangeType.find(change_type_id)

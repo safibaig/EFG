@@ -16,9 +16,9 @@ module RequestSpecHelpers
     state_change.modified_by.should == user
   end
 
-  def fill_in_duration_input(attribute, years, months)
-    fill_in "loan_eligibility_check_#{attribute}_years", with: years
-    fill_in "loan_eligibility_check_#{attribute}_months", with: months
+  def fill_in_duration_input(model, attribute, years, months)
+    fill_in "#{model}_#{attribute}_years", with: years
+    fill_in "#{model}_#{attribute}_months", with: months
   end
 
   # Eligibility Check
@@ -29,7 +29,7 @@ module RequestSpecHelpers
     choose 'loan_eligibility_check_collateral_exhausted_true'
     fill_in 'loan_eligibility_check_amount', with: '50000.89'
     select lender.lending_limits.first.name, from: 'loan_eligibility_check_lending_limit_id'
-    fill_in_duration_input 'repayment_duration', 2, 6
+    fill_in_duration_input 'loan_eligibility_check', 'repayment_duration', 2, 6
     fill_in 'loan_eligibility_check_turnover', with: '1234567.89'
     fill_in 'loan_eligibility_check_trading_date', with: '31/1/2012'
     select_option_value sic_code.code, from: 'loan_eligibility_check_sic_code'

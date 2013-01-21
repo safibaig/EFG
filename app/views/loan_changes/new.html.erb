@@ -12,8 +12,6 @@
 
 <p>When such changes are made a new Premium Payment Schedule must be generated to reflect the new repayment profile of the loan. This will be delivered automatically to the Premium Collection Agent via the Web Portal.</p>
 
-<p><span class="label label-important">IMPORTANT</span> If the change involves defining a new Maturity Date it is important that this is recorded in the 'New Maturity Date' field.</p>
-
 <hr>
 
 <%= simple_form_for(@loan_change, url: loan_loan_changes_path(@loan), html: { class: 'form-horizontal form-loan-change' }) do |f| %>
@@ -21,20 +19,27 @@
 
   <%= state_aid_calculation_hidden_fields(params[:state_aid_calculation]) %>
 
-  <%= f.input :date_of_change, as: :quick_date %>
-  <%= f.input :change_type_id, as: :select, collection: ChangeType.for_loan_change, prompt: 'Please select' %>
+  <fieldset>
+    <%= f.input :date_of_change, as: :quick_date %>
+    <%= f.input :change_type_id, as: :select, collection: ChangeType.for_loan_change, prompt: 'Please select' %>
+  </fieldset>
 
-  <%= simple_form_row 'Cumulative amount drawn against this facility prior to this change', @loan.cumulative_drawn_amount.format %>
-  <%= f.input :amount_drawn, as: :currency %>
-  <%= f.input :lump_sum_repayment, as: :currency %>
+  <fieldset>
+    <%= simple_form_row 'Cumulative amount drawn against this facility prior to this change', @loan.cumulative_drawn_amount.format %>
+    <%= f.input :amount_drawn, as: :currency %>
+    <%= f.input :lump_sum_repayment, as: :currency %>
+  </fieldset>
 
-  <%= simple_form_row 'Current business name', @loan.business_name %>
-  <%= f.input :business_name %>
+  <fieldset>
+    <%= simple_form_row 'Current business name', @loan.business_name %>
+    <%= f.input :business_name %>
+  </fieldset>
 
-  <%= simple_form_row 'Date of initial draw of funds', @loan.initial_draw_change.date_of_change.to_s(:screen) %>
-  <%= simple_form_row 'Current maturity date', @loan.maturity_date.to_s(:screen) %>
-
-  <%= f.input :maturity_date, as: :quick_date %>
+  <fieldset>
+    <%= simple_form_row 'Date of initial draw of funds', @loan.initial_draw_change.date_of_change.to_s(:screen) %>
+    <%= simple_form_row 'Initial Loan Term', @loan.repayment_duration.format %>
+    <%= f.input :repayment_duration, as: :duration %>
+  </fieldset>
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Submit', class: 'btn-primary', data: { 'disable-with' => 'Submitting...' } %>

@@ -81,6 +81,32 @@ describe 'loan change' do
     page.find('#loan_change_business_name').value.should == 'updated'
   end
 
+  specify 'changing the repayment duration' do
+    fill_in 'loan_change_date_of_change', with: '21/01/2013'
+    select ChangeType::ExtendTerm.name, from: 'loan_change_change_type_id'
+    fill_in_duration_input 'loan_change', 'repayment_duration', 4, 6
+
+    # confirm reschedule validation error is shown
+    click_button 'Submit'
+    page.should have_content('please reschedule')
+
+    click_button "Reschedule"
+    premium_cheque_date = Date.today.advance(months: 1).strftime('%m/%Y')
+    fill_in "state_aid_calculation_premium_cheque_month", with: premium_cheque_date
+    fill_in "state_aid_calculation_initial_draw_amount", with: "30000"
+    fill_in "state_aid_calculation_initial_draw_months", with: "18"
+
+    loan_change = loan.loan_changes.last
+    loan_change.date_of_change.should == Date.new(2013, 1, 21)
+    loan_change.change_type.should == ChangeType::ExtendTerm
+    loan_change.old_repayment_duration.should == MonthDuration.new(years: 2, months: 0)
+    loan_change.repayment_duration.should == MonthDuration.new(years: 4, months: 6)
+
+    loan.reload
+    loan.repayment_duration.should == MonthDuration.new(years: 4, months: 6)
+    loan.modified_by.should == current_user
+  end
+
   private
 
     def fill_in_valid_details

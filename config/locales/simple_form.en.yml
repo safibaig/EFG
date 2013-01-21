@@ -45,6 +45,7 @@ en:
         lump_sum_repayment: 'What is the amount of the lump sum repayment?'
         business_name: 'What is the new business name?'
         maturity_date: 'What is the new maturity date?'
+        repayment_duration: 'New Loan Term'
 
       data_correction:
         amount: 'Corrected Loan Amount'
