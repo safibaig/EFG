@@ -33,8 +33,6 @@
           <th>Loan Reference</th>
           <th>Name</th>
           <th>Date Demanded</th>
-          <th>Outstanding Balance</th>
-          <th>Eligible Outstanding Interest</th>
           <th>Amount of Claim (Guaranteed Percentage)</th>
         </tr>
       </thead>
@@ -45,10 +43,8 @@
             <td><%= "*" if loan.corrected? %></td>
             <td><%= loan.reference %></td>
             <td><%= loan.business_name %></td>
-            <td><%= loan.dti_demanded_on %></td>
-            <td><%= loan.dti_demand_outstanding %></td>
-            <td><%= loan.dti_interest %></td>
-            <td><%= loan.dti_amount_claimed %></td>
+            <td><%= loan.dti_demanded_on.to_s(:screen) %></td>
+            <td><%= loan.dti_amount_claimed.try(:format) %></td>
           </tr>
         <% end %>
       </tbody>
