@@ -1,10 +1,14 @@
 FactoryGirl.define do
-  factory :invoice do
+  factory :invoice_received_presenter do
     lender
-    association :created_by, factory: :user
+    association :creator, factory: :user
     reference '191767-INV'
     period_covered_quarter 'December'
     period_covered_year '2006'
     received_on Date.new(2007, 1, 10)
+
+    initialize_with {
+      new
+    }
   end
 end

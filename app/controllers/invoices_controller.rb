@@ -7,11 +7,12 @@ class InvoicesController < ApplicationController
   end
 
   def new
-    @invoice = Invoice.new
+    @invoice = InvoiceReceivedPresenter.new
   end
 
   def select_loans
-    @invoice = Invoice.new(params[:invoice])
+    @invoice = InvoiceReceivedPresenter.new
+    @invoice.attributes = params[:invoice]
 
     if @invoice.invalid?(:details)
       render :new and return
@@ -28,11 +29,12 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    @invoice = Invoice.new(params[:invoice])
-    @invoice.created_by = current_user
+    @invoice = InvoiceReceivedPresenter.new
+    @invoice.attributes = params[:invoice]
+    @invoice.creator = current_user
 
-    if @invoice.save_and_settle_loans
-      redirect_to invoice_url(@invoice)
+    if @invoice.save
+      redirect_to invoice_url(@invoice.invoice)
     else
       render :select_loans
     end
