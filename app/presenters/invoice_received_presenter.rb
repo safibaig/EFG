@@ -1,6 +1,28 @@
 require 'active_model/model'
 
 class InvoiceReceivedPresenter
+  class SettleLoanRow
+    attr_reader :loan
+
+    delegate :business_name, :corrected?, :dti_amount_claimed, :dti_demanded_on,
+      :id, :persisted?, :reference, :state, :to_key, to: :loan
+
+    def self.model_name
+      Loan.model_name
+    end
+
+    def initialize(loan)
+      @loan = loan
+      @settled = false
+    end
+
+    attr_accessor :settled
+
+    def settled?
+      settled
+    end
+  end
+
   PERIOD_COVERED_QUARTERS = Invoice::PERIOD_COVERED_QUARTERS
 
   include ActiveModel::Model
@@ -10,7 +32,7 @@ class InvoiceReceivedPresenter
   attr_accessor :lender, :reference, :period_covered_quarter, :period_covered_year, :received_on, :creator
 
   attr_accessible :lender_id, :reference, :period_covered_quarter,
-                  :period_covered_year, :received_on, :loans_to_be_settled_ids
+                  :period_covered_year, :received_on, :loans_attributes
 
   validates :lender_id, presence: true
   validates :reference, presence: true
@@ -20,7 +42,7 @@ class InvoiceReceivedPresenter
   validates_presence_of :creator, strict: true, on: :save
 
   validate(on: :save) do |invoice|
-    if invoice.loans_to_be_settled.none?
+    if loans.none? {|loan| loan.settled? }
       errors.add(:base, 'No loans were selected.')
     end
   end
@@ -41,16 +63,15 @@ class InvoiceReceivedPresenter
     @received_on = QuickDateFormatter.parse(value)
   end
 
-  def demanded_loans
-    lender.loans.demanded
+  def loans
+    @loans ||= lender.loans.demanded.map {|loan| SettleLoanRow.new(loan) }
   end
 
-  def loans_to_be_settled
-    @loans_to_be_settled || []
-  end
-
-  def loans_to_be_settled_ids=(ids)
-    @loans_to_be_settled = lender && lender.loans.where(id: ids)
+  def loans_attributes=(values)
+    values.each do |_, attributes|
+      loan = loans_by_id[attributes['id'].to_i]
+      loan.settled = (attributes['settled'] == '1')
+    end
   end
 
   def attributes=(values)
@@ -62,7 +83,7 @@ class InvoiceReceivedPresenter
   def save
     return false if invalid?(:details) || invalid?(:save)
 
-    raise LoanStateTransition::IncorrectLoanState unless loans_to_be_settled.all? {|loan| loan.state == Loan::Demanded }
+    raise LoanStateTransition::IncorrectLoanState unless loans.all? {|loan| loan.state == Loan::Demanded }
 
     ActiveRecord::Base.transaction do
       create_invoice!
@@ -89,7 +110,8 @@ class InvoiceReceivedPresenter
     end
 
     def settle_loans!
-      loans_to_be_settled.each do |loan|
+      loans.select(&:settled?).each do |loan_row|
+        loan = loan_row.loan
         loan.state = Loan::Settled
         loan.settled_on = Date.today
         loan.invoice = self.invoice
@@ -98,5 +120,9 @@ class InvoiceReceivedPresenter
 
         LoanStateChange.log(loan, LoanEvent::CreateClaim, self.creator)
       end
+    end
+
+    def loans_by_id
+      @loans_by_id ||= loans.index_by(&:id)
     end
 end

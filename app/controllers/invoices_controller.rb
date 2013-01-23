@@ -22,7 +22,7 @@ class InvoicesController < ApplicationController
       format.html
       format.csv do
         filename = "loans_to_settle_#{@invoice.lender.name.parameterize}_#{Date.today.to_s(:db)}.csv"
-        csv_export = LoansToSettleCsvExport.new(@invoice.demanded_loans)
+        csv_export = LoansToSettleCsvExport.new(@invoice.loans)
         stream_response(csv_export, filename)
       end
     end

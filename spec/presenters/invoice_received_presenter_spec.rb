@@ -48,7 +48,7 @@ describe InvoiceReceivedPresenter do
 
     context "save" do
       it "must have some loans" do
-        invoice_received_presenter.loans_to_be_settled_ids = []
+        invoice_received_presenter.loans_attributes = {}
         invoice_received_presenter.should_not be_valid(:save)
       end
 
@@ -61,15 +61,19 @@ describe InvoiceReceivedPresenter do
     end
   end
 
-  describe "#demanded_loans" do
+  describe "#loans" do
     let(:lender) { FactoryGirl.create(:lender) }
     let!(:demanded_loan_1) { FactoryGirl.create(:loan, :demanded, lender: lender) }
     let!(:demanded_loan_2) { FactoryGirl.create(:loan, :demanded, lender: lender) }
     let!(:settled_loan) { FactoryGirl.create(:loan, :settled, lender: lender) }
     let(:invoice_received_presenter) { FactoryGirl.build(:invoice_received_presenter, lender: lender) }
 
-    it "returns all the demanded loans for the lender" do
-      invoice_received_presenter.demanded_loans.should =~ [demanded_loan_1, demanded_loan_2]
+    it "returns SettleLoanRows for the lender's demanded loans" do
+      invoice_received_presenter.loans.each do |loan|
+        loan.should be_instance_of(InvoiceReceivedPresenter::SettleLoanRow)
+      end
+
+      invoice_received_presenter.loans.map(&:loan).should =~ [demanded_loan_1, demanded_loan_2]
     end
   end
 
@@ -89,7 +93,20 @@ describe InvoiceReceivedPresenter do
       invoice_received_presenter.received_on = '22/01/2013'
       invoice_received_presenter.creator = creator
 
-      invoice_received_presenter.loans_to_be_settled_ids = [demanded_loan_1.id, demanded_loan_2.id]
+      invoice_received_presenter.loans_attributes = {
+        '0' => {
+          'id' => demanded_loan_1.id.to_s,
+          'settled' => '1',
+        },
+        '1' => {
+          'id' => demanded_loan_2.id.to_s,
+          'settled' => '1',
+        },
+        '2' => {
+          'id' => demanded_loan_3.id.to_s,
+          'settled' => '0'
+        }
+      }
     end
 
     it "creates a new invoice" do

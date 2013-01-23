@@ -38,11 +38,11 @@ describe "loan settled" do
         page.should have_css("tr td:nth-child(2)", text: "*", count: 1)
 
         within('#loan_1') do
-          check('invoice[loans_to_be_settled_ids][]')
+          find('input[type=checkbox]').set(true)
         end
 
         within('#loan_3') do
-          check('invoice[loans_to_be_settled_ids][]')
+          find('input[type=checkbox]').set(true)
         end
 
         click_button 'Settle Loans'

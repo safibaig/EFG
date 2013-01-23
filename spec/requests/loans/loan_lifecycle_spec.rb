@@ -238,7 +238,7 @@ describe 'Loan lifecycle' do
     click_button "Select Loans"
 
     within("#loan_#{loan.id}") do
-      check('invoice[loans_to_be_settled_ids][]')
+      find('input[type=checkbox]').set(true)
     end
 
     click_button "Settle Loans"

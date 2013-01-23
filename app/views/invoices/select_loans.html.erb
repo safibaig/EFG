@@ -19,7 +19,7 @@
 
 <hr>
 
-<% if @invoice.demanded_loans.any? %>
+<% if @invoice.loans.any? %>
   <%= simple_form_for(@invoice, url: invoices_path, html: {class: 'form-select-loans'}) do |f| %>
     <%= f.error :base, error_tag: 'div', class: 'alert alert-error' %>
 
@@ -33,13 +33,17 @@
           <th>Loan Reference</th>
           <th>Name</th>
           <th>Date Demanded</th>
-          <th>Amount of Claim (Guaranteed Percentage)</th>
+          <th>Amount of Claim<br>(Guaranteed Percentage)</th>
         </tr>
       </thead>
       <tbody>
-        <% @invoice.demanded_loans.each do |loan| %>
+        <%= f.fields_for :loans, include_id: false do |loan_form| %>
+          <% loan = loan_form.object %>
           <tr id="<%= dom_id(loan) %>">
-            <td><%= check_box_tag "#{f.object_name}[loans_to_be_settled_ids][]", loan.id %></td>
+            <td>
+              <%= loan_form.hidden_field :id %>
+              <%= loan_form.check_box :settled %>
+            </td>
             <td><%= "*" if loan.corrected? %></td>
             <td><%= loan.reference %></td>
             <td><%= loan.business_name %></td>
