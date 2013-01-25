@@ -1,33 +1,6 @@
 require 'active_model/model'
 
 class InvoiceReceived
-  class SettleLoanRow
-    attr_reader :loan
-
-    delegate :business_name, :corrected?, :dti_amount_claimed, :dti_demanded_on,
-      :id, :persisted?, :reference, :state, :to_key, to: :loan
-
-    def self.model_name
-      Loan.model_name
-    end
-
-    def initialize(loan)
-      @loan = loan
-      @settled = false
-      @settled_amount = loan.dti_amount_claimed
-    end
-
-    attr_accessor :settled, :settled_amount
-
-    def settled?
-      settled
-    end
-
-    def settled_amount=(value)
-      @settled_amount = Money.parse(value)
-    end
-  end
-
   PERIOD_COVERED_QUARTERS = Invoice::PERIOD_COVERED_QUARTERS
 
   include ActiveModel::Model
@@ -69,7 +42,7 @@ class InvoiceReceived
   end
 
   def loans
-    @loans ||= lender.loans.demanded.map {|loan| SettleLoanRow.new(loan) }
+    @loans ||= lender.loans.demanded.map {|loan| SettleLoan.new(loan) }
   end
 
   def loans_attributes=(values)
@@ -87,9 +60,8 @@ class InvoiceReceived
   end
 
   def save
-    return false if invalid?(:details) || invalid?(:save)
-
-    raise LoanStateTransition::IncorrectLoanState unless loans.all? {|loan| loan.state == Loan::Demanded }
+    # This is intentionally eager. We want to run all of the validations.
+    return false if invalid?(:details) | invalid?(:save) | settled_loans.map(&:invalid?).any?
 
     ActiveRecord::Base.transaction do
       create_invoice!
@@ -116,20 +88,16 @@ class InvoiceReceived
     end
 
     def settle_loans!
-      loans.select(&:settled?).each do |loan_row|
-        loan = loan_row.loan
-        loan.state = Loan::Settled
-        loan.settled_on = Date.today
-        loan.invoice = self.invoice
-        loan.modified_by = self.creator
-        loan.settled_amount = loan_row.settled_amount
-        loan.save!
-
-        LoanStateChange.log(loan, LoanEvent::CreateClaim, self.creator)
+      settled_loans.each do |loan|
+        loan.settle!(invoice, self.creator)
       end
     end
 
     def loans_by_id
       @loans_by_id ||= loans.index_by(&:id)
+    end
+
+    def settled_loans
+      loans.select(&:settled?)
     end
 end

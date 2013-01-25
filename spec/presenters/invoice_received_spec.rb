@@ -70,7 +70,7 @@ describe InvoiceReceived do
 
     it "returns SettleLoanRows for the lender's demanded loans" do
       invoice_received.loans.each do |loan|
-        loan.should be_instance_of(InvoiceReceived::SettleLoanRow)
+        loan.should be_instance_of(SettleLoan)
       end
 
       invoice_received.loans.map(&:loan).should =~ [demanded_loan_1, demanded_loan_2]
@@ -102,7 +102,7 @@ describe InvoiceReceived do
         '1' => {
           'id' => demanded_loan_2.id.to_s,
           'settled' => '1',
-          'settled_amount' => '10234.45'
+          'settled_amount' => '6234.45'
         },
         '2' => {
           'id' => demanded_loan_3.id.to_s,
@@ -158,7 +158,7 @@ describe InvoiceReceived do
       demanded_loan_1.settled_amount.should == Money.new(340_12)
 
       demanded_loan_2.reload
-      demanded_loan_2.settled_amount.should == Money.new(10234_45)
+      demanded_loan_2.settled_amount.should == Money.new(6234_45)
     end
 
     it "logs the loan state changes" do

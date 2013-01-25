@@ -37,11 +37,11 @@ describe "loan settled" do
 
         page.should have_css("tr td:nth-child(2)", text: "*", count: 1)
 
-        within('#loan_1') do
+        within('#settle_loan_1') do
           find('input[type=checkbox]').set(true)
         end
 
-        within('#loan_3') do
+        within('#settle_loan_3') do
           find('input[type=checkbox]').set(true)
           find('input.currency').set('500.10')
         end
