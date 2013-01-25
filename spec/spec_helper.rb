@@ -1,11 +1,6 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
 
-require 'simplecov'
-require 'simplecov-rcov'
-SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
-SimpleCov.start 'rails'
-
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
@@ -45,9 +40,5 @@ RSpec.configure do |config|
 
   config.after(:each, type: :request) do
     Warden.test_reset!
-  end
-
-  config.before(:each) do
-    SimpleCov.command_name "RSpec:#{Process.pid.to_s}:#{ENV['TEST_ENV_NUMBER']}"
   end
 end
