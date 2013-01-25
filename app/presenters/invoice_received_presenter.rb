@@ -14,12 +14,17 @@ class InvoiceReceivedPresenter
     def initialize(loan)
       @loan = loan
       @settled = false
+      @settled_amount = loan.dti_amount_claimed
     end
 
-    attr_accessor :settled
+    attr_accessor :settled, :settled_amount
 
     def settled?
       settled
+    end
+
+    def settled_amount=(value)
+      @settled_amount = Money.parse(value)
     end
   end
 
@@ -71,6 +76,7 @@ class InvoiceReceivedPresenter
     values.each do |_, attributes|
       loan = loans_by_id[attributes['id'].to_i]
       loan.settled = (attributes['settled'] == '1')
+      loan.settled_amount = attributes['settled_amount']
     end
   end
 
@@ -116,6 +122,7 @@ class InvoiceReceivedPresenter
         loan.settled_on = Date.today
         loan.invoice = self.invoice
         loan.modified_by = self.creator
+        loan.settled_amount = loan_row.settled_amount
         loan.save!
 
         LoanStateChange.log(loan, LoanEvent::CreateClaim, self.creator)

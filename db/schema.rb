@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121127111721) do
+ActiveRecord::Schema.define(:version => 20130125082149) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -368,6 +368,7 @@ ActiveRecord::Schema.define(:version => 20121127111721) do
     t.string   "legacy_sic_parent_desc"
     t.boolean  "legacy_sic_notified_aid",                                                          :default => false
     t.boolean  "legacy_sic_eligible",                                                              :default => false
+    t.integer  "settled_amount"
   end
 
   add_index "loans", ["legacy_id"], :name => "index_loans_on_legacy_id", :unique => true

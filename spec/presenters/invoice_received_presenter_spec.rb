@@ -97,10 +97,12 @@ describe InvoiceReceivedPresenter do
         '0' => {
           'id' => demanded_loan_1.id.to_s,
           'settled' => '1',
+          'settled_amount' => '340.12'
         },
         '1' => {
           'id' => demanded_loan_2.id.to_s,
           'settled' => '1',
+          'settled_amount' => '10234.45'
         },
         '2' => {
           'id' => demanded_loan_3.id.to_s,
@@ -147,6 +149,16 @@ describe InvoiceReceivedPresenter do
       demanded_loan_3.invoice.should be_nil
 
       Timecop.return
+    end
+
+    it "updates the settled amount" do
+      invoice_received_presenter.save
+
+      demanded_loan_1.reload
+      demanded_loan_1.settled_amount.should == Money.new(340_12)
+
+      demanded_loan_2.reload
+      demanded_loan_2.settled_amount.should == Money.new(10234_45)
     end
 
     it "logs the loan state changes" do
