@@ -1,6 +1,6 @@
 namespace :data do
 
-  desc "Extract data from the database"
+  desc "Extract and cleanse to IL0 data from the database"
   task extract: :environment do
     require "extract"
     Extractor.run
