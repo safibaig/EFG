@@ -1,6 +1,6 @@
 require 'active_model/model'
 
-class InvoiceReceivedPresenter
+class InvoiceReceived
   class SettleLoanRow
     attr_reader :loan
 

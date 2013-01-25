@@ -7,11 +7,11 @@ class InvoicesController < ApplicationController
   end
 
   def new
-    @invoice = InvoiceReceivedPresenter.new
+    @invoice = InvoiceReceived.new
   end
 
   def select_loans
-    @invoice = InvoiceReceivedPresenter.new
+    @invoice = InvoiceReceived.new
     @invoice.attributes = params[:invoice]
 
     if @invoice.invalid?(:details)
@@ -29,7 +29,7 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    @invoice = InvoiceReceivedPresenter.new
+    @invoice = InvoiceReceived.new
     @invoice.attributes = params[:invoice]
     @invoice.creator = current_user
 
