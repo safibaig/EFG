@@ -73,6 +73,15 @@ class InvoiceReceived
     false
   end
 
+  def grouped_loans
+    @groups ||= GroupSet.new.tap do |groups|
+      groups.add('Legacy SFLG Loans') {|loan| loan.legacy_loan? }
+      groups.add('SFLG Loans') {|loan| loan.sflg? }
+      groups.add('EFG Loans') {|loan| loan.efg_loan? }
+      groups.filter(loans)
+    end
+  end
+
   private
     attr_writer :invoice
 

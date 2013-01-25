@@ -16,6 +16,10 @@ class SettleLoan
   attribute :dti_amount_claimed, read_only: true
   attribute :dti_demanded_on, read_only: true
 
+  attribute :legacy_loan?, read_only: true
+  attribute :sflg?, read_only: true
+  attribute :efg_loan?, read_only: true
+
   attr_accessor :settled
   attr_reader :settled_amount
 
