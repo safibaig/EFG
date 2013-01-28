@@ -6,7 +6,7 @@ gem 'activerecord-import', '0.2.11'
 gem 'aws-ses', :require => 'aws/ses' # Needed by exception_notification
 gem 'bootstrap-will_paginate', '0.0.7'
 gem 'canable', '0.3.0'
-gem 'devise', '2.1.0'
+gem 'devise', '2.2.3'
 gem "devise-encryptable", "0.1.1"
 gem 'exception_notification', '2.5.2'
 gem 'jquery-rails', "1.0.19"
