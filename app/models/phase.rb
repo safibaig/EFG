@@ -5,4 +5,6 @@ class Phase < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :created_by, strict: true
   validates_presence_of :modified_by, strict: true
+
+  attr_accessible :name
 end

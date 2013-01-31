@@ -29,6 +29,9 @@
     <% if current_user.can_create?(Expert) %>
       <li><%= link_to 'Manage Experts', expert_users_path, class: 'btn btn-info' %></li>
     <% end %>
+    <% if current_user.can_create?(Phase) %>
+      <li><%= link_to 'Manage Phases', phases_path, class: 'btn btn-info' %></li>
+    <% end %>
   </ul>
 </div>
 
