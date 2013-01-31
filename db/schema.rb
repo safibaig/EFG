@@ -379,8 +379,10 @@ ActiveRecord::Schema.define(:version => 20130125150508) do
 
   create_table "phases", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "created_by_id"
+    t.integer  "modified_by_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "realisation_statements", :force => true do |t|
