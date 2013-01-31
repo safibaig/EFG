@@ -212,4 +212,10 @@ describe PremiumCollectorUser do
     it { refute user.can_update?(Expert) }
     it { refute user.can_view?(Expert) }
   end
+
+  context 'Phases' do
+    it { refute user.can_create?(Phase) }
+    it { refute user.can_update?(Phase) }
+    it { refute user.can_view?(Phase) }
+  end
 end

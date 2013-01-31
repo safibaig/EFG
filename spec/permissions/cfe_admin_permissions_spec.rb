@@ -212,4 +212,10 @@ describe CfeAdminPermissions do
     it { refute user.can_update?(Expert) }
     it { assert user.can_view?(Expert) }
   end
+
+  context 'Phases' do
+    it { assert user.can_create?(Phase) }
+    it { assert user.can_update?(Phase) }
+    it { assert user.can_view?(Phase) }
+  end
 end
