@@ -1,3 +1,3 @@
 class Phase < ActiveRecord::Base
-  validates_presence_of :name, strict: true
+  validates_presence_of :name
 end

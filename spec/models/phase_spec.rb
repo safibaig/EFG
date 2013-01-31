@@ -9,10 +9,8 @@ describe Phase do
     end
 
     it "must have a name" do
-      expect {
-        phase.name = ''
-        phase.valid?
-      }.to raise_error(ActiveModel::StrictValidationFailed)
+      phase.name = ''
+      phase.should_not be_valid
     end
   end
 end
