@@ -9,6 +9,7 @@
   <% end %>
 
   <%= f.input :name %>
+  <%= f.input :phase_id, collection: @phases %>
 
   <% if @lending_limit.new_record? %>
     <%= f.input :starts_on, as: :quick_date %>

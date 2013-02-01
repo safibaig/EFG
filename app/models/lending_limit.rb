@@ -17,6 +17,7 @@ class LendingLimit < ActiveRecord::Base
 
   belongs_to :lender
   belongs_to :modified_by, class_name: 'User'
+  belongs_to :phase
 
   has_many :loans
 
@@ -31,7 +32,7 @@ class LendingLimit < ActiveRecord::Base
   validate :ends_on_is_after_starts_on
 
   attr_accessible :allocation, :allocation_type_id, :name, :ends_on,
-    :guarantee_rate, :premium_rate, :starts_on
+    :guarantee_rate, :premium_rate, :starts_on, :phase_id
 
   format :allocation, with: MoneyFormatter.new
   format :ends_on, with: QuickDateFormatter
