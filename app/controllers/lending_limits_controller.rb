@@ -2,7 +2,7 @@ class LendingLimitsController < ApplicationController
   before_filter :verify_create_permission, only: [:new, :create]
   before_filter :verify_update_permission, only: [:edit, :update, :deactivate]
   before_filter :verify_view_permission, only: [:index]
-  before_filter :loan_lender
+  before_filter :load_lender
 
   def index
     @lending_limits = @lender.lending_limits
@@ -52,7 +52,7 @@ class LendingLimitsController < ApplicationController
   end
 
   private
-    def loan_lender
+    def load_lender
       @lender = Lender.find(params[:lender_id])
     end
 
