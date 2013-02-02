@@ -9,7 +9,7 @@ We prefer issues that are bug reports or feature requests. Bugs must be isolated
 
 1. **Search for existing issues.** We get a lot of duplicate issues, and you'd help us out a lot by first checking if someone else has reported the same issue. Moreover, the issue may have already been resolved with a fix available.
 1. **Create an isolated and reproducible test case.**
-1. **Share as much information as possible.** Include operating system and version, browser and version, version of Bootstrap, customized or vanilla build, etc. where appropriate. Also include steps to reproduce the bug.
+1. **Share as much information as possible.** Include operating system and version, browser and version, version of EFG, customized or vanilla build, etc. where appropriate. Also include steps to reproduce the bug.
 
 
 ## Key branches
