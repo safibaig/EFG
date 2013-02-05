@@ -52,7 +52,7 @@ group :test do
   gem 'factory_girl_rails', '3.3.0'
   gem 'launchy', '2.1.0'
   gem 'pdf-reader', '1.1.1'
-  gem 'timecop'
+  gem 'timecop', '0.5.9.1'
 end
 
 group :extract do
