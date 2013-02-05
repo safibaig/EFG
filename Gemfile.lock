@@ -147,8 +147,8 @@ GEM
     mysql2 (0.3.11)
     nokogiri (1.5.5)
     orm_adapter (0.4.0)
-    parallel (0.6.1)
-    parallel_tests (0.8.7)
+    parallel (0.6.2)
+    parallel_tests (0.9.3)
       parallel
     pdf-reader (1.1.1)
       Ascii85 (~> 1.0.0)
@@ -300,8 +300,7 @@ DEPENDENCIES
   lograge (= 0.1.2)
   money (= 5.0.0)
   mysql2 (= 0.3.11)
-  parallel
-  parallel_tests
+  parallel_tests (= 0.9.3)
   pdf-reader (= 1.1.1)
   plek
   powder (= 0.1.8)
