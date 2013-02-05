@@ -72,7 +72,6 @@ GEM
     ci_reporter (1.7.0)
       builder (>= 2.1.2)
     columnize (0.3.6)
-    commonjs (0.2.6)
     composite_primary_keys (5.0.11)
       activerecord (~> 3.2.0, >= 3.2.11)
     data-anonymization (0.5.3)
@@ -130,11 +129,6 @@ GEM
     kgio (2.7.4)
     launchy (2.1.0)
       addressable (~> 2.2.6)
-    less (2.2.1)
-      commonjs (~> 0.2.6)
-    less-rails (2.2.2)
-      actionpack (>= 3.1)
-      less (~> 2.2.0)
     libv8 (3.3.10.4)
     libwebsocket (0.1.3)
       addressable
@@ -174,7 +168,7 @@ GEM
     rack (1.4.4)
     rack-cache (1.2)
       rack (>= 0.4)
-    rack-ssl (1.3.2)
+    rack-ssl (1.3.3)
       rack
     rack-ssl-enforcer (0.2.4)
     rack-test (0.6.2)
@@ -259,11 +253,10 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     ttfunk (1.0.3)
-    twitter-bootstrap-rails (2.0.7)
+    twitter-bootstrap-rails (2.2.0)
       actionpack (>= 3.1)
-      less-rails (~> 2.2.2)
+      execjs
       railties (>= 3.1)
-      therubyracer (~> 0.10.1)
     tzinfo (0.3.35)
     uglifier (1.2.4)
       execjs (>= 0.3.0)
@@ -326,7 +319,7 @@ DEPENDENCIES
   statsd-ruby (= 1.0.0)
   therubyracer (= 0.10.1)
   timecop
-  twitter-bootstrap-rails (= 2.0.7)
+  twitter-bootstrap-rails (= 2.2.0)
   uglifier (= 1.2.4)
   unicorn (= 4.3.1)
   useragent (= 0.4.10)
