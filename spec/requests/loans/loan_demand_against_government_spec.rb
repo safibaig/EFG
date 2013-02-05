@@ -44,7 +44,7 @@ describe 'loan demand against government' do
     fill_in 'loan_demand_against_government_dti_reason', with: 'Something'
     fill_in 'loan_demand_against_government_dti_interest', with: 5000
     fill_in 'loan_demand_against_government_dti_break_costs', with: 2000
-    select ded_code.code, from: 'loan_demand_against_government_dti_ded_code'
+    select_option_value ded_code.code, from: 'loan_demand_against_government_dti_ded_code'
 
     click_button 'Submit'
 

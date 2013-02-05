@@ -31,6 +31,8 @@ RSpec.configure do |config|
   # rspec-rails.
   config.infer_base_class_for_anonymous_controllers = false
 
+  config.include CapybaraDSLExtensions, type: :request
+
   # Warden / Devise test helpers for request specs.
   config.include Warden::Test::Helpers, type: :request
 

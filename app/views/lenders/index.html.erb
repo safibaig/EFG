@@ -23,7 +23,7 @@
   </thead>
   <tbody>
     <% @lenders.each do |lender| %>
-      <tr>
+      <tr id="<%= dom_id(lender) %>">
         <td><%= link_to lender.name, edit_lender_path(lender) %></td>
         <td><%= lender.organisation_reference_code %></td>
         <td><%= link_to lender.current_annual_lending_limit_allocation.format, lender_lending_limits_path(lender) %></td>

@@ -186,7 +186,7 @@ describe 'Managing CfeAdmins as CfeAdmin' do
 
       page.should have_content(I18n.t('manage_users.reset_password_sent', email: user.email))
       page.should have_content(I18n.t('manage_users.password_set_time_remaining', time_left: '7 days'))
-      page.should_not have_css('input', value: 'Send Reset Password Email')
+      page.should_not have_css('input', text: 'Send Reset Password Email')
     end
 
     it 'fails when user does not have an email address' do

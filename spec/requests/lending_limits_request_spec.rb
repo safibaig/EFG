@@ -11,7 +11,13 @@ describe 'LendingLimits' do
     before do
       visit root_path
       click_link 'Manage Lenders'
-      click_link '£0.00'
+
+      # We have 2 links to the lending limit:
+      # - lender.current_annual_lending_limit_allocation
+      # - lender.current_specific_lending_limit_allocation
+      # See views/lenders/index.html.erb
+      first(:link, "£0.00").click
+
       click_link 'New Lending Limit'
     end
 

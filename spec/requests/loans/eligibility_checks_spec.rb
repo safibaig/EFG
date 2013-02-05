@@ -50,13 +50,13 @@ describe 'eligibility checks' do
     # email eligibility decision
 
     # with invalid email
-    fill_in :eligibility_decision_email, with: 'wrong'
+    fill_in :eligibility_decision_email_email, with: 'wrong'
     click_button "Send"
 
     page.should have_content("is invalid")
 
     # with valid email
-    fill_in :eligibility_decision_email, with: 'joe@example.com'
+    fill_in :eligibility_decision_email_email, with: 'joe@example.com'
     click_button "Send"
 
     emails = ActionMailer::Base.deliveries
@@ -101,7 +101,7 @@ describe 'eligibility checks' do
 
     # email eligibility decision
 
-    fill_in :eligibility_decision_email, with: 'joe@example.com'
+    fill_in :eligibility_decision_email_email, with: 'joe@example.com'
     click_button "Send"
 
     emails = ActionMailer::Base.deliveries
