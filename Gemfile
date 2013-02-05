@@ -39,7 +39,7 @@ group :development do
 end
 
 group :development, :test do
-  gem 'brakeman', '1.7.0'
+  gem 'brakeman', '1.9.1'
   gem 'ci_reporter', '1.7.0'
   gem 'debugger', '1.1.4'
   gem 'parallel_tests', '0.9.3'
