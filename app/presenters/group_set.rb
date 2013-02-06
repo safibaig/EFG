@@ -33,6 +33,7 @@ class GroupSet
       @groups.each do |group, filter|
         if filter.call(object)
           group << object
+          break
         end
       end
     end

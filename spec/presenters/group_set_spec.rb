@@ -42,6 +42,15 @@ describe GroupSet do
       groups[1].loans.should =~ [sflg_loan_1, sflg_loan_2]
       groups[2].loans.should =~ [efg_loan_1, efg_loan_2]
     end
+
+    it "only filters objects into the first matching group" do
+      group_set.add('Second Legacy Loans Group') {|loan| loan.legacy_loan? }
+      group_set.filter([legacy_loan_1])
+
+      groups = group_set.to_a
+      groups[0].loans.should == [legacy_loan_1]
+      groups[3].loans.should == []
+    end
   end
 
 end
