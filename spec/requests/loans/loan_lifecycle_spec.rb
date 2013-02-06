@@ -21,7 +21,10 @@ describe 'Loan lifecycle' do
       login_as_lender_user
 
       # Eligibility Check
-      click_link "New Loan"
+      within_navigation do
+        click_link "New Loan"
+      end
+
       fill_in_valid_eligibility_check_details(lender)
       click_button 'Check'
 
@@ -78,7 +81,9 @@ describe 'Loan lifecycle' do
       login_as_lender_user
 
       # Recovery Made
-      click_link "Loan Portfolio"
+      within_navigation do
+        click_link "Loan Portfolio"
+      end
       within("#settled_loans") do
         click_link "1"
       end
@@ -107,7 +112,9 @@ describe 'Loan lifecycle' do
         visit root_path
         login_as_lender_user
 
-        click_link "Loan Portfolio"
+        within_navigation do
+          click_link "Loan Portfolio"
+        end
         within("#guaranteed_loans") do
           click_link "1"
         end
@@ -145,7 +152,9 @@ describe 'Loan lifecycle' do
         login_as_lender_user
 
         # Recovery Made
-        click_link "Loan Portfolio"
+        within_navigation do
+          click_link "Loan Portfolio"
+        end
         within("#settled_loans") do
           click_link "1"
         end
@@ -258,4 +267,7 @@ describe 'Loan lifecycle' do
     Date::MONTHNAMES[date.month]
   end
 
+  def within_navigation(&block)
+    within(".nav", &block)
+  end
 end

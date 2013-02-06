@@ -13,8 +13,6 @@ gem 'jquery-rails', "1.0.19"
 gem 'lograge', '0.1.2'
 gem 'money', '5.0.0'
 gem 'mysql2', '0.3.11'
-gem "parallel"
-gem "parallel_tests"
 gem 'plek'
 gem 'prawn', '0.12.0'
 gem 'progressbar', '0.11.0'
@@ -22,9 +20,9 @@ gem 'rack-ssl-enforcer'
 gem 'rails', '3.2.11'
 gem 'simple_form', '2.0.2'
 gem 'statsd-ruby', '1.0.0'
-gem 'twitter-bootstrap-rails', '2.0.7'
+gem 'twitter-bootstrap-rails', '2.2.0'
 gem 'unicorn', '4.3.1'
-gem 'useragent', '0.4.10'
+gem 'useragent', '0.4.16'
 gem 'weekdays', '1.0.2'
 gem 'whenever', '0.7.3', :require => false
 gem 'will_paginate', '3.0.3'
@@ -41,19 +39,20 @@ group :development do
 end
 
 group :development, :test do
-  gem 'brakeman', '1.7.0'
-  gem 'ci_reporter', '1.7.0'
+  gem 'brakeman', '1.9.1'
+  gem 'ci_reporter', '1.8.4'
   gem 'debugger', '1.1.4'
-  gem 'rspec-rails', '2.10.1'
+  gem 'parallel_tests', '0.9.3'
+  gem 'rspec-rails', '2.12.2'
   gem 'simplecov-rcov', '0.2.3'
 end
 
 group :test do
-  gem 'capybara', '1.1.2'
-  gem 'factory_girl_rails', '3.3.0'
+  gem 'capybara', '2.0.2'
+  gem 'factory_girl_rails', '4.2.0'
   gem 'launchy', '2.1.0'
   gem 'pdf-reader', '1.1.1'
-  gem 'timecop'
+  gem 'timecop', '0.5.9.1'
 end
 
 group :extract do

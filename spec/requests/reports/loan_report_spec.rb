@@ -126,7 +126,7 @@ describe 'Loan report' do
 
   def fill_in_valid_details
     select 'All states', from: 'loan_report[states][]'
-    check :loan_report_loan_source_s
+    check :loan_report_loan_sources_s
   end
 
   def navigate_to_loan_report_form

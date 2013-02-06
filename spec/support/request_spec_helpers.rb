@@ -32,7 +32,7 @@ module RequestSpecHelpers
     fill_in_duration_input 'repayment_duration', 2, 6
     fill_in 'loan_eligibility_check_turnover', with: '1234567.89'
     fill_in 'loan_eligibility_check_trading_date', with: '31/1/2012'
-    select sic_code.code, from: 'loan_eligibility_check_sic_code'
+    select_option_value sic_code.code, from: 'loan_eligibility_check_sic_code'
     select LoanCategory.find(2).name, from: 'loan_eligibility_check_loan_category_id' # Type B - partial security
     select LoanReason.active.first.name, from: 'loan_eligibility_check_reason_id' # Start-up costs
     choose 'loan_eligibility_check_previous_borrowing_true'
@@ -103,7 +103,7 @@ module RequestSpecHelpers
   def fill_in_valid_loan_demand_against_government_guarantee_details(loan, ded_code)
     fill_in 'loan_demand_against_government_dti_demand_outstanding', with: loan.amount
     fill_in 'loan_demand_against_government_dti_reason', with: 'Something'
-    select ded_code.code, from: 'loan_demand_against_government_dti_ded_code'
+    select_option_value ded_code.code, from: 'loan_demand_against_government_dti_ded_code'
   end
 
   # Loan Recovery
