@@ -10,6 +10,7 @@ class SettleLoan
   transition from: Loan::Demanded, to: Loan::Settled, event: LoanEvent::CreateClaim
 
   attribute :id, read_only: true
+  attribute :lending_limit, read_only: true
   attribute :reference, read_only: true
   attribute :business_name, read_only: true
   attribute :corrected?, read_only: true

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'active_model/model'
 
 class InvoiceReceived
@@ -42,7 +44,7 @@ class InvoiceReceived
   end
 
   def loans
-    @loans ||= lender.loans.demanded.map {|loan| SettleLoan.new(loan) }
+    @loans ||= lender.loans.demanded.includes(:lending_limit).map {|loan| SettleLoan.new(loan) }
   end
 
   def loans_attributes=(values)
@@ -77,7 +79,14 @@ class InvoiceReceived
     @groups ||= GroupSet.new.tap do |groups|
       groups.add('Legacy SFLG Loans') {|loan| loan.legacy_loan? }
       groups.add('SFLG Loans') {|loan| loan.sflg? }
-      groups.add('EFG Loans') {|loan| loan.efg_loan? }
+
+      Phase.order('name ASC').each do |phase|
+        # Compare ids here to avoid doing an extra join.
+        groups.add("EFG Loans – #{phase.name}") {|loan| loan.efg_loan? && loan.lending_limit.phase_id = phase.id }
+      end
+
+      groups.add('EFG Loans - Unknown Phase') {|loan| loan.efg_loan? }
+
       groups.filter(loans)
     end
   end
