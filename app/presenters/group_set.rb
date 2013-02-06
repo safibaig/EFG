@@ -1,25 +1,39 @@
 class GroupSet
   class Group
-    attr_reader :name, :loans
+    attr_reader :name, :objects
 
     def initialize(name)
       @name = name
-      @loans = []
+      @objects = []
     end
 
-    def <<(loan)
-      @loans << loan
+    def <<(object)
+      @objects << object
     end
   end
 
   include Enumerable
 
+  def self.group
+    Group
+  end
+
+  def self.filter(objects)
+    group_set = new
+    group_set.filter(objects)
+    group_set
+  end
+
   def initialize
     @groups = {}
   end
 
+  def groups
+    @groups.keys
+  end
+
   def add(name, &filter)
-    group = Group.new(name)
+    group = self.class.group.new(name)
     @groups[group] = filter
     group
   end

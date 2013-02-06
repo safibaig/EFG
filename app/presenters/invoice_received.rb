@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require 'active_model/model'
 
 class InvoiceReceived
@@ -76,19 +74,7 @@ class InvoiceReceived
   end
 
   def grouped_loans
-    @groups ||= GroupSet.new.tap do |groups|
-      groups.add('Legacy SFLG Loans') {|loan| loan.legacy_loan? }
-      groups.add('SFLG Loans') {|loan| loan.sflg? }
-
-      Phase.order('name ASC').each do |phase|
-        # Compare ids here to avoid doing an extra join.
-        groups.add("EFG Loans – #{phase.name}") {|loan| loan.efg_loan? && loan.lending_limit.phase_id = phase.id }
-      end
-
-      groups.add('EFG Loans - Unknown Phase') {|loan| loan.efg_loan? }
-
-      groups.filter(loans)
-    end
+    @groups ||= LoanGroupSet.filter(loans)
   end
 
   private

@@ -38,9 +38,9 @@ describe GroupSet do
       group_set.filter(loans)
 
       groups = group_set.to_a
-      groups[0].loans.should =~ [legacy_loan_1, legacy_loan_2]
-      groups[1].loans.should =~ [sflg_loan_1, sflg_loan_2]
-      groups[2].loans.should =~ [efg_loan_1, efg_loan_2]
+      groups[0].objects.should =~ [legacy_loan_1, legacy_loan_2]
+      groups[1].objects.should =~ [sflg_loan_1, sflg_loan_2]
+      groups[2].objects.should =~ [efg_loan_1, efg_loan_2]
     end
 
     it "only filters objects into the first matching group" do
@@ -48,8 +48,8 @@ describe GroupSet do
       group_set.filter([legacy_loan_1])
 
       groups = group_set.to_a
-      groups[0].loans.should == [legacy_loan_1]
-      groups[3].loans.should == []
+      groups[0].objects.should == [legacy_loan_1]
+      groups[3].objects.should == []
     end
   end
 
