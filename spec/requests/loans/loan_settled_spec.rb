@@ -37,12 +37,13 @@ describe "loan settled" do
 
         page.should have_css("tr td:nth-child(2)", text: "*", count: 1)
 
-        within('#loan_1') do
-          check('invoice[loans_to_be_settled_ids][]')
+        within('#settle_loan_1') do
+          find('input[type=checkbox]').set(true)
         end
 
-        within('#loan_3') do
-          check('invoice[loans_to_be_settled_ids][]')
+        within('#settle_loan_3') do
+          find('input[type=checkbox]').set(true)
+          find('input.currency').set('500.10')
         end
 
         click_button 'Settle Loans'
@@ -71,6 +72,7 @@ describe "loan settled" do
       loan3.modified_by.should == current_user
       loan3.settled_on.should == Date.new(2012, 01, 07)
       loan3.updated_at.to_i.should == time.to_i
+      loan3.settled_amount.should == Money.new(500_10)
 
       page.should have_content('BSPFDNH-01')
       page.should_not have_content('3PEZRGB-01')

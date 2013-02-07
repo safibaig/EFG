@@ -141,4 +141,6 @@ EFG::Application.routes.draw do
   resource :account_locked, controller: 'account_locked'
 
   resource :change_password, controller: 'change_password'
+
+  resources :phases, except: [:show, :destroy]
 end

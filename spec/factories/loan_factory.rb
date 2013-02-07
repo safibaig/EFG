@@ -107,6 +107,7 @@ FactoryGirl.define do
     trait :demanded do
       state Loan::Demanded
       dti_demand_outstanding Money.new(10_000_00)
+      dti_amount_claimed { |loan| loan.dti_demand_outstanding * 0.75 }
       dti_demanded_on { Date.today }
       dti_reason 'reason'
       ded_code

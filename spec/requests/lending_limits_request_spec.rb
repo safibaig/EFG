@@ -5,6 +5,7 @@ require 'spec_helper'
 describe 'LendingLimits' do
   let(:current_user) { FactoryGirl.create(:cfe_admin) }
   before { login_as(current_user, scope: :user) }
+  let!(:phase) { FactoryGirl.create(:phase, name: 'Phase 1') }
   let!(:lender) { FactoryGirl.create(:lender, name: 'ACME') }
 
   describe 'create' do
@@ -29,6 +30,7 @@ describe 'LendingLimits' do
     it do
       choose_radio_button :allocation_type_id, 1
       fill_in :name, 'This year'
+      select :phase_id, 'Phase 1'
       fill_in :starts_on, '1/1/12'
       fill_in :ends_on, '31/12/12'
       fill_in :allocation, '5000000'
@@ -38,6 +40,7 @@ describe 'LendingLimits' do
 
       lending_limit = LendingLimit.last
       lending_limit.lender.should == lender
+      lending_limit.phase.should == phase
       lending_limit.modified_by.should == current_user
       lending_limit.active.should == true
       lending_limit.name.should == 'This year'
@@ -56,7 +59,7 @@ describe 'LendingLimits' do
   end
 
   describe 'update' do
-    let!(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, name: 'Foo', allocation: Money.new(1_000_00)) }
+    let!(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, phase: phase, name: 'Foo', allocation: Money.new(1_000_00)) }
 
     before do
       visit root_path
@@ -73,11 +76,13 @@ describe 'LendingLimits' do
       page.should_not have_selector('#lending_limit_starts_on')
 
       fill_in :name, 'Updated'
+      select :phase_id, 'Phase 1'
       fill_in :allocation, '9999.99'
       click_button 'Update Lending Limit'
 
       lending_limit.reload
       lending_limit.lender.should == lender
+      lending_limit.phase.should == phase
       lending_limit.modified_by.should == current_user
       lending_limit.active.should == true
       lending_limit.name.should == 'Updated'
@@ -123,5 +128,9 @@ describe 'LendingLimits' do
 
     def fill_in(attribute, value)
       page.fill_in "lending_limit_#{attribute}", with: value
+    end
+
+    def select(attribute, value)
+      page.select value, from: "lending_limit_#{attribute}"
     end
 end

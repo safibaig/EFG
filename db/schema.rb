@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121127111721) do
+ActiveRecord::Schema.define(:version => 20130206141611) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -147,9 +147,11 @@ ActiveRecord::Schema.define(:version => 20121127111721) do
     t.datetime "created_at",                                                                           :null => false
     t.datetime "updated_at",                                                                           :null => false
     t.integer  "modified_by_id"
+    t.integer  "phase_id"
   end
 
   add_index "lending_limits", ["lender_id"], :name => "index_lending_limits_on_lender_id"
+  add_index "lending_limits", ["phase_id"], :name => "index_lending_limits_on_phase_id"
 
   create_table "loan_ineligibility_reasons", :force => true do |t|
     t.integer  "loan_id"
@@ -368,6 +370,7 @@ ActiveRecord::Schema.define(:version => 20121127111721) do
     t.string   "legacy_sic_parent_desc"
     t.boolean  "legacy_sic_notified_aid",                                                          :default => false
     t.boolean  "legacy_sic_eligible",                                                              :default => false
+    t.integer  "settled_amount"
   end
 
   add_index "loans", ["legacy_id"], :name => "index_loans_on_legacy_id", :unique => true
@@ -375,6 +378,14 @@ ActiveRecord::Schema.define(:version => 20121127111721) do
   add_index "loans", ["lending_limit_id"], :name => "index_loans_on_lending_limit_id"
   add_index "loans", ["reference"], :name => "index_loans_on_reference", :unique => true
   add_index "loans", ["state"], :name => "index_loans_on_state"
+
+  create_table "phases", :force => true do |t|
+    t.string   "name"
+    t.integer  "created_by_id"
+    t.integer  "modified_by_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
 
   create_table "realisation_statements", :force => true do |t|
     t.integer  "lender_id"

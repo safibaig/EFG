@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :lending_limit do
     lender
+    phase
     active true
     allocation 1000000
     allocation_type_id 1

@@ -237,8 +237,8 @@ describe 'Loan lifecycle' do
     fill_in 'invoice_received_on', with: Date.today.to_s(:screen)
     click_button "Select Loans"
 
-    within("#loan_#{loan.id}") do
-      check('invoice[loans_to_be_settled_ids][]')
+    within("#settle_loan_#{loan.id}") do
+      find('input[type=checkbox]').set(true)
     end
 
     click_button "Settle Loans"

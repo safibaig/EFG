@@ -19,43 +19,50 @@
 
 <hr>
 
-<% if @invoice.demanded_loans.any? %>
+<% if @invoice.loans.any? %>
   <%= simple_form_for(@invoice, url: invoices_path, html: {class: 'form-select-loans'}) do |f| %>
     <%= f.error :base, error_tag: 'div', class: 'alert alert-error' %>
-
     <%= render "hidden_fields", form: f %>
 
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Settle Claim?</th>
-          <th>&nbsp;</th>
-          <th>Loan Reference</th>
-          <th>Name</th>
-          <th>Date Demanded</th>
-          <th>Outstanding Balance</th>
-          <th>Eligible Outstanding Interest</th>
-          <th>Amount of Claim (Guaranteed Percentage)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @invoice.demanded_loans.each do |loan| %>
-          <tr id="<%= dom_id(loan) %>">
-            <td><%= check_box_tag "#{f.object_name}[loans_to_be_settled_ids][]", loan.id %></td>
-            <td><%= "*" if loan.corrected? %></td>
-            <td><%= loan.reference %></td>
-            <td><%= loan.business_name %></td>
-            <td><%= loan.dti_demanded_on %></td>
-            <td><%= loan.dti_demand_outstanding %></td>
-            <td><%= loan.dti_interest %></td>
-            <td><%= loan.dti_amount_claimed %></td>
-          </tr>
-        <% end %>
-      </tbody>
-      </tfoot>
-        <td colspan="8">( <strong>*</strong> indicates corrected loans )</td>
-      </tfoot>
-    </table>
+    <% @invoice.grouped_loans.each do |group| %>
+      <% if group.loans.any? %>
+        <h2><%= group.name %></h2>
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Settle Claim?</th>
+              <th>&nbsp;</th>
+              <th>Loan Reference</th>
+              <th>Name</th>
+              <th>Date Demanded</th>
+              <th>Amount of Claim<br>(Guaranteed Percentage)</th>
+              <th>Amount to be Settled</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= f.fields_for :loans, group.loans, include_id: false do |loan_form| %>
+              <% loan = loan_form.object %>
+              <tr id="<%= dom_id(loan) %>">
+                <td>
+                  <%= loan_form.hidden_field :id %>
+                  <%= loan_form.check_box :settled %>
+                </td>
+                <td><%= "*" if loan.corrected? %></td>
+                <td><%= loan.reference %></td>
+                <td><%= loan.business_name %></td>
+                <td><%= loan.dti_demanded_on.to_s(:screen) %></td>
+                <td><%= loan.dti_amount_claimed.try(:format) %></td>
+                <td><%= loan_form.input :settled_amount, as: :currency, label: false %></td>
+              </tr>
+            <% end %>
+          </tbody>
+          </tfoot>
+            <tr><td colspan="7">( <strong>*</strong> indicates corrected loans )</td></tr>
+          </tfoot>
+        </table>
+      <% end %>
+    <% end %>
 
     <div class="form-actions">
       <%= f.button :submit, 'Settle Loans', class: 'btn-primary', data: { 'disable-with' => 'Submitting...' } %>

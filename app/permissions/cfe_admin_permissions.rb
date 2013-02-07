@@ -6,6 +6,7 @@ module CfeAdminPermissions
       Lender,
       LenderAdmin,
       LendingLimit,
+      Phase,
       PremiumCollectorUser
     ].include?(resource)
   end
@@ -21,6 +22,7 @@ module CfeAdminPermissions
       Lender,
       LenderAdmin,
       LendingLimit,
+      Phase,
       PremiumCollectorUser
     ].include?(resource)
   end
@@ -33,6 +35,7 @@ module CfeAdminPermissions
       Lender,
       LenderAdmin,
       LendingLimit,
+      Phase,
       PremiumCollectorUser
     ].include?(resource)
   end
