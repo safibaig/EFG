@@ -79,9 +79,9 @@
           <% if current_user.can_view?(Search) %>
             <%= nav.item 'Search', new_search_path %>
           <% end %>
-
-          <%= render('search/loan_lookup_form') if current_user.can_view?(Search) %>
         <% end %>
+
+        <%= render('search/loan_lookup_form') if current_user.can_view?(Search) %>
       <% end %>
     <% end %>
   </div>
