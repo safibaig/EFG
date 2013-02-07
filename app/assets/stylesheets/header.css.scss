@@ -12,6 +12,10 @@
     width: 940px;
   }
 
+  a:focus {
+    outline: none;
+  }
+
   a.brand {
     font-family: $header_font;
   }
