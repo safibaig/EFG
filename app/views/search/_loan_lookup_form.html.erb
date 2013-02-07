@@ -1,5 +1,5 @@
-<%= form_tag lookup_search_path, method: :get, class: "form-search navbar-search", id: "loan_lookup" do %>
-  <%= text_field_tag :term, params[:term], class: "input-medium search-query", id: "lookup_term", placeholder: "Lookup Loan" %>
+<%= form_tag lookup_search_path, method: :get, class: "navbar-form pull-right", id: "loan_lookup" do %>
+  <%= text_field_tag :term, params[:term], class: 'search-term', id: "lookup_term", placeholder: "Lookup Loan" %>
   <noscript>
     <%= submit_tag "Search", class: "btn", id: "submit_lookup" %>
   </noscript>
