@@ -10,6 +10,7 @@ gem 'devise', '2.2.3'
 gem "devise-encryptable", "0.1.1"
 gem 'exception_notification', '2.5.2'
 gem 'jquery-rails', "1.0.19"
+gem 'less-rails', '2.2.6'
 gem 'lograge', '0.1.2'
 gem 'money', '5.0.0'
 gem 'mysql2', '0.3.11'
