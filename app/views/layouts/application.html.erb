@@ -70,11 +70,14 @@
           <% if current_user.can_create?(LoanTransfer::LegacySflg) %>
             <%= nav.item 'Transfer a Legacy Loan', new_legacy_loan_transfer_path %>
           <% end %>
-          <% if current_user.can_create?(LoanReport) %>
-            <li><%= link_to 'Generate a Loan Report', new_loan_report_path %></li>
-          <% end %>
-          <% if current_user.can_create?(LoanAuditReport) %>
-            <li><%= link_to 'Generate Loan Audit Report', new_loan_audit_report_path %></li>
+
+          <%= nav.dropdown('Reports') do |dropdown| %>
+            <% if current_user.can_create?(LoanReport) %>
+              <%= dropdown.item 'Generate a Loan Report', new_loan_report_path %>
+            <% end %>
+            <% if current_user.can_create?(LoanAuditReport) %>
+              <%= dropdown.item 'Generate Loan Audit Report', new_loan_audit_report_path %>
+            <% end %>
           <% end %>
           <% if current_user.can_view?(Search) %>
             <%= nav.item 'Search', new_search_path %>
