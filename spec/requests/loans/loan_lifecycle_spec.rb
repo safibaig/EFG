@@ -245,7 +245,7 @@ describe 'Loan lifecycle' do
   end
 
   def realise_recovery(loan)
-    click_link "Recoveries statement received"
+    click_link "Recoveries Statement Received"
     select lender.name, from: 'realisation_statement_lender_id'
     fill_in 'realisation_statement_reference', with: "ABC123"
     select next_quarter_month_name(Date.today), from: 'realisation_statement_period_covered_quarter'
@@ -268,6 +268,6 @@ describe 'Loan lifecycle' do
   end
 
   def within_navigation(&block)
-    within(".nav", &block)
+    within(".navbar-secondary", &block)
   end
 end

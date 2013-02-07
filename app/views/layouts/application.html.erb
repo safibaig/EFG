@@ -16,78 +16,77 @@
 </head>
 <body class="<%= 'training' if training_mode? %>">
 
-  <div class="navbar">
-    <div class="navbar-inner">
-      <div class="container">
-        <%= link_to application_title, root_path, class: 'brand' %>
+  <div class="navbar-container">
+    <%= navbar(:primary) do %>
+      <%= navbar_title application_title, root_path %>
 
-        <% if user_signed_in? %>
-          <% if current_user_access_restricted? %>
-            <ul class="nav">
-              <li><%= link_to 'Logout', destroy_user_session_path, id: "logout" %></li>
-            </ul>
-          <% else %>
-            <%= render('search/loan_lookup_form') if current_user.can_view?(Search) %>
+      <% if user_signed_in? %>
+        <%= navigation(:right) do |nav| %>
+          <% if !current_user_access_restricted? %>
+            <%= nav.dropdown('Help') do |dropdown| %>
+              <%= dropdown.item 'Web Portal Manual', '/help/EFG Web Portal Manual Issue One November 2012 KF Draft.pdf', class: 'pdf-download' %>
+              <%= dropdown.item 'EFG Scheme Manual', '/help/EFG Scheme Manual.docx', class: 'pdf-download' %>
+              <%= dropdown.item 'SFLG Scheme Manual', '/help/SFLG Scheme Manual.pdf', class: 'pdf-download' %>
+              <%= dropdown.item '2007 SIC Indices', '/help/sic2007index.pdf', class: 'pdf-download' %>
+              <%= dropdown.item 'Direct Debit Mandate', '/pdfs/direct_debit_mandate.pdf', class: 'pdf-download' %>
+              <%= dropdown.item 'Premium Collection Guidance', '/help/Premium Collection Guidance Note.pdf', class: 'pdf-download' %>
 
-            <ul class="nav">
-              <% if current_user.can_view?(LoanStates) %>
-                <li><%= link_to 'Loan Portfolio', loan_states_path %></li>
+              <% if current_user.can_create?(AskCfe) %>
+                <%= dropdown.item 'Ask CfE', new_help_ask_cfe_path %>
               <% end %>
-              <% if current_user.can_create?(PremiumScheduleReport) %>
-                <li><%= link_to 'Extract premium schedule information', new_premium_schedule_report_path %></li>
+              <% if current_user.can_create?(AskAnExpert) %>
+                <%= dropdown.item 'Ask an Expert', new_help_ask_an_expert_path %>
               <% end %>
-              <% if current_user.can_create?(LoanEligibilityCheck) %>
-                <li><%= link_to 'New Loan', new_eligibility_check_path %></li>
-              <% end %>
-              <% if current_user.can_create?(Invoice) %>
-                <li><%= link_to 'Invoice Received', new_invoice_path %></li>
-              <% end %>
-              <% if current_user.can_create?(RealisationStatement) %>
-                <li><%= link_to 'Recoveries statement received', new_realise_loan_path %></li>
-              <% end %>
-              <% if current_user.can_create?(LoanTransfer::Sflg) %>
-                <li><%= link_to 'Transfer a loan', new_loan_transfer_path %></li>
-              <% end %>
-              <% if current_user.can_create?(LoanTransfer::LegacySflg) %>
-                <li><%= link_to 'Transfer a legacy loan', new_legacy_loan_transfer_path %></li>
-              <% end %>
-              <% if current_user.can_create?(LoanReport) %>
-                <li><%= link_to 'Generate a loan report', new_loan_report_path %></li>
-              <% end %>
-              <% if current_user.can_create?(LoanAuditReport) %>
-                <li><%= link_to 'Generate loan audit report', new_loan_audit_report_path %></li>
-              <% end %>
-              <% if current_user.can_view?(Search) %>
-                <li><%= link_to 'Search', new_search_path %></li>
-              <% end %>
+            <% end %>
 
-              <li><%= link_to 'Change Password', edit_change_password_path %></li>
-              <li><%= link_to 'Logout', destroy_user_session_path, id: "logout" %></li>
+            <%= nav.item 'Change Password', edit_change_password_path %>
+          <% end %>
+          <%= nav.item 'Logout', destroy_user_session_path, id: "logout" %>
+        <% end %>
+      <% end %>
+    <% end %>
 
-              <li class="dropdown">
-                <%= link_to '#', "class" => "dropdown-toggle", "data-toggle" => "dropdown" do %>
-                  Help <b class="caret"></b>
-                <% end %>
-                <ul class="dropdown-menu">
-                  <li><%= link_to 'Web Portal Manual', '/help/EFG Web Portal Manual Issue One November 2012 KF Draft.pdf', class: 'pdf-download' %></li>
-                  <li><%= link_to 'EFG Scheme Manual', '/help/EFG Scheme Manual.docx', class: 'pdf-download' %></li>
-                  <li><%= link_to 'SFLG Scheme Manual', '/help/SFLG Scheme Manual.pdf', class: 'pdf-download' %></li>
-                  <li><%= link_to '2007 SIC Indices', '/help/sic2007index.pdf', class: 'pdf-download' %></li>
-                  <li><%= link_to 'Direct Debit Mandate', '/pdfs/direct_debit_mandate.pdf', class: 'pdf-download' %></li>
-                  <li><%= link_to 'Premium Collection Guidance', '/help/Premium Collection Guidance Note.pdf', class: 'pdf-download' %></li>
-                  <% if current_user.can_create?(AskCfe) %>
-                    <li><%= link_to 'Ask CfE', new_help_ask_cfe_path %></li>
-                  <% end %>
-                  <% if current_user.can_create?(AskAnExpert) %>
-                    <li><%= link_to 'Ask an Expert', new_help_ask_an_expert_path %></li>
-                  <% end %>
-                </ul>
-              </li>
-            </ul>
+    <% if user_signed_in? && !current_user_access_restricted? %>
+      <%= navbar(:secondary) do %>
+        <%= navigation do |nav| %>
+          <% if current_user.can_view?(LoanStates) %>
+            <%= nav.item 'Loan Portfolio', loan_states_path %>
+          <% end %>
+          <% if current_user.can_create?(PremiumScheduleReport) %>
+            <%= nav.item 'Extract Premium Schedule Information', new_premium_schedule_report_path %>
+          <% end %>
+          <% if current_user.can_create?(LoanEligibilityCheck) %>
+            <%= nav.item 'New Loan', new_eligibility_check_path %>
+          <% end %>
+          <% if current_user.can_create?(Invoice) %>
+            <%= nav.item 'Invoice Received', new_invoice_path %>
+          <% end %>
+          <% if current_user.can_create?(RealisationStatement) %>
+            <%= nav.item 'Recoveries Statement Received', new_realise_loan_path %>
+          <% end %>
+          <% if current_user.can_create?(LoanTransfer::Sflg) %>
+            <%= nav.item 'Transfer a Loan', new_loan_transfer_path %>
+          <% end %>
+          <% if current_user.can_create?(LoanTransfer::LegacySflg) %>
+            <%= nav.item 'Transfer a Legacy Loan', new_legacy_loan_transfer_path %>
+          <% end %>
+
+          <%= nav.dropdown('Reports') do |dropdown| %>
+            <% if current_user.can_create?(LoanReport) %>
+              <%= dropdown.item 'Generate a Loan Report', new_loan_report_path %>
+            <% end %>
+            <% if current_user.can_create?(LoanAuditReport) %>
+              <%= dropdown.item 'Generate Loan Audit Report', new_loan_audit_report_path %>
+            <% end %>
+          <% end %>
+          <% if current_user.can_view?(Search) %>
+            <%= nav.item 'Search', new_search_path %>
           <% end %>
         <% end %>
-      </div>
-    </div>
+
+        <%= render('search/loan_lookup_form') if current_user.can_view?(Search) %>
+      <% end %>
+    <% end %>
   </div>
 
   <div class="container">

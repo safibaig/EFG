@@ -4,6 +4,7 @@ class CurrencyInput < SimpleForm::Inputs::StringInput
   def input
     unit = options[:unit] || '£'
 
+    input_html_options[:type] = 'text'
     input_html_options[:value] = @builder.object.send(attribute_name)
 
     template.content_tag(:div, class: 'input-prepend') do

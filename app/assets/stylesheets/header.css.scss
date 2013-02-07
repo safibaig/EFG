@@ -1,21 +1,39 @@
 @import "variables";
 
+.navbar-container {
+  margin-bottom: 20px;
+}
+
 .navbar {
-  margin-bottom: 9px;
+  margin-bottom: 0;
 
   .container {
     margin: 0 auto;
     width: 940px;
   }
 
+  a:focus {
+    outline: none;
+  }
+
   a.brand {
-    color: #fff;
     font-family: $header_font;
   }
 
-  input.search-query {
+  .navbar-form {
+    margin-right: 10px;
+  }
+
+  input.search-term {
     background-color: #fff;
     color: #000;
+    width: 150px;
+  }
+}
+
+.navbar-inverse {
+  a.brand {
+    color: #fff;
   }
 }
 

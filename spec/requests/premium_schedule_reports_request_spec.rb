@@ -16,7 +16,7 @@ describe 'premium schedule reports' do
 
   it 'works' do
     visit root_path
-    click_link 'Extract premium schedule information'
+    click_link 'Extract Premium Schedule Information'
 
     click_button 'Submit'
     page.should have_selector('.errors-on-base')

@@ -118,7 +118,7 @@ describe 'Realise loans' do
 
   def navigate_to_form
     visit root_path
-    click_link 'Recoveries statement received'
+    click_link 'Recoveries Statement Received'
   end
 
 end
