@@ -1,7 +1,11 @@
 @import "variables";
 
+.navbar-container {
+  margin-bottom: 20px;
+}
+
 .navbar {
-  margin-bottom: 9px;
+  margin-bottom: 0;
 
   .container {
     margin: 0 auto;
@@ -9,13 +13,18 @@
   }
 
   a.brand {
-    color: #fff;
     font-family: $header_font;
   }
 
   input.search-term {
     background-color: #fff;
     color: #000;
+  }
+}
+
+.navbar-inverse {
+  a.brand {
+    color: #fff;
   }
 }
 

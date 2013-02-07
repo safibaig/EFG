@@ -268,6 +268,6 @@ describe 'Loan lifecycle' do
   end
 
   def within_navigation(&block)
-    within(".nav", &block)
+    within(".navbar-secondary", &block)
   end
 end
