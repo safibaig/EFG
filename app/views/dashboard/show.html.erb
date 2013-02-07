@@ -37,7 +37,7 @@
 
 <% if current_user.can_view?(LoanAlerts) %>
 <div class="dashboard_widgets" id="loan_alerts">
-  <h2><%= t('dashboard.loan_alerts.title') %></h2>
+  <h2>Loan Alerts For The Next 60 Days</h2>
 
   <div id="not_progressed_loan_alerts">
     <%= render 'loan_alert',
