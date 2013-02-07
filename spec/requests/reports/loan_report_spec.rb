@@ -131,7 +131,7 @@ describe 'Loan report' do
 
   def navigate_to_loan_report_form
     visit root_path
-    click_link 'Generate a loan report'
+    click_link 'Generate a Loan Report'
   end
 
 end

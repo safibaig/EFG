@@ -36,7 +36,7 @@ describe 'Loan audit report' do
 
   def navigate_to_loan_audit_report_form
     visit root_path
-    click_link 'Generate loan audit report'
+    click_link 'Generate Loan Audit Report'
   end
 
 end

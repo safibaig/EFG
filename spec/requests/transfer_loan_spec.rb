@@ -8,7 +8,7 @@ describe 'Transfer a loan' do
   before(:each) do
     login_as(current_user, scope: :user)
     visit root_path
-    click_link 'Transfer a loan'
+    click_link 'Transfer a Loan'
   end
 
   it 'should transfer loan from one lender to another' do
