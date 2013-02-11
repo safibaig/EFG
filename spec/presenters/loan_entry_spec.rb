@@ -35,9 +35,21 @@ describe LoanEntry do
       loan_entry.should_not be_valid
     end
 
-    it "should be invalid without a postcode" do
-      loan_entry.postcode = ''
-      loan_entry.should_not be_valid
+    context '#postcode' do
+      it 'is required' do
+        loan_entry.postcode = ''
+        loan_entry.should_not be_valid
+      end
+
+      it 'is valid for a valid UK postcode' do
+        loan_entry.postcode = 'EC1A 1BB'
+        loan_entry.should be_valid
+      end
+
+      it 'is invalid without a full, valid UK postcode' do
+        loan_entry.postcode = 'EC1A'
+        loan_entry.should_not be_valid
+      end
     end
 
     it "should be invalid without a repayment frequency" do

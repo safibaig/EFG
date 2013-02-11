@@ -56,16 +56,13 @@ class LoanEntry
 
   after_save :save_as_ineligible, unless: :is_eligible?
 
-  validates_presence_of :business_name, :legal_form_id, :interest_rate_type_id,
-                        :repayment_frequency_id, :postcode,
-                        :interest_rate, :fees, :repayment_duration
-
+  validates_presence_of :business_name, :fees, :interest_rate,
+    :interest_rate_type_id, :legal_form_id, :repayment_duration,
+    :repayment_frequency_id
   validates_presence_of :company_registration, if: :company_registration_required?
-
+  validate :postcode_allowed
   validate :state_aid_calculated
-
   validate :repayment_frequency_allowed
-
   validate :company_turnover_is_allowed, if: :turnover
 
   validate do
@@ -134,6 +131,10 @@ class LoanEntry
   end
 
   private
+
+  def postcode_allowed
+    errors.add(:postcode, 'is invalid') unless UKPostcode.new(postcode).full?
+  end
 
   # Note: state aid must be recalculated if the loan term has changed
   def state_aid_calculated
