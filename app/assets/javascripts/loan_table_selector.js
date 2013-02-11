@@ -1,3 +1,5 @@
+//= require accounting
+
 $(document).ready(function() {
   $('[data-behaviour^=loan-table-selector]').each(function(_, element) {
     var totalAmountHeader = $('<th>').attr({colspan: 6}).text('Total Amount to be Settled');
@@ -22,7 +24,7 @@ $(document).ready(function() {
         }
       });
 
-      totalAmountInput.val(totalAmountSettled.toFixed(2));
+      totalAmountInput.val(accounting.formatMoney(totalAmountSettled, ''));
     }
 
     calculateAmountSettledTotal();
