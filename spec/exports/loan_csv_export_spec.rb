@@ -14,6 +14,7 @@ describe LoanCsvExport do
         maturity_date: Date.new(2022, 2, 22),
         reference: 'ABC2345-01',
         trading_date: Date.new(1999, 9, 9),
+        lender_reference: 'lenderref1'
       )
     }
     let(:csv_data) {
@@ -56,7 +57,7 @@ describe LoanCsvExport do
         sic_eligible sic_notified_aid sic_parent_desc
         signed_direct_debit_received standard_cap state state_aid
         state_aid_is_valid town trading_date trading_name transferred_from
-        turnover updated_at viable_proposition would_you_lend)
+        turnover updated_at viable_proposition would_you_lend lender_reference)
     end
 
     it 'should return correct csv data for loans' do
@@ -159,6 +160,7 @@ describe LoanCsvExport do
       row[95].should == '01/10/2012 16:23:45'
       row[96].should == 'Yes'
       row[97].should == 'Yes'
+      row[98].should == 'lenderref1'
     end
   end
 end
