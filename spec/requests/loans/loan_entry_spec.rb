@@ -27,6 +27,7 @@ describe 'loan entry' do
     loan.postcode.should == 'N8 4HF'
     loan.non_validated_postcode.should == 'JF3 8HF'
     loan.sortcode.should == '03-12-45'
+    loan.lender_reference.should == 'lenderref1'
     loan.generic1.should == 'Generic 1'
     loan.generic2.should == 'Generic 2'
     loan.generic3.should == 'Generic 3'

@@ -55,6 +55,8 @@ module RequestSpecHelpers
 
     calculate_state_aid(loan)
 
+    fill_in 'loan_entry_lender_reference', with: 'lenderref1'
+
     select LoanSecurityType.find(1).name, from: 'loan_entry_loan_security_types' # Residential property
     fill_in 'loan_entry_security_proportion', with: '20'
     fill_in 'loan_entry_generic1', with: 'Generic 1'

@@ -17,6 +17,7 @@ class LoanEntry
   attribute :previous_borrowing
   attribute :private_residence_charge_required
   attribute :personal_guarantee_required
+  attribute :lender_reference
   attribute :amount
   attribute :turnover
   attribute :trading_date
