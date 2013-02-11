@@ -18,6 +18,7 @@
 <%= loan_details_table(@loan, 'simple_form.labels.loan_entry') do |table| %>
   <%= table.row 'lender', header: 'What is the name of the lender organisation?' %>
   <%= table.row 'reference', header: 'System Generated Identification Reference' %>
+  <%= table.row 'lender_reference' %>
   <%= table.row 'declaration_signed' %>
   <%= table.row 'business_name' %>
   <%= table.row 'trading_name' %>
