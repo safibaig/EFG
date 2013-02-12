@@ -198,6 +198,7 @@ en:
         trading_name: What is the trading name?
         company_registration: What is the company registration number?
         state: What is the Loan State?
+        lender_reference: What is the lender's loan reference?
         lending_limit_id: What is the appropriate Lending Limit?
         amount_from: Loan amount from
         amount_to: Loan amount to

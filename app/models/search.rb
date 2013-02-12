@@ -12,7 +12,7 @@ class Search
 
   ExactMatchFilters   = %w(state lender_id lending_limit_id reason_id modified_by_id).freeze
   PartialMatchFilters = %w(business_name trading_name company_registration postcode
-                           generic1 generic2 generic3 generic4 generic5).freeze
+                           generic1 generic2 generic3 generic4 generic5 lender_reference).freeze
   RangeFilters        = (MoneyAttributes + DateAttributes).freeze
   AllFilters          = (PartialMatchFilters + ExactMatchFilters + RangeFilters).freeze
 
