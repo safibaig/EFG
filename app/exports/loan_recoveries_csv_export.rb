@@ -9,6 +9,7 @@ class LoanRecoveriesCsvExport < BaseCsvExport
       :recovered_on,
       :dti_demand_outstanding,
       :amount_due_to_dti,
+      :lender_reference,
     ]
   end
 
@@ -18,7 +19,8 @@ class LoanRecoveriesCsvExport < BaseCsvExport
       record.loan.business_name,
       record.recovered_on.to_s(:screen),
       record.loan.dti_demand_outstanding.try(:format),
-      record.amount_due_to_dti.try(:format)
+      record.amount_due_to_dti.try(:format),
+      record.loan.lender_reference
     ]
   end
 

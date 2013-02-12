@@ -34,6 +34,7 @@
         <tr>
           <th>Confirm Realised?</th>
           <th>Loan Reference</th>
+          <th>Lender's Reference</th>
           <th>Name</th>
           <th>Recovered Date</th>
           <th>Outstanding Demand against Government Guarantee</th>
@@ -45,6 +46,7 @@
           <tr id="<%= dom_id(recovery) %>">
             <td><%= check_box_tag "#{f.object_name}[recoveries_to_be_realised_ids][]", recovery.id %></td>
             <td><%= recovery.loan.reference %></td>
+            <td><%= recovery.loan.lender_reference %></td>
             <td><%= recovery.loan.business_name %></td>
             <td><%= recovery.recovered_on.to_s(:screen) %></td>
             <td><%= recovery.loan.dti_amount_claimed.try(:format) %></td>
