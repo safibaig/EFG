@@ -12,6 +12,7 @@
   <thead>
     <tr>
       <th>Loan Reference</th>
+      <th>Lender's Reference</th>
       <th>Business Name</th>
       <th>Settle Date</th>
       <th>Loan State</th>
@@ -21,6 +22,7 @@
     <% @invoice.settled_loans.each do |loan| %>
       <tr>
         <td><%= loan.reference %></td>
+        <td><%= loan.lender_reference %></td>
         <td><%= loan.business_name %></td>
         <td><%= @invoice.created_at.to_s(:screen) %></td>
         <td><%= loan.state.humanize %></td>

@@ -12,6 +12,7 @@ class SettleLoan
   attribute :id, read_only: true
   attribute :lending_limit, read_only: true
   attribute :reference, read_only: true
+  attribute :lender_reference, read_only: true
   attribute :business_name, read_only: true
   attribute :corrected?, read_only: true
   attribute :dti_amount_claimed, read_only: true

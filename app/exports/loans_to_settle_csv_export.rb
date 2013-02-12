@@ -8,6 +8,7 @@ class LoansToSettleCsvExport < BaseCsvExport
       :business_name,
       :dti_demanded_on,
       :dti_amount_claimed,
+      :lender_reference,
     ]
   end
 
