@@ -28,7 +28,7 @@
       <% if group.loans.any? %>
         <h2><%= group.name %></h2>
 
-        <table class="table table-striped">
+        <table class="table table-striped" data-behaviour="loan-table-selector">
           <thead>
             <tr>
               <th>Settle Claim?</th>
@@ -57,7 +57,7 @@
               </tr>
             <% end %>
           </tbody>
-          </tfoot>
+          <tfoot>
             <tr><td colspan="7">( <strong>*</strong> indicates corrected loans )</td></tr>
           </tfoot>
         </table>
