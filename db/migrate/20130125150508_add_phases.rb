@@ -7,6 +7,13 @@ class AddPhases < ActiveRecord::Migration
       t.timestamps
     end
 
+    if !SystemUser.first
+      # This requires a SystemUser, so ensure that one exists.
+      system_user = SystemUser.new
+      system_user.username = "system"
+      system_user.save(validate: false)
+    end
+
     (1..4).each do |i|
       phase = Phase.new
       phase.name = "Phase #{i}"
