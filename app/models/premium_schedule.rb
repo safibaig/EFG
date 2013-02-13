@@ -8,7 +8,6 @@ class PremiumSchedule
   attr_reader :loan, :state_aid_calculation
 
   delegate :initial_draw_amount, to: :state_aid_calculation
-  delegate :initial_draw_months, to: :state_aid_calculation
   delegate :initial_capital_repayment_holiday, to: :state_aid_calculation
   delegate :second_draw_amount, to: :state_aid_calculation
   delegate :second_draw_months, to: :state_aid_calculation
@@ -19,6 +18,10 @@ class PremiumSchedule
   delegate :reschedule?, to: :state_aid_calculation
   delegate :premium_cheque_month, to: :state_aid_calculation
   delegate :premium_rate, to: :loan
+
+  def initial_draw_months
+    state_aid_calculation.repayment_duration
+  end
 
   def initial_draw_date
     loan.initial_draw_change.try :date_of_change

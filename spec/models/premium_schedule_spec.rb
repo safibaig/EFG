@@ -6,7 +6,7 @@ describe PremiumSchedule do
     let(:state_aid_calculation) {
       FactoryGirl.build(:state_aid_calculation,
         initial_draw_amount: Money.new(100_000_00),
-        initial_draw_months: 120)
+        repayment_duration: 120)
     }
 
     let(:premium_schedule) {
@@ -29,9 +29,9 @@ describe PremiumSchedule do
       premium_schedule.total_premiums.should == Money.new(10_250_00)
     end
 
-    context 'with weird initial_draw_months' do
+    context 'with weird repayment_duration' do
       it 'does not blow up if the number of months is less than one quarter' do
-        state_aid_calculation.initial_draw_months = 2
+        state_aid_calculation.repayment_duration = 2
 
         premium_schedule.premiums[0].should == Money.new(500_00)
         premium_schedule.premiums[1].should be_zero
@@ -48,7 +48,7 @@ describe PremiumSchedule do
           :state_aid_calculation,
           loan: loan,
           initial_draw_amount: Money.new(900_000_00),
-          initial_draw_months: 12,
+          repayment_duration: 12,
           initial_capital_repayment_holiday: 0,
           second_draw_amount: Money.new(100_000_00),
           second_draw_months: 3
@@ -72,7 +72,7 @@ describe PremiumSchedule do
           :state_aid_calculation,
           loan: loan,
           initial_draw_amount: Money.new(525_000_00),
-          initial_draw_months: 12,
+          repayment_duration: 12,
           initial_capital_repayment_holiday: 0,
           second_draw_amount: Money.new(350_500_00),
           second_draw_months: 2,
@@ -98,7 +98,7 @@ describe PremiumSchedule do
           :state_aid_calculation,
           loan: loan,
           initial_draw_amount: Money.new(100_000_00),
-          initial_draw_months: 12,
+          repayment_duration: 12,
           initial_capital_repayment_holiday: 0,
           second_draw_amount: Money.new(50_000_00),
           second_draw_months: 3,
@@ -126,7 +126,7 @@ describe PremiumSchedule do
           :state_aid_calculation,
           loan: loan,
           initial_draw_amount: Money.new(100_000_00),
-          initial_draw_months: 12,
+          repayment_duration: 12,
           initial_capital_repayment_holiday: 3
         )
       }
@@ -148,7 +148,7 @@ describe PremiumSchedule do
           :state_aid_calculation,
           loan: loan,
           initial_draw_amount: Money.new(60_900_00),
-          initial_draw_months: 120,
+          repayment_duration: 120,
           initial_capital_repayment_holiday: 0
         )
       }
@@ -173,7 +173,7 @@ describe PremiumSchedule do
             :state_aid_calculation,
             loan: loan,
             initial_draw_amount: Money.new(50_000_00),
-            initial_draw_months: 60,
+            repayment_duration: 60,
             initial_capital_repayment_holiday: 12
           )
         }
@@ -198,7 +198,7 @@ describe PremiumSchedule do
             :state_aid_calculation,
             loan: loan,
             initial_draw_amount: Money.new(38_500_00),
-            initial_draw_months: 60,
+            repayment_duration: 60,
             initial_capital_repayment_holiday: 0
           )
         }
@@ -224,7 +224,7 @@ describe PremiumSchedule do
           :state_aid_calculation,
           loan: loan,
           initial_draw_amount: Money.new(20_000_00),
-          initial_draw_months: 11,
+          repayment_duration: 11,
           initial_capital_repayment_holiday: 0
         )
       }

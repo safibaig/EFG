@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130211114303) do
+ActiveRecord::Schema.define(:version => 20130213143136) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -448,7 +448,7 @@ ActiveRecord::Schema.define(:version => 20130211114303) do
     t.integer  "loan_id",                                                                        :null => false
     t.integer  "initial_draw_year"
     t.integer  "initial_draw_amount",               :limit => 8,                                 :null => false
-    t.integer  "initial_draw_months"
+    t.integer  "repayment_duration"
     t.integer  "initial_capital_repayment_holiday"
     t.integer  "second_draw_amount",                :limit => 8
     t.integer  "second_draw_months"

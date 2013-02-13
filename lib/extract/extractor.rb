@@ -568,7 +568,7 @@ class Extractor
           whitelist 'legacy_loan_id'
           whitelist "initial_draw_year"
           whitelist "initial_draw_amount"
-          whitelist "initial_draw_months"
+          whitelist "repayment_duration"
           whitelist "initial_capital_repayment_holiday"
           whitelist "second_draw_amount"
           whitelist "second_draw_months"

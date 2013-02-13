@@ -5,7 +5,7 @@ module LoanChangesHelper
       %w(
         premium_cheque_month
         initial_draw_amount
-        initial_draw_months
+        repayment_duration
         initial_capital_repayment_holiday
         second_draw_amount
         second_draw_months

@@ -118,7 +118,7 @@ en:
       state_aid_calculation:
         initial_draw_year: 'What is the expected year of the initial draw?'
         initial_draw_amount: 'What is the amount of the initial draw?'
-        initial_draw_months: 'What is the loan term? (Months)'
+        repayment_duration: 'What is the loan term? (Months)'
         initial_capital_repayment_holiday: 'What is the length of the initial capital repayment holiday? (Months)'
         second_draw_amount: 'What is the amount of the additional draw (Second tranche)'
         second_draw_months: 'What is the number of months (from the initial draw) to second tranche drawdown?'
@@ -130,7 +130,7 @@ en:
       regenerate_schedule:
         premium_cheque_month: 'When is the next quarterly Premium due?'
         initial_draw_amount: 'What is the outstanding balance at the next (or subsequent) quarterly Premium collection point, taking account of any draws or repayments which may be made between now and the relevant quarter date?'
-        initial_draw_months: 'What will the outstanding loan term be at the next (or subsequent) quarterly Premium collection point? (Months - must be a multiple of 3, i.e. rounded up to the next whole quarter)'
+        repayment_duration: 'What will the outstanding loan term be at the next (or subsequent) quarterly Premium collection point? (Months - must be a multiple of 3, i.e. rounded up to the next whole quarter)'
         initial_capital_repayment_holiday: What is the length of the initial capital repayment holiday? (Months) (Note that if the facility is being provided on interest-only terms then the value entered here should be equal to the full term of the facility)
         second_draw_amount: What is the amount of the additional draw? (Second tranche)
         second_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to second tranche drawdown?

@@ -19,7 +19,7 @@ describe PremiumScheduleQuarter do
           loan: loan,
           initial_draw_year: 2012,
           initial_draw_amount: Money.new(900_000_00),
-          initial_draw_months: 12,
+          repayment_duration: 12,
           initial_capital_repayment_holiday: 0,
           second_draw_amount: Money.new(100_000_00),
           second_draw_months: 3,
@@ -45,7 +45,7 @@ describe PremiumScheduleQuarter do
           :state_aid_calculation,
           loan: loan,
           initial_draw_amount: Money.new(10_000_00),
-          initial_draw_months: 12,
+          repayment_duration: 12,
           initial_capital_repayment_holiday: 5
         )
       }
@@ -63,7 +63,7 @@ describe PremiumScheduleQuarter do
           loan: loan,
           initial_draw_year: nil,
           initial_draw_amount: Money.new(150_000_00),
-          initial_draw_months: 0,
+          repayment_duration: 0,
           initial_capital_repayment_holiday: 0,
           second_draw_amount: 0,
           second_draw_months: 0,

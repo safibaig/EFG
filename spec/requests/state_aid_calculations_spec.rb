@@ -16,14 +16,14 @@ describe 'state aid calculations' do
       navigate_to_state_aid_calculation_page
 
       page.find('#state_aid_calculation_initial_draw_amount').value.should == '123456.00'
-      page.find('#state_aid_calculation_initial_draw_months').value.should == '3'
+      page.find('#state_aid_calculation_repayment_duration').value.should == '3'
     end
 
     it 'creates a new record with valid data' do
       navigate_to_state_aid_calculation_page
 
       fill_in :initial_draw_amount, '£123,456'
-      fill_in :initial_draw_months, '12'
+      fill_in :repayment_duration, '12'
       fill_in :initial_capital_repayment_holiday, '0'
       fill_in :second_draw_amount, '£0'
       fill_in :second_draw_months, '£0'
@@ -37,7 +37,7 @@ describe 'state aid calculations' do
       state_aid_calculation = StateAidCalculation.last
       state_aid_calculation.loan.should == loan
       state_aid_calculation.initial_draw_amount.should == Money.new(123_456_00)
-      state_aid_calculation.initial_draw_months.should == 12
+      state_aid_calculation.repayment_duration.should == 12
       state_aid_calculation.initial_capital_repayment_holiday.should == 0
       state_aid_calculation.second_draw_amount.should == 0
       state_aid_calculation.second_draw_months.should == 0
