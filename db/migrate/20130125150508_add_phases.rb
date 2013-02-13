@@ -1,4 +1,18 @@
 class AddPhases < ActiveRecord::Migration
+
+  # Avoid dependency on a model object which might not exist when this
+  # migration is run.
+  class User < ActiveRecord::Base
+  end
+
+  class SystemUser < User
+  end
+
+  class Phase < ActiveRecord::Base
+    belongs_to :created_by, class_name: 'User'
+    belongs_to :modified_by, class_name: 'User'
+  end
+
   def up
     create_table :phases, :force => true do |t|
       t.string :name
@@ -11,7 +25,7 @@ class AddPhases < ActiveRecord::Migration
       # This requires a SystemUser, so ensure that one exists.
       system_user = SystemUser.new
       system_user.username = "system"
-      system_user.save(validate: false)
+      system_user.save
     end
 
     (1..4).each do |i|
