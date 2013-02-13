@@ -17,7 +17,6 @@ describe StateAidCalculation do
     end
 
     %w(
-      initial_draw_year
       initial_draw_amount
       initial_draw_months
     ).each do |attr|
@@ -111,11 +110,6 @@ describe StateAidCalculation do
     context 'when rescheduling' do
       let(:loan) { rescheduled_state_aid_calculation.loan }
       let(:rescheduled_state_aid_calculation) { FactoryGirl.build(:rescheduled_state_aid_calculation) }
-
-      it "does not require initial draw year" do
-        rescheduled_state_aid_calculation.initial_draw_year = nil
-        rescheduled_state_aid_calculation.should be_valid
-      end
 
       %w(
         premium_cheque_month

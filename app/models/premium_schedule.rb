@@ -7,7 +7,6 @@ class PremiumSchedule
 
   attr_reader :loan, :state_aid_calculation
 
-  delegate :initial_draw_year, to: :state_aid_calculation
   delegate :initial_draw_amount, to: :state_aid_calculation
   delegate :initial_draw_months, to: :state_aid_calculation
   delegate :initial_capital_repayment_holiday, to: :state_aid_calculation

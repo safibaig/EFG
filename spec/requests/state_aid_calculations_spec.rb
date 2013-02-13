@@ -22,7 +22,6 @@ describe 'state aid calculations' do
     it 'creates a new record with valid data' do
       navigate_to_state_aid_calculation_page
 
-      fill_in :initial_draw_year, '2012'
       fill_in :initial_draw_amount, '£123,456'
       fill_in :initial_draw_months, '12'
       fill_in :initial_capital_repayment_holiday, '0'
@@ -37,7 +36,6 @@ describe 'state aid calculations' do
 
       state_aid_calculation = StateAidCalculation.last
       state_aid_calculation.loan.should == loan
-      state_aid_calculation.initial_draw_year.should == 2012
       state_aid_calculation.initial_draw_amount.should == Money.new(123_456_00)
       state_aid_calculation.initial_draw_months.should == 12
       state_aid_calculation.initial_capital_repayment_holiday.should == 0
@@ -47,16 +45,6 @@ describe 'state aid calculations' do
       state_aid_calculation.third_draw_months.should be_nil
       state_aid_calculation.fourth_draw_amount.should be_nil
       state_aid_calculation.fourth_draw_months.should be_nil
-    end
-
-    it 'does not create a new record with invalid data' do
-      visit edit_loan_state_aid_calculation_path(loan)
-
-      expect {
-        click_button 'Submit'
-      }.to change(StateAidCalculation, :count).by(0)
-
-      current_path.should == loan_state_aid_calculation_path(loan)
     end
   end
 

@@ -8,7 +8,7 @@ class StateAidCalculation < ActiveRecord::Base
 
   belongs_to :loan, inverse_of: :state_aid_calculations
 
-  attr_accessible :initial_draw_year, :initial_draw_amount,
+  attr_accessible :initial_draw_amount,
     :initial_draw_months, :initial_capital_repayment_holiday,
     :second_draw_amount, :second_draw_months, :third_draw_amount,
     :third_draw_months, :fourth_draw_amount, :fourth_draw_months,
@@ -19,7 +19,6 @@ class StateAidCalculation < ActiveRecord::Base
   validates_presence_of :loan_id
   validates_presence_of :initial_draw_months
   validates_inclusion_of :calc_type, in: [ SCHEDULE_TYPE, RESCHEDULE_TYPE, NOTIFIED_AID_TYPE ]
-  validates_presence_of :initial_draw_year, unless: :reschedule?
   validates_format_of :premium_cheque_month, with: /\A\d{2}\/\d{4}\z/, if: :reschedule?, message: :invalid_format
 
   %w(initial_capital_repayment_holiday second_draw_months third_draw_months fourth_draw_months).each do |attr|
