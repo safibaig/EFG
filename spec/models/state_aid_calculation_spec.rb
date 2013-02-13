@@ -239,4 +239,22 @@ describe StateAidCalculation do
       state_aid_calculation.should_not be_reschedule
     end
   end
+
+  describe "#euro_conversion_rate" do
+    it "returns the default value" do
+      state_aid_calculation = FactoryGirl.build(:state_aid_calculation)
+      state_aid_calculation.euro_conversion_rate.should == 1.1974
+    end
+
+    it "returns a set value" do
+      state_aid_calculation = FactoryGirl.build(:state_aid_calculation, euro_conversion_rate: 0.65)
+      state_aid_calculation.euro_conversion_rate.should == 0.65
+    end
+
+    it "saves the euro_conversion_rate used" do
+      state_aid_calculation = FactoryGirl.create(:state_aid_calculation, euro_conversion_rate: 0.75)
+
+      state_aid_calculation[:euro_conversion_rate].should == 0.75
+    end
+  end
 end

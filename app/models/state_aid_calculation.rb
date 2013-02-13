@@ -16,6 +16,14 @@ class StateAidCalculation < ActiveRecord::Base
 
   before_validation :set_seq, on: :create
 
+  before_create do
+    write_attribute(:euro_conversion_rate, euro_conversion_rate)
+  end
+
+  after_save do |calculation|
+    calculation.loan.update_attribute :state_aid, state_aid_eur
+  end
+
   validates_presence_of :loan_id
   validates_presence_of :initial_draw_months
   validates_inclusion_of :calc_type, in: [ SCHEDULE_TYPE, RESCHEDULE_TYPE, NOTIFIED_AID_TYPE ]
@@ -47,16 +55,16 @@ class StateAidCalculation < ActiveRecord::Base
   end
 
   def state_aid_eur
-    euro = state_aid_gbp * 1.1974
+    euro = state_aid_gbp * euro_conversion_rate
     Money.new(euro.cents, 'EUR')
-  end
-
-  after_save do |calculation|
-    calculation.loan.update_attribute :state_aid, state_aid_eur
   end
 
   def reschedule?
     calc_type == RESCHEDULE_TYPE
+  end
+
+  def euro_conversion_rate
+    read_attribute(:euro_conversion_rate) || 1.1974
   end
 
   private
