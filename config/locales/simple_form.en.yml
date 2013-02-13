@@ -99,6 +99,7 @@ en:
         debtor_book_coverage: What is the Applicant's Current Approved Pre-Payment Percentage?
         debtor_book_topup: What Guaranteed Pre-Payment Percentage will be provided to the Applicant? (Not to exceed the lower of 30% or the difference between the Current Approved Pre-Payment Percentage and 100%)
         notified_aid: Is the intensity of Notified Aid calculated for this project less than 40% for non-Objective 1 loans or less than 60% for Objective 1 loans?
+        lender_reference: Lender's loan reference
 
       transferred_loan_entry:
         <<: *loan_entry
@@ -197,6 +198,7 @@ en:
         trading_name: What is the trading name?
         company_registration: What is the company registration number?
         state: What is the Loan State?
+        lender_reference: What is the lender's loan reference?
         lending_limit_id: What is the appropriate Lending Limit?
         amount_from: Loan amount from
         amount_to: Loan amount to

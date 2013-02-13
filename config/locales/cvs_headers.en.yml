@@ -79,6 +79,7 @@ en:
       type_f1: (For Type F only) What is the current limit of the Applicant's Invoice Finance facility?
       type_f2: (For Type F only) What percentage of the Applicant's approved debtor book value is covered by their existing invoice discounting facility?
       type_f3: (For Type F only) What additional percentage (not exceeding either 100% less the existing approved percentage or 30%) of the Applicant's approved debtor book value will the enhancement represent?
+      loan_lender_reference: Lender's loan reference
 
     loan_audit_report:
       loan_reference: Loan reference

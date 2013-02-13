@@ -12,6 +12,7 @@
   <thead>
     <tr>
       <th>Loan Reference</th>
+      <th>Lender's Reference</th>
       <th>Business Name</th>
       <th>Realised Date</th>
       <th>Loan State</th>
@@ -22,6 +23,7 @@
       <% @loan_realisations.each do |loan_realisation| %>
         <tr>
           <td><%= loan_realisation.realised_loan.reference %></td>
+          <td><%= loan_realisation.realised_loan.lender_reference %></td>
           <td><%= loan_realisation.realised_loan.business_name %></td>
           <td><%= loan_realisation.created_at.to_s(:screen) %></td>
           <td><%= loan_realisation.realised_loan.state.humanize %></td>

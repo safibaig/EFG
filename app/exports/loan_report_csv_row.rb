@@ -83,7 +83,8 @@ class LoanReportCsvRow
       boolean_as_text(row['overdraft_maintained']),
       Money.new(row['invoice_discount_limit'] || 0).to_s,
       row['debtor_book_coverage'],
-      row['debtor_book_topup']
+      row['debtor_book_topup'],
+      row['lender_reference']
     ]
   end
 

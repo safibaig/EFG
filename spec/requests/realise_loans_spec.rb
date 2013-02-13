@@ -6,7 +6,13 @@ describe 'Realise loans' do
 
   let!(:lender1) { FactoryGirl.create(:lender, name: 'Hayes Inc') }
 
-  let!(:loan1) { FactoryGirl.create(:loan, :recovered, reference: 'BSPFDNH-01', lender: lender1, settled_on: Date.new(2009)) }
+  let!(:loan1) {
+    FactoryGirl.create(:loan, :recovered,
+                       reference: 'BSPFDNH-01',
+                       lender_reference: 'lenderref1',
+                       lender: lender1,
+                       settled_on: Date.new(2009))
+  }
 
   let!(:recovery1) { FactoryGirl.create(:recovery, loan: loan1, recovered_on: Date.new(2011, 2, 20)) }
 
@@ -37,6 +43,8 @@ describe 'Realise loans' do
     page.should_not have_content('LOGIHLJ-02') # loan after quarter cut off date
     page.should_not have_content('HJD4JF8-01') # loan belongs to different lender
 
+    page.should have_content('lenderref1')
+
     within "#recovery_#{recovery1.id}" do
       check 'realisation_statement[recoveries_to_be_realised_ids][]'
     end
@@ -52,6 +60,8 @@ describe 'Realise loans' do
     page.should have_content(loan2.reference)
     page.should_not have_content(loan3.reference)
     page.should_not have_content(loan5.reference)
+
+    page.should have_content(loan1.lender_reference)
 
     loan1.reload
     loan1.state.should == Loan::Realised

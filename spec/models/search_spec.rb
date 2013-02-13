@@ -129,6 +129,7 @@ describe Search do
         generic3: 'generic 3 text',
         generic4: 'generic 4 text',
         generic5: 'generic 5 text',
+        lender_reference: 'lenderref01',
       )
     }
 
@@ -242,6 +243,10 @@ describe Search do
       it "should return loans by partial generic field #{num}" do
         search("generic#{num}" => "eric #{num}").results.should == [loan2]
       end
+    end
+
+    it "should return loans by partial lender reference" do
+      search("lender_reference" => "lenderref").results.should == [loan2]
     end
 
     it "should sort loans by business name" do

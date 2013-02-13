@@ -3,7 +3,12 @@ require 'spec_helper'
 describe "search" do
   let(:current_lender) { FactoryGirl.create(:lender) }
   let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
-  let!(:loan1) { FactoryGirl.create(:loan, :guaranteed, reference: "9BCI17R-01", lender: current_lender) }
+  let!(:loan1) {
+    FactoryGirl.create(:loan, :guaranteed,
+                       reference: "9BCI17R-01",
+                       lender: current_lender,
+                       lender_reference: 'lenderref01')
+  }
   let!(:loan2) { FactoryGirl.create(:loan, :offered, reference: "9BCI17R-02", lender: current_lender, business_name: "Inter-slice") }
 
   before do
@@ -17,6 +22,7 @@ describe "search" do
       fill_in 'search[business_name]', with: loan1.business_name
       fill_in 'search[trading_name]', with: loan1.trading_name
       fill_in 'search[company_registration]', with: loan1.company_registration
+      fill_in 'search[lender_reference]', with: loan1.lender_reference
       select "Guaranteed", from: 'search[state][]'
       click_button "Search"
     end

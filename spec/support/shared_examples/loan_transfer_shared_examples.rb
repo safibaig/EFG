@@ -94,6 +94,10 @@ shared_examples_for 'a loan transfer' do
         new_loan.invoice_id.should be_blank
       end
 
+      it 'should create a new loan with no lender reference' do
+        new_loan.lender_reference.should be_blank
+      end
+
       it 'should track which loan a transferred loan came from' do
         new_loan.transferred_from_id.should == loan.id
       end

@@ -33,6 +33,7 @@ Please note that all the information within Facility Entry can be revised, howev
   <% end %>
 
   <%= field_set_tag 'Facility' do %>
+    <%= f.input :lender_reference %>
     <%= f.input :amount, as: :currency %>
 
     <div class='control-group string'>

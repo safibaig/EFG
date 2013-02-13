@@ -17,6 +17,7 @@
   <%= f.input :trading_name %>
   <%= f.input :company_registration  %>
   <%= f.input :state, collection: loan_state_options(Loan::States), input_html: {multiple: true} %>
+  <%= f.input :lender_reference %>
 
   <%= field_set_tag 'Sorting' do %>
     <%= f.input :sort_by, collection: search_sort_options, prompt: false, selected: nil %>

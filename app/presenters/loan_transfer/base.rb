@@ -40,17 +40,23 @@ class LoanTransfer::Base
       new_loan.amount                = self.new_amount
       new_loan.reference             = reference_class.new(loan_to_transfer.reference).increment
       new_loan.state                 = Loan::Incomplete
-      new_loan.legacy_id             = nil
-      new_loan.sortcode              = nil
       new_loan.repayment_duration    = 0
-      new_loan.repayment_frequency_id = nil
-      new_loan.maturity_date         = nil
-      new_loan.invoice_id            = nil
       new_loan.transferred_from_id   = loan_to_transfer.id
       new_loan.lending_limit         = lender.lending_limits.active.first
       new_loan.created_by            = modified_by
       new_loan.modified_by           = modified_by
       new_loan.loan_security_types   = loan_to_transfer.loan_security_types.collect(&:id)
+
+      %w(
+        legacy_id
+        sortcode
+        repayment_frequency_id
+        maturity_date
+        invoice_id
+        lender_reference
+      ).each do |field|
+        new_loan.public_send("#{field}=", nil)
+      end
 
       (1..5).each do |num|
         new_loan.send("generic#{num}=", nil)

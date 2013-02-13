@@ -83,6 +83,7 @@ class LoanReportCsvExport < BaseCsvExport
       :type_f1,
       :type_f2,
       :type_f3,
+      :loan_lender_reference,
     ]
   end
 

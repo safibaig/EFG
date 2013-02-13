@@ -44,7 +44,7 @@ describe LoanTransfer::Sflg do
         id lender_id reference state sortcode repayment_duration amount
         repayment_frequency_id maturity_date invoice_id generic1 generic2 generic3
         generic4 generic5 transferred_from_id lending_limit_id created_at
-        updated_at legacy_id created_by_id
+        updated_at legacy_id created_by_id lender_reference
       )
 
       fields_to_compare = Loan.column_names - fields_not_copied

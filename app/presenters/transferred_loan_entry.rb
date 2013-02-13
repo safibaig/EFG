@@ -28,6 +28,7 @@ class TransferredLoanEntry
 
   attribute :declaration_signed
   attribute :sortcode
+  attribute :lender_reference
   attribute :amount
   attribute :repayment_duration
   attribute :repayment_frequency_id

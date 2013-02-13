@@ -90,6 +90,7 @@ describe LoanReportCsvExport do
         header[75].should == t(:type_f1)
         header[76].should == t(:type_f2)
         header[77].should == t(:type_f3)
+        header[78].should == t(:loan_lender_reference)
       end
     end
 
@@ -218,7 +219,8 @@ describe LoanReportCsvExport do
           overdraft_maintained: true,
           invoice_discount_limit: 6000,
           debtor_book_coverage: 30,
-          debtor_book_topup: 5
+          debtor_book_topup: 5,
+          lender_reference: 'lenderref1',
         )
       }
 
@@ -303,6 +305,7 @@ describe LoanReportCsvExport do
         row[75].should == '6000.00'
         row[76].should == '30.0'
         row[77].should == '5.0'
+        row[78].should == 'lenderref1'
       end
     end
   end

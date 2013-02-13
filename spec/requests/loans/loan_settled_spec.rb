@@ -8,7 +8,13 @@ describe "loan settled" do
     let!(:lender1) { FactoryGirl.create(:lender, name: 'Hayes Inc') }
     let!(:lender2) { FactoryGirl.create(:lender, name: 'Carroll-Cronin') }
 
-    let!(:loan1) { FactoryGirl.create(:loan, :demanded, id: 1, reference: 'BSPFDNH-01', lender: lender1) }
+    let!(:loan1) {
+      FactoryGirl.create(:loan, :demanded,
+                         id: 1,
+                         reference: 'BSPFDNH-01',
+                         lender_reference: 'lenderref1',
+                         lender: lender1)
+    }
     let!(:loan2) { FactoryGirl.create(:loan, :demanded, id: 2, reference: '3PEZRGB-01', lender: lender1) }
     let!(:loan3) { FactoryGirl.create(:loan, :demanded, id: 3, reference: 'LOGIHLJ-02', lender: lender1) }
     let!(:loan4) { FactoryGirl.create(:loan, id: 4, reference: 'MF6XT4Z-01', lender: lender1) }
@@ -34,6 +40,8 @@ describe "loan settled" do
         page.should have_content('LOGIHLJ-02')
         page.should_not have_content('MF6XT4Z-01')
         page.should_not have_content('HJD4JF8-01')
+
+        page.should have_content('lenderref1')
 
         page.should have_css("tr td:nth-child(2)", text: "*", count: 1)
 
@@ -79,6 +87,8 @@ describe "loan settled" do
       page.should have_content('LOGIHLJ-02')
       page.should_not have_content('MF6XT4Z-01')
       page.should_not have_content('HJD4JF8-01')
+
+      page.should have_content('lenderref1')
 
       should_log_loan_state_change(loan1, Loan::Settled, 18, current_user)
       should_log_loan_state_change(loan3, Loan::Settled, 18, current_user)
