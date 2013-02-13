@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130211114303) do
+ActiveRecord::Schema.define(:version => 20130213153413) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -476,7 +476,7 @@ ActiveRecord::Schema.define(:version => 20130211114303) do
     t.integer  "guarantee_rate"
     t.decimal  "npv",                                            :precision => 2,  :scale => 1
     t.decimal  "prem_rate",                                      :precision => 2,  :scale => 1
-    t.decimal  "euro_conv_rate",                                 :precision => 17, :scale => 14
+    t.decimal  "euro_conv_rate",                                 :precision => 17, :scale => 14, :null => false
     t.integer  "elsewhere_perc"
     t.integer  "obj1_perc"
     t.datetime "ar_timestamp"
