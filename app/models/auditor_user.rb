@@ -8,4 +8,8 @@ class AuditorUser < User
   def lenders
     Lender.scoped
   end
+
+  def lender_ids
+    lenders.pluck(:id)
+  end
 end

@@ -13,8 +13,13 @@ describe LenderUser do
   end
 
   describe '#lenders' do
-    it "returns an array containing only this user's lender record" do
-      user.lenders.should == [ user.lender ]
+    before do
+      FactoryGirl.create(:lender)
+    end
+
+    it "only contains this user's lender" do
+      user.lenders.count.should == 1
+      user.lenders.should include(user.lender)
     end
   end
 end

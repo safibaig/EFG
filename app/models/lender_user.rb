@@ -11,6 +11,10 @@ class LenderUser < User
   end
 
   def lenders
-    [ lender ]
+    Lender.where(id: lender_id)
+  end
+
+  def lender_ids
+    [lender_id]
   end
 end
