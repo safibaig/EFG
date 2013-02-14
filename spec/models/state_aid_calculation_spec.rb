@@ -263,7 +263,7 @@ describe StateAidCalculation do
       state_aid_calculation = FactoryGirl.create(:state_aid_calculation, euro_conversion_rate: 0.80)
 
       state_aid_calculation.reset_euro_conversion_rate
-      state_aid_calculation.euro_conversion_rate.should == StateAidCalculation::EURO_CONVERSION_RATE
+      state_aid_calculation.euro_conversion_rate.should == StateAidCalculation.current_euro_conversion_rate
     end
   end
 end

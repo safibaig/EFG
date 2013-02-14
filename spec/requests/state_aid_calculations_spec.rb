@@ -111,7 +111,7 @@ describe 'state aid calculations' do
           state_aid_calculation.reload
         }.to change(state_aid_calculation, :state_aid_eur)
 
-        state_aid_calculation.euro_conversion_rate.should == StateAidCalculation::EURO_CONVERSION_RATE
+        state_aid_calculation.euro_conversion_rate.should == StateAidCalculation.current_euro_conversion_rate
       end
     end
   end

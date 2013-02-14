@@ -47,6 +47,10 @@ class StateAidCalculation < ActiveRecord::Base
   RISK_FACTOR = 0.3
   EURO_CONVERSION_RATE = BigDecimal.new('1.1974')
 
+  def self.current_euro_conversion_rate
+    EURO_CONVERSION_RATE
+  end
+
   def premium_schedule
     PremiumSchedule.new(self, loan)
   end
@@ -65,11 +69,11 @@ class StateAidCalculation < ActiveRecord::Base
   end
 
   def euro_conversion_rate
-    read_attribute(:euro_conversion_rate) || EURO_CONVERSION_RATE
+    read_attribute(:euro_conversion_rate) || self.class.current_euro_conversion_rate
   end
 
   def reset_euro_conversion_rate
-    self.euro_conversion_rate = EURO_CONVERSION_RATE
+    self.euro_conversion_rate = self.class.current_euro_conversion_rate
   end
 
   private
