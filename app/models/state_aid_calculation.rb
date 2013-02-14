@@ -16,7 +16,7 @@ class StateAidCalculation < ActiveRecord::Base
 
   before_validation :set_seq, on: :create
 
-  before_create do
+  before_save do
     write_attribute(:euro_conversion_rate, euro_conversion_rate)
   end
 
@@ -45,6 +45,7 @@ class StateAidCalculation < ActiveRecord::Base
 
   # TODO: Confirm this value is correct for all loans
   RISK_FACTOR = 0.3
+  EURO_CONVERSION_RATE = BigDecimal.new('1.1974')
 
   def premium_schedule
     PremiumSchedule.new(self, loan)
@@ -64,7 +65,11 @@ class StateAidCalculation < ActiveRecord::Base
   end
 
   def euro_conversion_rate
-    read_attribute(:euro_conversion_rate) || 1.1974
+    read_attribute(:euro_conversion_rate) || EURO_CONVERSION_RATE
+  end
+
+  def reset_euro_conversion_rate
+    self.euro_conversion_rate = EURO_CONVERSION_RATE
   end
 
   private

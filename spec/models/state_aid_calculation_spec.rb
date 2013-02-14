@@ -257,4 +257,13 @@ describe StateAidCalculation do
       state_aid_calculation[:euro_conversion_rate].should == 0.75
     end
   end
+
+  describe "reset_euro_conversion_rate" do
+    it "clears the euro_conversion_rate so we get the current exchange rate" do
+      state_aid_calculation = FactoryGirl.create(:state_aid_calculation, euro_conversion_rate: 0.80)
+
+      state_aid_calculation.reset_euro_conversion_rate
+      state_aid_calculation.euro_conversion_rate.should == StateAidCalculation::EURO_CONVERSION_RATE
+    end
+  end
 end

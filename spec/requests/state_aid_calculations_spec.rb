@@ -95,6 +95,25 @@ describe 'state aid calculations' do
 
       state_aid_calculation.reload.initial_draw_amount.should_not be_nil
     end
+
+    context "updating a state aid calculation after the exchange rate has changed" do
+      # We've created a state aid calculation at an old exchange rate, and
+      # then its been updated. The subsequent calculation should be with the
+      # new exchange rate.
+      let(:state_aid_calculation) { FactoryGirl.create(:state_aid_calculation, loan: loan, euro_conversion_rate: 0.80) }
+
+      it "updates the euro conversion rate" do
+        navigate_to_state_aid_calculation_page
+
+        click_button 'Submit'
+
+        expect {
+          state_aid_calculation.reload
+        }.to change(state_aid_calculation, :state_aid_eur)
+
+        state_aid_calculation.euro_conversion_rate.should == StateAidCalculation::EURO_CONVERSION_RATE
+      end
+    end
   end
 
   private
