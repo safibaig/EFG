@@ -21,4 +21,8 @@ module UserManagementHelper
     distance_of_time_in_words(Time.now, end_time)
   end
 
+  def most_recent_login_time(user)
+    return nil if user.current_sign_in_at.blank?
+    user.current_sign_in_at.strftime('%d/%m/%Y %H:%M:%S')
+  end
 end
