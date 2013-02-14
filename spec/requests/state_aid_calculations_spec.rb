@@ -3,27 +3,28 @@
 require 'spec_helper'
 
 describe 'state aid calculations' do
-  describe 'creating' do
-    let(:current_lender) { FactoryGirl.create(:lender) }
-    let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
-    let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: '123456', repayment_duration: { months: 3 }) }
+  let(:current_lender) { FactoryGirl.create(:lender) }
+  let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
 
-    before do
-      login_as(current_user, scope: :user)
-    end
+  before do
+    login_as(current_user, scope: :user)
+    navigate_to_state_aid_calculation_page
+  end
+
+  describe 'creating' do
+    let(:loan) {
+      FactoryGirl.create(:loan, :eligible,
+                         lender: current_lender,
+                         amount: '123456',
+                         repayment_duration: { months: 12 })
+    }
 
     it 'pre-fills some fields' do
-      navigate_to_state_aid_calculation_page
-
-      page.find('#state_aid_calculation_initial_draw_amount').value.should == '123456.00'
-      page.find('#state_aid_calculation_repayment_duration').value.should == '3'
+      page.find('#state_aid_calculation_repayment_duration').value.should == '12'
     end
 
     it 'creates a new record with valid data' do
-      navigate_to_state_aid_calculation_page
-
       fill_in :initial_draw_amount, '£123,456'
-      fill_in :repayment_duration, '12'
       fill_in :initial_capital_repayment_holiday, '0'
       fill_in :second_draw_amount, '£0'
       fill_in :second_draw_months, '£0'
@@ -49,18 +50,19 @@ describe 'state aid calculations' do
   end
 
   describe 'updating an existing state_aid_calculation' do
-    let(:current_lender) { FactoryGirl.create(:lender) }
-    let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
-    let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: '123456', amount: Money.new(100_000_00)) }
-    let!(:state_aid_calculation) { FactoryGirl.create(:state_aid_calculation, loan: loan) }
-
-    before do
-      login_as(current_user, scope: :user)
-    end
+    let(:loan) {
+      FactoryGirl.create(:loan, :eligible,
+                         lender: current_lender,
+                         repayment_duration: { months: 60 },
+                         amount: Money.new(100_000_00))
+    }
+    let!(:state_aid_calculation) {
+      FactoryGirl.create(:state_aid_calculation,
+                         repayment_duration: 120,
+                         loan: loan)
+    }
 
     it 'updates the record' do
-      navigate_to_state_aid_calculation_page
-
       fill_in :initial_draw_amount, '£80,000'
       fill_in :second_draw_amount, '£20,000'
       fill_in :second_draw_months, '10'
@@ -74,14 +76,21 @@ describe 'state aid calculations' do
     end
 
     it 'does not update the record with invalid data' do
-      navigate_to_state_aid_calculation_page
-
       fill_in :initial_draw_amount, ''
       click_button 'Submit'
 
       current_path.should == loan_state_aid_calculation_path(loan)
 
       state_aid_calculation.reload.initial_draw_amount.should_not be_nil
+    end
+
+    it 'pulls the repayment duration from the loan' do
+      page.find('#state_aid_calculation_repayment_duration').value.should == '60'
+
+      click_button 'Submit'
+
+      state_aid_calculation.reload
+      state_aid_calculation.repayment_duration.should == 60
     end
   end
 

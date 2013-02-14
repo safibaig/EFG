@@ -11,7 +11,7 @@
 
 <%= simple_form_for(@state_aid_calculation, url: loan_state_aid_calculation_path(@loan, redirect: params[:redirect]), html: {method: :put, class: 'form-horizontal form-state-aid-calculation'}) do |f| %>
   <%= f.input :initial_draw_amount, as: :currency %>
-  <%= f.input :repayment_duration, as: :string %>
+  <%= f.input :repayment_duration, as: :string, disabled: true %>
 
   <%= field_set_tag 'Draw Information' do %>
     <%= f.input :initial_capital_repayment_holiday, as: :string %>
