@@ -4,7 +4,10 @@ class StateAidCalculation < ActiveRecord::Base
   SCHEDULE_TYPE = 'S'.freeze
   RESCHEDULE_TYPE = 'R'.freeze
   NOTIFIED_AID_TYPE = 'N'.freeze
+
+  EURO_CONVERSION_RATE = BigDecimal.new('1.1974')
   MAX_INITIAL_DRAW = Money.new(9_999_999_99)
+  RISK_FACTOR = 0.3
 
   belongs_to :loan, inverse_of: :state_aid_calculations
 
@@ -42,10 +45,6 @@ class StateAidCalculation < ActiveRecord::Base
   format :second_draw_amount, with: MoneyFormatter.new
   format :third_draw_amount, with: MoneyFormatter.new
   format :fourth_draw_amount, with: MoneyFormatter.new
-
-  # TODO: Confirm this value is correct for all loans
-  RISK_FACTOR = 0.3
-  EURO_CONVERSION_RATE = BigDecimal.new('1.1974')
 
   def self.current_euro_conversion_rate
     EURO_CONVERSION_RATE
