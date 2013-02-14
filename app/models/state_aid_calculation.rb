@@ -5,7 +5,7 @@ class StateAidCalculation < ActiveRecord::Base
   RESCHEDULE_TYPE = 'R'.freeze
   NOTIFIED_AID_TYPE = 'N'.freeze
 
-  EURO_CONVERSION_RATE = BigDecimal.new('1.1974')
+  EURO_CONVERSION_RATE = BigDecimal.new('1.2285')
   MAX_INITIAL_DRAW = Money.new(9_999_999_99)
   RISK_FACTOR = 0.3
 
