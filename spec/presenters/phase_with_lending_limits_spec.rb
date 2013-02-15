@@ -12,6 +12,46 @@ describe PhaseWithLendingLimits do
       phase_with_lending_limits.name = ''
       phase_with_lending_limits.should_not be_valid
     end
+
+    it 'requires a starts_on date' do
+      phase_with_lending_limits.starts_on = nil
+      phase_with_lending_limits.should_not be_valid
+    end
+
+    it 'requires a ends_on date' do
+      phase_with_lending_limits.ends_on = nil
+      phase_with_lending_limits.should_not be_valid
+    end
+
+    it 'requires a guarantee rate' do
+      phase_with_lending_limits.guarantee_rate = nil
+      phase_with_lending_limits.should_not be_valid
+    end
+
+    it 'requires a premium rate' do
+      phase_with_lending_limits.premium_rate = nil
+      phase_with_lending_limits.should_not be_valid
+    end
+
+    it 'requires a valid allocation_type_id' do
+      phase_with_lending_limits.allocation_type_id = ''
+      phase_with_lending_limits.should_not be_valid
+      phase_with_lending_limits.allocation_type_id = '99'
+      phase_with_lending_limits.should_not be_valid
+      phase_with_lending_limits.allocation_type_id = '1'
+      phase_with_lending_limits.should be_valid
+    end
+
+    it 'requires a lending_limit_name' do
+      phase_with_lending_limits.lending_limit_name = ''
+      phase_with_lending_limits.should_not be_valid
+    end
+
+    it 'requires ends_on to be after starts_on' do
+      phase_with_lending_limits.starts_on = Date.new(2012, 1, 2)
+      phase_with_lending_limits.ends_on = Date.new(2012, 1, 1)
+      phase_with_lending_limits.should_not be_valid
+    end
   end
 
   describe "#initialize" do
@@ -43,7 +83,7 @@ describe PhaseWithLendingLimits do
     subject { phase_with_lending_limits }
 
     its(:name) { should == 'name' }
-    its(:allocation_type_id) { should == '1' }
+    its(:allocation_type_id) { should == 1 }
     its(:lending_limit_name) { should == 'lending limit name' }
     its(:starts_on) { should == Date.new(2012, 1, 1) }
     its(:ends_on) { should == Date.new(2012, 12, 31) }

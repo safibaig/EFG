@@ -10,7 +10,11 @@ class PhaseWithLendingLimits
   attr_accessible :name, :lending_limit_name, :ends_on, :starts_on, :guarantee_rate,
     :premium_rate, :allocation_type_id, :lenders_attributes
 
-  validates :name, presence: true
+  validates_presence_of :allocation_type_id, :name, :ends_on, :guarantee_rate,
+    :premium_rate, :starts_on, :lending_limit_name
+
+  validate :ends_on_is_after_starts_on
+  validates_inclusion_of :allocation_type_id, in: [1, 2]
 
   def self.name
     Phase.name
@@ -26,6 +30,10 @@ class PhaseWithLendingLimits
 
   def starts_on=(value)
     @starts_on = QuickDateFormatter.parse(value)
+  end
+
+  def allocation_type_id=(value)
+    @allocation_type_id = value.try(:to_i)
   end
 
   def premium_rate=(value)
@@ -55,6 +63,8 @@ class PhaseWithLendingLimits
   end
 
   def save
+    return false unless valid?
+
     ActiveRecord::Base.transaction do
       phase = Phase.create!(name: name) do |phase|
         phase.created_by = created_by
@@ -85,5 +95,10 @@ class PhaseWithLendingLimits
 
   def lenders_by_id
     @lenders_by_id ||= lenders.index_by(&:id)
+  end
+
+  def ends_on_is_after_starts_on
+    return if ends_on.nil? || starts_on.nil?
+    errors.add(:ends_on, :must_be_after_starts_on) if ends_on < starts_on
   end
 end

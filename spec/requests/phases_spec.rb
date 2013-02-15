@@ -53,6 +53,14 @@ describe 'phases' do
     let!(:lender2) { FactoryGirl.create(:lender) }
     let!(:lender3) { FactoryGirl.create(:lender) }
 
+    it 'does not continue with invalid values' do
+      dispatch
+
+      click_button 'Create Phase'
+
+      current_path.should == phases_with_lending_limits_path
+    end
+
     it do
       dispatch
 

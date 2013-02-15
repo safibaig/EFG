@@ -11,6 +11,8 @@ class PhasesWithLendingLimitsController < ApplicationController
 
     if @phase.save
       redirect_to phases_path
+    else
+      render :new
     end
   end
 
