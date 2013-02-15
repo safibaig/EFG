@@ -6,7 +6,12 @@ class PhasesWithLendingLimitsController < ApplicationController
   end
 
   def create
-    
+    @phase = PhaseWithLendingLimits.new(params[:phase])
+    @phase.created_by = current_user
+
+    if @phase.save
+      redirect_to phases_path
+    end
   end
 
   private

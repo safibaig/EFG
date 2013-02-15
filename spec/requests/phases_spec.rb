@@ -12,7 +12,7 @@ describe 'phases' do
   describe 'creating a new phase' do
     def dispatch
       super
-      click_link 'New Phase'
+      visit_new_phase_form
     end
 
     it 'does not continue with invalid values' do
@@ -46,7 +46,7 @@ describe 'phases' do
   describe 'creating a new phase and setting up lending limits' do
     def dispatch
       super
-      click_link 'New Phase with Lending Limits'
+      visit_new_phase_with_lending_limits_form
     end
 
     let!(:lender1) { FactoryGirl.create(:lender) }
@@ -75,15 +75,21 @@ describe 'phases' do
       phase.created_by.should == current_user
       phase.modified_by.should == current_user
 
-      admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::PhaseCreated
-      admin_audit.auditable.should == phase
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      phase_admin_audit = AdminAudit.first!
+      phase_admin_audit.action.should == AdminAudit::PhaseCreated
+      phase_admin_audit.auditable.should == phase
+      phase_admin_audit.modified_by.should == current_user
+      phase_admin_audit.modified_on.should == Date.current
+
+      lending_limit_audits = AdminAudit.where(action: AdminAudit::LendingLimitCreated)
+      lending_limit_audits.count.should == 2
+      lending_limit_audits.map(&:auditable).should =~ LendingLimit.all
+      lending_limit_audits.all? {|lending_limit| lending_limit.modified_by == current_user}.should be_true
+      lending_limit_audits.all? {|lending_limit| lending_limit.modified_on.should == Date.current }.should be_true
 
       phase.lending_limits.count.should == 2
 
-      phase.lenging_limits.each do |lending_limit|
+      phase.lending_limits.each do |lending_limit|
         lending_limit.name.should == 'This year'
         lending_limit.starts_on.should == Date.new(2012, 1, 1)
         lending_limit.ends_on.should == Date.new(2012, 12, 31)
@@ -134,12 +140,24 @@ describe 'phases' do
 
 
   private
+    def visit_new_phase_form
+      within '.actions' do
+        first('a').click
+      end
+    end
+
+    def visit_new_phase_with_lending_limits_form
+      within '.actions' do
+        find(:xpath, '//a[contains(.,"New Phase with Lending Limits")]').click
+      end
+    end
+
     def fill_in(attribute, value)
-      page.fill_in "phase_with_lending_limits_#{attribute}", with: value
+      page.fill_in "phase_#{attribute}", with: value
     end
 
     def choose_radio_button(attribute, value)
-      choose "phase_with_lending_limits_#{attribute}_#{value}"
+      choose "phase_#{attribute}_#{value}"
     end
 
     def setup_lending_limit(lender, params = {})

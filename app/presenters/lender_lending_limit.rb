@@ -4,7 +4,7 @@ class LenderLendingLimit
   include ActiveModel::Model
   include ActiveModel::MassAssignmentSecurity
 
-  attr_reader :allocation
+  attr_reader :allocation, :lender
 
   attr_accessor :selected
 
@@ -25,8 +25,4 @@ class LenderLendingLimit
       @allocation = nil
     end
   end
-
-  private
-
-  attr_reader :lender
 end
