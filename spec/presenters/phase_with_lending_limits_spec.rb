@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe PhaseWithLendingLimits do
   describe "validations" do
+    let!(:lender) { FactoryGirl.create(:lender) }
     let(:phase_with_lending_limits) { FactoryGirl.build(:phase_with_lending_limits) }
 
     it "should have a valid factory" do
@@ -50,6 +51,13 @@ describe PhaseWithLendingLimits do
     it 'requires ends_on to be after starts_on' do
       phase_with_lending_limits.starts_on = Date.new(2012, 1, 2)
       phase_with_lending_limits.ends_on = Date.new(2012, 1, 1)
+      phase_with_lending_limits.should_not be_valid
+    end
+
+    it 'requires valid lender lending limits' do
+      lender = phase_with_lending_limits.lenders.first
+      lender.allocation = nil
+      lender.selected = true
       phase_with_lending_limits.should_not be_valid
     end
   end

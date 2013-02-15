@@ -91,6 +91,10 @@ class PhaseWithLendingLimits
     end
   end
 
+  def valid?
+    super & selected_lenders.all?(&:valid?)
+  end
+
   private
 
   def lenders_by_id

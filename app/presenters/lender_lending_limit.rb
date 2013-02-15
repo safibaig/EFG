@@ -8,6 +8,8 @@ class LenderLendingLimit
 
   attr_accessor :selected
 
+  validates :allocation, presence: true
+
   delegate :id, :name, :to_key, to: :lender
 
   def initialize(lender)

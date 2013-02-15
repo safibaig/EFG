@@ -9,6 +9,20 @@ describe LenderLendingLimit do
     end
   end
 
+  describe "validations" do
+    let(:lender) { FactoryGirl.build(:lender) }
+    subject { LenderLendingLimit.new(lender) }
+
+    it "should be valid with valid attributes" do
+      subject.allocation = 213
+      subject.should be_valid
+    end
+
+    it "should be invalid without an allocation" do
+      subject.should_not be_valid
+    end
+  end
+
   describe "#selected?" do
     let(:lender) { FactoryGirl.build(:lender) }
     subject { LenderLendingLimit.new(lender) }
