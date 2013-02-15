@@ -1,7 +1,10 @@
 <%= simple_form_for phase, url: phases_with_lending_limits_path do |f| %>
-  <%= f.input :name %>
+  <fieldset class="form-horizontal">
+    <%= f.input :name, label: 'Phase Name' %>
+  </fieldset>
 
-  <fieldset>
+  <fieldset class="form-horizontal">
+    <legend>Lending Limit</legend>
     <%= f.input :allocation_type_id, as: :radio_buttons, collection: LendingLimitType.all, wrapper_html: { class: 'radio-buttons-inline' } %>
     <%= f.input :lending_limit_name %>
     <%= f.input :starts_on, as: :quick_date %>
@@ -11,10 +14,12 @@
   </fieldset>
 
   <fieldset>
-    <table>
+    <legend>Allocations</legend>
+    <table class="table table-striped">
       <thead>
         <tr>
-          <th colspan="2">Lender</th>
+          <th></th>
+          <th>Lender</th>
           <th>Allocation</th>
         </tr>
       </thead>
