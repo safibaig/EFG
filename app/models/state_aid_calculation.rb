@@ -4,7 +4,10 @@ class StateAidCalculation < ActiveRecord::Base
   SCHEDULE_TYPE = 'S'.freeze
   RESCHEDULE_TYPE = 'R'.freeze
   NOTIFIED_AID_TYPE = 'N'.freeze
+
+  EURO_CONVERSION_RATE = BigDecimal.new('1.2285')
   MAX_INITIAL_DRAW = Money.new(9_999_999_99)
+  RISK_FACTOR = 0.3
 
   belongs_to :loan, inverse_of: :state_aid_calculations
 
@@ -15,6 +18,14 @@ class StateAidCalculation < ActiveRecord::Base
     :loan_id, :premium_cheque_month
 
   before_validation :set_seq, on: :create
+
+  before_save do
+    write_attribute(:euro_conversion_rate, euro_conversion_rate)
+  end
+
+  after_save do |calculation|
+    calculation.loan.update_attribute :state_aid, state_aid_eur
+  end
 
   validates_presence_of :loan_id
   validates_presence_of :initial_draw_months
@@ -35,8 +46,9 @@ class StateAidCalculation < ActiveRecord::Base
   format :third_draw_amount, with: MoneyFormatter.new
   format :fourth_draw_amount, with: MoneyFormatter.new
 
-  # TODO: Confirm this value is correct for all loans
-  RISK_FACTOR = 0.3
+  def self.current_euro_conversion_rate
+    EURO_CONVERSION_RATE
+  end
 
   def premium_schedule
     PremiumSchedule.new(self, loan)
@@ -47,16 +59,20 @@ class StateAidCalculation < ActiveRecord::Base
   end
 
   def state_aid_eur
-    euro = state_aid_gbp * 1.1974
+    euro = state_aid_gbp * euro_conversion_rate
     Money.new(euro.cents, 'EUR')
-  end
-
-  after_save do |calculation|
-    calculation.loan.update_attribute :state_aid, state_aid_eur
   end
 
   def reschedule?
     calc_type == RESCHEDULE_TYPE
+  end
+
+  def euro_conversion_rate
+    read_attribute(:euro_conversion_rate) || self.class.current_euro_conversion_rate
+  end
+
+  def reset_euro_conversion_rate
+    self.euro_conversion_rate = self.class.current_euro_conversion_rate
   end
 
   private

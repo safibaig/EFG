@@ -9,6 +9,7 @@ class StateAidCalculationsController < ApplicationController
   def update
     @state_aid_calculation.attributes = params[:state_aid_calculation]
     @state_aid_calculation.calc_type = StateAidCalculation::SCHEDULE_TYPE
+    @state_aid_calculation.reset_euro_conversion_rate
 
     if @state_aid_calculation.save
       redirect_to leave_state_aid_calculation_path(@loan)

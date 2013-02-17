@@ -192,12 +192,15 @@ describe StateAidCalculation do
       end
 
       it "calculates state aid in EUR" do
+        StateAidCalculation.stub!(:current_euro_conversion_rate).and_return(1.1974)
         state_aid_calculation.state_aid_eur.should == Money.new(24_962_50, 'EUR')
       end
     end
 
     describe "saving a state aid calculation" do
       it "should store the state aid on the loan" do
+        StateAidCalculation.stub!(:current_euro_conversion_rate).and_return(1.1974)
+
         loan.save!
         state_aid_calculation.save!
 
@@ -237,6 +240,33 @@ describe StateAidCalculation do
     it "should return false when schedule calculation type" do
       state_aid_calculation.calc_type = StateAidCalculation::SCHEDULE_TYPE
       state_aid_calculation.should_not be_reschedule
+    end
+  end
+
+  describe "#euro_conversion_rate" do
+    it "returns the default value" do
+      state_aid_calculation = FactoryGirl.build(:state_aid_calculation)
+      state_aid_calculation.euro_conversion_rate.should == StateAidCalculation.current_euro_conversion_rate
+    end
+
+    it "returns a set value" do
+      state_aid_calculation = FactoryGirl.build(:state_aid_calculation, euro_conversion_rate: 0.65)
+      state_aid_calculation.euro_conversion_rate.should == 0.65
+    end
+
+    it "saves the euro_conversion_rate used" do
+      state_aid_calculation = FactoryGirl.create(:state_aid_calculation, euro_conversion_rate: 0.75)
+
+      state_aid_calculation[:euro_conversion_rate].should == 0.75
+    end
+  end
+
+  describe "reset_euro_conversion_rate" do
+    it "clears the euro_conversion_rate so we get the current exchange rate" do
+      state_aid_calculation = FactoryGirl.create(:state_aid_calculation, euro_conversion_rate: 0.80)
+
+      state_aid_calculation.reset_euro_conversion_rate
+      state_aid_calculation.euro_conversion_rate.should == StateAidCalculation.current_euro_conversion_rate
     end
   end
 end
