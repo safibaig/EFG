@@ -3,21 +3,56 @@ require 'spec_helper'
 describe 'LenderAdmin management' do
   let!(:lender) { FactoryGirl.create(:lender, name: 'Bankers') }
   let(:current_user) { FactoryGirl.create(:cfe_admin) }
+
   before { login_as(current_user, scope: :user) }
 
   describe 'list' do
-    before do
-      FactoryGirl.create(:lender_admin, lender: lender, first_name: 'Barry', last_name: 'White')
-      FactoryGirl.create(:lender_user,  lender: lender, first_name: 'David', last_name: 'Bowie')
+    let!(:lender_admin) { FactoryGirl.create(:lender_admin, lender: lender, first_name: 'Barry', last_name: 'White') }
+    let!(:lender_user) { FactoryGirl.create(:lender_user,  lender: lender, first_name: 'David', last_name: 'Bowie') }
+
+    context 'as a CfE Admin' do
+      let(:current_user) { FactoryGirl.create(:cfe_admin) }
+
+      before do
+        visit root_path
+        click_link 'Manage Lender Admins'
+      end
+
+      it 'includes Lender Admins with links to edit' do
+        page.should have_content('Bankers')
+        page.should have_link(lender_admin.name, href: edit_lender_admin_path(lender_admin))
+      end
+
+      it 'does not include Lender Users' do
+        page.should_not have_content(lender_user.name)
+      end
     end
 
-    it do
-      visit root_path
-      click_link 'Manage Lender Admins'
+    context 'as a Lender Admin' do
+      let(:current_user) { FactoryGirl.create(:lender_admin, lender: lender) }
+      let!(:other_lender_admin) { FactoryGirl.create(:lender_admin, first_name: 'Bob', last_name: 'Flemming') }
 
-      page.should have_content('Bankers')
-      page.should have_content('Barry White')
-      page.should_not have_content('David Bowie')
+      before do
+        visit root_path
+        click_link 'View Lender Admins'
+      end
+
+      it 'includes Lender Admins from my Lender' do
+        page.should have_content('Bankers')
+        page.should have_content(lender_admin.name)
+      end
+
+      it 'does not include a link to edit visible Lender Admin' do
+        page.should_not have_link(lender_admin.name)
+      end
+
+      it 'does not include Lender Users' do
+        page.should_not have_content(lender_user.name)
+      end
+
+      it 'does not include Lender Admins from other Lender' do
+        page.should_not have_content(other_lender_admin.name)
+      end
     end
   end
 

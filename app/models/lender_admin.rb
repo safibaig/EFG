@@ -9,4 +9,12 @@ class LenderAdmin < User
   def active_for_authentication?
     super && lender.active
   end
+
+  def lenders
+    Lender.where(id: lender_id)
+  end
+
+  def lender_ids
+    [lender_id]
+  end
 end

@@ -137,7 +137,7 @@ describe LenderAdminPermissions do
   context 'LenderAdmins' do
     it { refute user.can_create?(LenderAdmin) }
     it { refute user.can_update?(LenderAdmin) }
-    it { refute user.can_view?(LenderAdmin) }
+    it { assert user.can_view?(LenderAdmin) }
   end
 
   context 'CfeAdmins' do

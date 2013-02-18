@@ -11,4 +11,15 @@ describe LenderAdmin do
       user.should_not be_valid
     end
   end
+
+  describe '#lenders' do
+    before do
+      FactoryGirl.create(:lender)
+    end
+
+    it "only contains this user's lender" do
+      user.lenders.count.should == 1
+      user.lenders.should include(user.lender)
+    end
+  end
 end

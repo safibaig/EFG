@@ -25,6 +25,7 @@ module LenderAdminPermissions
 
   def can_view?(resource)
     [
+      LenderAdmin,
       LenderUser
     ].include?(resource)
   end
