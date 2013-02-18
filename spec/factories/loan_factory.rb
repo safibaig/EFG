@@ -12,8 +12,6 @@ FactoryGirl.define do
     business_name 'Acme'
     trading_name 'Emca'
     postcode "EC1R 4RP"
-    non_validated_postcode "AB1 2CD"
-    town "London"
     viable_proposition true
     would_you_lend true
     collateral_exhausted true

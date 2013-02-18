@@ -49,7 +49,6 @@ module RequestSpecHelpers
     fill_in 'loan_entry_company_registration', with: '0123456789'
     select LegalForm.find(1).name, from: 'loan_entry_legal_form_id' # Sole Trader
     fill_in 'loan_entry_postcode', with: 'N8 4HF'
-    fill_in 'loan_entry_non_validated_postcode', with: 'JF3 8HF'
     fill_in 'loan_entry_sortcode', with: '03-12-45'
     select RepaymentFrequency.find(3).name, from: 'loan_entry_repayment_frequency_id' # quarterly
 
@@ -64,7 +63,6 @@ module RequestSpecHelpers
     fill_in 'loan_entry_generic3', with: 'Generic 3'
     fill_in 'loan_entry_generic4', with: 'Generic 4'
     fill_in 'loan_entry_generic5', with: 'Generic 5'
-    fill_in 'loan_entry_town', with: 'Londinium'
     choose 'loan_entry_interest_rate_type_id_1'
     fill_in 'loan_entry_interest_rate', with: '2.25'
     fill_in 'loan_entry_fees', with: '123.45'

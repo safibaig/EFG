@@ -29,7 +29,6 @@ class LoanEntry
   attribute :legal_form_id
   attribute :company_registration
   attribute :postcode
-  attribute :non_validated_postcode
   attribute :sortcode
   attribute :repayment_frequency_id
   attribute :generic1
@@ -37,7 +36,6 @@ class LoanEntry
   attribute :generic3
   attribute :generic4
   attribute :generic5
-  attribute :town
   attribute :interest_rate_type_id
   attribute :interest_rate
   attribute :fees

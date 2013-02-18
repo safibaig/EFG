@@ -9,8 +9,6 @@ class LoanReportCsvRow
       row['reference'],
       LegalForm.find(row['legal_form_id']).try(:name),
       row['postcode'],
-      row['non_validated_postcode'],
-      row['town'],
       Money.new(row['turnover'] || 0).to_s,
       row['trading_date'].try(:strftime, '%d-%m-%Y'),
       row['sic_code'],

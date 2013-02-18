@@ -20,9 +20,7 @@ class TransferredLoanEntry
   attribute :trading_name, read_only: true
   attribute :legal_form_id, read_only: true
   attribute :company_registration, read_only: true
-  attribute :non_validated_postcode, read_only: true
   attribute :postcode, read_only: true
-  attribute :town, read_only: true
   attribute :legacy_loan?, read_only: true
   attribute :state_aid_is_valid, read_only: true
 
