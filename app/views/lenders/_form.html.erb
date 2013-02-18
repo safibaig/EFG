@@ -1,11 +1,28 @@
 <%= simple_form_for @lender do |f| %>
-  <%= f.input :name %>
-  <%= f.input :organisation_reference_code %>
-  <%= f.input :loan_scheme, as: :select, collection: [ ['EFG only', Lender::EFG_SCHEME] ], include_blank: 'All' %>
-  <%= f.input :primary_contact_name %>
-  <%= f.input :primary_contact_phone %>
-  <%= f.input :primary_contact_email %>
-  <%= f.input :can_use_add_cap, wrapper: :checkbox %>
+  <div class="row">
+    <div class="span6">
+      <%= f.input :name %>
+      <%= f.input :organisation_reference_code %>
+      <%= f.input :loan_scheme, as: :select, collection: [ ['EFG only', Lender::EFG_SCHEME] ], include_blank: 'All' %>
+      <%= f.input :primary_contact_name %>
+      <%= f.input :primary_contact_phone %>
+      <%= f.input :primary_contact_email %>
+      <%= f.input :can_use_add_cap, wrapper: :checkbox %>
+    </div>
+
+    <div class="span6">
+      <% unless @lender.new_record? %>
+        <div class="well">
+          <h4>Lender logo</h4>
+          <% if @lender.logo && @lender.logo.exists? %>
+            <%= image_tag @lender.logo.public_path %>
+          <% else %>
+            Not available
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 
   <div class="form-actions">
     <%= f.button :submit, class: 'btn btn-primary', data: { 'disable-with' => 'Submitting...' } %>

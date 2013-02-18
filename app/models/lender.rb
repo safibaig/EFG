@@ -62,6 +62,11 @@ class Lender < ActiveRecord::Base
     loan_scheme.blank?
   end
 
+  def logo
+    return nil if organisation_reference_code.blank?
+    LenderLogo.new(organisation_reference_code)
+  end
+
   private
     def current_lending_limit_allocation_for_type(type_id)
       current_lending_limits.select { |lending_limit|

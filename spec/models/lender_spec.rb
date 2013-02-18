@@ -85,4 +85,20 @@ describe Lender do
       lender.can_access_all_loan_schemes?.should == false
     end
   end
+
+  describe '#logo' do
+    subject { FactoryGirl.build(:lender, organisation_reference_code: code) }
+
+    context 'when the lender has an organisation_reference_code' do
+      let(:code) { 'XX' }
+
+      its(:logo) { should be_kind_of LenderLogo }
+    end
+
+    context 'when the lender does not have an organisation_reference_code' do
+      let(:code) { nil }
+
+      its(:logo) { should be_nil }
+    end
+  end
 end
