@@ -8,8 +8,6 @@ class LoanReportCsvExport < BaseCsvExport
       :loan_reference,
       :legal_form,
       :post_code,
-      :non_validated_post_code,
-      :town,
       :annual_turnover,
       :trading_date,
       :sic_code,

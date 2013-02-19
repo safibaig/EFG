@@ -25,7 +25,6 @@ describe 'loan entry' do
     loan.trading_name.should == 'Brilliant Widgets'
     loan.company_registration.should == '0123456789'
     loan.postcode.should == 'N8 4HF'
-    loan.non_validated_postcode.should == 'JF3 8HF'
     loan.sortcode.should == '03-12-45'
     loan.lender_reference.should == 'lenderref1'
     loan.generic1.should == 'Generic 1'
@@ -33,7 +32,6 @@ describe 'loan entry' do
     loan.generic3.should == 'Generic 3'
     loan.generic4.should == 'Generic 4'
     loan.generic5.should == 'Generic 5'
-    loan.town.should == 'Londinium'
     loan.interest_rate_type.should == InterestRateType.find(1)
     loan.interest_rate.should == 2.25
     loan.fees.should == Money.new(12345)

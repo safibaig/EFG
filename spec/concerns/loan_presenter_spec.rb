@@ -6,7 +6,7 @@ describe LoanPresenter do
       include LoanPresenter
 
       attribute :name
-      attribute :town, read_only: true
+      attribute :address, read_only: true
     end
   end
 
@@ -51,7 +51,7 @@ describe LoanPresenter do
 
     context "read only attribute" do
       it "should not have a writer" do
-        transition.should_not respond_to(:town=)
+        transition.should_not respond_to(:address=)
       end
     end
   end
@@ -64,9 +64,9 @@ describe LoanPresenter do
     end
 
     it "should not call methods for read only attributes" do
-      transition.should_not_receive(:town=)
+      transition.should_not_receive(:address=)
 
-      transition.attributes = {'town' => 'Town'}
+      transition.attributes = {'address' => 'address'}
     end
 
     it "should not call methods for undefined attributes" do

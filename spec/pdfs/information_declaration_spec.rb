@@ -12,7 +12,6 @@ describe InformationDeclaration do
       legal_form_id: 2,
       loan_category_id: 5,
       maturity_date: Date.new(2020, 3, 2),
-      non_validated_postcode: 'XYZ 789',
       postcode: 'ABC 123',
       previous_borrowing: false,
       reason_id: 17,
@@ -22,7 +21,6 @@ describe InformationDeclaration do
       sic_code: 'A10.1.2',
       sic_desc: 'Foo',
       state_aid: Money.new(1_234_56, 'EUR'),
-      town: 'Surbiton',
       trading_date: Date.new(1999, 1, 1),
       trading_name: 'ACME Trading',
       turnover: Money.new(5_000_000_00)
@@ -67,8 +65,6 @@ describe InformationDeclaration do
       pdf_content.should include('£5,000,000.00')
       pdf_content.should include('01-01-1999')
       pdf_content.should include('ABC 123')
-      pdf_content.should include('XYZ 789')
-      pdf_content.should include('Surbiton')
       pdf_content.should include('£12,345.67')
       pdf_content.should include('4 years, 6 months')
       pdf_content.should include('Quarterly')

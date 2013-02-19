@@ -17,21 +17,24 @@ describe LoanCsvExport do
         lender_reference: 'lenderref1'
       )
     }
-    let(:csv_data) {
+    let(:csv) {
       Timecop.freeze(2012, 10, 1, 16, 23, 45) do
         loan
       end
 
       csv = LoanCsvExport.new(Loan.scoped).generate
-      CSV.parse(csv)
+      CSV.new(csv, { headers: :first_row })
     }
 
-    it 'should return csv data with a header row and one row of data' do
-      csv_data.size.should eq(2), "CSV should contain header and 1 row of data"
+    let(:row) { csv.shift }
+    let(:header) { row.headers }
+
+    it 'should return csv data with one row of data' do
+      csv.to_a.size.should eq(1)
     end
 
     it 'should return csv data with correct header' do
-      csv_data.first.should == %w(reference amount amount_demanded
+      header.should == %w(reference amount amount_demanded
         borrower_demanded_on sortcode business_name cancelled_comment
         cancelled_on cancelled_reason collateral_exhausted
         company_registration created_at created_by current_refinanced_amount
@@ -46,7 +49,7 @@ describe LoanCsvExport do
         loan_scheme loan_source maturity_date next_borrower_demand_seq
         next_change_history_seq next_in_calc_seq next_in_realise_seq
         next_in_recover_seq no_claim_on non_val_postcode
-        non_validated_postcode notified_aid original_overdraft_proportion
+        notified_aid original_overdraft_proportion
         outstanding_amount overdraft_limit overdraft_maintained
         personal_guarantee_required postcode premium_rate previous_borrowing
         private_residence_charge_required realised_money_date reason
@@ -56,111 +59,108 @@ describe LoanCsvExport do
         repayment_frequency security_proportion settled_on sic_code sic_desc
         sic_eligible sic_notified_aid sic_parent_desc
         signed_direct_debit_received standard_cap state state_aid
-        state_aid_is_valid town trading_date trading_name transferred_from
+        state_aid_is_valid trading_date trading_name transferred_from
         turnover updated_at viable_proposition would_you_lend lender_reference)
     end
 
     it 'should return correct csv data for loans' do
-      row = csv_data[1]
-      row[ 0].should == 'ABC2345-01'
-      row[ 1].should == '12345.00'
-      row[ 2].should == ''
-      row[ 3].should == ''
-      row[ 4].should == ''
-      row[ 5].should == 'Acme'
-      row[ 6].should == ''
-      row[ 7].should == ''
-      row[ 8].should == ''
-      row[ 9].should == 'Yes'
-      row[10].should == ''
-      row[11].should == '01/10/2012 16:23:45'
-      row[12].should == 'Joe Bloggs'
-      row[13].should == ''
-      row[14].should == ''
-      row[15].should == ''
-      row[16].should == ''
-      row[17].should == ''
-      row[18].should == ''
-      row[19].should == ''
-      row[20].should == ''
-      row[21].should == ''
-      row[22].should == ''
-      row[23].should == ''
-      row[24].should == ''
-      row[25].should == ''
-      row[26].should == '50000.00'
-      row[27].should == ''
-      row[28].should == 'Yes'
-      row[29].should == ''
-      row[30].should == ''
-      row[31].should == ''
-      row[32].should == ''
-      row[33].should == ''
-      row[34].should == '75.0'
-      row[35].should == ''
-      row[36].should == '01/10/2012'
-      row[37].should == '12345.00'
-      row[38].should == ''
-      row[39].should == ''
-      row[40].should == ''
-      row[41].should == 'No'
-      row[42].should == 'Sole Trader'
-      row[43].should == 'Little Tinkers'
-      row[44].should == 'Lending Limit'
-      row[45].should == 'Type A - New Term Loan with No Security'
-      row[46].should == 'E'
-      row[47].should == 'S'
-      row[48].should == '22/02/2022'
-      row[49].should == ''
-      row[50].should == ''
-      row[51].should == ''
-      row[52].should == ''
-      row[53].should == ''
-      row[54].should == ''
-      row[55].should == ''
-      row[56].should == 'AB1 2CD'
-      row[57].should == '0'
-      row[58].should == ''
-      row[59].should == ''
-      row[60].should == ''
-      row[61].should == ''
-      row[62].should == 'No'
-      row[63].should == 'EC1R 4RP'
-      row[64].should == '2.0'
-      row[65].should == 'Yes'
-      row[66].should == 'No'
-      row[67].should == ''
-      row[68].should == 'Start-up costs'
-      row[69].should == 'Yes'
-      row[70].should == ''
-      row[71].should == ''
-      row[72].should == ''
-      row[73].should == ''
-      row[74].should == ''
-      row[75].should == ''
-      row[76].should == '24'
-      row[77].should == 'Monthly'
-      row[78].should == ''
-      row[79].should == ''
-      row[80].should == '12345'
-      row[81].should == 'Growing of rice'
-      row[82].should == 'Yes'
-      row[83].should == ''
-      row[84].should == ''
-      row[85].should == 'Yes'
-      row[86].should == ''
-      row[87].should == 'guaranteed'
-      row[88].should == '10000.00'
-      row[89].should == 'Yes'
-      row[90].should == 'London'
-      row[91].should == '09/09/1999'
-      row[92].should == 'Emca'
-      row[93].should == ''
-      row[94].should == '12345.00'
-      row[95].should == '01/10/2012 16:23:45'
-      row[96].should == 'Yes'
-      row[97].should == 'Yes'
-      row[98].should == 'lenderref1'
+      row['reference'].should == 'ABC2345-01'
+      row['amount'].should == '12345.00'
+      row['amount_demanded'].should == ''
+      row['borrower_demanded_on'].should == ''
+      row['sortcode'].should == ''
+      row['business_name'].should == 'Acme'
+      row['cancelled_comment'].should == ''
+      row['cancelled_on'].should == ''
+      row['cancelled_reason'].should == ''
+      row['collateral_exhausted'].should == 'Yes'
+      row['company_registration'].should == ''
+      row['created_at'].should == '01/10/2012 16:23:45'
+      row['created_by'].should == 'Joe Bloggs'
+      row['current_refinanced_amount'].should == ''
+      row['debtor_book_coverage'].should == ''
+      row['debtor_book_topup'].should == ''
+      row['declaration_signed'].should == ''
+      row['dti_break_costs'].should == ''
+      row['dti_amount_claimed'].should == ''
+      row['dti_ded_code'].should == ''
+      row['dti_demand_outstanding'].should == ''
+      row['dti_demanded_on'].should == ''
+      row['dti_interest'].should == ''
+      row['dti_reason'].should == ''
+      row['facility_letter_date'].should == ''
+      row['facility_letter_sent'].should == ''
+      row['fees'].should == '50000.00'
+      row['final_refinanced_amount'].should == ''
+      row['first_pp_received'].should == 'Yes'
+      row['generic1'].should == ''
+      row['generic2'].should == ''
+      row['generic3'].should == ''
+      row['generic4'].should == ''
+      row['generic5'].should == ''
+      row['guarantee_rate'].should == '75.0'
+      row['guaranteed_on'].should == ''
+      row['initial_draw_date'].should == '01/10/2012'
+      row['initial_draw_amount'].should == '12345.00'
+      row['interest_rate'].should == ''
+      row['interest_rate_type'].should == ''
+      row['invoice_discount_limit'].should == ''
+      row['legacy_small_loan'].should == 'No'
+      row['legal_form'].should == 'Sole Trader'
+      row['lender'].should == 'Little Tinkers'
+      row['lending_limit'].should == 'Lending Limit'
+      row['loan_category'].should == 'Type A - New Term Loan with No Security'
+      row['loan_scheme'].should == 'E'
+      row['loan_source'].should == 'S'
+      row['maturity_date'].should == '22/02/2022'
+      row['next_borrower_demand_seq'].should == ''
+      row['next_change_history_seq'].should == ''
+      row['next_in_calc_seq'].should == ''
+      row['next_in_realise_seq'].should == ''
+      row['next_in_recover_seq'].should == ''
+      row['no_claim_on'].should == ''
+      row['non_val_postcode'].should == ''
+      row['notified_aid'].should == '0'
+      row['original_overdraft_proportion'].should == ''
+      row['outstanding_amount'].should == ''
+      row['overdraft_limit'].should == ''
+      row['overdraft_maintained'].should == ''
+      row['personal_guarantee_required'].should == 'No'
+      row['postcode'].should == 'EC1R 4RP'
+      row['premium_rate'].should == '2.0'
+      row['previous_borrowing'].should == 'Yes'
+      row['private_residence_charge_required'].should == 'No'
+      row['realised_money_date'].should == ''
+      row['reason'].should == 'Start-up costs'
+      row['received_declaration'].should == 'Yes'
+      row['recovery_on'].should == ''
+      row['refinance_security_proportion'].should == ''
+      row['remove_guarantee_on'].should == ''
+      row['remove_guarantee_outstanding_amount'].should == ''
+      row['remove_guarantee_reason'].should == ''
+      row['repaid_on'].should == ''
+      row['repayment_duration'].should == '24'
+      row['repayment_frequency'].should == 'Monthly'
+      row['security_proportion'].should == ''
+      row['settled_on'].should == ''
+      row['sic_code'].should == '12345'
+      row['sic_desc'].should == 'Growing of rice'
+      row['sic_eligible'].should == 'Yes'
+      row['sic_notified_aid'].should == ''
+      row['sic_parent_desc'].should == ''
+      row['signed_direct_debit_received'].should == 'Yes'
+      row['standard_cap'].should == ''
+      row['state'].should == 'guaranteed'
+      row['state_aid'].should == '10000.00'
+      row['state_aid_is_valid'].should == 'Yes'
+      row['trading_date'].should == '09/09/1999'
+      row['trading_name'].should == 'Emca'
+      row['transferred_from'].should == ''
+      row['turnover'].should == '12345.00'
+      row['updated_at'].should == '01/10/2012 16:23:45'
+      row['viable_proposition'].should == 'Yes'
+      row['would_you_lend'].should == 'Yes'
+      row['lender_reference'].should == 'lenderref1'
     end
   end
 end

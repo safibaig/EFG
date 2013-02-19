@@ -4,8 +4,6 @@ en:
       loan_reference: Loan reference
       legal_form: Legal form
       post_code: Post code
-      non_validated_post_code: Non-validated postcode
-      town: Town
       annual_turnover: Annual turnover
       trading_date: Trading date
       sic_code: SIC code
