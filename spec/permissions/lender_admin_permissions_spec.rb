@@ -138,6 +138,9 @@ describe LenderAdminPermissions do
     it { refute user.can_create?(LenderAdmin) }
     it { refute user.can_update?(LenderAdmin) }
     it { assert user.can_view?(LenderAdmin) }
+    it { assert user.can_unlock?(LenderAdmin) }
+    it { assert user.can_enable?(LenderAdmin) }
+    it { assert user.can_disable?(LenderAdmin) }
   end
 
   context 'CfeAdmins' do

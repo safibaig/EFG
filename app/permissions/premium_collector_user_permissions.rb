@@ -14,6 +14,18 @@ module PremiumCollectorUserPermissions
     false
   end
 
+  def can_enable?(resource)
+    can_update?(resource)
+  end
+
+  def can_disable?(resource)
+    can_update?(resource)
+  end
+
+  def can_unlock?(resource)
+    can_update?(resource)
+  end
+
   def can_view?(resource)
     false
   end

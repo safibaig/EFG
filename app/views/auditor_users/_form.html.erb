@@ -10,20 +10,4 @@
   </div>
 <% end %>
 
-<% if @user.persisted? && @user.locked? %>
-  <%= simple_form_for @user, url: unlock_auditor_user_path(@user), method: :post do |f| %>
-    <%= f.button :submit, value: 'Unlock User', data: { 'disable-with' => 'Submitting...' } %>
-  <% end %>
-<% end %>
-
-<% if @user.persisted? %>
-  <% if @user.disabled? %>
-    <%= simple_form_for @user, url: enable_auditor_user_path(@user), method: :post do |f| %>
-      <%= f.button :submit, value: 'Enable User', data: { 'disable-with' => 'Submitting...' } %>
-    <% end %>
-  <% else %>
-    <%= simple_form_for @user, url: disable_auditor_user_path(@user), method: :post do |f| %>
-      <%= f.button :submit, value: 'Disable User', data: { 'disable-with' => 'Submitting...' } %>
-    <% end %>
-  <% end %>
-<% end %>
+<%= render 'user_management/user_state_change_buttons', user: @user %>

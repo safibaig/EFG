@@ -31,6 +31,8 @@
           <td>
             <% if current_user.can_update?(user.class) %>
               <%= link_to user.name, url_for(action: :edit, id: user) %>
+            <% elsif current_user.can_view?(user.class) %>
+              <%= link_to user.name, user %>
             <% else %>
               <%= user.name %>
             <% end %>
