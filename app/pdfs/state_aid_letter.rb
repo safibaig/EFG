@@ -24,14 +24,12 @@ class StateAidLetter < Prawn::Document
   end
 
   def letterhead
-    if File.exists?(logo_image_path)
-      image logo_image_path, height: 50
+    logo = @loan.lender.logo
+
+    if logo && logo.exists?
+      image logo.path, height: 50
     end
     move_down 40
-  end
-
-  def logo_image_path
-    Rails.root + "public/system/logos/#{@loan.lender.organisation_reference_code.upcase}.jpg"
   end
 
   def address

@@ -13,12 +13,12 @@ class LenderLogo
     "/#{relative_path}" 
   end
 
+  def path
+    Rails.root.join('public', relative_path)
+  end
+
   private
   def relative_path
     "system/logos/#{code.upcase}.jpg"
-  end
-
-  def path
-    Rails.root.join('public', relative_path)
   end
 end
