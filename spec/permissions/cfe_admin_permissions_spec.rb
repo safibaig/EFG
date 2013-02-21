@@ -138,36 +138,54 @@ describe CfeAdminPermissions do
     it { assert user.can_create?(LenderAdmin) }
     it { assert user.can_update?(LenderAdmin) }
     it { assert user.can_view?(LenderAdmin) }
+    it { assert user.can_unlock?(LenderAdmin) }
+    it { assert user.can_enable?(LenderAdmin) }
+    it { assert user.can_disable?(LenderAdmin) }
   end
 
   context 'CfeAdmins' do
     it { refute user.can_create?(CfeAdmin) }
     it { refute user.can_update?(CfeAdmin) }
     it { refute user.can_view?(CfeAdmin) }
+    it { refute user.can_unlock?(CfeAdmin) }
+    it { refute user.can_enable?(CfeAdmin) }
+    it { refute user.can_disable?(CfeAdmin) }
   end
 
   context 'CfeUsers' do
     it { assert user.can_create?(CfeUser) }
     it { assert user.can_update?(CfeUser) }
     it { assert user.can_view?(CfeUser) }
+    it { assert user.can_unlock?(CfeUser) }
+    it { assert user.can_enable?(CfeUser) }
+    it { assert user.can_disable?(CfeUser) }
   end
 
   context 'AuditorUsers' do
     it { assert user.can_create?(AuditorUser) }
     it { assert user.can_update?(AuditorUser) }
     it { assert user.can_view?(AuditorUser) }
+    it { assert user.can_unlock?(AuditorUser) }
+    it { assert user.can_enable?(AuditorUser) }
+    it { assert user.can_disable?(AuditorUser) }
   end
 
   context 'PremiumCollectorUsers' do
     it { assert user.can_create?(PremiumCollectorUser) }
     it { assert user.can_update?(PremiumCollectorUser) }
     it { assert user.can_view?(PremiumCollectorUser) }
+    it { assert user.can_unlock?(PremiumCollectorUser) }
+    it { assert user.can_enable?(PremiumCollectorUser) }
+    it { assert user.can_disable?(PremiumCollectorUser) }
   end
 
   context 'LenderUsers' do
     it { refute user.can_create?(LenderUser) }
     it { refute user.can_update?(LenderUser) }
     it { refute user.can_view?(LenderUser) }
+    it { refute user.can_unlock?(LenderUser) }
+    it { refute user.can_enable?(LenderUser) }
+    it { refute user.can_disable?(LenderUser) }
   end
 
   context 'Lenders' do
