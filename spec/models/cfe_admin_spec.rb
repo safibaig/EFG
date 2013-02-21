@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe CfeUser do
-  let(:user) { FactoryGirl.build(:cfe_user) }
+describe CfeAdmin do
+  let(:user) { FactoryGirl.build(:cfe_admin) }
 
   it_behaves_like 'User'
 

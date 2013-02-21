@@ -1,18 +1,20 @@
 <div class="page-header">
-  <h1><%= user_type %> Management</h1>
+  <h1><%= user_class.model_name.human %> Management</h1>
 </div>
 
-<div class="actions">
-  <%= link_to %{<i class="icon-plus"></i> New #{user_type}}.html_safe, url_for(action: :new), class: 'btn' %>
-</div>
+<% if current_user.can_create?(user_class) %>
+  <div class="actions">
+    <%= link_to %{<i class="icon-plus"></i> New #{user_class.model_name.human}}.html_safe, url_for(action: :new), class: 'btn' %>
+  </div>
+<% end %>
 
 <% if @users.empty? %>
-  <h2>There are currently no <%= user_type %>s</h2>
+  <h2>There are currently no <%= user_class.model_name.human(count: 0) %></h2>
 <% else %>
   <table id="user_list" class="table table-striped">
     <thead>
       <tr>
-        <% if user_type == 'Lender Admin' %><th>Lender</th><% end %>
+        <% if user_class == LenderAdmin %><th>Lender</th><% end %>
         <th>Name</th>
         <th>Username</th>
         <th>Email</th>
@@ -25,16 +27,26 @@
     <tbody>
       <% users.each do |user| %>
         <tr>
-          <% if user_type == 'Lender Admin' %><td><%= user.lender.name %></td><% end %>
-          <td><%= link_to user.name, url_for(action: :edit, id: user) %></td>
+          <% if user_class == LenderAdmin %><td><%= user.lender.name %></td><% end %>
+          <td>
+            <% if current_user.can_update?(user.class) %>
+              <%= link_to user.name, url_for(action: :edit, id: user) %>
+            <% elsif current_user.can_view?(user.class) %>
+              <%= link_to user.name, user %>
+            <% else %>
+              <%= user.name %>
+            <% end %>
+          </td>
           <td><%= user.username %></td>
           <td><%= user.email %></td>
           <td class="center"><%=friendly_boolean user.disabled %></td>
           <td class="center"><%=friendly_boolean user.locked? %></td>
           <td><%= most_recent_login_time(user) %></td>
           <td class="options">
-            <%= set_email_options(user) %>
-            <%= set_password_options(user) %>
+            <% if current_user.can_update?(user.class) %>
+              <%= set_email_options(user) %>
+              <%= set_password_options(user) %>
+            <% end %>
           </td>
         </tr>
       <% end %>

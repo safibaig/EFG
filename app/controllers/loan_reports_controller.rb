@@ -30,7 +30,7 @@ class LoanReportsController < ApplicationController
     unless current_lender.can_access_all_loan_schemes?
       params[:loan_report].merge!(loan_scheme: Lender::EFG_SCHEME)
     end
-    params[:loan_report].merge(allowed_lender_ids: current_user.lenders.collect(&:id))
+    params[:loan_report].merge(allowed_lender_ids: current_user.lender_ids)
   end
 
   def verify_create_permission

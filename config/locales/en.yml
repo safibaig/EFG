@@ -139,6 +139,25 @@ en:
               required: 'Month of collection must be selected for schedule types "All" or "Changed" if no loan reference is entered'
 
   activerecord:
+    models:
+      auditor_user:
+        one: 'Auditor User'
+        other: 'Auditor Users'
+      cfe_admin:
+        one: 'CfE Admin'
+        other: 'CfE Admins'
+      cfe_user:
+        one: 'CfE User'
+        other: 'CfE Users'
+      lender_admin:
+        one: 'Lender Admin'
+        other: 'Lender Admins'
+      lender_user:
+        one: 'User'
+        other: 'Users'
+      premium_collector_user:
+        one: 'Premium Collector User'
+        other: 'Premium Collector Users'
     errors:
       models:
         lending_limit:

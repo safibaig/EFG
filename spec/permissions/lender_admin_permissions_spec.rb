@@ -137,37 +137,55 @@ describe LenderAdminPermissions do
   context 'LenderAdmins' do
     it { refute user.can_create?(LenderAdmin) }
     it { refute user.can_update?(LenderAdmin) }
-    it { refute user.can_view?(LenderAdmin) }
+    it { assert user.can_view?(LenderAdmin) }
+    it { assert user.can_unlock?(LenderAdmin) }
+    it { assert user.can_enable?(LenderAdmin) }
+    it { assert user.can_disable?(LenderAdmin) }
   end
 
   context 'CfeAdmins' do
     it { refute user.can_create?(CfeAdmin) }
     it { refute user.can_update?(CfeAdmin) }
     it { refute user.can_view?(CfeAdmin) }
+    it { refute user.can_unlock?(CfeAdmin) }
+    it { refute user.can_enable?(CfeAdmin) }
+    it { refute user.can_disable?(CfeAdmin) }
   end
 
   context 'CfeUsers' do
     it { refute user.can_create?(CfeUser) }
     it { refute user.can_update?(CfeUser) }
     it { refute user.can_view?(CfeUser) }
+    it { refute user.can_unlock?(CfeUser) }
+    it { refute user.can_enable?(CfeUser) }
+    it { refute user.can_disable?(CfeUser) }
   end
 
   context 'AuditorUsers' do
     it { refute user.can_create?(AuditorUser) }
     it { refute user.can_update?(AuditorUser) }
     it { refute user.can_view?(AuditorUser) }
+    it { refute user.can_unlock?(AuditorUser) }
+    it { refute user.can_enable?(AuditorUser) }
+    it { refute user.can_disable?(AuditorUser) }
   end
 
   context 'PremiumCollectorUsers' do
     it { refute user.can_create?(PremiumCollectorUser) }
     it { refute user.can_update?(PremiumCollectorUser) }
     it { refute user.can_view?(PremiumCollectorUser) }
+    it { refute user.can_unlock?(PremiumCollectorUser) }
+    it { refute user.can_enable?(PremiumCollectorUser) }
+    it { refute user.can_disable?(PremiumCollectorUser) }
   end
 
   context 'LenderUsers' do
     it { assert user.can_create?(LenderUser) }
     it { assert user.can_update?(LenderUser) }
     it { assert user.can_view?(LenderUser) }
+    it { assert user.can_unlock?(LenderUser) }
+    it { assert user.can_enable?(LenderUser) }
+    it { assert user.can_disable?(LenderUser) }
   end
 
   context 'Lenders' do
