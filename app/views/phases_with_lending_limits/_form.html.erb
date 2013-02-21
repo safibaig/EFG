@@ -1,0 +1,51 @@
+<%= simple_form_for phase, url: phases_with_lending_limits_path do |f| %>
+  <fieldset class="form-horizontal">
+    <%= f.input :name, label: 'Phase Name' %>
+  </fieldset>
+
+  <fieldset class="form-horizontal">
+    <legend>Lending Limit</legend>
+    <%= f.input :allocation_type_id, as: :radio_buttons, collection: LendingLimitType.all, wrapper_html: { class: 'radio-buttons-inline' } %>
+    <%= f.input :lending_limit_name %>
+    <%= f.input :starts_on, as: :quick_date %>
+    <%= f.input :ends_on, as: :quick_date %>
+    <%= f.input :guarantee_rate %>
+    <%= f.input :premium_rate %>
+  </fieldset>
+
+  <fieldset>
+    <legend>Allocations</legend>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Lender</th>
+          <th>Allocation</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <%= f.fields_for :lenders, phase.lenders, include_id: false do |lender_form| %>
+          <tr id="<%= dom_id(lender_form.object) %>">
+            <td>
+              <%= lender_form.hidden_field :id %>
+              <%= lender_form.check_box :selected %>
+            </td>
+
+            <td>
+              <%= lender_form.object.name %>
+            </td>
+
+            <td>
+              <%= lender_form.input :allocation, as: :currency, label: false %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </fieldset>
+
+  <div class="form-actions">
+    <%= f.button :submit, class: 'btn btn-primary', data: { 'disable-with' => 'Submitting...' } %>
+  </div>
+<% end %>
