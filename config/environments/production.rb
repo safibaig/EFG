@@ -71,5 +71,5 @@ EFG::Application.configure do
     :host => ENV["EFG_HOST"] || URI.parse(Plek.current.find('efg')).host
   }
 
-  config.action_mailer.delivery_method = :ses
+  config.action_mailer.delivery_method = :test
 end
