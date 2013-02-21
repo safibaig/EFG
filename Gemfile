@@ -58,8 +58,3 @@ group :test do
   gem 'timecop', '0.5.9.1'
 end
 
-group :extract do
-  # gem "data-anonymization", :path => "../data-anonymization"
-  gem "data-anonymization", "0.5.3"
-  gem "sqlite3", "1.3.6"
-end
