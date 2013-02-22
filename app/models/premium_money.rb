@@ -4,11 +4,7 @@ class PremiumMoney < Money
   # 0.1550 becomes £0.15, not £0.16
   # 0.1555 becomes £0.16
   def initialize(amount)
-    modified_amount = amount * 100
-    if (modified_amount.modulo(1) * 100).to_i <= 50
-      modified_amount = modified_amount.floor
-    end
-    super modified_amount
+    super amount.modulo(1) == 0.5 ?  amount.floor : amount.round
   end
 
 end
