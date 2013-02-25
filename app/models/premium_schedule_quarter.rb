@@ -25,7 +25,7 @@ class PremiumScheduleQuarter
       amount_in_pounds = aggregate_outstanding_amount.to_d
       premium_rate_per_quarter = premium_rate / 100 / 4
 
-      PremiumMoney.new((amount_in_pounds * 100) * premium_rate_per_quarter)
+      BankersRoundingMoney.new((amount_in_pounds * 100) * premium_rate_per_quarter)
     else
       Money.new(0)
     end
