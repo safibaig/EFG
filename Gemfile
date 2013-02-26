@@ -25,6 +25,7 @@ gem 'twitter-bootstrap-rails', '2.2.0'
 gem 'uk_postcode'
 gem 'unicorn', '4.3.1'
 gem 'useragent', '0.4.16'
+gem 'validate_as_email', '1.0.3'
 gem 'weekdays', '1.0.2'
 gem 'whenever', '0.7.3', :require => false
 gem 'will_paginate', '3.0.3'
