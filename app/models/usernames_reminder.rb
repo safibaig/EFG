@@ -15,6 +15,6 @@ class UsernamesReminder
 
   private
   def usernames_for_email
-    User.where(email: email).pluck(:username)
+    User.where(email: email, disabled: false).pluck(:username)
   end
 end
