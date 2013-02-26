@@ -7,6 +7,7 @@
   <%= f.input :password, required: false %>
 
   <%= render 'devise/shared/links' %>
+  <%= link_to 'Forgot your username?', new_usernames_reminder_path %>
 
   <div class="form-actions">
     <%= f.button :submit, 'Sign In', class: 'btn btn-primary' %>
