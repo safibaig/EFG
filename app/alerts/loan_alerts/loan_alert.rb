@@ -2,7 +2,13 @@
 #
 # Note: alert range is 60 week days (no support for public holidays)
 class LoanAlerts::LoanAlert
+  VALID_PRIORITIES = %w(low medium high)
+
   def initialize(lender, priority = nil)
+    unless priority.blank? || VALID_PRIORITIES.include?(priority)
+      raise ArgumentError, "#{priority} is not allowed. Must be low, medium or high"
+    end
+
     @lender = lender
     @priority = priority
   end
