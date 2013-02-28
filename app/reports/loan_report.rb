@@ -59,8 +59,8 @@ class LoanReport < BaseLoanReport
     scope = scope.where('loans.created_by_id = ?', created_by_id) if created_by_id.present?
     scope = scope.where('loans.facility_letter_date >= ?', facility_letter_start_date) if facility_letter_start_date.present?
     scope = scope.where('loans.facility_letter_date <= ?', facility_letter_end_date) if facility_letter_end_date.present?
-    scope = scope.where('loans.created_at >= ?', created_at_start_date) if created_at_start_date.present?
-    scope = scope.where('loans.created_at <= ?', created_at_end_date) if created_at_end_date.present?
+    scope = scope.where('loans.created_at >= ?', created_at_start_date.beginning_of_day) if created_at_start_date.present?
+    scope = scope.where('loans.created_at <= ?', created_at_end_date.end_of_day) if created_at_end_date.present?
     scope = scope.where('loans.last_modified_at >= ?', last_modified_start_date.beginning_of_day) if last_modified_start_date.present?
     scope = scope.where('loans.last_modified_at <= ?', last_modified_end_date.end_of_day) if last_modified_end_date.present?
 

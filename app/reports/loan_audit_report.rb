@@ -27,12 +27,12 @@ class LoanAuditReport < BaseLoanReport
     scope = scope.where('loans.state = ?', state) if state.present?
     scope = scope.where('loans.lender_id = ?', lender_id) if lender_id.present?
     scope = scope.where('loan_state_changes.event_id = ?', event_id) if event_id.present?
-    scope = scope.where('loans.created_at >= ?', created_at_start_date) if created_at_start_date.present?
-    scope = scope.where('loans.created_at <= ?', created_at_end_date) if created_at_end_date.present?
+    scope = scope.where('loans.created_at >= ?', created_at_start_date.beginning_of_day) if created_at_start_date.present?
+    scope = scope.where('loans.created_at <= ?', created_at_end_date.end_of_day) if created_at_end_date.present?
     scope = scope.where('loans.last_modified_at >= ?', last_modified_start_date.beginning_of_day) if last_modified_start_date.present?
     scope = scope.where('loans.last_modified_at <= ?', last_modified_end_date.end_of_day) if last_modified_end_date.present?
-    scope = scope.where('loan_state_changes.modified_at >= ?', audit_records_start_date) if audit_records_start_date.present?
-    scope = scope.where('loan_state_changes.modified_at <= ?', audit_records_end_date) if audit_records_end_date.present?
+    scope = scope.where('loan_state_changes.modified_at >= ?', audit_records_start_date.beginning_of_day) if audit_records_start_date.present?
+    scope = scope.where('loan_state_changes.modified_at <= ?', audit_records_end_date.end_of_day) if audit_records_end_date.present?
 
     # Note: facility_letter_start_date/facility_letter_end_date actually queries initial draw date
     # and includes records that do not have an initial draw date
