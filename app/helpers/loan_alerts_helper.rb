@@ -23,12 +23,13 @@ module LoanAlertsHelper
 
   def other_alert_links(priority)
     links = []
+    links << link_to("All Loan Alerts", url_for, class: 'btn')
 
     %w(high medium low).each do |p|
-      links << link_to("#{p.titleize} Priority Alerts", url_for(priority: p), class: 'btn') unless priority == p
+      links << link_to("#{p.titleize} Priority Alerts", url_for(priority: p), class: 'btn')
     end
 
-    links << link_to("All Loan Alerts", url_for, class: 'btn') if priority
+    links << link_to('Download as CSV', url_for(format: :csv, priority: priority), class: 'btn btn-primary pull-right')
 
     content_tag :div, class: 'form-actions' do
       links.join.html_safe
