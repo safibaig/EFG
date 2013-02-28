@@ -178,20 +178,38 @@ describe LoanReport do
       loan_report.loans.should == [ loan1 ]
     end
 
-    it "should return loans with a modified at date after a specified date" do
-      loan1.update_attribute(:updated_at, 1.day.ago)
-      loan2.update_attribute(:updated_at, 1.day.from_now)
+    it "should return loans last modified on the specified start date" do
+      loan1.update_attribute(:last_modified_at, Time.new(2013, 02, 26, 23, 59, 59))
+      loan2.update_attribute(:last_modified_at, Time.new(2013, 02, 27, 12,  0,  0))
 
-      loan_report = LoanReport.new(report_attributes(last_modified_start_date: Date.today.strftime('%d/%m/%Y')))
+      loan_report = LoanReport.new(report_attributes(last_modified_start_date: '27/02/2013'))
 
       loan_report.loans.should == [ loan2 ]
     end
 
-    it "should return loans with a modified at date before a specified date" do
-      loan1.update_attribute(:updated_at, 1.day.ago)
-      loan2.update_attribute(:updated_at, 1.day.from_now)
+    it "should return loans last modified after the specified start date" do
+      loan1.update_attribute(:last_modified_at, Time.new(2013, 02, 26, 23, 59, 59))
+      loan2.update_attribute(:last_modified_at, Time.new(2013, 02, 28, 12,  0,  0))
 
-      loan_report = LoanReport.new(report_attributes(last_modified_end_date: Date.today.strftime('%d/%m/%Y')))
+      loan_report = LoanReport.new(report_attributes(last_modified_start_date: '27/02/2013'))
+
+      loan_report.loans.should == [ loan2 ]
+    end
+
+    it "should return loans last modified on the specified end date" do
+      loan1.update_attribute(:last_modified_at, Time.new(2013, 02, 27, 12,  0,  0))
+      loan2.update_attribute(:last_modified_at, Time.new(2013, 02, 28,  0,  0,  0))
+
+      loan_report = LoanReport.new(report_attributes(last_modified_end_date: '27/02/2013'))
+
+      loan_report.loans.should == [ loan1 ]
+    end
+
+    it "should return loans last modified before the specified end date" do
+      loan1.update_attribute(:last_modified_at, Time.new(2013, 02, 26, 12,  0,  0))
+      loan2.update_attribute(:last_modified_at, Time.new(2013, 02, 28,  0,  0,  0))
+
+      loan_report = LoanReport.new(report_attributes(last_modified_end_date: '27/02/2013'))
 
       loan_report.loans.should == [ loan1 ]
     end
