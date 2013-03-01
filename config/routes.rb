@@ -142,6 +142,8 @@ EFG::Application.routes.draw do
 
   resource :change_password, controller: 'change_password'
 
+  resource :usernames_reminder, only: [:new, :create], controller: 'usernames_reminder'
+
   resources :phases, except: [:show, :destroy]
 
   resources :phases_with_lending_limits, only: [:new, :create]
