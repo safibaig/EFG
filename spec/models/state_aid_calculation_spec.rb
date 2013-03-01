@@ -11,9 +11,11 @@ describe StateAidCalculation do
       state_aid_calculation.should be_valid
     end
 
-    it 'requires a loan' do
-      state_aid_calculation.loan = nil
-      state_aid_calculation.should_not be_valid
+    it 'strictly requires a loan' do
+      expect {
+        state_aid_calculation.loan = nil
+        state_aid_calculation.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed)
     end
 
     %w(

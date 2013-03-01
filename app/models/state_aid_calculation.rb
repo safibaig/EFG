@@ -27,7 +27,7 @@ class StateAidCalculation < ActiveRecord::Base
     calculation.loan.update_attribute :state_aid, state_aid_eur
   end
 
-  validates_presence_of :loan_id
+  validates_presence_of :loan_id, strict: true
   validates_presence_of :initial_draw_months
   validates_inclusion_of :calc_type, in: [ SCHEDULE_TYPE, RESCHEDULE_TYPE, NOTIFIED_AID_TYPE ]
   validates_presence_of :initial_draw_year, unless: :reschedule?
@@ -102,7 +102,7 @@ class StateAidCalculation < ActiveRecord::Base
     end
 
     def total_draw_amount_equals_loan_amount
-      if loan && loan.amount != total_draw_amount
+      if loan.amount != total_draw_amount
         errors.add(:initial_draw_amount, :not_equal_to_loan_amount, loan_amount: loan.amount.format)
         errors.add(:second_draw_amount, :not_equal_to_loan_amount, loan_amount: loan.amount.format)
         errors.add(:third_draw_amount, :not_equal_to_loan_amount, loan_amount: loan.amount.format)
