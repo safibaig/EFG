@@ -24,27 +24,4 @@ class BaseLoanReport
   def loans
     raise NotImplementedError, "Define in sub-class"
   end
-
-  private
-
-  # return ActiveRecord query array
-  # e.g. ["loans.facility_letter_date >= ? AND loans.state = ?", Date Object, 'Guaranteed']
-  def query_conditions
-    conditions = []
-    values = []
-
-    query_conditions_mapping.each do |field, condition|
-      value = send(field)
-      next if value.blank?
-      conditions << condition
-      values << value
-    end
-
-    [conditions.join(" AND "), *values]
-  end
-
-  def query_conditions_mapping
-    raise NotImplementedError, "Define in sub-class"
-  end
-
 end

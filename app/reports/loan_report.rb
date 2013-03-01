@@ -50,7 +50,19 @@ class LoanReport < BaseLoanReport
         '(SELECT SUM(amount_drawn) FROM loan_modifications WHERE loan_id = loans.id) AS total_amount_drawn',
         '(SELECT SUM(lump_sum_repayment) FROM loan_modifications WHERE loan_id = loans.id) AS total_lump_sum_repayment'
       ].join(',')
-    ).where(query_conditions)
+    )
+
+    scope = scope.where('loans.state IN (?)', states) if states.present?
+    scope = scope.where('loans.loan_source IN (?)', loan_sources) if loan_sources.present?
+    scope = scope.where('loans.loan_scheme = ?', loan_scheme) if loan_scheme.present?
+    scope = scope.where('loans.lender_id IN (?)', lender_ids) if lender_ids.present?
+    scope = scope.where('loans.created_by_id = ?', created_by_id) if created_by_id.present?
+    scope = scope.where('loans.facility_letter_date >= ?', facility_letter_start_date) if facility_letter_start_date.present?
+    scope = scope.where('loans.facility_letter_date <= ?', facility_letter_end_date) if facility_letter_end_date.present?
+    scope = scope.where('loans.created_at >= ?', created_at_start_date.beginning_of_day) if created_at_start_date.present?
+    scope = scope.where('loans.created_at <= ?', created_at_end_date.end_of_day) if created_at_end_date.present?
+    scope = scope.where('loans.last_modified_at >= ?', last_modified_start_date.beginning_of_day) if last_modified_start_date.present?
+    scope = scope.where('loans.last_modified_at <= ?', last_modified_end_date.end_of_day) if last_modified_end_date.present?
 
     if loan_sources.include?(Loan::LEGACY_SFLG_SOURCE)
       scope = scope.where("loans.modified_by_legacy_id != 'migration'")
@@ -79,22 +91,6 @@ class LoanReport < BaseLoanReport
   end
 
   private
-
-  def query_conditions_mapping
-    {
-      states: "loans.state IN (?)",
-      loan_sources: "loans.loan_source IN (?)",
-      loan_scheme: "loans.loan_scheme = ?",
-      lender_ids: "loans.lender_id IN (?)",
-      created_by_id: "loans.created_by_id = ?",
-      facility_letter_start_date: "loans.facility_letter_date >= ?",
-      facility_letter_end_date: "loans.facility_letter_date <= ?",
-      created_at_start_date: "loans.created_at >= ?",
-      created_at_end_date: "loans.created_at <= ?",
-      last_modified_start_date: "loans.updated_at >= ?",
-      last_modified_end_date: "loans.updated_at <= ?"
-    }
-  end
 
   def lender_ids_are_allowed
     return if lender_ids.blank?
