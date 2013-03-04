@@ -7,6 +7,8 @@
 
 <p><%= t("loan_alerts.#{params[:id]}_description") %></p>
 
+<%= other_alert_links(@alert.priority) %>
+
 <table class="table table-striped">
   <thead>
     <tr>
