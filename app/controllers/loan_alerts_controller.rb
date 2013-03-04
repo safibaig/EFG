@@ -16,7 +16,7 @@ class LoanAlertsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv {
-        filename = [action, @alert.priority].reject(&:blank?).join('-')
+        filename = "#{[action, @alert.priority].reject(&:blank?).join('-')}.csv"
         csv_export = LoanCsvExport.new(@alert.loans)
         stream_response(csv_export, filename)
       }
