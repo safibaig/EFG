@@ -23,7 +23,7 @@ module LoanAlertsHelper
       links << link_to("#{p.titleize} Priority Alerts", url_for(priority: p), class: 'btn')
     end
 
-    links << link_to('Download as CSV', url_for(format: :csv, priority: priority), class: 'btn btn-primary pull-right')
+    links << link_to('Export CSV', url_for(format: :csv, priority: priority), class: 'btn btn-primary pull-right')
 
     content_tag :div, class: 'form-actions' do
       links.join.html_safe

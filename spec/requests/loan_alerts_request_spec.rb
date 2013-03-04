@@ -13,7 +13,7 @@ describe 'loan alerts' do
       it 'responds with a CSV' do
         visit root_path
         find('#not_closed_loan_alerts a.view-all').click
-        click_link('Download as CSV')
+        click_link('Export CSV')
         page.response_headers['Content-Type'].should include('text/csv')
       end
     end
