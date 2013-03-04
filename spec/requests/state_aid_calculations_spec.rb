@@ -54,6 +54,36 @@ describe 'state aid calculations' do
 
       current_path.should == loan_state_aid_calculation_path(loan)
     end
+
+    context 'when the sum of the draw amounts exceeds the loan amount' do
+      it 'fails validation and displays the correct error message' do
+        fill_in :initial_draw_year, '2012'
+        fill_in :initial_capital_repayment_holiday, '0'
+        fill_in :initial_draw_amount, '£100,000'
+        fill_in :initial_draw_months, 12
+        fill_in :second_draw_amount, '£100,000'
+        fill_in :second_draw_months, 3
+        fill_in :third_draw_amount, '£100,000'
+        fill_in :third_draw_months, 6
+
+        expect {
+          click_button 'Submit'
+        }.to change(StateAidCalculation, :count).by(0)
+
+        translation_key = %w(
+          activerecord
+          errors
+          models
+          state_aid_calculation
+          attributes
+          initial_draw_amount
+          not_less_than_or_equal_to_loan_amount
+        ).join('.')
+
+        current_path.should == loan_state_aid_calculation_path(loan)
+        page.should have_content(I18n.t(translation_key, loan_amount: loan.amount.format))
+      end
+    end
   end
 
   describe 'updating an existing state_aid_calculation' do
