@@ -17,10 +17,15 @@ module LoanAlertsHelper
 
   def other_alert_links(priority)
     links = []
-    links << link_to("All Loan Alerts", url_for, class: 'btn')
+
+    selected_button_class = 'btn btn-info'
+    unselected_button_class = 'btn'
+
+    links << link_to("All Loan Alerts", url_for, class: priority.blank? ? selected_button_class : unselected_button_class)
 
     %w(high medium low).each do |p|
-      links << link_to("#{p.titleize} Priority Alerts", url_for(priority: p), class: 'btn')
+      button_class = p == priority ? selected_button_class : unselected_button_class
+      links << link_to("#{p.titleize} Priority Alerts", url_for(priority: p), class: button_class)
     end
 
     links << link_to('Export CSV', url_for(format: :csv, priority: priority), class: 'btn btn-primary pull-right')
