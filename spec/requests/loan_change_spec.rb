@@ -3,7 +3,13 @@
 require 'spec_helper'
 
 describe 'loan change' do
-  let(:loan) { FactoryGirl.create(:loan, :guaranteed, business_name: 'ACME') }
+  let(:loan) {
+    FactoryGirl.create(:loan, :guaranteed,
+      business_name: 'ACME',
+      amount: Money.new(30_000_00)
+    )
+  }
+
   let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
   before { login_as(current_user, scope: :user) }
 

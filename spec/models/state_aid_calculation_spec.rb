@@ -1,5 +1,71 @@
 require 'spec_helper'
 
+shared_examples_for 'a draw amount validator' do
+  before do
+    subject.initial_draw_amount = Money.new(5_000_00)
+    subject.second_draw_amount  = Money.new(1_000_00)
+    subject.third_draw_amount   = Money.new(1_000_00)
+    subject.fourth_draw_amount  = Money.new(1_000_00)
+  end
+
+  context 'when the total of all draw amounts is equal to the loan amount' do
+    context 'and there are no nil draw amounts' do
+      before { loan.amount = Money.new(8_000_00) }
+
+      it 'is valid' do
+        subject.should be_valid
+      end
+    end
+
+    context 'and there are nil draw amounts' do
+      before do
+        loan.amount = Money.new(7_000_00)
+        subject.fourth_draw_amount = nil
+      end
+
+      it 'is valid' do
+        subject.should be_valid
+      end
+    end
+  end
+
+  context 'when the total of all draw amounts is less than the loan amount' do
+    before { loan.amount = Money.new(10_000_00) }
+
+    context 'and there are no nil draw amounts' do
+      it 'is valid' do
+        subject.should be_valid
+      end
+    end
+
+    context 'and there are nil draw amounts' do
+      before { subject.fourth_draw_amount = nil }
+
+      it 'is valid' do
+        subject.should be_valid
+      end
+    end
+  end
+
+  context 'when the total of all draw amounts is greater than the loan amount' do
+    before { loan.amount = Money.new(5_000_00) }
+
+    context 'and there are no nil draw amounts' do
+      it 'is not valid' do
+        subject.should_not be_valid
+      end
+    end
+
+    context 'and there are nil draw amounts' do
+      before { subject.fourth_draw_amount = nil }
+
+      it 'is not valid' do
+        subject.should_not be_valid
+      end
+    end
+  end
+end
+
 describe StateAidCalculation do
 
   let(:loan) { state_aid_calculation.loan }
@@ -89,30 +155,17 @@ describe StateAidCalculation do
       end
     end
 
-    it "requires that the sum of initial_draw_amount, second_draw_amount, third_draw_amount, fourth_draw_amount equal the loan amount" do
-      loan.amount = Money.new(10_000_00)
-      state_aid_calculation.initial_draw_amount = Money.new(6_000_00)
-      state_aid_calculation.second_draw_amount = Money.new(2_000_00)
-      state_aid_calculation.third_draw_amount = Money.new(2_000_00)
-      state_aid_calculation.fourth_draw_amount = Money.new(2_000_00)
-
-      state_aid_calculation.should_not be_valid
-    end
-
-    it "validates the loan amount correctly with nil values for draw amounts" do
-      loan = state_aid_calculation.loan
-      loan.amount = Money.new(10_000_00)
-      state_aid_calculation.initial_draw_amount = Money.new(6_000_00)
-      state_aid_calculation.second_draw_amount = nil
-      state_aid_calculation.third_draw_amount = nil
-      state_aid_calculation.fourth_draw_amount = nil
-
-      state_aid_calculation.should_not be_valid
+    it_should_behave_like 'a draw amount validator' do
+      subject { state_aid_calculation }
     end
 
     context 'when rescheduling' do
       let(:loan) { rescheduled_state_aid_calculation.loan }
       let(:rescheduled_state_aid_calculation) { FactoryGirl.build(:rescheduled_state_aid_calculation) }
+
+      it_should_behave_like 'a draw amount validator' do
+        subject { rescheduled_state_aid_calculation }
+      end
 
       it "does not require initial draw year" do
         rescheduled_state_aid_calculation.initial_draw_year = nil
