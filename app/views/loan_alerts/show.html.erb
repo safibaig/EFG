@@ -32,4 +32,6 @@
   </tbody>
 </table>
 
-<%= other_alert_links(@alert.priority) %>
+<% if @alert.loans_with_days_remaining.count > 5 %>
+  <%= other_alert_links(@alert.priority) %>
+<% end %>
