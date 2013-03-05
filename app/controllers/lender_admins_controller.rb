@@ -9,7 +9,11 @@ class LenderAdminsController < ApplicationController
   before_filter :find_user, only: [:show, :edit, :update, :reset_password, :unlock, :disable, :enable]
 
   def index
-    @users = LenderAdmin.where(lender_id: current_user.lender_ids).paginate(per_page: 100, page: params[:page])
+    params[:disabled] ||= '0'
+
+    @users = LenderAdmin
+      .where(lender_id: current_user.lender_ids, disabled: params[:disabled])
+      .paginate(per_page: 100, page: params[:page])
   end
 
   def show

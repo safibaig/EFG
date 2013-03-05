@@ -26,6 +26,16 @@ describe 'LenderAdmin management' do
       it 'does not include Lender Users' do
         page.should_not have_content(lender_user.name)
       end
+
+      it_should_behave_like 'an admin viewing active and disabled users' do
+        let!(:active_user) { lender_admin }
+        let!(:disabled_user) {
+          FactoryGirl.create(:lender_admin,
+                             first_name: 'Dave',
+                             last_name: 'Smith',
+                             disabled: true)
+        }
+      end
     end
 
     context 'as a Lender Admin' do
@@ -56,6 +66,17 @@ describe 'LenderAdmin management' do
 
       it 'does not include Lender Admins from other Lender' do
         page.should_not have_content(other_lender_admin.name)
+      end
+
+      it_should_behave_like 'an admin viewing active and disabled users' do
+        let!(:active_user) { lender_admin }
+        let!(:disabled_user) {
+          FactoryGirl.create(:lender_admin,
+                             first_name: 'Dave',
+                             last_name: 'Smith',
+                             disabled: true,
+                             lender: active_user.lender)
+        }
       end
     end
   end
@@ -237,6 +258,7 @@ describe 'LenderAdmin management' do
 
       it 'enables the user' do
         click_link 'View Lender Admins'
+        click_link 'Disabled'
         click_link 'Bob Flemming'
         click_button 'Enable User'
 
@@ -247,6 +269,7 @@ describe 'LenderAdmin management' do
     context 'as a CfE Admin' do
       it 'enables the user' do
         click_link 'Manage Lender Admins'
+        click_link 'Disabled'
         click_link 'Bob Flemming'
         click_button 'Enable User'
 
