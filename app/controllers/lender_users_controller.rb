@@ -1,7 +1,5 @@
 class LenderUsersController < UsersController
   def index
-    params[:disabled] ||= '0'
-
     @users = current_lender.lender_users
       .where(disabled: params[:disabled])
       .paginate(per_page: 100, page: params[:page])

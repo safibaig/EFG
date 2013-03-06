@@ -1,7 +1,5 @@
 class CfeUsersController < UsersController
   def index
-    params[:disabled] ||= '0'
-
     @users = CfeUser.where(disabled: params[:disabled])
       .paginate(per_page: 100, page: params[:page])
   end

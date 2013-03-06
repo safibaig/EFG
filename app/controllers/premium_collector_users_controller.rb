@@ -1,7 +1,5 @@
 class PremiumCollectorUsersController < UsersController
   def index
-    params[:disabled] ||= '0'
-
     @users = PremiumCollectorUser.where(disabled: params[:disabled])
       .paginate(per_page: 100, page: params[:page])
   end

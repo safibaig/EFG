@@ -1,7 +1,5 @@
 class AuditorUsersController < UsersController
   def index
-    params[:disabled] ||= '0'
-
     @users = AuditorUser.where(disabled: params[:disabled])
       .paginate(per_page: 100, page: params[:page])
   end
