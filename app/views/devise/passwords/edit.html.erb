@@ -11,8 +11,6 @@
   <%= f.input :password, label: "New Password", required: true %>
   <%= f.input :password_confirmation, label: "Confirm Your New Password", required: true %>
 
-  <%= render 'devise/shared/links' %>
-
   <div class="form-actions">
     <%= f.button :submit, "Change Password", class: 'btn btn-primary', data: { 'disable-with' => 'Submitting...' } %>
   </div>
