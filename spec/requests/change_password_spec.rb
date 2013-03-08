@@ -43,6 +43,21 @@ describe 'Change password' do
       page.current_url.should == root_url
     end
 
+    it "should not allow weak passwords" do
+      current_user = FactoryGirl.create(user_type)
+      login_as(current_user, scope: :user)
+
+      visit root_path
+      visit edit_change_password_path
+      click_link 'Change Password'
+
+      fill_in "#{user_type}_password", with: 'password'
+      fill_in "#{user_type}_password_confirmation", with: 'password'
+      click_button 'Update Password'
+
+      page.should have_content(I18n.t('errors.messages.insufficient_entropy', entropy: 5, minimum_entropy: Devise::Models::Strengthened::MINIMUM_ENTROPY))
+    end
+
   end
 
   it 'cannot be accessed unless logged in' do
