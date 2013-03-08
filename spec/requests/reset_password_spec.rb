@@ -81,7 +81,7 @@ describe 'Resetting password' do
     visit edit_user_password_path({ reset_password_token: user.reset_password_token }.merge(params))
   end
 
-  def submit_change_password_form(new_password = 'new-password')
+  def submit_change_password_form(new_password = 'new-password-W1bbL3')
     fill_in 'user[password]', with: new_password
     fill_in 'user[password_confirmation]', with: new_password
     click_button 'Change Password'

@@ -60,8 +60,9 @@ describe 'User creation and first login' do
     page.should have_content("doesn't match confirmation")
 
     # valid new password
-    fill_in 'user[password]', with: 'new-password'
-    fill_in 'user[password_confirmation]', with: 'new-password'
+    new_password = 'new-password-W1bbL3'
+    fill_in 'user[password]', with: new_password
+    fill_in 'user[password_confirmation]', with: new_password
     click_button 'Change Password'
 
     page.should have_content('Your password was set successfully. You are now signed in.')
@@ -76,7 +77,7 @@ describe 'User creation and first login' do
     click_link "Logout"
 
     fill_in 'user_username', with: lender_admin.username
-    fill_in 'user_password', with: 'new-password'
+    fill_in 'user_password', with: new_password
     click_button 'Sign In'
 
     page.should have_content('Signed in successfully')

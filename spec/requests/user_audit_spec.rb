@@ -37,8 +37,9 @@ describe "User audit" do
     visit edit_change_password_path
     click_link 'Change Password'
 
-    fill_in "lender_user_password", with: 'new-password'
-    fill_in "lender_user_password_confirmation", with: 'new-password'
+    new_password = 'new-password-W1bbL3'
+    fill_in "lender_user_password", with: new_password
+    fill_in "lender_user_password_confirmation", with: new_password
 
     expect {
       click_button 'Update Password'
@@ -83,8 +84,9 @@ describe "User audit" do
     current_user.save
 
     visit edit_user_password_path(current_user, :reset_password_token => current_user.reset_password_token)
-    fill_in "user_password", with: 'new-password'
-    fill_in "user_password_confirmation", with: 'new-password'
+    new_password = 'new-password-W1bbL3'
+    fill_in "user_password", with: new_password
+    fill_in "user_password_confirmation", with: new_password
 
     expect {
       click_button 'Change Password'

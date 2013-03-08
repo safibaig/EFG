@@ -9,7 +9,7 @@ module Devise
 
       protected
 
-      MINIMUM_ENTROPY = 10
+      MINIMUM_ENTROPY = 15
 
       def strong_enough_password?
         entropy = ::PassphraseEntropy.of(password)
