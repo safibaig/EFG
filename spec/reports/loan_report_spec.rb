@@ -142,6 +142,13 @@ describe LoanReport do
       loan_report.loans.should == [ legacy_sflg_loan ]
     end
 
+    it "should return Legacy_SFLG loans with a NULL modified_by_legacy_id" do
+      legacy_sflg_loan = FactoryGirl.create(:loan, loan_source: Loan::LEGACY_SFLG_SOURCE, modified_by_legacy_id: nil)
+
+      loan_report = LoanReport.new(report_attributes(loan_sources: [ Loan::LEGACY_SFLG_SOURCE ]))
+      loan_report.loans.should == [ legacy_sflg_loan ]
+    end
+
     it "should return loans with a facility letter date after a specified date" do
       loan1.update_attribute(:facility_letter_date, 1.day.ago)
       loan2.update_attribute(:facility_letter_date, 1.day.from_now)

@@ -65,7 +65,7 @@ class LoanReport < BaseLoanReport
     scope = scope.where('loans.last_modified_at <= ?', last_modified_end_date.end_of_day) if last_modified_end_date.present?
 
     if loan_sources.include?(Loan::LEGACY_SFLG_SOURCE)
-      scope = scope.where("loans.modified_by_legacy_id != 'migration'")
+      scope = scope.where("loans.modified_by_legacy_id IS NULL OR loans.modified_by_legacy_id != 'migration'")
     end
 
     scope.joins(
