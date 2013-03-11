@@ -4,8 +4,8 @@ require 'csv'
 describe LoanReportCsvExport do
   describe "#generate" do
     let!(:lender) { FactoryGirl.create(:lender, organisation_reference_code: 'ABC123') }
-    let(:loan_report) { FactoryGirl.build(:loan_report, lender_ids: [lender.id]) }
-    let(:loan_report_csv_export) { LoanReportCsvExport.new(loan_report.loans) }
+    let(:loan_report_presenter) { FactoryGirl.build(:loan_report_presenter, lender_ids: [lender.id]) }
+    let(:loan_report_csv_export) { LoanReportCsvExport.new(loan_report_presenter.loans) }
     let(:csv) { CSV.new(loan_report_csv_export.generate, { headers: :first_row }) }
 
     let(:user1) { FactoryGirl.create(:user, username: 'bobby.t') }

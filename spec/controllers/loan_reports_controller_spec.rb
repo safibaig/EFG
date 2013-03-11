@@ -69,14 +69,14 @@ describe LoanReportsController do
       it "should raise exception when trying to access loans belonging to a different lender" do
         expect {
           dispatch(lender_ids: [ loan.lender.id, loan2.lender.id ])
-        }.to raise_error(LoanReport::LenderNotAllowed)
+        }.to raise_error(LoanReportPresenter::LenderNotAllowed)
       end
 
       it "should set loan scheme to 'E' when current user's lender can only access EFG scheme loans" do
         lender.loan_scheme = Lender::EFG_SCHEME
-        report = double(LoanReport, 'valid?' => false)
+        report = double(LoanReportPresenter, 'valid?' => false)
 
-        LoanReport.
+        LoanReportPresenter.
           should_receive(:new).
           with({ "loan_scheme" => Lender::EFG_SCHEME, "allowed_lender_ids" => [ lender.id ] }).
           and_return(report)

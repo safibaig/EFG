@@ -24,7 +24,7 @@
 
   <%= f.input :last_modified_end_date, as: :quick_date %>
 
-  <%= f.input :states, as: :select, collection: loan_state_options(LoanReport::ALLOWED_LOAN_STATES), input_html: { multiple: true } %>
+  <%= f.input :states, as: :select, collection: loan_state_options(LoanReportPresenter::ALLOWED_LOAN_STATES), input_html: { multiple: true } %>
 
   <%= loan_report_lender_field(f) %>
 

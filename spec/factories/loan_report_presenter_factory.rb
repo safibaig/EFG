@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :loan_report do
+  factory :loan_report_presenter do
     states Loan::States
     loan_sources ["S"]
     loan_scheme "E"
