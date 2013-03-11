@@ -1,6 +1,23 @@
-class LoanAuditReport < BaseLoanReport
+require 'active_model/model'
+
+class LoanAuditReport
+  include ActiveModel::Model
+
+  ALLOWED_LOAN_STATES = Loan::States.sort.freeze
 
   attr_accessor :state, :lender_id, :event_id
+
+  def self.date_attribute(*attributes)
+    attributes.each do |attribute|
+
+      attr_reader attribute
+
+      define_method("#{attribute}=") do |value|
+        instance_variable_set "@#{attribute}", QuickDateFormatter.parse(value)
+      end
+
+    end
+  end
 
   date_attribute :facility_letter_start_date, :facility_letter_end_date,
                  :created_at_start_date, :created_at_end_date,
@@ -42,6 +59,10 @@ class LoanAuditReport < BaseLoanReport
                         facility_letter_end_date) if facility_letter_end_date.present?
 
     scope.order("loans.reference, loan_state_changes.version")
+  end
+
+  def count
+    @count ||= loans.count
   end
 
   def event_name

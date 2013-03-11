@@ -1,12 +1,29 @@
-class LoanReport < BaseLoanReport
+require 'active_model/model'
 
+class LoanReport
   class LenderNotAllowed < ArgumentError; end
+
+  include ActiveModel::Model
+
+  ALLOWED_LOAN_STATES = Loan::States.sort.freeze
 
   ALLOWED_LOAN_SOURCES = [ Loan::SFLG_SOURCE, Loan::LEGACY_SFLG_SOURCE ].freeze
 
   ALLOWED_LOAN_SCHEMES = [ Loan::EFG_SCHEME, Loan::SFLG_SCHEME ].freeze
 
   attr_accessor :allowed_lender_ids, :states, :loan_sources, :loan_scheme, :lender_ids, :created_by_id
+
+  def self.date_attribute(*attributes)
+    attributes.each do |attribute|
+
+      attr_reader attribute
+
+      define_method("#{attribute}=") do |value|
+        instance_variable_set "@#{attribute}", QuickDateFormatter.parse(value)
+      end
+
+    end
+  end
 
   date_attribute :facility_letter_start_date, :facility_letter_end_date,
                  :created_at_start_date, :created_at_end_date,
@@ -76,6 +93,10 @@ class LoanReport < BaseLoanReport
       'LEFT JOIN users AS created_by_user ON loans.created_by_id = created_by_user.id',
       'LEFT JOIN users AS modified_by_user ON loans.modified_by_id = modified_by_user.id',
     )
+  end
+
+  def count
+    @count ||= loans.count
   end
 
   def loan_sources=(sources)
