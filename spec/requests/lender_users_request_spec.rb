@@ -6,9 +6,16 @@ describe 'LenderUser management' do
   before { login_as(current_user, scope: :user) }
 
   describe 'list' do
-    let!(:lender_user) { FactoryGirl.create(:lender_user, first_name: 'Barry', last_name: 'White', lender: lender) }
+    let!(:lender_user) {
+      FactoryGirl.create(:lender_user,
+                         first_name: 'Barry',
+                         last_name: 'White',
+                         lender: lender)
+    }
 
-    let!(:cfe_admin) { FactoryGirl.create(:cfe_admin, first_name: 'David', last_name: 'Bowie') }
+    let!(:cfe_admin) {
+      FactoryGirl.create(:cfe_admin, first_name: 'David', last_name: 'Bowie')
+    }
 
     it "should only show users that the current user can manage" do
       visit root_path
@@ -26,6 +33,22 @@ describe 'LenderUser management' do
       click_link 'Manage Users'
 
       page.should have_content('User has no email so cannot login!')
+    end
+
+    it_should_behave_like 'an admin viewing active and disabled users' do
+      before do
+        visit root_path
+        click_link 'Manage Users'
+      end
+
+      let!(:active_user) { lender_user }
+      let!(:disabled_user) {
+        FactoryGirl.create(:lender_user,
+                           first_name: 'Dave',
+                           last_name: 'Smith',
+                           lender: lender,
+                           disabled: true)
+      }
     end
   end
 
@@ -154,6 +177,7 @@ describe 'LenderUser management' do
     it do
       visit root_path
       click_link 'Manage Users'
+      click_link 'Disabled'
       click_link 'Bob Flemming'
       click_button 'Enable User'
 

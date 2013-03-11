@@ -5,17 +5,27 @@ describe 'CfeUser management' do
   before { login_as(current_user, scope: :user) }
 
   describe 'list' do
+    let!(:cfe_user) { FactoryGirl.create(:cfe_user, first_name: 'Barry', last_name: 'White') }
+    let!(:lender_user) { FactoryGirl.create(:lender_user, first_name: 'David', last_name: 'Bowie') }
+
     before do
-      FactoryGirl.create(:cfe_user, first_name: 'Barry', last_name: 'White')
-      FactoryGirl.create(:lender_user, first_name: 'David', last_name: 'Bowie')
+      visit root_path
+      click_link 'Manage CfE Users'
     end
 
     it do
-      visit root_path
-      click_link 'Manage CfE Users'
-
       page.should have_content('Barry White')
       page.should_not have_content('David Bowie')
+    end
+
+    it_should_behave_like 'an admin viewing active and disabled users' do
+      let!(:active_user) { cfe_user }
+      let!(:disabled_user) {
+        FactoryGirl.create(:cfe_user,
+                           first_name: 'Dave',
+                           last_name: 'Smith',
+                           disabled: true)
+      }
     end
   end
 
@@ -131,6 +141,7 @@ describe 'CfeUser management' do
     it do
       visit root_path
       click_link 'Manage CfE Users'
+      click_link 'Disabled'
       click_link 'Bob Flemming'
       click_button 'Enable User'
 

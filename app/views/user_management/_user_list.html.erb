@@ -8,8 +8,10 @@
   </div>
 <% end %>
 
-<% if @users.empty? %>
-  <h2>There are currently no <%= user_class.model_name.human(count: 0) %></h2>
+<%= render 'user_management/active_disabled_tabs', disabled: disabled %>
+
+<% if users.empty? %>
+  <h2>No <%= user_class.model_name.human(count: 0) %></h2>
 <% else %>
   <table id="user_list" class="table table-striped">
     <thead>
@@ -18,7 +20,6 @@
         <th>Name</th>
         <th>Username</th>
         <th>Email</th>
-        <th class="center">Disabled</th>
         <th class="center">Locked</th>
         <th>Last Login</th>
         <th>&nbsp;</th>
@@ -39,7 +40,6 @@
           </td>
           <td><%= user.username %></td>
           <td><%= user.email %></td>
-          <td class="center"><%=friendly_boolean user.disabled %></td>
           <td class="center"><%=friendly_boolean user.locked? %></td>
           <td><%= most_recent_login_time(user) %></td>
           <td class="options">
@@ -54,4 +54,4 @@
   </table>
 <% end %>
 
-<%= will_paginate @users %>
+<%= will_paginate users %>

@@ -1,0 +1,4 @@
+<ul class="nav nav-pills">
+  <li class="<%= disabled == '0' ? 'active' : '' %>"><%= link_to 'Active', url_for(disabled: 0) %></li>
+  <li class="<%= disabled == '1' ? 'active' : '' %>"><%= link_to 'Disabled', url_for(disabled: 1) %></li>
+</ul>
