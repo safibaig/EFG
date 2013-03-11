@@ -1,10 +1,10 @@
 module Devise
   module Models
     module Strengthened
-      def self.included(base)
-        base.class_eval do
-          validate :strong_enough_password?, :if => :password_required?
-        end
+      extend ActiveSupport::Concern
+
+      included do
+        validate :strong_enough_password?, :if => :password_required?
       end
 
       protected
