@@ -18,8 +18,8 @@ describe PremiumSchedule do
         500_00, 487_50, 475_00, 462_50, 450_00, 437_50, 425_00, 412_50, 400_00,
         387_50, 375_00, 362_50, 350_00, 337_50, 325_00, 312_50, 300_00, 287_50,
         275_00, 262_50, 250_00, 237_50, 225_00, 212_50, 200_00, 187_50, 175_00,
-        162_50, 150_00, 137_50, 125_00, 112_50, 100_00,  87_50,  75_00,  62_50,
-         50_00,  37_50,  25_00,  12_50
+        162_50, 150_00, 137_50, 125_00, 112_50, 100_00, 87_50, 75_00, 62_50,
+        50_00, 37_50, 25_00, 12_50
       ].each.with_index do |premium, quarter|
         premium_schedule.premiums[quarter].should == Money.new(premium)
       end
@@ -153,11 +153,11 @@ describe PremiumSchedule do
         )
       }
 
-      it 'should correctly calculate premiums, rounding halves to the nearest even whole penny' do
-        [ 304_50, 296_89, 289_28, 281_66, 274_05, 266_44, 258_82, 251_21, 243_60, 235_99,
-          228_38, 220_76, 213_15, 205_54, 197_92, 190_31, 182_70, 175_09, 167_48, 159_86,
-          152_25, 144_64, 137_02, 129_41, 121_80, 114_19, 106_58,  98_96,  91_35,  83_74,
-           76_12,  68_51,  60_90,  53_29,  45_68,  38_06,  30_45,  22_84,  15_22,   7_61
+      it 'should correctly calculate premiums, rounding down halves (e.g. 289.2750 becomes £289.27, not £289.28)' do
+        [ 304_50, 296_89, 289_27, 281_66, 274_05, 266_44, 258_82, 251_21, 243_60, 235_99,
+          228_37, 220_76, 213_15, 205_54, 197_92, 190_31, 182_70, 175_09, 167_47, 159_86,
+          152_25, 144_64, 137_02, 129_41, 121_80, 114_19, 106_57, 98_96, 91_35, 83_74,
+          76_12, 68_51, 60_90, 53_29, 45_67, 38_06, 30_45, 22_84, 15_22, 7_61
         ].each.with_index do |premium, quarter|
           premium_schedule.premiums[quarter].should == Money.new(premium)
         end
@@ -178,10 +178,10 @@ describe PremiumSchedule do
           )
         }
 
-        it 'should correctly calculate premiums, rounding halves to the nearest whole penny' do
-          [ 250_00, 250_00, 250_00, 250_00, 250_00, 234_38, 218_75,
-            203_12, 187_50, 171_88, 156_25, 140_62, 125_00, 109_38,
-             93_75,  78_12,  62_50,  46_88,  31_25,  15_62
+        it 'should correctly calculate premiums, rounding down halves (e.g. 289.2750 becomes £289.27, not £289.28)' do
+          [ 250_00, 250_00, 250_00, 250_00, 250_00, 234_37, 218_75,
+            203_12, 187_50, 171_87, 156_25, 140_62, 125_00, 109_37,
+            93_75, 78_12, 62_50, 46_87, 31_25, 15_62
           ].each.with_index do |premium, quarter|
             premium_schedule.premiums[quarter].should == Money.new(premium)
           end
@@ -203,10 +203,10 @@ describe PremiumSchedule do
           )
         }
 
-        it 'should correctly calculate premiums, rounding halves to the nearest whole penny' do
-          [ 192_50, 182_88, 173_25, 163_62, 154_00, 144_38,
-            134_75, 125_12, 115_50, 105_88,  96_25,  86_62, 77_00,
-             67_38,  57_75,  48_12,  38_50,  28_88,  19_25,  9_62
+        it 'should correctly calculate premiums, rounding down halves (e.g. 289.2750 becomes £289.27, not £289.28)' do
+          [ 192_50, 182_87, 173_25, 163_62, 154_00, 144_37,
+            134_75, 125_12, 115_50, 105_87, 96_25, 86_62, 77_00,
+            67_37, 57_75, 48_12, 38_50, 28_87, 19_25, 9_62
           ].each.with_index do |premium, quarter|
             premium_schedule.premiums[quarter].should == Money.new(premium)
           end

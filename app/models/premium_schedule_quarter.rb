@@ -22,10 +22,7 @@ class PremiumScheduleQuarter
 
   def premium_amount
     if quarter < total_quarters
-      amount_in_pounds = aggregate_outstanding_amount.to_d
-      premium_rate_per_quarter = premium_rate / 100 / 4
-
-      BankersRoundingMoney.new((amount_in_pounds * 100) * premium_rate_per_quarter)
+      PremiumMoney.new(aggregate_outstanding_amount.to_d * (premium_rate / 100 / 4))
     else
       Money.new(0)
     end
