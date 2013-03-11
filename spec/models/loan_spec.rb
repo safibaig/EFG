@@ -166,18 +166,18 @@ describe Loan do
     end
   end
 
-  describe "#premium_schedule" do
-    it "should return a PremiumSchedule for the loan" do
+  describe "#premium_schedule_generator" do
+    it "should return a PremiumScheduleGenerator for the loan" do
       loan = FactoryGirl.build(:loan)
       loan.state_aid_calculations.build
 
-      loan.premium_schedule.should be_instance_of(PremiumSchedule)
-      loan.premium_schedule.loan.should == loan
+      loan.premium_schedule_generator.should be_instance_of(PremiumScheduleGenerator)
+      loan.premium_schedule_generator.loan.should == loan
     end
 
     it "should return nil if it doesn't have a state aid calculation" do
       loan = FactoryGirl.build(:loan)
-      loan.premium_schedule.should be_nil
+      loan.premium_schedule_generator.should be_nil
     end
   end
 

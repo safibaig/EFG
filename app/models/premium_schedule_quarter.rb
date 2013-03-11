@@ -1,23 +1,23 @@
 class PremiumScheduleQuarter
 
-  attr_reader :quarter, :total_quarters, :premium_schedule, :initial_capital_repayment_holiday
+  attr_reader :quarter, :total_quarters, :premium_schedule_generator, :initial_capital_repayment_holiday
 
-  delegate :initial_draw_amount, to: :premium_schedule
-  delegate :initial_draw_months, to: :premium_schedule
-  delegate :repayment_duration, to: :premium_schedule
-  delegate :second_draw_amount, to: :premium_schedule
-  delegate :second_draw_months, to: :premium_schedule
-  delegate :third_draw_amount, to: :premium_schedule
-  delegate :third_draw_months, to: :premium_schedule
-  delegate :fourth_draw_amount, to: :premium_schedule
-  delegate :fourth_draw_months, to: :premium_schedule
-  delegate :premium_rate, to: :premium_schedule
+  delegate :initial_draw_amount, to: :premium_schedule_generator
+  delegate :initial_draw_months, to: :premium_schedule_generator
+  delegate :repayment_duration, to: :premium_schedule_generator
+  delegate :second_draw_amount, to: :premium_schedule_generator
+  delegate :second_draw_months, to: :premium_schedule_generator
+  delegate :third_draw_amount, to: :premium_schedule_generator
+  delegate :third_draw_months, to: :premium_schedule_generator
+  delegate :fourth_draw_amount, to: :premium_schedule_generator
+  delegate :fourth_draw_months, to: :premium_schedule_generator
+  delegate :premium_rate, to: :premium_schedule_generator
 
-  def initialize(quarter, total_quarters, premium_schedule)
+  def initialize(quarter, total_quarters, premium_schedule_generator)
     @quarter                           = quarter
     @total_quarters                    = total_quarters
-    @premium_schedule                  = premium_schedule
-    @initial_capital_repayment_holiday = premium_schedule.initial_capital_repayment_holiday.to_i
+    @premium_schedule_generator                  = premium_schedule_generator
+    @initial_capital_repayment_holiday = premium_schedule_generator.initial_capital_repayment_holiday.to_i
   end
 
   def premium_amount

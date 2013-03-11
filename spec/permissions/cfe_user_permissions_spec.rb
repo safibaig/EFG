@@ -45,8 +45,8 @@ describe CfeUserPermissions do
   end
 
   context 'premium schedules' do
-    it { refute user.can_view?(PremiumSchedule) }
-    it { refute user.can_update?(PremiumSchedule) }
+    it { refute user.can_view?(PremiumScheduleGenerator) }
+    it { refute user.can_update?(PremiumScheduleGenerator) }
   end
 
   context 'Loan Offer' do

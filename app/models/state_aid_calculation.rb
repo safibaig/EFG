@@ -50,12 +50,12 @@ class StateAidCalculation < ActiveRecord::Base
     EURO_CONVERSION_RATE
   end
 
-  def premium_schedule
-    PremiumSchedule.new(self, loan)
+  def premium_schedule_generator
+    PremiumScheduleGenerator.new(self, loan)
   end
 
   def state_aid_gbp
-    (loan.amount * (loan.guarantee_rate / 100) * RISK_FACTOR) - premium_schedule.total_premiums
+    (loan.amount * (loan.guarantee_rate / 100) * RISK_FACTOR) - premium_schedule_generator.total_premiums
   end
 
   def state_aid_eur

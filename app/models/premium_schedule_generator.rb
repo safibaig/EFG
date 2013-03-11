@@ -1,4 +1,4 @@
-class PremiumSchedule
+class PremiumScheduleGenerator
 
   def initialize(state_aid_calculation, loan)
     @state_aid_calculation = state_aid_calculation

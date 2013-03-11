@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe PremiumScheduleQuarter do
 
-  let(:premium_schedule) {
-    PremiumSchedule.new(state_aid_calculation, state_aid_calculation.loan)
+  let(:premium_schedule_generator) {
+    PremiumScheduleGenerator.new(state_aid_calculation, state_aid_calculation.loan)
   }
 
   let(:loan) {
@@ -30,7 +30,7 @@ describe PremiumScheduleQuarter do
 
       it 'should return correct premium amounts' do
         [ 4500_00, 3875_00, 2583_33, 1291_67, 0 ].each.with_index do |premium, quarter|
-          PremiumScheduleQuarter.new(quarter, 4, premium_schedule).premium_amount.should == Money.new(premium)
+          PremiumScheduleQuarter.new(quarter, 4, premium_schedule_generator).premium_amount.should == Money.new(premium)
         end
       end
     end
@@ -52,7 +52,7 @@ describe PremiumScheduleQuarter do
 
       it 'should correctly calculate premiums' do
         [ 50_00, 50_00, 42_86, 21_43, 0 ].each.with_index do |premium, quarter|
-          PremiumScheduleQuarter.new(quarter, 4, premium_schedule).premium_amount.should == Money.new(premium)
+          PremiumScheduleQuarter.new(quarter, 4, premium_schedule_generator).premium_amount.should == Money.new(premium)
         end
       end
     end
@@ -77,7 +77,7 @@ describe PremiumScheduleQuarter do
       it "should calculate the premium_amount" do
         (0..40).each do |quarter|
           expect {
-            PremiumScheduleQuarter.new(quarter, premium_schedule.total_quarters, premium_schedule).premium_amount
+            PremiumScheduleQuarter.new(quarter, premium_schedule_generator.total_quarters, premium_schedule_generator).premium_amount
           }.to_not raise_error(ZeroDivisionError)
         end
       end

@@ -28,8 +28,8 @@ module PremiumScheduleHelper
     end
   end
 
-  def premium_schedule_title(premium_schedule)
-    premium_schedule.reschedule? ? "Revised Premium Schedule" : "Premium Schedule"
+  def premium_schedule_title(premium_schedule_generator)
+    premium_schedule_generator.reschedule? ? "Revised Premium Schedule" : "Premium Schedule"
   end
 
 end

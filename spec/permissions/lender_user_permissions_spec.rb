@@ -45,8 +45,8 @@ describe LenderUserPermissions do
   end
 
   context 'premium schedules' do
-    it { assert user.can_view?(PremiumSchedule) }
-    it { assert user.can_update?(PremiumSchedule) }
+    it { assert user.can_view?(PremiumScheduleGenerator) }
+    it { assert user.can_update?(PremiumScheduleGenerator) }
   end
 
   context 'Loan Offer' do

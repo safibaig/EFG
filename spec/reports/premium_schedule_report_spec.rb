@@ -494,7 +494,7 @@ describe PremiumScheduleReport do
 
       it "should set the correct premiums for scheduled state aid calculation" do
         # the first premium is set to 0.0 for premium schedules with calc type 'S'
-        expected_premiums = scheduled_state_aid_calculation.premium_schedule.premiums.collect { |p| p.to_f.to_s }
+        expected_premiums = scheduled_state_aid_calculation.premium_schedule_generator.premiums.collect { |p| p.to_f.to_s }
         expected_premiums[0] = "0.0"
 
         row1[7, row1.size].should == expected_premiums
@@ -505,7 +505,7 @@ describe PremiumScheduleReport do
       end
 
       it "should set the correct premiums for re-scheduled state aid calculation" do
-        expected_premiums = rescheduled_state_aid_calculation.premium_schedule.premiums.collect { |p| p.to_f.to_s }
+        expected_premiums = rescheduled_state_aid_calculation.premium_schedule_generator.premiums.collect { |p| p.to_f.to_s }
 
         row2[7, row2.size].should == expected_premiums
       end

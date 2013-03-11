@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'spec_helper'
 
-describe PremiumSchedule do
+describe PremiumScheduleGenerator do
   describe "calculations" do
     let(:state_aid_calculation) {
       FactoryGirl.build(:state_aid_calculation,
@@ -9,8 +9,8 @@ describe PremiumSchedule do
         initial_draw_months: 120)
     }
 
-    let(:premium_schedule) {
-      PremiumSchedule.new(state_aid_calculation, state_aid_calculation.loan)
+    let(:premium_schedule_generator) {
+      PremiumScheduleGenerator.new(state_aid_calculation, state_aid_calculation.loan)
     }
 
     it "calculates quarterly premiums" do
@@ -21,20 +21,20 @@ describe PremiumSchedule do
         162_50, 150_00, 137_50, 125_00, 112_50, 100_00,  87_50,  75_00,  62_50,
          50_00,  37_50,  25_00,  12_50
       ].each.with_index do |premium, quarter|
-        premium_schedule.premiums[quarter].should == Money.new(premium)
+        premium_schedule_generator.premiums[quarter].should == Money.new(premium)
       end
     end
 
     it "calculates total premiums" do
-      premium_schedule.total_premiums.should == Money.new(10_250_00)
+      premium_schedule_generator.total_premiums.should == Money.new(10_250_00)
     end
 
     context 'with weird initial_draw_months' do
       it 'does not blow up if the number of months is less than one quarter' do
         state_aid_calculation.initial_draw_months = 2
 
-        premium_schedule.premiums[0].should == Money.new(500_00)
-        premium_schedule.premiums[1].should be_zero
+        premium_schedule_generator.premiums[0].should == Money.new(500_00)
+        premium_schedule_generator.premiums[1].should be_zero
       end
     end
 
@@ -57,7 +57,7 @@ describe PremiumSchedule do
 
       it 'should correctly calculate premiums' do
         [ 4500_00, 3875_00, 2583_33, 1291_67, 0 ].each.with_index do |premium, quarter|
-          premium_schedule.premiums[quarter].should == Money.new(premium)
+          premium_schedule_generator.premiums[quarter].should == Money.new(premium)
         end
       end
     end
@@ -83,7 +83,7 @@ describe PremiumSchedule do
 
       it 'should correctly calculate premiums' do
         [ 2625_00, 3546_00, 2364_00, 1555_50, 0 ].each.with_index do |premium, quarter|
-          premium_schedule.premiums[quarter].should == Money.new(premium)
+          premium_schedule_generator.premiums[quarter].should == Money.new(premium)
         end
       end
     end
@@ -111,7 +111,7 @@ describe PremiumSchedule do
 
       it 'should correctly calculate premiums' do
         [ 500_00, 625_00, 666_67, 4333_33, 0 ].each.with_index do |premium, quarter|
-          premium_schedule.premiums[quarter].should == Money.new(premium)
+          premium_schedule_generator.premiums[quarter].should == Money.new(premium)
         end
       end
     end
@@ -133,7 +133,7 @@ describe PremiumSchedule do
 
       it 'should correctly calculate premiums' do
         [ 500_00, 500_00, 333_33, 166_67, 0 ].each.with_index do |premium, quarter|
-          premium_schedule.premiums[quarter].should == Money.new(premium)
+          premium_schedule_generator.premiums[quarter].should == Money.new(premium)
         end
       end
     end
@@ -159,7 +159,7 @@ describe PremiumSchedule do
           152_25, 144_64, 137_02, 129_41, 121_80, 114_19, 106_58,  98_96,  91_35,  83_74,
            76_12,  68_51,  60_90,  53_29,  45_68,  38_06,  30_45,  22_84,  15_22,   7_61
         ].each.with_index do |premium, quarter|
-          premium_schedule.premiums[quarter].should == Money.new(premium)
+          premium_schedule_generator.premiums[quarter].should == Money.new(premium)
         end
       end
 
@@ -183,7 +183,7 @@ describe PremiumSchedule do
             203_12, 187_50, 171_88, 156_25, 140_62, 125_00, 109_38,
              93_75,  78_12,  62_50,  46_88,  31_25,  15_62
           ].each.with_index do |premium, quarter|
-            premium_schedule.premiums[quarter].should == Money.new(premium)
+            premium_schedule_generator.premiums[quarter].should == Money.new(premium)
           end
         end
       end
@@ -208,7 +208,7 @@ describe PremiumSchedule do
             134_75, 125_12, 115_50, 105_88,  96_25,  86_62, 77_00,
              67_38,  57_75,  48_12,  38_50,  28_88,  19_25,  9_62
           ].each.with_index do |premium, quarter|
-            premium_schedule.premiums[quarter].should == Money.new(premium)
+            premium_schedule_generator.premiums[quarter].should == Money.new(premium)
           end
         end
       end
@@ -231,7 +231,7 @@ describe PremiumSchedule do
 
       it "should not include last quarter's premium" do
         [ 100_00, 72_73, 45_45, 0 ].each.with_index do |premium, quarter|
-          premium_schedule.premiums[quarter].should == Money.new(premium)
+          premium_schedule_generator.premiums[quarter].should == Money.new(premium)
         end
       end
     end
@@ -239,13 +239,13 @@ describe PremiumSchedule do
 
   describe "#subsequent_premiums" do
 
-    let(:premium_schedule) { PremiumSchedule.new(state_aid_calculation, state_aid_calculation.loan) }
+    let(:premium_schedule_generator) { PremiumScheduleGenerator.new(state_aid_calculation, state_aid_calculation.loan) }
 
     context "when standard state aid calculation" do
       let(:state_aid_calculation) { FactoryGirl.build(:state_aid_calculation) }
 
       it "should not include first quarter when standard state aid calculation" do
-        premium_schedule.subsequent_premiums.size.should == 39
+        premium_schedule_generator.subsequent_premiums.size.should == 39
       end
     end
 
@@ -253,7 +253,7 @@ describe PremiumSchedule do
       let(:state_aid_calculation) { FactoryGirl.build(:rescheduled_state_aid_calculation ) }
 
       it "should include first quarter when rescheduled state aid calculation" do
-        premium_schedule.subsequent_premiums.size.should == 40
+        premium_schedule_generator.subsequent_premiums.size.should == 40
       end
     end
   end
@@ -261,41 +261,41 @@ describe PremiumSchedule do
   describe "#second_premium_collection_month" do
     let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
     let!(:state_aid_calculation) { loan.state_aid_calculations.build }
-    let(:premium_schedule) { loan.premium_schedule }
+    let(:premium_schedule_generator) { loan.premium_schedule_generator }
 
     it "should return formatted date string 3 months from the initial draw date " do
       loan.initial_draw_change.update_attribute :date_of_change, Date.new(2012, 2, 24)
 
-      premium_schedule.second_premium_collection_month.should == '05/2012'
+      premium_schedule_generator.second_premium_collection_month.should == '05/2012'
     end
 
     it "should not screw up with end of month dates" do
       loan.initial_draw_change.update_attribute :date_of_change, Date.new(2011, 11, 30)
 
-      premium_schedule.second_premium_collection_month.should == '02/2012'
+      premium_schedule_generator.second_premium_collection_month.should == '02/2012'
     end
 
     it "should return nil if there is no initial draw date" do
       loan.loan_modifications.delete_all
 
-      premium_schedule.second_premium_collection_month.should be_nil
+      premium_schedule_generator.second_premium_collection_month.should be_nil
     end
   end
 
   describe "#initial_premium_cheque" do
     context 'when reschedule' do
-      let(:premium_schedule) { FactoryGirl.build(:rescheduled_state_aid_calculation).premium_schedule }
+      let(:premium_schedule_generator) { FactoryGirl.build(:rescheduled_state_aid_calculation).premium_schedule_generator }
 
       it "returns 0 money" do
-        premium_schedule.initial_premium_cheque.should == Money.new(0)
+        premium_schedule_generator.initial_premium_cheque.should == Money.new(0)
       end
     end
 
     context 'when not reschedule' do
-      let(:premium_schedule) { FactoryGirl.build(:state_aid_calculation).premium_schedule }
+      let(:premium_schedule_generator) { FactoryGirl.build(:state_aid_calculation).premium_schedule_generator }
 
       it "returns first premium amount" do
-        premium_schedule.initial_premium_cheque.should == premium_schedule.premiums.first
+        premium_schedule_generator.initial_premium_cheque.should == premium_schedule_generator.premiums.first
       end
     end
   end

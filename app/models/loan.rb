@@ -222,9 +222,9 @@ class Loan < ActiveRecord::Base
     @cumulative_total_previous_recoveries ||= Money.new(recoveries.sum(:amount_due_to_dti))
   end
 
-  def premium_schedule
+  def premium_schedule_generator
     return nil unless self.state_aid_calculation
-    PremiumSchedule.new(self.state_aid_calculation, self)
+    PremiumScheduleGenerator.new(self.state_aid_calculation, self)
   end
 
   def already_transferred?
