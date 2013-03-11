@@ -4,6 +4,7 @@ class LoanReportPresenter
   class LenderNotAllowed < ArgumentError; end
 
   include ActiveModel::Model
+  include PresenterFormatterConcern
 
   def self.model_name
     ActiveModel::Name.new(self, nil, 'LoanReport')
@@ -17,21 +18,12 @@ class LoanReportPresenter
 
   attr_accessor :allowed_lender_ids, :states, :loan_sources, :loan_scheme, :lender_ids, :created_by_id
 
-  def self.date_attribute(*attributes)
-    attributes.each do |attribute|
-
-      attr_reader attribute
-
-      define_method("#{attribute}=") do |value|
-        instance_variable_set "@#{attribute}", QuickDateFormatter.parse(value)
-      end
-
-    end
-  end
-
-  date_attribute :facility_letter_start_date, :facility_letter_end_date,
-                 :created_at_start_date, :created_at_end_date,
-                 :last_modified_start_date, :last_modified_end_date
+  format :facility_letter_start_date, with: QuickDateFormatter
+  format :facility_letter_end_date, with: QuickDateFormatter
+  format :created_at_start_date, with: QuickDateFormatter
+  format :created_at_end_date, with: QuickDateFormatter
+  format :last_modified_start_date, with: QuickDateFormatter
+  format :last_modified_end_date, with: QuickDateFormatter
 
   validates_presence_of :allowed_lender_ids, :lender_ids, :loan_sources
 

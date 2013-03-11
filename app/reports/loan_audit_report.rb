@@ -7,6 +7,7 @@ class LoanAuditReport
 
   attr_accessor :state, :lender_id, :event_id
 
+  # TODO: This could use PresenterFormatterConcern, although it isn't a presenter.
   def self.date_attribute(*attributes)
     attributes.each do |attribute|
 
