@@ -20,7 +20,9 @@ en:
         invalid: A new charge may not not be taken over a principal private residence in connection with providing an EFG-backed facility.
       sic_code:
         invalid: "SIC code is ineligible. The SIC code is used to classify business activities. While businesses in the majority of sectors are eligible there are a small number of exclusions, usually due to either UK or EU regulations."
-
+  errors:
+    messages:
+      insufficient_entropy: "not strong enough. Consider using a longer passphrase, and including different cases, numbers and symbols in your passphrase."
   activemodel:
     loan_demand_against_government:
       amount_claimed: "Demand has been made against the Government Guarantee. The value of the demand is: %{amount}"

@@ -52,6 +52,12 @@ describe 'Resetting password' do
     page.should have_content(I18n.t('devise.passwords.updated'))
   end
 
+  it 'fails when changed password is too weak' do
+    open_reset_password_page
+    submit_change_password_form 'password'
+    page.should have_content(I18n.t('errors.messages.insufficient_entropy', entropy: 5, minimum_entropy: Devise::Models::Strengthened::MINIMUM_ENTROPY))
+  end
+
   it 'fails when allowed time has expired' do
     user.reset_password_sent_at = LenderUser.reset_password_within.ago - 1.second
     user.save!
@@ -75,9 +81,9 @@ describe 'Resetting password' do
     visit edit_user_password_path({ reset_password_token: user.reset_password_token }.merge(params))
   end
 
-  def submit_change_password_form
-    fill_in 'user[password]', with: 'new-password'
-    fill_in 'user[password_confirmation]', with: 'new-password'
+  def submit_change_password_form(new_password = 'new-password-W1bbL3')
+    fill_in 'user[password]', with: new_password
+    fill_in 'user[password_confirmation]', with: new_password
     click_button 'Change Password'
   end
 

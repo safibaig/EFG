@@ -19,8 +19,9 @@ describe 'Change password' do
       visit edit_change_password_path
       click_link 'Change Password'
 
-      fill_in "#{user_type}_password", with: 'new-password'
-      fill_in "#{user_type}_password_confirmation", with: 'new-password'
+      new_password = 'new-password-W1bbL3'
+      fill_in "#{user_type}_password", with: new_password
+      fill_in "#{user_type}_password_confirmation", with: new_password
       click_button 'Update Password'
 
       admin_audit = AdminAudit.last!
@@ -36,11 +37,26 @@ describe 'Change password' do
 
       click_link "Logout"
       fill_in 'user_username', with: current_user.username
-      fill_in 'user_password', with: 'new-password'
+      fill_in 'user_password', with: new_password
       click_button 'Sign In'
 
       page.should have_content(I18n.t('devise.sessions.signed_in'))
       page.current_url.should == root_url
+    end
+
+    it "should not allow weak passwords" do
+      current_user = FactoryGirl.create(user_type)
+      login_as(current_user, scope: :user)
+
+      visit root_path
+      visit edit_change_password_path
+      click_link 'Change Password'
+
+      fill_in "#{user_type}_password", with: 'password'
+      fill_in "#{user_type}_password_confirmation", with: 'password'
+      click_button 'Update Password'
+
+      page.should have_content(I18n.t('errors.messages.insufficient_entropy', entropy: 5, minimum_entropy: Devise::Models::Strengthened::MINIMUM_ENTROPY))
     end
 
   end
