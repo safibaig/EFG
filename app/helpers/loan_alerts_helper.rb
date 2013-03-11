@@ -1,10 +1,4 @@
 module LoanAlertsHelper
-  def loan_alerts_breadcrumbs_text(state, priority)
-    "Loan Alerts: #{state.humanize.titleize}".tap { |text|
-      text << " (#{priority.titleize})" if priority.present?
-    }
-  end
-
   def loan_alerts_priority(priority)
     return if priority.blank?
     secondary_class_name = case priority
@@ -24,11 +18,17 @@ module LoanAlertsHelper
   def other_alert_links(priority)
     links = []
 
+    selected_button_class = 'btn btn-info'
+    unselected_button_class = 'btn'
+
+    links << link_to("All Loan Alerts", url_for, class: priority.blank? ? selected_button_class : unselected_button_class)
+
     %w(high medium low).each do |p|
-      links << link_to("#{p.titleize} Priority Alerts", url_for(priority: p), class: 'btn') unless priority == p
+      button_class = p == priority ? selected_button_class : unselected_button_class
+      links << link_to("#{p.titleize} Priority Alerts", url_for(priority: p), class: button_class)
     end
 
-    links << link_to("All Loan Alerts", url_for, class: 'btn') if priority
+    links << link_to('Export CSV', url_for(format: :csv, priority: priority), class: 'btn btn-primary pull-right')
 
     content_tag :div, class: 'form-actions' do
       links.join.html_safe

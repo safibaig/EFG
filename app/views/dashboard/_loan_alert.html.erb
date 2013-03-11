@@ -4,7 +4,7 @@
   <div class="bar-chart">
     <% presenter.alerts_grouped_by_priority.each do |alert_group| %>
 
-      <%= link_to(send(url_helper, priority: alert_group.priority), class: alert_group.class_name) do %>
+      <%= link_to(loan_alert_path(id: type, priority: alert_group.priority), class: alert_group.class_name) do %>
 
         <% alert_group.each_alert_by_day do |alert_entry| %>
           <div>
@@ -28,7 +28,7 @@
   </ol>
 
   <% if presenter.total_loan_count > 0 %>
-    <%= link_to "View all", send(url_helper), class: 'view-all' %>
+    <%= link_to "View all", loan_alert_path(id: type), class: 'view-all' %>
   <% end %>
 
 </div>

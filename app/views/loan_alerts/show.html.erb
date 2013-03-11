@@ -1,11 +1,13 @@
 <%= breadcrumbs %>
 
 <div class="page-header">
-  <%= loan_alerts_priority(params[:priority]) %>
-  <h1><%= params[:action].titleize %> Loan Alerts (<%= pluralize(@alert.loans.count, 'loan') %>)</h1>
+  <%= loan_alerts_priority(@alert.priority) %>
+  <h1><%= params[:id].titleize %> Loan Alerts (<%= pluralize(@alert.loans.count, 'loan') %>)</h1>
 </div>
 
-<p><%= t("loan_alerts.#{params[:action]}_description") %></p>
+<p><%= t("loan_alerts.#{params[:id]}_description") %></p>
+
+<%= other_alert_links(@alert.priority) %>
 
 <table class="table table-striped">
   <thead>
@@ -30,5 +32,6 @@
   </tbody>
 </table>
 
-
-<%= other_alert_links(params[:priority]) %>
+<% if @alert.loans_with_days_remaining.count > 5 %>
+  <%= other_alert_links(@alert.priority) %>
+<% end %>
