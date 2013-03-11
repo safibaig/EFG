@@ -3,25 +3,23 @@
 require 'spec_helper'
 
 describe 'state aid calculations' do
-  describe 'creating' do
-    let(:current_lender) { FactoryGirl.create(:lender) }
-    let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
-    let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: '123456', repayment_duration: { months: 3 }) }
+  let(:current_lender) { FactoryGirl.create(:lender) }
+  let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
 
+  describe 'creating' do
     before do
       login_as(current_user, scope: :user)
+      navigate_to_state_aid_calculation_page
     end
 
-    it 'pre-fills some fields' do
-      navigate_to_state_aid_calculation_page
+    let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: '123456', repayment_duration: { months: 3 }) }
 
+    it 'pre-fills some fields' do
       page.find('#state_aid_calculation_initial_draw_amount').value.should == '123456.00'
       page.find('#state_aid_calculation_initial_draw_months').value.should == '3'
     end
 
     it 'creates a new record with valid data' do
-      navigate_to_state_aid_calculation_page
-
       fill_in :initial_draw_year, '2012'
       fill_in :initial_draw_amount, '£123,456'
       fill_in :initial_draw_months, '12'
@@ -50,29 +48,54 @@ describe 'state aid calculations' do
     end
 
     it 'does not create a new record with invalid data' do
-      visit edit_loan_state_aid_calculation_path(loan)
-
       expect {
         click_button 'Submit'
       }.to change(StateAidCalculation, :count).by(0)
 
       current_path.should == loan_state_aid_calculation_path(loan)
     end
+
+    context 'when the sum of the draw amounts exceeds the loan amount' do
+      it 'fails validation and displays the correct error message' do
+        fill_in :initial_draw_year, '2012'
+        fill_in :initial_capital_repayment_holiday, '0'
+        fill_in :initial_draw_amount, '£100,000'
+        fill_in :initial_draw_months, 12
+        fill_in :second_draw_amount, '£100,000'
+        fill_in :second_draw_months, 3
+        fill_in :third_draw_amount, '£100,000'
+        fill_in :third_draw_months, 6
+
+        expect {
+          click_button 'Submit'
+        }.to change(StateAidCalculation, :count).by(0)
+
+        translation_key = %w(
+          activerecord
+          errors
+          models
+          state_aid_calculation
+          attributes
+          initial_draw_amount
+          not_less_than_or_equal_to_loan_amount
+        ).join('.')
+
+        current_path.should == loan_state_aid_calculation_path(loan)
+        page.should have_content(I18n.t(translation_key, loan_amount: loan.amount.format))
+      end
+    end
   end
 
   describe 'updating an existing state_aid_calculation' do
-    let(:current_lender) { FactoryGirl.create(:lender) }
-    let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
-    let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: '123456', amount: Money.new(100_000_00)) }
+    let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: Money.new(100_000_00)) }
     let!(:state_aid_calculation) { FactoryGirl.create(:state_aid_calculation, loan: loan) }
 
     before do
       login_as(current_user, scope: :user)
+      navigate_to_state_aid_calculation_page
     end
 
     it 'updates the record' do
-      navigate_to_state_aid_calculation_page
-
       fill_in :initial_draw_amount, '£80,000'
       fill_in :second_draw_amount, '£20,000'
       fill_in :second_draw_months, '10'
@@ -86,8 +109,6 @@ describe 'state aid calculations' do
     end
 
     it 'does not update the record with invalid data' do
-      navigate_to_state_aid_calculation_page
-
       fill_in :initial_draw_amount, ''
       click_button 'Submit'
 
@@ -103,8 +124,6 @@ describe 'state aid calculations' do
       let(:state_aid_calculation) { FactoryGirl.create(:state_aid_calculation, loan: loan, euro_conversion_rate: 0.80) }
 
       it "updates the euro conversion rate" do
-        navigate_to_state_aid_calculation_page
-
         click_button 'Submit'
 
         expect {

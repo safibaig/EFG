@@ -27,7 +27,7 @@ class StateAidCalculation < ActiveRecord::Base
     calculation.loan.update_attribute :state_aid, state_aid_eur
   end
 
-  validates_presence_of :loan_id
+  validates_presence_of :loan_id, strict: true
   validates_presence_of :initial_draw_months
   validates_inclusion_of :calc_type, in: [ SCHEDULE_TYPE, RESCHEDULE_TYPE, NOTIFIED_AID_TYPE ]
   validates_presence_of :initial_draw_year, unless: :reschedule?
@@ -39,7 +39,7 @@ class StateAidCalculation < ActiveRecord::Base
 
   validate :premium_cheque_month_in_the_future, if: :reschedule?
   validate :initial_draw_amount_is_within_limit
-  validate :total_draw_amount_equals_loan_amount, unless: :reschedule?
+  validate :total_draw_amount_less_than_or_equal_to_loan_amount
 
   format :initial_draw_amount, with: MoneyFormatter.new
   format :second_draw_amount, with: MoneyFormatter.new
@@ -101,12 +101,12 @@ class StateAidCalculation < ActiveRecord::Base
       [initial_draw_amount, second_draw_amount, third_draw_amount, fourth_draw_amount].compact.sum
     end
 
-    def total_draw_amount_equals_loan_amount
-      if loan && loan.amount != total_draw_amount
-        errors.add(:initial_draw_amount, :not_equal_to_loan_amount, loan_amount: loan.amount.format)
-        errors.add(:second_draw_amount, :not_equal_to_loan_amount, loan_amount: loan.amount.format)
-        errors.add(:third_draw_amount, :not_equal_to_loan_amount, loan_amount: loan.amount.format)
-        errors.add(:fourth_draw_amount, :not_equal_to_loan_amount, loan_amount: loan.amount.format)
+    def total_draw_amount_less_than_or_equal_to_loan_amount
+      if loan.amount < total_draw_amount
+        errors.add(:initial_draw_amount, :not_less_than_or_equal_to_loan_amount, loan_amount: loan.amount.format)
+        errors.add(:second_draw_amount, :not_less_than_or_equal_to_loan_amount, loan_amount: loan.amount.format)
+        errors.add(:third_draw_amount, :not_less_than_or_equal_to_loan_amount, loan_amount: loan.amount.format)
+        errors.add(:fourth_draw_amount, :not_less_than_or_equal_to_loan_amount, loan_amount: loan.amount.format)
       end
     end
 end

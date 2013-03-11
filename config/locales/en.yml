@@ -222,7 +222,7 @@ en:
         state_aid_calculation:
           attributes:
             _draw_amount: &draw_amount
-              not_equal_to_loan_amount: 'the sum of all draw amounts (initial, second, third, fourth) must equal the loan amount: %{loan_amount}'
+              not_less_than_or_equal_to_loan_amount: 'the sum of all draw amounts (initial, second, third, fourth) must be less than or equal to the loan amount: %{loan_amount}'
             premium_cheque_month:
               invalid: 'This does not allow enough time for the Premium Collection Agent. Please enter the next Premium date in the schedule'
               invalid_format: 'must have the format mm/yyyy'
