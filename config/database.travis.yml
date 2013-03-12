@@ -1,0 +1,8 @@
+development:
+  adapter: mysql2
+  host: localhost
+  database: efg_test
+  username: root
+  password:
+  encoding: utf8
+  pool: 5
