@@ -24,13 +24,12 @@ class LoanReportsController < ApplicationController
   private
 
   # ensure
-  # - allowed_lender_ids is included in loan_report params
   # - loan scheme is set to 'E' in loan_report params if current lender can only access EFG loans
   def loan_report_params
     unless current_lender.can_access_all_loan_schemes?
       params[:loan_report].merge!(loan_scheme: Lender::EFG_SCHEME)
     end
-    params[:loan_report].merge(allowed_lender_ids: current_user.lender_ids)
+    params[:loan_report]
   end
 
   def verify_create_permission

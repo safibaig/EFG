@@ -14,7 +14,7 @@ describe LoanReportPresenter do
   end
 
   describe "validation" do
-    let(:user) { double('user') }
+    let(:user) { FactoryGirl.create(:lender_user) }
     let(:loan_report_presenter) { LoanReportPresenter.new(user, report_attributes) }
 
     it 'should have a valid factory' do
@@ -79,22 +79,10 @@ describe LoanReportPresenter do
       loan_report_presenter.created_by_id = 'a'
       loan_report_presenter.should_not be_valid
     end
-
-    it "should raise exception when a specified lender is not allowed" do
-      loan1 = FactoryGirl.create(:loan, :eligible)
-      loan2 = FactoryGirl.create(:loan, :guaranteed)
-
-      loan_report_presenter.allowed_lender_ids = [ loan2.lender_id ]
-      loan_report_presenter.lender_ids         = [ loan1.lender_id, loan2.lender_id ]
-
-      expect {
-        loan_report_presenter.valid?
-      }.to raise_error(LoanReportPresenter::LenderNotAllowed)
-    end
   end
 
   describe "delegating to report" do
-    let(:user) { double('user')}
+    let(:user) { FactoryGirl.create(:lender_user) }
     let(:loan_report) { double('LoanReport') }
     let(:presenter) { LoanReportPresenter.new(user) }
     before { presenter.stub!(:report).and_return(loan_report) }
@@ -175,14 +163,44 @@ describe LoanReportPresenter do
     end
   end
 
+  describe "#report" do
+    let(:presenter) { LoanReportPresenter.new(user, report_attributes) }
+
+    context "with a LenderUser" do
+      let(:lender) { FactoryGirl.create(:lender) }
+      let(:user) { FactoryGirl.create(:lender_user, lender: lender) }
+
+      it "sets the report's lender_ids the user's lender_id" do
+        presenter.report.lender_ids.should == [lender.id]
+      end
+    end
+
+    context "with a user who can select lenders" do
+      let!(:lender1) { FactoryGirl.create(:lender) }
+      let!(:lender2) { FactoryGirl.create(:lender) }
+      let!(:lender3) { FactoryGirl.create(:lender) }
+      let(:user) { FactoryGirl.build(:cfe_user) }
+
+      it "sets lender_ids to the selected lender_ids" do
+        presenter.lender_ids = [lender1.id, lender3.id]
+        presenter.report.lender_ids.should == [lender1.id, lender3.id]
+      end
+
+      it "removes any lender_ids that the user can't access" do
+        user.stub!(:lender_ids).and_return([lender1.id, lender2.id])
+
+        presenter.lender_ids = [lender1.id, lender3.id]
+        presenter.report.lender_ids.should == [lender1.id]
+      end
+    end
+  end
+
   private
 
   def report_attributes(params = {})
-    allowed_lender_ids = Lender.count.zero? ? [ 1 ] : Lender.all.collect(&:id)
     lender_ids = Lender.count.zero? ? [ 1 ] : Lender.all.collect(&:id)
 
     {
-      allowed_lender_ids: allowed_lender_ids,
       lender_ids: lender_ids,
       loan_sources: [Loan::SFLG_SOURCE],
       loan_scheme: Loan::EFG_SCHEME,

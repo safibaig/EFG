@@ -9,7 +9,6 @@ describe LoanReportCsvExport do
     let(:loan_report_presenter) { LoanReportPresenter.new(user) }
 
     before do
-      loan_report_presenter.allowed_lender_ids = [lender.id]
       loan_report_presenter.lender_ids = [lender.id]
       loan_report_presenter.states = Loan::States
       loan_report_presenter.loan_sources = [Loan::SFLG_SOURCE]
