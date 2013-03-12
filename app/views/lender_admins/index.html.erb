@@ -1,3 +1,10 @@
-<%= breadcrumbs %>
+<% if current_user.lenders.count > 1 %>
+  <%= breadcrumbs(
+    link_to('Lenders', lenders_path),
+    h(lender.name)
+  ) %>
+<% else %>
+  <%= breadcrumbs %>
+<% end %>
 
 <%= render "user_management/user_list", user_class: LenderAdmin, users: @users, disabled: params[:disabled] %>

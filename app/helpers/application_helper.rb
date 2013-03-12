@@ -19,6 +19,20 @@ module ApplicationHelper
     ])
   end
 
+  def breadcrumbs_for_lender_admins(lender, current_user)
+    if current_user.lenders.count > 1
+      breadcrumbs(
+        link_to('Lenders', lenders_path),
+        h(lender.name),
+        link_to('Lender Admins', lender_lender_admins_path(lender))
+      )
+    else
+      breadcrumbs(
+        link_to('Lender Admins', lender_lender_admins_path(lender))
+      )
+    end
+  end
+
   def friendly_boolean(boolean)
     boolean ? 'Yes' : 'No'
   end
