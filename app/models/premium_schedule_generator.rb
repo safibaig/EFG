@@ -1,24 +1,24 @@
 class PremiumScheduleGenerator
 
-  def initialize(state_aid_calculation, loan)
-    @state_aid_calculation = state_aid_calculation
+  def initialize(premium_schedule, loan)
+    @premium_schedule = premium_schedule
     @loan = loan
   end
 
-  attr_reader :loan, :state_aid_calculation
+  attr_reader :loan, :premium_schedule
 
-  delegate :initial_draw_year, to: :state_aid_calculation
-  delegate :initial_draw_amount, to: :state_aid_calculation
-  delegate :initial_draw_months, to: :state_aid_calculation
-  delegate :initial_capital_repayment_holiday, to: :state_aid_calculation
-  delegate :second_draw_amount, to: :state_aid_calculation
-  delegate :second_draw_months, to: :state_aid_calculation
-  delegate :third_draw_amount, to: :state_aid_calculation
-  delegate :third_draw_months, to: :state_aid_calculation
-  delegate :fourth_draw_amount, to: :state_aid_calculation
-  delegate :fourth_draw_months, to: :state_aid_calculation
-  delegate :reschedule?, to: :state_aid_calculation
-  delegate :premium_cheque_month, to: :state_aid_calculation
+  delegate :initial_draw_year, to: :premium_schedule
+  delegate :initial_draw_amount, to: :premium_schedule
+  delegate :initial_draw_months, to: :premium_schedule
+  delegate :initial_capital_repayment_holiday, to: :premium_schedule
+  delegate :second_draw_amount, to: :premium_schedule
+  delegate :second_draw_months, to: :premium_schedule
+  delegate :third_draw_amount, to: :premium_schedule
+  delegate :third_draw_months, to: :premium_schedule
+  delegate :fourth_draw_amount, to: :premium_schedule
+  delegate :fourth_draw_months, to: :premium_schedule
+  delegate :reschedule?, to: :premium_schedule
+  delegate :premium_cheque_month, to: :premium_schedule
   delegate :premium_rate, to: :loan
 
   def initial_draw_date

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130227165505) do
+ActiveRecord::Schema.define(:version => 20130311160540) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -389,6 +389,48 @@ ActiveRecord::Schema.define(:version => 20130227165505) do
     t.datetime "updated_at",     :null => false
   end
 
+  create_table "premium_schedules", :force => true do |t|
+    t.integer  "loan_id",                                                                        :null => false
+    t.integer  "initial_draw_year"
+    t.integer  "initial_draw_amount",               :limit => 8,                                 :null => false
+    t.integer  "initial_draw_months"
+    t.integer  "initial_capital_repayment_holiday"
+    t.integer  "second_draw_amount",                :limit => 8
+    t.integer  "second_draw_months"
+    t.integer  "third_draw_amount",                 :limit => 8
+    t.integer  "third_draw_months"
+    t.integer  "fourth_draw_amount",                :limit => 8
+    t.integer  "fourth_draw_months"
+    t.datetime "created_at",                                                                     :null => false
+    t.datetime "updated_at",                                                                     :null => false
+    t.string   "legacy_loan_id"
+    t.integer  "seq"
+    t.integer  "loan_version"
+    t.string   "calc_type"
+    t.string   "premium_cheque_month"
+    t.integer  "holiday"
+    t.integer  "total_cost"
+    t.integer  "public_funding"
+    t.boolean  "obj1_area"
+    t.boolean  "reduce_costs"
+    t.boolean  "improve_prod"
+    t.boolean  "increase_quality"
+    t.boolean  "improve_nat_env"
+    t.boolean  "promote"
+    t.boolean  "agriculture"
+    t.integer  "guarantee_rate"
+    t.decimal  "npv",                                            :precision => 2,  :scale => 1
+    t.decimal  "prem_rate",                                      :precision => 2,  :scale => 1
+    t.decimal  "euro_conversion_rate",                           :precision => 17, :scale => 14, :null => false
+    t.integer  "elsewhere_perc"
+    t.integer  "obj1_perc"
+    t.datetime "ar_timestamp"
+    t.datetime "ar_insert_timestamp"
+  end
+
+  add_index "premium_schedules", ["legacy_loan_id"], :name => "index_premium_schedules_on_legacy_loan_id"
+  add_index "premium_schedules", ["loan_id", "seq"], :name => "index_premium_schedules_on_loan_id_and_seq", :unique => true
+
   create_table "realisation_statements", :force => true do |t|
     t.integer  "lender_id"
     t.integer  "created_by_id"
@@ -444,48 +486,6 @@ ActiveRecord::Schema.define(:version => 20130227165505) do
   end
 
   add_index "sic_codes", ["code"], :name => "index_sic_codes_on_code", :unique => true
-
-  create_table "state_aid_calculations", :force => true do |t|
-    t.integer  "loan_id",                                                                        :null => false
-    t.integer  "initial_draw_year"
-    t.integer  "initial_draw_amount",               :limit => 8,                                 :null => false
-    t.integer  "initial_draw_months"
-    t.integer  "initial_capital_repayment_holiday"
-    t.integer  "second_draw_amount",                :limit => 8
-    t.integer  "second_draw_months"
-    t.integer  "third_draw_amount",                 :limit => 8
-    t.integer  "third_draw_months"
-    t.integer  "fourth_draw_amount",                :limit => 8
-    t.integer  "fourth_draw_months"
-    t.datetime "created_at",                                                                     :null => false
-    t.datetime "updated_at",                                                                     :null => false
-    t.string   "legacy_loan_id"
-    t.integer  "seq"
-    t.integer  "loan_version"
-    t.string   "calc_type"
-    t.string   "premium_cheque_month"
-    t.integer  "holiday"
-    t.integer  "total_cost"
-    t.integer  "public_funding"
-    t.boolean  "obj1_area"
-    t.boolean  "reduce_costs"
-    t.boolean  "improve_prod"
-    t.boolean  "increase_quality"
-    t.boolean  "improve_nat_env"
-    t.boolean  "promote"
-    t.boolean  "agriculture"
-    t.integer  "guarantee_rate"
-    t.decimal  "npv",                                            :precision => 2,  :scale => 1
-    t.decimal  "prem_rate",                                      :precision => 2,  :scale => 1
-    t.decimal  "euro_conversion_rate",                           :precision => 17, :scale => 14, :null => false
-    t.integer  "elsewhere_perc"
-    t.integer  "obj1_perc"
-    t.datetime "ar_timestamp"
-    t.datetime "ar_insert_timestamp"
-  end
-
-  add_index "state_aid_calculations", ["legacy_loan_id"], :name => "index_state_aid_calculations_on_legacy_loan_id"
-  add_index "state_aid_calculations", ["loan_id", "seq"], :name => "index_state_aid_calculations_on_loan_id_and_seq", :unique => true
 
   create_table "user_audits", :force => true do |t|
     t.integer  "user_id"

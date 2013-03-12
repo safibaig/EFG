@@ -4,7 +4,7 @@ describe LoanTransfer::LegacySflg do
   let(:lender) { FactoryGirl.create(:lender, :with_lending_limit) }
 
   let!(:loan) {
-    FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation, :with_loan_securities, :legacy_sflg,
+    FactoryGirl.create(:loan, :offered, :guaranteed, :with_premium_schedule, :with_loan_securities, :legacy_sflg,
       lender: lender,
       lender_reference: 'lenderref1'
     )

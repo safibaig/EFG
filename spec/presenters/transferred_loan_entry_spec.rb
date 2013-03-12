@@ -40,7 +40,7 @@ describe TransferredLoanEntry do
     end
 
     it "should be invalid without a state aid calculation" do
-      transferred_loan_entry.loan.state_aid_calculations.delete_all
+      transferred_loan_entry.loan.premium_schedules.delete_all
       transferred_loan_entry.should_not be_valid
       transferred_loan_entry.errors[:state_aid].should == ['must be calculated']
     end

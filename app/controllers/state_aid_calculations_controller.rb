@@ -7,11 +7,11 @@ class StateAidCalculationsController < ApplicationController
   end
 
   def update
-    @state_aid_calculation.attributes = params[:state_aid_calculation]
-    @state_aid_calculation.calc_type = StateAidCalculation::SCHEDULE_TYPE
-    @state_aid_calculation.reset_euro_conversion_rate
+    @premium_schedule.attributes = params[:premium_schedule]
+    @premium_schedule.calc_type = PremiumSchedule::SCHEDULE_TYPE
+    @premium_schedule.reset_euro_conversion_rate
 
-    if @state_aid_calculation.save
+    if @premium_schedule.save
       redirect_to leave_state_aid_calculation_path(@loan)
     else
       render :edit
@@ -24,9 +24,9 @@ class StateAidCalculationsController < ApplicationController
   end
 
   def load_state_aid_calculation
-    @state_aid_calculation = @loan.state_aid_calculation || @loan.state_aid_calculations.build
-    @state_aid_calculation.initial_draw_amount ||= @loan.amount.dup
-    @state_aid_calculation.initial_draw_months ||= @loan.repayment_duration.total_months
+    @premium_schedule = @loan.premium_schedule || @loan.premium_schedules.build
+    @premium_schedule.initial_draw_amount ||= @loan.amount.dup
+    @premium_schedule.initial_draw_months ||= @loan.repayment_duration.total_months
   end
 
   helper_method :leave_state_aid_calculation_path
@@ -43,6 +43,6 @@ class StateAidCalculationsController < ApplicationController
   end
 
   def verify_update_permission
-    enforce_update_permission(StateAidCalculation)
+    enforce_update_permission(PremiumSchedule)
   end
 end

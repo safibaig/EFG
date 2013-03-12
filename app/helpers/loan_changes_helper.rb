@@ -1,6 +1,6 @@
 module LoanChangesHelper
 
-  def state_aid_calculation_hidden_fields(hash)
+  def premium_schedule_hidden_fields(hash)
     if hash.is_a?(Hash)
       %w(
         premium_cheque_month
@@ -14,7 +14,7 @@ module LoanChangesHelper
         fourth_draw_amount
         fourth_draw_months
       ).collect do |field|
-        hidden_field_tag "state_aid_calculation[#{field}]", hash[field.to_sym]
+        hidden_field_tag "premium_schedule[#{field}]", hash[field.to_sym]
       end.join.html_safe
     end
   end

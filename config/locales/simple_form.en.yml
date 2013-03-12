@@ -113,7 +113,7 @@ en:
         initial_draw_date: 'On what date was the initial draw of funds made?'
         initial_draw_amount: 'What was the value of the initial draw?'
 
-      state_aid_calculation:
+      premium_schedule:
         initial_draw_year: 'What is the expected year of the initial draw?'
         initial_draw_amount: 'What is the amount of the initial draw?'
         initial_draw_months: 'What is the loan term? (Months)'

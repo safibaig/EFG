@@ -13,8 +13,8 @@ describe 'loan entry' do
     )
   }
 
-  let!(:state_aid_calculation) {
-    FactoryGirl.create(state_aid_calculation_type,
+  let!(:premium_schedule) {
+    FactoryGirl.create(premium_schedule_type,
       loan: loan,
       initial_draw_amount: Money.new(100_000_00),
       initial_draw_months: 120
@@ -28,7 +28,7 @@ describe 'loan entry' do
   end
 
   context 'when viewing a premium schedule' do
-    let(:state_aid_calculation_type) { :state_aid_calculation }
+    let(:premium_schedule_type) { :premium_schedule }
 
     it 'displays the correct data' do
       page.should have_content('£10,250.00')
@@ -39,7 +39,7 @@ describe 'loan entry' do
   end
 
   context 'when viewing a rescheduled premium schedule' do
-    let(:state_aid_calculation_type) { :rescheduled_state_aid_calculation }
+    let(:premium_schedule_type) { :rescheduled_premium_schedule }
 
     it 'displays the correct data' do
       page.should have_css('.premium1')

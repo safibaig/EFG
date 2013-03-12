@@ -3,7 +3,7 @@ require 'spec_helper'
 describe PremiumScheduleQuarter do
 
   let(:premium_schedule_generator) {
-    PremiumScheduleGenerator.new(state_aid_calculation, state_aid_calculation.loan)
+    PremiumScheduleGenerator.new(premium_schedule, premium_schedule.loan)
   }
 
   let(:loan) {
@@ -13,9 +13,8 @@ describe PremiumScheduleQuarter do
   describe '#premium_amount' do
     context 'with second tranche drawdown' do
 
-      let(:state_aid_calculation) {
-        FactoryGirl.build(
-          :state_aid_calculation,
+      let(:premium_schedule) {
+        FactoryGirl.build(:premium_schedule,
           loan: loan,
           initial_draw_year: 2012,
           initial_draw_amount: Money.new(900_000_00),
@@ -40,9 +39,8 @@ describe PremiumScheduleQuarter do
         FactoryGirl.build(:loan, amount: Money.new(1_000_000_00), repayment_duration: { months: 12 })
       }
 
-      let(:state_aid_calculation) {
-        FactoryGirl.build(
-          :state_aid_calculation,
+      let(:premium_schedule) {
+        FactoryGirl.build(:premium_schedule,
           loan: loan,
           initial_draw_amount: Money.new(10_000_00),
           initial_draw_months: 12,
@@ -58,8 +56,8 @@ describe PremiumScheduleQuarter do
     end
 
     context "with zero tranche draw downs" do
-      let(:state_aid_calculation) {
-        FactoryGirl.build(:state_aid_calculation,
+      let(:premium_schedule) {
+        FactoryGirl.build(:premium_schedule,
           loan: loan,
           initial_draw_year: nil,
           initial_draw_amount: Money.new(150_000_00),

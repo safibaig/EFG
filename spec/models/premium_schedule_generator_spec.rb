@@ -3,14 +3,14 @@ require 'spec_helper'
 
 describe PremiumScheduleGenerator do
   describe "calculations" do
-    let(:state_aid_calculation) {
-      FactoryGirl.build(:state_aid_calculation,
+    let(:premium_schedule) {
+      FactoryGirl.build(:premium_schedule,
         initial_draw_amount: Money.new(100_000_00),
         initial_draw_months: 120)
     }
 
     let(:premium_schedule_generator) {
-      PremiumScheduleGenerator.new(state_aid_calculation, state_aid_calculation.loan)
+      PremiumScheduleGenerator.new(premium_schedule, premium_schedule.loan)
     }
 
     it "calculates quarterly premiums" do
@@ -31,7 +31,7 @@ describe PremiumScheduleGenerator do
 
     context 'with weird initial_draw_months' do
       it 'does not blow up if the number of months is less than one quarter' do
-        state_aid_calculation.initial_draw_months = 2
+        premium_schedule.initial_draw_months = 2
 
         premium_schedule_generator.premiums[0].should == Money.new(500_00)
         premium_schedule_generator.premiums[1].should be_zero
@@ -43,9 +43,8 @@ describe PremiumScheduleGenerator do
         FactoryGirl.build(:loan, amount: Money.new(1_000_000_00), repayment_duration: { months: 12 })
       }
 
-      let(:state_aid_calculation) {
-        FactoryGirl.build(
-          :state_aid_calculation,
+      let(:premium_schedule) {
+        FactoryGirl.build(:premium_schedule,
           loan: loan,
           initial_draw_amount: Money.new(900_000_00),
           initial_draw_months: 12,
@@ -67,9 +66,8 @@ describe PremiumScheduleGenerator do
         FactoryGirl.build(:loan, amount: Money.new(1_000_000_00), repayment_duration: { months: 12 })
       }
 
-      let(:state_aid_calculation) {
-        FactoryGirl.build(
-          :state_aid_calculation,
+      let(:premium_schedule) {
+        FactoryGirl.build(:premium_schedule,
           loan: loan,
           initial_draw_amount: Money.new(525_000_00),
           initial_draw_months: 12,
@@ -93,9 +91,8 @@ describe PremiumScheduleGenerator do
         FactoryGirl.build(:loan, amount: Money.new(1_000_000_00), repayment_duration: { months: 12 })
       }
 
-      let(:state_aid_calculation) {
-        FactoryGirl.build(
-          :state_aid_calculation,
+      let(:premium_schedule) {
+        FactoryGirl.build(:premium_schedule,
           loan: loan,
           initial_draw_amount: Money.new(100_000_00),
           initial_draw_months: 12,
@@ -121,9 +118,8 @@ describe PremiumScheduleGenerator do
         FactoryGirl.build(:loan, amount: Money.new(1_000_000_00), repayment_duration: { months: 12 })
       }
 
-      let(:state_aid_calculation) {
-        FactoryGirl.build(
-          :state_aid_calculation,
+      let(:premium_schedule) {
+        FactoryGirl.build(:premium_schedule,
           loan: loan,
           initial_draw_amount: Money.new(100_000_00),
           initial_draw_months: 12,
@@ -143,9 +139,8 @@ describe PremiumScheduleGenerator do
         FactoryGirl.build(:loan, amount: Money.new(60_900_00), repayment_duration: { months: 120 })
       }
 
-      let(:state_aid_calculation) {
-        FactoryGirl.build(
-          :state_aid_calculation,
+      let(:premium_schedule) {
+        FactoryGirl.build(:premium_schedule,
           loan: loan,
           initial_draw_amount: Money.new(60_900_00),
           initial_draw_months: 120,
@@ -168,9 +163,8 @@ describe PremiumScheduleGenerator do
           FactoryGirl.build(:loan, amount: Money.new(50_000_00), repayment_duration: { months: 60 })
         }
 
-        let(:state_aid_calculation) {
-          FactoryGirl.build(
-            :state_aid_calculation,
+        let(:premium_schedule) {
+          FactoryGirl.build(:premium_schedule,
             loan: loan,
             initial_draw_amount: Money.new(50_000_00),
             initial_draw_months: 60,
@@ -193,9 +187,8 @@ describe PremiumScheduleGenerator do
           FactoryGirl.build(:loan, amount: Money.new(38_500_00), repayment_duration: { months: 60 })
         }
 
-        let(:state_aid_calculation) {
-          FactoryGirl.build(
-            :state_aid_calculation,
+        let(:premium_schedule) {
+          FactoryGirl.build(:premium_schedule,
             loan: loan,
             initial_draw_amount: Money.new(38_500_00),
             initial_draw_months: 60,
@@ -219,9 +212,8 @@ describe PremiumScheduleGenerator do
         FactoryGirl.build(:loan, amount: Money.new(20_000_00), repayment_duration: { months: 11 })
       }
 
-      let(:state_aid_calculation) {
-        FactoryGirl.build(
-          :state_aid_calculation,
+      let(:premium_schedule) {
+        FactoryGirl.build(:premium_schedule,
           loan: loan,
           initial_draw_amount: Money.new(20_000_00),
           initial_draw_months: 11,
@@ -239,10 +231,10 @@ describe PremiumScheduleGenerator do
 
   describe "#subsequent_premiums" do
 
-    let(:premium_schedule_generator) { PremiumScheduleGenerator.new(state_aid_calculation, state_aid_calculation.loan) }
+    let(:premium_schedule_generator) { PremiumScheduleGenerator.new(premium_schedule, premium_schedule.loan) }
 
     context "when standard state aid calculation" do
-      let(:state_aid_calculation) { FactoryGirl.build(:state_aid_calculation) }
+      let(:premium_schedule) { FactoryGirl.build(:premium_schedule) }
 
       it "should not include first quarter when standard state aid calculation" do
         premium_schedule_generator.subsequent_premiums.size.should == 39
@@ -250,7 +242,7 @@ describe PremiumScheduleGenerator do
     end
 
     context "when rescheduled state aid calculation" do
-      let(:state_aid_calculation) { FactoryGirl.build(:rescheduled_state_aid_calculation ) }
+      let(:premium_schedule) { FactoryGirl.build(:rescheduled_premium_schedule ) }
 
       it "should include first quarter when rescheduled state aid calculation" do
         premium_schedule_generator.subsequent_premiums.size.should == 40
@@ -260,7 +252,7 @@ describe PremiumScheduleGenerator do
 
   describe "#second_premium_collection_month" do
     let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
-    let!(:state_aid_calculation) { loan.state_aid_calculations.build }
+    let!(:premium_schedule) { loan.premium_schedules.build }
     let(:premium_schedule_generator) { loan.premium_schedule_generator }
 
     it "should return formatted date string 3 months from the initial draw date " do
@@ -284,7 +276,7 @@ describe PremiumScheduleGenerator do
 
   describe "#initial_premium_cheque" do
     context 'when reschedule' do
-      let(:premium_schedule_generator) { FactoryGirl.build(:rescheduled_state_aid_calculation).premium_schedule_generator }
+      let(:premium_schedule_generator) { FactoryGirl.build(:rescheduled_premium_schedule).premium_schedule_generator }
 
       it "returns 0 money" do
         premium_schedule_generator.initial_premium_cheque.should == Money.new(0)
@@ -292,7 +284,7 @@ describe PremiumScheduleGenerator do
     end
 
     context 'when not reschedule' do
-      let(:premium_schedule_generator) { FactoryGirl.build(:state_aid_calculation).premium_schedule_generator }
+      let(:premium_schedule_generator) { FactoryGirl.build(:premium_schedule).premium_schedule_generator }
 
       it "returns first premium amount" do
         premium_schedule_generator.initial_premium_cheque.should == premium_schedule_generator.premiums.first

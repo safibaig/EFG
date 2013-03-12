@@ -207,8 +207,8 @@ describe LoanChange do
       it 'should require state aid calculation attributes' do
         loan_change.change_type_id = '2'
         loan_change.should_not be_valid
-        loan_change.state_aid_calculation_attributes = FactoryGirl.attributes_for(
-          :rescheduled_state_aid_calculation, loan: loan_change.loan
+        loan_change.premium_schedule_attributes = FactoryGirl.attributes_for(
+          :rescheduled_premium_schedule, loan: loan_change.loan
         )
         loan_change.should be_valid
       end
@@ -238,7 +238,7 @@ describe LoanChange do
         loan_change.modified_date = Date.current
       end
     }
-    let(:state_aid_calculation_attributes) { FactoryGirl.attributes_for(:rescheduled_state_aid_calculation, loan: loan) }
+    let(:premium_schedule_attributes) { FactoryGirl.attributes_for(:rescheduled_premium_schedule, loan: loan) }
 
     context 'change types' do
       context '1 - business name' do
@@ -280,7 +280,7 @@ describe LoanChange do
 
             loan_change.change_type_id = change_type
             loan_change.maturity_date = Date.new(2019, 4, 3)
-            loan_change.state_aid_calculation_attributes = state_aid_calculation_attributes
+            loan_change.premium_schedule_attributes = premium_schedule_attributes
 
             loan_change.save_and_update_loan
           end
@@ -340,20 +340,18 @@ describe LoanChange do
       it 'creates new state aid calculation for the Loan' do
         loan_change.change_type_id = '2'
 
-        loan_change.state_aid_calculation_attributes = FactoryGirl.attributes_for(
-          :rescheduled_state_aid_calculation, loan: loan
+        loan_change.premium_schedule_attributes = FactoryGirl.attributes_for(
+          :rescheduled_premium_schedule, loan: loan
         )
 
         expect {
           loan_change.save_and_update_loan
-        }.to change(StateAidCalculation, :count).by(1)
+        }.to change(PremiumSchedule, :count).by(1)
       end
 
       it 'does not update the Loan if the state aid calculation is not valid' do
         loan_change.change_type_id = '2'
-
-        loan_change.state_aid_calculation_attributes = {}
-
+        loan_change.premium_schedule_attributes = {}
         loan_change.save_and_update_loan.should == false
 
         loan.reload

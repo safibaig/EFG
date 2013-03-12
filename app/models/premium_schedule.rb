@@ -1,4 +1,4 @@
-class StateAidCalculation < ActiveRecord::Base
+class PremiumSchedule < ActiveRecord::Base
   include FormatterConcern
 
   SCHEDULE_TYPE = 'S'.freeze
@@ -9,7 +9,7 @@ class StateAidCalculation < ActiveRecord::Base
   MAX_INITIAL_DRAW = Money.new(9_999_999_99)
   RISK_FACTOR = 0.3
 
-  belongs_to :loan, inverse_of: :state_aid_calculations
+  belongs_to :loan, inverse_of: :premium_schedules
 
   attr_accessible :initial_draw_year, :initial_draw_amount,
     :initial_draw_months, :initial_capital_repayment_holiday,
@@ -77,7 +77,7 @@ class StateAidCalculation < ActiveRecord::Base
 
   private
     def set_seq
-      self.seq = (StateAidCalculation.where(loan_id: loan_id).maximum(:seq) || -1) + 1 unless seq
+      self.seq = (PremiumSchedule.where(loan_id: loan_id).maximum(:seq) || -1) + 1 unless seq
     end
 
     def initial_draw_amount_is_within_limit

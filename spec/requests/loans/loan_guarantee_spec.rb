@@ -5,7 +5,7 @@ require 'spec_helper'
 describe 'loan guarantee' do
   let(:current_user) { FactoryGirl.create(:lender_user) }
   let(:loan) {
-    FactoryGirl.create(:loan, :offered, :with_state_aid_calculation,
+    FactoryGirl.create(:loan, :offered, :with_premium_schedule,
       lender: current_user.lender,
       repayment_duration: {years: 3},
       facility_letter_date: Date.new(2012, 10, 20)

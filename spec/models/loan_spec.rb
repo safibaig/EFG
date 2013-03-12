@@ -112,16 +112,16 @@ describe Loan do
     end
   end
 
-  describe "#state_aid_calculation" do
+  describe "#premium_schedule" do
 
     let!(:loan) { FactoryGirl.create(:loan) }
 
-    let!(:state_aid_calculation1) { FactoryGirl.create(:state_aid_calculation, loan: loan) }
+    let!(:premium_schedule1) { FactoryGirl.create(:premium_schedule, loan: loan) }
 
-    let!(:state_aid_calculation2) { FactoryGirl.create(:state_aid_calculation, loan: loan) }
+    let!(:premium_schedule2) { FactoryGirl.create(:premium_schedule, loan: loan) }
 
     it "returns the most recent state aid calculation record" do
-      loan.state_aid_calculation.should == state_aid_calculation2
+      loan.premium_schedule.should == premium_schedule2
     end
   end
 
@@ -169,13 +169,13 @@ describe Loan do
   describe "#premium_schedule_generator" do
     it "should return a PremiumScheduleGenerator for the loan" do
       loan = FactoryGirl.build(:loan)
-      loan.state_aid_calculations.build
+      loan.premium_schedules.build
 
       loan.premium_schedule_generator.should be_instance_of(PremiumScheduleGenerator)
       loan.premium_schedule_generator.loan.should == loan
     end
 
-    it "should return nil if it doesn't have a state aid calculation" do
+    it "should return nil if it doesn't have a premium_schedule" do
       loan = FactoryGirl.build(:loan)
       loan.premium_schedule_generator.should be_nil
     end

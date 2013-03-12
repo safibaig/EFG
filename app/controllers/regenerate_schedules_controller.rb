@@ -3,16 +3,16 @@ class RegenerateSchedulesController < ApplicationController
   before_filter :load_loan
 
   def new
-    @state_aid_calculation = @loan.state_aid_calculations.build
+    @premium_schedule = @loan.premium_schedules.build
   end
 
   def create
-    @state_aid_calculation = @loan.state_aid_calculations.build(params[:state_aid_calculation])
-    @state_aid_calculation.calc_type = StateAidCalculation::RESCHEDULE_TYPE
+    @premium_schedule = @loan.premium_schedules.build(params[:premium_schedule])
+    @premium_schedule.calc_type = PremiumSchedule::RESCHEDULE_TYPE
 
-    if @state_aid_calculation.valid?
+    if @premium_schedule.valid?
       redirect_to new_loan_loan_change_url(
-        state_aid_calculation: params[:state_aid_calculation],
+        premium_schedule: params[:premium_schedule],
         loan_change: params[:loan_change]
       )
     else
@@ -27,7 +27,7 @@ class RegenerateSchedulesController < ApplicationController
   end
 
   def verify_create_permission
-    enforce_create_permission(StateAidCalculation)
+    enforce_create_permission(PremiumSchedule)
   end
 
 end

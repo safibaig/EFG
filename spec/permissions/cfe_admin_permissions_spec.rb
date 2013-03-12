@@ -29,7 +29,7 @@ describe CfeAdminPermissions do
   end
 
   context 'state aid calculations' do
-    it { refute user.can_update?(StateAidCalculation) }
+    it { refute user.can_update?(PremiumSchedule) }
   end
 
   context 'data protection declaration' do
@@ -130,8 +130,8 @@ describe CfeAdminPermissions do
     it { refute user.can_create?(LoanTransfer::Sflg) }
   end
 
-  context 'StateAidCalculation' do
-    it { refute user.can_create?(StateAidCalculation) }
+  context 'PremiumSchedule' do
+    it { refute user.can_create?(PremiumSchedule) }
   end
 
   context 'LenderAdmins' do

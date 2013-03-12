@@ -3,17 +3,17 @@ class PremiumScheduleReportRow
     'Schedule Type', 'Initial Premium Cheque', '1st Collection Date',
     'No of Payments'] + (1..40).map { |i| "Premium#{i}" }
 
-  attr_accessor :loan, :state_aid_calculation
+  attr_accessor :loan, :premium_schedule
 
   def self.from_loans(loans)
-    state_aid_calculation_ids = loans.map(&:state_aid_calculation_id)
-    state_aid_calculations = StateAidCalculation.find(state_aid_calculation_ids)
-    state_aid_calculation_lookup = state_aid_calculations.index_by { |s| "#{s.loan_id}_#{s.calc_type}" }
+    premium_schedule_ids = loans.map(&:premium_schedule_id)
+    premium_schedules = PremiumSchedule.find(premium_schedule_ids)
+    premium_schedule_lookup = premium_schedules.index_by { |s| "#{s.loan_id}_#{s.calc_type}" }
 
     loans.map do |loan|
       new(loan).tap do |row|
-        key = "#{loan.id}_#{loan.state_aid_calculation_calc_type}"
-        row.state_aid_calculation = state_aid_calculation_lookup[key]
+        key = "#{loan.id}_#{loan.premium_schedule_calc_type}"
+        row.premium_schedule = premium_schedule_lookup[key]
       end
     end
   end
@@ -23,7 +23,7 @@ class PremiumScheduleReportRow
   end
 
   def premium_schedule_generator
-    @premium_schedule_generator ||= PremiumScheduleGenerator.new(state_aid_calculation, loan)
+    @premium_schedule_generator ||= PremiumScheduleGenerator.new(premium_schedule, loan)
   end
 
   def to_csv
@@ -48,16 +48,16 @@ class PremiumScheduleReportRow
 
   # always display calc_type 'N' as 'S' in this report
   def calc_type
-    if loan.state_aid_calculation_calc_type == StateAidCalculation::NOTIFIED_AID_TYPE
-      StateAidCalculation::SCHEDULE_TYPE
+    if loan.premium_schedule_calc_type == PremiumSchedule::NOTIFIED_AID_TYPE
+      PremiumSchedule::SCHEDULE_TYPE
     else
-      loan.state_aid_calculation_calc_type
+      loan.premium_schedule_calc_type
     end
   end
 
   def first_collection_month
-    if state_aid_calculation.premium_cheque_month.present?
-      state_aid_calculation.premium_cheque_month
+    if premium_schedule.premium_cheque_month.present?
+      premium_schedule.premium_cheque_month
     else
       loan.draw_down_date.advance(months: 3).strftime('%m/%Y')
     end

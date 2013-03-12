@@ -6,8 +6,8 @@ FactoryGirl.define do
     repayment_frequency_id 3
 
     initialize_with {
-      state_aid_calculation = FactoryGirl.create(:state_aid_calculation)
-      loan = FactoryGirl.create(:loan, :incomplete, :transferred, state_aid_calculations: [ state_aid_calculation ])
+      premium_schedule = FactoryGirl.create(:premium_schedule)
+      loan = FactoryGirl.create(:loan, :incomplete, :transferred, premium_schedules: [ premium_schedule ])
       new(loan)
     }
   end

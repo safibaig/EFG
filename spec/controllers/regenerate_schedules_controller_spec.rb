@@ -18,7 +18,7 @@ describe RegenerateSchedulesController do
 
   describe '#create' do
     def dispatch(params = {})
-      post :create, { loan_id: loan.id, state_aid_calculation: {} }.merge(params)
+      post :create, { loan_id: loan.id, premium_schedule: {} }.merge(params)
     end
 
     it_behaves_like 'AuditorUser-restricted controller'

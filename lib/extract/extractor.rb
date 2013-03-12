@@ -560,7 +560,7 @@ class Extractor
           whitelist "public_sector_restricted"
         end
 
-        table 'state_aid_calculations' do
+        table 'premium_schedules' do
           batch_size 200
           primary_key 'id'
 

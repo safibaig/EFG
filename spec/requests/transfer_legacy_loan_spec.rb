@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'Transfer a legacy loan' do
   let(:lender) { FactoryGirl.create(:lender, :with_lending_limit) }
   let(:current_user) { FactoryGirl.create(:lender_user, lender: lender) }
-  let(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation, :legacy_sflg) }
+  let(:loan) { FactoryGirl.create(:loan, :offered, :guaranteed, :with_premium_schedule, :legacy_sflg) }
 
   before(:each) do
     login_as(current_user, scope: :user)
