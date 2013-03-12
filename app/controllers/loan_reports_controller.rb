@@ -2,11 +2,11 @@ class LoanReportsController < ApplicationController
   before_filter :verify_create_permission
 
   def new
-    @loan_report = LoanReportPresenter.new
+    @loan_report = LoanReportPresenter.new(current_user)
   end
 
   def create
-    @loan_report = LoanReportPresenter.new(loan_report_params)
+    @loan_report = LoanReportPresenter.new(current_user, loan_report_params)
     if @loan_report.valid?
       respond_to do |format|
         format.html { render 'summary' }

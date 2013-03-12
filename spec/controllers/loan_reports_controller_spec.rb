@@ -78,7 +78,7 @@ describe LoanReportsController do
 
         LoanReportPresenter.
           should_receive(:new).
-          with({ "loan_scheme" => Lender::EFG_SCHEME, "allowed_lender_ids" => [ lender.id ] }).
+          with(current_user, { "loan_scheme" => Lender::EFG_SCHEME, "allowed_lender_ids" => [ lender.id ] }).
           and_return(report)
 
         dispatch(loan_scheme: 'S')

@@ -37,6 +37,13 @@ class LoanReportPresenter
 
   validate :loan_states_are_allowed
 
+  def initialize(user, attributes = {})
+    @user = user
+    super(attributes)
+  end
+
+  attr_reader :user
+
   def loans
     report.loans
   end
@@ -55,6 +62,18 @@ class LoanReportPresenter
 
   def lender_ids=(lender_ids)
     @lender_ids = filter_blank_multi_select(lender_ids)
+  end
+
+  def has_lender_selection?
+    !user.lender.is_a?(Lender)
+  end
+
+  def has_loan_type_selection?
+    user.lender.can_access_all_loan_schemes?
+  end
+
+  def has_created_by_selection?
+    user.lender.is_a?(Lender)
   end
 
   private

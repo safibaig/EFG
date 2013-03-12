@@ -4,15 +4,18 @@ require 'csv'
 describe LoanReportPresenter do
 
   describe "#initialize" do
+    let(:user) { double('user') }
+
     it "should not allow unsupported attributes" do
       expect {
-        LoanReportPresenter.new(report_attributes(company_registration: '123456C'))
+        LoanReportPresenter.new(user, report_attributes(company_registration: '123456C'))
       }.to raise_error(NoMethodError)
     end
   end
 
   describe "validation" do
-    let(:loan_report_presenter) { LoanReportPresenter.new(report_attributes) }
+    let(:user) { double('user') }
+    let(:loan_report_presenter) { LoanReportPresenter.new(user, report_attributes) }
 
     it 'should have a valid factory' do
       loan_report_presenter.should be_valid
@@ -91,8 +94,9 @@ describe LoanReportPresenter do
   end
 
   describe "delegating to report" do
+    let(:user) { double('user')}
     let(:loan_report) { double('LoanReport') }
-    let(:presenter) { LoanReportPresenter.new }
+    let(:presenter) { LoanReportPresenter.new(user) }
     before { presenter.stub!(:report).and_return(loan_report) }
 
     it "delegates #count" do
@@ -107,17 +111,83 @@ describe LoanReportPresenter do
     end
   end
 
+  describe "permissions" do
+    let(:presenter) { LoanReportPresenter.new(user) }
+
+    context "with AuditorUser" do
+      let(:user) { FactoryGirl.build(:auditor_user) }
+
+      it "allows lender selection" do
+        presenter.should have_lender_selection
+      end
+
+      it "doesn't allow created by selection" do
+        presenter.should_not have_created_by_selection
+      end
+    end
+
+    context "with CfeUser" do
+      let(:user) { FactoryGirl.build(:cfe_user) }
+
+      it "allows lender selection" do
+        presenter.should have_lender_selection
+      end
+
+      it "allows loan type selection" do
+        presenter.should have_loan_type_selection
+      end
+
+      it "doesn't allow created by selection" do
+        presenter.should_not have_created_by_selection
+      end
+    end
+
+    context "with LenderUser" do
+      let(:user) { FactoryGirl.build(:lender_user) }
+
+      it "doesn't allow lender selection" do
+        presenter.should_not have_lender_selection
+      end
+
+      it "allows created by selection" do
+        presenter.should have_created_by_selection
+      end
+    end
+
+    context "with a users's 'lender' that can access all loan schemes" do
+      let(:lender) { double('lender', :can_access_all_loan_schemes? => true)}
+      let(:user) { FactoryGirl.build(:lender_user) }
+      before { user.stub!(:lender).and_return(lender) }
+
+      it "allows loan type selection" do
+        presenter.should have_loan_type_selection
+      end
+    end
+
+    context "with a user's 'lender' that can't access all loan schemes" do
+      let(:lender) { double('lender', :can_access_all_loan_schemes? => false)}
+      let(:user) { FactoryGirl.build(:lender_user) }
+      before { user.stub!(:lender).and_return(lender) }
+
+      it "doesn't allow loan type selection" do
+        presenter.should_not have_loan_type_selection
+      end
+    end
+  end
+
   private
 
   def report_attributes(params = {})
     allowed_lender_ids = Lender.count.zero? ? [ 1 ] : Lender.all.collect(&:id)
     lender_ids = Lender.count.zero? ? [ 1 ] : Lender.all.collect(&:id)
 
-    FactoryGirl.attributes_for(
-      :loan_report_presenter,
+    {
       allowed_lender_ids: allowed_lender_ids,
-      lender_ids: lender_ids
-    ).merge(params)
+      lender_ids: lender_ids,
+      loan_sources: [Loan::SFLG_SOURCE],
+      loan_scheme: Loan::EFG_SCHEME,
+      states: Loan::States,
+    }.merge(params)
   end
 
 end
