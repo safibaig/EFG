@@ -18,7 +18,7 @@ class TransferredLoanEntriesController < ApplicationController
       redirect_to loan_url(@transferred_loan_entry.loan)
     when 'State Aid Calculation'
       @transferred_loan_entry.save_as_incomplete
-      redirect_to edit_loan_state_aid_calculation_url(@transferred_loan_entry.loan, redirect: 'transferred_loan_entry')
+      redirect_to edit_loan_premium_schedule_url(@transferred_loan_entry.loan, redirect: 'transferred_loan_entry')
     else
       if @transferred_loan_entry.save
         redirect_to loan_url(@transferred_loan_entry.loan)

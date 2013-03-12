@@ -22,7 +22,7 @@
   <%= f.input :initial_draw_date, as: :quick_date, wrapper_html: {data: {behaviour: 'initial-draw-date'}} %>
   <%= simple_form_row('Maturity Date', 'calculated based on initial draw date', class: 'projected-maturity-date', data: {'behaviour' => 'projected-maturity-date', 'repayment-duration' => f.object.repayment_duration.total_months}) %>
 
-  <%= f.input :initial_draw_amount, as: :currency, disabled: true, hint: "To change the initial draw amount, you must #{link_to 'update the state aid calculation', edit_loan_state_aid_calculation_path(f.object.loan, redirect: 'loan_guarantee')}." %>
+  <%= f.input :initial_draw_amount, as: :currency, disabled: true, hint: "To change the initial draw amount, you must #{link_to 'update the state aid calculation', edit_loan_premium_schedule_path(f.object.loan, redirect: 'loan_guarantee')}." %>
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Submit', class: 'btn-primary', data: { 'disable-with' => 'Submitting...' } %>

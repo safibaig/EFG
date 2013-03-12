@@ -1,7 +1,7 @@
-class StateAidCalculationsController < ApplicationController
+class PremiumSchedulesController < ApplicationController
   before_filter :verify_update_permission, only: [:edit, :update]
   before_filter :load_loan, only: [:edit, :update]
-  before_filter :load_state_aid_calculation, only: [:edit, :update]
+  before_filter :load_premium_schedule, only: [:edit, :update]
 
   def edit
   end
@@ -12,7 +12,7 @@ class StateAidCalculationsController < ApplicationController
     @premium_schedule.reset_euro_conversion_rate
 
     if @premium_schedule.save
-      redirect_to leave_state_aid_calculation_path(@loan)
+      redirect_to leave_premium_schedule_path(@loan)
     else
       render :edit
     end
@@ -23,14 +23,14 @@ class StateAidCalculationsController < ApplicationController
     @loan = current_lender.loans.find(params[:loan_id])
   end
 
-  def load_state_aid_calculation
+  def load_premium_schedule
     @premium_schedule = @loan.premium_schedule || @loan.premium_schedules.build
     @premium_schedule.initial_draw_amount ||= @loan.amount.dup
     @premium_schedule.initial_draw_months ||= @loan.repayment_duration.total_months
   end
 
-  helper_method :leave_state_aid_calculation_path
-  def leave_state_aid_calculation_path(loan)
+  helper_method :leave_premium_schedule_path
+  def leave_premium_schedule_path(loan)
     if params[:redirect] == 'loan_entry'
       new_loan_entry_path(loan)
     elsif params[:redirect] == 'transferred_loan_entry'

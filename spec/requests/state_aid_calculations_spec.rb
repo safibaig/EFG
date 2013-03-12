@@ -9,7 +9,7 @@ describe 'state aid calculations' do
   describe 'creating' do
     before do
       login_as(current_user, scope: :user)
-      navigate_to_state_aid_calculation_page
+      navigate_to_premium_schedule_page
     end
 
     let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: '123456', repayment_duration: { months: 3 }) }
@@ -48,11 +48,13 @@ describe 'state aid calculations' do
     end
 
     it 'does not create a new record with invalid data' do
+      visit edit_loan_premium_schedule_path(loan)
+
       expect {
         click_button 'Submit'
       }.to change(PremiumSchedule, :count).by(0)
 
-      current_path.should == loan_state_aid_calculation_path(loan)
+      current_path.should == loan_premium_schedule_path(loan)
     end
 
     context 'when the sum of the draw amounts exceeds the loan amount' do
@@ -80,7 +82,7 @@ describe 'state aid calculations' do
           not_less_than_or_equal_to_loan_amount
         ).join('.')
 
-        current_path.should == loan_state_aid_calculation_path(loan)
+        current_path.should == loan_premium_schedule_path(loan)
         page.should have_content(I18n.t(translation_key, loan_amount: loan.amount.format))
       end
     end
@@ -92,7 +94,7 @@ describe 'state aid calculations' do
 
     before do
       login_as(current_user, scope: :user)
-      navigate_to_state_aid_calculation_page
+      navigate_to_premium_schedule_page
     end
 
     it 'updates the record' do
@@ -112,7 +114,7 @@ describe 'state aid calculations' do
       fill_in :initial_draw_amount, ''
       click_button 'Submit'
 
-      current_path.should == loan_state_aid_calculation_path(loan)
+      current_path.should == loan_premium_schedule_path(loan)
 
       premium_schedule.reload.initial_draw_amount.should_not be_nil
     end
@@ -136,7 +138,7 @@ describe 'state aid calculations' do
   end
 
   private
-    def navigate_to_state_aid_calculation_page
+    def navigate_to_premium_schedule_page
       visit loan_path(loan)
       click_link 'Loan Entry'
       click_button 'State Aid Calculation'

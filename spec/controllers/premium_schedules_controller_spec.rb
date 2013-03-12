@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe StateAidCalculationsController do
+describe PremiumSchedulesController do
   let(:loan) { FactoryGirl.create(:loan, :eligible) }
 
   describe '#edit' do
