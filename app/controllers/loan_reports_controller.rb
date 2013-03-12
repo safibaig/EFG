@@ -6,7 +6,7 @@ class LoanReportsController < ApplicationController
   end
 
   def create
-    @loan_report = LoanReportPresenter.new(current_user, loan_report_params)
+    @loan_report = LoanReportPresenter.new(current_user, params[:loan_report])
     if @loan_report.valid?
       respond_to do |format|
         format.html { render 'summary' }
@@ -22,16 +22,6 @@ class LoanReportsController < ApplicationController
   end
 
   private
-
-  # ensure
-  # - loan scheme is set to 'E' in loan_report params if current lender can only access EFG loans
-  def loan_report_params
-    unless current_lender.can_access_all_loan_schemes?
-      params[:loan_report].merge!(loan_scheme: Lender::EFG_SCHEME)
-    end
-    params[:loan_report]
-  end
-
   def verify_create_permission
     enforce_create_permission(LoanReport)
   end

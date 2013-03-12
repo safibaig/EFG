@@ -47,6 +47,10 @@ class LoanReportPresenter
   def initialize(user, attributes = {})
     @user = user
     super(attributes)
+
+    unless has_loan_type_selection?
+      self.loan_scheme = Loan::EFG_SCHEME
+    end
   end
 
   attr_reader :user

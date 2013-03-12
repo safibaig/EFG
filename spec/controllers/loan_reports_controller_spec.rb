@@ -65,18 +65,6 @@ describe LoanReportsController do
         dispatch
         response.should be_success
       end
-
-      it "should set loan scheme to 'E' when current user's lender can only access EFG scheme loans" do
-        lender.loan_scheme = Lender::EFG_SCHEME
-        report = double(LoanReportPresenter, 'valid?' => false)
-
-        LoanReportPresenter.
-          should_receive(:new).
-          with(current_user, { "loan_scheme" => Lender::EFG_SCHEME }).
-          and_return(report)
-
-        dispatch(loan_scheme: 'S')
-      end
     end
 
     context 'with cfe user' do

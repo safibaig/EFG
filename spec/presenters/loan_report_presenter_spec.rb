@@ -193,6 +193,26 @@ describe LoanReportPresenter do
         presenter.report.lender_ids.should == [lender1.id]
       end
     end
+
+    context "with a user who can access all loan schemes" do
+      let(:lender) { FactoryGirl.create(:lender, loan_scheme: '') }
+      let(:user) { FactoryGirl.create(:lender_user, lender: lender) }
+      let(:presenter) { LoanReportPresenter.new(user) }
+
+      it "doesn't set loan_scheme" do
+        presenter.loan_scheme.should be_nil
+      end
+    end
+
+    context "with a user who can't access all loan schems" do
+      let(:lender) { FactoryGirl.create(:lender, loan_scheme: 'E') }
+      let(:user) { FactoryGirl.create(:lender_user, lender: lender) }
+      let(:presenter) { LoanReportPresenter.new(user) }
+
+      it "sets the loan_scheme to EFG" do
+        presenter.loan_scheme.should == Loan::EFG_SCHEME
+      end
+    end
   end
 
   private
