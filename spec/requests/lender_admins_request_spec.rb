@@ -14,11 +14,7 @@ describe 'LenderAdmin management' do
       let(:current_user) { FactoryGirl.create(:cfe_admin) }
 
       before do
-        visit root_path
-        click_link 'Manage Lenders'
-        within(:css, "tr#lender_#{lender.id}") do
-          click_link 'Lender Admins'
-        end
+        navigate_cfe_admin_to_lender_admins_for_lender lender
       end
 
       it 'includes Lender Admins with links to edit' do
@@ -91,11 +87,7 @@ describe 'LenderAdmin management' do
     end
 
     it do
-      visit root_path
-      click_link 'Manage Lenders'
-      within(:css, "tr#lender_#{lender.id}") do
-        click_link 'Lender Admins'
-      end
+      navigate_cfe_admin_to_lender_admins_for_lender lender
 
       click_link 'New Lender Admin'
 
@@ -133,11 +125,7 @@ describe 'LenderAdmin management' do
     let!(:user) { FactoryGirl.create(:lender_admin, first_name: 'Bob', last_name: 'Flemming', lender: lender) }
 
     it do
-      visit root_path
-      click_link 'Manage Lenders'
-      within(:css, "tr#lender_#{lender.id}") do
-        click_link 'Lender Admins'
-      end
+      navigate_cfe_admin_to_lender_admins_for_lender lender
 
       click_link 'Bob Flemming'
 
@@ -172,14 +160,11 @@ describe 'LenderAdmin management' do
                          locked: true)
     }
 
-    before do
-      visit root_path
-    end
-
     context 'as a Lender Admin' do
       let(:current_user) { FactoryGirl.create(:lender_admin, lender: lender) }
 
       it 'unlocks the user' do
+        visit root_path
         click_link 'View Lender Admins'
         click_link 'Bob Flemming'
         click_button 'Unlock User'
@@ -190,10 +175,7 @@ describe 'LenderAdmin management' do
 
     context 'as a Cfe Admin' do
       it 'unlocks the user' do
-        click_link 'Manage Lenders'
-        within(:css, "tr#lender_#{lender.id}") do
-          click_link 'Lender Admins'
-        end
+        navigate_cfe_admin_to_lender_admins_for_lender lender
         click_link 'Bob Flemming'
         click_button 'Unlock User'
 
@@ -218,14 +200,11 @@ describe 'LenderAdmin management' do
                          lender: lender)
     }
 
-    before do
-      visit root_path
-    end
-
     context 'as a Lender Admin' do
       let(:current_user) { FactoryGirl.create(:lender_admin, lender: lender) }
 
       it 'disables the user' do
+        visit root_path
         click_link 'View Lender Admins'
         click_link 'Bob Flemming'
         click_button 'Disable User'
@@ -236,10 +215,7 @@ describe 'LenderAdmin management' do
 
     context 'as a Cfe Admin' do
       it 'disables the user' do
-        click_link 'Manage Lenders'
-        within(:css, "tr#lender_#{lender.id}") do
-          click_link 'Lender Admins'
-        end
+        navigate_cfe_admin_to_lender_admins_for_lender lender
         click_link 'Bob Flemming'
         click_button 'Disable User'
 
@@ -265,14 +241,11 @@ describe 'LenderAdmin management' do
                          disabled: true)
     }
 
-    before do
-      visit root_path
-    end
-
     context 'as a Lender Admin' do
       let(:current_user) { FactoryGirl.create(:lender_admin, lender: lender) }
 
       it 'enables the user' do
+        visit root_path
         click_link 'View Lender Admins'
         click_link 'Disabled'
         click_link 'Bob Flemming'
@@ -284,10 +257,7 @@ describe 'LenderAdmin management' do
 
     context 'as a CfE Admin' do
       it 'enables the user' do
-        click_link 'Manage Lenders'
-        within(:css, "tr#lender_#{lender.id}") do
-          click_link 'Lender Admins'
-        end
+        navigate_cfe_admin_to_lender_admins_for_lender lender
         click_link 'Disabled'
         click_link 'Bob Flemming'
         click_button 'Enable User'
@@ -326,11 +296,7 @@ describe 'LenderAdmin management' do
       user.reset_password_token.should be_nil
       user.reset_password_sent_at.should be_nil
 
-      visit root_path
-      click_link 'Manage Lenders'
-      within(:css, "tr#lender_#{lender.id}") do
-        click_link 'Lender Admins'
-      end
+      navigate_cfe_admin_to_lender_admins_for_lender lender
       click_link 'Bob Flemming'
       click_button 'Send Reset Password Email'
 
@@ -347,11 +313,7 @@ describe 'LenderAdmin management' do
     end
 
     it "can be sent from user list page" do
-      visit root_path
-      click_link 'Manage Lenders'
-      within(:css, "tr#lender_#{lender.id}") do
-        click_link 'Lender Admins'
-      end
+      navigate_cfe_admin_to_lender_admins_for_lender lender
       click_button 'Send Reset Password Email'
 
       page.should have_content(I18n.t('manage_users.reset_password_sent', email: user.email))
@@ -364,11 +326,7 @@ describe 'LenderAdmin management' do
       user.email = nil
       user.save(validate: false)
 
-      visit root_path
-      click_link 'Manage Lenders'
-      within(:css, "tr#lender_#{lender.id}") do
-        click_link 'Lender Admins'
-      end
+      navigate_cfe_admin_to_lender_admins_for_lender lender
       click_link 'Bob Flemming'
       click_button 'Send Reset Password Email'
 

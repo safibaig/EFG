@@ -10,11 +10,7 @@ describe 'User creation and first login' do
 
   it do
     # cfe admin creates new lender admin
-    visit root_path
-    click_link 'Manage Lenders'
-    within(:css, "tr#lender_#{lender.id}") do
-      click_link 'Lender Admins'
-    end
+    navigate_cfe_admin_to_lender_admins_for_lender lender
     click_link 'New Lender Admin'
 
     fill_in 'lender_admin_first_name', with: 'Bob'

@@ -122,6 +122,16 @@ module RequestSpecHelpers
     fill_in 'recovery_additional_break_costs', with: '£456'
   end
 
+  # User Management
+  def navigate_cfe_admin_to_lender_admins_for_lender(lender)
+    visit root_path
+
+    click_link 'Manage Lenders'
+
+    within(:css, "tr#lender_#{lender.id}") do
+      click_link 'Lender Admins'
+    end
+  end
 end
 
 RSpec.configure do |config|
