@@ -29,9 +29,6 @@ GEM
       activesupport (= 3.2.12)
       arel (~> 3.0.2)
       tzinfo (~> 0.3.29)
-    activerecord-import (0.2.11)
-      activerecord (~> 3.0)
-      activerecord (~> 3.0)
     activeresource (3.2.12)
       activemodel (= 3.2.12)
       activesupport (= 3.2.12)
@@ -290,7 +287,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord-import (= 0.2.11)
   aws-ses
   bootstrap-will_paginate (= 0.0.7)
   bourbon (= 2.1.1)
