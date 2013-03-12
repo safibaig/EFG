@@ -1,5 +1,5 @@
 <%= breadcrumbs(
-  link_to('Lender Admins', lender_admins_path)
+  link_to('Lender Admins', lender_lender_admins_path(@user.lender))
 ) %>
 
 <div class="page-header">
@@ -20,5 +20,5 @@
 <%= render 'user_management/user_state_change_buttons', user: @user %>
 
 <div class="actions">
-  <%= link_to "Back to Lender Admins", lender_admins_url, class: 'btn' %>
+  <%= link_to "Back to Lender Admins", lender_lender_admins_path(@user.lender), class: 'btn' %>
 </div>

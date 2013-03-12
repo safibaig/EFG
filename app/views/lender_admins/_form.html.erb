@@ -1,8 +1,8 @@
 <%= render "user_management/password_not_set_dialog", user: @user %>
 
-<%= simple_form_for @user do |f| %>
+<%= simple_form_for [@user.lender, @user] do |f| %>
   <% if @user.new_record? %>
-    <%= f.input :lender_id, as: :select, collection: Lender.order_by_name, prompt: 'Please select' %>
+    <p>Lender: <%= @user.lender.name %></p>
   <% end %>
 
   <%= f.input :first_name %>

@@ -14,10 +14,8 @@
     <% if current_user.can_create?(CfeUser) %>
       <li><%= link_to 'Manage CfE Users', cfe_users_path, class: 'btn btn-info' %></li>
     <% end %>
-    <% if current_user.can_create?(LenderAdmin) %>
-      <li><%= link_to 'Manage Lender Admins', lender_admins_path, class: 'btn btn-info' %></li>
-    <% elsif current_user.can_view?(LenderAdmin) %>
-      <li><%= link_to 'View Lender Admins', lender_admins_path, class: 'btn btn-info' %></li>
+    <% if current_user.can_view?(LenderAdmin) && current_user.lender.is_a?(Lender) %>
+      <li><%= link_to 'View Lender Admins', lender_lender_admins_path(current_user.lender), class: 'btn btn-info' %></li>
     <% end %>
     <% if current_user.can_create?(AuditorUser) %>
       <li><%= link_to 'Manage Auditor Users', auditor_users_path, class: 'btn btn-info' %></li>
@@ -25,8 +23,8 @@
     <% if current_user.can_create?(PremiumCollectorUser) %>
       <li><%= link_to 'Manage Premium Collector Users', premium_collector_users_path, class: 'btn btn-info' %></li>
     <% end %>
-    <% if current_user.can_create?(LenderUser) %>
-      <li><%= link_to 'Manage Users', lender_users_path, class: 'btn btn-info' %></li>
+    <% if current_user.can_create?(LenderUser) && current_user.lender.is_a?(Lender) %>
+      <li><%= link_to 'Manage Users', lender_lender_users_path(current_user.lender), class: 'btn btn-info' %></li>
     <% end %>
     <% if current_user.can_create?(Expert) %>
       <li><%= link_to 'Manage Experts', expert_users_path, class: 'btn btn-info' %></li>

@@ -1,6 +1,6 @@
 <%= render "user_management/password_not_set_dialog", user: @user %>
 
-<%= simple_form_for @user do |f| %>
+<%= simple_form_for [@user.lender, @user] do |f| %>
   <%= f.input :first_name %>
   <%= f.input :last_name %>
   <%= f.input :email %>
