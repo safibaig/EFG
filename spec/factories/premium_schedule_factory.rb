@@ -3,7 +3,7 @@ FactoryGirl.define do
     loan
     initial_draw_year 2012
     initial_draw_amount { |o| o.loan.amount }
-    initial_draw_months 12
+    repayment_duration 12
     calc_type 'S'
 
     factory :rescheduled_premium_schedule do

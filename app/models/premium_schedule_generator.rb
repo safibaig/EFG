@@ -9,7 +9,7 @@ class PremiumScheduleGenerator
 
   delegate :initial_draw_year, to: :premium_schedule
   delegate :initial_draw_amount, to: :premium_schedule
-  delegate :initial_draw_months, to: :premium_schedule
+  delegate :repayment_duration, to: :premium_schedule
   delegate :initial_capital_repayment_holiday, to: :premium_schedule
   delegate :second_draw_amount, to: :premium_schedule
   delegate :second_draw_months, to: :premium_schedule
@@ -64,7 +64,7 @@ class PremiumScheduleGenerator
   # for now for data consistency.
   def total_quarters
     @total_quarters ||= begin
-      months = initial_draw_months / 3
+      months = repayment_duration / 3
       months = 1 if months.zero?
       months
     end

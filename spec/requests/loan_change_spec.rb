@@ -50,7 +50,7 @@ describe 'loan change' do
 
     fill_in "premium_schedule_premium_cheque_month", with: premium_cheque_date
     fill_in "premium_schedule_initial_draw_amount", with: "30000"
-    fill_in "premium_schedule_initial_draw_months", with: "18"
+    fill_in "premium_schedule_repayment_duration", with: "18"
 
     click_button "Submit"
 
@@ -64,7 +64,7 @@ describe 'loan change' do
     calculation = PremiumSchedule.last
     calculation.premium_cheque_month.should == premium_cheque_date
     calculation.initial_draw_amount.should == Money.new(30_000_00)
-    calculation.initial_draw_months.should == 18
+    calculation.repayment_duration.should == 18
     calculation.should be_reschedule
   end
 

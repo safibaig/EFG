@@ -87,7 +87,7 @@ describe PremiumSchedule do
     %w(
       initial_draw_year
       initial_draw_amount
-      initial_draw_months
+      repayment_duration
     ).each do |attr|
       it "is invalid without #{attr}" do
         premium_schedule.send("#{attr}=", '')
@@ -175,7 +175,7 @@ describe PremiumSchedule do
       %w(
         premium_cheque_month
         initial_draw_amount
-        initial_draw_months
+        repayment_duration
       ).each do |attr|
         it "is invalid without #{attr}" do
           rescheduled_premium_schedule.send("#{attr}=", '')
@@ -232,7 +232,7 @@ describe PremiumSchedule do
       FactoryGirl.build(:premium_schedule,
         loan: loan,
         initial_draw_amount: Money.new(50_000_00),
-        initial_draw_months: 24,
+        repayment_duration: 24,
         initial_capital_repayment_holiday: 4,
         second_draw_amount: Money.new(25_000_00),
         second_draw_months: 13,

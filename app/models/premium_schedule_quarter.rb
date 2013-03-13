@@ -3,7 +3,7 @@ class PremiumScheduleQuarter
   attr_reader :quarter, :total_quarters, :premium_schedule_generator, :initial_capital_repayment_holiday
 
   delegate :initial_draw_amount, to: :premium_schedule_generator
-  delegate :initial_draw_months, to: :premium_schedule_generator
+  delegate :repayment_duration, to: :premium_schedule_generator
   delegate :repayment_duration, to: :premium_schedule_generator
   delegate :second_draw_amount, to: :premium_schedule_generator
   delegate :second_draw_months, to: :premium_schedule_generator
@@ -50,7 +50,7 @@ class PremiumScheduleQuarter
     end
 
     months_from_first_draw_until_repayment = get_months_from_first_draw_until_repayment(draw_month)
-    remaining_months = initial_draw_months - months_from_first_draw_until_repayment
+    remaining_months = repayment_duration - months_from_first_draw_until_repayment
 
     if months_from_first_draw_until_repayment <= last_month_in_quarter
       draw_amount - (draw_amount * (last_month_in_quarter - months_from_first_draw_until_repayment)) / remaining_months
@@ -69,7 +69,7 @@ class PremiumScheduleQuarter
   def first_draw_down_outstanding_balance(initial_draw_amount)
     # repayment holiday is complete, either in this or a previous quarter (may have ended mid-quarter e.g. month 5)
     if repayment_holiday_complete?
-      remaining_months = initial_draw_months - initial_capital_repayment_holiday
+      remaining_months = repayment_duration - initial_capital_repayment_holiday
       initial_draw_amount - (initial_draw_amount * (last_month_in_quarter - initial_capital_repayment_holiday)) / remaining_months
     else
       # if in repayment holiday, no capital repaid yet

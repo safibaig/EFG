@@ -77,7 +77,7 @@
     </tr>
     <tr>
       <th>What is the remaining facility term in months at this Premium Collection point?</th>
-      <td><%= @premium_schedule_generator.initial_draw_months %></td>
+      <td><%= @premium_schedule_generator.repayment_duration %></td>
     </tr>
     <% else %>
     <tr>
@@ -86,7 +86,7 @@
     </tr>
     <tr>
       <th>What is the loan term in months remaining at this Premium Collection point?</th>
-      <td><%= @premium_schedule_generator.initial_draw_months %></td>
+      <td><%= @premium_schedule_generator.repayment_duration %></td>
     </tr>
     <% end %>
     <tr>
