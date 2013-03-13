@@ -1,4 +1,4 @@
-development:
+test:
   adapter: mysql2
   host: localhost
   database: efg_test
