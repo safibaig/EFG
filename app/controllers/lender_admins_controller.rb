@@ -66,11 +66,6 @@ class LenderAdminsController < UsersController
     redirect_to lender_lender_admin_url(lender, @user)
   end
 
-  def lender
-    @lender ||= current_user.lenders.find(params[:lender_id])
-  end
-  helper_method :lender
-
   private
     def find_user
       @user = lender.lender_admins.find(params[:id])
@@ -79,4 +74,10 @@ class LenderAdminsController < UsersController
     def user_class
       LenderAdmin
     end
+
+    def lender
+      @lender ||= current_user.lenders.find(params[:lender_id])
+    end
+    helper_method :lender
+
 end
