@@ -20,7 +20,7 @@ module ApplicationHelper
   end
 
   def breadcrumbs_for_lender_admins(lender, current_user)
-    if current_user.lenders.count > 1
+    if current_user.lenders.size > 1
       breadcrumbs(
         link_to('Lenders', lenders_path),
         h(lender.name),
