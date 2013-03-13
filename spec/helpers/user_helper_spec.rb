@@ -14,7 +14,7 @@ describe UserHelper do
 
       context 'and an action is specified' do
         it 'returns the correct path' do
-          polymorphic_user_path(user, :edit).should == edit_lender_lender_user_path(lender, user)
+          polymorphic_user_path(:edit, user).should == edit_lender_lender_user_path(lender, user)
         end
       end
     end
@@ -30,7 +30,7 @@ describe UserHelper do
 
       context 'and an action is specified' do
         it 'returns the correct path' do
-          polymorphic_user_path(user, :edit).should == edit_cfe_user_path(user)
+          polymorphic_user_path(:edit, user).should == edit_cfe_user_path(user)
         end
       end
     end

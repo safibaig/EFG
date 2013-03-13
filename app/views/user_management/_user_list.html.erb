@@ -31,7 +31,7 @@
           <% if user_class == LenderAdmin %><td><%= user.lender.name %></td><% end %>
           <td>
             <% if current_user.can_update?(user.class) %>
-              <%= link_to user.name, polymorphic_user_path(user, :edit) %>
+              <%= link_to user.name, polymorphic_user_path(:edit, user) %>
             <% elsif current_user.can_view?(user.class) %>
               <%= link_to user.name, polymorphic_user_path(user) %>
             <% else %>
