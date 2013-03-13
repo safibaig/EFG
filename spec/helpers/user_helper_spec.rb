@@ -8,13 +8,13 @@ describe UserHelper do
 
       context 'and no action is specified' do
         it 'returns the correct path' do
-          polymorphic_user_path(user).should == "/lenders/#{lender.id}/lender_users/#{user.id}"
+          polymorphic_user_path(user).should == lender_lender_user_path(lender, user)
         end
       end
 
       context 'and an action is specified' do
         it 'returns the correct path' do
-          polymorphic_user_path(user, :edit).should == "/lenders/#{lender.id}/lender_users/#{user.id}/edit"
+          polymorphic_user_path(user, :edit).should == edit_lender_lender_user_path(lender, user)
         end
       end
     end
@@ -24,13 +24,13 @@ describe UserHelper do
 
       context 'and no action is specified' do
         it 'returns the correct path' do
-          polymorphic_user_path(user).should == "/cfe_users/#{user.id}"
+          polymorphic_user_path(user).should == cfe_user_path(user)
         end
       end
 
       context 'and an action is specified' do
         it 'returns the correct path' do
-          polymorphic_user_path(user, :edit).should == "/cfe_users/#{user.id}/edit"
+          polymorphic_user_path(user, :edit).should == edit_cfe_user_path(user)
         end
       end
     end
