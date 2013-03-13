@@ -37,6 +37,7 @@ group :assets do
 end
 
 group :development do
+  gem 'debugger', '1.1.4'
   gem 'guard-rspec', '0.7.2'
   gem 'powder', '0.1.8'
 end
@@ -44,7 +45,6 @@ end
 group :development, :test do
   gem 'brakeman', '1.9.1'
   gem 'ci_reporter', '1.8.4'
-  gem 'debugger', '1.1.4'
   gem 'parallel_tests', '0.9.3'
   gem 'rspec-rails', '2.12.2'
   gem 'simplecov-rcov', '0.2.3'
