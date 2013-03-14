@@ -19,13 +19,8 @@ class LoanReportPresenter
   end
 
   ALLOWED_LOAN_STATES = Loan::States.sort.freeze
-
-  ALLOWED_LOAN_SOURCES = [ Loan::SFLG_SOURCE, Loan::LEGACY_SFLG_SOURCE ].freeze
-
-  ALLOWED_LOAN_SCHEMES = [ Loan::EFG_SCHEME, Loan::SFLG_SCHEME ].freeze
-
-  attr_accessor :created_by_id, :loan_scheme
-  attr_reader :lender_ids, :loan_sources, :states
+  ALLOWED_LOAN_TYPES = LoanTypes::ALL.freeze
+  LOAN_TYPES_BY_ID = LoanTypes::ALL.index_by(&:id)
 
   format :facility_letter_start_date, with: QuickDateFormatter
   format :facility_letter_end_date, with: QuickDateFormatter
@@ -34,14 +29,9 @@ class LoanReportPresenter
   format :last_modified_start_date, with: QuickDateFormatter
   format :last_modified_end_date, with: QuickDateFormatter
 
-  validates_presence_of :lender_ids, :loan_sources
-
+  validates_presence_of :lender_ids, :loan_types
   validates_numericality_of :created_by_id, allow_blank: true
-
-  validates_inclusion_of :loan_scheme, in: ALLOWED_LOAN_SCHEMES, allow_blank: true
-
-  validate :loan_sources_are_allowed
-
+  validate :loan_types_are_allowed
   validate :loan_states_are_allowed
 
   def initialize(user, attributes = {})
@@ -49,7 +39,7 @@ class LoanReportPresenter
     super(attributes)
 
     unless has_loan_type_selection?
-      self.loan_scheme = Loan::EFG_SCHEME
+      self.loan_types = [LoanTypes::EFG.id]
     end
   end
 
@@ -63,8 +53,7 @@ class LoanReportPresenter
 
     LoanReport.new.tap do |report|
       report.states = self.states
-      report.loan_sources = self.loan_sources
-      report.loan_scheme = self.loan_scheme
+      report.loan_types = self.loan_types
       report.lender_ids = filter_lender_ids(self.lender_ids)
       report.created_by_id = self.created_by_id
       report.facility_letter_start_date = self.facility_letter_start_date
@@ -85,20 +74,24 @@ class LoanReportPresenter
   end
 
   # Form Attributes
+  attr_accessor :created_by_id
+  attr_reader :lender_ids, :loan_types, :states
+
   def allowed_lenders
     user.lenders
   end
 
-  def loan_sources=(sources)
-    @loan_sources = filter_blank_multi_select(sources)
+  def lender_ids=(lender_ids)
+    @lender_ids = filter_blank_multi_select(lender_ids)
+  end
+
+  def loan_types=(type_ids)
+    type_ids = filter_blank_multi_select(type_ids) || []
+    @loan_types = type_ids.map {|id| LOAN_TYPES_BY_ID[id]}.compact
   end
 
   def states=(states)
     @states = filter_blank_multi_select(states)
-  end
-
-  def lender_ids=(lender_ids)
-    @lender_ids = filter_blank_multi_select(lender_ids)
   end
 
   # Permissions
@@ -115,9 +108,9 @@ class LoanReportPresenter
   end
 
   private
-  def loan_sources_are_allowed
-    if loan_sources.present? && loan_sources.any? { |source| !ALLOWED_LOAN_SOURCES.include?(source) }
-      errors.add(:loan_sources, :inclusion)
+  def loan_types_are_allowed
+    if loan_types.present? && loan_types.any? { |type| !ALLOWED_LOAN_TYPES.include?(type) }
+      errors.add(:loan_types, :inclusion)
     end
   end
 

@@ -32,25 +32,32 @@ describe LoanReport do
       loan_report.loans.should == [guaranteed_loan]
     end
 
-    it "returns loans with a specific loan scheme" do
+    it "returns loans with the Legacy SFLG type" do
+      legacy_sflg_loan = FactoryGirl.create(:loan, :legacy_sflg)
+
+      loan_report.loan_types = [LoanTypes::LEGACY_SFLG]
+      loan_report.loans.should == [legacy_sflg_loan]
+    end
+
+    it "doesn't include legacy SFLG loans with a legacy modified by id of 'migration'" do
+      FactoryGirl.create(:loan, :legacy_sflg, modified_by_legacy_id: 'migration')
+
+      loan_report.loan_types = [LoanTypes::LEGACY_SFLG, LoanTypes::EFG]
+      loan_report.loans.should == [loan1, loan2]
+    end
+
+    it "returns Legacy SFLG loans with a NULL modified_by_legacy_id" do
+      legacy_sflg_loan = FactoryGirl.create(:loan, :legacy_sflg, modified_by_legacy_id: nil)
+
+      loan_report.loan_types = [LoanTypes::LEGACY_SFLG]
+      loan_report.loans.should == [legacy_sflg_loan]
+    end
+
+    it "returns loans with the New SFLG type" do
       sflg_loan = FactoryGirl.create(:loan, :sflg)
 
-      loan_report.loan_scheme = Loan::SFLG_SCHEME
+      loan_report.loan_types = [LoanTypes::NEW_SFLG]
       loan_report.loans.should == [sflg_loan]
-    end
-
-    it "returns loans with a specific loan source" do
-      legacy_sflg_loan = FactoryGirl.create(:loan, loan_source: Loan::LEGACY_SFLG_SOURCE)
-
-      loan_report.loan_sources = [Loan::LEGACY_SFLG_SOURCE]
-      loan_report.loans.should == [legacy_sflg_loan]
-    end
-
-    it "returns Legacy_SFLG loans with a NULL modified_by_legacy_id" do
-      legacy_sflg_loan = FactoryGirl.create(:loan, loan_source: Loan::LEGACY_SFLG_SOURCE, modified_by_legacy_id: nil)
-
-      loan_report.loan_sources = [Loan::LEGACY_SFLG_SOURCE]
-      loan_report.loans.should == [legacy_sflg_loan]
     end
 
     it "returns loans with a facility letter date after a specified date" do
@@ -145,13 +152,6 @@ describe LoanReport do
 
     it "should ignore blank values" do
       loan_report.facility_letter_start_date = ""
-      loan_report.loans.should == [loan1, loan2]
-    end
-
-    it "should not include legacy SFLG loans with a legacy modified by id of 'migration'" do
-      FactoryGirl.create(:loan, :legacy_sflg, modified_by_legacy_id: 'migration')
-
-      loan_report.loan_sources = [Loan::LEGACY_SFLG_SOURCE, Loan::SFLG_SOURCE]
       loan_report.loans.should == [loan1, loan2]
     end
   end

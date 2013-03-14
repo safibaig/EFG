@@ -93,9 +93,9 @@ describe 'Loan report' do
     it "should show validation errors" do
       click_button "Submit"
 
-      # 2 errors - empty states multi-select, no loan source checkbox checked
+      # 2 errors - empty states multi-select, no loan type selected
       page.should have_css('.control-group.select.required.error #loan_report_lender_ids')
-      page.should have_css('.control-group.check_boxes.required.error #loan_report_loan_sources_s')
+      page.should have_css('.control-group.check_boxes.required.error .help-inline')
     end
 
   end
@@ -126,7 +126,7 @@ describe 'Loan report' do
 
   def fill_in_valid_details
     select 'All states', from: 'loan_report[states][]'
-    check :loan_report_loan_sources_s
+    check :loan_report_loan_types_efg
   end
 
   def navigate_to_loan_report_form

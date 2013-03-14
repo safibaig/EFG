@@ -39,34 +39,19 @@ describe LoanReportPresenter do
       loan_report_presenter.should be_valid
     end
 
-    it 'should be invalid without a loan source' do
-      loan_report_presenter.loan_sources = nil
+    it 'should be invalid without a loan type' do
+      loan_report_presenter.loan_types = nil
+      loan_report_presenter.should_not be_valid
+
+      loan_report_presenter.loan_types = []
       loan_report_presenter.should_not be_valid
     end
 
-    it 'should be invalid without an allowed loan source' do
-      loan_report_presenter.loan_sources = ["Z"]
+    it 'should be invalid without a valid loan type' do
+      loan_report_presenter.loan_types = ["Z"]
       loan_report_presenter.should_not be_valid
 
-      loan_report_presenter.loan_sources = [ Loan::LEGACY_SFLG_SOURCE ]
-      loan_report_presenter.should be_valid
-    end
-
-    it 'should be valid when loan scheme is nil' do
-      loan_report_presenter.loan_scheme = nil
-      loan_report_presenter.should be_valid
-    end
-
-    it 'should be valid with a blank loan scheme' do
-      loan_report_presenter.loan_scheme = ""
-      loan_report_presenter.should be_valid
-    end
-
-    it 'should be invalid without an allowed loan scheme' do
-      loan_report_presenter.loan_scheme = "Z"
-      loan_report_presenter.should_not be_valid
-
-      loan_report_presenter.loan_scheme = Loan::EFG_SCHEME
+      loan_report_presenter.loan_types = [LoanTypes::LEGACY_SFLG.id]
       loan_report_presenter.should be_valid
     end
 
@@ -199,18 +184,18 @@ describe LoanReportPresenter do
       let(:user) { FactoryGirl.create(:lender_user, lender: lender) }
       let(:presenter) { LoanReportPresenter.new(user) }
 
-      it "doesn't set loan_scheme" do
-        presenter.loan_scheme.should be_nil
+      it "doesn't set loan_types" do
+        presenter.loan_types.should be_nil
       end
     end
 
-    context "with a user who can't access all loan schems" do
+    context "with a user who can't access all loan schemes" do
       let(:lender) { FactoryGirl.create(:lender, loan_scheme: 'E') }
       let(:user) { FactoryGirl.create(:lender_user, lender: lender) }
       let(:presenter) { LoanReportPresenter.new(user) }
 
-      it "sets the loan_scheme to EFG" do
-        presenter.loan_scheme.should == Loan::EFG_SCHEME
+      it "sets the loan_types to EFG" do
+        presenter.loan_types.should == [LoanTypes::EFG]
       end
     end
   end
@@ -222,8 +207,7 @@ describe LoanReportPresenter do
 
     {
       lender_ids: lender_ids,
-      loan_sources: [Loan::SFLG_SOURCE],
-      loan_scheme: Loan::EFG_SCHEME,
+      loan_types: [LoanTypes::NEW_SFLG.id, LoanTypes::EFG.id],
       states: Loan::States,
     }.merge(params)
   end

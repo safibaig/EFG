@@ -36,10 +36,8 @@
     <%= f.input :created_by_id, as: :select, collection: current_lender.lender_users, prompt: 'All' %>
   <% end %>
 
-  <%= f.input :loan_sources, as: :check_boxes, collection: loan_report_source_options %>
-
   <% if @loan_report.has_loan_type_selection? %>
-    <%= f.input :loan_scheme, as: :select, collection: loan_report_scheme_options, prompt: 'All' %>
+    <%= f.input :loan_types, as: :check_boxes, collection: LoanTypes::ALL %>
   <% end %>
 
   <div class="form-actions">

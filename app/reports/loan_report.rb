@@ -1,5 +1,5 @@
 class LoanReport
-  attr_accessor :states, :loan_sources, :loan_scheme, :lender_ids, :created_by_id,
+  attr_accessor :states, :loan_types, :lender_ids, :created_by_id,
               :facility_letter_start_date, :facility_letter_end_date,
               :created_at_start_date, :created_at_end_date,
               :last_modified_start_date, :last_modified_end_date
@@ -61,8 +61,29 @@ class LoanReport
   def scope
     scope = Loan.scoped
     scope = scope.where('loans.state IN (?)', states) if states.present?
-    scope = scope.where('loans.loan_source IN (?)', loan_sources) if loan_sources.present?
-    scope = scope.where('loans.loan_scheme = ?', loan_scheme) if loan_scheme.present?
+
+    if loan_types.present?
+      # Tried to use Arel here, but it was segfaulting. Falling back to string
+      # concatination - what web developers do best...
+      #
+      # loans = Loan.arel_table
+      # types_conditions = loan_types.map do |type|
+      #   condition = (loans[:loan_scheme].eq(type.scheme).and(loans[:loan_source].eq(type.source)))
+      #   condition.to_sql
+      # end
+      types_conditions = loan_types.map do |type|
+        condition = "loans.loan_scheme = '#{type.scheme}' AND loans.loan_source = '#{type.source}'"
+
+        if type == LoanTypes::LEGACY_SFLG
+          condition = "#{condition} AND (loans.modified_by_legacy_id IS NULL OR loans.modified_by_legacy_id != 'migration')"
+        end
+
+        condition = "(#{condition})"
+      end
+
+      scope = scope.where(types_conditions.join(' OR '))
+    end
+
     scope = scope.where('loans.lender_id IN (?)', lender_ids) if lender_ids.present?
     scope = scope.where('loans.created_by_id = ?', created_by_id) if created_by_id.present?
     scope = scope.where('loans.facility_letter_date >= ?', facility_letter_start_date) if facility_letter_start_date.present?
@@ -71,10 +92,6 @@ class LoanReport
     scope = scope.where('loans.created_at <= ?', created_at_end_date.end_of_day) if created_at_end_date.present?
     scope = scope.where('loans.last_modified_at >= ?', last_modified_start_date.beginning_of_day) if last_modified_start_date.present?
     scope = scope.where('loans.last_modified_at <= ?', last_modified_end_date.end_of_day) if last_modified_end_date.present?
-
-    if loan_sources && loan_sources.include?(Loan::LEGACY_SFLG_SOURCE)
-      scope = scope.where("loans.modified_by_legacy_id IS NULL OR loans.modified_by_legacy_id != 'migration'")
-    end
 
     scope
   end
