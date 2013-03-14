@@ -16,7 +16,7 @@ describe 'loan entry' do
   let!(:state_aid_calculation) {
     FactoryGirl.create(state_aid_calculation_type,
       loan: loan,
-      initial_draw_amount: Money.new(100_000_00),
+      initial_draw_amount: loan.amount,
       initial_draw_months: 120
     )
   }

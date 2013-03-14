@@ -98,7 +98,7 @@ class StateAidCalculation < ActiveRecord::Base
     end
 
     def total_draw_amount
-      [initial_draw_amount, second_draw_amount, third_draw_amount, fourth_draw_amount].compact.sum
+      [initial_draw_amount, second_draw_amount, third_draw_amount, fourth_draw_amount].compact.sum.to_money
     end
 
     def total_draw_amount_less_than_or_equal_to_loan_amount

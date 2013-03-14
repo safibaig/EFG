@@ -55,4 +55,16 @@ module ApplicationHelper
   def training_mode?
     EFG::Application.config.training_mode
   end
+
+  def render_flash(type, alert_class = nil)
+    value = flash[type]
+    return unless value
+
+    if value.respond_to?(:render)
+      value.render(self, type)
+    else
+      alert_class ||= "alert-#{type}"
+      content_tag(:p, value, class: ['alert', alert_class])
+    end
+  end
 end

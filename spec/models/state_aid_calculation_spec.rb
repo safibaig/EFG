@@ -216,10 +216,10 @@ describe StateAidCalculation do
         end
       end
 
-      it "is valid with differing values for loan amount and total draw amounth" do
+      it "is invalid with draw amounts greater than the loan amount" do
         loan.amount = 10_000_00
-        rescheduled_state_aid_calculation.initial_draw_amount = 10_00
-        rescheduled_state_aid_calculation.should be_valid
+        rescheduled_state_aid_calculation.initial_draw_amount = 15_000_00
+        rescheduled_state_aid_calculation.should_not be_valid
       end
     end
   end
