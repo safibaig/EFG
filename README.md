@@ -1,6 +1,8 @@
 EFG
 ===
 
+[![Build Status](https://travis-ci.org/alphagov/EFG.png?branch=master)](https://travis-ci.org/alphagov/EFG)
+
 Enterprise Finance Guarantee
 
 ## Getting started
