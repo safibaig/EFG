@@ -1,9 +1,11 @@
 require 'spec_helper'
 
 describe LenderAdminsController do
+  let(:lender) { FactoryGirl.create(:lender) }
+
   describe '#index' do
     def dispatch
-      get :index
+      get :index, lender_id: lender.id
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
@@ -16,7 +18,7 @@ describe LenderAdminsController do
     let(:lender_admin) { FactoryGirl.create(:lender_admin) }
 
     def dispatch
-      get :show, id: lender_admin.id
+      get :show, id: lender_admin.id, lender_id: lender_admin.lender.id
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
@@ -27,7 +29,7 @@ describe LenderAdminsController do
 
   describe '#new' do
     def dispatch
-      get :new
+      get :new, lender_id: lender.id
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
@@ -39,7 +41,7 @@ describe LenderAdminsController do
 
   describe '#create' do
     def dispatch
-      post :create
+      post :create, lender_id: lender.id
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
@@ -53,7 +55,7 @@ describe LenderAdminsController do
     let(:lender_admin) { FactoryGirl.create(:lender_admin) }
 
     def dispatch
-      get :edit, id: lender_admin.id
+      get :edit, id: lender_admin.id, lender_id: lender_admin.lender.id
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
@@ -67,7 +69,7 @@ describe LenderAdminsController do
     let(:lender_admin) { FactoryGirl.create(:lender_admin) }
 
     def dispatch
-      put :update, id: lender_admin.id
+      put :update, id: lender_admin.id, lender_id: lender_admin.lender.id
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
@@ -81,7 +83,7 @@ describe LenderAdminsController do
     let(:lender_admin) { FactoryGirl.create(:lender_admin) }
 
     def dispatch
-      post :reset_password, id: lender_admin.id
+      post :reset_password, id: lender_admin.id, lender_id: lender_admin.lender.id
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
@@ -95,7 +97,7 @@ describe LenderAdminsController do
     let(:lender_admin) { FactoryGirl.create(:lender_admin) }
 
     def dispatch
-      post :unlock, id: lender_admin.id
+      post :unlock, id: lender_admin.id, lender_id: lender_admin.lender.id
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
@@ -109,7 +111,7 @@ describe LenderAdminsController do
     let(:lender_admin) { FactoryGirl.create(:lender_admin) }
 
     def dispatch
-      post :disable, id: lender_admin.id
+      post :disable, id: lender_admin.id, lender_id: lender_admin.lender.id
     end
 
     it_behaves_like 'AuditorUser-restricted controller'
@@ -123,7 +125,7 @@ describe LenderAdminsController do
     let(:lender_admin) { FactoryGirl.create(:lender_admin) }
 
     def dispatch
-      post :enable, id: lender_admin.id
+      post :enable, id: lender_admin.id, lender_id: lender_admin.lender.id
     end
 
     it_behaves_like 'AuditorUser-restricted controller'

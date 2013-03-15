@@ -14,13 +14,12 @@ describe 'LenderAdmin management' do
       let(:current_user) { FactoryGirl.create(:cfe_admin) }
 
       before do
-        visit root_path
-        click_link 'Manage Lender Admins'
+        navigate_cfe_admin_to_lender_admins_for_lender lender
       end
 
       it 'includes Lender Admins with links to edit' do
         page.should have_content('Bankers')
-        page.should have_link(lender_admin.name, href: edit_lender_admin_path(lender_admin))
+        page.should have_link(lender_admin.name, href: edit_lender_lender_admin_path(lender, lender_admin))
       end
 
       it 'does not include Lender Users' do
@@ -33,7 +32,8 @@ describe 'LenderAdmin management' do
           FactoryGirl.create(:lender_admin,
                              first_name: 'Dave',
                              last_name: 'Smith',
-                             disabled: true)
+                             disabled: true,
+                             lender: lender)
         }
       end
     end
@@ -53,11 +53,11 @@ describe 'LenderAdmin management' do
       end
 
       it 'includes a link to show visible Lender Admin' do
-        page.should have_link(lender_admin.name, href: lender_admin_path(lender_admin))
+        page.should have_link(lender_admin.name, href: lender_lender_admin_path(lender, lender_admin))
       end
 
       it 'does not include a link to edit visible Lender Admin' do
-        page.should_not have_link(lender_admin.name, href: edit_lender_admin_path(lender_admin))
+        page.should_not have_link(lender_admin.name, href: edit_lender_lender_admin_path(lender, lender_admin))
       end
 
       it 'does not include Lender Users' do
@@ -87,12 +87,10 @@ describe 'LenderAdmin management' do
     end
 
     it do
-      visit root_path
-      click_link 'Manage Lender Admins'
+      navigate_cfe_admin_to_lender_admins_for_lender lender
 
       click_link 'New Lender Admin'
 
-      select 'lender_id', 'Bankers'
       fill_in 'first_name', 'Bob'
       fill_in 'last_name', 'Flemming'
       fill_in 'email', 'bob.flemming@example.com'
@@ -106,6 +104,7 @@ describe 'LenderAdmin management' do
       page.should have_content('bob.flemming@example.com')
 
       user = LenderAdmin.last!
+      user.lender.should == lender
       user.created_by.should == current_user
       user.modified_by.should == current_user
 
@@ -126,8 +125,7 @@ describe 'LenderAdmin management' do
     let!(:user) { FactoryGirl.create(:lender_admin, first_name: 'Bob', last_name: 'Flemming', lender: lender) }
 
     it do
-      visit root_path
-      click_link 'Manage Lender Admins'
+      navigate_cfe_admin_to_lender_admins_for_lender lender
 
       click_link 'Bob Flemming'
 
@@ -162,14 +160,11 @@ describe 'LenderAdmin management' do
                          locked: true)
     }
 
-    before do
-      visit root_path
-    end
-
     context 'as a Lender Admin' do
       let(:current_user) { FactoryGirl.create(:lender_admin, lender: lender) }
 
       it 'unlocks the user' do
+        visit root_path
         click_link 'View Lender Admins'
         click_link 'Bob Flemming'
         click_button 'Unlock User'
@@ -180,7 +175,7 @@ describe 'LenderAdmin management' do
 
     context 'as a Cfe Admin' do
       it 'unlocks the user' do
-        click_link 'Manage Lender Admins'
+        navigate_cfe_admin_to_lender_admins_for_lender lender
         click_link 'Bob Flemming'
         click_button 'Unlock User'
 
@@ -205,14 +200,11 @@ describe 'LenderAdmin management' do
                          lender: lender)
     }
 
-    before do
-      visit root_path
-    end
-
     context 'as a Lender Admin' do
       let(:current_user) { FactoryGirl.create(:lender_admin, lender: lender) }
 
       it 'disables the user' do
+        visit root_path
         click_link 'View Lender Admins'
         click_link 'Bob Flemming'
         click_button 'Disable User'
@@ -223,7 +215,7 @@ describe 'LenderAdmin management' do
 
     context 'as a Cfe Admin' do
       it 'disables the user' do
-        click_link 'Manage Lender Admins'
+        navigate_cfe_admin_to_lender_admins_for_lender lender
         click_link 'Bob Flemming'
         click_button 'Disable User'
 
@@ -249,14 +241,11 @@ describe 'LenderAdmin management' do
                          disabled: true)
     }
 
-    before do
-      visit root_path
-    end
-
     context 'as a Lender Admin' do
       let(:current_user) { FactoryGirl.create(:lender_admin, lender: lender) }
 
       it 'enables the user' do
+        visit root_path
         click_link 'View Lender Admins'
         click_link 'Disabled'
         click_link 'Bob Flemming'
@@ -268,7 +257,7 @@ describe 'LenderAdmin management' do
 
     context 'as a CfE Admin' do
       it 'enables the user' do
-        click_link 'Manage Lender Admins'
+        navigate_cfe_admin_to_lender_admins_for_lender lender
         click_link 'Disabled'
         click_link 'Bob Flemming'
         click_button 'Enable User'
@@ -307,8 +296,7 @@ describe 'LenderAdmin management' do
       user.reset_password_token.should be_nil
       user.reset_password_sent_at.should be_nil
 
-      visit root_path
-      click_link 'Manage Lender Admins'
+      navigate_cfe_admin_to_lender_admins_for_lender lender
       click_link 'Bob Flemming'
       click_button 'Send Reset Password Email'
 
@@ -325,8 +313,7 @@ describe 'LenderAdmin management' do
     end
 
     it "can be sent from user list page" do
-      visit root_path
-      click_link 'Manage Lender Admins'
+      navigate_cfe_admin_to_lender_admins_for_lender lender
       click_button 'Send Reset Password Email'
 
       page.should have_content(I18n.t('manage_users.reset_password_sent', email: user.email))
@@ -339,8 +326,7 @@ describe 'LenderAdmin management' do
       user.email = nil
       user.save(validate: false)
 
-      visit root_path
-      click_link 'Manage Lender Admins'
+      navigate_cfe_admin_to_lender_admins_for_lender lender
       click_link 'Bob Flemming'
       click_button 'Send Reset Password Email'
 

@@ -1,6 +1,4 @@
-<%= breadcrumbs(
-  link_to('Lender Admins', lender_admins_path)
-) %>
+<%= breadcrumbs_for_lender_admins(@user.lender, current_user) %>
 
 <div class="page-header">
   <h1>New Lender Admin</h1>

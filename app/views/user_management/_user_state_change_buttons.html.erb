@@ -1,5 +1,5 @@
 <% if user.persisted? && user.locked? && current_user.can_unlock?(user.class) %>
-  <%= simple_form_for user, url: polymorphic_path([:unlock, user]), method: :post do |f| %>
+  <%= simple_form_for user, url: polymorphic_user_path(:unlock, user), method: :post do |f| %>
     <%= f.button :submit, value: 'Unlock User', data: { 'disable-with' => 'Submitting...' } %>
   <% end %>
 <% end %>
@@ -7,13 +7,13 @@
 <% if user.persisted? %>
   <% if user.disabled? %>
     <% if current_user.can_enable?(user.class) %>
-      <%= simple_form_for user, url: polymorphic_path([:enable, user]), method: :post do |f| %>
+      <%= simple_form_for user, url: polymorphic_user_path(:enable, user), method: :post do |f| %>
         <%= f.button :submit, value: 'Enable User', data: { 'disable-with' => 'Submitting...' } %>
       <% end %>
     <% end %>
   <% else %>
     <% if current_user.can_disable?(user.class) %>
-      <%= simple_form_for user, url: polymorphic_path([:disable, user]), method: :post do |f| %>
+      <%= simple_form_for user, url: polymorphic_user_path(:disable, user), method: :post do |f| %>
         <%= f.button :submit, value: 'Disable User', data: { 'disable-with' => 'Submitting...' } %>
       <% end %>
     <% end %>

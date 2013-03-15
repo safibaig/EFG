@@ -28,6 +28,19 @@ EFG::Application.routes.draw do
         post :deactivate
       end
     end
+
+    with_options only: [:index, :show, :new, :create, :edit, :update] do
+      %w(lender_admins lender_users).each do |resource|
+        resources resource do
+          member do
+            post :disable
+            post :enable
+            post :reset_password
+            post :unlock
+          end
+        end
+      end
+    end
   end
 
   resources :loans, only: [:show] do
@@ -89,7 +102,7 @@ EFG::Application.routes.draw do
 
   with_options only: [:index, :show, :new, :create, :edit, :update] do
 
-    %w(auditor_users cfe_admins cfe_users lender_admins lender_users premium_collector_users).each do |resource|
+    %w(auditor_users cfe_admins cfe_users premium_collector_users).each do |resource|
       resources resource do
         member do
           post :disable

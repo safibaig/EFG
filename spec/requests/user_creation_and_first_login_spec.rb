@@ -10,11 +10,9 @@ describe 'User creation and first login' do
 
   it do
     # cfe admin creates new lender admin
-    visit root_path
-    click_link 'Manage Lender Admins'
+    navigate_cfe_admin_to_lender_admins_for_lender lender
     click_link 'New Lender Admin'
 
-    select 'Bankers', from: 'lender_admin_lender_id'
     fill_in 'lender_admin_first_name', with: 'Bob'
     fill_in 'lender_admin_last_name', with: 'Flemming'
     fill_in 'lender_admin_email', with: 'bob.flemming@example.com'

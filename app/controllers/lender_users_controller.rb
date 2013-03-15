@@ -1,6 +1,6 @@
 class LenderUsersController < UsersController
   def index
-    @users = current_lender.lender_users
+    @users = lender.lender_users
       .where(disabled: params[:disabled])
       .paginate(per_page: 100, page: params[:page])
   end
@@ -9,11 +9,11 @@ class LenderUsersController < UsersController
   end
 
   def new
-    @user = current_lender.lender_users.new
+    @user = lender.lender_users.new
   end
 
   def create
-    @user = current_lender.lender_users.new(params[:lender_user])
+    @user = lender.lender_users.new(params[:lender_user])
     @user.created_by = current_user
     @user.modified_by = current_user
 
@@ -21,7 +21,7 @@ class LenderUsersController < UsersController
       AdminAudit.log(AdminAudit::UserCreated, @user, current_user)
       @user.send_new_account_notification
       flash[:notice] = I18n.t('manage_users.new_account_email_sent', email: @user.email)
-      redirect_to lender_user_url(@user)
+      redirect_to lender_lender_user_url(lender, @user)
     else
       render :new
     end
@@ -36,7 +36,7 @@ class LenderUsersController < UsersController
 
     if @user.save
       AdminAudit.log(AdminAudit::UserEdited, @user, current_user)
-      redirect_to lender_user_url(@user)
+      redirect_to lender_lender_user_url(lender, @user)
     else
       render :edit
     end
@@ -51,24 +51,28 @@ class LenderUsersController < UsersController
   def unlock
     @user.unlock!
     AdminAudit.log(AdminAudit::UserUnlocked, @user, current_user)
-    redirect_to lender_user_url(@user)
+    redirect_to lender_lender_user_url(lender, @user)
   end
 
   def disable
     @user.disable!
     AdminAudit.log(AdminAudit::UserDisabled, @user, current_user)
-    redirect_to lender_user_url(@user)
+    redirect_to lender_lender_user_url(lender, @user)
   end
 
   def enable
     @user.enable!
     AdminAudit.log(AdminAudit::UserEnabled, @user, current_user)
-    redirect_to lender_user_url(@user)
+    redirect_to lender_lender_user_url(lender, @user)
   end
 
   private
     def find_user
-      @user = current_lender.lender_users.find(params[:id])
+      @user = lender.lender_users.find(params[:id])
+    end
+
+    def lender
+      @lender ||= current_user.lenders.find(params[:lender_id])
     end
 
     def user_class
