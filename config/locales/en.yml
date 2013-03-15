@@ -63,8 +63,8 @@ en:
             repayment_duration:
               not_allowed: 'Loan term should be between 3 months and 2, 3 or 10 years (inclusive). EFG facilities are only available for terms of between three months and ten years in most cases. Type E facilities have a maximum term of two years and Type F facilities have a maximum of three years.'
             maturity_date:
-              less_than_min_loan_term: Maturity date must be at least three months after the date of initial draw of funds
-              greater_than_max_loan_term: Maturity date must not be more than than ten years (or 2 years for Type E and 3 years for Type F loans) after the date of initial draw of funds
+              less_than_min_repayment_duration: Maturity date must be at least three months after the date of initial draw of funds
+              greater_than_max_repayment_duration: Maturity date must not be more than than ten years (or 2 years for Type E and 3 years for Type F loans) after the date of initial draw of funds
             turnover:
               <<: *turnover
         loan_offer:
@@ -130,7 +130,7 @@ en:
               calculated: must be calculated
             maturity_date:
               required: "can't be blank"
-              greater_than_max_loan_term: Maturity date must not be more than than ten years (or 2 years for Type E and 3 years for Type F loans) after the date of initial draw of funds
+              greater_than_max_repayment_duration: Maturity date must not be more than than ten years (or 2 years for Type E and 3 years for Type F loans) after the date of initial draw of funds
         premium_schedule_report:
           attributes:
             base:
@@ -213,8 +213,8 @@ en:
               exceeds_amount_drawn: The lump sum repayment must be less than the current total amount drawn
             maturity_date:
               required: "can't be blank"
-              less_than_min_loan_term: Maturity date must be at least three months after the date of initial draw of funds
-              greater_than_max_loan_term: Maturity date must not be more than than ten years (or 2 years for Type E and 3 years for Type F loans) after the date of initial draw of funds
+              less_than_min_repayment_duration: Maturity date must be at least three months after the date of initial draw of funds
+              greater_than_max_repayment_duration: Maturity date must not be more than than ten years (or 2 years for Type E and 3 years for Type F loans) after the date of initial draw of funds
         lender_limit:
           attributes:
             ends_on:

@@ -34,8 +34,8 @@ class EligibilityCheck
   end
 
   def check_repayment_duration
-    loan_term = LoanTerm.new(loan)
-    unless loan.repayment_duration.total_months.between?(loan_term.min_months, loan_term.max_months)
+    repayment_duration = RepaymentDuration.new(loan)
+    unless loan.repayment_duration.total_months.between?(repayment_duration.min_months, repayment_duration.max_months)
       add_error(:repayment_duration)
     end
   end

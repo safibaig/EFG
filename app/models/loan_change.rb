@@ -46,10 +46,10 @@ class LoanChange < LoanModification
       when ChangeType::ExtendTerm, ChangeType::DecreaseTerm
         self.old_maturity_date  = loan.maturity_date
         loan.maturity_date      = maturity_date
-        self.old_loan_term      = loan.repayment_duration.total_months
-        new_loan_term           = LoanTerm.new(loan).months_between_draw_date_and_maturity_date
-        self.loan_term          = new_loan_term
-        loan.repayment_duration = new_loan_term
+        self.old_repayment_duration      = loan.repayment_duration.total_months
+        new_repayment_duration           = RepaymentDuration.new(loan).months_between_draw_date_and_maturity_date
+        self.repayment_duration          = new_repayment_duration
+        loan.repayment_duration = new_repayment_duration
       end
     end
 
@@ -71,7 +71,7 @@ class LoanChange < LoanModification
         errors.add(:business_name, :required) unless business_name.present?
       when ChangeType::ExtendTerm, ChangeType::DecreaseTerm
         errors.add(:maturity_date, :required) unless maturity_date
-        validate_maturity_date_within_allowed_loan_term if maturity_date
+        validate_maturity_date_within_allowed_repayment_duration if maturity_date
       when ChangeType::LenderDemandSatisfied
         errors.add(:base, :required_lender_demand_satisfied) unless amount_drawn || lump_sum_repayment || maturity_date.present?
       when ChangeType::LumpSumRepayment
@@ -94,16 +94,16 @@ class LoanChange < LoanModification
       errors.add(:base, :state_aid_not_recalculated) unless premium_schedule_attributes.present?
     end
 
-    def validate_maturity_date_within_allowed_loan_term
-      loan_term = LoanTerm.new(loan)
+    def validate_maturity_date_within_allowed_repayment_duration
+      repayment_duration = RepaymentDuration.new(loan)
       initial_draw_date = loan.initial_draw_change.date_of_change
 
-      if maturity_date < initial_draw_date.advance(months: loan_term.min_months)
-        errors.add(:maturity_date, :less_than_min_loan_term)
+      if maturity_date < initial_draw_date.advance(months: repayment_duration.min_months)
+        errors.add(:maturity_date, :less_than_min_repayment_duration)
       end
 
-      if maturity_date > initial_draw_date.advance(months: loan_term.max_months)
-        errors.add(:maturity_date, :greater_than_max_loan_term)
+      if maturity_date > initial_draw_date.advance(months: repayment_duration.max_months)
+        errors.add(:maturity_date, :greater_than_max_repayment_duration)
       end
     end
 end

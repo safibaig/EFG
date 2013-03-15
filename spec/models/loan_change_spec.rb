@@ -138,7 +138,7 @@ describe LoanChange do
 
           let(:loan_change) { FactoryGirl.build(:loan_change, :reschedule, loan: loan) }
 
-          let(:loan_term) { LoanTerm.new(loan) }
+          let(:repayment_duration) { RepaymentDuration.new(loan) }
 
           let(:initial_draw_date) { loan.initial_draw_change.date_of_change }
 
@@ -290,7 +290,7 @@ describe LoanChange do
           end
 
           it 'stores old loan term' do
-            loan_change.old_loan_term.should == 24 # default loan factory repayment duration is 2 years
+            loan_change.old_repayment_duration.should == 24 # default loan factory repayment duration is 2 years
           end
 
           it 'updates loan maturity date' do

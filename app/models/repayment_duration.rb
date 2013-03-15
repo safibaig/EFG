@@ -1,4 +1,4 @@
-class LoanTerm
+class RepaymentDuration
 
   DEFAULT_MIN_LOAN_TERM_MONTHS = 3
 
@@ -17,13 +17,13 @@ class LoanTerm
 
   def min_months
     return 0 if loan.created_from_transfer?
-    return loan_category.min_loan_term if loan_category
+    return loan_category.min_repayment_duration if loan_category
     return DEFAULT_MIN_LOAN_TERM_MONTHS_SFLG if loan.sflg? || loan.legacy_loan?
     DEFAULT_MIN_LOAN_TERM_MONTHS
   end
 
   def max_months
-    loan_category ? loan_category.max_loan_term : DEFAULT_MAX_LOAN_TERM_MONTHS
+    loan_category ? loan_category.max_repayment_duration : DEFAULT_MAX_LOAN_TERM_MONTHS
   end
 
   def earliest_start_date

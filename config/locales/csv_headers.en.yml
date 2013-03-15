@@ -16,7 +16,7 @@ en:
       lending_limit: What is the Lending Limit against which this facility is to be allocated? (Note that the date of the Scheme Facility Letter must fall within the validity of the Lending Limit)
       lender_reference: What is the lender organisation reference code?
       loan_state: Loan state
-      loan_term: Loan term
+      repayment_duration: Loan term
       repayment_frequency: Repayment frequency
       maturity_date: Maturity date
       generic1: Generic lender field 1

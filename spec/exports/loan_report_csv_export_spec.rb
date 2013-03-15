@@ -156,7 +156,7 @@ describe LoanReportCsvExport do
           :lending_limit,
           :lender_reference,
           :loan_state,
-          :loan_term,
+          :repayment_duration,
           :repayment_frequency,
           :maturity_date,
           :generic1,
@@ -237,7 +237,7 @@ describe LoanReportCsvExport do
       row[t(:lending_limit)].should == 'lending limit'
       row[t(:lender_reference)].should == 'ABC123'
       row[t(:loan_state)].should == 'Eligible'
-      row[t(:loan_term)].should == '24'
+      row[t(:repayment_duration)].should == '24'
       row[t(:repayment_frequency)].should == RepaymentFrequency.find(1).name
       row[t(:maturity_date)].should == '05-11-2025'
       row[t(:generic1)].should == 'generic1'

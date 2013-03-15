@@ -198,8 +198,8 @@ ActiveRecord::Schema.define(:version => 20130321140352) do
     t.integer  "old_dti_demand_interest",   :limit => 8
     t.integer  "lending_limit_id"
     t.integer  "old_lending_limit_id"
-    t.integer  "loan_term"
-    t.integer  "old_loan_term"
+    t.integer  "repayment_duration"
+    t.integer  "old_repayment_duration"
     t.datetime "created_at",                                            :null => false
     t.datetime "updated_at",                                            :null => false
     t.string   "type"

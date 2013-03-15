@@ -20,7 +20,7 @@ class LoanReportCsvExport < BaseCsvExport
       :lending_limit,
       :lender_reference,
       :loan_state,
-      :loan_term,
+      :repayment_duration,
       :repayment_frequency,
       :maturity_date,
       :generic1,
