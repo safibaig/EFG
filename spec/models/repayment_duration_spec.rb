@@ -76,22 +76,6 @@ describe RepaymentDuration do
     end
   end
 
-  describe '#earliest_start_date' do
-    let(:loan) { FactoryGirl.build(:loan) }
-
-    it 'should return date 3 months from today' do
-      repayment_duration.earliest_start_date.should == Date.today.advance(months: 3)
-    end
-  end
-
-  describe '#latest_end_date' do
-    let(:loan) { FactoryGirl.build(:loan) }
-
-    it "should return date 120 months from today" do
-      repayment_duration.latest_end_date.should == Date.today.advance(months: 120)
-    end
-  end
-
   describe "#months_between_draw_date_and_maturity_date" do
 
     context 'with loan term of several years' do
