@@ -6,4 +6,10 @@ class RepaymentFrequency < StaticAssociation
     {id: 4, name: 'Monthly'},
     {id: 5, name: 'Interest Only - Single Repayment on Maturity'}
   ]
+
+  Annually = find(1)
+  SixMonthly = find(2)
+  Quarterly = find(3)
+  Monthly = find(4)
+  InterestOnly = find(5)
 end

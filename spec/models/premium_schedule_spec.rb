@@ -4,8 +4,11 @@ shared_examples_for 'a draw amount validator' do
   before do
     subject.initial_draw_amount = Money.new(5_000_00)
     subject.second_draw_amount  = Money.new(1_000_00)
+    subject.second_draw_months  = 1
     subject.third_draw_amount   = Money.new(1_000_00)
+    subject.third_draw_months   = 2
     subject.fourth_draw_amount  = Money.new(1_000_00)
+    subject.fourth_draw_months  = 3
   end
 
   context 'when the total of all draw amounts is equal to the loan amount' do

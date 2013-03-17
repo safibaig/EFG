@@ -32,10 +32,25 @@ class PremiumScheduleGenerator
   end
 
   def premiums
-    return @premiums if @premiums
-    @premiums = Array.new(40) do |quarter|
-      PremiumScheduleQuarter.new(quarter, total_quarters, self).premium_amount
-    end
+    klass = case @loan.repayment_frequency
+      when RepaymentFrequency::Annually
+        # TODO: fixme:
+        LegacyQuarterlyPremiumPaymentCollection
+      when RepaymentFrequency::SixMonthly
+        # TODO: fixme:
+        LegacyQuarterlyPremiumPaymentCollection
+      when RepaymentFrequency::Quarterly
+        LegacyQuarterlyPremiumPaymentCollection
+      when RepaymentFrequency::Monthly
+        # TODO: fixme:
+        LegacyQuarterlyPremiumPaymentCollection
+      when RepaymentFrequency::InterestOnly
+        InterestOnlyPremiumPaymentCollection
+      else
+        raise ArgumentError, 'unknown repayment frequency type'
+      end
+
+    klass.new(premium_schedule).to_a
   end
 
   def subsequent_premiums
@@ -56,18 +71,6 @@ class PremiumScheduleGenerator
   def second_premium_collection_month
     return unless initial_draw_date
     initial_draw_date.advance(months: 3).strftime('%m/%Y')
-  end
-
-  # TODO: round total quarter up.
-  # The legacy system rounded down which excludes the last quarter from the premium schedule.
-  # This is a bug as the last quarter should be in the schedule, but we are replicating it
-  # for now for data consistency.
-  def total_quarters
-    @total_quarters ||= begin
-      months = repayment_duration / 3
-      months = 1 if months.zero?
-      months
-    end
   end
 
   def initial_premium_cheque
