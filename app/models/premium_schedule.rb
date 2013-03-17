@@ -75,6 +75,37 @@ class PremiumSchedule < ActiveRecord::Base
     self.euro_conversion_rate = self.class.current_euro_conversion_rate
   end
 
+  def drawdowns
+    drawdowns = [TrancheDrawdown.new(initial_draw_amount, 0)]
+
+    if second_draw_amount.present? && second_draw_amount.nonzero? && second_draw_months.present? && second_draw_months.nonzero?
+      drawdowns << TrancheDrawdown.new(second_draw_amount, second_draw_months)
+    end
+
+    if third_draw_amount.present? && third_draw_amount.nonzero? && third_draw_months.present? && third_draw_months.nonzero?
+      drawdowns << TrancheDrawdown.new(third_draw_amount, third_draw_months)
+    end
+
+    if fourth_draw_amount.present? && fourth_draw_amount.nonzero? && fourth_draw_months.present? && fourth_draw_months.nonzero?
+      drawdowns << TrancheDrawdown.new(fourth_draw_amount, fourth_draw_months)
+    end
+
+    drawdowns
+  end
+
+  def repayment_holiday_active_at_month?(month)
+    initial_capital_repayment_holiday >= month
+  end
+
+  def initial_capital_repayment_holiday
+    # Force nil => 0
+    super.to_i
+  end
+
+  def premium_rate_per_quarter
+    loan.premium_rate / 100 / 4
+  end
+
   private
     def set_seq
       self.seq = (PremiumSchedule.where(loan_id: loan_id).maximum(:seq) || -1) + 1 unless seq
@@ -98,7 +129,7 @@ class PremiumSchedule < ActiveRecord::Base
     end
 
     def total_draw_amount
-      [initial_draw_amount, second_draw_amount, third_draw_amount, fourth_draw_amount].compact.sum
+      drawdowns.map(&:amount).sum
     end
 
     def total_draw_amount_less_than_or_equal_to_loan_amount
