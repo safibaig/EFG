@@ -137,7 +137,7 @@ class LoanEntry
 
   # Note: state aid must be recalculated if the loan term has changed
   def state_aid_calculated
-    errors.add(:state_aid, :calculated) unless self.loan.state_aid_calculation
+    errors.add(:state_aid, :calculated) unless self.loan.premium_schedule
     errors.add(:state_aid, :recalculate) if self.loan.repayment_duration_changed?
   end
 

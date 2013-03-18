@@ -36,10 +36,10 @@ class PremiumScheduleReport
         'loans.lending_limit_id',
         'first_loan_change.date_of_change AS draw_down_date',
         'lenders.organisation_reference_code AS lender_organisation',
-        'state_aid_calculations.id AS state_aid_calculation_id',
-        'state_aid_calculations.calc_type AS state_aid_calculation_calc_type'
+        'premium_schedules.id AS premium_schedule_id',
+        'premium_schedules.calc_type AS premium_schedule_calc_type'
       ].join(', '))
-      .joins(:lender, :state_aid_calculations, :loan_modifications)
+      .joins(:lender, :premium_schedules, :loan_modifications)
       .joins('INNER JOIN loan_modifications AS first_loan_change
                 ON first_loan_change.loan_id = loans.id AND first_loan_change.seq = 0')
       .where(loans: { legacy_small_loan: false })
@@ -106,9 +106,9 @@ class PremiumScheduleReport
       conditions = []
 
       if %w(All New).include?(schedule_type)
-        max_state_aid_seq = StateAidCalculation.
+        max_state_aid_seq = PremiumSchedule.
                               select("max(seq)").
-                              where("loans.id = state_aid_calculations.loan_id").
+                              where("loans.id = premium_schedules.loan_id").
                               where("calc_type = 'S' OR calc_type = 'N'")
 
         if start_on
@@ -120,17 +120,17 @@ class PremiumScheduleReport
         end
 
         conditions << Loan
-          .where("(state_aid_calculations.calc_type = 'S' or state_aid_calculations.calc_type = 'N')")
+          .where("(premium_schedules.calc_type = 'S' or premium_schedules.calc_type = 'N')")
           .where('loan_modifications.seq = 0')
-          .where("state_aid_calculations.seq = (#{max_state_aid_seq.to_sql})")
+          .where("premium_schedules.seq = (#{max_state_aid_seq.to_sql})")
           .where_values
           .join(" AND ")
       end
 
       if %w(All Changed).include?(schedule_type)
-        max_state_aid_seq = StateAidCalculation.
+        max_state_aid_seq = PremiumSchedule.
                               select("max(seq)").
-                              where("loans.id = state_aid_calculations.loan_id").
+                              where("loans.id = premium_schedules.loan_id").
                               where("calc_type = 'R'")
 
         if collection_month.present?
@@ -140,9 +140,9 @@ class PremiumScheduleReport
         max_loan_change_seq = LoanModification.select('max(seq)').where('loan_modifications.loan_id = loans.id')
 
         conditions << Loan
-          .where("state_aid_calculations.calc_type = 'R'")
+          .where("premium_schedules.calc_type = 'R'")
           .where("loan_modifications.seq = (#{max_loan_change_seq.to_sql})")
-          .where("state_aid_calculations.seq = (#{max_state_aid_seq.to_sql})")
+          .where("premium_schedules.seq = (#{max_state_aid_seq.to_sql})")
           .where_values
           .join(" AND ")
       end

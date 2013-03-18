@@ -4,7 +4,7 @@ describe LoanTransfer::Sflg do
   let(:lender) { FactoryGirl.create(:lender, :with_lending_limit) }
 
   let!(:loan) {
-    FactoryGirl.create(:loan, :offered, :guaranteed, :with_state_aid_calculation, :with_loan_securities, :sflg, lender: lender)
+    FactoryGirl.create(:loan, :offered, :guaranteed, :with_premium_schedule, :with_loan_securities, :sflg, lender: lender)
   }
 
   let(:loan_transfer) {

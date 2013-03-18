@@ -47,8 +47,8 @@ describe LoanGuarantee do
 
   describe '#save' do
     let(:lender_user) { FactoryGirl.create(:lender_user) }
-    let(:state_aid_calculation) { FactoryGirl.build(:state_aid_calculation, initial_draw_amount: Money.new(5_000_00)) }
-    let(:loan) { FactoryGirl.create(:loan, :offered, state_aid_calculations: [state_aid_calculation], amount: Money.new(5_000_00)) }
+    let(:premium_schedule) { FactoryGirl.build(:premium_schedule, initial_draw_amount: Money.new(5_000_00)) }
+    let(:loan) { FactoryGirl.create(:loan, :offered, premium_schedules: [premium_schedule], amount: Money.new(5_000_00)) }
     let(:loan_guarantee) do
       LoanGuarantee.new(loan).tap do |loan_guarantee|
         loan_guarantee.attributes = FactoryGirl.attributes_for(:loan_guarantee)

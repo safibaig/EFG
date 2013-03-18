@@ -29,7 +29,7 @@ describe SuperUserPermissions do
   end
 
   context 'state aid calculations' do
-    it { refute user.can_update?(StateAidCalculation) }
+    it { refute user.can_update?(PremiumSchedule) }
   end
 
   context 'data protection declaration' do
@@ -45,8 +45,8 @@ describe SuperUserPermissions do
   end
 
   context 'premium schedules' do
-    it { refute user.can_view?(PremiumSchedule) }
-    it { refute user.can_update?(PremiumSchedule) }
+    it { refute user.can_view?(PremiumScheduleGenerator) }
+    it { refute user.can_update?(PremiumScheduleGenerator) }
   end
 
   context 'Loan Offer' do
@@ -130,8 +130,8 @@ describe SuperUserPermissions do
     it { refute user.can_create?(LoanTransfer::Sflg) }
   end
 
-  context 'StateAidCalculation' do
-    it { refute user.can_create?(StateAidCalculation) }
+  context 'PremiumSchedule' do
+    it { refute user.can_create?(PremiumSchedule) }
   end
 
   context 'LenderAdmins' do

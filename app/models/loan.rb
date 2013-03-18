@@ -44,7 +44,7 @@ class Loan < ActiveRecord::Base
   belongs_to :modified_by, class_name: 'User'
   belongs_to :invoice
   belongs_to :ded_code, foreign_key: 'dti_ded_code', primary_key: 'code'
-  has_many :state_aid_calculations, inverse_of: :loan, order: :seq
+  has_many :premium_schedules, inverse_of: :loan, order: :seq
   has_one :initial_draw_change
   has_one :transferred_from, class_name: 'Loan', foreign_key: 'id', primary_key: 'transferred_from_id'
   has_many :data_corrections
@@ -175,12 +175,13 @@ class Loan < ActiveRecord::Base
     amount - cumulative_drawn_amount
   end
 
-  def state_aid_calculation
-    state_aid_calculations.last
+  def premium_schedule
+    premium_schedules.last
   end
 
-  def has_state_aid_calculation?
-    state_aid_calculation.present?
+  def premium_schedule_generator
+    return nil unless self.premium_schedule
+    PremiumScheduleGenerator.new(self.premium_schedule, self)
   end
 
   def loan_category
@@ -220,11 +221,6 @@ class Loan < ActiveRecord::Base
 
   def cumulative_total_previous_recoveries
     @cumulative_total_previous_recoveries ||= Money.new(recoveries.sum(:amount_due_to_dti))
-  end
-
-  def premium_schedule
-    return nil unless self.state_aid_calculation
-    PremiumSchedule.new(self.state_aid_calculation, self)
   end
 
   def already_transferred?

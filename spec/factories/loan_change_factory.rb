@@ -8,8 +8,8 @@ FactoryGirl.define do
     business_name 'ACME'
 
     trait :reschedule do
-      state_aid_calculation_attributes { |loan_change|
-        FactoryGirl.attributes_for(:rescheduled_state_aid_calculation, loan: loan_change.loan)
+      premium_schedule_attributes { |loan_change|
+        FactoryGirl.attributes_for(:rescheduled_premium_schedule, loan: loan_change.loan)
       }
     end
   end

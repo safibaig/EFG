@@ -43,7 +43,7 @@ describe 'Transferred loan entry' do
     loan.generic3.should == 'Generic 3'
     loan.generic4.should == 'Generic 4'
     loan.generic5.should == 'Generic 5'
-    loan.state_aid_calculation.should be_present
+    loan.premium_schedule.should be_present
     loan.modified_by.should == current_user
 
     should_log_loan_state_change(loan, Loan::Completed, 4, current_user)

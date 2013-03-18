@@ -13,7 +13,7 @@ class LoanChangesController < ApplicationController
     @loan_change = @loan.loan_changes.new(params[:loan_change])
     @loan_change.created_by = current_user
     @loan_change.modified_date = Date.today
-    @loan_change.state_aid_calculation_attributes = params[:state_aid_calculation]
+    @loan_change.premium_schedule_attributes = params[:premium_schedule]
 
     if @loan_change.save_and_update_loan
       redirect_to loan_url(@loan)

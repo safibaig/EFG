@@ -18,7 +18,7 @@ class LoanEntriesController < ApplicationController
       redirect_to loan_url(@loan_entry.loan)
     when 'State Aid Calculation'
       @loan_entry.save_as_incomplete
-      redirect_to edit_loan_state_aid_calculation_url(@loan_entry.loan, redirect: 'loan_entry')
+      redirect_to edit_loan_premium_schedule_url(@loan_entry.loan, redirect: 'loan_entry')
     else
       if @loan_entry.save
         if @loan_entry.complete?

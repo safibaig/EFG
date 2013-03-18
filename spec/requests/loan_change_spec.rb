@@ -48,9 +48,9 @@ describe 'loan change' do
 
     premium_cheque_date = Date.today.advance(months: 1).strftime('%m/%Y')
 
-    fill_in "state_aid_calculation_premium_cheque_month", with: premium_cheque_date
-    fill_in "state_aid_calculation_initial_draw_amount", with: "30000"
-    fill_in "state_aid_calculation_initial_draw_months", with: "18"
+    fill_in "premium_schedule_premium_cheque_month", with: premium_cheque_date
+    fill_in "premium_schedule_initial_draw_amount", with: "30000"
+    fill_in "premium_schedule_repayment_duration", with: "18"
 
     click_button "Submit"
 
@@ -59,12 +59,12 @@ describe 'loan change' do
     # verify state aid calculation is created
     expect {
       click_button 'Submit'
-    }.to change(StateAidCalculation, :count).by(1)
+    }.to change(PremiumSchedule, :count).by(1)
 
-    calculation = StateAidCalculation.last
+    calculation = PremiumSchedule.last
     calculation.premium_cheque_month.should == premium_cheque_date
     calculation.initial_draw_amount.should == Money.new(30_000_00)
-    calculation.initial_draw_months.should == 18
+    calculation.repayment_duration.should == 18
     calculation.should be_reschedule
   end
 

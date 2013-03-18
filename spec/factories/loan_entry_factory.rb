@@ -11,7 +11,7 @@ FactoryGirl.define do
     turnover '12345'
 
     initialize_with {
-      loan = FactoryGirl.build(:loan, :with_state_aid_calculation)
+      loan = FactoryGirl.build(:loan, :with_premium_schedule)
       new(loan)
     }
 
@@ -20,7 +20,7 @@ FactoryGirl.define do
       security_proportion 25.0
 
       initialize_with {
-        loan = FactoryGirl.build(:loan, :with_state_aid_calculation, loan_category_id: 2)
+        loan = FactoryGirl.build(:loan, :with_premium_schedule, loan_category_id: 2)
         new(loan)
       }
     end
@@ -30,7 +30,7 @@ FactoryGirl.define do
       refinance_security_proportion 15.0
 
       initialize_with {
-        loan = FactoryGirl.build(:loan, :with_state_aid_calculation, loan_category_id: 3)
+        loan = FactoryGirl.build(:loan, :with_premium_schedule, loan_category_id: 3)
         new(loan)
       }
     end
@@ -41,7 +41,7 @@ FactoryGirl.define do
       final_refinanced_amount 20000.00
 
       initialize_with {
-        loan = FactoryGirl.build(:loan, :with_state_aid_calculation, loan_category_id: 4)
+        loan = FactoryGirl.build(:loan, :with_premium_schedule, loan_category_id: 4)
         new(loan)
       }
     end
@@ -51,7 +51,7 @@ FactoryGirl.define do
       overdraft_maintained true
 
       initialize_with {
-        loan = FactoryGirl.build(:loan, :with_state_aid_calculation, loan_category_id: 5)
+        loan = FactoryGirl.build(:loan, :with_premium_schedule, loan_category_id: 5)
         new(loan)
       }
     end
@@ -62,7 +62,7 @@ FactoryGirl.define do
       debtor_book_topup 20.0
 
       initialize_with {
-        loan = FactoryGirl.build(:loan, :with_state_aid_calculation, loan_category_id: 6)
+        loan = FactoryGirl.build(:loan, :with_premium_schedule, loan_category_id: 6)
         new(loan)
       }
     end

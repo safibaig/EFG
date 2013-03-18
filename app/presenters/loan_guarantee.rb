@@ -28,7 +28,7 @@ class LoanGuarantee
   end
 
   def initial_draw_amount
-    @initial_draw_amount ||= loan.state_aid_calculation.initial_draw_amount
+    @initial_draw_amount ||= loan.premium_schedule.initial_draw_amount
   end
 
   def initial_draw_date=(value)

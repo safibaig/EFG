@@ -1,302 +1,327 @@
-# encoding: utf-8
 require 'spec_helper'
 
+shared_examples_for 'a draw amount validator' do
+  before do
+    subject.initial_draw_amount = Money.new(5_000_00)
+    subject.second_draw_amount  = Money.new(1_000_00)
+    subject.third_draw_amount   = Money.new(1_000_00)
+    subject.fourth_draw_amount  = Money.new(1_000_00)
+  end
+
+  context 'when the total of all draw amounts is equal to the loan amount' do
+    context 'and there are no nil draw amounts' do
+      before { loan.amount = Money.new(8_000_00) }
+
+      it 'is valid' do
+        subject.should be_valid
+      end
+    end
+
+    context 'and there are nil draw amounts' do
+      before do
+        loan.amount = Money.new(7_000_00)
+        subject.fourth_draw_amount = nil
+      end
+
+      it 'is valid' do
+        subject.should be_valid
+      end
+    end
+  end
+
+  context 'when the total of all draw amounts is less than the loan amount' do
+    before { loan.amount = Money.new(10_000_00) }
+
+    context 'and there are no nil draw amounts' do
+      it 'is valid' do
+        subject.should be_valid
+      end
+    end
+
+    context 'and there are nil draw amounts' do
+      before { subject.fourth_draw_amount = nil }
+
+      it 'is valid' do
+        subject.should be_valid
+      end
+    end
+  end
+
+  context 'when the total of all draw amounts is greater than the loan amount' do
+    before { loan.amount = Money.new(5_000_00) }
+
+    context 'and there are no nil draw amounts' do
+      it 'is not valid' do
+        subject.should_not be_valid
+      end
+    end
+
+    context 'and there are nil draw amounts' do
+      before { subject.fourth_draw_amount = nil }
+
+      it 'is not valid' do
+        subject.should_not be_valid
+      end
+    end
+  end
+end
+
 describe PremiumSchedule do
-  describe "calculations" do
-    let(:state_aid_calculation) {
-      FactoryGirl.build(:state_aid_calculation,
-        initial_draw_amount: Money.new(100_000_00),
-        initial_draw_months: 120)
-    }
+
+  let(:loan) { premium_schedule.loan }
+  let(:premium_schedule) { FactoryGirl.build(:premium_schedule) }
+
+  describe 'validations' do
+
+    it 'has a valid Factory' do
+      premium_schedule.should be_valid
+    end
+
+    it 'strictly requires a loan' do
+      expect {
+        premium_schedule.loan = nil
+        premium_schedule.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed)
+    end
+
+    %w(
+      initial_draw_year
+      initial_draw_amount
+      repayment_duration
+    ).each do |attr|
+      it "is invalid without #{attr}" do
+        premium_schedule.send("#{attr}=", '')
+        premium_schedule.should_not be_valid
+      end
+    end
+
+    it 'requires initial draw amount to be 0 or more' do
+      loan.amount = 0
+
+      premium_schedule.initial_draw_amount = -1
+      premium_schedule.should_not be_valid
+
+      premium_schedule.initial_draw_amount = 0
+      premium_schedule.should be_valid
+    end
+
+    it 'requires initial draw amount to be less than 9,999,999.99' do
+      loan.amount = PremiumSchedule::MAX_INITIAL_DRAW
+
+      premium_schedule.initial_draw_amount = PremiumSchedule::MAX_INITIAL_DRAW + Money.new(1)
+      premium_schedule.should_not be_valid
+
+      premium_schedule.initial_draw_amount = PremiumSchedule::MAX_INITIAL_DRAW
+      premium_schedule.should be_valid
+    end
+
+    it 'requires an allowed calculation type' do
+      premium_schedule.calc_type = nil
+      premium_schedule.should_not be_valid
+
+      premium_schedule.calc_type = "Z"
+      premium_schedule.should_not be_valid
+
+      premium_schedule.calc_type = PremiumSchedule::SCHEDULE_TYPE
+      premium_schedule.should be_valid
+
+      premium_schedule.calc_type = PremiumSchedule::NOTIFIED_AID_TYPE
+      premium_schedule.should be_valid
+    end
+
+    %w(
+      initial_capital_repayment_holiday
+      second_draw_months
+      third_draw_months
+      fourth_draw_months
+    ).each do |attr|
+      it "does not require #{attr} if not set" do
+        premium_schedule.initial_capital_repayment_holiday = nil
+        premium_schedule.should be_valid
+      end
+
+      it "requires #{attr} to be 0 or greater if set" do
+        premium_schedule.initial_capital_repayment_holiday = -1
+        premium_schedule.should_not be_valid
+        premium_schedule.initial_capital_repayment_holiday = 0
+        premium_schedule.should be_valid
+      end
+
+      it "requires #{attr} to be 120 or less if set" do
+        premium_schedule.initial_capital_repayment_holiday = 121
+        premium_schedule.should_not be_valid
+        premium_schedule.initial_capital_repayment_holiday = 120
+        premium_schedule.should be_valid
+      end
+    end
+
+    it_should_behave_like 'a draw amount validator' do
+      subject { premium_schedule }
+    end
+
+    context 'when rescheduling' do
+      let(:loan) { rescheduled_premium_schedule.loan }
+      let(:rescheduled_premium_schedule) { FactoryGirl.build(:rescheduled_premium_schedule) }
+
+      it_should_behave_like 'a draw amount validator' do
+        subject { rescheduled_premium_schedule }
+      end
+
+      it "does not require initial draw year" do
+        rescheduled_premium_schedule.initial_draw_year = nil
+        rescheduled_premium_schedule.should be_valid
+      end
+
+      %w(
+        premium_cheque_month
+        initial_draw_amount
+        repayment_duration
+      ).each do |attr|
+        it "is invalid without #{attr}" do
+          rescheduled_premium_schedule.send("#{attr}=", '')
+          rescheduled_premium_schedule.should_not be_valid
+        end
+      end
+
+      it 'must have a correctly formatted premium_cheque_month' do
+        rescheduled_premium_schedule.premium_cheque_month = 'blah'
+        rescheduled_premium_schedule.should_not be_valid
+        rescheduled_premium_schedule.premium_cheque_month = '1/12'
+        rescheduled_premium_schedule.should_not be_valid
+        rescheduled_premium_schedule.premium_cheque_month = '29/2015'
+        rescheduled_premium_schedule.should_not be_valid
+        rescheduled_premium_schedule.premium_cheque_month = '09/2015'
+        rescheduled_premium_schedule.should be_valid
+      end
+
+      it "is not valid when premium cheque month is in the past" do
+        rescheduled_premium_schedule.premium_cheque_month = "03/2012"
+        rescheduled_premium_schedule.should_not be_valid
+      end
+
+      it "is not valid when premium cheque month is current month" do
+        rescheduled_premium_schedule.premium_cheque_month = Date.today.strftime('%m/%Y')
+        rescheduled_premium_schedule.should_not be_valid
+      end
+
+      it "is valid when premium cheque month is next month" do
+        rescheduled_premium_schedule.premium_cheque_month = Date.today.next_month.strftime('%m/%Y')
+        rescheduled_premium_schedule.should be_valid
+      end
+
+      it "is valid when premium cheque month number is less than current month but in a future year" do
+        Timecop.freeze(Date.new(2012, 8, 23)) do
+          rescheduled_premium_schedule.premium_cheque_month = "07/2013"
+          rescheduled_premium_schedule.should be_valid
+        end
+      end
+
+      it "is valid with differing values for loan amount and total draw amounth" do
+        loan.amount = 10_000_00
+        rescheduled_premium_schedule.initial_draw_amount = 10_00
+        rescheduled_premium_schedule.should be_valid
+      end
+    end
+  end
+
+  context do
+
+    let(:loan) { FactoryGirl.build(:loan, amount: Money.new(100_000_00)) }
 
     let(:premium_schedule) {
-      PremiumSchedule.new(state_aid_calculation, state_aid_calculation.loan)
+      FactoryGirl.build(:premium_schedule,
+        loan: loan,
+        initial_draw_amount: Money.new(50_000_00),
+        repayment_duration: 24,
+        initial_capital_repayment_holiday: 4,
+        second_draw_amount: Money.new(25_000_00),
+        second_draw_months: 13,
+        third_draw_amount: Money.new(25_000_00),
+        third_draw_months: 17
+      )
     }
 
-    it "calculates quarterly premiums" do
-      [
-        500_00, 487_50, 475_00, 462_50, 450_00, 437_50, 425_00, 412_50, 400_00,
-        387_50, 375_00, 362_50, 350_00, 337_50, 325_00, 312_50, 300_00, 287_50,
-        275_00, 262_50, 250_00, 237_50, 225_00, 212_50, 200_00, 187_50, 175_00,
-        162_50, 150_00, 137_50, 125_00, 112_50, 100_00,  87_50,  75_00,  62_50,
-         50_00,  37_50,  25_00,  12_50
-      ].each.with_index do |premium, quarter|
-        premium_schedule.premiums[quarter].should == Money.new(premium)
+    describe "calculations" do
+      it "calculates state aid in GBP" do
+        premium_schedule.state_aid_gbp.should == Money.new(20_847_25, 'GBP')
+      end
+
+      it "calculates state aid in EUR" do
+        PremiumSchedule.stub!(:current_euro_conversion_rate).and_return(1.1974)
+        premium_schedule.state_aid_eur.should == Money.new(24_962_50, 'EUR')
       end
     end
 
-    it "calculates total premiums" do
-      premium_schedule.total_premiums.should == Money.new(10_250_00)
-    end
+    describe "saving a state aid calculation" do
+      it "should store the state aid on the loan" do
+        PremiumSchedule.stub!(:current_euro_conversion_rate).and_return(1.1974)
 
-    context 'with weird initial_draw_months' do
-      it 'does not blow up if the number of months is less than one quarter' do
-        state_aid_calculation.initial_draw_months = 2
+        loan.save!
+        premium_schedule.save!
 
-        premium_schedule.premiums[0].should == Money.new(500_00)
-        premium_schedule.premiums[1].should be_zero
-      end
-    end
-
-    context 'with second tranche draw down' do
-      let(:loan) {
-        FactoryGirl.build(:loan, amount: Money.new(1_000_000_00), repayment_duration: { months: 12 })
-      }
-
-      let(:state_aid_calculation) {
-        FactoryGirl.build(
-          :state_aid_calculation,
-          loan: loan,
-          initial_draw_amount: Money.new(900_000_00),
-          initial_draw_months: 12,
-          initial_capital_repayment_holiday: 0,
-          second_draw_amount: Money.new(100_000_00),
-          second_draw_months: 3
-        )
-      }
-
-      it 'should correctly calculate premiums' do
-        [ 4500_00, 3875_00, 2583_33, 1291_67, 0 ].each.with_index do |premium, quarter|
-          premium_schedule.premiums[quarter].should == Money.new(premium)
-        end
-      end
-    end
-
-    context 'with second and third tranche draw downs' do
-      let(:loan) {
-        FactoryGirl.build(:loan, amount: Money.new(1_000_000_00), repayment_duration: { months: 12 })
-      }
-
-      let(:state_aid_calculation) {
-        FactoryGirl.build(
-          :state_aid_calculation,
-          loan: loan,
-          initial_draw_amount: Money.new(525_000_00),
-          initial_draw_months: 12,
-          initial_capital_repayment_holiday: 0,
-          second_draw_amount: Money.new(350_500_00),
-          second_draw_months: 2,
-          third_draw_amount: Money.new(124_500_00),
-          third_draw_months: 7
-        )
-      }
-
-      it 'should correctly calculate premiums' do
-        [ 2625_00, 3546_00, 2364_00, 1555_50, 0 ].each.with_index do |premium, quarter|
-          premium_schedule.premiums[quarter].should == Money.new(premium)
-        end
-      end
-    end
-
-    context 'with second, third and fourth tranche draw downs' do
-      let(:loan) {
-        FactoryGirl.build(:loan, amount: Money.new(1_000_000_00), repayment_duration: { months: 12 })
-      }
-
-      let(:state_aid_calculation) {
-        FactoryGirl.build(
-          :state_aid_calculation,
-          loan: loan,
-          initial_draw_amount: Money.new(100_000_00),
-          initial_draw_months: 12,
-          initial_capital_repayment_holiday: 0,
-          second_draw_amount: Money.new(50_000_00),
-          second_draw_months: 3,
-          third_draw_amount: Money.new(50_000_00),
-          third_draw_months: 6,
-          fourth_draw_amount: Money.new(800_000_00),
-          fourth_draw_months: 9
-        )
-      }
-
-      it 'should correctly calculate premiums' do
-        [ 500_00, 625_00, 666_67, 4333_33, 0 ].each.with_index do |premium, quarter|
-          premium_schedule.premiums[quarter].should == Money.new(premium)
-        end
-      end
-    end
-
-    context 'with payment holiday' do
-      let(:loan) {
-        FactoryGirl.build(:loan, amount: Money.new(1_000_000_00), repayment_duration: { months: 12 })
-      }
-
-      let(:state_aid_calculation) {
-        FactoryGirl.build(
-          :state_aid_calculation,
-          loan: loan,
-          initial_draw_amount: Money.new(100_000_00),
-          initial_draw_months: 12,
-          initial_capital_repayment_holiday: 3
-        )
-      }
-
-      it 'should correctly calculate premiums' do
-        [ 500_00, 500_00, 333_33, 166_67, 0 ].each.with_index do |premium, quarter|
-          premium_schedule.premiums[quarter].should == Money.new(premium)
-        end
-      end
-    end
-
-    context 'with potential rounding errors 1' do
-      let(:loan) {
-        FactoryGirl.build(:loan, amount: Money.new(60_900_00), repayment_duration: { months: 120 })
-      }
-
-      let(:state_aid_calculation) {
-        FactoryGirl.build(
-          :state_aid_calculation,
-          loan: loan,
-          initial_draw_amount: Money.new(60_900_00),
-          initial_draw_months: 120,
-          initial_capital_repayment_holiday: 0
-        )
-      }
-
-      it 'should correctly calculate premiums, rounding halves to the nearest even whole penny' do
-        [ 304_50, 296_89, 289_28, 281_66, 274_05, 266_44, 258_82, 251_21, 243_60, 235_99,
-          228_38, 220_76, 213_15, 205_54, 197_92, 190_31, 182_70, 175_09, 167_48, 159_86,
-          152_25, 144_64, 137_02, 129_41, 121_80, 114_19, 106_58,  98_96,  91_35,  83_74,
-           76_12,  68_51,  60_90,  53_29,  45_68,  38_06,  30_45,  22_84,  15_22,   7_61
-        ].each.with_index do |premium, quarter|
-          premium_schedule.premiums[quarter].should == Money.new(premium)
-        end
-      end
-
-      context 'with potential rounding errors 2' do
-        let(:loan) {
-          FactoryGirl.build(:loan, amount: Money.new(50_000_00), repayment_duration: { months: 60 })
-        }
-
-        let(:state_aid_calculation) {
-          FactoryGirl.build(
-            :state_aid_calculation,
-            loan: loan,
-            initial_draw_amount: Money.new(50_000_00),
-            initial_draw_months: 60,
-            initial_capital_repayment_holiday: 12
-          )
-        }
-
-        it 'should correctly calculate premiums, rounding halves to the nearest whole penny' do
-          [ 250_00, 250_00, 250_00, 250_00, 250_00, 234_38, 218_75,
-            203_12, 187_50, 171_88, 156_25, 140_62, 125_00, 109_38,
-             93_75,  78_12,  62_50,  46_88,  31_25,  15_62
-          ].each.with_index do |premium, quarter|
-            premium_schedule.premiums[quarter].should == Money.new(premium)
-          end
-        end
-      end
-
-      context 'with potential rounding errors 3' do
-        let(:loan) {
-          FactoryGirl.build(:loan, amount: Money.new(38_500_00), repayment_duration: { months: 60 })
-        }
-
-        let(:state_aid_calculation) {
-          FactoryGirl.build(
-            :state_aid_calculation,
-            loan: loan,
-            initial_draw_amount: Money.new(38_500_00),
-            initial_draw_months: 60,
-            initial_capital_repayment_holiday: 0
-          )
-        }
-
-        it 'should correctly calculate premiums, rounding halves to the nearest whole penny' do
-          [ 192_50, 182_88, 173_25, 163_62, 154_00, 144_38,
-            134_75, 125_12, 115_50, 105_88,  96_25,  86_62, 77_00,
-             67_38,  57_75,  48_12,  38_50,  28_88,  19_25,  9_62
-          ].each.with_index do |premium, quarter|
-            premium_schedule.premiums[quarter].should == Money.new(premium)
-          end
-        end
-      end
-    end
-
-    context 'with loan term not divisible by 3' do
-      let(:loan) {
-        FactoryGirl.build(:loan, amount: Money.new(20_000_00), repayment_duration: { months: 11 })
-      }
-
-      let(:state_aid_calculation) {
-        FactoryGirl.build(
-          :state_aid_calculation,
-          loan: loan,
-          initial_draw_amount: Money.new(20_000_00),
-          initial_draw_months: 11,
-          initial_capital_repayment_holiday: 0
-        )
-      }
-
-      it "should not include last quarter's premium" do
-        [ 100_00, 72_73, 45_45, 0 ].each.with_index do |premium, quarter|
-          premium_schedule.premiums[quarter].should == Money.new(premium)
-        end
+        loan.reload
+        loan.state_aid.should == Money.new(24_962_50, 'EUR')
       end
     end
   end
 
-  describe "#subsequent_premiums" do
+  describe "sequence" do
+    let(:premium_schedule) { FactoryGirl.build(:premium_schedule) }
 
-    let(:premium_schedule) { PremiumSchedule.new(state_aid_calculation, state_aid_calculation.loan) }
-
-    context "when standard state aid calculation" do
-      let(:state_aid_calculation) { FactoryGirl.build(:state_aid_calculation) }
-
-      it "should not include first quarter when standard state aid calculation" do
-        premium_schedule.subsequent_premiums.size.should == 39
-      end
+    it "should be set before validation on create" do
+      premium_schedule.seq.should be_nil
+      premium_schedule.valid?
+      premium_schedule.seq.should == 0
     end
 
-    context "when rescheduled state aid calculation" do
-      let(:state_aid_calculation) { FactoryGirl.build(:rescheduled_state_aid_calculation ) }
+    it "should increment by 1 when state aid calculation for the same loan exists" do
+      premium_schedule.save!
+      new_premium_schedule = FactoryGirl.build(:premium_schedule, loan: premium_schedule.loan)
 
-      it "should include first quarter when rescheduled state aid calculation" do
-        premium_schedule.subsequent_premiums.size.should == 40
-      end
+      new_premium_schedule.valid?
+
+      new_premium_schedule.seq.should == 1
     end
   end
 
-  describe "#second_premium_collection_month" do
-    let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
-    let!(:state_aid_calculation) { loan.state_aid_calculations.build }
-    let(:premium_schedule) { loan.premium_schedule }
+  describe "reschedule?" do
+    let(:premium_schedule) { FactoryGirl.build(:premium_schedule) }
 
-    it "should return formatted date string 3 months from the initial draw date " do
-      loan.initial_draw_change.update_attribute :date_of_change, Date.new(2012, 2, 24)
-
-      premium_schedule.second_premium_collection_month.should == '05/2012'
+    it "should return true when reschedule calculation type" do
+      premium_schedule.calc_type = PremiumSchedule::RESCHEDULE_TYPE
+      premium_schedule.should be_reschedule
     end
 
-    it "should not screw up with end of month dates" do
-      loan.initial_draw_change.update_attribute :date_of_change, Date.new(2011, 11, 30)
-
-      premium_schedule.second_premium_collection_month.should == '02/2012'
-    end
-
-    it "should return nil if there is no initial draw date" do
-      loan.loan_modifications.delete_all
-
-      premium_schedule.second_premium_collection_month.should be_nil
+    it "should return false when schedule calculation type" do
+      premium_schedule.calc_type = PremiumSchedule::SCHEDULE_TYPE
+      premium_schedule.should_not be_reschedule
     end
   end
 
-  describe "#initial_premium_cheque" do
-    context 'when reschedule' do
-      let(:premium_schedule) { FactoryGirl.build(:rescheduled_state_aid_calculation).premium_schedule }
-
-      it "returns 0 money" do
-        premium_schedule.initial_premium_cheque.should == Money.new(0)
-      end
+  describe "#euro_conversion_rate" do
+    it "returns the default value" do
+      premium_schedule = FactoryGirl.build(:premium_schedule)
+      premium_schedule.euro_conversion_rate.should == PremiumSchedule.current_euro_conversion_rate
     end
 
-    context 'when not reschedule' do
-      let(:premium_schedule) { FactoryGirl.build(:state_aid_calculation).premium_schedule }
+    it "returns a set value" do
+      premium_schedule = FactoryGirl.build(:premium_schedule, euro_conversion_rate: 0.65)
+      premium_schedule.euro_conversion_rate.should == 0.65
+    end
 
-      it "returns first premium amount" do
-        premium_schedule.initial_premium_cheque.should == premium_schedule.premiums.first
-      end
+    it "saves the euro_conversion_rate used" do
+      premium_schedule = FactoryGirl.create(:premium_schedule, euro_conversion_rate: 0.75)
+
+      premium_schedule[:euro_conversion_rate].should == 0.75
+    end
+  end
+
+  describe "reset_euro_conversion_rate" do
+    it "clears the euro_conversion_rate so we get the current exchange rate" do
+      premium_schedule = FactoryGirl.create(:premium_schedule, euro_conversion_rate: 0.80)
+
+      premium_schedule.reset_euro_conversion_rate
+      premium_schedule.euro_conversion_rate.should == PremiumSchedule.current_euro_conversion_rate
     end
   end
 end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe StateAidCalculationsController do
+describe PremiumSchedulesController do
   let(:loan) { FactoryGirl.create(:loan, :eligible) }
 
   describe '#edit' do
@@ -18,7 +18,7 @@ describe StateAidCalculationsController do
 
   describe '#update' do
     def dispatch(params = {})
-      put :update, { loan_id: loan.id, state_aid_calculation: {} }.merge(params)
+      put :update, { loan_id: loan.id, premium_schedule: {} }.merge(params)
     end
 
     it_behaves_like 'AuditorUser-restricted controller'

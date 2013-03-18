@@ -167,9 +167,9 @@ FactoryGirl.define do
       end
     end
 
-    trait :with_state_aid_calculation do
+    trait :with_premium_schedule do
       after(:build) do |loan|
-        loan.state_aid_calculations = [ FactoryGirl.build(:state_aid_calculation) ]
+        loan.premium_schedules = [ FactoryGirl.build(:premium_schedule) ]
       end
     end
 

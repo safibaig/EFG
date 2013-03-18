@@ -29,7 +29,7 @@ describe LenderUserPermissions do
   end
 
   context 'state aid calculations' do
-    it { assert user.can_update?(StateAidCalculation) }
+    it { assert user.can_update?(PremiumSchedule) }
   end
 
   context 'data protection declaration' do
@@ -45,8 +45,8 @@ describe LenderUserPermissions do
   end
 
   context 'premium schedules' do
-    it { assert user.can_view?(PremiumSchedule) }
-    it { assert user.can_update?(PremiumSchedule) }
+    it { assert user.can_view?(PremiumScheduleGenerator) }
+    it { assert user.can_update?(PremiumScheduleGenerator) }
   end
 
   context 'Loan Offer' do
@@ -118,8 +118,8 @@ describe LenderUserPermissions do
     it { assert user.can_create?(LoanTransfer::Sflg) }
   end
 
-  context 'StateAidCalculation' do
-    it { assert user.can_create?(StateAidCalculation) }
+  context 'PremiumSchedule' do
+    it { assert user.can_create?(PremiumSchedule) }
   end
 
   context 'LoanReport' do

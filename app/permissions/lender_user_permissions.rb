@@ -21,7 +21,7 @@ module LenderUserPermissions
         LoanTransfer::LegacySflg,
         LoanTransfer::Sflg,
         Recovery,
-        StateAidCalculation,
+        PremiumSchedule,
         TransferredLoanEntry
       ].include?(resource)
     end
@@ -33,8 +33,8 @@ module LenderUserPermissions
 
   def can_update?(resource)
     [
-      PremiumSchedule,
-      StateAidCalculation
+      PremiumScheduleGenerator,
+      PremiumSchedule
     ].include?(resource)
   end
 
@@ -59,7 +59,7 @@ module LenderUserPermissions
       LoanAlerts,
       LoanChange,
       LoanModification,
-      PremiumSchedule,
+      PremiumScheduleGenerator,
       Search,
       StateAidLetter
     ].include?(resource)

@@ -5,6 +5,6 @@
 
 <div class="form-actions">
   <%= link_to_premium_schedule(@loan) %>
-  <%= link_to('State Aid Calculation', edit_loan_state_aid_calculation_path(@loan), class: 'btn btn-info') if current_user.can_update?(StateAidCalculation) %>
+  <%= link_to('State Aid Calculation', edit_loan_premium_schedule_path(@loan), class: 'btn btn-info') if current_user.can_update?(PremiumSchedule) %>
   <%= link_to_state_aid_letter(@loan) %>
 </div>

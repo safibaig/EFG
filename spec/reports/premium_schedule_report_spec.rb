@@ -139,9 +139,9 @@ describe PremiumScheduleReport do
     let(:loan1) { FactoryGirl.create(:loan, :guaranteed, loan_scheme: 'E', loan_source: 'L') }
     let(:loan2) { FactoryGirl.create(:loan, :guaranteed, loan_scheme: 'E', loan_source: 'S', reference: 'ABC') }
     let(:loan3) { FactoryGirl.create(:loan, :guaranteed, loan_scheme: 'S', loan_source: 'S') }
-    let!(:state_aid_calculation1) { FactoryGirl.create(:state_aid_calculation, loan: loan1, calc_type: 'S', premium_cheque_month: '01/2011') }
-    let!(:state_aid_calculation2) { FactoryGirl.create(:state_aid_calculation, loan: loan2, calc_type: 'R', premium_cheque_month: "01/#{Date.today.year + 1}") }
-    let!(:state_aid_calculation3) { FactoryGirl.create(:state_aid_calculation, loan: loan3, calc_type: 'N', premium_cheque_month: '02/2011') }
+    let!(:premium_schedule1) { FactoryGirl.create(:premium_schedule, loan: loan1, calc_type: 'S', premium_cheque_month: '01/2011') }
+    let!(:premium_schedule2) { FactoryGirl.create(:premium_schedule, loan: loan2, calc_type: 'R', premium_cheque_month: "01/#{Date.today.year + 1}") }
+    let!(:premium_schedule3) { FactoryGirl.create(:premium_schedule, loan: loan3, calc_type: 'N', premium_cheque_month: '02/2011') }
 
     before do
       loan1.initial_draw_change.update_attribute :date_of_change, '1/1/11'
@@ -268,8 +268,8 @@ describe PremiumScheduleReport do
         end
 
         it 'includes all rescheduled loans' do
-          FactoryGirl.create(:state_aid_calculation, loan: loan1, calc_type: 'R', premium_cheque_month: "03/#{Date.today.year + 1}")
-          FactoryGirl.create(:state_aid_calculation, loan: loan3, calc_type: 'R', premium_cheque_month: "03/#{Date.today.year + 1}")
+          FactoryGirl.create(:premium_schedule, loan: loan1, calc_type: 'R', premium_cheque_month: "03/#{Date.today.year + 1}")
+          FactoryGirl.create(:premium_schedule, loan: loan3, calc_type: 'R', premium_cheque_month: "03/#{Date.today.year + 1}")
 
           loan_ids.should include(loan1.id)
           loan_ids.should include(loan2.id)
@@ -289,9 +289,9 @@ describe PremiumScheduleReport do
 
         context 'with collection_month' do
           before do
-            FactoryGirl.create(:state_aid_calculation, loan: loan1, calc_type: 'R', premium_cheque_month: "04/#{Date.today.year + 1}")
-            FactoryGirl.create(:state_aid_calculation, loan: loan2, calc_type: 'R', premium_cheque_month: "04/#{Date.today.year + 1}")
-            FactoryGirl.create(:state_aid_calculation, loan: loan3, calc_type: 'R', premium_cheque_month: "05/#{Date.today.year + 1}")
+            FactoryGirl.create(:premium_schedule, loan: loan1, calc_type: 'R', premium_cheque_month: "04/#{Date.today.year + 1}")
+            FactoryGirl.create(:premium_schedule, loan: loan2, calc_type: 'R', premium_cheque_month: "04/#{Date.today.year + 1}")
+            FactoryGirl.create(:premium_schedule, loan: loan3, calc_type: 'R', premium_cheque_month: "05/#{Date.today.year + 1}")
           end
 
           it do
@@ -392,7 +392,7 @@ describe PremiumScheduleReport do
     context 'with standard state aid calculation' do
 
       before do
-        FactoryGirl.create(:state_aid_calculation, loan: loan, calc_type: 'S', premium_cheque_month: '2/2011')
+        FactoryGirl.create(:premium_schedule, loan: loan, calc_type: 'S', premium_cheque_month: '2/2011')
       end
 
       it 'should return 2 rows of data' do
@@ -452,7 +452,7 @@ describe PremiumScheduleReport do
 
     context 'with rescheduled state aid calculation' do
       before do
-        FactoryGirl.create(:rescheduled_state_aid_calculation, loan: loan)
+        FactoryGirl.create(:rescheduled_premium_schedule, loan: loan)
       end
 
       it 'sets schedule type correctly' do
@@ -466,8 +466,8 @@ describe PremiumScheduleReport do
 
     context "with state aid calculation without premium cheque month" do
       before do
-        state_aid_calc = FactoryGirl.create(:state_aid_calculation, loan: loan)
-        state_aid_calc.update_attribute(:premium_cheque_month, "")
+        premium_schedule = FactoryGirl.create(:premium_schedule, loan: loan)
+        premium_schedule.update_attribute(:premium_cheque_month, "")
       end
 
       it 'sets first collection date to 3 months after guarantee date' do
@@ -476,12 +476,10 @@ describe PremiumScheduleReport do
     end
 
     context "where loan has scheduled and re-scheduled state aid calculations" do
-      let!(:scheduled_state_aid_calculation) { FactoryGirl.create(:state_aid_calculation, loan: loan) }
-
-      let!(:rescheduled_state_aid_calculation) { FactoryGirl.create(:rescheduled_state_aid_calculation, loan: loan) }
+      let!(:scheduled_premium_schedule) { FactoryGirl.create(:premium_schedule, loan: loan) }
+      let!(:rescheduled_premium_schedule) { FactoryGirl.create(:rescheduled_premium_schedule, loan: loan) }
 
       let(:row1) { csv[1] }
-
       let(:row2) { csv[2] }
 
       it "should include a row for both state aid calculations" do
@@ -494,7 +492,7 @@ describe PremiumScheduleReport do
 
       it "should set the correct premiums for scheduled state aid calculation" do
         # the first premium is set to 0.0 for premium schedules with calc type 'S'
-        expected_premiums = scheduled_state_aid_calculation.premium_schedule.premiums.collect { |p| p.to_f.to_s }
+        expected_premiums = scheduled_premium_schedule.premium_schedule_generator.premiums.collect { |p| p.to_f.to_s }
         expected_premiums[0] = "0.0"
 
         row1[7, row1.size].should == expected_premiums
@@ -505,7 +503,7 @@ describe PremiumScheduleReport do
       end
 
       it "should set the correct premiums for re-scheduled state aid calculation" do
-        expected_premiums = rescheduled_state_aid_calculation.premium_schedule.premiums.collect { |p| p.to_f.to_s }
+        expected_premiums = rescheduled_premium_schedule.premium_schedule_generator.premiums.collect { |p| p.to_f.to_s }
 
         row2[7, row2.size].should == expected_premiums
       end
@@ -513,7 +511,7 @@ describe PremiumScheduleReport do
 
     context "with Notified Aid calc type" do
       before do
-        FactoryGirl.create(:state_aid_calculation, loan: loan, calc_type: StateAidCalculation::NOTIFIED_AID_TYPE)
+        FactoryGirl.create(:premium_schedule, loan: loan, calc_type: PremiumSchedule::NOTIFIED_AID_TYPE)
       end
 
       it "sets Schedule Type value to 'S' instead of 'N'" do

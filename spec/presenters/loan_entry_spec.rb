@@ -73,7 +73,7 @@ describe LoanEntry do
     end
 
     it "should be invalid without a state aid calculation" do
-      loan_entry.loan.state_aid_calculations.delete_all
+      loan_entry.loan.premium_schedules.delete_all
       loan_entry.should_not be_valid
       loan_entry.errors[:state_aid].should == ['must be calculated']
     end

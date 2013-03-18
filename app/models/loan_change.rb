@@ -1,5 +1,5 @@
 class LoanChange < LoanModification
-  attr_accessor :state_aid_calculation_attributes
+  attr_accessor :premium_schedule_attributes
 
   before_save :set_old_and_loan_attributes
   after_save_and_update_loan :update_loan!
@@ -52,9 +52,9 @@ class LoanChange < LoanModification
       loan.save!
 
       if requires_state_aid_recalculation?
-        state_aid_calculation = loan.state_aid_calculations.build(state_aid_calculation_attributes)
-        state_aid_calculation.calc_type = StateAidCalculation::RESCHEDULE_TYPE
-        state_aid_calculation.save!
+        premium_schedule = loan.premium_schedules.build(premium_schedule_attributes)
+        premium_schedule.calc_type = PremiumSchedule::RESCHEDULE_TYPE
+        premium_schedule.save!
       end
     end
 
@@ -84,7 +84,7 @@ class LoanChange < LoanModification
     end
 
     def state_aid_recalculated
-      errors.add(:base, :state_aid_not_recalculated) unless state_aid_calculation_attributes.present?
+      errors.add(:base, :state_aid_not_recalculated) unless premium_schedule_attributes.present?
     end
 
     def validate_maturity_date_within_allowed_loan_term
