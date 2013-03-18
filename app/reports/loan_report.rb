@@ -71,17 +71,8 @@ class LoanReport
       #   condition = (loans[:loan_scheme].eq(type.scheme).and(loans[:loan_source].eq(type.source)))
       #   condition.to_sql
       # end
-      types_conditions = loan_types.map do |type|
-        condition = "loans.loan_scheme = '#{type.scheme}' AND loans.loan_source = '#{type.source}'"
-
-        if type == LoanTypes::LEGACY_SFLG
-          condition = "#{condition} AND (loans.modified_by_legacy_id IS NULL OR loans.modified_by_legacy_id != 'migration')"
-        end
-
-        condition = "(#{condition})"
-      end
-
-      scope = scope.where(types_conditions.join(' OR '))
+      type_condition = ->(type) { "(loans.loan_scheme = '#{type.scheme}' AND loans.loan_source = '#{type.source}')" }
+      scope = scope.where(loan_types.map(&type_condition).join(' OR '))
     end
 
     scope = scope.where('loans.lender_id IN (?)', lender_ids) if lender_ids.present?
