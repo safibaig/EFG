@@ -6,9 +6,9 @@ describe 'LoanModifications' do
   let(:current_user) { FactoryGirl.create(:lender_user) }
   before { login_as(current_user, scope: :user) }
 
-  let(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_user.lender, business_name: 'Foo', sortcode: '123456') }
+  let(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_user.lender, business_name: 'Foo') }
   let!(:loan_change) { FactoryGirl.create(:loan_change, loan: loan, change_type_id: ChangeType::BusinessName.id, business_name: 'Bar') }
-  let!(:data_correction) { FactoryGirl.create(:data_correction, loan: loan, sortcode: '654321') }
+  let!(:data_correction) { FactoryGirl.create(:data_correction, loan: loan, sortcode: '654321', old_sortcode: '123456') }
 
   describe 'index' do
     before do

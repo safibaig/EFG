@@ -1,0 +1,11 @@
+<%= breadcrumbs_for_loan(@loan) %>
+
+<div class="page-header">
+  <h1>Data Correction</h1>
+</div>
+
+<p>From this page you can correct the facility information described below.</p>
+
+<ul>
+  <li><%= link_to('Sortcode', new_loan_data_correction_path(@loan, type: 'sortcode')) %></li>
+</ul>

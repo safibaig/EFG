@@ -106,7 +106,7 @@ describe 'Loan lifecycle' do
 
   %w(sflg legacy_sflg).each do |loan_type|
     context "for guaranteed #{loan_type.humanize} loan" do
-      let!(:loan) { FactoryGirl.create(:loan, loan_type.to_sym, :offered, :guaranteed, lender: lender) }
+      let!(:loan) { FactoryGirl.create(:loan, loan_type.to_sym, :offered, :guaranteed, lender: lender, sortcode: '03-12-45') }
 
       it do
         visit root_path
@@ -200,14 +200,20 @@ describe 'Loan lifecycle' do
   end
 
   def make_loan_data_correction(loan)
-    new_amount = loan.amount + Money.new(5_000_00)
-
     click_link "Data Correction"
-    fill_in "data_correction_amount", with: new_amount.to_s
+    click_link 'Sortcode'
+    fill_in "data_correction_sortcode", with: '654321'
     click_button "Submit"
 
     current_url.should == loan_url(loan)
-    page.should have_content(new_amount.format)
+
+    click_link 'Loan Changes'
+    click_link 'Data correction'
+
+    page.should have_content('03-12-45')
+    page.should have_content('654321')
+
+    click_link 'Loan Summary'
   end
 
   def make_demand_to_borrower(loan)
