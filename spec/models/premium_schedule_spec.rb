@@ -327,4 +327,84 @@ describe PremiumSchedule do
       premium_schedule.euro_conversion_rate.should == PremiumSchedule.current_euro_conversion_rate
     end
   end
+
+  describe '#total_premiums' do
+    let(:premium_schedule) {
+      FactoryGirl.build(:premium_schedule,
+        initial_draw_amount: Money.new(100_000_00),
+        repayment_duration: 120)
+    }
+
+    it 'calculates total premiums' do
+      premium_schedule.loan.premium_rate = 2.0
+      premium_schedule.total_premiums.should == Money.new(10_250_00)
+    end
+  end
+
+  describe '#subsequent_premiums' do
+    context 'when not a reschedule' do
+      let(:premium_schedule) { FactoryGirl.build(:premium_schedule, repayment_duration: 120) }
+
+      it 'should not include first quarter when standard state aid calculation' do
+        premium_schedule.subsequent_premiums.size.should == 39
+      end
+    end
+
+    context 'when a reschedule' do
+      let(:premium_schedule) { FactoryGirl.build(:rescheduled_premium_schedule, repayment_duration: 120) }
+
+      it 'should include first quarter when rescheduled state aid calculation' do
+        premium_schedule.subsequent_premiums.size.should == 40
+      end
+    end
+  end
+
+  describe '#second_premium_collection_month' do
+    let(:premium_schedule) { FactoryGirl.build(:premium_schedule, loan: loan) }
+    let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
+
+    it 'returns a formatted date string 3 months from the initial draw date ' do
+      loan.initial_draw_change.update_attribute :date_of_change, Date.new(2012, 2, 24)
+
+      premium_schedule.second_premium_collection_month.should == '05/2012'
+    end
+
+    it 'deals with end of month dates' do
+      loan.initial_draw_change.update_attribute :date_of_change, Date.new(2011, 11, 30)
+
+      premium_schedule.second_premium_collection_month.should == '02/2012'
+    end
+
+    it 'returns nil if there is no initial draw date' do
+      loan.loan_modifications.delete_all
+
+      premium_schedule.second_premium_collection_month.should be_nil
+    end
+  end
+
+  describe '#initial_premium_cheque' do
+    context 'when not reschedule' do
+      let(:premium_schedule) {
+        FactoryGirl.build(:premium_schedule,
+          initial_draw_amount: Money.new(100_000_00),
+          repayment_duration: 120)
+      }
+
+      it 'returns the first premium amount' do
+        premium_schedule.initial_premium_cheque.should == premium_schedule.premiums.first
+      end
+    end
+
+    context 'when a reschedule' do
+      let(:premium_schedule) {
+        FactoryGirl.build(:rescheduled_premium_schedule,
+          initial_draw_amount: Money.new(100_000_00),
+          repayment_duration: 120)
+      }
+
+      it 'returns 0 money' do
+        premium_schedule.initial_premium_cheque.should == Money.new(0)
+      end
+    end
+  end
 end

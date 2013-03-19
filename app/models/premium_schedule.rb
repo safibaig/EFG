@@ -50,12 +50,8 @@ class PremiumSchedule < ActiveRecord::Base
     EURO_CONVERSION_RATE
   end
 
-  def premium_schedule_generator
-    PremiumScheduleGenerator.new(self, loan)
-  end
-
   def state_aid_gbp
-    (loan.amount * (loan.guarantee_rate / 100) * RISK_FACTOR) - premium_schedule_generator.total_premiums
+    (loan.amount * (loan.guarantee_rate / 100) * RISK_FACTOR) - total_premiums
   end
 
   def state_aid_eur
@@ -91,6 +87,60 @@ class PremiumSchedule < ActiveRecord::Base
     end
 
     drawdowns
+  end
+
+  def premiums
+    klass = case loan.repayment_frequency
+      when RepaymentFrequency::Annually
+        # TODO: fixme:
+        LegacyQuarterlyPremiumPaymentCollection
+      when RepaymentFrequency::SixMonthly
+        # TODO: fixme:
+        LegacyQuarterlyPremiumPaymentCollection
+      when RepaymentFrequency::Quarterly
+        LegacyQuarterlyPremiumPaymentCollection
+      when RepaymentFrequency::Monthly
+        # TODO: fixme:
+        LegacyQuarterlyPremiumPaymentCollection
+      when RepaymentFrequency::InterestOnly
+        InterestOnlyPremiumPaymentCollection
+      else
+        raise ArgumentError, 'unknown repayment frequency type'
+      end
+
+    klass.new(self).to_a
+  end
+
+  def total_premiums
+    premiums.sum
+  end
+
+  def initial_draw_date
+    loan.initial_draw_change.try :date_of_change
+  end
+
+  def subsequent_premiums
+    @subsequent_premiums ||= reschedule? ? premiums : premiums[1..-1]
+  end
+
+  def number_of_subsequent_payments
+    subsequent_premiums.count
+  end
+
+  def total_subsequent_premiums
+    subsequent_premiums.sum
+  end
+
+  # This returns a string because its not really a valid date and it doesn't
+  # have a day. We could just pick an arbitary day, but then it might be
+  # tempting to (incorrectly) format it in the view with the day shown.
+  def second_premium_collection_month
+    return unless initial_draw_date
+    initial_draw_date.advance(months: 3).strftime('%m/%Y')
+  end
+
+  def initial_premium_cheque
+    reschedule? ? Money.new(0) : premiums.first
   end
 
   def repayment_holiday_active_at_month?(month)

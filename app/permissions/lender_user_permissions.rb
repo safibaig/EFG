@@ -33,7 +33,6 @@ module LenderUserPermissions
 
   def can_update?(resource)
     [
-      PremiumScheduleGenerator,
       PremiumSchedule
     ].include?(resource)
   end
@@ -59,7 +58,7 @@ module LenderUserPermissions
       LoanAlerts,
       LoanChange,
       LoanModification,
-      PremiumScheduleGenerator,
+      PremiumSchedule,
       Search,
       StateAidLetter
     ].include?(resource)

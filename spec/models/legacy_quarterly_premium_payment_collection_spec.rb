@@ -3,21 +3,17 @@ require 'spec_helper'
 describe LegacyQuarterlyPremiumPaymentCollection do
   let(:collection) { LegacyQuarterlyPremiumPaymentCollection.new(premium_schedule) }
 
+  before do
+    premium_schedule.loan.premium_rate = 2.00
+  end
+
   describe '#to_a' do
     context 'when there is a single drawdown' do
       context 'and no repayment holiday' do
-        let(:loan) {
-          FactoryGirl.build_stubbed(:loan,
-            amount: Money.new(20_000_00),
-            premium_rate: 2.00,
-          )
-        }
-
         let(:premium_schedule) {
           FactoryGirl.build_stubbed(:premium_schedule,
             repayment_duration: 60,
             initial_draw_amount: Money.new(20_000_00),
-            loan: loan
           )
         }
 
@@ -47,20 +43,12 @@ describe LegacyQuarterlyPremiumPaymentCollection do
         end
       end
 
-      context 'and there is a repayment holiday' do
-        let(:loan) {
-          FactoryGirl.build_stubbed(:loan,
-            amount: Money.new(160_000_00),
-            premium_rate: 2.00,
-          )
-        }
-
+      context 'and a repayment holiday' do
         let(:premium_schedule) {
           FactoryGirl.build_stubbed(:premium_schedule,
             repayment_duration: 24,
             initial_capital_repayment_holiday: 12,
             initial_draw_amount: Money.new(160_000_00),
-            loan: loan
           )
         }
 
@@ -79,22 +67,14 @@ describe LegacyQuarterlyPremiumPaymentCollection do
       end
     end
 
-    context 'when there are multiple drawdowns' do
+    context 'when there are two drawdowns' do
       context 'and no repayment holiday' do
-        let(:loan) {
-          FactoryGirl.build_stubbed(:loan,
-            amount: Money.new(400_000_00),
-            premium_rate: 2.00,
-          )
-        }
-
         let(:premium_schedule) {
           FactoryGirl.build_stubbed(:premium_schedule,
             repayment_duration: 60,
             initial_draw_amount: Money.new(300_000_00),
             second_draw_amount: Money.new(100_000_00),
             second_draw_months: 3,
-            loan: loan
           )
         }
 
@@ -124,70 +104,104 @@ describe LegacyQuarterlyPremiumPaymentCollection do
         end
       end
 
-      context 'and there is a repayment holiday' do
-        let(:loan) {
-          FactoryGirl.build_stubbed(:loan,
-            amount: Money.new(500_000_00),
-            premium_rate: 2.00,
-          )
-        }
+      context 'when there are three drawdowns' do
+        context 'and no repayment holiday' do
+          let(:premium_schedule) {
+            FactoryGirl.build_stubbed(:premium_schedule,
+              repayment_duration: 12,
+              initial_draw_amount: Money.new(525_000_00),
+              second_draw_amount: Money.new(350_500_00),
+              second_draw_months: 2,
+              third_draw_amount: Money.new(124_500_00),
+              third_draw_months: 7
+            )
+          }
 
-        let(:premium_schedule) {
-          FactoryGirl.build_stubbed(:premium_schedule,
-            repayment_duration: 60,
-            initial_capital_repayment_holiday: 6,
-            initial_draw_amount: Money.new(100_000_00),
-            second_draw_amount: Money.new(100_000_00),
-            second_draw_months: 1,
-            third_draw_amount: Money.new(100_000_00),
-            third_draw_months: 2,
-            fourth_draw_amount: Money.new(200_000_00),
-            fourth_draw_months: 3,
-            loan: loan
-          )
-        }
+          it 'returns the correct premium payments' do
+            collection.to_a.should == [
+              BankersRoundingMoney.new(BigDecimal.new('262500')),
+              BankersRoundingMoney.new(BigDecimal.new('354600')),
+              BankersRoundingMoney.new(BigDecimal.new('236400')),
+              BankersRoundingMoney.new(BigDecimal.new('155550'))
+            ]
+          end
+        end
+      end
 
-        it 'returns the correct premium payments' do
-          collection.to_a.should == [
-            BankersRoundingMoney.new(BigDecimal.new( '50000')),
-            BankersRoundingMoney.new(BigDecimal.new('250000')),
-            BankersRoundingMoney.new(BigDecimal.new('250000')),
-            BankersRoundingMoney.new(BigDecimal.new('236111')),
-            BankersRoundingMoney.new(BigDecimal.new('222222')),
-            BankersRoundingMoney.new(BigDecimal.new('208333')),
-            BankersRoundingMoney.new(BigDecimal.new('194444')),
-            BankersRoundingMoney.new(BigDecimal.new('180556')),
-            BankersRoundingMoney.new(BigDecimal.new('166667')),
-            BankersRoundingMoney.new(BigDecimal.new('152778')),
-            BankersRoundingMoney.new(BigDecimal.new('138889')),
-            BankersRoundingMoney.new(BigDecimal.new('125000')),
-            BankersRoundingMoney.new(BigDecimal.new('111111')),
-            BankersRoundingMoney.new(BigDecimal.new( '97222')),
-            BankersRoundingMoney.new(BigDecimal.new( '83333')),
-            BankersRoundingMoney.new(BigDecimal.new( '69444')),
-            BankersRoundingMoney.new(BigDecimal.new( '55556')),
-            BankersRoundingMoney.new(BigDecimal.new( '41667')),
-            BankersRoundingMoney.new(BigDecimal.new( '27778')),
-            BankersRoundingMoney.new(BigDecimal.new( '13889'))
-          ]
+      context 'when there are four drawdowns' do
+        context 'and no repayment holiday' do
+          let(:premium_schedule) {
+            FactoryGirl.build(:premium_schedule,
+              initial_draw_amount: Money.new(100_000_00),
+              repayment_duration: 12,
+              second_draw_amount: Money.new(50_000_00),
+              second_draw_months: 3,
+              third_draw_amount: Money.new(50_000_00),
+              third_draw_months: 6,
+              fourth_draw_amount: Money.new(800_000_00),
+              fourth_draw_months: 9
+            )
+          }
+
+          it 'returns the correct premium payments' do
+            collection.to_a.should == [
+              BankersRoundingMoney.new(BigDecimal.new( '50000')),
+              BankersRoundingMoney.new(BigDecimal.new( '62500')),
+              BankersRoundingMoney.new(BigDecimal.new( '66667')),
+              BankersRoundingMoney.new(BigDecimal.new('433333'))
+            ]
+          end
+        end
+
+        context 'and a repayment holiday' do
+          let(:premium_schedule) {
+            FactoryGirl.build_stubbed(:premium_schedule,
+              repayment_duration: 60,
+              initial_capital_repayment_holiday: 6,
+              initial_draw_amount: Money.new(100_000_00),
+              second_draw_amount: Money.new(100_000_00),
+              second_draw_months: 1,
+              third_draw_amount: Money.new(100_000_00),
+              third_draw_months: 2,
+              fourth_draw_amount: Money.new(200_000_00),
+              fourth_draw_months: 3,
+            )
+          }
+
+          it 'returns the correct premium payments' do
+            collection.to_a.should == [
+              BankersRoundingMoney.new(BigDecimal.new( '50000')),
+              BankersRoundingMoney.new(BigDecimal.new('250000')),
+              BankersRoundingMoney.new(BigDecimal.new('250000')),
+              BankersRoundingMoney.new(BigDecimal.new('236111')),
+              BankersRoundingMoney.new(BigDecimal.new('222222')),
+              BankersRoundingMoney.new(BigDecimal.new('208333')),
+              BankersRoundingMoney.new(BigDecimal.new('194444')),
+              BankersRoundingMoney.new(BigDecimal.new('180556')),
+              BankersRoundingMoney.new(BigDecimal.new('166667')),
+              BankersRoundingMoney.new(BigDecimal.new('152778')),
+              BankersRoundingMoney.new(BigDecimal.new('138889')),
+              BankersRoundingMoney.new(BigDecimal.new('125000')),
+              BankersRoundingMoney.new(BigDecimal.new('111111')),
+              BankersRoundingMoney.new(BigDecimal.new( '97222')),
+              BankersRoundingMoney.new(BigDecimal.new( '83333')),
+              BankersRoundingMoney.new(BigDecimal.new( '69444')),
+              BankersRoundingMoney.new(BigDecimal.new( '55556')),
+              BankersRoundingMoney.new(BigDecimal.new( '41667')),
+              BankersRoundingMoney.new(BigDecimal.new( '27778')),
+              BankersRoundingMoney.new(BigDecimal.new( '13889'))
+            ]
+          end
         end
       end
     end
 
     context 'when the loan term does not contain an exact number of quarters' do
-      let(:loan) {
-        FactoryGirl.build_stubbed(:loan,
-          amount: Money.new(50_000_00),
-          premium_rate: 2.00,
-        )
-      }
-
       let(:premium_schedule) {
         FactoryGirl.build_stubbed(:premium_schedule,
           repayment_duration: 50, # <-- not evenly divisible by 3
           initial_draw_amount: Money.new(50_000_00),
           initial_capital_repayment_holiday: 2,
-          loan: loan
         )
       }
 
@@ -209,6 +223,21 @@ describe LegacyQuarterlyPremiumPaymentCollection do
           BankersRoundingMoney.new(BigDecimal.new( '5729')),
           BankersRoundingMoney.new(BigDecimal.new( '4167')),
           BankersRoundingMoney.new(BigDecimal.new( '2604')),
+        ]
+      end
+    end
+
+    context 'when the repayment duration is less than one quarter' do
+      let(:premium_schedule) {
+        FactoryGirl.build_stubbed(:premium_schedule,
+          repayment_duration: 2,
+          initial_draw_amount: Money.new(100_000_00),
+        )
+      }
+
+      it 'returns the correct single premium payment' do
+        collection.to_a.should == [
+          BankersRoundingMoney.new(BigDecimal.new('50000'))
         ]
       end
     end
