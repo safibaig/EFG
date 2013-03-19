@@ -7,5 +7,6 @@
 <p>From this page you can correct the facility information described below.</p>
 
 <ul>
+  <% if @loan.state == Loan::Demanded %><li><%= link_to('Demanded Amount', new_loan_data_correction_path(@loan, type: 'demanded_amount')) %></li><% end %>
   <li><%= link_to('Sortcode', new_loan_data_correction_path(@loan, type: 'sortcode')) %></li>
 </ul>

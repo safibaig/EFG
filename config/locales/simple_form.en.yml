@@ -47,10 +47,10 @@ en:
         maturity_date: 'What is the new maturity date?'
 
       data_correction:
+        demanded_amount: 'Change to the Original Outstanding Scheme Facility Principal'
+        demanded_interest: 'Change to interest'
         lending_limit_id: 'Correct Lending Limit'
         sortcode: 'Correct Branch Sort Code'
-        dti_demand_out_amount: 'Change to the Original Outstanding Scheme Facility Principal'
-        dti_demand_interest: 'Change to interest'
 
       loan_eligibility_check:
         <<: *loan
