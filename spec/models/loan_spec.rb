@@ -166,21 +166,6 @@ describe Loan do
     end
   end
 
-  describe "#premium_schedule_generator" do
-    it "should return a PremiumScheduleGenerator for the loan" do
-      loan = FactoryGirl.build(:loan)
-      loan.premium_schedules.build
-
-      loan.premium_schedule_generator.should be_instance_of(PremiumScheduleGenerator)
-      loan.premium_schedule_generator.loan.should == loan
-    end
-
-    it "should return nil if it doesn't have a premium_schedule" do
-      loan = FactoryGirl.build(:loan)
-      loan.premium_schedule_generator.should be_nil
-    end
-  end
-
   describe "reference" do
     let(:loan) {
       loan = FactoryGirl.build(:loan)
