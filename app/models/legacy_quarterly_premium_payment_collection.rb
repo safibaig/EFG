@@ -1,4 +1,4 @@
-class LegacyQuarterlyPremiumPaymentCollection < BasePremiumPaymentCollection
+class LegacyQuarterlyPremiumPaymentCollection < QuarterlyPremiumPaymentCollection
   # The legacy system rounded down which excludes the last quarter from the premium schedule.
   # This is a bug as the last quarter should be in the schedule, but we are replicating it
   # for now for data consistency.
@@ -8,10 +8,5 @@ class LegacyQuarterlyPremiumPaymentCollection < BasePremiumPaymentCollection
       quarters = 1 if quarters.zero?
       quarters
     end
-  end
-
-  def premium_amount_for_quarter(quarter)
-    super
-    QuarterlyPremiumPayment.new(quarter, premium_schedule).amount
   end
 end

@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe LegacyQuarterlyPremiumPaymentCollection do
+describe QuarterlyPremiumPaymentCollection do
   it_should_behave_like 'a quarterly premium payment collection' do
-    subject { LegacyQuarterlyPremiumPaymentCollection }
+    subject { QuarterlyPremiumPaymentCollection }
   end
 
   describe '#to_a' do
@@ -15,10 +15,10 @@ describe LegacyQuarterlyPremiumPaymentCollection do
         )
       }
 
-      it 'returns the correct premium payments, missing off the final one' do
+      it 'returns the correct premium payments (one more than the legacy calculation)' do
         premium_schedule.loan.premium_rate = 2.00
 
-			  collection = LegacyQuarterlyPremiumPaymentCollection.new(premium_schedule)
+        collection = QuarterlyPremiumPaymentCollection.new(premium_schedule)
 
         collection.to_a.should == [
           BankersRoundingMoney.new(BigDecimal.new('25000')),
@@ -37,6 +37,7 @@ describe LegacyQuarterlyPremiumPaymentCollection do
           BankersRoundingMoney.new(BigDecimal.new( '5729')),
           BankersRoundingMoney.new(BigDecimal.new( '4167')),
           BankersRoundingMoney.new(BigDecimal.new( '2604')),
+          BankersRoundingMoney.new(BigDecimal.new( '1042')),
         ]
       end
     end
