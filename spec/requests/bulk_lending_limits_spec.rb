@@ -36,8 +36,8 @@ describe "bulk creation of lending limits" do
       fill_in 'guarantee_rate', '75'
       fill_in 'premium_rate', '2'
 
-      setup_lending_limit lender1, allocation: '987'
-      setup_lending_limit lender3, allocation: '123,456.78'
+      setup_lending_limit lender1, allocation: '987', active: true
+      setup_lending_limit lender3, allocation: '123,456.78', active: false
 
       click_button 'Create Lending Limits'
 
@@ -58,6 +58,7 @@ describe "bulk creation of lending limits" do
       end
 
       phase.lending_limits.map(&:lender).should =~ [lender1, lender3]
+      phase.lending_limits.map(&:active).should =~ [true, false]
     end
   end
 
@@ -70,8 +71,9 @@ describe "bulk creation of lending limits" do
 
   def setup_lending_limit(lender, params = {})
     within "#lender_lending_limit_#{lender.id}" do
-      find('input[type=checkbox]').set(true)
-      find('input[type=text]').set(params[:allocation])
+      find('input[type=checkbox][name*=selected]').set(true)
+      find('input[type=text]').set(params.fetch(:allocation))
+      find('input[type=checkbox][name*=active]').set(params.fetch(:active))
     end
   end
 

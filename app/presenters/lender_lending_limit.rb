@@ -6,7 +6,7 @@ class LenderLendingLimit
 
   attr_reader :allocation, :lender
 
-  attr_accessor :selected
+  attr_accessor :selected, :active
 
   validates :allocation, presence: true
 
@@ -14,6 +14,7 @@ class LenderLendingLimit
 
   def initialize(lender)
     @lender = lender
+    @active = true
   end
 
   def selected?

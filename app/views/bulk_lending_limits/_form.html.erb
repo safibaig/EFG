@@ -17,6 +17,7 @@
           <th></th>
           <th>Lender</th>
           <th>Allocation</th>
+          <th>Active</th>
         </tr>
       </thead>
 
@@ -35,6 +36,9 @@
             <td>
               <%= lender_form.input :allocation, as: :currency, label: false %>
             </td>
+
+            <td>
+              <%= lender_form.check_box :active %>
           </tr>
         <% end %>
       </tbody>

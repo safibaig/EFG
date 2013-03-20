@@ -49,6 +49,7 @@ class BulkLendingLimits
       lender = lenders_by_id[lender_attributes[:id].to_i]
       lender.selected = (lender_attributes[:selected] == '1')
       lender.allocation = lender_attributes[:allocation]
+      lender.active = (lender_attributes[:active] == '1')
     end
   end
 
@@ -70,13 +71,15 @@ class BulkLendingLimits
         lending_limit = LendingLimit.create! do |lending_limit|
           lending_limit.name = lending_limit_name
           lending_limit.phase = phase
-          lending_limit.lender = lender_lending_limit.lender
           lending_limit.starts_on = starts_on
           lending_limit.ends_on = ends_on
           lending_limit.guarantee_rate = guarantee_rate
           lending_limit.premium_rate = premium_rate
           lending_limit.allocation_type_id = allocation_type_id
+
+          lending_limit.lender = lender_lending_limit.lender
           lending_limit.allocation = lender_lending_limit.allocation
+          lending_limit.active = lender_lending_limit.active
         end
 
         AdminAudit.log(AdminAudit::LendingLimitCreated, lending_limit, created_by)

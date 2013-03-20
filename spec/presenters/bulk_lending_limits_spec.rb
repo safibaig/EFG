@@ -132,7 +132,14 @@ describe BulkLendingLimits do
       '1' => {
         id: lender2.id,
         selected: '1',
-        allocation: '123'
+        allocation: '123',
+        active: '1'
+      },
+      '2' => {
+        id: lender3.id,
+        selected: '1',
+        allocation: '123',
+        active: '0'
       }
     } }
 
@@ -149,6 +156,7 @@ describe BulkLendingLimits do
 
     let(:lender1) { FactoryGirl.create(:lender) }
     let(:lender2) { FactoryGirl.create(:lender) }
+    let(:lender3) { FactoryGirl.create(:lender) }
     let(:phase) { FactoryGirl.create(:phase) }
     let(:user) { FactoryGirl.create(:cfe_admin) }
 
@@ -162,18 +170,21 @@ describe BulkLendingLimits do
     it "should create a lending limit" do
       expect {
         bulk_lending_limits.save
-      }.to change(LendingLimit, :count).by(1)
+      }.to change(LendingLimit, :count).by(2)
 
-      lending_limit = LendingLimit.first
+      lending_limits = LendingLimit.all
 
-      lending_limit.starts_on.should == Date.new(2012, 1, 1)
-      lending_limit.ends_on.should == Date.new(2012, 12, 31)
-      lending_limit.guarantee_rate.should == 75
-      lending_limit.premium_rate.should == 2
-      lending_limit.name.should == 'lending limit name'
-      lending_limit.allocation_type_id.should == 1
+      lending_limits.each do |lending_limit|
+        lending_limit.starts_on.should == Date.new(2012, 1, 1)
+        lending_limit.ends_on.should == Date.new(2012, 12, 31)
+        lending_limit.guarantee_rate.should == 75
+        lending_limit.premium_rate.should == 2
+        lending_limit.name.should == 'lending limit name'
+        lending_limit.allocation_type_id.should == 1
+      end
 
-      lending_limit.lender.should == lender2
+      lending_limits.map(&:lender).should =~ [lender2, lender3]
+      lending_limits.count(&:active?).should == 1
     end
 
     it "should create lending limits for selected lenders only" do
