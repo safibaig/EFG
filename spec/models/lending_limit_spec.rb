@@ -88,4 +88,42 @@ describe LendingLimit do
     lending_limit.loans_using_lending_limit.should == expected_loans
   end
 
+  describe "activation" do
+    context "with an active lending limit" do
+      let(:lending_limit) { FactoryGirl.create(:lending_limit, :active) }
+
+      specify "#activate! doesn't change active flag" do
+        lending_limit.activate!
+        lending_limit.reload
+
+        lending_limit.should be_active
+      end
+
+      specify "#deactivate! sets the active flag to false" do
+        lending_limit.deactivate!
+        lending_limit.reload
+
+        lending_limit.should_not be_active
+      end
+    end
+
+    context "with an inactive lending limit" do
+      let(:lending_limit) { FactoryGirl.create(:lending_limit, :inactive) }
+
+      specify "#activate! sets the active flag to true" do
+        lending_limit.activate!
+        lending_limit.reload
+
+        lending_limit.should be_active
+      end
+
+      specify "#deactivate! sets the active flag to false" do
+        lending_limit.deactivate!
+        lending_limit.reload
+
+        lending_limit.should_not be_active
+      end
+    end
+  end
+
 end

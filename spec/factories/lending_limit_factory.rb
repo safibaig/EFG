@@ -10,5 +10,13 @@ FactoryGirl.define do
     ends_on { |lending_limit| lending_limit.starts_on.advance(years: 1) }
     premium_rate 2
     guarantee_rate 75
+
+    trait :active do
+      active true
+    end
+
+    trait :inactive do
+      active false
+    end
   end
 end

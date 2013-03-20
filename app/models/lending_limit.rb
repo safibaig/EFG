@@ -47,9 +47,12 @@ class LendingLimit < ActiveRecord::Base
     LendingLimitType.find(allocation_type_id)
   end
 
+  def activate!
+    update_attribute(:active, true)
+  end
+
   def deactivate!
-    self.active = false
-    save(validate: false)
+    update_attribute(:active, false)
   end
 
   private

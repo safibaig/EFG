@@ -25,6 +25,7 @@ EFG::Application.routes.draw do
 
     resources :lending_limits do
       member do
+        post :activate
         post :deactivate
       end
     end

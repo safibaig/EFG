@@ -1,6 +1,6 @@
 class LendingLimitsController < ApplicationController
   before_filter :verify_create_permission, only: [:new, :create]
-  before_filter :verify_update_permission, only: [:edit, :update, :deactivate]
+  before_filter :verify_update_permission, only: [:edit, :update, :activate, :deactivate]
   before_filter :verify_view_permission, only: [:index]
   before_filter :load_lender
   before_filter :load_phases, only: [:new, :edit]
@@ -44,6 +44,14 @@ class LendingLimitsController < ApplicationController
       load_phases
       render :edit
     end
+  end
+
+  def activate
+    @lending_limit = @lender.lending_limits.find(params[:id])
+    @lending_limit.modified_by = current_user
+    @lending_limit.activate!
+    AdminAudit.log(AdminAudit::LendingLimitActivated, @lending_limit, current_user)
+    redirect_to lender_lending_limits_url(@lender)
   end
 
   def deactivate
