@@ -10,8 +10,8 @@ class PremiumSchedule < ActiveRecord::Base
   RISK_FACTOR = 0.3
 
   PREMIUM_CALCULATION_STRATEGIES = {
-    annually: LegacyQuarterlyPremiumPaymentCollection,
-    six_monthly: LegacyQuarterlyPremiumPaymentCollection,
+    annually: AnnualPremiumPaymentCollection,
+    six_monthly: SixMonthlyPremiumPaymentCollection,
     quarterly: QuarterlyPremiumPaymentCollection,
     monthly: LegacyQuarterlyPremiumPaymentCollection,
     interest_only: InterestOnlyPremiumPaymentCollection,
