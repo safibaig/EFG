@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130314114612) do
+ActiveRecord::Schema.define(:version => 20130319175816) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -426,6 +426,7 @@ ActiveRecord::Schema.define(:version => 20130314114612) do
     t.integer  "obj1_perc"
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
+    t.string   "premium_calculation_strategy"
   end
 
   add_index "premium_schedules", ["legacy_loan_id"], :name => "index_premium_schedules_on_legacy_loan_id"

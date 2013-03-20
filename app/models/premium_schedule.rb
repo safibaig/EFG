@@ -9,6 +9,15 @@ class PremiumSchedule < ActiveRecord::Base
   MAX_INITIAL_DRAW = Money.new(9_999_999_99)
   RISK_FACTOR = 0.3
 
+  PREMIUM_CALCULATION_STRATEGIES = {
+    annually: LegacyQuarterlyPremiumPaymentCollection,
+    six_monthly: LegacyQuarterlyPremiumPaymentCollection,
+    quarterly: LegacyQuarterlyPremiumPaymentCollection,
+    monthly: LegacyQuarterlyPremiumPaymentCollection,
+    interest_only: InterestOnlyPremiumPaymentCollection,
+    legacy_quarterly: LegacyQuarterlyPremiumPaymentCollection
+  }
+
   belongs_to :loan, inverse_of: :premium_schedules
 
   attr_accessible :initial_draw_year, :initial_draw_amount,
@@ -18,6 +27,7 @@ class PremiumSchedule < ActiveRecord::Base
     :loan_id, :premium_cheque_month
 
   before_validation :set_seq, on: :create
+  before_validation :set_premium_calculation_strategy, on: :create
 
   before_save do
     write_attribute(:euro_conversion_rate, euro_conversion_rate)
@@ -29,6 +39,7 @@ class PremiumSchedule < ActiveRecord::Base
 
   validates_presence_of :loan_id, strict: true
   validates_presence_of :repayment_duration
+  validates_presence_of :premium_calculation_strategy
   validates_inclusion_of :calc_type, in: [ SCHEDULE_TYPE, RESCHEDULE_TYPE, NOTIFIED_AID_TYPE ]
   validates_presence_of :initial_draw_year, unless: :reschedule?
   validates_format_of :premium_cheque_month, with: /\A\d{2}\/\d{4}\z/, if: :reschedule?, message: :invalid_format
@@ -90,25 +101,7 @@ class PremiumSchedule < ActiveRecord::Base
   end
 
   def premiums
-    klass = case loan.repayment_frequency
-      when RepaymentFrequency::Annually
-        # TODO: fixme:
-        LegacyQuarterlyPremiumPaymentCollection
-      when RepaymentFrequency::SixMonthly
-        # TODO: fixme:
-        LegacyQuarterlyPremiumPaymentCollection
-      when RepaymentFrequency::Quarterly
-        LegacyQuarterlyPremiumPaymentCollection
-      when RepaymentFrequency::Monthly
-        # TODO: fixme:
-        LegacyQuarterlyPremiumPaymentCollection
-      when RepaymentFrequency::InterestOnly
-        InterestOnlyPremiumPaymentCollection
-      else
-        raise ArgumentError, 'unknown repayment frequency type'
-      end
-
-    klass.new(self).to_a
+    premium_payment_collection_class.new(self).to_a
   end
 
   def total_premiums
@@ -161,6 +154,11 @@ class PremiumSchedule < ActiveRecord::Base
       self.seq = (PremiumSchedule.where(loan_id: loan_id).maximum(:seq) || -1) + 1 unless seq
     end
 
+    def set_premium_calculation_strategy
+      return unless loan && loan.repayment_frequency
+      write_attribute(:premium_calculation_strategy, loan.repayment_frequency.premium_calculation_strategy)
+    end
+
     def initial_draw_amount_is_within_limit
       if initial_draw_amount.blank? || initial_draw_amount < 0 || initial_draw_amount > MAX_INITIAL_DRAW
         errors.add(:initial_draw_amount, :invalid)
@@ -189,5 +187,9 @@ class PremiumSchedule < ActiveRecord::Base
         errors.add(:third_draw_amount, :not_less_than_or_equal_to_loan_amount, loan_amount: loan.amount.format)
         errors.add(:fourth_draw_amount, :not_less_than_or_equal_to_loan_amount, loan_amount: loan.amount.format)
       end
+    end
+
+    def premium_payment_collection_class
+      PREMIUM_CALCULATION_STRATEGIES.fetch(premium_calculation_strategy.to_sym)
     end
 end
