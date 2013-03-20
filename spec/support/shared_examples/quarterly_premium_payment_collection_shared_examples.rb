@@ -1,4 +1,4 @@
-shared_examples_for 'a quarterly premium payment collection' do
+shared_examples_for 'a premium payment collection based on monthly or quarterly loan repayments' do
   describe '#to_a' do
     let(:collection) { subject.new(premium_schedule) }
 

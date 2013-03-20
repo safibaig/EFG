@@ -13,7 +13,7 @@ class PremiumSchedule < ActiveRecord::Base
     annually: AnnualPremiumPaymentCollection,
     six_monthly: SixMonthlyPremiumPaymentCollection,
     quarterly: QuarterlyPremiumPaymentCollection,
-    monthly: LegacyQuarterlyPremiumPaymentCollection,
+    monthly: MonthlyPremiumPaymentCollection,
     interest_only: InterestOnlyPremiumPaymentCollection,
     legacy_quarterly: LegacyQuarterlyPremiumPaymentCollection
   }
