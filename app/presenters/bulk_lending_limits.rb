@@ -4,13 +4,13 @@ class BulkLendingLimits
   include ActiveModel::Model
   include ActiveModel::MassAssignmentSecurity
 
-  attr_accessor :name, :created_by, :modified_by, :lending_limit_name,
+  attr_accessor :phase_id, :created_by, :modified_by, :lending_limit_name,
     :ends_on, :starts_on, :guarantee_rate, :premium_rate, :allocation_type_id
 
-  attr_accessible :name, :lending_limit_name, :ends_on, :starts_on, :guarantee_rate,
+  attr_accessible :phase_id, :lending_limit_name, :ends_on, :starts_on, :guarantee_rate,
     :premium_rate, :allocation_type_id, :lenders_attributes
 
-  validates_presence_of :allocation_type_id, :name, :ends_on, :guarantee_rate,
+  validates_presence_of :allocation_type_id, :phase_id, :ends_on, :guarantee_rate,
     :premium_rate, :starts_on, :lending_limit_name
 
   validate :ends_on_is_after_starts_on
@@ -40,6 +40,10 @@ class BulkLendingLimits
     @guarantee_rate = value.try(:to_i)
   end
 
+  def phase
+    Phase.find(phase_id)
+  end
+
   def lenders_attributes=(values)
     values.each do |_, lender_attributes|
       lender = lenders_by_id[lender_attributes[:id].to_i]
@@ -62,13 +66,6 @@ class BulkLendingLimits
     return false unless valid?
 
     ActiveRecord::Base.transaction do
-      phase = Phase.create!(name: name) do |phase|
-        phase.created_by = created_by
-        phase.modified_by = created_by
-      end
-
-      AdminAudit.log(AdminAudit::PhaseCreated, phase, created_by)
-
       selected_lenders.each do |lender_lending_limit|
         lending_limit = LendingLimit.create! do |lending_limit|
           lending_limit.name = lending_limit_name

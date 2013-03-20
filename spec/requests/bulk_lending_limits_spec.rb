@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe "bulk creation of lending limits" do
   let(:current_user) { FactoryGirl.create(:cfe_admin) }
   before { login_as(current_user, scope: :user) }
@@ -9,6 +11,7 @@ describe "bulk creation of lending limits" do
       visit_bulk_lending_limits_form
     end
 
+    let!(:phase) { FactoryGirl.create(:phase, name: 'Phase 1') }
     let!(:lender1) { FactoryGirl.create(:lender) }
     let!(:lender2) { FactoryGirl.create(:lender) }
     let!(:lender3) { FactoryGirl.create(:lender) }
@@ -24,7 +27,7 @@ describe "bulk creation of lending limits" do
     it do
       dispatch
 
-      fill_in 'name', 'Phase'
+      select 'Phase 1', from: 'bulk_lending_limits_phase_id'
 
       choose_radio_button 'allocation_type_id', 1
       fill_in 'lending_limit_name', 'This year'
@@ -37,17 +40,6 @@ describe "bulk creation of lending limits" do
       setup_lending_limit lender3, allocation: '123,456.78'
 
       click_button 'Create Lending Limits'
-
-      phase = Phase.last!
-      phase.name.should == 'Phase'
-      phase.created_by.should == current_user
-      phase.modified_by.should == current_user
-
-      phase_admin_audit = AdminAudit.first!
-      phase_admin_audit.action.should == AdminAudit::PhaseCreated
-      phase_admin_audit.auditable.should == phase
-      phase_admin_audit.modified_by.should == current_user
-      phase_admin_audit.modified_on.should == Date.current
 
       lending_limit_audits = AdminAudit.where(action: AdminAudit::LendingLimitCreated)
       lending_limit_audits.count.should == 2
