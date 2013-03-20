@@ -100,6 +100,10 @@ class PremiumSchedule < ActiveRecord::Base
     drawdowns
   end
 
+  def drawdowns_taken_by_quarter(quarter)
+    drawdowns.select {|drawdown| drawdown.month <= quarter.last_month }
+  end
+
   def premiums
     premium_payment_collection_class.new(self).to_a
   end
