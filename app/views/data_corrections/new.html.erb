@@ -1,4 +1,7 @@
-<%= breadcrumbs_for_loan(@loan) %>
+<%= breadcrumbs_for_loan(
+  @loan,
+  link_to('Data Correction', loan_data_corrections_path(@loan))
+) %>
 
 <div class="page-header">
   <h1>Data Correction</h1>
