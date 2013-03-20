@@ -1,4 +1,6 @@
 class LendingLimitsController < ApplicationController
+  include AuditableController
+
   before_filter :verify_create_permission, only: [:new, :create]
   before_filter :verify_update_permission, only: [:edit, :update, :activate, :deactivate]
   before_filter :verify_view_permission, only: [:index]
@@ -19,8 +21,9 @@ class LendingLimitsController < ApplicationController
     @lending_limit.active = true
     @lending_limit.modified_by = current_user
 
-    if @lending_limit.save
-      AdminAudit.log(AdminAudit::LendingLimitCreated, @lending_limit, current_user)
+    save = -> { @lending_limit.save }
+
+    if audit(AdminAudit::LendingLimitCreated, @lending_limit, &save)
       redirect_to lender_lending_limits_url(@lender)
     else
       load_phases
@@ -37,8 +40,9 @@ class LendingLimitsController < ApplicationController
     @lending_limit.attributes = params[:lending_limit].slice(:allocation, :name, :phase_id)
     @lending_limit.modified_by = current_user
 
-    if @lending_limit.save
-      AdminAudit.log(AdminAudit::LendingLimitEdited, @lending_limit, current_user)
+    save = -> { @lending_limit.save }
+
+    if audit(AdminAudit::LendingLimitEdited, @lending_limit, &save)
       redirect_to lender_lending_limits_url(@lender)
     else
       load_phases
@@ -49,16 +53,22 @@ class LendingLimitsController < ApplicationController
   def activate
     @lending_limit = @lender.lending_limits.find(params[:id])
     @lending_limit.modified_by = current_user
-    @lending_limit.activate!
-    AdminAudit.log(AdminAudit::LendingLimitActivated, @lending_limit, current_user)
+
+    audit(AdminAudit::LendingLimitActivated, @lending_limit) do
+      @lending_limit.activate!
+    end
+
     redirect_to lender_lending_limits_url(@lender)
   end
 
   def deactivate
     @lending_limit = @lender.lending_limits.find(params[:id])
     @lending_limit.modified_by = current_user
-    @lending_limit.deactivate!
-    AdminAudit.log(AdminAudit::LendingLimitRemoved, @lending_limit, current_user)
+
+    audit(AdminAudit::LendingLimitRemoved, @lending_limit) do
+      @lending_limit.deactivate!
+    end
+
     redirect_to lender_lending_limits_url(@lender)
   end
 
