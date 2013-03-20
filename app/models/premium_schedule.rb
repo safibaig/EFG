@@ -12,7 +12,7 @@ class PremiumSchedule < ActiveRecord::Base
   PREMIUM_CALCULATION_STRATEGIES = {
     annually: LegacyQuarterlyPremiumPaymentCollection,
     six_monthly: LegacyQuarterlyPremiumPaymentCollection,
-    quarterly: LegacyQuarterlyPremiumPaymentCollection,
+    quarterly: QuarterlyPremiumPaymentCollection,
     monthly: LegacyQuarterlyPremiumPaymentCollection,
     interest_only: InterestOnlyPremiumPaymentCollection,
     legacy_quarterly: LegacyQuarterlyPremiumPaymentCollection
