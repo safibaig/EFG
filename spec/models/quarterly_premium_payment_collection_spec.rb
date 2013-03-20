@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe QuarterlyPremiumPaymentCollection do
-  it_should_behave_like 'a quarterly premium payment collection' do
+  it_should_behave_like 'a premium payment collection based on monthly or quarterly loan repayments' do
     subject { QuarterlyPremiumPaymentCollection }
   end
 
