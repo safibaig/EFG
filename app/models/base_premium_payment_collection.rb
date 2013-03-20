@@ -33,6 +33,8 @@ class BasePremiumPaymentCollection
     unless range_of_quarters.map(&:quarter_number).include?(quarter.quarter_number)
       raise ArgumentError, 'quarter out of bounds'
     end
+
+    PremiumPayment.new(quarter, premium_schedule, repayment_frequency).amount
   end
 
   def range_of_quarters
