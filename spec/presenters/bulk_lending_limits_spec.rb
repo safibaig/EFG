@@ -83,7 +83,7 @@ describe BulkLendingLimits do
     let(:lender) { double(Lender, id: 1) }
 
     before do
-      Lender.stub!(:order_by_name).and_return([lender])
+      Lender.stub_chain(:active, :order_by_name).and_return([lender])
     end
 
     let(:bulk_lending_limits) { BulkLendingLimits.new(attributes) }
@@ -110,12 +110,15 @@ describe BulkLendingLimits do
     let(:bulk_lending_limits) { BulkLendingLimits.new }
     let(:lender) { double(Lender) }
 
-    before { Lender.stub!(:order_by_name).and_return([lender]) }
+    before { Lender.stub_chain(:active, :order_by_name).and_return([lender]) }
 
     subject { bulk_lending_limits.lenders }
 
     it "should use the order_by_name scope on Lenders" do
-      Lender.should_receive(:order_by_name)
+      scope = double('scope')
+      Lender.should_receive(:active).and_return(scope)
+      scope.should_receive(:order_by_name).and_return([lender])
+
       subject
     end
 

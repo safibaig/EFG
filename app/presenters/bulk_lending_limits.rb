@@ -54,7 +54,7 @@ class BulkLendingLimits
   end
 
   def lenders
-    @lenders ||= Lender.order_by_name.map do |lender|
+    @lenders ||= Lender.active.order_by_name.map do |lender|
       LenderLendingLimit.new(lender)
     end
   end
