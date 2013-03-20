@@ -426,4 +426,51 @@ describe PremiumSchedule do
       end
     end
   end
+
+  describe '#drawdowns' do
+    let(:drawdowns) { premium_schedule.drawdowns }
+
+    context 'when there is a single drawdown' do
+      let(:premium_schedule) {
+        FactoryGirl.build(:rescheduled_premium_schedule,
+          initial_draw_amount: Money.new(100_000_00))
+      }
+
+      it 'returns an array containing one drawdown' do
+        drawdowns.size.should == 1
+
+        drawdowns[0].amount.should == Money.new(100_000_00)
+        drawdowns[0].month.should == 0
+      end
+    end
+
+    context 'when there are multiple drawdowns' do
+      let(:premium_schedule) {
+        FactoryGirl.build(:rescheduled_premium_schedule,
+          initial_draw_amount: Money.new(100_000_00),
+          second_draw_amount: Money.new(75_000_00),
+          second_draw_months: 2,
+          third_draw_amount: Money.new(50_000_00),
+          third_draw_months: 4,
+          fourth_draw_amount: Money.new(25_000_00),
+          fourth_draw_months: 6)
+      }
+
+      it 'returns an array containing one drawdown' do
+        drawdowns.size.should == 4
+
+        drawdowns[0].amount.should == Money.new(100_000_00)
+        drawdowns[0].month.should == 0
+
+        drawdowns[1].amount.should == Money.new(75_000_00)
+        drawdowns[1].month.should == 2
+
+        drawdowns[2].amount.should == Money.new(50_000_00)
+        drawdowns[2].month.should == 4
+
+        drawdowns[3].amount.should == Money.new(25_000_00)
+        drawdowns[3].month.should == 6
+      end
+    end
+  end
 end
