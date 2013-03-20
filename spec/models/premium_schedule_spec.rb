@@ -98,6 +98,12 @@ describe PremiumSchedule do
       end
     end
 
+    it 'is invalid when unable to derive the premium_calculation_strategy from the loan' do
+      premium_schedule.premium_calculation_strategy = nil
+      loan.repayment_frequency_id = nil
+      premium_schedule.should_not be_valid
+    end
+
     it 'requires initial draw amount to be 0 or more' do
       loan.amount = 0
 
@@ -155,6 +161,19 @@ describe PremiumSchedule do
         premium_schedule.should_not be_valid
         premium_schedule.initial_capital_repayment_holiday = 120
         premium_schedule.should be_valid
+      end
+    end
+
+    describe 'callbacks' do
+      context 'on create' do
+        context 'before validation' do
+          it 'sets the premium_calculation_strategy based on the repayment frequency of the loan' do
+            premium_schedule.premium_calculation_strategy = nil
+            loan.repayment_frequency_id = 3
+            premium_schedule.valid?
+            premium_schedule.premium_calculation_strategy.should == 'quarterly'
+          end
+        end
       end
     end
 
