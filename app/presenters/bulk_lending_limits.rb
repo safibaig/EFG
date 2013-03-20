@@ -1,6 +1,6 @@
 require 'active_model/model'
 
-class PhaseWithLendingLimits
+class BulkLendingLimits
   include ActiveModel::Model
   include ActiveModel::MassAssignmentSecurity
 
@@ -15,10 +15,6 @@ class PhaseWithLendingLimits
 
   validate :ends_on_is_after_starts_on
   validates_inclusion_of :allocation_type_id, in: [1, 2]
-
-  def self.name
-    Phase.name
-  end
 
   def initialize(attrs = {})
     super(sanitize_for_mass_assignment(attrs))

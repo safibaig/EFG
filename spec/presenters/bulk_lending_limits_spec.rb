@@ -1,64 +1,64 @@
 require 'spec_helper'
 
-describe PhaseWithLendingLimits do
+describe BulkLendingLimits do
   describe "validations" do
     let!(:lender) { FactoryGirl.create(:lender) }
-    let(:phase_with_lending_limits) { FactoryGirl.build(:phase_with_lending_limits) }
+    let(:bulk_lending_limits) { FactoryGirl.build(:bulk_lending_limits) }
 
     it "should have a valid factory" do
-      phase_with_lending_limits.should be_valid
+      bulk_lending_limits.should be_valid
     end
 
     it "should be invalid without a name" do
-      phase_with_lending_limits.name = ''
-      phase_with_lending_limits.should_not be_valid
+      bulk_lending_limits.name = ''
+      bulk_lending_limits.should_not be_valid
     end
 
     it 'requires a starts_on date' do
-      phase_with_lending_limits.starts_on = nil
-      phase_with_lending_limits.should_not be_valid
+      bulk_lending_limits.starts_on = nil
+      bulk_lending_limits.should_not be_valid
     end
 
     it 'requires a ends_on date' do
-      phase_with_lending_limits.ends_on = nil
-      phase_with_lending_limits.should_not be_valid
+      bulk_lending_limits.ends_on = nil
+      bulk_lending_limits.should_not be_valid
     end
 
     it 'requires a guarantee rate' do
-      phase_with_lending_limits.guarantee_rate = nil
-      phase_with_lending_limits.should_not be_valid
+      bulk_lending_limits.guarantee_rate = nil
+      bulk_lending_limits.should_not be_valid
     end
 
     it 'requires a premium rate' do
-      phase_with_lending_limits.premium_rate = nil
-      phase_with_lending_limits.should_not be_valid
+      bulk_lending_limits.premium_rate = nil
+      bulk_lending_limits.should_not be_valid
     end
 
     it 'requires a valid allocation_type_id' do
-      phase_with_lending_limits.allocation_type_id = ''
-      phase_with_lending_limits.should_not be_valid
-      phase_with_lending_limits.allocation_type_id = '99'
-      phase_with_lending_limits.should_not be_valid
-      phase_with_lending_limits.allocation_type_id = '1'
-      phase_with_lending_limits.should be_valid
+      bulk_lending_limits.allocation_type_id = ''
+      bulk_lending_limits.should_not be_valid
+      bulk_lending_limits.allocation_type_id = '99'
+      bulk_lending_limits.should_not be_valid
+      bulk_lending_limits.allocation_type_id = '1'
+      bulk_lending_limits.should be_valid
     end
 
     it 'requires a lending_limit_name' do
-      phase_with_lending_limits.lending_limit_name = ''
-      phase_with_lending_limits.should_not be_valid
+      bulk_lending_limits.lending_limit_name = ''
+      bulk_lending_limits.should_not be_valid
     end
 
     it 'requires ends_on to be after starts_on' do
-      phase_with_lending_limits.starts_on = Date.new(2012, 1, 2)
-      phase_with_lending_limits.ends_on = Date.new(2012, 1, 1)
-      phase_with_lending_limits.should_not be_valid
+      bulk_lending_limits.starts_on = Date.new(2012, 1, 2)
+      bulk_lending_limits.ends_on = Date.new(2012, 1, 1)
+      bulk_lending_limits.should_not be_valid
     end
 
     it 'requires valid lender lending limits' do
-      lender = phase_with_lending_limits.lenders.first
+      lender = bulk_lending_limits.lenders.first
       lender.allocation = nil
       lender.selected = true
-      phase_with_lending_limits.should_not be_valid
+      bulk_lending_limits.should_not be_valid
     end
   end
 
@@ -86,9 +86,9 @@ describe PhaseWithLendingLimits do
       Lender.stub!(:order_by_name).and_return([lender])
     end
 
-    let(:phase_with_lending_limits) { PhaseWithLendingLimits.new(attributes) }
+    let(:bulk_lending_limits) { BulkLendingLimits.new(attributes) }
 
-    subject { phase_with_lending_limits }
+    subject { bulk_lending_limits }
 
     its(:name) { should == 'name' }
     its(:allocation_type_id) { should == 1 }
@@ -99,7 +99,7 @@ describe PhaseWithLendingLimits do
     its(:premium_rate) { should == 2 }
 
     context "selected lenders" do
-      subject { phase_with_lending_limits.lenders.first }
+      subject { bulk_lending_limits.lenders.first }
 
       its(:allocation) { should == Money.new(12300) }
       it { should be_selected }
@@ -107,12 +107,12 @@ describe PhaseWithLendingLimits do
   end
 
   describe "#lenders" do
-    let(:phase_with_lending_limits) { PhaseWithLendingLimits.new }
+    let(:bulk_lending_limits) { BulkLendingLimits.new }
     let(:lender) { double(Lender) }
 
     before { Lender.stub!(:order_by_name).and_return([lender]) }
 
-    subject { phase_with_lending_limits.lenders }
+    subject { bulk_lending_limits.lenders }
 
     it "should use the order_by_name scope on Lenders" do
       Lender.should_receive(:order_by_name)
@@ -152,14 +152,14 @@ describe PhaseWithLendingLimits do
     let(:user) { FactoryGirl.create(:cfe_admin) }
 
     before do
-      phase_with_lending_limits.created_by = user
+      bulk_lending_limits.created_by = user
     end
 
-    let(:phase_with_lending_limits) { PhaseWithLendingLimits.new(attributes) }
+    let(:bulk_lending_limits) { BulkLendingLimits.new(attributes) }
 
     it "should create a phase" do
       expect {
-        phase_with_lending_limits.save
+        bulk_lending_limits.save
       }.to change(Phase, :count).by(1)
 
       phase = Phase.first
@@ -169,7 +169,7 @@ describe PhaseWithLendingLimits do
 
     it "should create a lending limit" do
       expect {
-        phase_with_lending_limits.save
+        bulk_lending_limits.save
       }.to change(LendingLimit, :count).by(1)
 
       lending_limit = LendingLimit.first
@@ -186,7 +186,7 @@ describe PhaseWithLendingLimits do
 
     it "should create lending limits for selected lenders only" do
       expect {
-        phase_with_lending_limits.save
+        bulk_lending_limits.save
       }.to_not change(lender1.lending_limits, :count)
     end
 
@@ -195,12 +195,12 @@ describe PhaseWithLendingLimits do
 
       it "for AdminAudit::PhaseCreated" do
         AdminAudit.should_receive(:log).with(AdminAudit::PhaseCreated, instance_of(Phase), user)
-        phase_with_lending_limits.save
+        bulk_lending_limits.save
       end
 
       it "for AdminAudit::LendingLimitCreated" do
         AdminAudit.should_receive(:log).with(AdminAudit::LendingLimitCreated, instance_of(LendingLimit), user)
-        phase_with_lending_limits.save
+        bulk_lending_limits.save
       end
     end
   end

@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :phase_with_lending_limits do
+  factory :bulk_lending_limits do
     name 'Phase 1'
     sequence(:lending_limit_name) { |n| "lending limit #{n}" }
     allocation_type_id 1
