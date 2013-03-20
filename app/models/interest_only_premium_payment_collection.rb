@@ -1,6 +1,5 @@
 class InterestOnlyPremiumPaymentCollection < BasePremiumPaymentCollection
-  def premium_amount_for_quarter(quarter)
-    super
-    InterestOnlyPremiumPayment.new(quarter, premium_schedule).amount
+  def repayment_frequency
+    RepaymentFrequency::InterestOnly
   end
 end

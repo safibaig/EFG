@@ -1,7 +1,8 @@
-class BasePremiumPayment
-  def initialize(quarter, premium_schedule)
+class PremiumPayment
+  def initialize(quarter, premium_schedule, repayment_frequency)
     @quarter = quarter
     @premium_schedule = premium_schedule
+    @repayment_frequency = repayment_frequency
   end
 
   def amount
@@ -10,7 +11,7 @@ class BasePremiumPayment
   end
 
   private
-  attr_reader :quarter, :premium_schedule
+  attr_reader :quarter, :premium_schedule, :repayment_frequency
 
   def amount_of_drawdown_repaid(drawdown)
     if premium_schedule.repayment_holiday_active_at_month?(quarter.last_month)
@@ -54,5 +55,14 @@ class BasePremiumPayment
     months_of_repayment = (complete_repayments * months_per_repayment_period) - start_month_of_drawdown_repayment(month_of_drawdown)
 
     months_of_repayment > 0 ? months_of_repayment : 0
+  end
+
+  def months_per_repayment_period
+    if repayment_frequency == RepaymentFrequency::InterestOnly
+      # No repayment until the end of the loan
+      premium_schedule.repayment_duration
+    else
+      repayment_frequency.months_per_repayment_period
+    end
   end
 end
