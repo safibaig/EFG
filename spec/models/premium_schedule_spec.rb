@@ -473,4 +473,29 @@ describe PremiumSchedule do
       end
     end
   end
+
+  describe '#drawdowns_taken_by_quarter' do
+    let(:premium_schedule) {
+      FactoryGirl.build(:rescheduled_premium_schedule,
+        initial_draw_amount: Money.new(100_000_00),
+        second_draw_amount: Money.new(75_000_00),
+        second_draw_months: 2,
+        third_draw_amount: Money.new(50_000_00),
+        third_draw_months: 4,
+        fourth_draw_amount: Money.new(25_000_00),
+        fourth_draw_months: 6)
+    }
+
+    it 'returns only the drawdowns taken by the quarter specified' do
+      drawdowns = premium_schedule.drawdowns_taken_by_quarter(LoanQuarter.new(1))
+
+      drawdowns.size.should == 2
+
+      drawdowns[0].amount.should == Money.new(100_000_00)
+      drawdowns[0].month.should == 0
+
+      drawdowns[1].amount.should == Money.new(75_000_00)
+      drawdowns[1].month.should == 2
+    end
+  end
 end
