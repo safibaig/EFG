@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130319175816) do
+ActiveRecord::Schema.define(:version => 20130321140352) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -390,9 +390,9 @@ ActiveRecord::Schema.define(:version => 20130319175816) do
   end
 
   create_table "premium_schedules", :force => true do |t|
-    t.integer  "loan_id",                                                                        :null => false
+    t.integer  "loan_id",                                                                                           :null => false
     t.integer  "initial_draw_year"
-    t.integer  "initial_draw_amount",               :limit => 8,                                 :null => false
+    t.integer  "initial_draw_amount",               :limit => 8,                                                    :null => false
     t.integer  "repayment_duration"
     t.integer  "initial_capital_repayment_holiday"
     t.integer  "second_draw_amount",                :limit => 8
@@ -401,8 +401,8 @@ ActiveRecord::Schema.define(:version => 20130319175816) do
     t.integer  "third_draw_months"
     t.integer  "fourth_draw_amount",                :limit => 8
     t.integer  "fourth_draw_months"
-    t.datetime "created_at",                                                                     :null => false
-    t.datetime "updated_at",                                                                     :null => false
+    t.datetime "created_at",                                                                                        :null => false
+    t.datetime "updated_at",                                                                                        :null => false
     t.string   "legacy_loan_id"
     t.integer  "seq"
     t.integer  "loan_version"
@@ -421,12 +421,12 @@ ActiveRecord::Schema.define(:version => 20130319175816) do
     t.integer  "guarantee_rate"
     t.decimal  "npv",                                            :precision => 2,  :scale => 1
     t.decimal  "prem_rate",                                      :precision => 2,  :scale => 1
-    t.decimal  "euro_conversion_rate",                           :precision => 17, :scale => 14, :null => false
+    t.decimal  "euro_conversion_rate",                           :precision => 17, :scale => 14,                    :null => false
     t.integer  "elsewhere_perc"
     t.integer  "obj1_perc"
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
-    t.string   "premium_calculation_strategy"
+    t.boolean  "legacy_premium_calculation",                                                     :default => false
   end
 
   add_index "premium_schedules", ["legacy_loan_id"], :name => "index_premium_schedules_on_legacy_loan_id"

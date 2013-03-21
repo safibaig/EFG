@@ -5,7 +5,7 @@ FactoryGirl.define do
     initial_draw_amount { |o| o.loan.amount }
     repayment_duration 12
     calc_type 'S'
-    premium_calculation_strategy 'legacy_quarterly'
+    legacy_premium_calculation true
 
     factory :rescheduled_premium_schedule do
       calc_type 'R'

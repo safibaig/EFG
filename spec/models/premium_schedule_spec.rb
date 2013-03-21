@@ -98,12 +98,6 @@ describe PremiumSchedule do
       end
     end
 
-    it 'is invalid when unable to derive the premium_calculation_strategy from the loan' do
-      premium_schedule.premium_calculation_strategy = nil
-      loan.repayment_frequency_id = nil
-      premium_schedule.should_not be_valid
-    end
-
     it 'requires initial draw amount to be 0 or more' do
       loan.amount = 0
 
@@ -161,19 +155,6 @@ describe PremiumSchedule do
         premium_schedule.should_not be_valid
         premium_schedule.initial_capital_repayment_holiday = 120
         premium_schedule.should be_valid
-      end
-    end
-
-    describe 'callbacks' do
-      context 'on create' do
-        context 'before validation' do
-          it 'sets the premium_calculation_strategy based on the repayment frequency of the loan' do
-            premium_schedule.premium_calculation_strategy = nil
-            loan.repayment_frequency_id = 3
-            premium_schedule.valid?
-            premium_schedule.premium_calculation_strategy.should == 'quarterly'
-          end
-        end
       end
     end
 
@@ -474,28 +455,218 @@ describe PremiumSchedule do
     end
   end
 
-  describe '#drawdowns_taken_by_quarter' do
-    let(:premium_schedule) {
-      FactoryGirl.build(:rescheduled_premium_schedule,
-        initial_draw_amount: Money.new(100_000_00),
-        second_draw_amount: Money.new(75_000_00),
-        second_draw_months: 2,
-        third_draw_amount: Money.new(50_000_00),
-        third_draw_months: 4,
-        fourth_draw_amount: Money.new(25_000_00),
-        fourth_draw_months: 6)
-    }
+  describe '#premiums' do
+    before do
+      premium_schedule.loan.premium_rate = 2.00
+    end
 
-    it 'returns only the drawdowns taken by the quarter specified' do
-      drawdowns = premium_schedule.drawdowns_taken_by_quarter(LoanQuarter.new(1))
+    context 'when using legacy premium calculation logic' do
+      context 'and the loan term contains an exact number of quarters' do
+        it_should_behave_like 'premium payments for a loan repaid on a monthly or quarterly basis' do
+          let(:legacy_premium_calculation) { true }
+          let(:loan) {
+            FactoryGirl.build_stubbed(:loan,
+              repayment_frequency_id: RepaymentFrequency::Quarterly.id
+            )
+          }
+        end
+      end
 
-      drawdowns.size.should == 2
+      context 'and the loand term does not contain an exact number of quarters' do
+        let(:premium_schedule) {
+          FactoryGirl.build_stubbed(:premium_schedule,
+            repayment_duration: 50, # <-- not evenly divisible by 3
+            initial_draw_amount: Money.new(50_000_00),
+            initial_capital_repayment_holiday: 2,
+            legacy_premium_calculation: true
+          )
+        }
 
-      drawdowns[0].amount.should == Money.new(100_000_00)
-      drawdowns[0].month.should == 0
+        it 'returns the correct premium payments, missing off the final one' do
+          premium_schedule.premiums.should == [
+            BankersRoundingMoney.new(BigDecimal.new('25000')),
+            BankersRoundingMoney.new(BigDecimal.new('24479')),
+            BankersRoundingMoney.new(BigDecimal.new('22917')),
+            BankersRoundingMoney.new(BigDecimal.new('21354')),
+            BankersRoundingMoney.new(BigDecimal.new('19792')),
+            BankersRoundingMoney.new(BigDecimal.new('18229')),
+            BankersRoundingMoney.new(BigDecimal.new('16667')),
+            BankersRoundingMoney.new(BigDecimal.new('15104')),
+            BankersRoundingMoney.new(BigDecimal.new('13542')),
+            BankersRoundingMoney.new(BigDecimal.new('11979')),
+            BankersRoundingMoney.new(BigDecimal.new('10417')),
+            BankersRoundingMoney.new(BigDecimal.new( '8854')),
+            BankersRoundingMoney.new(BigDecimal.new( '7292')),
+            BankersRoundingMoney.new(BigDecimal.new( '5729')),
+            BankersRoundingMoney.new(BigDecimal.new( '4167')),
+            BankersRoundingMoney.new(BigDecimal.new( '2604')),
+          ]
+        end
+      end
+    end
 
-      drawdowns[1].amount.should == Money.new(75_000_00)
-      drawdowns[1].month.should == 2
+    context 'when not using legacy premium calculation logic' do
+      context 'and the repayment frequency is quarterly' do
+        context 'and the loan term contains an exact number of quarters' do
+          it_should_behave_like 'premium payments for a loan repaid on a monthly or quarterly basis' do
+            let(:legacy_premium_calculation) { false }
+            let(:loan) {
+              FactoryGirl.build_stubbed(:loan,
+                repayment_frequency_id: RepaymentFrequency::Quarterly.id
+              )
+            }
+          end
+        end
+
+        context 'when the loan term does not contain an exact number of quarters' do
+          let(:premium_schedule) {
+            FactoryGirl.build_stubbed(:premium_schedule,
+              repayment_duration: 50, # <-- not evenly divisible by 3
+              initial_draw_amount: Money.new(50_000_00),
+              initial_capital_repayment_holiday: 2,
+              legacy_premium_calculation: false
+            )
+          }
+
+          it 'returns the correct premium payments (one more than the legacy calculation)' do
+            premium_schedule.loan.repayment_frequency_id = RepaymentFrequency::Quarterly.id
+
+            premium_schedule.premiums.should == [
+              BankersRoundingMoney.new(BigDecimal.new('25000')),
+              BankersRoundingMoney.new(BigDecimal.new('24479')),
+              BankersRoundingMoney.new(BigDecimal.new('22917')),
+              BankersRoundingMoney.new(BigDecimal.new('21354')),
+              BankersRoundingMoney.new(BigDecimal.new('19792')),
+              BankersRoundingMoney.new(BigDecimal.new('18229')),
+              BankersRoundingMoney.new(BigDecimal.new('16667')),
+              BankersRoundingMoney.new(BigDecimal.new('15104')),
+              BankersRoundingMoney.new(BigDecimal.new('13542')),
+              BankersRoundingMoney.new(BigDecimal.new('11979')),
+              BankersRoundingMoney.new(BigDecimal.new('10417')),
+              BankersRoundingMoney.new(BigDecimal.new( '8854')),
+              BankersRoundingMoney.new(BigDecimal.new( '7292')),
+              BankersRoundingMoney.new(BigDecimal.new( '5729')),
+              BankersRoundingMoney.new(BigDecimal.new( '4167')),
+              BankersRoundingMoney.new(BigDecimal.new( '2604')),
+              BankersRoundingMoney.new(BigDecimal.new( '1042')),
+            ]
+          end
+        end
+      end
+
+      context 'and the repayment frequency is monthly' do
+        context 'and the loan term contains an exact number of quarters' do
+          it_should_behave_like 'premium payments for a loan repaid on a monthly or quarterly basis' do
+            let(:legacy_premium_calculation) { false }
+            let(:loan) {
+              FactoryGirl.build_stubbed(:loan,
+                repayment_frequency_id: RepaymentFrequency::Monthly.id
+              )
+            }
+          end
+        end
+
+        context 'when the loan term does not contain an exact number of quarters' do
+          let(:premium_schedule) {
+            FactoryGirl.build_stubbed(:premium_schedule,
+              repayment_duration: 50, # <-- not evenly divisible by 3
+              initial_draw_amount: Money.new(50_000_00),
+              initial_capital_repayment_holiday: 2,
+              legacy_premium_calculation: false
+            )
+          }
+
+          it 'returns the correct premium payments (one more than the legacy calculation)' do
+            premium_schedule.loan.repayment_frequency_id = RepaymentFrequency::Monthly.id
+
+            premium_schedule.premiums.should == [
+              BankersRoundingMoney.new(BigDecimal.new('25000')),
+              BankersRoundingMoney.new(BigDecimal.new('24479')),
+              BankersRoundingMoney.new(BigDecimal.new('22917')),
+              BankersRoundingMoney.new(BigDecimal.new('21354')),
+              BankersRoundingMoney.new(BigDecimal.new('19792')),
+              BankersRoundingMoney.new(BigDecimal.new('18229')),
+              BankersRoundingMoney.new(BigDecimal.new('16667')),
+              BankersRoundingMoney.new(BigDecimal.new('15104')),
+              BankersRoundingMoney.new(BigDecimal.new('13542')),
+              BankersRoundingMoney.new(BigDecimal.new('11979')),
+              BankersRoundingMoney.new(BigDecimal.new('10417')),
+              BankersRoundingMoney.new(BigDecimal.new( '8854')),
+              BankersRoundingMoney.new(BigDecimal.new( '7292')),
+              BankersRoundingMoney.new(BigDecimal.new( '5729')),
+              BankersRoundingMoney.new(BigDecimal.new( '4167')),
+              BankersRoundingMoney.new(BigDecimal.new( '2604')),
+              BankersRoundingMoney.new(BigDecimal.new( '1042')),
+            ]
+          end
+        end
+      end
+
+      context 'and the repayment frequency is six-monthly' do
+        before do
+          premium_schedule.loan.repayment_frequency_id = RepaymentFrequency::SixMonthly.id
+        end
+
+        context 'when there is a single drawdown' do
+          context 'and no repayment holiday' do
+            let(:premium_schedule) {
+              FactoryGirl.build_stubbed(:premium_schedule,
+                repayment_duration: 36,
+                initial_draw_amount: Money.new(75_000_00),
+                legacy_premium_calculation: false,
+              )
+            }
+
+            it 'returns the correct premium payments' do
+              premium_schedule.premiums.should == [
+                BankersRoundingMoney.new(BigDecimal.new('37500')),
+                BankersRoundingMoney.new(BigDecimal.new('37500')),
+                BankersRoundingMoney.new(BigDecimal.new('31250')),
+                BankersRoundingMoney.new(BigDecimal.new('31250')),
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('18750')),
+                BankersRoundingMoney.new(BigDecimal.new('18750')),
+                BankersRoundingMoney.new(BigDecimal.new('12500')),
+                BankersRoundingMoney.new(BigDecimal.new('12500')),
+                BankersRoundingMoney.new(BigDecimal.new( '6250')),
+                BankersRoundingMoney.new(BigDecimal.new( '6250')),
+              ]
+            end
+          end
+        end
+      end
+
+      context 'and the repayment frequency is annually' do
+        before do
+          premium_schedule.loan.repayment_frequency_id = RepaymentFrequency::Annually.id
+        end
+
+        context 'when there is a single drawdown' do
+          context 'and no repayment holiday' do
+            let(:premium_schedule) {
+              FactoryGirl.build_stubbed(:premium_schedule,
+                repayment_duration: 24,
+                initial_draw_amount: Money.new(350_000_00),
+                legacy_premium_calculation: false
+              )
+            }
+
+            it 'returns the correct premium payments' do
+              premium_schedule.premiums.should == [
+                BankersRoundingMoney.new(BigDecimal.new('175000')),
+                BankersRoundingMoney.new(BigDecimal.new('175000')),
+                BankersRoundingMoney.new(BigDecimal.new('175000')),
+                BankersRoundingMoney.new(BigDecimal.new('175000')),
+                BankersRoundingMoney.new(BigDecimal.new( '87500')),
+                BankersRoundingMoney.new(BigDecimal.new( '87500')),
+                BankersRoundingMoney.new(BigDecimal.new( '87500')),
+                BankersRoundingMoney.new(BigDecimal.new( '87500')),
+              ]
+            end
+          end
+        end
+      end
     end
   end
 end
