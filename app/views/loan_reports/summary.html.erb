@@ -61,15 +61,11 @@
       <td><%= current_lender.lender_users.find(@loan_report.created_by_id).try(:name) %></td>
     </tr>
     <% end %>
-    <tr>
-      <td>Loan type(s)</td>
-      <td><%= loan_source_name(@loan_report.loan_sources) %></td>
-    </tr>
     <% if current_lender.can_access_all_loan_schemes? %>
-    <tr>
-      <td>Loan scheme</td>
-      <td><%= loan_scheme_name(@loan_report.loan_scheme) %></td>
-    </tr>
+      <tr>
+        <td>Loan Type(s)</td>
+        <td><%= @loan_report.loan_types.map(&:name).to_sentence %></td>
+      </tr>
     <% end %>
   </tbody>
 </table>
@@ -84,7 +80,6 @@
     <%= f.hidden_field :created_at_end_date, value: @loan_report.created_at_end_date.try(:to_s, :screen) %>
     <%= f.hidden_field :last_modified_start_date, value: @loan_report.last_modified_start_date.try(:to_s, :screen) %>
     <%= f.hidden_field :last_modified_end_date, value: @loan_report.last_modified_end_date.try(:to_s, :screen) %>
-    <%= f.hidden_field(:loan_scheme) if current_lender.can_access_all_loan_schemes? %>
     <%= f.hidden_field :created_by_id %>
 
     <% @loan_report.states.each do |state| %>
@@ -95,8 +90,8 @@
       <%= hidden_field_tag 'loan_report[lender_ids][]', lender_id %>
     <% end %>
 
-    <% @loan_report.loan_sources.each do |source| %>
-      <%= hidden_field_tag 'loan_report[loan_sources][]', source %>
+    <% @loan_report.loan_types.each do |type| %>
+      <%= hidden_field_tag 'loan_report[loan_types][]', type.id %>
     <% end %>
 
     <div class="form-actions">

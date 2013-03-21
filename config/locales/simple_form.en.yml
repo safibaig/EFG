@@ -256,8 +256,7 @@ en:
         states: Select loan state
         lender_ids: What is the name of the lender organisation?
         created_by_id: To refine your data extraction select the user who created the data
-        loan_sources: What is the Loan Type?
-        loan_scheme: Loan scheme
+        loan_types: What is the Loan Type?
 
       loan_audit_report:
         facility_letter_start_date: What is the date of Scheme Facility Letter start date for your report?

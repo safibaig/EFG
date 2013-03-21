@@ -24,15 +24,21 @@
 
   <%= f.input :last_modified_end_date, as: :quick_date %>
 
-  <%= f.input :states, as: :select, collection: loan_state_options(LoanReport::ALLOWED_LOAN_STATES), input_html: { multiple: true } %>
+  <%= f.input :states, as: :select, collection: loan_state_options(LoanReportPresenter::ALLOWED_LOAN_STATES), input_html: { multiple: true } %>
 
-  <%= loan_report_lender_field(f) %>
+  <% if @loan_report.has_lender_selection? %>
+    <%= f.input :lender_ids, as: :select, collection: @loan_report.allowed_lenders.order_by_name, input_html: { class: 'input-xxlarge', multiple: true } %>
+  <% else %>
+    <%= hidden_field_tag 'loan_report[lender_ids][]', current_lender.id %>
+  <% end %>
 
-  <%= loan_report_created_by_field(f) %>
+  <% if @loan_report.has_created_by_selection? %>
+    <%= f.input :created_by_id, as: :select, collection: current_lender.lender_users, prompt: 'All' %>
+  <% end %>
 
-  <%= f.input :loan_sources, as: :check_boxes, collection: loan_report_source_options %>
-
-  <%= loan_report_scheme_field(f) %>
+  <% if @loan_report.has_loan_type_selection? %>
+    <%= f.input :loan_types, as: :check_boxes, collection: LoanTypes::ALL %>
+  <% end %>
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Submit', class: 'btn-primary', data: { 'disable-with' => 'Submitting...' } %>

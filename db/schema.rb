@@ -203,6 +203,8 @@ ActiveRecord::Schema.define(:version => 20130314114612) do
     t.datetime "created_at",                                            :null => false
     t.datetime "updated_at",                                            :null => false
     t.string   "type"
+    t.integer  "old_repayment_duration"
+    t.integer  "repayment_duration"
   end
 
   add_index "loan_modifications", ["loan_id", "seq"], :name => "index_loan_changes_on_loan_id_and_seq", :unique => true
