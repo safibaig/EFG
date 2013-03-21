@@ -34,6 +34,14 @@ class LoanModification < ActiveRecord::Base
 
   scope :desc, order('date_of_change DESC, id DESC')
 
+  def change_type
+    ChangeType.find(change_type_id)
+  end
+
+  def change_type_name
+    change_type.name
+  end
+
   def changes
     attributes.select { |key, value|
       key[0..3] == 'old_' && value.present?

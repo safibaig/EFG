@@ -43,10 +43,10 @@ en:
         change_type_id: 'What is the change you wish to make?'
         amount_drawn: 'What is the amount now being drawn that is to be recorded? (This should include any further draws it is known will take place before the next Premium Payment is due)'
         lump_sum_repayment: 'What is the amount of the lump sum repayment?'
-        business_name: 'What is the new business name?'
         maturity_date: 'What is the new maturity date?'
 
       data_correction:
+        business_name: 'What is the new business name?'
         demanded_amount: 'Change to the Original Outstanding Scheme Facility Principal'
         demanded_interest: 'Change to interest'
         lending_limit_id: 'Correct Lending Limit'

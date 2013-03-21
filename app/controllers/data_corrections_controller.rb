@@ -1,5 +1,6 @@
 class DataCorrectionsController < ApplicationController
   TYPES = {
+    'business_name' => BusinessNameDataCorrectionPresenter,
     'demanded_amount' => DemandedAmountDataCorrectionPresenter,
     'sortcode' => SortcodeDataCorrectionPresenter
   }

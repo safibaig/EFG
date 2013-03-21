@@ -31,16 +31,6 @@ describe LoanChange do
     end
 
     context 'change types' do
-      context '1 - business name' do
-        it 'requires a business_name' do
-          loan_change.change_type_id = ChangeType::BusinessName.id
-          loan_change.business_name = ''
-          loan_change.should_not be_valid
-          loan_change.business_name = 'ACME'
-          loan_change.should be_valid
-        end
-      end
-
       context '5 - Lender demand satisfied' do
         before do
           loan_change.change_type_id = ChangeType::LenderDemandSatisfied.id
@@ -215,18 +205,6 @@ describe LoanChange do
     end
   end
 
-  describe '#changes' do
-    let(:loan_change) { FactoryGirl.build(:loan_change) }
-
-    it 'contains only fields that have a value' do
-      loan_change.old_business_name = 'Foo'
-      loan_change.business_name = 'Bar'
-
-      loan_change.changes.size.should == 1
-      loan_change.changes.first[:attribute].should == 'business_name'
-    end
-  end
-
   describe '#save_and_update_loan' do
     let(:user) { FactoryGirl.create(:lender_user) }
     let(:loan) { FactoryGirl.create(:loan, :guaranteed, :lender_demand, business_name: 'ACME', maturity_date: Date.new(2020, 3, 2)) }
@@ -241,36 +219,6 @@ describe LoanChange do
     let(:premium_schedule_attributes) { FactoryGirl.attributes_for(:rescheduled_premium_schedule, loan: loan) }
 
     context 'change types' do
-      context '1 - business name' do
-        before do
-          loan_change.change_type_id = ChangeType::BusinessName.id
-          loan_change.business_name = 'Foo'
-        end
-
-        it 'works' do
-          loan_change.save_and_update_loan.should == true
-          loan_change.old_business_name.should == 'ACME'
-
-          loan.reload
-          loan.business_name.should == 'Foo'
-          loan.modified_by.should == user
-          loan.state.should == Loan::Guaranteed
-
-          state_change = loan.state_changes.last!
-          state_change.event_id.should == 9
-          state_change.state.should == Loan::Guaranteed
-        end
-
-        it 'does not update Loan#maturity_date' do
-          loan_change.maturity_date = Date.new(2021, 4, 3)
-          loan_change.save_and_update_loan.should == true
-          loan_change.old_maturity_date.should == nil
-
-          loan.reload
-          loan.maturity_date.should == Date.new(2020, 3, 2)
-        end
-      end
-
       # 4 - extend term
       # a - decrease term
       %w(4 a).each do |change_type|
@@ -310,12 +258,6 @@ describe LoanChange do
             state_change = loan.state_changes.last!
             state_change.event_id.should == 9
             state_change.state.should == Loan::Guaranteed
-          end
-
-          it 'does not update Loan#business_name' do
-            loan_change.old_business_name.should == nil
-            loan.reload
-            loan.business_name.should == 'ACME'
           end
         end
       end

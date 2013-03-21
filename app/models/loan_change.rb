@@ -11,16 +11,8 @@ class LoanChange < LoanModification
   validate :validate_non_negative_amounts
   validate :state_aid_recalculated, if: :requires_state_aid_recalculation?
 
-  attr_accessible :amount_drawn, :business_name, :change_type_id,
+  attr_accessible :amount_drawn, :change_type_id,
     :date_of_change, :lump_sum_repayment, :maturity_date
-
-  def change_type
-    ChangeType.find(change_type_id)
-  end
-
-  def change_type_name
-    change_type.name
-  end
 
   def requires_state_aid_recalculation?
     [
@@ -40,9 +32,6 @@ class LoanChange < LoanModification
 
     def set_old_and_loan_attributes
       case change_type
-      when ChangeType::BusinessName
-        self.old_business_name = loan.business_name
-        loan.business_name = business_name
       when ChangeType::ExtendTerm, ChangeType::DecreaseTerm
         self.old_maturity_date  = loan.maturity_date
         loan.maturity_date      = maturity_date
@@ -67,8 +56,6 @@ class LoanChange < LoanModification
 
     def validate_change_type
       case change_type
-      when ChangeType::BusinessName
-        errors.add(:business_name, :required) unless business_name.present?
       when ChangeType::ExtendTerm, ChangeType::DecreaseTerm
         errors.add(:maturity_date, :required) unless maturity_date
         validate_maturity_date_within_allowed_repayment_duration if maturity_date

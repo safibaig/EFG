@@ -4,7 +4,7 @@
   <h1>Change Facility</h1>
 </div>
 
-<p>From this page you can change the amount or terms of a facility (excluding the amount of the original facility or extending the term beyond ten years), return a facility from 'Demand to Borrower' to 'Guaranteed' and record a change of business name.</p>
+<p>From this page you can change the amount or terms of a facility (excluding the amount of the original facility or extending the term beyond ten years) and return a facility from 'Demand to Borrower' to 'Guaranteed'.</p>
 
 <p>Please note that, for loans agreed up until the end of 2005 under the former Small Loans Arrangement for which the full premium was paid in advance, the premium calculation is still required. However the schedule produced should not be given to the Borrower and is not forwarded to the Premium Collection Agent.</p>
 
@@ -27,9 +27,6 @@
   <%= simple_form_row 'Cumulative amount drawn against this facility prior to this change', @loan.cumulative_drawn_amount.format %>
   <%= f.input :amount_drawn, as: :currency %>
   <%= f.input :lump_sum_repayment, as: :currency %>
-
-  <%= simple_form_row 'Current business name', @loan.business_name %>
-  <%= f.input :business_name %>
 
   <%= simple_form_row 'Date of initial draw of funds', @loan.initial_draw_change.date_of_change.to_s(:screen) %>
   <%= simple_form_row 'Current maturity date', @loan.maturity_date.to_s(:screen) %>
