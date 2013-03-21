@@ -11,6 +11,7 @@ describe LenderUsersController do
     it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'CfeAdmin-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'LenderAdmin Lender-scoped controller'
     it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
@@ -38,6 +39,7 @@ describe LenderUsersController do
     it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'CfeAdmin-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'LenderAdmin Lender-scoped controller'
     it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end
@@ -50,6 +52,7 @@ describe LenderUsersController do
     it_behaves_like 'AuditorUser-restricted controller'
     it_behaves_like 'CfeAdmin-restricted controller'
     it_behaves_like 'CfeUser-restricted controller'
+    it_behaves_like 'LenderAdmin Lender-scoped controller'
     it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
   end

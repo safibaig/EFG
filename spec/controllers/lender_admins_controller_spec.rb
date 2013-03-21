@@ -12,6 +12,7 @@ describe LenderAdminsController do
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
+    it_behaves_like 'LenderAdmin Lender-scoped controller'
   end
 
   describe '#show' do
@@ -25,6 +26,7 @@ describe LenderAdminsController do
     it_behaves_like 'CfeUser-restricted controller'
     it_behaves_like 'LenderUser-restricted controller'
     it_behaves_like 'PremiumCollectorUser-restricted controller'
+    it_behaves_like 'LenderAdmin Lender-scoped controller'
   end
 
   describe '#new' do
