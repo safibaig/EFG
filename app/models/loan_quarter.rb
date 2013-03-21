@@ -6,6 +6,6 @@ class LoanQuarter
   end
 
   def last_month
-    3 * @quarter_number
+    3 * quarter_number
   end
 end
