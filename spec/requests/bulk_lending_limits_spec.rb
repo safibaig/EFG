@@ -27,7 +27,7 @@ describe "bulk creation of lending limits" do
     it do
       dispatch
 
-      select 'Phase 1', from: 'bulk_lending_limits_phase_id'
+      select 'Phase 1', from: 'bulk_lending_limits_scheme_or_phase_id'
 
       choose_radio_button 'allocation_type_id', 1
       fill_in 'lending_limit_name', 'This year'

@@ -10,7 +10,7 @@ describe BulkLendingLimits do
     end
 
     it "should be invalid without a phase" do
-      bulk_lending_limits.phase_id = nil
+      bulk_lending_limits.scheme_or_phase_id = nil
       bulk_lending_limits.should_not be_valid
     end
 
@@ -70,7 +70,7 @@ describe BulkLendingLimits do
     } }
 
     let(:attributes) { {
-      phase_id: 47,
+      scheme_or_phase_id: 47,
       allocation_type_id: '1',
       lending_limit_name: 'lending limit name',
       starts_on: '1/1/12',
@@ -90,7 +90,7 @@ describe BulkLendingLimits do
 
     subject { bulk_lending_limits }
 
-    its(:phase_id) { should == 47 }
+    its(:scheme_or_phase_id) { should == 47 }
     its(:allocation_type_id) { should == 1 }
     its(:lending_limit_name) { should == 'lending limit name' }
     its(:starts_on) { should == Date.new(2012, 1, 1) }
@@ -147,7 +147,7 @@ describe BulkLendingLimits do
     } }
 
     let(:attributes) { {
-      phase_id: phase.id,
+      scheme_or_phase_id: phase.id,
       allocation_type_id: '1',
       lending_limit_name: 'lending limit name',
       starts_on: '1/1/12',
@@ -163,12 +163,13 @@ describe BulkLendingLimits do
     let(:phase) { FactoryGirl.create(:phase) }
     let(:user) { FactoryGirl.create(:cfe_admin) }
 
-    before do
-      bulk_lending_limits.created_by = user
-      AdminAudit.stub!(:log)
-    end
+    before { AdminAudit.stub!(:log) }
 
-    let(:bulk_lending_limits) { BulkLendingLimits.new(attributes) }
+    let(:bulk_lending_limits) do
+      bulk_lending_limits = BulkLendingLimits.new(attributes)
+      bulk_lending_limits.created_by = user
+      bulk_lending_limits
+    end
 
     it "should create a lending limit" do
       expect {
@@ -199,6 +200,22 @@ describe BulkLendingLimits do
     it "logs AdminAudit::LendingLimitCreated" do
       AdminAudit.should_receive(:log).with(AdminAudit::LendingLimitCreated, instance_of(LendingLimit), user)
       bulk_lending_limits.save
+    end
+
+    context "with SFLG scheme selected" do
+      before { attributes[:scheme_or_phase_id] = Loan::SFLG_SCHEME }
+
+      it "creates lending limits with a nil phase" do
+        expect {
+          bulk_lending_limits.save
+        }.to change(LendingLimit, :count).by(2)
+
+        lending_limits = LendingLimit.all
+
+        lending_limits.each do |lending_limit|
+          lending_limit.phase.should be_nil
+        end
+      end
     end
   end
 end

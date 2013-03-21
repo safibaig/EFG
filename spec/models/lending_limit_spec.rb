@@ -60,20 +60,6 @@ describe LendingLimit do
       lending_limit.ends_on = Date.new(2012, 1, 1)
       lending_limit.should_not be_valid
     end
-
-    describe "phase" do
-      it "requires a phase for new lending limits" do
-        lending_limit.phase = nil
-        lending_limit.should_not be_valid
-      end
-
-      it "doesn't requrire a phase for existing lending limits" do
-        lending_limit.save!
-
-        lending_limit.phase = nil
-        lending_limit.should be_valid
-      end
-    end
   end
 
   it "has many loans using allocation" do

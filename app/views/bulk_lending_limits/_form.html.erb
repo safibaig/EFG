@@ -1,6 +1,6 @@
 <%= simple_form_for phase, url: bulk_lending_limits_path do |f| %>
   <fieldset class="form-horizontal">
-    <%= f.input :phase_id, as: :select, collection: Phase.all %>
+    <%= f.input :scheme_or_phase_id, as: :scheme_or_phase_select, label: 'Scheme / Phase' %>
     <%= f.input :allocation_type_id, as: :radio_buttons, collection: LendingLimitType.all, wrapper_html: { class: 'radio-buttons-inline' } %>
     <%= f.input :lending_limit_name %>
     <%= f.input :starts_on, as: :quick_date %>

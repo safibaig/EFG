@@ -4,13 +4,13 @@ class BulkLendingLimits
   include ActiveModel::Model
   include ActiveModel::MassAssignmentSecurity
 
-  attr_accessor :phase_id, :created_by, :modified_by, :lending_limit_name,
+  attr_accessor :scheme_or_phase_id, :created_by, :modified_by, :lending_limit_name,
     :ends_on, :starts_on, :guarantee_rate, :premium_rate, :allocation_type_id
 
-  attr_accessible :phase_id, :lending_limit_name, :ends_on, :starts_on, :guarantee_rate,
+  attr_accessible :scheme_or_phase_id, :lending_limit_name, :ends_on, :starts_on, :guarantee_rate,
     :premium_rate, :allocation_type_id, :lenders_attributes
 
-  validates_presence_of :allocation_type_id, :phase_id, :ends_on, :guarantee_rate,
+  validates_presence_of :allocation_type_id, :scheme_or_phase_id, :ends_on, :guarantee_rate,
     :premium_rate, :starts_on, :lending_limit_name
 
   validate :ends_on_is_after_starts_on
@@ -40,8 +40,14 @@ class BulkLendingLimits
     @guarantee_rate = value.try(:to_i)
   end
 
+  # Verify that a "Scheme / Phase" was selected in the validations, but if SFLG
+  # was selected the phase should be nil.
   def phase
-    Phase.find(phase_id)
+    if scheme_or_phase_id == Loan::SFLG_SCHEME
+      nil
+    else
+      Phase.find(scheme_or_phase_id)
+    end
   end
 
   def lenders_attributes=(values)
