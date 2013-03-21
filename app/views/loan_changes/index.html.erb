@@ -1,0 +1,11 @@
+<%= breadcrumbs_for_loan(@loan) %>
+
+<div class="page-header">
+  <h1>Change Loan</h1>
+</div>
+
+<p>From this page you can change the amount or terms of a facility (excluding the amount of the original facility or extending the term beyond ten years) and return a facility from 'Demand to Borrower' to 'Guaranteed'.</p>
+
+<ul>
+  <li><%= link_to('Extend / Reduce', new_loan_loan_change_path(@loan, type: 'repayment_duration')) %></li>
+</ul>

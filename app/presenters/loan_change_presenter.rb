@@ -5,12 +5,17 @@ class LoanChangePresenter
   include ActiveModel::MassAssignmentSecurity
   extend  ActiveModel::Callbacks
 
+  def self.model_name
+    ActiveModel::Name.new(self, nil, 'LoanChange')
+  end
+
   define_model_callbacks :save
 
   before_save :update_loan_change
   before_save :update_loan
 
-  attr_accessor :created_by, :date_of_change, :loan
+  attr_accessor :created_by, :loan
+  attr_reader :date_of_change
   attr_accessible :date_of_change
 
   validates :date_of_change, presence: true
@@ -19,6 +24,10 @@ class LoanChangePresenter
 
   def initialize(attributes = {})
     super(sanitize_for_mass_assignment(attributes))
+  end
+
+  def date_of_change=(value)
+    @date_of_change = QuickDateFormatter.parse(value)
   end
 
   def loan_change
