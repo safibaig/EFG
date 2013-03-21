@@ -9,15 +9,6 @@ class PremiumSchedule < ActiveRecord::Base
   MAX_INITIAL_DRAW = Money.new(9_999_999_99)
   RISK_FACTOR = 0.3
 
-  PREMIUM_CALCULATION_STRATEGIES = {
-    annually: AnnualPremiumPaymentCollection,
-    six_monthly: SixMonthlyPremiumPaymentCollection,
-    quarterly: QuarterlyPremiumPaymentCollection,
-    monthly: MonthlyPremiumPaymentCollection,
-    interest_only: InterestOnlyPremiumPaymentCollection,
-    legacy_quarterly: LegacyQuarterlyPremiumPaymentCollection
-  }
-
   belongs_to :loan, inverse_of: :premium_schedules
 
   attr_accessible :initial_draw_year, :initial_draw_amount,
@@ -26,8 +17,9 @@ class PremiumSchedule < ActiveRecord::Base
     :third_draw_months, :fourth_draw_amount, :fourth_draw_months,
     :loan_id, :premium_cheque_month
 
+  attr_readonly :legacy_premium_calculation
+
   before_validation :set_seq, on: :create
-  before_validation :set_premium_calculation_strategy, on: :create
 
   before_save do
     write_attribute(:euro_conversion_rate, euro_conversion_rate)
@@ -39,7 +31,6 @@ class PremiumSchedule < ActiveRecord::Base
 
   validates_presence_of :loan_id, strict: true
   validates_presence_of :repayment_duration
-  validates_presence_of :premium_calculation_strategy
   validates_inclusion_of :calc_type, in: [ SCHEDULE_TYPE, RESCHEDULE_TYPE, NOTIFIED_AID_TYPE ]
   validates_presence_of :initial_draw_year, unless: :reschedule?
   validates_format_of :premium_cheque_month, with: /\A\d{2}\/\d{4}\z/, if: :reschedule?, message: :invalid_format
@@ -83,47 +74,35 @@ class PremiumSchedule < ActiveRecord::Base
   end
 
   def drawdowns
-    drawdowns = [
-      TrancheDrawdown.new(
-        amount: initial_draw_amount,
-        month: 0,
-        premium_schedule: self
-      )
-    ]
+    [TrancheDrawdown.new(initial_draw_amount, 0)].tap do |drawdowns|
+      if second_draw_amount.present? && second_draw_amount.nonzero? && second_draw_months.present? && second_draw_months.nonzero?
+        drawdowns << TrancheDrawdown.new(second_draw_amount, second_draw_months)
+      end
 
-    if second_draw_amount.present? && second_draw_amount.nonzero? && second_draw_months.present? && second_draw_months.nonzero?
-      drawdowns << TrancheDrawdown.new(
-        amount: second_draw_amount,
-        month: second_draw_months,
-        premium_schedule: self
-      )
+      if third_draw_amount.present? && third_draw_amount.nonzero? && third_draw_months.present? && third_draw_months.nonzero?
+        drawdowns << TrancheDrawdown.new(third_draw_amount, third_draw_months)
+      end
+
+      if fourth_draw_amount.present? && fourth_draw_amount.nonzero? && fourth_draw_months.present? && fourth_draw_months.nonzero?
+        drawdowns << TrancheDrawdown.new(fourth_draw_amount, fourth_draw_months)
+      end
     end
-
-    if third_draw_amount.present? && third_draw_amount.nonzero? && third_draw_months.present? && third_draw_months.nonzero?
-      drawdowns << TrancheDrawdown.new(
-        amount: third_draw_amount,
-        month: third_draw_months,
-        premium_schedule: self
-      )
-    end
-
-    if fourth_draw_amount.present? && fourth_draw_amount.nonzero? && fourth_draw_months.present? && fourth_draw_months.nonzero?
-      drawdowns << TrancheDrawdown.new(
-        amount: fourth_draw_amount,
-        month: fourth_draw_months,
-        premium_schedule: self
-      )
-    end
-
-    drawdowns
-  end
-
-  def drawdowns_taken_by_quarter(quarter)
-    drawdowns.select {|drawdown| drawdown.month <= quarter.last_month }
   end
 
   def premiums
-    premium_payment_collection_class.new(self).to_a
+    loan_quarters.map do |loan_quarter|
+      outstanding_loan_value_at_quarter = drawdowns.inject(Money.new(0)) do |sum, drawdown|
+        sum + OutstandingDrawdownValue.new(
+          drawdown: drawdown,
+          quarter: loan_quarter,
+          repayment_frequency: repayment_frequency,
+          repayment_duration: repayment_duration,
+          repayment_holiday: initial_capital_repayment_holiday
+        ).amount
+      end
+
+      BankersRoundingMoney.new((outstanding_loan_value_at_quarter.to_d * 100) * premium_rate_per_quarter)
+    end
   end
 
   def total_premiums
@@ -171,14 +150,33 @@ class PremiumSchedule < ActiveRecord::Base
     loan.premium_rate / 100 / 4
   end
 
+  def loan_quarters
+    (0...number_of_loan_quarters).map { |n| LoanQuarter.new(n) }
+  end
+
+  def number_of_loan_quarters
+    @number_of_loan_quarters ||= begin
+      if legacy_premium_calculation
+        quarters = repayment_duration / 3
+        quarters = 1 if quarters.zero?
+        quarters
+      else
+        (repayment_duration.to_f / 3).ceil
+      end
+    end
+  end
+
+  def repayment_frequency
+    if legacy_premium_calculation
+      RepaymentFrequency::Quarterly
+    else
+      loan.repayment_frequency
+    end
+  end
+
   private
     def set_seq
       self.seq = (PremiumSchedule.where(loan_id: loan_id).maximum(:seq) || -1) + 1 unless seq
-    end
-
-    def set_premium_calculation_strategy
-      return unless loan && loan.repayment_frequency
-      write_attribute(:premium_calculation_strategy, loan.repayment_frequency.premium_calculation_strategy)
     end
 
     def initial_draw_amount_is_within_limit
@@ -209,9 +207,5 @@ class PremiumSchedule < ActiveRecord::Base
         errors.add(:third_draw_amount, :not_less_than_or_equal_to_loan_amount, loan_amount: loan.amount.format)
         errors.add(:fourth_draw_amount, :not_less_than_or_equal_to_loan_amount, loan_amount: loan.amount.format)
       end
-    end
-
-    def premium_payment_collection_class
-      PREMIUM_CALCULATION_STRATEGIES.fetch(premium_calculation_strategy.to_sym)
     end
 end
