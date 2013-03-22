@@ -72,8 +72,6 @@ class Lender < ActiveRecord::Base
     def current_lending_limit_allocation_for_type(type)
       current_lending_limits.select { |lending_limit|
         lending_limit.allocation_type_id == type.id
-      }.inject(Money.new(0)) { |memo, lending_limit|
-        memo += lending_limit.allocation
-      }
+      }.sum(Money.new(0), &:allocation)
     end
 end
