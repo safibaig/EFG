@@ -13,10 +13,11 @@ module ApplicationHelper
   end
 
   def breadcrumbs_for_loan(loan, *extras)
-    breadcrumbs(*[
+    breadcrumbs(
       link_to('Loan Portfolio', loan_states_path),
-      link_to("Loan #{loan.reference}", loan_path(loan))
-    ])
+      link_to("Loan #{loan.reference}", loan_path(loan)),
+      *extras
+    )
   end
 
   def breadcrumbs_for_lender_admins(lender, current_user)

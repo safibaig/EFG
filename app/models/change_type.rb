@@ -13,8 +13,17 @@ class ChangeType < StaticAssociation
   ]
 
   def self.for_loan_change
-    all.reject { |change_type|
-      change_type.id == '9'
-    }
+    all.reject { |change_type| change_type == DataCorrection }
   end
+
+  BusinessName = find('1')
+  CapitalRepaymentHoliday = find('2')
+  ChangeRepayments = find('3')
+  ExtendTerm = find('4')
+  LenderDemandSatisfied = find('5')
+  LumpSumRepayment = find('6')
+  RecordAgreedDraw = find('7')
+  ReprofileDraws = find('8')
+  DataCorrection = find('9')
+  DecreaseTerm = find('a')
 end

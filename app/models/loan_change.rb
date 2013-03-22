@@ -5,7 +5,7 @@ class LoanChange < LoanModification
   after_save_and_update_loan :update_loan!
   after_save_and_update_loan :log_loan_state_change!
 
-  validates_inclusion_of :change_type_id, in: %w(1 2 3 4 5 6 7 8 a)
+  validates_inclusion_of :change_type_id, in: ChangeType.for_loan_change.map(&:id)
 
   validate :validate_change_type
   validate :validate_non_negative_amounts
@@ -23,7 +23,14 @@ class LoanChange < LoanModification
   end
 
   def requires_state_aid_recalculation?
-    %w(2 3 4 6 8 a).include?(change_type_id)
+    [
+      ChangeType::CapitalRepaymentHoliday,
+      ChangeType::ChangeRepayments,
+      ChangeType::ExtendTerm,
+      ChangeType::LumpSumRepayment,
+      ChangeType::ReprofileDraws,
+      ChangeType::DecreaseTerm,
+    ].include?(change_type)
   end
 
   private
@@ -32,11 +39,11 @@ class LoanChange < LoanModification
     end
 
     def set_old_and_loan_attributes
-      case change_type_id
-      when '1'
+      case change_type
+      when ChangeType::BusinessName
         self.old_business_name = loan.business_name
         loan.business_name = business_name
-      when '4', 'a'
+      when ChangeType::ExtendTerm, ChangeType::DecreaseTerm
         self.old_maturity_date  = loan.maturity_date
         loan.maturity_date      = maturity_date
         self.old_loan_term      = loan.repayment_duration.total_months
@@ -59,20 +66,20 @@ class LoanChange < LoanModification
     end
 
     def validate_change_type
-      case change_type_id
-      when '1'
+      case change_type
+      when ChangeType::BusinessName
         errors.add(:business_name, :required) unless business_name.present?
-      when '4', 'a'
+      when ChangeType::ExtendTerm, ChangeType::DecreaseTerm
         errors.add(:maturity_date, :required) unless maturity_date
         validate_maturity_date_within_allowed_loan_term if maturity_date
-      when '5'
+      when ChangeType::LenderDemandSatisfied
         errors.add(:base, :required_lender_demand_satisfied) unless amount_drawn || lump_sum_repayment || maturity_date.present?
-      when '6'
+      when ChangeType::LumpSumRepayment
         errors.add(:lump_sum_repayment, :required) unless lump_sum_repayment
         if lump_sum_repayment && (loan.cumulative_lump_sum_amount + lump_sum_repayment) > loan.cumulative_drawn_amount
           errors.add(:lump_sum_repayment, :exceeds_amount_drawn)
         end
-      when '7'
+      when ChangeType::RecordAgreedDraw
         errors.add(:amount_drawn, :required) unless amount_drawn
         errors.add(:amount_drawn, :exceeded_undrawn_amount) if amount_drawn && amount_drawn > loan.amount_not_yet_drawn
       end
