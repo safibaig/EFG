@@ -44,11 +44,7 @@ class Lender < ActiveRecord::Base
   end
 
   def current_lending_limits
-    today = Date.current
-
-    active_lending_limits.select { |lending_limit|
-      today.between?(lending_limit.starts_on, lending_limit.ends_on)
-    }
+    active_lending_limits.current
   end
 
   def current_annual_lending_limit_allocation

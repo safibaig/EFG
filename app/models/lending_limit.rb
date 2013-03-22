@@ -42,6 +42,12 @@ class LendingLimit < ActiveRecord::Base
 
   scope :active, where(active: true)
 
+  def self.current
+    today = Date.current
+
+    scoped.where("starts_on <= ? AND ends_on >= ?", today, today)
+  end
+
   def allocation_type
     LendingLimitType.find(allocation_type_id)
   end

@@ -112,4 +112,15 @@ describe LendingLimit do
     end
   end
 
+  describe ".current" do
+    it "filters lending limits that are start on or before the current date, and end after the " do
+      ended_in_past = FactoryGirl.create(:lending_limit, starts_on: 4.weeks.ago, ends_on: 2.weeks.ago)
+      ends_today = FactoryGirl.create(:lending_limit, starts_on: 4.weeks.ago, ends_on: Date.today)
+      overlaps_today = FactoryGirl.create(:lending_limit, starts_on: 2.weeks.ago, ends_on: 2.weeks.from_now)
+      starts_today = FactoryGirl.create(:lending_limit, starts_on: Date.today, ends_on: 4.weeks.from_now)
+      starts_in_future = FactoryGirl.create(:lending_limit, starts_on: 2.weeks.from_now, ends_on: 4.weeks.from_now)
+
+      LendingLimit.current.should =~ [ends_today, overlaps_today, starts_today]
+    end
+  end
 end
