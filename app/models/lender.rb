@@ -66,8 +66,6 @@ class Lender < ActiveRecord::Base
 
   private
     def current_lending_limit_allocation_for_type(type)
-      current_lending_limits.select { |lending_limit|
-        lending_limit.allocation_type_id == type.id
-      }.sum(Money.new(0), &:allocation)
+      current_lending_limits.where(allocation_type_id: type.id).sum(Money.new(0), &:allocation)
     end
 end
