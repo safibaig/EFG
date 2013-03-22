@@ -28,7 +28,7 @@ class LendingLimit < ActiveRecord::Base
   validates_presence_of :lender_id, strict: true
   validates_presence_of :allocation, :name, :ends_on, :guarantee_rate,
     :premium_rate, :starts_on
-  validates_inclusion_of :allocation_type_id, in: [1, 2]
+  validates_inclusion_of :allocation_type_id, in: [LendingLimitType::Annual, LendingLimitType::Specific].map(&:id)
   validate :ends_on_is_after_starts_on
 
   attr_accessible :allocation, :allocation_type_id, :name, :ends_on,

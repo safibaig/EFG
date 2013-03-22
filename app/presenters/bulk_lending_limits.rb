@@ -14,7 +14,7 @@ class BulkLendingLimits
     :premium_rate, :starts_on, :lending_limit_name
 
   validate :ends_on_is_after_starts_on
-  validates_inclusion_of :allocation_type_id, in: [1, 2]
+  validates_inclusion_of :allocation_type_id, in: [LendingLimitType::Annual, LendingLimitType::Specific].map(&:id)
 
   def initialize(attrs = {})
     super(sanitize_for_mass_assignment(attrs))
