@@ -25,6 +25,7 @@ EFG::Application.routes.draw do
 
     resources :lending_limits do
       member do
+        post :activate
         post :deactivate
       end
     end
@@ -152,5 +153,5 @@ EFG::Application.routes.draw do
 
   resources :phases, except: [:show, :destroy]
 
-  resources :phases_with_lending_limits, only: [:new, :create]
+  resources :bulk_lending_limits, only: [:new, :create]
 end

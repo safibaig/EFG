@@ -28,7 +28,6 @@ class LendingLimit < ActiveRecord::Base
   validates_presence_of :lender_id, strict: true
   validates_presence_of :allocation, :name, :ends_on, :guarantee_rate,
     :premium_rate, :starts_on
-  validates_presence_of :phase, on: :create
   validates_inclusion_of :allocation_type_id, in: [1, 2]
   validate :ends_on_is_after_starts_on
 
@@ -47,9 +46,12 @@ class LendingLimit < ActiveRecord::Base
     LendingLimitType.find(allocation_type_id)
   end
 
+  def activate!
+    update_attribute(:active, true)
+  end
+
   def deactivate!
-    self.active = false
-    save(validate: false)
+    update_attribute(:active, false)
   end
 
   private

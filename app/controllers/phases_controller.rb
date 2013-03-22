@@ -1,4 +1,6 @@
 class PhasesController < ApplicationController
+  include AuditableController
+
   before_filter :verify_view_permission, only: [:index]
   before_filter :verify_create_permission, only: [:new, :create]
   before_filter :verify_update_permission, only: [:edit, :update, :activate, :deactivate]
@@ -53,13 +55,5 @@ class PhasesController < ApplicationController
 
     def verify_view_permission
       enforce_view_permission(Phase)
-    end
-
-    def audit(event, object, &action)
-      ActiveRecord::Base.transaction do
-        success = action.call
-        AdminAudit.log(event, object, current_user) if success
-        success
-      end
     end
 end

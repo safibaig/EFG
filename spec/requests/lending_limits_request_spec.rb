@@ -96,8 +96,33 @@ describe 'LendingLimits' do
     end
   end
 
+  describe 'activating a LendingLimit' do
+    let!(:lending_limit) { FactoryGirl.create(:lending_limit, :inactive, lender: lender, name: 'Foo', allocation: Money.new(1_000_00)) }
+
+    before do
+      visit root_path
+      click_link 'Manage Lenders'
+      click_link 'Lending Limits'
+      click_link lending_limit.name
+    end
+
+    it do
+      click_button 'Activate Lending Limit'
+
+      lending_limit.reload
+      lending_limit.active.should == true
+      lending_limit.modified_by.should == current_user
+
+      admin_audit = AdminAudit.last!
+      admin_audit.action.should == AdminAudit::LendingLimitActivated
+      admin_audit.auditable.should == lending_limit
+      admin_audit.modified_by.should == current_user
+      admin_audit.modified_on.should == Date.current
+    end
+  end
+
   describe 'deactivating a LendingLimit' do
-    let!(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, name: 'Foo', allocation: Money.new(1_000_00)) }
+    let!(:lending_limit) { FactoryGirl.create(:lending_limit, :active, lender: lender, name: 'Foo', allocation: Money.new(1_000_00)) }
 
     before do
       visit root_path

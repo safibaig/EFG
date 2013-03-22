@@ -1,10 +1,6 @@
-<%= simple_form_for phase, url: phases_with_lending_limits_path do |f| %>
+<%= simple_form_for phase, url: bulk_lending_limits_path do |f| %>
   <fieldset class="form-horizontal">
-    <%= f.input :name, label: 'Phase Name' %>
-  </fieldset>
-
-  <fieldset class="form-horizontal">
-    <legend>Lending Limit</legend>
+    <%= f.input :scheme_or_phase_id, as: :scheme_or_phase_select, label: 'Scheme / Phase' %>
     <%= f.input :allocation_type_id, as: :radio_buttons, collection: LendingLimitType.all, wrapper_html: { class: 'radio-buttons-inline' } %>
     <%= f.input :lending_limit_name %>
     <%= f.input :starts_on, as: :quick_date %>
@@ -21,6 +17,7 @@
           <th></th>
           <th>Lender</th>
           <th>Allocation</th>
+          <th>Active</th>
         </tr>
       </thead>
 
@@ -39,6 +36,9 @@
             <td>
               <%= lender_form.input :allocation, as: :currency, label: false %>
             </td>
+
+            <td>
+              <%= lender_form.check_box :active %>
           </tr>
         <% end %>
       </tbody>
@@ -46,6 +46,6 @@
   </fieldset>
 
   <div class="form-actions">
-    <%= f.button :submit, class: 'btn btn-primary', data: { 'disable-with' => 'Submitting...' } %>
+    <%= f.button :submit, value: 'Create Lending Limits', class: 'btn btn-primary', data: { 'disable-with' => 'Submitting...' } %>
   </div>
 <% end %>

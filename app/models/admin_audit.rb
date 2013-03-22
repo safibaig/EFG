@@ -8,6 +8,7 @@ class AdminAudit < ActiveRecord::Base
   LendingLimitCreated = 'Add Lender Lending limit'
   LendingLimitEdited = 'Edit Lending limit'
   LendingLimitRemoved = 'Remove Lender Lending limit'
+  LendingLimitActivated = 'Activated Lender Lending limit'
   PhaseCreated = 'Phase created'
   PhaseEdited = 'Phase edited'
   UserCreated = 'User created'

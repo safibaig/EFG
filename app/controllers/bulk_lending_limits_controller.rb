@@ -1,12 +1,12 @@
-class PhasesWithLendingLimitsController < ApplicationController
+class BulkLendingLimitsController < ApplicationController
   before_filter :verify_create_permission, only: [:new, :create]
 
   def new
-    @phase = PhaseWithLendingLimits.new
+    @phase = BulkLendingLimits.new
   end
 
   def create
-    @phase = PhaseWithLendingLimits.new(params[:phase])
+    @phase = BulkLendingLimits.new(params[:bulk_lending_limits])
     @phase.created_by = current_user
 
     if @phase.save

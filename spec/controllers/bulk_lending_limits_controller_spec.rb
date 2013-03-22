@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PhasesWithLendingLimitsController do
+describe BulkLendingLimitsController do
   let(:phase) { FactoryGirl.create(:phase) }
 
   describe "GET new" do
