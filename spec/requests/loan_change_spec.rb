@@ -15,6 +15,27 @@ describe 'loan change' do
   let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
   before { login_as(current_user, scope: :user) }
 
+  context 'lump_sum_repayment' do
+    before do
+      visit_loan_changes
+      click_link 'Lump Sum Repayment'
+    end
+
+    it 'works' do
+      fill_in :date_of_change, '1/6/12'
+      fill_in :lump_sum_repayment, '1234.56'
+      click_button 'Submit'
+
+      loan_change = loan.loan_changes.last!
+      loan_change.change_type.should == ChangeType::LumpSumRepayment
+      loan_change.date_of_change.should == Date.new(2012, 6, 1)
+      loan_change.lump_sum_repayment.should == Money.new(1_234_56)
+
+      loan.reload
+      loan.modified_by.should == current_user
+    end
+  end
+
   context 'repayment_duration' do
     before do
       visit_loan_changes

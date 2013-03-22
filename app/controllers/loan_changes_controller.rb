@@ -1,5 +1,6 @@
 class LoanChangesController < ApplicationController
   TYPES = {
+    'lump_sum_repayment' => LumpSumRepaymentLoanChangePresenter,
     'repayment_duration' => RepaymentDurationLoanChangePresenter
   }
 
