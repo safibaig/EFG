@@ -234,4 +234,7 @@ Devise.setup do |config|
       record.update_attribute(:failed_attempts, 0)
     end
   end
+
+  # The password should expire (e.g 90 days)
+  config.expire_password_after = 90.days
 end
