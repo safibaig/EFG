@@ -15,7 +15,7 @@ describe 'password policy' do
 
       it "should be unable to login as a #{user_type.humanize} when the password has expired" do
         current_user = FactoryGirl.create(user_type)
-        current_user.password_changed_at = current_user.password_changed_at - 91.days
+        current_user.password_changed_at = current_user.password_changed_at - current_user.class.expire_password_after
         current_user.save!
 
         visit root_path
