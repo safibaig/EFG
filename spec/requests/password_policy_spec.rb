@@ -22,6 +22,16 @@ describe 'password policy' do
         submit_sign_in_form(current_user.username, current_user.password)
         page.should have_content('Your password is expired')
       end
+
+      it "should be able to login as a #{user_type.humanize} when the password has not expired" do
+        current_user = FactoryGirl.create(user_type)
+        current_user.password_changed_at = Time.now.utc
+        current_user.save!
+
+        visit root_path
+        submit_sign_in_form(current_user.username, current_user.password)
+        page.should have_content('Logout')
+      end
     end
   end
 end
