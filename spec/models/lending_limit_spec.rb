@@ -123,4 +123,21 @@ describe LendingLimit do
       LendingLimit.current.should =~ [ends_today, overlaps_today, starts_today]
     end
   end
+
+  describe "#unavailable?" do
+    it "unavailable if its not current" do
+      lending_limit = FactoryGirl.build(:lending_limit, :active, starts_on: 4.weeks.ago, ends_on: 2.weeks.ago)
+      lending_limit.should be_unavailable
+    end
+
+    it "unavailable if its not active" do
+      lending_limit = FactoryGirl.build(:lending_limit, :inactive, starts_on: 4.weeks.ago, ends_on: 4.weeks.from_now)
+      lending_limit.should be_unavailable
+    end
+
+    it "available if its active and current" do
+      lending_limit = FactoryGirl.build(:lending_limit, :active, starts_on: 4.weeks.ago, ends_on: 4.weeks.from_now)
+      lending_limit.should_not be_unavailable
+    end
+  end
 end

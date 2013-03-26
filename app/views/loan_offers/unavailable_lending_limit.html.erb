@@ -1,0 +1,12 @@
+<%= breadcrumbs_for_loan(@loan) %>
+
+<div class="page-header">
+  <h1>Loan Offer</h1>
+</div>
+
+<div class="alert alert-block">
+  <h4>Lending Limit Unavailable</h4>
+  <p>This loan was entered with the <strong><%= @loan.lending_limit.name %></strong>
+  lending limit. This lending limit has since become unavailable. You must now choose
+  a new lending limit.</p>
+</div>

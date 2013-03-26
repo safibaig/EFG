@@ -4,6 +4,12 @@ class LoanOffersController < ApplicationController
 
   def new
     @loan = current_lender.loans.find(params[:loan_id])
+
+    if @loan.lending_limit.unavailable?
+      render 'unavailable_lending_limit'
+      return
+    end
+
     @loan_offer = LoanOffer.new(@loan)
   end
 

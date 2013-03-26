@@ -60,6 +60,14 @@ class LendingLimit < ActiveRecord::Base
     update_attribute(:active, false)
   end
 
+  def available?
+    active && (starts_on..ends_on).cover?(Date.today)
+  end
+
+  def unavailable?
+    !available?
+  end
+
   private
     def ends_on_is_after_starts_on
       return if ends_on.nil? || starts_on.nil?
