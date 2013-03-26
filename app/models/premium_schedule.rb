@@ -90,7 +90,7 @@ class PremiumSchedule < ActiveRecord::Base
   end
 
   def premiums
-    loan_quarters.map do |loan_quarter|
+    @premiums ||= loan_quarters.map do |loan_quarter|
       outstanding_loan_value_at_quarter = drawdowns.inject(Money.new(0)) do |sum, drawdown|
         sum + OutstandingDrawdownValue.new(
           drawdown: drawdown,
