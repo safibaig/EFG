@@ -1,6 +1,7 @@
 shared_examples_for 'premium payments for a loan repaid on a monthly or quarterly basis' do
   before do
     premium_schedule.loan.premium_rate = 2.00
+    premium_schedule.loan.repayment_frequency_id = repayment_frequency.id
   end
 
   context 'when there is a single drawdown' do
@@ -10,7 +11,6 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
           repayment_duration: 60,
           initial_draw_amount: Money.new(20_000_00),
           legacy_premium_calculation: legacy_premium_calculation,
-          loan: loan,
         )
       }
 
@@ -47,7 +47,6 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
           initial_capital_repayment_holiday: 12,
           initial_draw_amount: Money.new(160_000_00),
           legacy_premium_calculation: legacy_premium_calculation,
-          loan: loan
         )
       }
 
@@ -75,7 +74,6 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
           second_draw_amount: Money.new(100_000_00),
           second_draw_months: 3,
           legacy_premium_calculation: legacy_premium_calculation,
-          loan: loan
         )
       }
 
@@ -117,7 +115,6 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
           third_draw_amount: Money.new(12_000_00),
           third_draw_months: 6,
           legacy_premium_calculation: legacy_premium_calculation,
-          loan: loan
         )
       }
 
@@ -145,7 +142,6 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
           fourth_draw_amount: Money.new(800_000_00),
           fourth_draw_months: 9,
           legacy_premium_calculation: legacy_premium_calculation,
-          loan: loan
         )
       }
 
@@ -172,7 +168,6 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
           fourth_draw_amount: Money.new(200_000_00),
           fourth_draw_months: 3,
           legacy_premium_calculation: legacy_premium_calculation,
-          loan: loan
         )
       }
 
@@ -209,7 +204,6 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
         repayment_duration: 2,
         initial_draw_amount: Money.new(100_000_00),
         legacy_premium_calculation: legacy_premium_calculation,
-        loan: loan
       )
     }
 
