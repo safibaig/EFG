@@ -66,7 +66,7 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
     end
   end
 
-  context 'when there are two drawdowns' do
+  context 'when there are two drawdowns taken on quarter months' do
     context 'and no repayment holiday' do
       let(:premium_schedule) {
         FactoryGirl.build_stubbed(:premium_schedule,
@@ -106,16 +106,16 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
     end
   end
 
-  context 'when there are three drawdowns' do
+  context 'when there are three drawdowns taken on quarter months' do
     context 'and no repayment holiday' do
       let(:premium_schedule) {
         FactoryGirl.build_stubbed(:premium_schedule,
           repayment_duration: 12,
-          initial_draw_amount: Money.new(525_000_00),
-          second_draw_amount: Money.new(350_500_00),
-          second_draw_months: 2,
-          third_draw_amount: Money.new(124_500_00),
-          third_draw_months: 7,
+          initial_draw_amount: Money.new(12_000_00),
+          second_draw_amount: Money.new(12_000_00),
+          second_draw_months: 3,
+          third_draw_amount: Money.new(12_000_00),
+          third_draw_months: 6,
           legacy_premium_calculation: legacy_premium_calculation,
           loan: loan
         )
@@ -123,16 +123,16 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
 
       it 'returns the correct premium payments' do
         premium_schedule.premiums.should == [
-          BankersRoundingMoney.new(BigDecimal.new('262500')),
-          BankersRoundingMoney.new(BigDecimal.new('354600')),
-          BankersRoundingMoney.new(BigDecimal.new('236400')),
-          BankersRoundingMoney.new(BigDecimal.new('155550'))
+          BankersRoundingMoney.new(BigDecimal.new( '6000')),
+          BankersRoundingMoney.new(BigDecimal.new('10500')),
+          BankersRoundingMoney.new(BigDecimal.new('13000')),
+          BankersRoundingMoney.new(BigDecimal.new( '6500'))
         ]
       end
     end
   end
 
-  context 'when there are four drawdowns' do
+  context 'when there are four drawdowns taken on quarter months' do
     context 'and no repayment holiday' do
       let(:premium_schedule) {
         FactoryGirl.build(:premium_schedule,

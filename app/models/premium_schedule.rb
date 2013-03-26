@@ -168,7 +168,7 @@ class PremiumSchedule < ActiveRecord::Base
 
   def repayment_frequency
     if legacy_premium_calculation
-      RepaymentFrequency::Quarterly
+      RepaymentFrequency::Monthly
     else
       loan.repayment_frequency
     end

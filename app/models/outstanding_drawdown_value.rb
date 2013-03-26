@@ -14,7 +14,7 @@ class OutstandingDrawdownValue
 
   private
 
-  attr_reader :drawdown, :quarter, :repayment_frequency, :repayment_duration, :repayment_holiday
+  attr_reader :drawdown, :quarter, :repayment_frequency, :repayment_duration
 
   def amount_of_drawdown_repaid
     if repayment_holiday_active?
@@ -29,17 +29,13 @@ class OutstandingDrawdownValue
   end
 
   def proportion_of_drawdown_repaid
-    months_of_drawdown_repayment.to_f / total_drawdown_repayment_months
+    months_of_drawdown_repayment_so_far.to_f / total_drawdown_repayment_months
   end
 
-  def months_of_drawdown_repayment
-    # Number of complete loan repayment periods since premium schedule start
-    complete_repayments = quarter.last_month.divmod(months_per_repayment_period).first
-
-    # Number of months of repayment at this quarter against this drawdown
-    months_of_repayment = (complete_repayments * months_per_repayment_period) - start_month_of_drawdown_repayment
-
-    months_of_repayment > 0 ? months_of_repayment : 0
+  def months_of_drawdown_repayment_so_far
+    months_from_start_until_quarter = quarter.last_month - start_month_of_drawdown_repayment
+    months_from_start_until_quarter = 0 if months_from_start_until_quarter < 0
+    months_from_start_until_quarter.div(months_per_repayment_period) * months_per_repayment_period
   end
 
   def months_per_repayment_period
@@ -56,6 +52,20 @@ class OutstandingDrawdownValue
   end
 
   def start_month_of_drawdown_repayment
-    repayment_holiday > drawdown.month ? repayment_holiday : drawdown.month
+    # For the purposes of calculating repayment rate, drawdowns taken within
+    # the payment period "roll back" to the beginning of the payment period.
+    # E.g. for an annual loan a drawdown in months 1-11 is treated as a
+    # drawdown in month 0.
+    whole_periods_elapsed = drawdown.month.div(months_per_repayment_period)
+    effective_drawdown_month = whole_periods_elapsed * months_per_repayment_period
+    repayment_holiday > effective_drawdown_month ? repayment_holiday : effective_drawdown_month
+  end
+
+  def repayment_holiday
+    # If the payment holiday is not a multiple of the repayment frequency, it
+    # gets rounded down to the last repayment month. E.g. For a six monthly
+    # loan a holiday of 8 months becomes 6 months. For a quarterly loan a
+    # holiday of 2 months becomes 0 months.
+    @repayment_holiday.div(months_per_repayment_period) * months_per_repayment_period
   end
 end

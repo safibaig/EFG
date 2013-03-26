@@ -472,34 +472,21 @@ describe PremiumSchedule do
         end
       end
 
-      context 'and the loand term does not contain an exact number of quarters' do
+      context 'and the loan term does not contain an exact number of quarters' do
         let(:premium_schedule) {
           FactoryGirl.build_stubbed(:premium_schedule,
-            repayment_duration: 50, # <-- not evenly divisible by 3
-            initial_draw_amount: Money.new(50_000_00),
-            initial_capital_repayment_holiday: 2,
+            repayment_duration: 14, # <-- not evenly divisible by 3
+            initial_draw_amount: Money.new(36_000_00),
             legacy_premium_calculation: true
           )
         }
 
         it 'returns the correct premium payments, missing off the final one' do
           premium_schedule.premiums.should == [
-            BankersRoundingMoney.new(BigDecimal.new('25000')),
-            BankersRoundingMoney.new(BigDecimal.new('24479')),
-            BankersRoundingMoney.new(BigDecimal.new('22917')),
-            BankersRoundingMoney.new(BigDecimal.new('21354')),
-            BankersRoundingMoney.new(BigDecimal.new('19792')),
-            BankersRoundingMoney.new(BigDecimal.new('18229')),
-            BankersRoundingMoney.new(BigDecimal.new('16667')),
-            BankersRoundingMoney.new(BigDecimal.new('15104')),
-            BankersRoundingMoney.new(BigDecimal.new('13542')),
-            BankersRoundingMoney.new(BigDecimal.new('11979')),
-            BankersRoundingMoney.new(BigDecimal.new('10417')),
-            BankersRoundingMoney.new(BigDecimal.new( '8854')),
-            BankersRoundingMoney.new(BigDecimal.new( '7292')),
-            BankersRoundingMoney.new(BigDecimal.new( '5729')),
-            BankersRoundingMoney.new(BigDecimal.new( '4167')),
-            BankersRoundingMoney.new(BigDecimal.new( '2604')),
+            BankersRoundingMoney.new(BigDecimal.new('18000')),
+            BankersRoundingMoney.new(BigDecimal.new('14143')),
+            BankersRoundingMoney.new(BigDecimal.new('10286')),
+            BankersRoundingMoney.new(BigDecimal.new( '6429')),
           ]
         end
       end
@@ -518,12 +505,11 @@ describe PremiumSchedule do
           end
         end
 
-        context 'when the loan term does not contain an exact number of quarters' do
+        context 'and the loan term does not contain an exact number of quarters' do
           let(:premium_schedule) {
             FactoryGirl.build_stubbed(:premium_schedule,
-              repayment_duration: 50, # <-- not evenly divisible by 3
-              initial_draw_amount: Money.new(50_000_00),
-              initial_capital_repayment_holiday: 2,
+              repayment_duration: 14, # <-- not evenly divisible by 3
+              initial_draw_amount: Money.new(36_000_00),
               legacy_premium_calculation: false
             )
           }
@@ -532,23 +518,11 @@ describe PremiumSchedule do
             premium_schedule.loan.repayment_frequency_id = RepaymentFrequency::Quarterly.id
 
             premium_schedule.premiums.should == [
-              BankersRoundingMoney.new(BigDecimal.new('25000')),
-              BankersRoundingMoney.new(BigDecimal.new('24479')),
-              BankersRoundingMoney.new(BigDecimal.new('22917')),
-              BankersRoundingMoney.new(BigDecimal.new('21354')),
-              BankersRoundingMoney.new(BigDecimal.new('19792')),
-              BankersRoundingMoney.new(BigDecimal.new('18229')),
-              BankersRoundingMoney.new(BigDecimal.new('16667')),
-              BankersRoundingMoney.new(BigDecimal.new('15104')),
-              BankersRoundingMoney.new(BigDecimal.new('13542')),
-              BankersRoundingMoney.new(BigDecimal.new('11979')),
-              BankersRoundingMoney.new(BigDecimal.new('10417')),
-              BankersRoundingMoney.new(BigDecimal.new( '8854')),
-              BankersRoundingMoney.new(BigDecimal.new( '7292')),
-              BankersRoundingMoney.new(BigDecimal.new( '5729')),
-              BankersRoundingMoney.new(BigDecimal.new( '4167')),
-              BankersRoundingMoney.new(BigDecimal.new( '2604')),
-              BankersRoundingMoney.new(BigDecimal.new( '1042')),
+              BankersRoundingMoney.new(BigDecimal.new('18000')),
+              BankersRoundingMoney.new(BigDecimal.new('14143')),
+              BankersRoundingMoney.new(BigDecimal.new('10286')),
+              BankersRoundingMoney.new(BigDecimal.new( '6429')),
+              BankersRoundingMoney.new(BigDecimal.new( '2571')),
             ]
           end
         end
@@ -569,9 +543,8 @@ describe PremiumSchedule do
         context 'when the loan term does not contain an exact number of quarters' do
           let(:premium_schedule) {
             FactoryGirl.build_stubbed(:premium_schedule,
-              repayment_duration: 50, # <-- not evenly divisible by 3
-              initial_draw_amount: Money.new(50_000_00),
-              initial_capital_repayment_holiday: 2,
+              repayment_duration: 14, # <-- not evenly divisible by 3
+              initial_draw_amount: Money.new(36_000_00),
               legacy_premium_calculation: false
             )
           }
@@ -580,23 +553,11 @@ describe PremiumSchedule do
             premium_schedule.loan.repayment_frequency_id = RepaymentFrequency::Monthly.id
 
             premium_schedule.premiums.should == [
-              BankersRoundingMoney.new(BigDecimal.new('25000')),
-              BankersRoundingMoney.new(BigDecimal.new('24479')),
-              BankersRoundingMoney.new(BigDecimal.new('22917')),
-              BankersRoundingMoney.new(BigDecimal.new('21354')),
-              BankersRoundingMoney.new(BigDecimal.new('19792')),
-              BankersRoundingMoney.new(BigDecimal.new('18229')),
-              BankersRoundingMoney.new(BigDecimal.new('16667')),
-              BankersRoundingMoney.new(BigDecimal.new('15104')),
-              BankersRoundingMoney.new(BigDecimal.new('13542')),
-              BankersRoundingMoney.new(BigDecimal.new('11979')),
-              BankersRoundingMoney.new(BigDecimal.new('10417')),
-              BankersRoundingMoney.new(BigDecimal.new( '8854')),
-              BankersRoundingMoney.new(BigDecimal.new( '7292')),
-              BankersRoundingMoney.new(BigDecimal.new( '5729')),
-              BankersRoundingMoney.new(BigDecimal.new( '4167')),
-              BankersRoundingMoney.new(BigDecimal.new( '2604')),
-              BankersRoundingMoney.new(BigDecimal.new( '1042')),
+              BankersRoundingMoney.new(BigDecimal.new('18000')),
+              BankersRoundingMoney.new(BigDecimal.new('14143')),
+              BankersRoundingMoney.new(BigDecimal.new('10286')),
+              BankersRoundingMoney.new(BigDecimal.new( '6429')),
+              BankersRoundingMoney.new(BigDecimal.new( '2571')),
             ]
           end
         end
@@ -662,6 +623,66 @@ describe PremiumSchedule do
                 BankersRoundingMoney.new(BigDecimal.new( '87500')),
                 BankersRoundingMoney.new(BigDecimal.new( '87500')),
                 BankersRoundingMoney.new(BigDecimal.new( '87500')),
+              ]
+            end
+          end
+        end
+
+        context 'when there are three drawdowns' do
+          context 'and no repayment holiday' do
+            let(:premium_schedule) {
+              FactoryGirl.build_stubbed(:premium_schedule,
+                repayment_duration: 24,
+                initial_draw_amount: Money.new(700_000_00),
+                second_draw_amount: Money.new(100_000_00),
+                second_draw_months: 1,
+                third_draw_amount: Money.new(200_000_00),
+                third_draw_months: 5,
+                legacy_premium_calculation: false
+              )
+            }
+
+            it 'returns the correct premium payments' do
+              premium_schedule.premiums.should == [
+                BankersRoundingMoney.new(BigDecimal.new('350000')),
+                BankersRoundingMoney.new(BigDecimal.new('400000')),
+                BankersRoundingMoney.new(BigDecimal.new('500000')),
+                BankersRoundingMoney.new(BigDecimal.new('500000')),
+                BankersRoundingMoney.new(BigDecimal.new('250000')),
+                BankersRoundingMoney.new(BigDecimal.new('250000')),
+                BankersRoundingMoney.new(BigDecimal.new('250000')),
+                BankersRoundingMoney.new(BigDecimal.new('250000')),
+              ]
+            end
+          end
+        end
+
+        context 'when there are four drawdowns' do
+          context 'and no repayment holiday' do
+            let(:premium_schedule) {
+              FactoryGirl.build_stubbed(:premium_schedule,
+                repayment_duration: 24,
+                initial_draw_amount: Money.new(100_000_00),
+                second_draw_amount: Money.new(100_000_00),
+                second_draw_months: 1,
+                third_draw_amount: Money.new(100_000_00),
+                third_draw_months: 2,
+                fourth_draw_amount: Money.new(100_000_00),
+                fourth_draw_months: 6,
+                legacy_premium_calculation: false,
+              )
+            }
+
+            it 'returns the correct premium payments' do
+              premium_schedule.premiums.should == [
+                BankersRoundingMoney.new(BigDecimal.new( '50000')),
+                BankersRoundingMoney.new(BigDecimal.new('150000')),
+                BankersRoundingMoney.new(BigDecimal.new('200000')),
+                BankersRoundingMoney.new(BigDecimal.new('200000')),
+                BankersRoundingMoney.new(BigDecimal.new('100000')),
+                BankersRoundingMoney.new(BigDecimal.new('100000')),
+                BankersRoundingMoney.new(BigDecimal.new('100000')),
+                BankersRoundingMoney.new(BigDecimal.new('100000')),
               ]
             end
           end
