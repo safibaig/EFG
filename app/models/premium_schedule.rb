@@ -137,10 +137,6 @@ class PremiumSchedule < ActiveRecord::Base
     reschedule? ? Money.new(0) : premiums.first
   end
 
-  def repayment_holiday_active_at_month?(month)
-    initial_capital_repayment_holiday >= month
-  end
-
   def initial_capital_repayment_holiday
     # Force nil => 0
     super.to_i
@@ -148,30 +144,6 @@ class PremiumSchedule < ActiveRecord::Base
 
   def premium_rate_per_quarter
     loan.premium_rate / 100 / 4
-  end
-
-  def loan_quarters
-    (0...number_of_loan_quarters).map { |n| LoanQuarter.new(n) }
-  end
-
-  def number_of_loan_quarters
-    @number_of_loan_quarters ||= begin
-      if legacy_premium_calculation
-        quarters = repayment_duration / 3
-        quarters = 1 if quarters.zero?
-        quarters
-      else
-        (repayment_duration.to_f / 3).ceil
-      end
-    end
-  end
-
-  def repayment_frequency
-    if legacy_premium_calculation
-      RepaymentFrequency::Monthly
-    else
-      loan.repayment_frequency
-    end
   end
 
   private
@@ -207,5 +179,29 @@ class PremiumSchedule < ActiveRecord::Base
         errors.add(:third_draw_amount, :not_less_than_or_equal_to_loan_amount, loan_amount: loan.amount.format)
         errors.add(:fourth_draw_amount, :not_less_than_or_equal_to_loan_amount, loan_amount: loan.amount.format)
       end
+    end
+
+    def number_of_loan_quarters
+      @number_of_loan_quarters ||= begin
+        if legacy_premium_calculation
+          quarters = repayment_duration / 3
+          quarters = 1 if quarters.zero?
+          quarters
+        else
+          (repayment_duration.to_f / 3).ceil
+        end
+      end
+    end
+
+    def repayment_frequency
+      if legacy_premium_calculation
+        RepaymentFrequency::Monthly
+      else
+        loan.repayment_frequency
+      end
+    end
+
+    def loan_quarters
+      (0...number_of_loan_quarters).map { |n| LoanQuarter.new(n) }
     end
 end
