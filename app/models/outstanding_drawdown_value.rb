@@ -14,7 +14,7 @@ class OutstandingDrawdownValue
 
   private
 
-  attr_reader :drawdown, :quarter, :repayment_frequency, :repayment_duration
+  attr_reader :drawdown, :quarter, :repayment_frequency
 
   def amount_of_drawdown_repaid
     if repayment_holiday_active?
@@ -59,6 +59,19 @@ class OutstandingDrawdownValue
     whole_periods_elapsed = drawdown.month.div(months_per_repayment_period)
     effective_drawdown_month = whole_periods_elapsed * months_per_repayment_period
     repayment_holiday > effective_drawdown_month ? repayment_holiday : effective_drawdown_month
+  end
+
+  def repayment_duration
+    # Six monthly and annual repayment loans with a repayment duration which
+    # isn't a multiple of the repayment frequency get rounded up the nearest
+    # whole repayment period. E.g. an annual loan with a repayment duration of
+    # 68 months gets rounded up to the nearest 12 (72)
+    if [RepaymentFrequency::SixMonthly, RepaymentFrequency::Annually].include? repayment_frequency and
+         @repayment_duration % months_per_repayment_period != 0
+      (@repayment_duration.div(months_per_repayment_period) + 1) * months_per_repayment_period
+    else
+      @repayment_duration
+    end
   end
 
   def repayment_holiday
