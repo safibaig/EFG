@@ -787,31 +787,73 @@ describe PremiumSchedule do
 
         context 'when there are four drawdowns' do
           context 'and no repayment holiday' do
-            let(:premium_schedule) {
-              FactoryGirl.build_stubbed(:premium_schedule,
-                repayment_duration: 24,
-                initial_draw_amount: Money.new(100_000_00),
-                second_draw_amount: Money.new(100_000_00),
-                second_draw_months: 1,
-                third_draw_amount: Money.new(100_000_00),
-                third_draw_months: 2,
-                fourth_draw_amount: Money.new(100_000_00),
-                fourth_draw_months: 6,
-                legacy_premium_calculation: false,
-              )
-            }
+            context 'and a repayment duration which is a multiple of 12 (months)' do
+              let(:premium_schedule) {
+                FactoryGirl.build_stubbed(:premium_schedule,
+                  repayment_duration: 24,
+                  initial_draw_amount: Money.new(100_000_00),
+                  second_draw_amount: Money.new(100_000_00),
+                  second_draw_months: 1,
+                  third_draw_amount: Money.new(100_000_00),
+                  third_draw_months: 2,
+                  fourth_draw_amount: Money.new(100_000_00),
+                  fourth_draw_months: 6,
+                  legacy_premium_calculation: false,
+                )
+              }
 
-            it 'returns the correct premium payments' do
-              premium_schedule.premiums.should == [
-                BankersRoundingMoney.new(BigDecimal.new( '50000')),
-                BankersRoundingMoney.new(BigDecimal.new('150000')),
-                BankersRoundingMoney.new(BigDecimal.new('200000')),
-                BankersRoundingMoney.new(BigDecimal.new('200000')),
-                BankersRoundingMoney.new(BigDecimal.new('100000')),
-                BankersRoundingMoney.new(BigDecimal.new('100000')),
-                BankersRoundingMoney.new(BigDecimal.new('100000')),
-                BankersRoundingMoney.new(BigDecimal.new('100000')),
-              ]
+              it 'returns the correct premium payments' do
+                premium_schedule.premiums.should == [
+                  BankersRoundingMoney.new(BigDecimal.new( '50000')),
+                  BankersRoundingMoney.new(BigDecimal.new('150000')),
+                  BankersRoundingMoney.new(BigDecimal.new('200000')),
+                  BankersRoundingMoney.new(BigDecimal.new('200000')),
+                  BankersRoundingMoney.new(BigDecimal.new('100000')),
+                  BankersRoundingMoney.new(BigDecimal.new('100000')),
+                  BankersRoundingMoney.new(BigDecimal.new('100000')),
+                  BankersRoundingMoney.new(BigDecimal.new('100000')),
+                ]
+              end
+            end
+
+            context 'and a repayment duration which is not a multiple of 12 (months)' do
+              let(:premium_schedule) {
+                FactoryGirl.build_stubbed(:premium_schedule,
+                  repayment_duration: 68, # <-- not evenly divisible by 12
+                  initial_draw_amount: Money.new(171_275_00),
+                  second_draw_amount: Money.new(171_275_00),
+                  second_draw_months: 2,
+                  legacy_premium_calculation: false,
+                )
+              }
+
+              it 'returns the correct premium payments' do
+                premium_schedule.premiums.should == [
+                  BankersRoundingMoney.new(BigDecimal.new( '85638')),
+                  BankersRoundingMoney.new(BigDecimal.new('171275')),
+                  BankersRoundingMoney.new(BigDecimal.new('171275')),
+                  BankersRoundingMoney.new(BigDecimal.new('171275')),
+                  BankersRoundingMoney.new(BigDecimal.new('142729')),
+                  BankersRoundingMoney.new(BigDecimal.new('142729')),
+                  BankersRoundingMoney.new(BigDecimal.new('142729')),
+                  BankersRoundingMoney.new(BigDecimal.new('142729')),
+                  BankersRoundingMoney.new(BigDecimal.new('114183')),
+                  BankersRoundingMoney.new(BigDecimal.new('114183')),
+                  BankersRoundingMoney.new(BigDecimal.new('114183')),
+                  BankersRoundingMoney.new(BigDecimal.new('114183')),
+                  BankersRoundingMoney.new(BigDecimal.new( '85638')),
+                  BankersRoundingMoney.new(BigDecimal.new( '85638')),
+                  BankersRoundingMoney.new(BigDecimal.new( '85638')),
+                  BankersRoundingMoney.new(BigDecimal.new( '85638')),
+                  BankersRoundingMoney.new(BigDecimal.new( '57092')),
+                  BankersRoundingMoney.new(BigDecimal.new( '57092')),
+                  BankersRoundingMoney.new(BigDecimal.new( '57092')),
+                  BankersRoundingMoney.new(BigDecimal.new( '57092')),
+                  BankersRoundingMoney.new(BigDecimal.new( '28546')),
+                  BankersRoundingMoney.new(BigDecimal.new( '28546')),
+                  BankersRoundingMoney.new(BigDecimal.new( '28546')),
+                ]
+              end
             end
           end
         end
