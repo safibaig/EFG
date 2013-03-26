@@ -437,7 +437,7 @@ describe PremiumSchedule do
           fourth_draw_months: 6)
       }
 
-      it 'returns an array containing one drawdown' do
+      it 'returns an array containing all drawdowns' do
         drawdowns.size.should == 4
 
         drawdowns[0].amount.should == Money.new(100_000_00)
