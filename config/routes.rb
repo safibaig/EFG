@@ -77,6 +77,7 @@ EFG::Application.routes.draw do
     resource :premium_schedule, only: [:edit, :update]
     resource :premium_schedule, only: [:show], controller: 'premium_schedule'
     resource :remove_guarantee, only: [:new, :create], controller: 'loan_remove_guarantees'
+    resource :update_lending_limit, only: [:new, :create], controller: 'update_loan_lending_limits'
 
     resources :data_corrections, only: [:new, :create]
     resources :loan_changes, only: [:new, :create]

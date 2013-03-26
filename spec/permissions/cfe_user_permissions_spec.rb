@@ -53,6 +53,10 @@ describe CfeUserPermissions do
     it { refute user.can_create?(LoanOffer) }
   end
 
+  context 'Update Loan Lending Limit' do
+    it { refute user.can_create?(UpdateLoanLendingLimit) }
+  end
+
   context 'Loan Entry' do
     it { refute user.can_create?(LoanEntry) }
   end

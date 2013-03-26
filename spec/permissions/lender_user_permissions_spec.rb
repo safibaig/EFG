@@ -53,6 +53,10 @@ describe LenderUserPermissions do
     it { assert user.can_create?(LoanOffer) }
   end
 
+  context 'Update Loan Lending Limit' do
+    it { assert user.can_create?(UpdateLoanLendingLimit) }
+  end
+
   context 'Loan Entry' do
     it { assert user.can_create?(LoanEntry) }
   end
