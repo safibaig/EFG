@@ -464,11 +464,7 @@ describe PremiumSchedule do
       context 'and the loan term contains an exact number of quarters' do
         it_should_behave_like 'premium payments for a loan repaid on a monthly or quarterly basis' do
           let(:legacy_premium_calculation) { true }
-          let(:loan) {
-            FactoryGirl.build_stubbed(:loan,
-              repayment_frequency_id: RepaymentFrequency::Quarterly.id
-            )
-          }
+          let(:repayment_frequency) { RepaymentFrequency::Monthly }
         end
       end
 
@@ -497,11 +493,7 @@ describe PremiumSchedule do
         context 'and the loan term contains an exact number of quarters' do
           it_should_behave_like 'premium payments for a loan repaid on a monthly or quarterly basis' do
             let(:legacy_premium_calculation) { false }
-            let(:loan) {
-              FactoryGirl.build_stubbed(:loan,
-                repayment_frequency_id: RepaymentFrequency::Quarterly.id
-              )
-            }
+            let(:repayment_frequency) { RepaymentFrequency::Quarterly }
           end
         end
 
@@ -532,11 +524,7 @@ describe PremiumSchedule do
         context 'and the loan term contains an exact number of quarters' do
           it_should_behave_like 'premium payments for a loan repaid on a monthly or quarterly basis' do
             let(:legacy_premium_calculation) { false }
-            let(:loan) {
-              FactoryGirl.build_stubbed(:loan,
-                repayment_frequency_id: RepaymentFrequency::Monthly.id
-              )
-            }
+            let(:repayment_frequency) { RepaymentFrequency::Monthly }
           end
         end
 
