@@ -11,13 +11,13 @@ class LoanChangesController < ApplicationController
   end
 
   def new
-    @presenter = presenter_class.new if params[:type]
+    @presenter = presenter_class.new(@loan)
   end
 
   def create
-    @presenter = presenter_class.new(params[:loan_change])
+    @presenter = presenter_class.new(@loan)
+    @presenter.attributes = params[:loan_change]
     @presenter.created_by = current_user
-    @presenter.loan = @loan
 
     if @presenter.save
       redirect_to loan_url(@loan)

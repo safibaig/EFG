@@ -4,14 +4,14 @@ describe RepaymentDurationLoanChangePresenter do
   it_behaves_like 'LoanChangePresenter'
 
   describe 'validations' do
-    let(:loan) { FactoryGirl.create(:loan, :guaranteed, repayment_duration: 24) }
-    let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change_presenter, loan: loan) }
-
     it 'has a valid factory' do
-      presenter.should be_valid
+      FactoryGirl.build(:repayment_duration_loan_change_presenter).should be_valid
     end
 
     context '#added_months' do
+      let(:loan) { FactoryGirl.create(:loan, :guaranteed, repayment_duration: 24) }
+      let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change_presenter, loan: loan) }
+
       it 'is required' do
         presenter.added_months = nil
         presenter.should_not be_valid

@@ -4,14 +4,14 @@ describe LumpSumRepaymentLoanChangePresenter do
   it_behaves_like 'LoanChangePresenter'
 
   describe 'validations' do
-    let(:loan) { FactoryGirl.create(:loan, :guaranteed, amount: Money.new(20_000_00)) }
-    let(:presenter) { FactoryGirl.build(:lump_sum_repayment_loan_change_presenter, loan: loan) }
-
     it 'has a valid factory' do
-      presenter.should be_valid
+      FactoryGirl.build(:lump_sum_repayment_loan_change_presenter).should be_valid
     end
 
     context '#lump_sum_repayment' do
+      let(:loan) { FactoryGirl.create(:loan, :guaranteed, amount: Money.new(20_000_00)) }
+      let(:presenter) { FactoryGirl.build(:lump_sum_repayment_loan_change_presenter, loan: loan) }
+
       it 'is required' do
         presenter.lump_sum_repayment = nil
         presenter.should_not be_valid

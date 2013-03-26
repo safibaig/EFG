@@ -1,9 +1,11 @@
 require 'active_model/model'
 
 class LoanChangePresenter
-  include ActiveModel::Model
-  include ActiveModel::MassAssignmentSecurity
   extend  ActiveModel::Callbacks
+  extend  ActiveModel::Naming
+  include ActiveModel::Conversion
+  include ActiveModel::MassAssignmentSecurity
+  include ActiveModel::Validations
 
   def self.model_name
     ActiveModel::Name.new(self, nil, 'LoanChange')
@@ -14,16 +16,21 @@ class LoanChangePresenter
   before_save :update_loan_change
   before_save :update_loan
 
-  attr_accessor :created_by, :loan
-  attr_reader :date_of_change
+  attr_accessor :created_by
+  attr_reader :date_of_change, :loan
   attr_accessible :date_of_change
 
   validates :date_of_change, presence: true
-  validates :loan, presence: true, strict: true
   validates :created_by, presence: true, strict: true
 
-  def initialize(attributes = {})
-    super(sanitize_for_mass_assignment(attributes))
+  def initialize(loan)
+    @loan = loan
+  end
+
+  def attributes=(attributes)
+    sanitize_for_mass_assignment(attributes).each do |k, v|
+      public_send("#{k}=", v)
+    end
   end
 
   def date_of_change=(value)
@@ -32,6 +39,10 @@ class LoanChangePresenter
 
   def loan_change
     @loan_change ||= loan.loan_changes.new
+  end
+
+  def persisted?
+    false
   end
 
   def save

@@ -1,8 +1,15 @@
 FactoryGirl.define do
   factory :loan_change_presenter do
+    ignore do
+      association :loan, factory: [:loan, :guaranteed]
+    end
+
     association :created_by, factory: :lender_user
     date_of_change Date.new
-    loan
+
+    initialize_with do
+      new(loan)
+    end
 
     factory :lump_sum_repayment_loan_change_presenter, class: LumpSumRepaymentLoanChangePresenter do
       lump_sum_repayment Money.new(1_000_00)

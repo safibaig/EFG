@@ -9,13 +9,6 @@ shared_examples_for 'LoanChangePresenter' do
       presenter.should_not be_valid
     end
 
-    it 'strictly requires a loan' do
-      expect {
-        presenter.loan = nil
-        presenter.valid?
-      }.to raise_error(ActiveModel::StrictValidationFailed)
-    end
-
     it 'strictly requires a created_by' do
       expect {
         presenter.created_by = nil
