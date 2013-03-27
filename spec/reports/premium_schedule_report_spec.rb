@@ -411,42 +411,42 @@ describe PremiumScheduleReport do
         row[8].should == '46.29'
         row[9].should == '30.86'
         row[10].should == '15.43'
-        row[11].should be_blank
-        row[12].should be_blank
-        row[13].should be_blank
-        row[14].should be_blank
-        row[15].should be_blank
-        row[16].should be_blank
-        row[17].should be_blank
-        row[18].should be_blank
-        row[19].should be_blank
-        row[20].should be_blank
-        row[21].should be_blank
-        row[22].should be_blank
-        row[23].should be_blank
-        row[24].should be_blank
-        row[25].should be_blank
-        row[26].should be_blank
-        row[27].should be_blank
-        row[28].should be_blank
-        row[29].should be_blank
-        row[30].should be_blank
-        row[31].should be_blank
-        row[32].should be_blank
-        row[33].should be_blank
-        row[34].should be_blank
-        row[35].should be_blank
-        row[36].should be_blank
-        row[37].should be_blank
-        row[38].should be_blank
-        row[39].should be_blank
-        row[40].should be_blank
-        row[41].should be_blank
-        row[42].should be_blank
-        row[43].should be_blank
-        row[44].should be_blank
-        row[45].should be_blank
-        row[46].should be_blank
+        row[11].should == '0.0'
+        row[12].should == '0.0'
+        row[13].should == '0.0'
+        row[14].should == '0.0'
+        row[15].should == '0.0'
+        row[16].should == '0.0'
+        row[17].should == '0.0'
+        row[18].should == '0.0'
+        row[19].should == '0.0'
+        row[20].should == '0.0'
+        row[21].should == '0.0'
+        row[22].should == '0.0'
+        row[23].should == '0.0'
+        row[24].should == '0.0'
+        row[25].should == '0.0'
+        row[26].should == '0.0'
+        row[27].should == '0.0'
+        row[28].should == '0.0'
+        row[29].should == '0.0'
+        row[30].should == '0.0'
+        row[31].should == '0.0'
+        row[32].should == '0.0'
+        row[33].should == '0.0'
+        row[34].should == '0.0'
+        row[35].should == '0.0'
+        row[36].should == '0.0'
+        row[37].should == '0.0'
+        row[38].should == '0.0'
+        row[39].should == '0.0'
+        row[40].should == '0.0'
+        row[41].should == '0.0'
+        row[42].should == '0.0'
+        row[43].should == '0.0'
+        row[44].should == '0.0'
+        row[45].should == '0.0'
+        row[46].should == '0.0'
       end
     end
 
