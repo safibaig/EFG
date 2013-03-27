@@ -37,8 +37,13 @@ class RepaymentDurationLoanChangePresenter < LoanChangePresenter
         rd = RepaymentDuration.new(loan)
         @repayment_duration = loan.repayment_duration.total_months + added_months
 
-        errors.add(:added_months, :too_short, count: rd.min_months) if repayment_duration < rd.min_months
-        errors.add(:added_months, :too_long,  count: rd.max_months) if repayment_duration > rd.max_months
+        if repayment_duration <= 0
+          errors.add(:added_months, :must_be_gt_zero)
+        elsif repayment_duration < rd.min_months
+          errors.add(:added_months, :too_short, count: rd.min_months)
+        elsif repayment_duration > rd.max_months
+          errors.add(:added_months, :too_long,  count: rd.max_months)
+        end
 
         initial_draw_date = loan.initial_draw_change.date_of_change
         @maturity_date = initial_draw_date.advance(months: @repayment_duration)

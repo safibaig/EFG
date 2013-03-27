@@ -5,8 +5,7 @@ describe RepaymentDurationLoanChangePresenter do
 
   describe 'validations' do
     context '#added_months' do
-      let(:loan) { FactoryGirl.create(:loan, :guaranteed, repayment_duration: 24) }
-      let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change_presenter, loan: loan) }
+      let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change_presenter) }
 
       it 'is required' do
         presenter.added_months = nil
@@ -18,15 +17,82 @@ describe RepaymentDurationLoanChangePresenter do
         presenter.should_not be_valid
       end
 
-      context 'calculaing #repayment_duration' do
-        it 'cannot be too short' do
-          presenter.added_months = -22
-          presenter.should_not be_valid
+      context 'calculated #repayment_duration' do
+        let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change_presenter, loan: loan) }
+
+        before do
+          loan.initial_draw_change.update_column(:date_of_change, Date.new(2010, 1, 1))
+
+          # One month after initial draw date.
+          Timecop.freeze(2010, 2, 1)
         end
 
-        it 'cannot be too long' do
-          presenter.added_months = 999
-          presenter.should_not be_valid
+        after do
+          Timecop.return
+        end
+
+        context 'for an EFG loan' do
+          let(:loan) { FactoryGirl.create(:loan, :guaranteed, repayment_duration: 60, maturity_date: Date.new(2015, 1, 1)) }
+
+          it 'must be more than zero months' do
+            presenter.added_months = -60
+            presenter.should_not be_valid
+          end
+
+          it 'must be at least 3 months' do
+            presenter.added_months = -58
+            presenter.should_not be_valid
+
+            presenter.added_months = -57
+            presenter.should be_valid
+          end
+
+          it 'must be no more than 120 months' do
+            presenter.added_months = 61
+            presenter.should_not be_valid
+
+            presenter.added_months = 60
+            presenter.should be_valid
+          end
+        end
+
+        context 'for a SFLG loan (with no category)' do
+          let(:loan) { FactoryGirl.create(:loan, :sflg, :guaranteed, loan_category_id: nil, repayment_duration: 60) }
+
+          it 'must be more than zero months' do
+            presenter.added_months = -60
+            presenter.should_not be_valid
+          end
+
+          it 'must be at least 24 months' do
+            presenter.added_months = -37
+            presenter.should_not be_valid
+
+            presenter.added_months = -36
+            presenter.should be_valid
+          end
+
+          it 'must be no more than 120 months' do
+            presenter.added_months = 61
+            presenter.should_not be_valid
+
+            presenter.added_months = 60
+            presenter.should be_valid
+          end
+        end
+
+        context 'for a transferred loan' do
+          let(:loan) { FactoryGirl.create(:loan, :transferred, repayment_duration: 60) }
+
+          it 'must be more than zero months' do
+            presenter.added_months = -60
+            presenter.should_not be_valid
+          end
+
+          it 'has no minimum repayment_duration' do
+            presenter.added_months = -58
+            presenter.should be_valid
+          end
         end
       end
     end
