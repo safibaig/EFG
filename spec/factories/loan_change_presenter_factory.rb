@@ -6,6 +6,7 @@ FactoryGirl.define do
 
     association :created_by, factory: :lender_user
     date_of_change Date.new
+    initial_draw_amount Money.new(10_000_00)
 
     initialize_with do
       new(loan)

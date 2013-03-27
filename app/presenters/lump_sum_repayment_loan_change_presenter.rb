@@ -9,6 +9,10 @@ class LumpSumRepaymentLoanChangePresenter < LoanChangePresenter
   end
 
   private
+    def amount_available
+      loan.amount - loan.cumulative_lump_sum_amount
+    end
+
     def update_loan_change
       loan_change.change_type_id = ChangeType::LumpSumRepayment.id
       loan_change.lump_sum_repayment = lump_sum_repayment
@@ -19,8 +23,8 @@ class LumpSumRepaymentLoanChangePresenter < LoanChangePresenter
         errors.add(:lump_sum_repayment, :required)
       elsif lump_sum_repayment <= 0
         errors.add(:lump_sum_repayment, :must_be_greater_than_zero)
-      elsif loan.cumulative_lump_sum_amount + lump_sum_repayment > loan.cumulative_drawn_amount
-        errors.add(:lump_sum_repayment, :exceeds_amount_drawn)
+      elsif lump_sum_repayment > amount_available
+        errors.add(:lump_sum_repayment, :exceeds_amount_available)
       end
     end
 end

@@ -1,5 +1,4 @@
-<%= simple_form_row 'Loan amount', @loan.amount.format %>
 <%= simple_form_row 'Cumulative amount drawn against this facility prior to this change', @loan.cumulative_drawn_amount.format %>
 <%= simple_form_row 'Cumulative amount repaid to this facility prior to this change', @loan.cumulative_lump_sum_amount.format %>
 
-<%= f.input :lump_sum_repayment %>
+<%= f.input :lump_sum_repayment, as: :currency %>

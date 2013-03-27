@@ -43,7 +43,13 @@ en:
         change_type_id: 'What is the change you wish to make?'
         amount_drawn: 'What is the amount now being drawn that is to be recorded? (This should include any further draws it is known will take place before the next Premium Payment is due)'
         lump_sum_repayment: 'What is the amount of the lump sum repayment?'
-        maturity_date: 'What is the new maturity date?'
+        outstanding_amount: 'What is the outstanding balance at the next (or subsequent) quarterly Premium collection point, taking account of any draws or repayments which may be made between now and the relevant quarter date?'
+        second_draw_amount: What is the amount of the additional draw? (Second tranche)
+        second_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to second tranche drawdown?
+        third_draw_amount: What is the amount of the additional draw? (Third tranche)
+        third_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to third tranche drawdown?
+        fourth_draw_amount: What is the amount of the additional draw? (Fourth tranche)
+        fourth_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to fourth tranche drawdown?
 
       data_correction:
         business_name: 'What is the new business name?'
@@ -120,18 +126,6 @@ en:
         third_draw_months: 'What is the number of months (from the initial draw) to third tranche drawdown?'
         fourth_draw_amount: 'What is the amount of additional draw? (Fourth tranche)'
         fourth_draw_months: 'What is the number of months (from the initial draw) to fourth tranche drawdown?'
-
-      regenerate_schedule:
-        premium_cheque_month: 'When is the next quarterly Premium due?'
-        initial_draw_amount: 'What is the outstanding balance at the next (or subsequent) quarterly Premium collection point, taking account of any draws or repayments which may be made between now and the relevant quarter date?'
-        repayment_duration: 'What will the outstanding loan term be at the next (or subsequent) quarterly Premium collection point? (Months - must be a multiple of 3, i.e. rounded up to the next whole quarter)'
-        initial_capital_repayment_holiday: What is the length of the initial capital repayment holiday? (Months) (Note that if the facility is being provided on interest-only terms then the value entered here should be equal to the full term of the facility)
-        second_draw_amount: What is the amount of the additional draw? (Second tranche)
-        second_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to second tranche drawdown?
-        third_draw_amount: What is the amount of the additional draw? (Third tranche)
-        third_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to third tranche drawdown?
-        fourth_draw_amount: What is the amount of the additional draw? (Fourth tranche)
-        fourth_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to fourth tranche drawdown?
 
       loan_demand_to_borrower:
         amount_demanded: 'What was the amount for which demand was made on the borrower (as recorded on the demand letter)?'

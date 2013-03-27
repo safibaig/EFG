@@ -4,10 +4,6 @@ describe RepaymentDurationLoanChangePresenter do
   it_behaves_like 'LoanChangePresenter'
 
   describe 'validations' do
-    it 'has a valid factory' do
-      FactoryGirl.build(:repayment_duration_loan_change_presenter).should be_valid
-    end
-
     context '#added_months' do
       let(:loan) { FactoryGirl.create(:loan, :guaranteed, repayment_duration: 24) }
       let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change_presenter, loan: loan) }
@@ -38,22 +34,22 @@ describe RepaymentDurationLoanChangePresenter do
 
   describe '#save' do
     let(:user) { FactoryGirl.create(:lender_user) }
-    let(:loan) {
-      FactoryGirl.create(:loan, :guaranteed,
-        repayment_duration: 60,
-        maturity_date: Date.new(2015, 3, 2)
-      ).tap { |loan|
-        loan.initial_draw_change.update_column(:date_of_change, Date.new(2010, 3, 2))
-      }
-    }
+    let(:loan) { FactoryGirl.create(:loan, :guaranteed, maturity_date: Date.new(2015, 3, 2), repayment_duration: 60) }
     let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change_presenter, created_by: user, loan: loan) }
 
     context 'success' do
+      before do
+        loan.initial_draw_change.update_column :date_of_change, Date.new(2010, 3, 2)
+      end
+
       let(:loan_change) { loan.loan_changes.last! }
 
       it 'creates a LoanChange and updates the loan' do
         presenter.added_months = 3
-        presenter.save.should == true
+
+        Timecop.freeze(2013, 3, 1) do
+          presenter.save.should == true
+        end
 
         loan_change.old_maturity_date.should == Date.new(2015, 3, 2)
         loan_change.maturity_date.should == Date.new(2015, 6, 2)
@@ -65,6 +61,10 @@ describe RepaymentDurationLoanChangePresenter do
         loan.repayment_duration.total_months.should == 63
         loan.maturity_date.should == Date.new(2015, 6, 2)
         loan.modified_by.should == user
+
+        premium_schedule = loan.premium_schedules.last!
+        premium_schedule.premium_cheque_month.should == '06/2013'
+        premium_schedule.repayment_duration.should == 24
       end
 
       it 'stores the correct change_type when extending' do

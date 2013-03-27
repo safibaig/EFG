@@ -5,6 +5,7 @@ require 'spec_helper'
 describe 'loan change' do
   let(:loan) {
     FactoryGirl.create(:loan, :guaranteed,
+      amount: Money.new(100_000_00),
       maturity_date: Date.new(2014, 12, 25),
       repayment_duration: 60
     ).tap { |loan|
@@ -22,16 +23,26 @@ describe 'loan change' do
     end
 
     it 'works' do
-      fill_in :date_of_change, '1/6/12'
+      fill_in :date_of_change, '1/12/11'
       fill_in :lump_sum_repayment, '1234.56'
-      click_button 'Submit'
+      fill_in :initial_draw_amount, '65,432.10'
+
+      Timecop.freeze(2011, 12, 1) do
+        click_button 'Submit'
+      end
 
       loan_change = loan.loan_changes.last!
       loan_change.change_type.should == ChangeType::LumpSumRepayment
-      loan_change.date_of_change.should == Date.new(2012, 6, 1)
+      loan_change.date_of_change.should == Date.new(2011, 12, 1)
       loan_change.lump_sum_repayment.should == Money.new(1_234_56)
 
+      premium_schedule = loan.premium_schedules.last!
+      premium_schedule.initial_draw_amount.should == Money.new(65_432_10)
+      premium_schedule.premium_cheque_month.should == '03/2012'
+      premium_schedule.repayment_duration.should == 33
+
       loan.reload
+      loan.maturity_date.should == Date.new(2014, 12, 25)
       loan.modified_by.should == current_user
     end
   end
@@ -43,14 +54,24 @@ describe 'loan change' do
     end
 
     it 'works' do
-      fill_in :date_of_change, '1/6/12'
+      fill_in :date_of_change, '11/9/10'
       fill_in :added_months, '3'
-      click_button 'Submit'
+      fill_in :initial_draw_amount, '65,432.10'
+
+      Timecop.freeze(2010, 9, 1) do
+        click_button 'Submit'
+      end
 
       loan_change = loan.loan_changes.last!
       loan_change.change_type.should == ChangeType::ExtendTerm
-      loan_change.date_of_change.should == Date.new(2012, 6, 1)
+      loan_change.date_of_change.should == Date.new(2010, 9, 11)
+      loan_change.old_repayment_duration.should == 60
       loan_change.repayment_duration.should == 63
+
+      premium_schedule = loan.premium_schedules.last!
+      premium_schedule.initial_draw_amount.should == Money.new(65_432_10)
+      premium_schedule.premium_cheque_month.should == '12/2010'
+      premium_schedule.repayment_duration.should == 51
 
       loan.reload
       loan.modified_by.should == current_user

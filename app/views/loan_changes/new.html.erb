@@ -7,12 +7,33 @@
   <h1>Change Facility</h1>
 </div>
 
+<p><span class="label label-info">INFORMATION</span> A new Premium Schedule will be generated from the information entered here.</p>
+
+<hr>
+
 <%= simple_form_for(@presenter, url: loan_loan_changes_path(@loan, type: params[:type]), html: { class: 'form-horizontal form-loan-change' }) do |f| %>
   <%= render_errors_on_base(f.object.errors) %>
 
   <%= f.input :date_of_change, as: :quick_date %>
 
+  <%= simple_form_row 'Original loan amount', @loan.amount.format %>
+
   <%= render params[:type], f: f %>
+
+  <%= field_set_tag 'Draw Information' do %>
+    <%= simple_form_row 'Next quarterly Premium month due', @presenter.next_premium_cheque_month %>
+    <%= f.input :initial_draw_amount, as: :currency %>
+    <%= simple_form_row 'Outstanding loan term at the next quarterly Premium collection point', @presenter.repayment_duration_at_next_premium %>
+
+    <hr>
+
+    <%= f.input :second_draw_amount, as: :currency %>
+    <%= f.input :second_draw_months, input_html: { class: 'input-mini' } %>
+    <%= f.input :third_draw_amount, as: :currency %>
+    <%= f.input :third_draw_months, input_html: { class: 'input-mini' } %>
+    <%= f.input :fourth_draw_amount, as: :currency %>
+    <%= f.input :fourth_draw_months, input_html: { class: 'input-mini' } %>
+  <% end %>
 
   <div class="form-actions">
     <%= f.button :submit, value: 'Submit', class: 'btn-primary', data: { 'disable-with' => 'Submitting...' } %>
