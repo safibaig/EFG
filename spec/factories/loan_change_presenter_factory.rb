@@ -19,5 +19,7 @@ FactoryGirl.define do
     factory :repayment_duration_loan_change_presenter, class: RepaymentDurationLoanChangePresenter do
       added_months 3
     end
+
+    factory :reprofile_draws_loan_change_presenter, class: ReprofileDrawsLoanChangePresenter
   end
 end
