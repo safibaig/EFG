@@ -1,14 +1,12 @@
 # encoding: utf-8
 require 'spec_helper'
 
-describe 'loan entry' do
-  let(:current_lender) { FactoryGirl.create(:lender) }
-
-  let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
+shared_examples_for 'a premium schedule viewer' do
+  let(:lender) { FactoryGirl.create(:lender) }
 
   let(:loan) {
     FactoryGirl.create(:loan, :completed,
-      lender: current_lender,
+      lender: lender,
       amount: Money.new(100_000_00)
     )
   }
@@ -44,6 +42,20 @@ describe 'loan entry' do
     it 'displays the correct data' do
       page.should have_css('.premium1')
       page.should have_css('.premium40')
+    end
+  end
+end
+
+describe 'loan entry' do
+  context 'as a lender user' do
+    it_should_behave_like 'a premium schedule viewer' do
+      let(:current_user) { FactoryGirl.create(:lender_user, lender: lender) }
+    end
+  end
+
+  context 'as a CfE user' do
+    it_should_behave_like 'a premium schedule viewer' do
+      let(:current_user) { FactoryGirl.create(:cfe_user) }
     end
   end
 end
