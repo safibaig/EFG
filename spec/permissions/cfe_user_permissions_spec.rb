@@ -31,7 +31,7 @@ describe CfeUserPermissions do
   context 'PremiumSchedule' do
     it { refute user.can_create?(PremiumSchedule) }
     it { refute user.can_update?(PremiumSchedule) }
-    it { refute user.can_view?(PremiumSchedule) }
+    it { assert user.can_view?(PremiumSchedule) }
   end
 
   context 'data protection declaration' do
