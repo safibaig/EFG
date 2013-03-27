@@ -118,7 +118,7 @@ class PremiumSchedule < ActiveRecord::Base
   end
 
   def number_of_subsequent_payments
-    subsequent_premiums.count
+    subsequent_premiums.count {|amount| amount > 0 }
   end
 
   def total_subsequent_premiums
