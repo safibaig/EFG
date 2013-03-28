@@ -70,6 +70,7 @@ EFG::Application.routes.draw do
     resource :entry, only: [:new, :create], controller: 'loan_entries'
     resource :transferred_entry, only: [:new, :create], controller: 'transferred_loan_entries'
     resource :demand_to_borrower, only: [:new, :create], controller: 'loan_demand_to_borrowers'
+    resource :satisfy_lender_demand, only: [:new, :create], controller: 'loan_satisfy_lender_demand'
     resource :repay, only: [:new, :create], controller: 'loan_repays'
     resource :no_claim, only: [:new, :create], controller: 'loan_no_claims'
     resource :demand_against_government, only: [:new, :create], controller: 'loan_demand_against_government'

@@ -1,0 +1,13 @@
+<%= breadcrumbs_for_loan(@loan) %>
+
+<div class="page-header">
+  <h1>Lender Demand Satisfied</h1>
+</div>
+
+<%= simple_form_for(@loan_satisfy_lender_demand, url: loan_satisfy_lender_demand_path(@loan), html: { class: 'form-horizontal form-loan-lender-demand-satisfied' }) do |f| %>
+  <%= f.input :date_of_change, as: :quick_date %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Submit', class: 'btn-primary', data: { 'disable-with' => 'Submitting...' } %>
+  </div>
+<% end %>

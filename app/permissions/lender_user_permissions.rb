@@ -18,6 +18,7 @@ module LenderUserPermissions
         LoanOffer,
         LoanRepay,
         LoanReport,
+        LoanSatisfyLenderDemand,
         LoanTransfer::LegacySflg,
         LoanTransfer::Sflg,
         Recovery,
