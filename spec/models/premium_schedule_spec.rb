@@ -680,6 +680,34 @@ describe PremiumSchedule do
               ]
             end
           end
+
+          context 'and a repayment holiday' do
+            let(:premium_schedule) {
+              FactoryGirl.build_stubbed(:premium_schedule,
+                repayment_duration: 36,
+                initial_draw_amount: Money.new(50_000_00),
+                legacy_premium_calculation: false,
+                initial_capital_repayment_holiday: 12
+              )
+            }
+
+            it 'returns the correct premium payments' do
+              premium_schedule.premiums.should == [
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('18750')),
+                BankersRoundingMoney.new(BigDecimal.new('18750')),
+                BankersRoundingMoney.new(BigDecimal.new('12500')),
+                BankersRoundingMoney.new(BigDecimal.new('12500')),
+                BankersRoundingMoney.new(BigDecimal.new('6250')),
+                BankersRoundingMoney.new(BigDecimal.new('6250'))
+              ]
+            end
+          end
         end
 
         context 'when there are four drawdowns' do
@@ -739,6 +767,38 @@ describe PremiumSchedule do
                 BankersRoundingMoney.new(BigDecimal.new( '87500')),
                 BankersRoundingMoney.new(BigDecimal.new( '87500')),
                 BankersRoundingMoney.new(BigDecimal.new( '87500')),
+              ]
+            end
+          end
+
+          context 'and a repayment holiday' do
+            let(:premium_schedule) {
+              FactoryGirl.build_stubbed(:premium_schedule,
+                repayment_duration: 48,
+                initial_draw_amount: Money.new(50_000_00),
+                legacy_premium_calculation: false,
+                initial_capital_repayment_holiday: 24
+              )
+            }
+
+            it 'returns the correct premium payments' do
+              premium_schedule.premiums.should == [
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('25000')),
+                BankersRoundingMoney.new(BigDecimal.new('12500')),
+                BankersRoundingMoney.new(BigDecimal.new('12500')),
+                BankersRoundingMoney.new(BigDecimal.new('12500')),
+                BankersRoundingMoney.new(BigDecimal.new('12500'))
               ]
             end
           end
