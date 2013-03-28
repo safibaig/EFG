@@ -20,16 +20,12 @@ class OutstandingDrawdownValue
     if repayment_holiday_active?
       Money.new(0)
     else
-      drawdown.amount * proportion_of_drawdown_repaid
+      (drawdown.amount * months_of_drawdown_repayment_so_far) / total_drawdown_repayment_months
     end
   end
 
   def repayment_holiday_active?
     repayment_holiday >= quarter.last_month
-  end
-
-  def proportion_of_drawdown_repaid
-    months_of_drawdown_repayment_so_far.to_f / total_drawdown_repayment_months
   end
 
   def months_of_drawdown_repayment_so_far
