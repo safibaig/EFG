@@ -200,6 +200,33 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
         end
       end
 
+      context 'when there is a second drawdown in month 0' do
+        let(:premium_schedule) {
+          FactoryGirl.build_stubbed(:premium_schedule,
+            repayment_duration: 30,
+            initial_draw_amount: Money.new(10_000_00),
+            second_draw_amount: Money.new(10_000_00),
+            second_draw_months: 0,
+            legacy_premium_calculation: legacy_premium_calculation,
+          )
+        }
+
+        it 'does not ignore the second drawdown and returns the correct premium payments' do
+          premium_schedule.premiums.should == [
+            BankersRoundingMoney.new(BigDecimal.new('10000')),
+            BankersRoundingMoney.new(BigDecimal.new( '9000')),
+            BankersRoundingMoney.new(BigDecimal.new( '8000')),
+            BankersRoundingMoney.new(BigDecimal.new( '7000')),
+            BankersRoundingMoney.new(BigDecimal.new( '6000')),
+            BankersRoundingMoney.new(BigDecimal.new( '5000')),
+            BankersRoundingMoney.new(BigDecimal.new( '4000')),
+            BankersRoundingMoney.new(BigDecimal.new( '3000')),
+            BankersRoundingMoney.new(BigDecimal.new( '2000')),
+            BankersRoundingMoney.new(BigDecimal.new( '1000')),
+          ]
+        end
+      end
+
       context 'when the repayment duration is less than one quarter' do
         let(:premium_schedule) {
           FactoryGirl.build_stubbed(:premium_schedule,

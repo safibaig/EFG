@@ -75,15 +75,15 @@ class PremiumSchedule < ActiveRecord::Base
 
   def drawdowns
     [TrancheDrawdown.new(initial_draw_amount, 0)].tap do |drawdowns|
-      if second_draw_amount.present? && second_draw_amount.nonzero? && second_draw_months.present? && second_draw_months.nonzero?
+      if second_draw_amount.present? && second_draw_amount.nonzero? && second_draw_months.present?
         drawdowns << TrancheDrawdown.new(second_draw_amount, second_draw_months)
       end
 
-      if third_draw_amount.present? && third_draw_amount.nonzero? && third_draw_months.present? && third_draw_months.nonzero?
+      if third_draw_amount.present? && third_draw_amount.nonzero? && third_draw_months.present?
         drawdowns << TrancheDrawdown.new(third_draw_amount, third_draw_months)
       end
 
-      if fourth_draw_amount.present? && fourth_draw_amount.nonzero? && fourth_draw_months.present? && fourth_draw_months.nonzero?
+      if fourth_draw_amount.present? && fourth_draw_amount.nonzero? && fourth_draw_months.present?
         drawdowns << TrancheDrawdown.new(fourth_draw_amount, fourth_draw_months)
       end
     end
