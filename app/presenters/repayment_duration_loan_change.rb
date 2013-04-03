@@ -15,6 +15,10 @@ class RepaymentDurationLoanChange < LoanChangePresenter
   end
 
   private
+    def months_per_repayment_period
+      loan.repayment_frequency.try(:months_per_repayment_period) || 1
+    end
+
     def update_loan
       loan.repayment_duration = repayment_duration
       loan.maturity_date = maturity_date
@@ -33,6 +37,8 @@ class RepaymentDurationLoanChange < LoanChangePresenter
         errors.add(:added_months, :required)
       elsif added_months.zero?
         errors.add(:added_months, :must_not_be_zero)
+      elsif added_months % months_per_repayment_period != 0
+        errors.add(:added_months, :must_match_repayment_frequency, months_per_repayment_period: months_per_repayment_period)
       else
         rd = RepaymentDuration.new(loan)
         @repayment_duration = loan.repayment_duration.total_months + added_months

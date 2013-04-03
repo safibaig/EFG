@@ -17,6 +17,42 @@ describe RepaymentDurationLoanChange do
         presenter.should_not be_valid
       end
 
+      [
+        RepaymentFrequency::Annually,
+        RepaymentFrequency::SixMonthly,
+        RepaymentFrequency::Quarterly
+      ].each do |repayment_frequency|
+        context "for #{repayment_frequency.name} repayment_frequency" do
+          before do
+            presenter.loan.update_column :repayment_frequency_id, repayment_frequency.id
+          end
+
+          it 'ensures added_months are in valid chunks' do
+            presenter.added_months = 2
+            presenter.should_not be_valid
+
+            presenter.added_months = repayment_frequency.months_per_repayment_period
+            presenter.should be_valid
+          end
+        end
+      end
+
+      [
+        RepaymentFrequency::Monthly,
+        RepaymentFrequency::InterestOnly
+      ].each do |repayment_frequency|
+        context "for #{repayment_frequency.name} repayment_frequency" do
+          before do
+            presenter.loan.update_column :repayment_frequency_id, repayment_frequency.id
+          end
+
+          it 'works' do
+            presenter.added_months = 2
+            presenter.should be_valid
+          end
+        end
+      end
+
       context 'calculated #repayment_duration' do
         let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change, loan: loan) }
 
