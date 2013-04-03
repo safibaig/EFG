@@ -1,13 +1,20 @@
-# Include the default config file.
-def load_file_if_exists(config, file)
-  config.instance_eval(File.read(file)) if File.exist?(file)
+worker_processes 3
+timeout 30
+preload_app true
+
+before_fork do |server, worker|
+  Signal.trap 'TERM' do
+    puts 'Unicorn master intercepting TERM and sending myself QUIT instead'
+    Process.kill 'QUIT', Process.pid
+  end
+
+  defined?(ActiveRecord::Base) and ActiveRecord::Base.connection.disconnect!
 end
-load_file_if_exists(self, "/etc/govuk/unicorn.rb")
 
-# EFG lives in its own little world - it has a server all to itself.
-worker_processes 4
+after_fork do |server, worker|
+  Signal.trap 'TERM' do
+    puts 'Unicorn worker intercepting TERM and doing nothing. Wait for master to sent QUIT'
+  end
 
-# Currently we have some reports on the request thread that take a long-time
-# to generate. Change the timeout for a worker to finish the response from
-# default of 60 seconds to 120 seconds.
-timeout 120
+  defined?(ActiveRecord::Base) and ActiveRecord::Base.establish_connection
+end
