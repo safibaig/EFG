@@ -102,6 +102,9 @@ en:
       transferred_loan_entry:
         <<: *loan_entry
 
+      update_loan_lending_limit:
+        new_lending_limit_id: 'New Lending Limit'
+
       loan_offer:
         facility_letter_sent: "Have the Scheme Facility Offer Documents been sent to the Applicant?"
         facility_letter_date: "What is the date of the Scheme Facility Letter? - Please note that this must fall within the chosen Lending Limit period. Any change to the Lending Limit must be made in Loan Entry before entering the Scheme Facility date here."

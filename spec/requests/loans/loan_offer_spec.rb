@@ -41,12 +41,20 @@ describe 'loan offer' do
   end
 
   context "with an unavailable lending limit" do
-    let(:lending_limit) { FactoryGirl.create(:lending_limit, :inactive) }
+    let(:lending_limit) { FactoryGirl.create(:lending_limit, :inactive, lender: current_user.lender) }
+    let!(:new_lending_limit) { FactoryGirl.create(:lending_limit, :active, lender: current_user.lender, name: 'The Next Great Lending Limit') }
 
     it "prompts to change the lending limit" do
       dispatch
 
       page.should have_content 'Lending Limit Unavailable'
+
+      select 'The Next Great Lending Limit', from: 'update_loan_lending_limit[new_lending_limit_id]'
+      click_button 'Submit'
+
+      loan.reload
+      loan.lending_limit.should == new_lending_limit
+      loan.modified_by.should == current_user
     end
   end
 end
