@@ -1,9 +1,12 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe 'loan offer' do
   let(:current_user) { FactoryGirl.create(:lender_user) }
   let(:lending_limit) { FactoryGirl.create(:lending_limit) }
   let(:loan) { FactoryGirl.create(:loan, :completed, lender: current_user.lender, lending_limit: lending_limit) }
+  let!(:premium_schedule) { FactoryGirl.create(:premium_schedule, loan: loan) }
   before { login_as(current_user, scope: :user) }
 
   def dispatch
@@ -42,7 +45,7 @@ describe 'loan offer' do
 
   context "with an unavailable lending limit" do
     let(:lending_limit) { FactoryGirl.create(:lending_limit, :inactive, lender: current_user.lender) }
-    let!(:new_lending_limit) { FactoryGirl.create(:lending_limit, :active, lender: current_user.lender, name: 'The Next Great Lending Limit') }
+    let!(:new_lending_limit) { FactoryGirl.create(:lending_limit, :active, lender: current_user.lender, name: 'The Next Great Lending Limit', premium_rate: 10) }
 
     it "prompts to change the lending limit" do
       dispatch
@@ -51,6 +54,9 @@ describe 'loan offer' do
 
       select 'The Next Great Lending Limit', from: 'update_loan_lending_limit[new_lending_limit_id]'
       click_button 'Submit'
+
+      page.should have_content '€3,222.76'
+      page.should have_content '€2,464.46'
 
       loan.reload
       loan.lending_limit.should == new_lending_limit

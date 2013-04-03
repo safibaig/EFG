@@ -1,0 +1,28 @@
+<%= breadcrumbs_for_loan(@loan) %>
+
+<div class="alert alert-block alert-success">
+  <h4>Lending Limit Updated</h4>
+  <p>This lending limit has been changed to: <strong><%= @loan.lending_limit.name %></strong>.</p>
+</div>
+
+<p>If you believe there are now issues with regards to the recalculated De Minimis figure then you <strong>must</strong> cancel the loan.</p>
+
+<p>For example,  the total value of the State Aid for the last three years, including that arising from this application, is now more than €200,000, or the relevant lower threshold where advised for eligible agriculture, fisheries and transport businesses.</p>
+
+<p>If there isn't an issue, then please progress as you would do ordinarily.</p>
+
+<table class="table">
+  <tr>
+    <th>Previous State Aid</th>
+    <td><%= @update_lending_limit.previous_state_aid.format %></td>
+  </tr>
+  <tr>
+    <th>New State Aid</th>
+    <td><%= @update_lending_limit.new_state_aid.format %></td>
+  </tr>
+</table>
+
+<div class="form-actions">
+  <%= link_to('Offer Scheme Facility', new_loan_offer_path(@loan), class: 'btn btn-primary') if current_user.can_create?(LoanOffer) %>
+  <%= link_to('Loan Details', loan_path(@loan), class: 'btn') %>
+</div>

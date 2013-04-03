@@ -12,7 +12,7 @@ class UpdateLoanLendingLimitsController < ApplicationController
     @update_lending_limit.modified_by = current_user
 
     if @update_lending_limit.save
-      redirect_to loan_url(@update_lending_limit.loan)
+      render
     else
       render :new
     end

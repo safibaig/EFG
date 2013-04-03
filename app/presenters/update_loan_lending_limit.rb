@@ -3,11 +3,12 @@
 class UpdateLoanLendingLimit
   include LoanPresenter
 
-  attr_reader :new_lending_limit_id
+  attr_reader :new_lending_limit_id, :previous_state_aid, :new_state_aid
 
   validates_presence_of :new_lending_limit_id
 
   before_save :update_lending_limit
+  before_save :update_state_aid
 
   def available_lending_limits
     loan.lender.current_lending_limits
@@ -25,5 +26,11 @@ class UpdateLoanLendingLimit
     # to the one of the original LendingLimit object.
     loan.lending_limit = nil
     loan.lending_limit_id = new_lending_limit_id
+  end
+
+  def update_state_aid
+    @previous_state_aid = loan.state_aid
+    loan.recalculate_state_aid
+    @new_state_aid = loan.state_aid
   end
 end
