@@ -40,10 +40,10 @@ en:
 
       loan_change:
         date_of_change: 'What is the date when the change to be recorded occurred?'
-        change_type_id: 'What is the change you wish to make?'
+        added_months: Added months
         amount_drawn: 'What is the amount now being drawn that is to be recorded? (This should include any further draws it is known will take place before the next Premium Payment is due)'
         lump_sum_repayment: 'What is the amount of the lump sum repayment?'
-        outstanding_amount: 'What is the outstanding balance at the next (or subsequent) quarterly Premium collection point, taking account of any draws or repayments which may be made between now and the relevant quarter date?'
+        initial_draw_amount: 'What is the outstanding balance at the next quarterly Premium collection point, taking account of any draws or repayments which may be made between now and the relevant quarter date?'
         second_draw_amount: What is the amount of the additional draw? (Second tranche)
         second_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to second tranche drawdown?
         third_draw_amount: What is the amount of the additional draw? (Third tranche)
@@ -53,9 +53,6 @@ en:
 
       data_correction:
         business_name: 'What is the new business name?'
-        demanded_amount: 'Change to the Original Outstanding Scheme Facility Principal'
-        demanded_interest: 'Change to interest'
-        lending_limit_id: 'Correct Lending Limit'
         sortcode: 'Correct Branch Sort Code'
 
       loan_eligibility_check:

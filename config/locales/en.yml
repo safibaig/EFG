@@ -28,10 +28,29 @@ en:
       amount_claimed: "Demand has been made against the Government Guarantee. The value of the demand is: %{amount}"
     errors:
       models:
+        agreed_draw:
+          attributes:
+            amount_drawn:
+              required: "can't be blank"
+              must_be_positive: "must be positive"
+              exceeds_amount_available: "must be less than or equal to the loan amount minus the current total amount drawn"
         ask_an_expert:
           attributes:
             expert_users:
               must_have_at_least_one_email: 'must have at least one email address'
+        loan_change:
+          attributes:
+            added_months:
+              required: "can't be blank"
+              exceeded_undrawn_amount: The amount drawn must be less than or equal to the loan amount minus the current total amount drawn
+            lump_sum_repayment:
+              required: "can't be blank"
+              must_be_gt_zero: "can't be negative"
+              exceeds_amount_draw: "can't be more than the total amount drawn"
+            maturity_date:
+              required: "can't be blank"
+              less_than_min_repayment_duration: Maturity date must be at least three months after the date of initial draw of funds
+              greater_than_max_repayment_duration: Maturity date must not be more than than ten years (or 2 years for Type E and 3 years for Type F loans) after the date of initial draw of funds
         loan_demand_to_borrower:
           attributes:
             amount_demanded:
@@ -166,55 +185,6 @@ en:
           attributes:
             ends_on:
               must_be_after_starts_on: must be after start date
-        data_correction:
-          attributes:
-            base:
-              must_have_a_change: 'No changes have been requested'
-            amount:
-              must_have_changed: 'has not changed'
-              must_be_eligible_amount: 'is not in the range £1,000 to £1,000,000'
-              must_be_gte_cumulative_amount_drawn: 'must be greater than or equal to the Correct total amount drawn to date'
-            facility_letter_date:
-              must_not_be_in_the_future: 'must not be later than today'
-              must_fall_within_lending_limit: 'must be within the changed lending limit date range'
-              must_be_no_less_than_six_months_before_initial_draw_date: 'must be on or after the date six months before the date of the original initial draw'
-            initial_draw_amount:
-              must_not_take_cumulative_amount_drawn_over_amount: 'must less than or equal to the loan amount minus subsequent draw downs'
-            initial_draw_date:
-              must_not_be_in_the_future: 'must not be later than today'
-              must_not_be_before_facility_letter_date: 'must not be before the date of the Original Facility Letter Date'
-              must_not_be_more_than_six_months_after_facility_letter_date: 'must not be more than six months after the Facility Letter Date'
-            dti_demand_out_amount:
-              must_have_changed: 'has not changed'
-              must_not_be_negative: 'must be greater than or equal to £0.00'
-              must_be_demanded_state: 'Loan must be Demanded to change Original Outstanding Scheme Facility Principal'
-              must_not_be_greater_than_cumulative_drawn_amount: 'must be less than or equal to the total drawn amount'
-            dti_demand_interest:
-              must_have_changed: 'has not changed'
-              must_not_be_negative: 'must be greater than or equal to £0.00'
-              must_be_demanded_state: 'Loan must be Demanded to change Original Outstanding Scheme Facility Principal'
-              must_not_be_an_EFG_loan: 'Loan must not be in the EFG scheme'
-              must_be_lte_new_loan_amount: 'must not be greater than the new loan amount'
-              must_be_lte_original_loan_amount: 'must not be greater than the loan amount'
-        loan_change:
-          attributes:
-            base:
-              required_lender_demand_satisfied: 'At least one of the following values must be entered: Amount Drawn, Lump Sum Repayment or Maturity Date'
-              state_aid_not_recalculated: 'Calculator input values have not been entered, please reschedule'
-            amount_drawn:
-              required: "can't be blank"
-              not_be_negative: "can't be negative"
-              exceeded_undrawn_amount: The amount drawn must be less than or equal to the loan amount minus the current total amount drawn
-            business_name:
-              required: "can't be blank"
-            lump_sum_repayment:
-              required: "can't be blank"
-              not_be_negative: "can't be negative"
-              exceeds_amount_drawn: The lump sum repayment must be less than the current total amount drawn
-            maturity_date:
-              required: "can't be blank"
-              less_than_min_repayment_duration: Maturity date must be at least three months after the date of initial draw of funds
-              greater_than_max_repayment_duration: Maturity date must not be more than than ten years (or 2 years for Type E and 3 years for Type F loans) after the date of initial draw of funds
         lender_limit:
           attributes:
             ends_on:

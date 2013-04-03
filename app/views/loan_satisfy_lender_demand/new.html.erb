@@ -4,6 +4,10 @@
   <h1>Lender Demand Satisfied</h1>
 </div>
 
+<p>Any changes to the loan should be recorded using the 'Change Amount or Terms' screen.</p>
+
+<hr>
+
 <%= simple_form_for(@loan_satisfy_lender_demand, url: loan_satisfy_lender_demand_path(@loan), html: { class: 'form-horizontal form-loan-lender-demand-satisfied' }) do |f| %>
   <%= f.input :date_of_change, as: :quick_date %>
 
