@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe SortcodeDataCorrectionPresenter do
+describe SortcodeDataCorrection do
   describe 'validations' do
-    let(:presenter) { FactoryGirl.build(:sortcode_data_correction_presenter) }
+    let(:presenter) { FactoryGirl.build(:sortcode_data_correction) }
 
     it 'has a valid factory' do
       presenter.should be_valid
@@ -17,7 +17,7 @@ describe SortcodeDataCorrectionPresenter do
   describe '#save' do
     let(:user) { FactoryGirl.create(:lender_user) }
     let(:loan) { FactoryGirl.create(:loan, :guaranteed, sortcode: '123456', last_modified_at: 1.year.ago) }
-    let(:presenter) { FactoryGirl.build(:sortcode_data_correction_presenter, created_by: user, loan: loan) }
+    let(:presenter) { FactoryGirl.build(:sortcode_data_correction, created_by: user, loan: loan) }
 
     context 'success' do
       it 'creates a DataCorrection and updates the loan' do

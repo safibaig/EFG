@@ -1,4 +1,4 @@
-class RepaymentDurationLoanChangePresenter < LoanChangePresenter
+class RepaymentDurationLoanChange < LoanChangePresenter
   attr_reader :maturity_date, :added_months, :repayment_duration
   attr_accessible :added_months
 

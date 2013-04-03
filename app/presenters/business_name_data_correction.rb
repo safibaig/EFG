@@ -1,4 +1,4 @@
-class BusinessNameDataCorrectionPresenter < DataCorrectionPresenter
+class BusinessNameDataCorrection < DataCorrectionPresenter
   attr_accessor :business_name
   attr_accessible :business_name
 

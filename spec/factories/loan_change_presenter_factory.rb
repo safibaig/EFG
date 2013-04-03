@@ -12,14 +12,14 @@ FactoryGirl.define do
       new(loan)
     end
 
-    factory :lump_sum_repayment_loan_change_presenter, class: LumpSumRepaymentLoanChangePresenter do
+    factory :lump_sum_repayment_loan_change, class: LumpSumRepaymentLoanChange do
       lump_sum_repayment Money.new(1_000_00)
     end
 
-    factory :repayment_duration_loan_change_presenter, class: RepaymentDurationLoanChangePresenter do
+    factory :repayment_duration_loan_change, class: RepaymentDurationLoanChange do
       added_months 3
     end
 
-    factory :reprofile_draws_loan_change_presenter, class: ReprofileDrawsLoanChangePresenter
+    factory :reprofile_draws_loan_change, class: ReprofileDrawsLoanChange
   end
 end

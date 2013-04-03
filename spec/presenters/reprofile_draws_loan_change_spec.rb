@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe ReprofileDrawsLoanChangePresenter do
+describe ReprofileDrawsLoanChange do
   it_behaves_like 'LoanChangePresenter'
 
   describe '#save' do
     let(:user) { FactoryGirl.create(:lender_user) }
     let(:loan) { FactoryGirl.create(:loan, :guaranteed, repayment_duration: 60) }
-    let(:presenter) { FactoryGirl.build(:reprofile_draws_loan_change_presenter, created_by: user, loan: loan) }
+    let(:presenter) { FactoryGirl.build(:reprofile_draws_loan_change, created_by: user, loan: loan) }
 
     before do
       loan.initial_draw_change.update_column :date_of_change, Date.new(2010, 1)

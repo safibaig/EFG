@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe BusinessNameDataCorrectionPresenter do
+describe BusinessNameDataCorrection do
   describe 'validations' do
-    let(:presenter) { FactoryGirl.build(:business_name_data_correction_presenter) }
+    let(:presenter) { FactoryGirl.build(:business_name_data_correction) }
 
     it 'has a valid factory' do
       presenter.should be_valid
@@ -17,7 +17,7 @@ describe BusinessNameDataCorrectionPresenter do
   describe '#save' do
     let(:user) { FactoryGirl.create(:lender_user) }
     let(:loan) { FactoryGirl.create(:loan, :guaranteed, business_name: 'Foo') }
-    let(:presenter) { FactoryGirl.build(:business_name_data_correction_presenter, created_by: user, loan: loan) }
+    let(:presenter) { FactoryGirl.build(:business_name_data_correction, created_by: user, loan: loan) }
 
     context 'success' do
       it 'creates a DataCorrection and updates the loan' do

@@ -1,4 +1,4 @@
-class LumpSumRepaymentLoanChangePresenter < LoanChangePresenter
+class LumpSumRepaymentLoanChange < LoanChangePresenter
   attr_reader :lump_sum_repayment
   attr_accessible :lump_sum_repayment
 

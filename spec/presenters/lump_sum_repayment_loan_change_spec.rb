@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe LumpSumRepaymentLoanChangePresenter do
+describe LumpSumRepaymentLoanChange do
   it_behaves_like 'LoanChangePresenter'
 
   describe 'validations' do
     context '#lump_sum_repayment' do
       let(:loan) { FactoryGirl.create(:loan, :guaranteed, amount: Money.new(10_000_00)) }
-      let(:presenter) { FactoryGirl.build(:lump_sum_repayment_loan_change_presenter, loan: loan) }
+      let(:presenter) { FactoryGirl.build(:lump_sum_repayment_loan_change, loan: loan) }
 
       it 'is required' do
         presenter.lump_sum_repayment = nil
@@ -33,7 +33,7 @@ describe LumpSumRepaymentLoanChangePresenter do
   describe '#save' do
     let(:user) { FactoryGirl.create(:lender_user) }
     let(:loan) { FactoryGirl.create(:loan, :guaranteed, repayment_duration: 60) }
-    let(:presenter) { FactoryGirl.build(:lump_sum_repayment_loan_change_presenter, created_by: user, loan: loan) }
+    let(:presenter) { FactoryGirl.build(:lump_sum_repayment_loan_change, created_by: user, loan: loan) }
 
     context 'success' do
       before do

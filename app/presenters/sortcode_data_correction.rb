@@ -1,4 +1,4 @@
-class SortcodeDataCorrectionPresenter < DataCorrectionPresenter
+class SortcodeDataCorrection < DataCorrectionPresenter
   attr_accessor :sortcode
   attr_accessible :sortcode
 

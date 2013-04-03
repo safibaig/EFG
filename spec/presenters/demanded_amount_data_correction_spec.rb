@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe DemandedAmountDataCorrectionPresenter do
+describe DemandedAmountDataCorrection do
   describe 'validations' do
-    let(:presenter) { FactoryGirl.build(:demanded_amount_data_correction_presenter) }
+    let(:presenter) { FactoryGirl.build(:demanded_amount_data_correction) }
     let(:loan) { FactoryGirl.create(:loan, :guaranteed, :demanded, dti_demand_outstanding: Money.new(1_000_00), dti_interest: Money.new(100_00)) }
 
     it 'has a valid factory' do
@@ -67,7 +67,7 @@ describe DemandedAmountDataCorrectionPresenter do
 
   describe '#save' do
     let(:user) { FactoryGirl.create(:lender_user) }
-    let(:presenter) { FactoryGirl.build(:demanded_amount_data_correction_presenter, created_by: user, loan: loan) }
+    let(:presenter) { FactoryGirl.build(:demanded_amount_data_correction, created_by: user, loan: loan) }
 
     context 'EFG loan' do
       let(:loan) { FactoryGirl.create(:loan, :guaranteed, :demanded, dti_demand_outstanding: Money.new(1_000_00), dti_interest: nil) }

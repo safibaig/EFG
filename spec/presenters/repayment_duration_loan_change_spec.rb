@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe RepaymentDurationLoanChangePresenter do
+describe RepaymentDurationLoanChange do
   it_behaves_like 'LoanChangePresenter'
 
   describe 'validations' do
     context '#added_months' do
-      let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change_presenter) }
+      let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change) }
 
       it 'is required' do
         presenter.added_months = nil
@@ -18,7 +18,7 @@ describe RepaymentDurationLoanChangePresenter do
       end
 
       context 'calculated #repayment_duration' do
-        let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change_presenter, loan: loan) }
+        let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change, loan: loan) }
 
         before do
           loan.initial_draw_change.update_column(:date_of_change, Date.new(2010, 1, 1))
@@ -101,7 +101,7 @@ describe RepaymentDurationLoanChangePresenter do
   describe '#save' do
     let(:user) { FactoryGirl.create(:lender_user) }
     let(:loan) { FactoryGirl.create(:loan, :guaranteed, maturity_date: Date.new(2015, 3, 2), repayment_duration: 60) }
-    let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change_presenter, created_by: user, loan: loan) }
+    let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change, created_by: user, loan: loan) }
 
     context 'success' do
       before do

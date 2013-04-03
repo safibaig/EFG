@@ -1,8 +1,8 @@
 class DataCorrectionsController < ApplicationController
   TYPES = {
-    'business_name' => BusinessNameDataCorrectionPresenter,
-    'demanded_amount' => DemandedAmountDataCorrectionPresenter,
-    'sortcode' => SortcodeDataCorrectionPresenter
+    'business_name' => BusinessNameDataCorrection,
+    'demanded_amount' => DemandedAmountDataCorrection,
+    'sortcode' => SortcodeDataCorrection
   }
 
   before_filter :verify_create_permission

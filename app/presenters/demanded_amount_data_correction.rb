@@ -1,4 +1,4 @@
-class DemandedAmountDataCorrectionPresenter < DataCorrectionPresenter
+class DemandedAmountDataCorrection < DataCorrectionPresenter
   attr_reader :demanded_amount, :demanded_interest
   attr_accessible :demanded_amount, :demanded_interest
 
