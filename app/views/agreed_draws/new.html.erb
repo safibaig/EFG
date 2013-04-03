@@ -1,0 +1,14 @@
+<%= breadcrumbs_for_loan(@loan) %>
+
+<div class="page-header">
+  <h1>Record Agreed Draw</h1>
+</div>
+
+<%= simple_form_for(@agreed_draw, url: loan_agreed_draws_path(@loan), html: { class: 'form-horizontal form-agreed-draw' }) do |f| %>
+  <%= f.input :date_of_change, as: :quick_date %>
+  <%= f.input :amount_drawn, as: :currency %>
+
+  <div class="form-actions">
+    <%= f.button :submit, value: 'Submit', class: 'btn-primary', data: { 'disable-with' => 'Submitting...' } %>
+  </div>
+<% end %>

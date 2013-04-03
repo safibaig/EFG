@@ -229,4 +229,10 @@ describe SuperUserPermissions do
     it { refute user.can_update?(LoanSatisfyLenderDemand) }
     it { refute user.can_view?(LoanSatisfyLenderDemand) }
   end
+
+  context 'AgreedDraw' do
+    it { refute user.can_create?(AgreedDraw) }
+    it { refute user.can_update?(AgreedDraw) }
+    it { refute user.can_view?(AgreedDraw) }
+  end
 end

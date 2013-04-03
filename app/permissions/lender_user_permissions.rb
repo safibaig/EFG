@@ -6,6 +6,7 @@ module LenderUserPermissions
       expert?
     else
       [
+        AgreedDraw,
         DataCorrection,
         LoanCancel,
         LoanChange,

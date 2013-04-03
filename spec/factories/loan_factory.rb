@@ -33,6 +33,7 @@ FactoryGirl.define do
     updated_at { Time.now }
     loan_source Loan::SFLG_SOURCE
     loan_scheme Loan::EFG_SCHEME
+    last_modified_at { 1.day.ago }
 
     after :build do |loan|
       loan.lending_limit ||= FactoryGirl.create(:lending_limit, lender: loan.lender)
