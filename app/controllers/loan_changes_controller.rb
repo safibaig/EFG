@@ -29,7 +29,7 @@ class LoanChangesController < ApplicationController
 
   private
     def load_loan
-      @loan = current_lender.loans.changeable.find(params[:loan_id])
+      @loan = current_lender.loans.guaranteed.find(params[:loan_id])
     end
 
     def presenter_class

@@ -99,13 +99,6 @@ module RequestSpecHelpers
     fill_in 'loan_demand_to_borrower_borrower_demanded_on', with: Date.today.to_s(:screen)
   end
 
-  # Loan Demand Against Government Guarantee
-  def fill_in_valid_loan_demand_against_government_guarantee_details(loan, ded_code)
-    fill_in 'loan_demand_against_government_dti_demand_outstanding', with: loan.amount
-    fill_in 'loan_demand_against_government_dti_reason', with: 'Something'
-    select_option_value ded_code.code, from: 'loan_demand_against_government_dti_ded_code'
-  end
-
   # Loan Recovery
   def fill_in_valid_efg_recovery_details
     fill_in 'recovery_recovered_on', with: Date.today.to_s(:screen)

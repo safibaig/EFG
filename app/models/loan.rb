@@ -64,7 +64,6 @@ class Loan < ActiveRecord::Base
   scope :guaranteed,      where(state: Loan::Guaranteed)
   scope :recovered,       where(state: Loan::Recovered)
 
-  scope :changeable,  where(state: [Loan::Guaranteed, Loan::LenderDemand])
   scope :correctable, where(state: [Loan::Guaranteed, Loan::LenderDemand, Loan::Demanded])
   scope :recoverable, where(state: [Loan::Settled, Loan::Recovered, Loan::Realised])
 

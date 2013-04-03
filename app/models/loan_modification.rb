@@ -1,8 +1,6 @@
 class LoanModification < ActiveRecord::Base
   include FormatterConcern
 
-  define_model_callbacks :save_and_update_loan
-
   before_validation :set_seq, on: :create
 
   belongs_to :created_by, class_name: 'User'
@@ -56,18 +54,6 @@ class LoanModification < ActiveRecord::Base
         value: self.send(new_name)
       }
     }
-  end
-
-  def save_and_update_loan
-    return false unless valid?
-
-    transaction do
-      run_callbacks :save_and_update_loan do
-        save!
-      end
-    end
-
-    true
   end
 
   private

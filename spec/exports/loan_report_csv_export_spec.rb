@@ -54,6 +54,7 @@ describe LoanReportCsvExport do
     let!(:lump_sum_repayment) {
       FactoryGirl.create(:loan_change,
         loan: loan,
+        amount_drawn: nil,
         lump_sum_repayment: Money.new(5_000_00)
       )
     }

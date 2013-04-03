@@ -101,7 +101,7 @@ describe LoanCsvExport do
       row['guarantee_rate'].should == '75.0'
       row['guaranteed_on'].should == ''
       row['initial_draw_date'].should == '01/10/2012'
-      row['initial_draw_amount'].should == '12345.00'
+      row['initial_draw_amount'].should == '10000.00'
       row['interest_rate'].should == ''
       row['interest_rate_type'].should == ''
       row['invoice_discount_limit'].should == ''

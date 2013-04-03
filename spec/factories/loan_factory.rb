@@ -84,7 +84,7 @@ FactoryGirl.define do
 
       after :create do |loan|
         FactoryGirl.create(:initial_draw_change,
-          amount_drawn: loan.amount,
+          amount_drawn: Money.new(10_000_00),
           loan: loan
         )
       end
@@ -161,7 +161,7 @@ FactoryGirl.define do
 
       after :create do |loan|
         FactoryGirl.create(:initial_draw_change,
-          amount_drawn: loan.amount,
+          amount_drawn: Money.new(10_000_00),
           loan: loan
         )
       end

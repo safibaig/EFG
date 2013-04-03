@@ -14,17 +14,19 @@ describe 'loan demand against government' do
     visit loan_path(loan)
     click_link 'Demand Against Guarantee'
 
-    fill_in_valid_loan_demand_against_government_guarantee_details(loan, ded_code)
+    fill_in 'loan_demand_against_government_dti_demand_outstanding', with: '10,000'
+    fill_in 'loan_demand_against_government_dti_reason', with: 'Something'
+    select_option_value ded_code.code, from: 'loan_demand_against_government_dti_ded_code'
     click_button 'Submit'
 
-    loan = Loan.last
-
     current_path.should == loan_path(loan)
+
+    loan.reload
 
     page.should have_content(I18n.t('activemodel.loan_demand_against_government.amount_claimed', amount: loan.dti_amount_claimed.format))
 
     loan.state.should == Loan::Demanded
-    loan.dti_demand_outstanding.should == loan.amount
+    loan.dti_demand_outstanding.should == Money.new(10_000_00)
     loan.dti_amount_claimed.should_not be_nil
     loan.dti_demanded_on.should == Date.today
     loan.ded_code.should == ded_code
@@ -40,7 +42,7 @@ describe 'loan demand against government' do
     visit loan_path(loan)
     click_link 'Demand Against Guarantee'
 
-    fill_in 'loan_demand_against_government_dti_demand_outstanding', with: loan.amount
+    fill_in 'loan_demand_against_government_dti_demand_outstanding', with: '10,000'
     fill_in 'loan_demand_against_government_dti_reason', with: 'Something'
     fill_in 'loan_demand_against_government_dti_interest', with: 5000
     fill_in 'loan_demand_against_government_dti_break_costs', with: 2000
@@ -48,10 +50,9 @@ describe 'loan demand against government' do
 
     click_button 'Submit'
 
-    loan = Loan.last
-
     current_path.should == loan_path(loan)
 
+    loan.reload
     loan.dti_interest.should == Money.new(5000_00)
     loan.dti_break_costs.should == Money.new(2000_00)
     loan.dti_amount_claimed.should_not be_nil

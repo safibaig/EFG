@@ -6,9 +6,13 @@ describe 'LoanModifications' do
   let(:current_user) { FactoryGirl.create(:lender_user) }
   before { login_as(current_user, scope: :user) }
 
-  let(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_user.lender, business_name: 'Foo') }
-  let!(:loan_change) { FactoryGirl.create(:loan_change, loan: loan, change_type_id: ChangeType::BusinessName.id, business_name: 'Bar') }
-  let!(:data_correction) { FactoryGirl.create(:data_correction, loan: loan, sortcode: '654321', old_sortcode: '123456') }
+  let(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_user.lender, repayment_duration: 60) }
+
+  before do
+    FactoryGirl.create(:loan_change, loan: loan, change_type_id: ChangeType::ExtendTerm.id, repayment_duration: 63, old_repayment_duration: 60)
+    FactoryGirl.create(:data_correction, loan: loan, sortcode: '654321', old_sortcode: '123456')
+    FactoryGirl.create(:loan_change, loan: loan, change_type_id: ChangeType::LumpSumRepayment.id, lump_sum_repayment: Money.new(1_234_56))
+  end
 
   describe 'index' do
     before do
@@ -17,11 +21,12 @@ describe 'LoanModifications' do
     end
 
     it 'includes all LoanModifications' do
-      page.all('table tbody tr').length.should == 3
+      page.all('table tbody tr').length.should == 4
 
       page.should have_content('Initial draw and guarantee')
-      page.should have_content('Business name')
+      page.should have_content('Extend term')
       page.should have_content('Data correction')
+      page.should have_content('Lump sum repayment')
     end
   end
 
@@ -42,15 +47,13 @@ describe 'LoanModifications' do
 
     it 'includes new and old values for a LoanChange' do
       click_link 'Loan Changes'
-      click_link 'Business name'
+      click_link 'Extend term'
 
-      page.should have_content('Foo')
-      page.should have_content('Bar')
+      page.should have_content('60')
+      page.should have_content('63')
     end
 
     it 'includes LoanChange#lump_sum_repayment' do
-      FactoryGirl.create(:loan_change, :reschedule, loan: loan, change_type_id: ChangeType::LumpSumRepayment.id, lump_sum_repayment: Money.new(1_234_56))
-
       click_link 'Loan Changes'
       click_link 'Lump sum repayment'
 

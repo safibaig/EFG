@@ -1,11 +1,11 @@
 FactoryGirl.define do
   factory :loan_change do
     loan
-    created_by factory: :user
+    created_by factory: :lender_user
     date_of_change '1/2/12'
-    change_type_id ChangeType::BusinessName.id
+    change_type_id ChangeType::RecordAgreedDraw.id
     modified_date '3/4/12'
-    business_name 'ACME'
+    amount_drawn Money.new(1_000_00)
 
     trait :reschedule do
       premium_schedule_attributes { |loan_change|

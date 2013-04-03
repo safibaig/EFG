@@ -52,7 +52,7 @@ describe 'Loan lifecycle' do
       current_url.should == loan_url(loan)
 
       # Loan Change
-      change_loan_business_name(loan)
+      reprofile_draws(loan)
 
       # Loan Data Correction - loan amount
       make_loan_data_correction(loan)
@@ -121,7 +121,7 @@ describe 'Loan lifecycle' do
         click_link loan.reference
 
         # Loan Change
-        change_loan_business_name(loan)
+        reprofile_draws(loan)
 
         # Loan Data Correction - loan amount
         make_loan_data_correction(loan)
@@ -188,15 +188,24 @@ describe 'Loan lifecycle' do
     submit_sign_in_form(cfe_user.username, cfe_user.password)
   end
 
-  def change_loan_business_name(loan)
+  def reprofile_draws(loan)
     click_link "Change Amount or Terms"
+    click_link 'Reprofile Draws'
     fill_in 'loan_change_date_of_change', with: Date.today.to_s(:screen)
-    select ChangeType::BusinessName.name, from: 'loan_change_change_type_id' # change business name
-    fill_in 'loan_change_business_name', with: 'New Business Name'
+    fill_in 'loan_change_initial_draw_amount', with: '9,876.54'
     click_button 'Submit'
 
     current_url.should == loan_url(loan)
-    page.should have_content('New Business Name')
+
+    click_link 'Generate Premium Schedule'
+    page.should have_content('£9,876.54')
+    click_link "Loan #{loan.reference}"
+  end
+
+  def fill_in_valid_loan_demand_against_government_guarantee_details(loan, ded_code)
+    fill_in 'loan_demand_against_government_dti_demand_outstanding', with: loan.cumulative_drawn_amount
+    fill_in 'loan_demand_against_government_dti_reason', with: 'Something'
+    select_option_value ded_code.code, from: 'loan_demand_against_government_dti_ded_code'
   end
 
   def make_loan_data_correction(loan)
@@ -225,10 +234,8 @@ describe 'Loan lifecycle' do
   end
 
   def satisfy_lender_demand(loan)
-    click_link "Change Amount or Terms"
-    fill_in 'loan_change_date_of_change', with: Date.today.to_s(:screen)
-    select ChangeType::LenderDemandSatisfied.name, from: 'loan_change_change_type_id' # lender demand satisfied
-    fill_in 'loan_change_lump_sum_repayment', with: '10000'
+    click_link 'Lender Demand Satisfied'
+    fill_in 'loan_satisfy_lender_demand_date_of_change', with: Date.today.to_s(:screen)
     click_button 'Submit'
 
     current_url.should == loan_url(loan)
