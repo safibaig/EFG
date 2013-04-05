@@ -502,6 +502,16 @@ class Extractor
           whitelist "legacy_sic_eligible"
         end
 
+        table 'phases' do
+          primary_key 'id'
+
+          whitelist 'name'
+          whitelist 'created_by_id'
+          whitelist 'modified_by_id'
+          whitelist 'created_at'
+          whitelist 'updated_at'
+        end
+
         table 'realisation_statements' do
           primary_key 'id'
 
