@@ -73,6 +73,10 @@ class PremiumSchedule < ActiveRecord::Base
     self.euro_conversion_rate = self.class.current_euro_conversion_rate
   end
 
+  def has_drawdowns?
+    drawdowns.length > 1
+  end
+
   def drawdowns
     [TrancheDrawdown.new(initial_draw_amount, 0)].tap do |drawdowns|
       if second_draw_amount.present? && second_draw_amount.nonzero? && second_draw_months.present?

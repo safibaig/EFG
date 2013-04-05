@@ -1,6 +1,6 @@
 <div class="form-actions">
   <%= link_to('Change Amount or Terms', loan_loan_changes_path(@loan), class: 'btn') if current_user.can_create?(LoanChange) %>
-  <%= link_to('Record Agreed Draw', new_loan_agreed_draw_path(@loan), class: 'btn') if current_user.can_create?(AgreedDraw) %>
+  <%= link_to('Record Agreed Draw', new_loan_agreed_draw_path(@loan), class: 'btn') if current_user.can_create?(AgreedDraw) && @loan.has_drawdowns? %>
   <%= link_to('Demand to Borrower', new_loan_demand_to_borrower_path(@loan), class: 'btn') if current_user.can_create?(LoanDemandToBorrower) %>
   <%= link_to('Remove Guarantee', new_loan_remove_guarantee_path(@loan), class: 'btn') if current_user.can_create?(LoanRemoveGuarantee) %>
   <%= link_to('Repay Loan', new_loan_repay_path(@loan), class: 'btn') if current_user.can_create?(LoanRepay) %>
