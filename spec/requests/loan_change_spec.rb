@@ -85,6 +85,13 @@ describe 'loan change' do
     it 'works' do
       fill_in :date_of_change, '11/9/10'
       fill_in :initial_draw_amount, '65,432.10'
+      fill_in :initial_capital_repayment_holiday, '3'
+      fill_in :second_draw_amount, '5,000.00'
+      fill_in :second_draw_months, '6'
+      fill_in :third_draw_amount, '5,000.00'
+      fill_in :third_draw_months, '12'
+      fill_in :fourth_draw_amount, '5,000.00'
+      fill_in :fourth_draw_months, '18'
 
       Timecop.freeze(2010, 9, 1) do
         click_button 'Submit'
@@ -98,6 +105,13 @@ describe 'loan change' do
       premium_schedule.initial_draw_amount.should == Money.new(65_432_10)
       premium_schedule.premium_cheque_month.should == '12/2010'
       premium_schedule.repayment_duration.should == 48
+      premium_schedule.initial_capital_repayment_holiday.should == 3
+      premium_schedule.second_draw_amount.should == Money.new(5_000_00)
+      premium_schedule.second_draw_months.should == 6
+      premium_schedule.third_draw_amount.should == Money.new(5_000_00)
+      premium_schedule.third_draw_months.should == 12
+      premium_schedule.fourth_draw_amount.should == Money.new(5_000_00)
+      premium_schedule.fourth_draw_months.should == 18
 
       loan.reload
       loan.modified_by.should == current_user

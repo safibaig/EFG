@@ -20,12 +20,13 @@ class LoanChangePresenter
   attr_reader :date_of_change, :loan
   attr_accessible :date_of_change, :initial_draw_amount, :second_draw_amount,
     :second_draw_months, :third_draw_amount, :third_draw_months,
-    :fourth_draw_amount, :fourth_draw_months
+    :fourth_draw_amount, :fourth_draw_months, :initial_capital_repayment_holiday
 
   validates :created_by, presence: true, strict: true
   validates :date_of_change, presence: true
 
   delegate :initial_draw_amount, :initial_draw_amount=, to: :premium_schedule
+  delegate :initial_capital_repayment_holiday, :initial_capital_repayment_holiday=, to: :premium_schedule
   delegate :second_draw_amount, :second_draw_amount=, to: :premium_schedule
   delegate :second_draw_months, :second_draw_months=, to: :premium_schedule
   delegate :third_draw_amount, :third_draw_amount=, to: :premium_schedule
