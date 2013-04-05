@@ -156,7 +156,11 @@ class PremiumSchedule < ActiveRecord::Base
     end
 
     def initial_draw_amount_is_within_limit
-      if initial_draw_amount.blank? || initial_draw_amount < 0 || initial_draw_amount > MAX_INITIAL_DRAW
+      if initial_draw_amount.blank?
+        errors.add(:initial_draw_amount, :required)
+      elsif initial_draw_amount <= 0
+        errors.add(:initial_draw_amount, :must_be_positive)
+      elsif initial_draw_amount > MAX_INITIAL_DRAW
         errors.add(:initial_draw_amount, :invalid)
       end
     end
