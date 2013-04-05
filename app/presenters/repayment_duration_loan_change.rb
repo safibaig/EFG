@@ -39,6 +39,8 @@ class RepaymentDurationLoanChange < LoanChangePresenter
         errors.add(:added_months, :must_not_be_zero)
       elsif added_months % months_per_repayment_period != 0
         errors.add(:added_months, :must_match_repayment_frequency, months_per_repayment_period: months_per_repayment_period)
+      elsif repayment_duration_at_next_premium <= 0
+        errors.add(:added_months, :must_have_a_positive_repayment_duration_at_next_premium)
       else
         rd = RepaymentDuration.new(loan)
         @repayment_duration = loan.repayment_duration.total_months + added_months

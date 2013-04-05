@@ -53,6 +53,30 @@ describe RepaymentDurationLoanChange do
         end
       end
 
+      context 'calculated #repayment_duration_at_next_premium' do
+        let(:loan) { FactoryGirl.create(:loan, :guaranteed, repayment_duration: 24) }
+        let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change, loan: loan) }
+
+        before do
+          loan.initial_draw_change.update_column(:date_of_change, Date.new(2010, 1, 1))
+
+          # The month of second quarter collection.
+          Timecop.freeze(2010, 4, 1)
+        end
+
+        after do
+          Timecop.return
+        end
+
+        it 'must be positive' do
+          presenter.added_months = -18
+          presenter.should_not be_valid
+
+          presenter.added_months = -17
+          presenter.should be_valid
+        end
+      end
+
       context 'calculated #repayment_duration' do
         let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change, loan: loan) }
 
@@ -78,9 +102,6 @@ describe RepaymentDurationLoanChange do
           it 'must be at least 3 months' do
             presenter.added_months = -58
             presenter.should_not be_valid
-
-            presenter.added_months = -57
-            presenter.should be_valid
           end
 
           it 'must be no more than 120 months' do
@@ -123,11 +144,6 @@ describe RepaymentDurationLoanChange do
           it 'must be more than zero months' do
             presenter.added_months = -60
             presenter.should_not be_valid
-          end
-
-          it 'has no minimum repayment_duration' do
-            presenter.added_months = -58
-            presenter.should be_valid
           end
         end
       end

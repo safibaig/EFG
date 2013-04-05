@@ -42,8 +42,9 @@ en:
           attributes:
             added_months:
               required: "can't be blank"
-              exceeded_undrawn_amount: The amount drawn must be less than or equal to the loan amount minus the current total amount drawn
+              must_not_be_zero: "cannot be zero"
               must_match_repayment_frequency: "must be a multiple of %{months_per_repayment_period} to match the loan's repayment frequency"
+              must_have_a_positive_repayment_duration_at_next_premium: "must ensure a valid loan term at the next premium collection quarter"
             lump_sum_repayment:
               required: "can't be blank"
               must_be_gt_zero: "can't be negative"
