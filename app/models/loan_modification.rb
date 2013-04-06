@@ -36,6 +36,10 @@ class LoanModification < ActiveRecord::Base
     ChangeType.find(change_type_id)
   end
 
+  def change_type=(change_type)
+    self.change_type_id = change_type.id
+  end
+
   def change_type_name
     change_type.name
   end

@@ -17,7 +17,7 @@ class LoanSatisfyLenderDemand
   private
     def create_loan_change
       loan_change = loan.loan_changes.new
-      loan_change.change_type_id = ChangeType::LenderDemandSatisfied.id
+      loan_change.change_type = ChangeType::LenderDemandSatisfied
       loan_change.created_by = modified_by
       loan_change.date_of_change = date_of_change
       loan_change.modified_date = Date.current

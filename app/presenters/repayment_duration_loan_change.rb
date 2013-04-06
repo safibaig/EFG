@@ -25,7 +25,7 @@ class RepaymentDurationLoanChange < LoanChangePresenter
     end
 
     def update_loan_change
-      loan_change.change_type_id = (added_months > 0 ? ChangeType::ExtendTerm : ChangeType::DecreaseTerm).id
+      loan_change.change_type = added_months > 0 ? ChangeType::ExtendTerm : ChangeType::DecreaseTerm
       loan_change.repayment_duration = repayment_duration
       loan_change.old_repayment_duration = loan.repayment_duration.total_months
       loan_change.maturity_date = maturity_date

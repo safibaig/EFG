@@ -39,7 +39,7 @@ class AgreedDraw
 
     loan.transaction do
       loan_change.amount_drawn = amount_drawn
-      loan_change.change_type_id = ChangeType::RecordAgreedDraw.id
+      loan_change.change_type = ChangeType::RecordAgreedDraw
       loan_change.created_by = created_by
       loan_change.date_of_change = date_of_change
       loan_change.modified_date = Date.current

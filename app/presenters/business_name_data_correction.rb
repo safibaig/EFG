@@ -6,7 +6,7 @@ class BusinessNameDataCorrection < DataCorrectionPresenter
 
   private
     def update_data_correction
-      data_correction.change_type_id = ChangeType::BusinessName.id
+      data_correction.change_type = ChangeType::BusinessName
       data_correction.business_name = business_name
       data_correction.old_business_name = loan.business_name
     end

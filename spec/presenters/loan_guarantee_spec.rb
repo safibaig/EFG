@@ -61,7 +61,7 @@ describe LoanGuarantee do
 
       initial_draw_change = loan.initial_draw_change
       initial_draw_change.amount_drawn.should == Money.new(5_000_00)
-      initial_draw_change.change_type_id.should == nil
+      initial_draw_change.change_type.should == nil
       initial_draw_change.created_by.should == lender_user
       initial_draw_change.date_of_change.should == Date.current
       initial_draw_change.modified_date.should == Date.current

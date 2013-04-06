@@ -9,9 +9,9 @@ describe 'LoanModifications' do
   let(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_user.lender, repayment_duration: 60) }
 
   before do
-    FactoryGirl.create(:loan_change, loan: loan, change_type_id: ChangeType::ExtendTerm.id, repayment_duration: 63, old_repayment_duration: 60)
+    FactoryGirl.create(:loan_change, loan: loan, change_type: ChangeType::ExtendTerm, repayment_duration: 63, old_repayment_duration: 60)
     FactoryGirl.create(:data_correction, loan: loan, sortcode: '654321', old_sortcode: '123456')
-    FactoryGirl.create(:loan_change, loan: loan, change_type_id: ChangeType::LumpSumRepayment.id, lump_sum_repayment: Money.new(1_234_56))
+    FactoryGirl.create(:loan_change, loan: loan, change_type: ChangeType::LumpSumRepayment, lump_sum_repayment: Money.new(1_234_56))
   end
 
   describe 'index' do

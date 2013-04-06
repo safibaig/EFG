@@ -25,7 +25,7 @@ describe SortcodeDataCorrection do
         presenter.save.should == true
 
         data_correction = loan.data_corrections.last!
-        data_correction.change_type_id.should == ChangeType::DataCorrection.id
+        data_correction.change_type.should == ChangeType::DataCorrection
         data_correction.created_by.should == user
         data_correction.sortcode.should == '654321'
         data_correction.old_sortcode.should == '123456'

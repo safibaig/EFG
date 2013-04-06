@@ -36,7 +36,7 @@ describe 'loan guarantee' do
 
     loan_change = loan.initial_draw_change
     loan_change.amount_drawn.should == loan.amount
-    loan_change.change_type_id.should == nil
+    loan_change.change_type.should == nil
     loan_change.created_by.should == current_user
     loan_change.date_of_change.should == Date.new(2012, 11, 30)
     loan_change.modified_date.should == Date.current

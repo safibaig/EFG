@@ -26,7 +26,7 @@ describe BusinessNameDataCorrection do
 
         data_correction = loan.data_corrections.last!
         data_correction.created_by.should == user
-        data_correction.change_type_id.should == ChangeType::BusinessName.id
+        data_correction.change_type.should == ChangeType::BusinessName
         data_correction.business_name.should == 'Bar'
         data_correction.old_business_name.should == 'Foo'
 
