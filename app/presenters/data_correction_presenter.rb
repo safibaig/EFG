@@ -14,10 +14,17 @@ class DataCorrectionPresenter
   before_save :update_data_correction
   before_save :update_loan
 
-  attr_accessor :created_by, :loan
+  attr_accessor :created_by
+  attr_reader :loan
 
-  def initialize(attributes = {})
-    super(sanitize_for_mass_assignment(attributes))
+  def initialize(loan)
+    @loan = loan
+  end
+
+  def attributes=(attributes)
+    sanitize_for_mass_assignment(attributes).each do |k, v|
+      public_send("#{k}=", v)
+    end
   end
 
   def data_correction

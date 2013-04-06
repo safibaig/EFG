@@ -12,13 +12,13 @@ class DataCorrectionsController < ApplicationController
   end
 
   def new
-    @presenter = presenter_class.new
+    @presenter = presenter_class.new(@loan)
   end
 
   def create
-    @presenter = presenter_class.new(params[:data_correction])
+    @presenter = presenter_class.new(@loan)
+    @presenter.attributes = params[:data_correction]
     @presenter.created_by = current_user
-    @presenter.loan = @loan
 
     if @presenter.save
       redirect_to loan_url(@loan)

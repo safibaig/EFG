@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe DemandedAmountDataCorrection do
   describe 'validations' do
-    let(:presenter) { FactoryGirl.build(:demanded_amount_data_correction) }
     let(:loan) { FactoryGirl.create(:loan, :guaranteed, :demanded, dti_demand_outstanding: Money.new(1_000_00), dti_interest: Money.new(100_00)) }
+    let(:presenter) { FactoryGirl.build(:demanded_amount_data_correction) }
 
     it 'has a valid factory' do
       presenter.should be_valid
@@ -23,9 +23,7 @@ describe DemandedAmountDataCorrection do
     end
 
     context '#demanded_amount=' do
-      before do
-        presenter.loan = loan
-      end
+      let(:presenter) { FactoryGirl.build(:demanded_amount_data_correction, loan: loan) }
 
       it 'must not be negative' do
         presenter.demanded_amount = Money.new(-1)
@@ -44,9 +42,7 @@ describe DemandedAmountDataCorrection do
     end
 
     context '#demanded_interest=' do
-      before do
-        presenter.loan = loan
-      end
+      let(:presenter) { FactoryGirl.build(:demanded_amount_data_correction, loan: loan) }
 
       it 'must not be negative' do
         presenter.demanded_interest = Money.new(-1)

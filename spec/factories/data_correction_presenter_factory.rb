@@ -1,7 +1,14 @@
 FactoryGirl.define do
   factory :data_correction_presenter do
+    ignore do
+      association :loan, factory: [:loan, :guaranteed]
+    end
+
     association :created_by, factory: :lender_user
-    loan
+
+    initialize_with do
+      new(loan)
+    end
 
     factory :business_name_data_correction, class: BusinessNameDataCorrection do
       business_name 'New Business Name'
