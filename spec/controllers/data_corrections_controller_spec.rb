@@ -56,6 +56,13 @@ describe DataCorrectionsController do
           }.to raise_error(ActiveRecord::RecordNotFound)
         end
       end
+
+      context 'with an invalid type parameter' do
+        it 'redirects to index' do
+          dispatch type: 'foo'
+          response.should redirect_to(loan_data_corrections_url)
+        end
+      end
     end
   end
 

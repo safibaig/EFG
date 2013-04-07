@@ -7,16 +7,15 @@ class LoanChangesController < ApplicationController
 
   before_filter :verify_create_permission
   before_filter :load_loan
+  before_filter :load_presenter, only: [:new, :create]
 
   def index
   end
 
   def new
-    @presenter = presenter_class.new(@loan)
   end
 
   def create
-    @presenter = presenter_class.new(@loan)
     @presenter.attributes = params[:loan_change]
     @presenter.created_by = current_user
 
@@ -32,8 +31,14 @@ class LoanChangesController < ApplicationController
       @loan = current_lender.loans.guaranteed.find(params[:loan_id])
     end
 
-    def presenter_class
-      TYPES.fetch(params[:type])
+    def load_presenter
+      klass = TYPES[params[:type]]
+
+      if klass
+        @presenter = klass.new(@loan)
+      else
+        redirect_to action: :index
+      end
     end
 
     def verify_create_permission
