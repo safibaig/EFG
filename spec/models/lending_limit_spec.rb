@@ -125,9 +125,14 @@ describe LendingLimit do
   end
 
   describe "#unavailable?" do
-    it "unavailable if its not current" do
-      lending_limit = FactoryGirl.build(:lending_limit, :active, starts_on: 4.weeks.ago, ends_on: 2.weeks.ago)
+    it "unavailable if its not current and past the 30 day grace period" do
+      lending_limit = FactoryGirl.build(:lending_limit, :active, starts_on: 4.weeks.ago, ends_on: 6.weeks.ago)
       lending_limit.should be_unavailable
+    end
+
+    it "available if its not current and within the 30 day grace period" do
+      lending_limit = FactoryGirl.build(:lending_limit, :active, starts_on: 4.weeks.ago, ends_on: 30.days.ago)
+      lending_limit.should_not be_unavailable
     end
 
     it "unavailable if its not active" do
