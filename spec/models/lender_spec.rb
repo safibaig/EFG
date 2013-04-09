@@ -58,11 +58,11 @@ describe Lender do
     let(:lender) { FactoryGirl.create(:lender) }
 
     before do
-      FactoryGirl.create(:lending_limit, lender: lender, allocation: Money.new(1_000_00), allocation_type_id: 1)
-      FactoryGirl.create(:lending_limit, lender: lender, allocation: Money.new(2_000_00), allocation_type_id: 1, active: false)
-      FactoryGirl.create(:lending_limit, lender: lender, allocation: Money.new(4_000_00), allocation_type_id: 2)
-      FactoryGirl.create(:lending_limit, lender: lender, allocation: Money.new(8_000_00), allocation_type_id: 1)
-      FactoryGirl.create(:lending_limit, lender: lender, allocation: Money.new(16_000_00), allocation_type_id: 1, starts_on: 2.months.ago, ends_on: 1.month.ago)
+      FactoryGirl.create(:lending_limit, lender: lender, allocation: Money.new(1_000_00), allocation_type_id: LendingLimitType::Annual.id)
+      FactoryGirl.create(:lending_limit, lender: lender, allocation: Money.new(2_000_00), allocation_type_id: LendingLimitType::Annual.id, active: false)
+      FactoryGirl.create(:lending_limit, lender: lender, allocation: Money.new(4_000_00), allocation_type_id: LendingLimitType::Specific.id)
+      FactoryGirl.create(:lending_limit, lender: lender, allocation: Money.new(8_000_00), allocation_type_id: LendingLimitType::Annual.id)
+      FactoryGirl.create(:lending_limit, lender: lender, allocation: Money.new(16_000_00), allocation_type_id: LendingLimitType::Annual.id, starts_on: 2.months.ago, ends_on: 1.month.ago)
     end
 
     it do

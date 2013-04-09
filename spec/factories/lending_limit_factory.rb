@@ -4,7 +4,7 @@ FactoryGirl.define do
     phase
     active true
     allocation 1000000
-    allocation_type_id 1
+    allocation_type_id LendingLimitType::Annual.id
     sequence(:name) { |n| "lending limit #{n}" }
     starts_on 1.month.ago
     ends_on { |lending_limit| lending_limit.starts_on.advance(years: 1) }

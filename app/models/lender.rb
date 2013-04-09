@@ -43,20 +43,16 @@ class Lender < ActiveRecord::Base
     save(validate: false)
   end
 
-  def current_annual_lending_limit_allocation
-    current_lending_limit_allocation_for_type(1)
+  def current_lending_limits
+    active_lending_limits.current
   end
 
-  def current_lending_limits
-    today = Date.current
-
-    active_lending_limits.select { |lending_limit|
-      today.between?(lending_limit.starts_on, lending_limit.ends_on)
-    }
+  def current_annual_lending_limit_allocation
+    current_lending_limit_allocation_for_type(LendingLimitType::Annual)
   end
 
   def current_specific_lending_limit_allocation
-    current_lending_limit_allocation_for_type(2)
+    current_lending_limit_allocation_for_type(LendingLimitType::Specific)
   end
 
   def can_access_all_loan_schemes?
@@ -69,11 +65,7 @@ class Lender < ActiveRecord::Base
   end
 
   private
-    def current_lending_limit_allocation_for_type(type_id)
-      current_lending_limits.select { |lending_limit|
-        lending_limit.allocation_type_id == type_id
-      }.inject(Money.new(0)) { |memo, lending_limit|
-        memo += lending_limit.allocation
-      }
+    def current_lending_limit_allocation_for_type(type)
+      current_lending_limits.where(allocation_type_id: type.id).sum(Money.new(0), &:allocation)
     end
 end

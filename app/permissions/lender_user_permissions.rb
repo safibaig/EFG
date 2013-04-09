@@ -22,7 +22,8 @@ module LenderUserPermissions
         LoanTransfer::Sflg,
         Recovery,
         PremiumSchedule,
-        TransferredLoanEntry
+        TransferredLoanEntry,
+        UpdateLoanLendingLimit
       ].include?(resource)
     end
   end

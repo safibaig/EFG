@@ -28,7 +28,7 @@ describe 'LendingLimits' do
     end
 
     it do
-      choose_radio_button :allocation_type_id, 1
+      choose_radio_button :allocation_type_id, LendingLimitType::Annual.id
       fill_in :name, 'This year'
       select :phase_id, 'Phase 1'
       fill_in :starts_on, '1/1/12'

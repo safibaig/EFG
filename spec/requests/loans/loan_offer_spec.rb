@@ -1,14 +1,21 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe 'loan offer' do
   let(:current_user) { FactoryGirl.create(:lender_user) }
-  let(:loan) { FactoryGirl.create(:loan, :completed, lender: current_user.lender) }
+  let(:lending_limit) { FactoryGirl.create(:lending_limit) }
+  let(:loan) { FactoryGirl.create(:loan, :completed, lender: current_user.lender, lending_limit: lending_limit) }
+  let!(:premium_schedule) { FactoryGirl.create(:premium_schedule, loan: loan) }
   before { login_as(current_user, scope: :user) }
 
-  it 'entering further loan information' do
+  def dispatch
     visit loan_path(loan)
     click_link 'Offer Scheme Facility'
+  end
 
+  it 'entering further loan information' do
+    dispatch
     fill_in_valid_loan_offer_details(loan)
     click_button 'Submit'
 
@@ -25,7 +32,7 @@ describe 'loan offer' do
   end
 
   it 'does not continue with invalid values' do
-    visit new_loan_offer_path(loan)
+    dispatch
 
     loan.state.should == Loan::Completed
     expect {
@@ -36,4 +43,24 @@ describe 'loan offer' do
     current_path.should == loan_offer_path(loan)
   end
 
+  context "with an unavailable lending limit" do
+    let(:lending_limit) { FactoryGirl.create(:lending_limit, :inactive, lender: current_user.lender) }
+    let!(:new_lending_limit) { FactoryGirl.create(:lending_limit, :active, lender: current_user.lender, name: 'The Next Great Lending Limit', premium_rate: 10) }
+
+    it "prompts to change the lending limit" do
+      dispatch
+
+      page.should have_content 'Lending Limit Unavailable'
+
+      select 'The Next Great Lending Limit', from: 'update_loan_lending_limit[new_lending_limit_id]'
+      click_button 'Submit'
+
+      page.should have_content '€3,222.76'
+      page.should have_content '€2,464.46'
+
+      loan.reload
+      loan.lending_limit.should == new_lending_limit
+      loan.modified_by.should == current_user
+    end
+  end
 end

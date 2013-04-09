@@ -112,4 +112,37 @@ describe LendingLimit do
     end
   end
 
+  describe ".current" do
+    it "filters lending limits that are start on or before the current date, and end after the " do
+      ended_in_past = FactoryGirl.create(:lending_limit, starts_on: 4.weeks.ago, ends_on: 2.weeks.ago)
+      ends_today = FactoryGirl.create(:lending_limit, starts_on: 4.weeks.ago, ends_on: Date.today)
+      overlaps_today = FactoryGirl.create(:lending_limit, starts_on: 2.weeks.ago, ends_on: 2.weeks.from_now)
+      starts_today = FactoryGirl.create(:lending_limit, starts_on: Date.today, ends_on: 4.weeks.from_now)
+      starts_in_future = FactoryGirl.create(:lending_limit, starts_on: 2.weeks.from_now, ends_on: 4.weeks.from_now)
+
+      LendingLimit.current.should =~ [ends_today, overlaps_today, starts_today]
+    end
+  end
+
+  describe "#unavailable?" do
+    it "unavailable if its not current and past the 30 day grace period" do
+      lending_limit = FactoryGirl.build(:lending_limit, :active, starts_on: 4.weeks.ago, ends_on: 6.weeks.ago)
+      lending_limit.should be_unavailable
+    end
+
+    it "available if its not current and within the 30 day grace period" do
+      lending_limit = FactoryGirl.build(:lending_limit, :active, starts_on: 4.weeks.ago, ends_on: 30.days.ago)
+      lending_limit.should_not be_unavailable
+    end
+
+    it "unavailable if its not active" do
+      lending_limit = FactoryGirl.build(:lending_limit, :inactive, starts_on: 4.weeks.ago, ends_on: 4.weeks.from_now)
+      lending_limit.should be_unavailable
+    end
+
+    it "available if its active and current" do
+      lending_limit = FactoryGirl.build(:lending_limit, :active, starts_on: 4.weeks.ago, ends_on: 4.weeks.from_now)
+      lending_limit.should_not be_unavailable
+    end
+  end
 end

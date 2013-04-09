@@ -281,6 +281,10 @@ class Loan < ActiveRecord::Base
     end
   end
 
+  def recalculate_state_aid
+    self.state_aid = self.premium_schedule.state_aid_eur
+  end
+
   private
 
   def set_reference

@@ -1,5 +1,6 @@
 <div class="form-actions">
   <%= link_to('Offer Scheme Facility', new_loan_offer_path(@loan), class: 'btn btn-primary') if current_user.can_create?(LoanOffer) %>
+  <%= link_to('Change Lending Limit', new_loan_update_lending_limit_path(@loan), class: 'btn') if current_user.can_create?(UpdateLoanLendingLimit) %>
   <%= link_to('Cancel Loan', new_loan_cancel_path(@loan), class: 'btn btn-danger') if current_user.can_create?(LoanCancel) %>
 </div>
 

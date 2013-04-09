@@ -28,7 +28,7 @@ class LendingLimit < ActiveRecord::Base
   validates_presence_of :lender_id, strict: true
   validates_presence_of :allocation, :name, :ends_on, :guarantee_rate,
     :premium_rate, :starts_on
-  validates_inclusion_of :allocation_type_id, in: [1, 2]
+  validates_inclusion_of :allocation_type_id, in: [LendingLimitType::Annual, LendingLimitType::Specific].map(&:id)
   validate :ends_on_is_after_starts_on
 
   attr_accessible :allocation, :allocation_type_id, :name, :ends_on,
@@ -42,6 +42,12 @@ class LendingLimit < ActiveRecord::Base
 
   scope :active, where(active: true)
 
+  def self.current
+    today = Date.current
+
+    scoped.where("starts_on <= ? AND ends_on >= ?", today, today)
+  end
+
   def allocation_type
     LendingLimitType.find(allocation_type_id)
   end
@@ -52,6 +58,15 @@ class LendingLimit < ActiveRecord::Base
 
   def deactivate!
     update_attribute(:active, false)
+  end
+
+  def available?
+    ends_on_with_grace_period = ends_on.advance(days: 30)
+    active && (starts_on..ends_on_with_grace_period).cover?(Date.today)
+  end
+
+  def unavailable?
+    !available?
   end
 
   private

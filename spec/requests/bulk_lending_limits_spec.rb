@@ -29,7 +29,7 @@ describe "bulk creation of lending limits" do
 
       select 'Phase 1', from: 'bulk_lending_limits_scheme_or_phase_id'
 
-      choose_radio_button 'allocation_type_id', 1
+      choose_radio_button 'allocation_type_id', LendingLimitType::Annual.id
       fill_in 'lending_limit_name', 'This year'
       fill_in 'starts_on', '1/1/12'
       fill_in 'ends_on', '31/12/12'
