@@ -1,18 +1,20 @@
 <%= breadcrumbs_for_loan(@loan) %>
 
-<div class="alert alert-block">
-  <h4>Lending Limit Unavailable</h4>
-  <p>This loan was entered with the <strong><%= @loan.lending_limit.name %></strong>
-  lending limit. This lending limit has since become unavailable. You must now choose
-  a new lending limit.</p>
-</div>
+<% if @loan.lending_limit.unavailable? %>
+  <div class="alert alert-block">
+    <h4>Lending Limit Unavailable</h4>
+    <p>This loan was entered with the <strong><%= @loan.lending_limit.name %></strong>
+    lending limit. This lending limit has since become unavailable. You must now choose
+    a new lending limit.</p>
+  </div>
+<% end %>
 
 <%= simple_form_for(@update_lending_limit, url: loan_update_lending_limit_path(@loan), html: { class: 'form-horizontal form-update-loan-lending-limit' }) do |f| %>
 
   <%= render_errors_on_base(f.object.errors) %>
 
   <fieldset>
-    <legend>Update Lending Limit</legend>
+    <legend>Change Lending Limit</legend>
 
     <%= f.input :new_lending_limit_id, as: :select, collection: @update_lending_limit.available_lending_limits %>
   </fieldset>
