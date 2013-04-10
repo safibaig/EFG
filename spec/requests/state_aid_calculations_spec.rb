@@ -25,7 +25,7 @@ describe 'state aid calculations' do
       fill_in :repayment_duration, '12'
       fill_in :initial_capital_repayment_holiday, '0'
       fill_in :second_draw_amount, '£0'
-      fill_in :second_draw_months, '£0'
+      fill_in :second_draw_months, '0'
 
       expect {
         click_button 'Submit'

@@ -22,28 +22,26 @@ class PremiumScheduleReportRow
     @loan = loan
   end
 
-  def premium_schedule_generator
-    @premium_schedule_generator ||= PremiumScheduleGenerator.new(premium_schedule, loan)
-  end
-
   def to_csv
     [
       loan.draw_down_date.strftime('%d-%m-%Y'),
       loan.lender_organisation,
       loan.reference,
       calc_type,
-      premium_schedule_generator.initial_premium_cheque.to_f,
+      premium_schedule.initial_premium_cheque.to_f,
       first_collection_month,
-      premium_schedule_generator.number_of_subsequent_payments,
+      premium_schedule.number_of_subsequent_payments,
     ] + premiums
   end
 
   private
 
   def premiums
-    array = premium_schedule_generator.subsequent_premiums.map(&:to_f)
-    array.unshift(0.0) unless premium_schedule_generator.reschedule?
-    array
+    array = premium_schedule.subsequent_premiums.map(&:to_f)
+    array.unshift(0.0) unless premium_schedule.reschedule?
+
+    # Pad with nil when there are fewer premium payments than the maximum of 40
+    array.fill(array.length...40) { 0.0 }
   end
 
   # always display calc_type 'N' as 'S' in this report
