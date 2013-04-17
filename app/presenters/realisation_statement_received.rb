@@ -42,10 +42,14 @@ class RealisationStatementReceived
 
   def recoveries
     Recovery
-      .includes(:loan)
+      .includes(:loan => :lending_limit)
       .where(loans: { lender_id: lender_id })
       .where(['recovered_on <= ?', quarter_cutoff_date])
       .where(realise_flag: false)
+  end
+
+  def grouped_recoveries
+    @grouped_recoveries ||= RecoveriesGroupSet.filter(recoveries)
   end
 
   def recoveries_to_be_realised
