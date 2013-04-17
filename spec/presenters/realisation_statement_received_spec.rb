@@ -7,7 +7,6 @@ describe RealisationStatementReceived do
     context "details" do
       it "must have a valid factory" do
         realisation_statement_received.should be_valid
-        realisation_statement_received.should be_valid(:save)
       end
 
       it "must have a lender" do
@@ -47,8 +46,11 @@ describe RealisationStatementReceived do
     end
 
     context "save" do
-      it "must have loans to be realised" do
-        realisation_statement_received.recoveries_to_be_realised_ids = []
+      it "must have recoveries to be realised" do
+        realisation_statement_received.recoveries.each do |recovery|
+          recovery.realised = false
+        end
+
         realisation_statement_received.should_not be_valid(:save)
       end
 
@@ -70,7 +72,7 @@ describe RealisationStatementReceived do
     let!(:next_quarter_recovery)      { FactoryGirl.create(:recovery, loan: loan, recovered_on: Date.new(2012, 6, 30)) }
 
     it "should return recoveries within or prior to the specified quarter" do
-      recoveries = realisation_statement_received.recoveries
+      recoveries = realisation_statement_received.recoveries.map(&:recovery)
 
       recoveries.size.should == 2
       recoveries.should =~ [previous_quarter_recovery, specified_quarter_recovery]
@@ -89,45 +91,23 @@ describe RealisationStatementReceived do
     end
   end
 
-  describe '#recoveries_to_be_realised_ids' do
-    let(:realisation_statement_received) { FactoryGirl.build(:realisation_statement_received, lender: lender) }
-    let(:lender) { FactoryGirl.create(:lender) }
-    let(:loan1) { FactoryGirl.create(:loan, :recovered, lender: lender, settled_on: Date.new(2000)) }
-    let(:recovery1) { FactoryGirl.create(:recovery, loan: loan1) }
-
-    context 'with already realised recoveries' do
-      let(:recovery2) { FactoryGirl.create(:recovery, realise_flag: true, loan: loan1) }
-
-      it 'does not assign them' do
-        realisation_statement_received.recoveries_to_be_realised_ids = [recovery1.id, recovery2.id]
-        realisation_statement_received.recoveries_to_be_realised.should =~ [recovery1]
-      end
-    end
-
-    context 'with recoveries from other lenders' do
-      let(:recovery2) { FactoryGirl.create(:recovery) }
-
-      it 'does not assign them' do
-        realisation_statement_received.recoveries_to_be_realised_ids = [recovery1.id, recovery2.id]
-        realisation_statement_received.recoveries_to_be_realised.should =~ [recovery1]
-      end
-    end
-  end
-
   describe "#save" do
-    let(:realisation_statement_received) { FactoryGirl.build(:realisation_statement_received) }
+    let(:realisation_statement_received) { FactoryGirl.build(:realisation_statement_received, lender: lender) }
     let(:lender) { FactoryGirl.create(:lender) }
 
     context 'with valid loans to be realised' do
       let(:loan1) { FactoryGirl.create(:loan, :recovered, lender: lender, settled_on: Date.new(2000)) }
       let(:loan2) { FactoryGirl.create(:loan, :recovered, lender: lender, settled_on: Date.new(2000)) }
-      let(:recovery1) { FactoryGirl.create(:recovery, loan: loan1, amount_due_to_dti: Money.new(123_00)) }
-      let(:recovery2) { FactoryGirl.create(:recovery, loan: loan2, amount_due_to_dti: Money.new(456_00)) }
-      let(:recovery3) { FactoryGirl.create(:recovery, loan: loan2, amount_due_to_dti: Money.new(789_00)) }
+      let(:recovery1) { FactoryGirl.create(:recovery, loan: loan1, amount_due_to_dti: Money.new(123_00), recovered_on: Date.new(2006, 6)) }
+      let(:recovery2) { FactoryGirl.create(:recovery, loan: loan2, amount_due_to_dti: Money.new(456_00), recovered_on: Date.new(2006, 6)) }
+      let(:recovery3) { FactoryGirl.create(:recovery, loan: loan2, amount_due_to_dti: Money.new(789_00), recovered_on: Date.new(2006, 6)) }
 
       before do
-        realisation_statement_received.lender = lender
-        realisation_statement_received.recoveries_to_be_realised_ids = [recovery1.id, recovery2.id, recovery3.id]
+        recoveries_to_realise_ids = [recovery1.id, recovery2.id, recovery3.id]
+        realisation_statement_received.recoveries.select {|recovery| recoveries_to_realise_ids.include?(recovery.id)}.each do |recovery|
+          recovery.realised = true
+        end
+
         realisation_statement_received.save
       end
 

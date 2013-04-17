@@ -45,12 +45,12 @@ describe 'Realise loans' do
 
     page.should have_content('lenderref1')
 
-    within "#recovery_#{recovery1.id}" do
-      check 'realisation_statement[recoveries_to_be_realised_ids][]'
+    within "#realise_recovery_#{recovery1.id}" do
+      find('input[type=checkbox][name$="[realised]"]').set(true)
     end
 
-    within "#recovery_#{recovery2.id}" do
-      check 'realisation_statement[recoveries_to_be_realised_ids][]'
+    within "#realise_recovery_#{recovery2.id}" do
+      find('input[type=checkbox][name$="[realised]"]').set(true)
     end
 
     click_button 'Realise Loans'
