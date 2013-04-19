@@ -179,11 +179,6 @@ class Loan < ActiveRecord::Base
     premium_schedules.last
   end
 
-  def premium_schedule_generator
-    return nil unless self.premium_schedule
-    PremiumScheduleGenerator.new(self.premium_schedule, self)
-  end
-
   def loan_category
     LoanCategory.find(loan_category_id)
   end

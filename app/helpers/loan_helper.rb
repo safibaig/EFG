@@ -31,9 +31,9 @@ module LoanHelper
   end
 
   def link_to_premium_schedule(loan)
-    return unless current_user.can_view?(PremiumScheduleGenerator)
+    return unless current_user.can_view?(PremiumSchedule)
 
-    if loan.premium_schedule_generator
+    if loan.premium_schedule
       link_to('Generate Premium Schedule', loan_premium_schedule_path(loan), class: 'btn btn-info')
     end
   end
