@@ -28,8 +28,10 @@ describe CfeUserPermissions do
     it { refute user.can_create?(LoanEligibilityCheck) }
   end
 
-  context 'state aid calculations' do
+  context 'PremiumSchedule' do
+    it { refute user.can_create?(PremiumSchedule) }
     it { refute user.can_update?(PremiumSchedule) }
+    it { assert user.can_view?(PremiumSchedule) }
   end
 
   context 'data protection declaration' do
@@ -42,11 +44,6 @@ describe CfeUserPermissions do
 
   context 'state aid letters' do
     it { refute user.can_view?(StateAidLetter) }
-  end
-
-  context 'premium schedules' do
-    it { refute user.can_view?(PremiumSchedule) }
-    it { refute user.can_update?(PremiumSchedule) }
   end
 
   context 'Loan Offer' do
@@ -120,10 +117,6 @@ describe CfeUserPermissions do
 
   context 'LoanTransfer::Sflg' do
     it { refute user.can_create?(LoanTransfer::Sflg) }
-  end
-
-  context 'PremiumSchedule' do
-    it { refute user.can_create?(PremiumSchedule) }
   end
 
   context 'LoanReport' do
