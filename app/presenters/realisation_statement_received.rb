@@ -53,6 +53,7 @@ class RealisationStatementReceived
     values.each do |_, attributes|
       recovery = recoveries_by_id[attributes['id'].to_i]
       recovery.realised = (attributes['realised'] == '1')
+      recovery.post_claim_limit = (attributes['post_claim_limit'] == '1')
     end
   end
 
@@ -66,8 +67,8 @@ class RealisationStatementReceived
 
     ActiveRecord::Base.transaction do
       create_realisation_statement!
-      realise_loans!
       realise_recoveries!
+      realise_loans!
     end
 
     true
@@ -102,20 +103,7 @@ class RealisationStatementReceived
 
   # TODO: Don't mark loans as realised if they have futher recoveries.
   def realise_loans!
-    realised_recoveries_grouped_by_loan = realised_recoveries.group_by(&:loan)
-    realised_recoveries_grouped_by_loan.each do |loan, recoveries|
-      realised_amount = recoveries.sum(&:amount_due_to_dti)
-
-      self.realisation_statement.loan_realisations.create!(
-        realised_loan: loan,
-        created_by: creator,
-        realised_amount: realised_amount,
-        realised_on: Date.today
-      )
-    end
-
-    loans = realised_recoveries_grouped_by_loan.keys
-    loan_ids = loans.map(&:id).uniq
+    loan_ids = realised_recoveries.map {|recovery| recovery.loan.id }.uniq
 
     Loan.where(id: loan_ids).update_all(
       modified_by_id: creator.id,
@@ -125,12 +113,9 @@ class RealisationStatementReceived
   end
 
   def realise_recoveries!
-    ids = realised_recoveries.map(&:id)
-
-    Recovery.where(id: ids).update_all(
-      realisation_statement_id: self.realisation_statement.id,
-      realise_flag: true
-    )
+    realised_recoveries.each do |recovery|
+      recovery.realise!(realisation_statement, creator)
+    end
   end
 
   def recoveries_by_id

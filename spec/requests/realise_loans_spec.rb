@@ -29,17 +29,18 @@ describe 'Realise loans' do
     loan2 = FactoryGirl.create(:loan, :recovered, reference: '3PEZRGB-01', lender: lender1, settled_on: Date.new(2009))
     loan3 = FactoryGirl.create(:loan, :recovered, reference: 'LOGIHLJ-02', lender: lender1, settled_on: Date.new(2009))
     loan5 = FactoryGirl.create(:loan, reference: 'HJD4JF8-01', lender: lender2, settled_on: Date.new(2009))
+    loan6 = FactoryGirl.create(:loan, :recovered, reference: 'HJDS743-01', lender: lender1, settled_on: Date.new(2009))
 
     recovery2 = FactoryGirl.create(:recovery, loan: loan2, recovered_on: Date.new(2011, 2, 20))
     recovery3 = FactoryGirl.create(:recovery, loan: loan3, recovered_on: Date.new(2012, 5, 5))
     recovery5 = FactoryGirl.create(:recovery, loan: loan5, recovered_on: Date.new(2012, 5, 5))
-
-    # test
+    recovery6 = FactoryGirl.create(:recovery, loan: loan6, recovered_on: Date.new(2011, 2, 20))
 
     select_loans
 
     page.should have_content('BSPFDNH-01')
     page.should have_content('3PEZRGB-01')
+    page.should have_content('HJDS743-01')
     page.should_not have_content('LOGIHLJ-02') # loan after quarter cut off date
     page.should_not have_content('HJD4JF8-01') # loan belongs to different lender
 
@@ -53,11 +54,17 @@ describe 'Realise loans' do
       find('input[type=checkbox][name$="[realised]"]').set(true)
     end
 
+    within "#realise_recovery_#{recovery6.id}" do
+      find('input[type=checkbox][name$="[post_claim_limit]"]').set(true)
+    end
+
     click_button 'Realise Loans'
 
     page.should have_content('The following loans have been realised')
     page.should have_content(loan1.reference)
     page.should have_content(loan2.reference)
+    page.should have_content(loan2.reference)
+    page.should have_content(loan6.reference)
     page.should_not have_content(loan3.reference)
     page.should_not have_content(loan5.reference)
 
@@ -70,6 +77,11 @@ describe 'Realise loans' do
     loan2.reload
     loan2.state.should == Loan::Realised
     loan2.modified_by.should == current_user
+
+    loan6.reload
+    loan6.state.should == Loan::Realised
+    loan6.modified_by.should == current_user
+    loan6.loan_realisations.last.post_claim_limit.should be_true
 
     loan3.reload.state.should == Loan::Recovered
     loan5.reload.state.should == Loan::Eligible

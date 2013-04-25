@@ -127,8 +127,8 @@ describe RealisationStatementReceived do
         loan2.reload.realised_money_date.should == Date.today
       end
 
-      it 'creates loan realisation for each loan to be realised' do
-        LoanRealisation.count.should == 2
+      it 'creates loan realisation for each recovery' do
+        LoanRealisation.count.should == 3
       end
 
       it 'creates loan realisations with the same created by user as the realisation statement' do
@@ -140,8 +140,8 @@ describe RealisationStatementReceived do
 
       it 'stores the realised amount on each new loan realisation' do
         realisation_statement = realisation_statement_received.realisation_statement
-        realisation_statement.loan_realisations.find_by_realised_loan_id!(loan1.id).realised_amount.should == Money.new(123_00)
-        realisation_statement.loan_realisations.find_by_realised_loan_id!(loan2.id).realised_amount.should == Money.new(1245_00)
+        realised_amounts = realisation_statement.loan_realisations.map(&:realised_amount)
+        realised_amounts.should =~ [Money.new(123_00), Money.new(456_00), Money.new(789_00)]
       end
 
       it 'associates the recoveries with the realisation statement' do

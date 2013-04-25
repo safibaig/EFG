@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130321140352) do
+ActiveRecord::Schema.define(:version => 20130417155018) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -222,6 +222,7 @@ ActiveRecord::Schema.define(:version => 20130321140352) do
     t.string   "seq"
     t.string   "ar_timestamp"
     t.string   "ar_insert_timestamp"
+    t.boolean  "post_claim_limit",                      :default => false
   end
 
   add_index "loan_realisations", ["created_by_id"], :name => "index_loan_realisations_on_created_by_id"

@@ -36,6 +36,7 @@
           <thead>
             <tr>
               <th>Confirm Realised?</th>
+              <th>Post Claim Limit?</th>
               <th>Loan Reference</th>
               <th>Lender's Reference</th>
               <th>Name</th>
@@ -52,6 +53,7 @@
                   <%= recovery_form.hidden_field :id %>
                   <%= recovery_form.check_box :realised %>
                 </td>
+                <td><%= recovery_form.check_box :post_claim_limit %>
                 <td><%= recovery.loan_reference %></td>
                 <td><%= recovery.lender_loan_reference %></td>
                 <td><%= recovery.loan_business_name %></td>
