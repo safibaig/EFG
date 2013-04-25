@@ -163,6 +163,14 @@ class Loan < ActiveRecord::Base
     Money.new(loan_realisations.sum(:realised_amount))
   end
 
+  def cumulative_pre_claim_limit_realised_amount
+    Money.new(loan_realisations.pre_claim_limit.sum(:realised_amount))
+  end
+
+  def cumulative_post_claim_limit_realised_amount
+    Money.new(loan_realisations.post_claim_limit.sum(:realised_amount))
+  end
+
   def cumulative_unrealised_recoveries_amount
     cumulative_recoveries_amount - cumulative_realised_amount
   end
