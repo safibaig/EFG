@@ -6,6 +6,10 @@ class PremiumSchedulesController < ApplicationController
   before_filter :load_premium_schedule, only: [:edit, :update]
 
   def edit
+    unless @premium_schedule.repayment_frequency
+      flash[:notice] = I18n.t('premium_schedule.repayment_frequency_not_set')
+      redirect_to new_loan_entry_path(@loan)
+    end
   end
 
   def show

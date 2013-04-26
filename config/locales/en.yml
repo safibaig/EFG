@@ -263,3 +263,6 @@ en:
     password_not_set: "This user does not have a password, please send them a reset password email or they will not be able to login."
     password_set_time_remaining: "User has %{time_left} left to set password."
     usernames_reminder_sent: "If your email address exists in our database, you will receive a username reminder at your email address in a few minutes."
+
+  premium_schedule:
+    repayment_frequency_not_set: "Cannot proceed until a repayment frequency has been selected for the loan."

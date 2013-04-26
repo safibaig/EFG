@@ -58,4 +58,29 @@ describe 'loan entry' do
       let(:current_user) { FactoryGirl.create(:cfe_user) }
     end
   end
+
+  context 'when the loan does not have a repayment frequency' do
+    let(:current_user) { FactoryGirl.create(:lender_user, lender: lender) }
+    let(:lender) { FactoryGirl.create(:lender) }
+    let(:loan) {
+      FactoryGirl.create(:loan, :completed,
+        lender: lender,
+        repayment_frequency_id: nil,
+        state: 'incomplete'
+      )
+    }
+
+    before do
+      login_as(current_user, scope: :user)
+      visit edit_loan_premium_schedule_path(loan)
+    end
+
+    it 'should redirect to loan entry' do
+      current_path.should == new_loan_entry_path(loan)
+    end
+
+    it 'should display the correct flash message' do
+      page.should have_content(I18n.t('premium_schedule.repayment_frequency_not_set'))
+    end
+  end
 end

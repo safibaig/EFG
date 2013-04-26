@@ -146,6 +146,14 @@ class PremiumSchedule < ActiveRecord::Base
     loan.premium_rate / 100 / 4
   end
 
+  def repayment_frequency
+    if legacy_premium_calculation
+      RepaymentFrequency::Monthly
+    else
+      loan.repayment_frequency
+    end
+  end
+
   private
     def set_seq
       self.seq = (PremiumSchedule.where(loan_id: loan_id).maximum(:seq) || -1) + 1 unless seq
@@ -190,14 +198,6 @@ class PremiumSchedule < ActiveRecord::Base
         else
           (repayment_duration.to_f / 3).ceil
         end
-      end
-    end
-
-    def repayment_frequency
-      if legacy_premium_calculation
-        RepaymentFrequency::Monthly
-      else
-        loan.repayment_frequency
       end
     end
 
