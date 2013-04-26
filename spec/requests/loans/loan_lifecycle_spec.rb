@@ -253,8 +253,8 @@ describe 'Loan lifecycle' do
     fill_in 'realisation_statement_received_on', with: Date.today.to_s(:screen)
     click_button 'Select Loans'
 
-    within "#recovery_#{loan.recoveries.last.id}" do
-      check 'realisation_statement[recoveries_to_be_realised_ids][]'
+    within "#realise_recovery_#{loan.recoveries.last.id}" do
+      find('input[type=checkbox][name$="[realised]"]').set(true)
     end
 
     click_button 'Realise Loans'

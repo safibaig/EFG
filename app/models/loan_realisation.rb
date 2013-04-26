@@ -9,5 +9,8 @@ class LoanRealisation < ActiveRecord::Base
 
   attr_accessible :realised_loan, :created_by, :realised_amount
 
+  scope :pre_claim_limit, -> { where(post_claim_limit: false) }
+  scope :post_claim_limit, -> { where(post_claim_limit: true) }
+
   format :realised_amount, with: MoneyFormatter.new
 end
