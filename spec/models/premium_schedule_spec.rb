@@ -359,6 +359,42 @@ describe PremiumSchedule do
     end
   end
 
+  describe '#total_subsequent_premiums' do
+    before do
+      premium_schedule.loan.repayment_frequency_id = RepaymentFrequency::Quarterly.id
+      premium_schedule.loan.premium_rate = 2.00
+    end
+
+    context 'when not a reschedule' do
+      context 'and there are subsequent premiums' do
+        let(:premium_schedule) {
+          FactoryGirl.build_stubbed(:premium_schedule,
+            repayment_duration: 12,
+            initial_draw_amount: Money.new(10_000_00),
+          )
+        }
+
+        it 'returns the correct total' do
+          premium_schedule.total_subsequent_premiums.should == Money.new(75_00)
+        end
+      end
+
+      context 'and there are no subsequent premiums' do
+        let(:premium_schedule) {
+          FactoryGirl.build_stubbed(:premium_schedule,
+            repayment_duration: 3,
+            initial_draw_amount: Money.new(10_000_00),
+          )
+        }
+
+        it 'returns the correct total' do
+          # Use eql since we explicitly want a Money object
+          premium_schedule.total_subsequent_premiums.should eql(Money.new(0))
+        end
+      end
+    end
+  end
+
   describe '#second_premium_collection_month' do
     let(:premium_schedule) { FactoryGirl.build(:premium_schedule, loan: loan) }
     let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
