@@ -122,7 +122,7 @@ class PremiumSchedule < ActiveRecord::Base
   end
 
   def total_subsequent_premiums
-    subsequent_premiums.sum
+    subsequent_premiums.empty? ? Money.new(0) : subsequent_premiums.sum
   end
 
   # This returns a string because its not really a valid date and it doesn't
