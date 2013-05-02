@@ -203,8 +203,6 @@ ActiveRecord::Schema.define(:version => 20130417155018) do
     t.datetime "created_at",                                            :null => false
     t.datetime "updated_at",                                            :null => false
     t.string   "type"
-    t.integer  "old_repayment_duration"
-    t.integer  "repayment_duration"
   end
 
   add_index "loan_modifications", ["loan_id", "seq"], :name => "index_loan_changes_on_loan_id_and_seq", :unique => true
@@ -214,8 +212,8 @@ ActiveRecord::Schema.define(:version => 20130417155018) do
     t.integer  "realisation_statement_id"
     t.integer  "created_by_id"
     t.integer  "realised_amount",          :limit => 8
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.datetime "created_at",                                               :null => false
+    t.datetime "updated_at",                                               :null => false
     t.integer  "legacy_loan_id"
     t.string   "legacy_created_by"
     t.date     "realised_on"
